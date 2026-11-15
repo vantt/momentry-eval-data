@@ -1,0 +1,150 @@
+Bạn đọc tài liệu của một dự án phần mềm và viết hồ sơ ngắn cho người ngoài chưa từng nghe về nó. Hồ sơ này sẽ đứng đầu mọi câu chuyện kể về dự án, để người nghe biết đang nói về cái gì.
+
+Trả:
+- profile: 3-5 câu, chữ thường ngày. Theo thứ tự: dự án là gì; làm cho ai; ràng buộc chính (ví dụ chạy trên máy, giữ riêng tư, ngôn ngữ người dùng, nền tảng); mục tiêu hiện tại, chỉ khi tài liệu có nói. Tài liệu không nói mục tiêu thì kết thúc ở ràng buộc, không thêm câu "Mục tiêu hiện tại: chưa có".
+
+Luật cứng:
+- Chỉ dùng điều tài liệu nói. Không đoán, không thêm con số, khách hàng, kế hoạch hay động cơ tài liệu không ghi. Ý nào tài liệu không nói thì bỏ hẳn ý đó, không viết câu nói về tài liệu (như "tài liệu không nói mục tiêu").
+- Không đoán người làm là một nhóm hay một người khi tài liệu không nói.
+- Không chép lệnh, đường dẫn, khoá, địa chỉ hay tên người.
+- Tài liệu không cho biết dự án làm gì (chỉ có quy tắc cho agent, mẫu trống, danh sách lệnh) thì trả none kèm lý do ngắn.
+- Viết cùng ngôn ngữ với phần lớn tài liệu.
+
+Ví dụ:
+{"profile":"Một công cụ dòng lệnh sao lưu ảnh từ điện thoại vào ổ cứng trong nhà. Làm cho người không rành kỹ thuật, nên chỉ có một lệnh và không phải cấu hình gì. Ảnh không bao giờ rời mạng nhà. Mục tiêu hiện tại: chạy được trên Windows."}
+
+Ví dụ không có:
+{"none":true,"reason":"chỉ có quy tắc viết code cho agent, không nói dự án làm gì"}
+
+<sources>
+### README.md
+# obsidian-pkm
+
+Hỏi Claude Desktop về graph của vault Obsidian: note nào nối với note nào, đi từ ý này tới ý kia qua đâu, note nào lạc khỏi mạng. Một file `pkm`, không cần Python.
+
+Trạng thái (2026-11-03): bản thử mới nhất là pre-release `v0.1.0-rc.4`. Mã đã xong tới bộ cài: lõi, CLI, MCP `pkm` (một cửa: tìm kiếm qua OHS và graph; trước tên là `kg`), `related` với OHS, `pkm mcp install` và `pkm doctor`, khớp bản Python trên vault thử kg-solo; đã thử cài trên Windows thật. Các bước dưới đây dùng bản đó. GitHub không coi pre-release là bản mới nhất, nên link tải phải ghi tag (khi có bản chính thức thì dùng `releases/latest/download/…`).
+
+## Bắt đầu nhanh (Windows)
+
+Từ máy Windows trống tới Claude Desktop hỏi được graph vault trong khoảng 5 phút. Cần: Claude Desktop và một vault Obsidian. Repo đã public (2026-11-03): không cần GitHub CLI `gh` hay đăng nhập. Gói OHS (tìm kiếm theo nghĩa cho `search` và `related`) thì `pkm mcp install` tự tải từ bản phát hành công khai của fork.
+
+1. Mở PowerShell (không cần quyền admin).
+2. Cài `pkm` vào `%LOCALAPPDATA%\pkm\bin` và thêm vào PATH:
+   ```powershell
+   irm https://github.com/vantt/obsidian-pkm/releases/download/v0.1.0-rc.4/install.ps1 | iex
+   ```
+3. Thoát hẳn Claude Desktop (cả biểu tượng ở khay hệ thống), rồi nối vault vào Claude Desktop:
+   ```powershell
+   pkm mcp install "D:\Duong\dan\toi\Vault"
+   ```
+   Lệnh này dựng index (vault chỉ có wikilink trong thân note thì tự đọc link ở đó, xem dưới), tải gói OHS `0.17.2-vantt.4` (khoảng 100 MB, kiểm sha256) vào `%LOCALAPPDATA%\pkm\ohs`, ghi mục `pkm`, rồi làm ấm index tìm kiếm (vault lớn lần đầu mất vài phút; `--no-warm` để bỏ). Mục `kg` cũ do `pkm` ghi được đổi tên thành `pkm`; mục `ohs` bạn tự thêm thì giữ nguyên (không cần nữa, vì `pkm` đã có `search` và `read`). Máy không ra được GitHub thì tải file gói ở [bản phát hành của fork](https://github.com/vantt/obsidian-hybrid-search/releases/tag/v0.17.2-vantt.4) rồi thêm `--ohs-package <file vừa tải>`; không cần OHS thì thêm `--no-ohs`.
+4. Mở Claude Desktop và hỏi: *"Dùng pkm: vault có bao nhiêu note, note nào được liên kết tới nhiều nhất?"*
+
+Cách đọc cạnh của graph: mặc định `pkm` chỉ lấy cạnh từ khoá frontmatter theo schema (như bản Python). Vault Obsidian thường chỉ có wikilink trong thân note nên cách đó cho graph rỗng; khi gặp vậy, `pkm mcp install` tự dựng lại với `--edge-keys links --body-edges` và ghi hai cờ đó vào mục `pkm`. Muốn giữ cách đọc theo schema thì thêm `--schema-edges-only`.
+
+Có lỗi thì chạy `pkm doctor`: lệnh này kiểm index, cấu hình Claude Desktop, gói OHS (cả Visual C++ Redistributable mà gói cần trên Windows), đường dẫn dài, và in cách sửa.
+
+macOS, Linux: bước 2 là `curl -fsSL https://github.com/vantt/obsidian-pkm/releases/download/v0.1.0-rc.4/install.sh | sh` (cài vào `~/.local/bin`).
+
+<details>
+<summary>Cập nhật, gỡ cài, tuỳ chọn của bộ cài</summary>
+
+- **Cập nhật:** chạy lại lệnh ở bước 2. Cùng phiên bản thì không làm gì. Claude Desktop đang chạy `pkm.exe` vẫn cập nhật được; khởi động lại Claude Desktop để dùng bản mới.
+- **Gỡ cài:** gỡ mục `pkm` khỏi Claude Desktop trước, rồi gỡ `pkm`:
+  ```powershell
+  pkm mcp install --remove
+  $env:PKM_UNINSTALL = '1'; irm https://github.com/vantt/obsidian-pkm/releases/download/v0.1.0-rc.4/install.ps1 | iex
+  ```
+  Index và gói OHS vẫn nằm ở `%LOCALAPPDATA%\pkm`; xoá thư mục đó nếu muốn bỏ hẳn.
+- **Cài và nối vault một lần:** `$env:PKM_MCP_INSTALL = 'D:\Vault'` trước lệnh ở bước 2.
+- **Tuỳ chọn khác** (biến môi trường, hoặc tham số khi chạy file): `PKM_VERSION` (`-Version`), `PKM_INSTALL_DIR` (`-InstallDir`), `PKM_NO_MODIFY_PATH=1`, `PKM_DRY_RUN=1`, `PKM_RELEASE_REPO` (`-Repo`), `PKM_RELEASE_BASE_URL` (`-ReleaseBaseUrl`). Đầy đủ ở đầu [scripts/install.ps1](scripts/install.ps1) và `sh install.sh --help`.
+- Bộ cài tải công khai; nếu bị từ chối (cài từ một bản fork private qua `PKM_RELEASE_REPO`) thì chuyển sang `gh release download`, cần `gh auth login`. Mọi file đều được kiểm sha256 theo `checksums.txt` của bản phát hành.
+< …[+3386]
+
+### docs/PRD.md
+# PRD: lõi Rust của sản phẩm PKM (`vantt/obsidian-pkm`)
+
+| | |
+|---|---|
+| Repo này | `vantt/obsidian-pkm` (private): lõi Rust, binary `pkm` |
+| Đặc tả chạy được | [`vantt/obsidian-pkm-automation`](https://github.com/vantt/obsidian-pkm-automation) (repo nghiên cứu, Python), **ghim tại `5a3eb2f`** (2026-11-02) |
+| Dữ liệu kiểm | [`vantt/obsidian-test-fixture`](https://github.com/vantt/obsidian-test-fixture) `v0.7.0`, preset `kg-solo` (có `.kg-answers.json`); vault xưởng bản B của user (chỉ chạy trên máy user) |
+| Schema | v3 cùng gói `business`, `capture` (`docs/knowledge-graph/schema/schema.yaml` của repo đặc tả) |
+| Bộ tool MCP | Bộ đã duyệt ở E9.12 (GATES 2026-10-30) cộng `related` (E9.4) |
+| Tìm theo nghĩa | OHS qua fork [`vantt/obsidian-hybrid-search`](https://github.com/vantt/obsidian-hybrid-search) (agent khác giữ; PRD ở `vantt/PRD.md` của fork) |
+| Người viết code | Agent. Tài liệu này đủ để làm mà không hỏi lại; chỗ còn phải quyết ghi ở mục 15 |
+
+Mục lục: 1 Bối cảnh và quyết định đã chốt · 2 Phạm vi · 3 Kiến trúc · 4 Bản ghim và đặc tả · 5 Đuổi theo bản Python · 6 Bộ so khớp · 7 Chuyển từng module · 8 Hợp đồng MCP · 9 Nối OHS · 10 CLI · 11 Cài cho Claude Desktop · 12 Kiểm thử và CI · 13 Điều kiện bắt đầu và chuyển hẳn · 14 Lộ trình · 15 Quyết định còn mở · 16 Rủi ro.
+
+---
+
+## 1. Bối cảnh và quyết định đã chốt
+
+Sản phẩm: hệ PKM trên Obsidian cho người làm một mình, freelancer, có tiếng Việt. Repo đặc tả (Python) đã chứng minh được lõi graph: index SQLite của vault, schema v3, bộ tool hỏi graph, MCP cho Claude Desktop và chat trong Obsidian. Khách không được phải cài Python, nên lõi phải thành một binary.
+
+Đã chốt (nguồn: `docs/GATES.md`, `docs/plans/E12.7-port-rust-js.md` của repo đặc tả):
+
+| # | Quyết định | Nguồn |
+|---|---|---|
+| D1 | Lõi viết bằng **Rust**: một crate thư viện `pkm-core`, một binary `pkm` (CLI, MCP, sau này bộ cài và web server). Không chuyển lõi sang JS | GATES 2026-10-31; E12.7 mục 1, 5.1 (làm rõ 2026-11-02) |
+| D2 | Bản Python là **đặc tả chạy được**. Rust phải cho kết quả giống Python trên cùng dữ liệu; bộ test Python là danh sách kiểm | GATES 2026-10-31; E12.7 nguyên tắc 4 |
+| D3 | **SQL giữ nguyên**: bảng, view validator, recursive CTE chép sang `rusqlite` (SQLite đóng gói sẵn) | E12.7 nguyên tắc 5 |
+| D4 | Giao diện người dùng là **plugin Obsidian JS/TS**, gọi `pkm` qua `child_process`, JSON. Không thuộc giai đoạn này | E12.7 mục 1 |
+| D5 | **Tìm theo nghĩa giữ OHS** (JS, Node đi kèm gói dựng sẵn của fork). Không tự làm lại trong Rust ở giai đoạn này | user 2026-11-01; E12.7 mục 5 |
+| D6 | `pkm-core` có **một module OHS duy nhất**: giữ một tiến trình `ohs serve --stdio`, request có `id`. Mọi chỗ khác gọi qua module này | E12.7 mục 5.1 |
+| D7 | Khi OHS chưa sẵn sàng: **không có đường lùi** cho ra kết quả kém; báo trạng thái kèm tiến độ hoặc lỗi kèm việc cần làm; tool MCP trả lỗi có cấu trúc | user 2026-11-02; E12.7 mục 5.1 |
+| D8 | Điện thoại: `pkm serve` trên máy giữ vault, điện thoại chỉ là trình duyệt (Tailscale, LAN, token). Không WASM. Không thuộc giai đoạn này | user 2026-11-02; E12.7 mục 4.1 |
+| D9 | **Chỉ chuyển lõi `kg` và MCP trước.** Các việc E11 (trang Nguyên liệu, hàng chờ đề xuất, vùng tri thức, giao diện xưởng) chờ E11.7 (4 tuần sản xuất thật) và chờ nhịp sửa chậm lại | trao đổi 2026-11-02; số đo: `scripts/e11` 21 commit, khoảng 5.100 dòng đổi trong 7 ngày; `scripts/kg` 8 commit, khoảng 2.300 dòng, phần lớn là sửa cho Windows |
+| D10 | Ghim một phiên bản Python, chuyển, rồi **đuổi theo** thay đổi mới của Python tới khi hai bên khớp, rồi bỏ bản Python cho lõi | user 2026-11-02 |
+
+## 2. Phạm vi
+
+### 2.1. Giai đoạn 1 (repo này làm)
+Lõi graph và mọi thứ cần để thay MCP `kg` Python trong Claude Desktop và chat trong Obsidian:
+
+| Python (repo đặc tả, tại `5a3eb2f`) | Dòng | Rust |
+|---|---|---|
+| `scripts/kg/vault.py` | 162 | `pkm-core::vault` |
+| `scripts/kg/schema.py` + `docs/knowledge-graph/schema/schema.yaml` | 167 + 372 | `pkm-core::schema` (schema nhúng bằng `include_str!`, vẫn n …[+20811]
+
+### AGENTS.md
+# Luật cho agent làm việc trong repo này
+
+Áp dụng cho mọi agent (Claude Code, Codex, Gemini, ...) sửa `obsidian-pkm`: binary `pkm` (CLI, MCP), plugin Obsidian `pkm`, bộ cài, preset bản B.
+
+## Mỗi thay đổi người dùng thấy được phải có đủ ba thứ
+
+Người dùng thấy được = lệnh mới, nút, cài đặt, hành vi đổi, thông báo, công cụ MCP, cờ CLI. Sửa nội bộ không đổi hành vi thì chỉ cần unit test.
+
+1. **Unit test** cho phần tính toán, tách khỏi Obsidian (như `apps/obsidian-plugin/src/compare-scroll/session.ts`).
+2. **Test e2e chạy tự động** trên app thật, không chỉ trên mock:
+   - Plugin: script chạy trong Obsidian thật qua `obsidian eval` (Obsidian CLI), trên **vault thử có dữ liệu bịa**, đọc trạng thái thật (DOM, vị trí cuộn, file đã ghi) và so với kỳ vọng. Không chạy trên vault thật của người dùng; không để lại plugin, file hay cấu hình thừa.
+   - CLI và MCP: chạy binary đã build trên vault bịa, so đầu ra.
+   - Chờ đủ lâu cho Obsidian vẽ xong trước khi đo (chế độ đọc vẽ dần note dài và tự chỉnh vị trí cuộn).
+   - Ghi trong commit: đã chạy e2e ở đâu, kết quả.
+3. **Hướng dẫn sử dụng** trong `docs/user-guide/`, cùng commit:
+   - Viết cho người dùng, không cho người phát triển: dùng để làm gì (ví dụ đời thường), các bước đánh số, mỗi bước nói bấm gì và **thấy gì** (chữ trên nút, thông báo, thanh trạng thái), điều nên biết, cách tắt.
+   - Đủ rõ để quay thành video hướng dẫn và dùng khi bán hàng.
+   - Ví dụ hư cấu; không tên note, nội dung hay tên người từ vault thật.
+
+Thiếu một trong ba thì việc chưa xong: không báo xong, không merge.
+
+## Mã lấy từ người khác
+
+- Chỉ lấy mã có giấy phép cho phép (MIT, BSD, Apache...). Ghi công ở đầu file (tên dự án, link, giấy phép, tác giả) và mang theo toàn văn giấy phép vào bản phát hành (ví dụ hiện trong trang cài đặt), vì `legalComments: 'none'` bỏ comment khỏi `main.js`.
+- Tìm ra lỗi hay cải tiến chung trong mã đó thì gửi lại cho tác giả (issue, PR từ fork dưới tài khoản `vantt`), người dùng duyệt lời trước khi gửi. Ghi link PR trong mã.
+
+## Theo dõi dự án nguồn (distill)
+
+Plugin, theme mà `pkm setup` ghim, mã chép vào plugin `pkm` và OHS gốc được theo dõi ở [docs/distillery](docs/distillery/distill.yaml) bằng skill `distill-repo` (script `distill.mjs`). Bài học nằm ở `docs/distillery/lessons/<domain>.yaml`, mỗi bài ghim tới `nguồn@commit:đường dẫn#dòng`.
+
+- Trước khi nâng phiên bản ghim trong `presets/b/setup.json`, hay sửa mã chép từ nguồn khác: chạy `delta <nguồn>`, đọc thay đổi từ cursor, ghi bài học, `seal`.
+- Bản sao nguồn ở `upstreams/` (gitignore); thiếu thì `git clone --filter=blob:none <url> upstreams/<nguồn>`.
+- Chỉ người dùng chốt bài học (`planned`, `rejected`...). Bài học không tự thành việc; muốn làm thì đưa vào plan như việc khác.
+- PR đã gửi cho nguồn (ví dụ relative-scroll-lock PR 1) ghi trong `notes` của nguồn; mỗi lượt delta xem PR đó đã merge chưa.
+
+### CLAUDE.md
+@AGENTS.md
+</sources>
+
+Chỉ trả JSON theo một trong hai dạng trên.

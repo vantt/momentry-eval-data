@@ -1,0 +1,1293 @@
+{
+  "id": "cd4449ab",
+  "run": 1,
+  "host": "omp",
+  "transcript": "/home/vantt/.omp/profiles/gemini-tetcu72/agent/sessions/-projects-mcp-skill-hub-simplify/2026-10-09T02-40-10-134Z_01a11e88-4796-7023-a511-4a8dcd4449ab.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "dadb4c5597fabafa",
+  "at": "2026-11-10T12:45:41.174Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.35,
+    "tokens": 92346,
+    "chunks": 1,
+    "hotspots": 144,
+    "entries": 2664,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "omp:cd4449ab",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.3417582,
+    "secs": 384.7,
+    "exitCode": 0,
+    "status": "done",
+    "written": 22,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-09-test-xanh-ma-real-hub-van-4257",
+        "status": "angle",
+        "angle": "Một công cụ quản lý skill (skill hub) đang chuyển dữ liệu từ schema v1 lên v3, và người làm tin rằng test xanh trên fixture viết tay là đủ để báo xong. Hoá ra file metadata của hub thật dùng trường khác và thiếu id, nên migration vẫn hỏng khi chạy trên dữ liệu thật. Dev nào viết test trên dữ liệu tự tạo nên chạy thử trên dữ liệu thật trước khi báo xong.",
+        "audience": "dev viết test và migration cho dữ liệu thật",
+        "evidence": [
+          1461,
+          1462,
+          1713
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ quản lý skill (skill hub) viết bằng Go, đang chuyển dữ liệu từ schema v1 lên v3.",
+            "evidence": [
+              6,
+              1462
+            ]
+          },
+          "want": {
+            "text": "Migrate được hub thật từ v1 lên v3.",
+            "evidence": [
+              1462
+            ]
+          },
+          "obstacle": {
+            "text": "Dry-run trên bản sao hub thật báo 'canonical entity is missing an ID'; fixture viết tay không chứa dữ liệu thật.",
+            "evidence": [
+              1462
+            ]
+          },
+          "turn": {
+            "text": "Tưởng fixture viết tay và make check xanh là đủ; hoá ra hub thật có .meta/skill.yaml dùng trường repo, learn_paths và thiếu id, nên migration vẫn hỏng.",
+            "evidence": [
+              1461,
+              1462
+            ]
+          },
+          "action": {
+            "text": "Bỏ qua .meta ở workspace v1/v2, lấy id từ tên thư mục, chấp nhận trường repo, gộp nguồn theo URL chuẩn hoá, thay fixture bằng bản sao thật.",
+            "evidence": [
+              1462,
+              1523
+            ]
+          },
+          "outcome": {
+            "text": "Migrate chạy được trên bản sao hub thật (schema 3, validate qua, trust không đổi); nhưng vòng review sau lộ hồi quy: description thành '>-'.",
+            "evidence": [
+              1713
+            ]
+          },
+          "takeaway": {
+            "text": "Test xanh trên fixture tự viết chưa chứng minh gì về dữ liệu thật; chạy migration trên bản sao dữ liệu thật trước khi báo xong.",
+            "evidence": [
+              1462,
+              1713
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-09-bao-cao-noi-xong-code-van-4257",
+        "status": "angle",
+        "angle": "Dự án mcp-skill-hub đang làm đợt 2, và một worktree đang làm Phase 4 đổi cách ghi skill sang key mới 'repo'. Báo cáo nói mọi chỗ ghi đã chuyển xong, nhưng skill_add vẫn ghi 'repository' cho skill mới: báo cáo sai, code chưa đổi. Ai nhận báo cáo AI cần biết câu 'đã xong' phải được đối chiếu với code, không chỉ tin tóm tắt.",
+        "audience": "dev dùng AI để viết và review code",
+        "evidence": [
+          6,
+          2025
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án mcp-skill-hub, worktree C đang làm Phase 4 của đợt 2: đổi cách ghi skill sang key mới.",
+            "evidence": [
+              6
+            ]
+          },
+          "want": {
+            "text": "Muốn Phase 4 đạt chuẩn để lead merge vào main trước khi làm Phase 3.",
+            "evidence": [
+              2025
+            ]
+          },
+          "obstacle": {
+            "text": "Báo cáo nói mọi chỗ ghi đã chuyển, nhưng skill_add vẫn ghi 'repository' cho skill mới.",
+            "evidence": [
+              2025
+            ]
+          },
+          "turn": {
+            "text": "Tưởng báo cáo đã đúng; hoá ra skill_add vẫn ghi key cũ, nên câu 'đã xong' sai.",
+            "evidence": [
+              2024,
+              2025
+            ]
+          },
+          "action": {
+            "text": "Sửa skill_add ghi 'repo', xoá đường dẫn provDoc không dùng, thêm test kiểm tra không còn 'repository'.",
+            "evidence": [
+              2053,
+              2110
+            ]
+          },
+          "outcome": {
+            "text": "Commit d646117, 3 file, +126/−48 dòng.",
+            "evidence": [
+              2112
+            ]
+          },
+          "takeaway": {
+            "text": "Câu 'đã xong' trong báo cáo AI cần được đối chiếu với code, kèm lệnh kiểm chứng.",
+            "evidence": [
+              2025
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-09-migration-v4-nuot-loi-duyet-cay-4257",
+        "status": "angle",
+        "angle": "Một dự án công cụ MCP cho kho skill đang gom mô hình dữ liệu về bản tối giản, và người làm đang chuyển dữ liệu từ v3 sang v4. Người làm tưởng bước migration đã xong sau khi commit, nhưng vòng đọc thư mục vẫn bỏ qua mọi lỗi, nên migrate có thể chạy xong mà thiếu dữ liệu không ai hay. Dev viết migration hay công cụ đọc dữ liệu hàng loạt sẽ muốn biết cách đảm bảo hoặc xong hết, hoặc không đổi gì.",
+        "audience": "dev viết migration hoặc công cụ đọc dữ liệu hàng loạt",
+        "evidence": [
+          3656,
+          3957
+        ],
+        "spine": {
+          "context": {
+            "text": "Một dự án công cụ MCP cho kho skill đang gom mô hình dữ liệu về bản tối giản, người làm chuyển dữ liệu từ bản v3 sang v4 theo từng phase.",
+            "evidence": [
+              6,
+              2374
+            ]
+          },
+          "want": {
+            "text": "Muốn migration v3→v4 hoặc xong hết, hoặc không đổi gì trong workspace.",
+            "evidence": [
+              3656
+            ]
+          },
+          "obstacle": {
+            "text": "Vòng đọc cây thư mục insight bỏ qua mọi lỗi bằng dấu gạch dưới.",
+            "evidence": [
+              3656,
+              3962
+            ]
+          },
+          "turn": {
+            "text": "Tưởng migration đã xong sau khi commit; hoá ra lỗi đọc vẫn bị nuốt, và lead phải chỉ ra.",
+            "evidence": [
+              3656,
+              3957
+            ]
+          },
+          "action": {
+            "text": "Thay mọi lỗi đọc hoặc parse bị bỏ trong v4 bằng lỗi có tên file, rồi viết test với một file insight hỏng.",
+            "evidence": [
+              3656,
+              3987
+            ]
+          },
+          "outcome": {
+            "text": "Test riêng lúc đầu fail; sau đó toàn bộ package internal/migration chạy xanh.",
+            "evidence": [
+              3989,
+              4001
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi báo xong, grep các chỗ bỏ qua lỗi (_ =); lỗi bị nuốt không hiện ra trong test xanh.",
+            "evidence": [
+              3962
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-09-nguoi-duyet-bat-regression-ma-fixture-4257",
+        "status": "angle",
+        "angle": "Dự án là một skill hub cho AI agent, đang chuyển dữ liệu sang schema phiên bản 3 ở phase 4. Bộ test fixture chỉ kiểm trust nên báo xanh, trong khi khi người duyệt so sánh đầu ra thật thì mô tả skill thành '>-' và tên bị đổi. Người nghe nên quan tâm vì mô tả là thứ agent dùng để định tuyến, nên một bài test chỉ kiểm một phần có thể xanh mà vẫn làm hỏng việc chọn skill.",
+        "audience": "dev viết công cụ hoặc test migration dữ liệu cho AI agent",
+        "evidence": [
+          6,
+          1713
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án là một skill hub cho AI agent, đang chuyển dữ liệu sang schema phiên bản 3 ở phase 4.",
+            "evidence": [
+              6
+            ]
+          },
+          "want": {
+            "text": "Migration phải giữ nguyên những gì agent nhìn thấy: mô tả, tên và định tuyến.",
+            "evidence": [
+              1713
+            ]
+          },
+          "obstacle": {
+            "text": "Fixture test chỉ kiểm trust nên bỏ sót regression ở mô tả và tên.",
+            "evidence": [
+              1713
+            ]
+          },
+          "turn": {
+            "text": "Fixture báo xanh nên tưởng migration đúng; hoá ra mô tả skill thành '>-' và tên 'test-audit' bị đổi thành 'Test Audit'.",
+            "evidence": [
+              1713
+            ]
+          },
+          "action": {
+            "text": "Đọc frontmatter bằng YAML parser thật, đổi thứ tự ưu tiên tên, chỉ ghi khóa repo, và mở rộng test so sánh name, description, status, routing trên đầu ra thật.",
+            "evidence": [
+              1712,
+              1713
+            ]
+          },
+          "outcome": {
+            "text": "Tên 'test-audit' giữ nguyên sau migration trong lần kiểm trên bản sao.",
+            "evidence": [
+              1890
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi báo xanh, kiểm tên, mô tả, trạng thái và định tuyến trên đầu ra thật; chỉ kiểm trust là chưa đủ.",
+            "evidence": [
+              1713
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-09-hai-cach-viet-cung-mot-url-4257",
+        "status": "angle",
+        "angle": "Dự án là một hub kỹ năng viết bằng Go, và người làm đang sửa bước migration để chạy được trên hub thật. Hai URL repo của cùng một kỹ năng, một có đuôi .git và một không, được chuẩn hoá bằng Python và cho ra cùng một chuỗi nên tưởng là xong. Nhưng code Go vẫn báo không khớp vì thứ tự trim khác nhau, và ai chuẩn hoá dữ liệu bằng ngôn ngữ khác rồi tin kết quả đó đều có thể gặp đúng lỗi này.",
+        "audience": "dev viết công cụ migrate dữ liệu bằng Go",
+        "evidence": [
+          1462,
+          1803,
+          1818,
+          1827
+        ],
+        "spine": {
+          "context": {
+            "text": "Một hub kỹ năng viết bằng Go, người làm đang sửa bước migration để chạy trên hub thật theo yêu cầu của lead.",
+            "evidence": [
+              6,
+              1462
+            ]
+          },
+          "want": {
+            "text": "Gộp hai URL repo (một có đuôi .git, một không) thành một nguồn khi migrate metadata.",
+            "evidence": [
+              1462
+            ]
+          },
+          "obstacle": {
+            "text": "Code Go vẫn báo matches=false cho hai URL đã được chuẩn hoá.",
+            "evidence": [
+              1818
+            ]
+          },
+          "turn": {
+            "text": "Tưởng: chuẩn hoá bằng Python cho ra cùng một chuỗi thì Go cũng khớp. Hoá ra: Go vẫn lệch vì thứ tự trim khác nhau.",
+            "evidence": [
+              1803,
+              1818
+            ]
+          },
+          "action": {
+            "text": "Sửa thứ tự trim khoảng trắng và đuôi .git trong hàm chuẩn hoá Go, rồi chạy lại test.",
+            "evidence": [
+              1824,
+              1827
+            ]
+          },
+          "outcome": {
+            "text": "Test migration v1→v2→v3 trên fixture pass.",
+            "evidence": [
+              1827
+            ]
+          },
+          "takeaway": {
+            "text": "Chuẩn hoá dữ liệu phải dùng đúng code của repo; kết quả thử bằng ngôn ngữ khác có thể không khớp.",
+            "evidence": [
+              1803,
+              1818
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-09-mot-dong-yaml-thut-le-lam-4257",
+        "status": "none",
+        "none": true,
+        "reason": "Chỉ là sửa một chỉ báo thụt lề trong fixture YAML của test; không ai tin sai điều gì về kiến thức hay hành vi hệ thống, nên không có chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Một dự án hub kỹ năng cho agent (MCP), đang được đơn giản hoá trong worktree riêng.",
+            "evidence": [
+              6,
+              2374
+            ]
+          },
+          "want": {
+            "text": "Viết test migration v3 sang v4 với fixture trước Phase 3.",
+            "evidence": [
+              2374
+            ]
+          },
+          "obstacle": {
+            "text": "Test migration đỏ; decoder YAML báo lỗi khi đọc receipt.",
+            "evidence": [
+              2713,
+              2743
+            ]
+          },
+          "action": {
+            "text": "Thử lại chuỗi YAML với block scalar đã sửa và qua decoder thật.",
+            "evidence": [
+              2741,
+              2744
+            ]
+          },
+          "outcome": {
+            "text": "Decode thành công sau khi sửa chỉ báo thụt lề của block scalar.",
+            "evidence": [
+              2746
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-09-noi-regex-bang-chung-de-test-4257",
+        "status": "angle",
+        "angle": "Dự án mcp-skill-hub đang đơn giản hoá code và chuyển dữ liệu từ v3 sang v4. Người làm nới regex bằng chứng và schema dùng chung để test qua, vì dữ liệu cũ thiếu đường dẫn; việc này cho thấy họ tin nới chung là đủ. Người duyệt chỉ ra schema chung phải giữ chặt cho lesson mới, ngoại lệ chỉ đặt trong bước migrate. Nới schema chung để qua test là nợ kỹ thuật, lần sau dữ liệu thiếu đường dẫn sẽ lọt vào.",
+        "audience": "dev làm migration dữ liệu và schema cho công cụ AI",
+        "evidence": [
+          6,
+          3656,
+          3963,
+          3966
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án mcp-skill-hub đang đơn giản hoá code và chuyển dữ liệu từ v3 sang v4.",
+            "evidence": [
+              6,
+              2374
+            ]
+          },
+          "want": {
+            "text": "Lesson mới phải có bằng chứng đúng dạng repo@sha:path, và migration phải fail closed.",
+            "evidence": [
+              3656
+            ]
+          },
+          "obstacle": {
+            "text": "Dữ liệu cũ dùng dạng repo@sha không có path nên không khớp quy tắc mới.",
+            "evidence": [
+              3656
+            ]
+          },
+          "turn": {
+            "text": "Tưởng nới regex và schema chung để dạng repo@sha không path lọt qua là đủ; hoá ra schema phải giữ chặt, ngoại lệ chỉ được đặt trong bước migrate.",
+            "evidence": [
+              3656,
+              3963,
+              3966
+            ]
+          },
+          "action": {
+            "text": "Nới EvidencePattern và distill.schema.json để chấp nhận repo@sha không có :path.",
+            "evidence": [
+              3963,
+              3966
+            ]
+          },
+          "takeaway": {
+            "text": "Nới schema chung để qua test là nợ kỹ thuật; đặt ngoại lệ ở chỗ migrate dữ liệu cũ và giữ quy tắc mới chặt.",
+            "evidence": [
+              3656
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-10-09-xoa-17-tool-mcp-cu-va-4257",
+        "status": "none",
+        "none": true,
+        "reason": "Không có ai tin sai điều gì rồi hoá ra khác. Đây là việc refactor theo kế hoạch: xoá tool, cập nhật SKILL.md và commit. Lần đọc file không tồn tại (L3457) là lỗi vặt. Bài học về hai bản copy và test ranh giới viết trước trong phần chuyện không có bằng chứng trong trích đoạn.",
+        "spine": {
+          "context": {
+            "text": "Một agent làm worktree C của dự án mcp-skill-hub, đơn giản hoá bề mặt MCP và web theo mô hình distill tối giản, theo kế hoạch Phase 3 và 4 của lead.",
+            "evidence": [
+              6,
+              2374
+            ]
+          },
+          "want": {
+            "text": "Làm Phase 3 theo thứ tự đã định, mỗi phase một commit, make check xanh.",
+            "evidence": [
+              2374
+            ]
+          },
+          "obstacle": {
+            "text": "Main đã đi trước (worktree D đã merge), nên nhánh cần rebase lên main.",
+            "evidence": [
+              2345
+            ]
+          },
+          "action": {
+            "text": "Commit thay đổi căn chỉnh, xoá 17 tool MCP cũ, cập nhật SKILL.md của curator bằng cp sang bản copy.",
+            "evidence": [
+              3485,
+              3596,
+              3956
+            ]
+          },
+          "outcome": {
+            "text": "Commit c75baca: 19 file, +350 và -1650 dòng.",
+            "evidence": [
+              3956,
+              3959
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-09-golden-file-duoc-doi-de-test-4257",
+        "status": "none",
+        "none": true,
+        "reason": "Đoạn trích không cho thấy ai tin sai điều gì rồi bị chứng minh ngược lại. Có lần đổi golden bằng -update và test xanh, nhưng không dòng nào nêu nguyên nhân lỗi, nên chưa đủ bằng chứng cho chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Một agent làm việc trên worktree của dự án mcp-skill-hub, đang đơn giản hoá các phase.",
+            "evidence": [
+              6
+            ]
+          },
+          "obstacle": {
+            "text": "Test eval và test web đỏ khi chạy.",
+            "evidence": [
+              1086,
+              1302
+            ]
+          },
+          "action": {
+            "text": "Sửa experiment_id trong manifest eval thành cli-replay-v1, rồi cập nhật golden web bằng cờ -update.",
+            "evidence": [
+              1087,
+              1089,
+              1303
+            ]
+          },
+          "outcome": {
+            "text": "Test web xanh sau khi cập nhật golden.",
+            "evidence": [
+              1305,
+              1308
+            ]
+          }
+        },
+        "completeness": 4
+      },
+      {
+        "id": "2026-10-09-model-distill-test-reopen-va-go-4257",
+        "status": "angle",
+        "angle": "Một dự án hub quản lý skill cho agent đang đơn giản hoá qua các phase. Người làm xoá revision_package.go cùng test, tưởng thế là gọn, nhưng test distill đỏ liên tục qua nhiều vòng sửa validate vì chỗ khác vẫn đọc lớp đó. Ai đang gỡ một lớp dữ liệu nên grep chỗ đọc trước khi xoá để khỏi mất nhiều vòng sửa.",
+        "audience": "dev đang xoá code cũ trong dự án có nhiều chỗ đọc chung",
+        "evidence": [
+          6,
+          3083,
+          3088
+        ],
+        "spine": {
+          "context": {
+            "text": "Một dự án hub quản lý skill cho agent, đang đơn giản hoá qua các phase; người làm đang ở worktree riêng.",
+            "evidence": [
+              6
+            ]
+          },
+          "want": {
+            "text": "Gỡ lớp revision package và đưa model distill mới lên.",
+            "evidence": [
+              3083
+            ]
+          },
+          "obstacle": {
+            "text": "Sau khi xoá, test distill đỏ liên tục qua nhiều vòng sửa validate.",
+            "evidence": [
+              3088,
+              3262
+            ]
+          },
+          "turn": {
+            "text": "Tưởng xoá revision_package.go cùng test của nó là gọn; hoá ra chỗ khác vẫn đọc lớp đó nên test tombstone vẫn đỏ.",
+            "evidence": [
+              3083,
+              3088
+            ]
+          },
+          "action": {
+            "text": "Xoá file và test, thêm nhánh skipRuntimePackages, rồi sửa validate qua nhiều lần chạy test.",
+            "evidence": [
+              3083,
+              3238
+            ]
+          },
+          "outcome": {
+            "text": "Chưa xanh: go test ./internal/app vẫn FAIL ở lần chạy cuối.",
+            "evidence": [
+              3346
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi xoá một lớp dữ liệu, grep toàn bộ chỗ đọc nó để biết test nào sẽ đỏ.",
+            "evidence": [
+              3083,
+              3088
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "omp:cd4449ab L1-L4000: done; 18 chuyện thô, 22 cụm; ghi 22 mới, gộp 0\nđiểm nóng 144 (thiếu 0); lần chạy 1/1; 0.34 USD\ngóc kể: 7 có, 3 không ra chuyện\nhồ sơ dự án: repo không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-09-test-xanh-ma-real-hub-van-4257",
+      "code": "M-5ZZF",
+      "title": "Test xanh mà real hub vẫn hỏng: 'canonical entity is missing an ID'",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ quản lý skill (skill hub) đang chuyển dữ liệu từ schema v1 lên v3, và người làm tin rằng test xanh trên fixture viết tay là đủ để báo xong. Hoá ra file metadata của hub thật dùng trường khác và thiếu id, nên migration vẫn hỏng khi chạy trên dữ liệu thật. Dev nào viết test trên dữ liệu tự tạo nên chạy thử trên dữ liệu thật trước khi báo xong.",
+      "audience": "dev viết test và migration cho dữ liệu thật",
+      "spine": {
+        "context": {
+          "text": "Một công cụ quản lý skill (skill hub) viết bằng Go, đang chuyển dữ liệu từ schema v1 lên v3.",
+          "lines": [
+            "omp:cd4449ab#L6",
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "want": {
+          "text": "Migrate được hub thật từ v1 lên v3.",
+          "lines": [
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "obstacle": {
+          "text": "Dry-run trên bản sao hub thật báo 'canonical entity is missing an ID'; fixture viết tay không chứa dữ liệu thật.",
+          "lines": [
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng fixture viết tay và make check xanh là đủ; hoá ra hub thật có .meta/skill.yaml dùng trường repo, learn_paths và thiếu id, nên migration vẫn hỏng.",
+          "lines": [
+            "omp:cd4449ab#L1461",
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "action": {
+          "text": "Bỏ qua .meta ở workspace v1/v2, lấy id từ tên thư mục, chấp nhận trường repo, gộp nguồn theo URL chuẩn hoá, thay fixture bằng bản sao thật.",
+          "lines": [
+            "omp:cd4449ab#L1462",
+            "omp:cd4449ab#L1523"
+          ]
+        },
+        "outcome": {
+          "text": "Migrate chạy được trên bản sao hub thật (schema 3, validate qua, trust không đổi); nhưng vòng review sau lộ hồi quy: description thành '>-'.",
+          "lines": [
+            "omp:cd4449ab#L1713"
+          ]
+        },
+        "takeaway": {
+          "text": "Test xanh trên fixture tự viết chưa chứng minh gì về dữ liệu thật; chạy migration trên bản sao dữ liệu thật trước khi báo xong.",
+          "lines": [
+            "omp:cd4449ab#L1462",
+            "omp:cd4449ab#L1713"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-bao-cao-noi-xong-code-van-4257",
+      "code": "M-7RDJ",
+      "title": "Báo cáo nói xong, code vẫn ghi key cũ 'repository'",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án mcp-skill-hub đang làm đợt 2, và một worktree đang làm Phase 4 đổi cách ghi skill sang key mới 'repo'. Báo cáo nói mọi chỗ ghi đã chuyển xong, nhưng skill_add vẫn ghi 'repository' cho skill mới: báo cáo sai, code chưa đổi. Ai nhận báo cáo AI cần biết câu 'đã xong' phải được đối chiếu với code, không chỉ tin tóm tắt.",
+      "audience": "dev dùng AI để viết và review code",
+      "spine": {
+        "context": {
+          "text": "Dự án mcp-skill-hub, worktree C đang làm Phase 4 của đợt 2: đổi cách ghi skill sang key mới.",
+          "lines": [
+            "omp:cd4449ab#L6"
+          ]
+        },
+        "want": {
+          "text": "Muốn Phase 4 đạt chuẩn để lead merge vào main trước khi làm Phase 3.",
+          "lines": [
+            "omp:cd4449ab#L2025"
+          ]
+        },
+        "obstacle": {
+          "text": "Báo cáo nói mọi chỗ ghi đã chuyển, nhưng skill_add vẫn ghi 'repository' cho skill mới.",
+          "lines": [
+            "omp:cd4449ab#L2025"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng báo cáo đã đúng; hoá ra skill_add vẫn ghi key cũ, nên câu 'đã xong' sai.",
+          "lines": [
+            "omp:cd4449ab#L2024",
+            "omp:cd4449ab#L2025"
+          ]
+        },
+        "action": {
+          "text": "Sửa skill_add ghi 'repo', xoá đường dẫn provDoc không dùng, thêm test kiểm tra không còn 'repository'.",
+          "lines": [
+            "omp:cd4449ab#L2053",
+            "omp:cd4449ab#L2110"
+          ]
+        },
+        "outcome": {
+          "text": "Commit d646117, 3 file, +126/−48 dòng.",
+          "lines": [
+            "omp:cd4449ab#L2112"
+          ]
+        },
+        "takeaway": {
+          "text": "Câu 'đã xong' trong báo cáo AI cần được đối chiếu với code, kèm lệnh kiểm chứng.",
+          "lines": [
+            "omp:cd4449ab#L2025"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-migration-v4-nuot-loi-duyet-cay-4257",
+      "code": "M-J18G",
+      "title": "Migration v4 nuốt lỗi duyệt cây thư mục",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một dự án công cụ MCP cho kho skill đang gom mô hình dữ liệu về bản tối giản, và người làm đang chuyển dữ liệu từ v3 sang v4. Người làm tưởng bước migration đã xong sau khi commit, nhưng vòng đọc thư mục vẫn bỏ qua mọi lỗi, nên migrate có thể chạy xong mà thiếu dữ liệu không ai hay. Dev viết migration hay công cụ đọc dữ liệu hàng loạt sẽ muốn biết cách đảm bảo hoặc xong hết, hoặc không đổi gì.",
+      "audience": "dev viết migration hoặc công cụ đọc dữ liệu hàng loạt",
+      "spine": {
+        "context": {
+          "text": "Một dự án công cụ MCP cho kho skill đang gom mô hình dữ liệu về bản tối giản, người làm chuyển dữ liệu từ bản v3 sang v4 theo từng phase.",
+          "lines": [
+            "omp:cd4449ab#L6",
+            "omp:cd4449ab#L2374"
+          ]
+        },
+        "want": {
+          "text": "Muốn migration v3→v4 hoặc xong hết, hoặc không đổi gì trong workspace.",
+          "lines": [
+            "omp:cd4449ab#L3656"
+          ]
+        },
+        "obstacle": {
+          "text": "Vòng đọc cây thư mục insight bỏ qua mọi lỗi bằng dấu gạch dưới.",
+          "lines": [
+            "omp:cd4449ab#L3656",
+            "omp:cd4449ab#L3962"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng migration đã xong sau khi commit; hoá ra lỗi đọc vẫn bị nuốt, và lead phải chỉ ra.",
+          "lines": [
+            "omp:cd4449ab#L3656",
+            "omp:cd4449ab#L3957"
+          ]
+        },
+        "action": {
+          "text": "Thay mọi lỗi đọc hoặc parse bị bỏ trong v4 bằng lỗi có tên file, rồi viết test với một file insight hỏng.",
+          "lines": [
+            "omp:cd4449ab#L3656",
+            "omp:cd4449ab#L3987"
+          ]
+        },
+        "outcome": {
+          "text": "Test riêng lúc đầu fail; sau đó toàn bộ package internal/migration chạy xanh.",
+          "lines": [
+            "omp:cd4449ab#L3989",
+            "omp:cd4449ab#L4001"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi báo xong, grep các chỗ bỏ qua lỗi (_ =); lỗi bị nuốt không hiện ra trong test xanh.",
+          "lines": [
+            "omp:cd4449ab#L3962"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-nguoi-duyet-bat-regression-ma-fixture-4257",
+      "code": "M-2QJV",
+      "title": "Người duyệt bắt regression mà fixture bỏ sót: mô tả thành '>-'",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là một skill hub cho AI agent, đang chuyển dữ liệu sang schema phiên bản 3 ở phase 4. Bộ test fixture chỉ kiểm trust nên báo xanh, trong khi khi người duyệt so sánh đầu ra thật thì mô tả skill thành '>-' và tên bị đổi. Người nghe nên quan tâm vì mô tả là thứ agent dùng để định tuyến, nên một bài test chỉ kiểm một phần có thể xanh mà vẫn làm hỏng việc chọn skill.",
+      "audience": "dev viết công cụ hoặc test migration dữ liệu cho AI agent",
+      "spine": {
+        "context": {
+          "text": "Dự án là một skill hub cho AI agent, đang chuyển dữ liệu sang schema phiên bản 3 ở phase 4.",
+          "lines": [
+            "omp:cd4449ab#L6"
+          ]
+        },
+        "want": {
+          "text": "Migration phải giữ nguyên những gì agent nhìn thấy: mô tả, tên và định tuyến.",
+          "lines": [
+            "omp:cd4449ab#L1713"
+          ]
+        },
+        "obstacle": {
+          "text": "Fixture test chỉ kiểm trust nên bỏ sót regression ở mô tả và tên.",
+          "lines": [
+            "omp:cd4449ab#L1713"
+          ]
+        },
+        "turn": {
+          "text": "Fixture báo xanh nên tưởng migration đúng; hoá ra mô tả skill thành '>-' và tên 'test-audit' bị đổi thành 'Test Audit'.",
+          "lines": [
+            "omp:cd4449ab#L1713"
+          ]
+        },
+        "action": {
+          "text": "Đọc frontmatter bằng YAML parser thật, đổi thứ tự ưu tiên tên, chỉ ghi khóa repo, và mở rộng test so sánh name, description, status, routing trên đầu ra thật.",
+          "lines": [
+            "omp:cd4449ab#L1712",
+            "omp:cd4449ab#L1713"
+          ]
+        },
+        "outcome": {
+          "text": "Tên 'test-audit' giữ nguyên sau migration trong lần kiểm trên bản sao.",
+          "lines": [
+            "omp:cd4449ab#L1890"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi báo xanh, kiểm tên, mô tả, trạng thái và định tuyến trên đầu ra thật; chỉ kiểm trust là chưa đủ.",
+          "lines": [
+            "omp:cd4449ab#L1713"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-hai-cach-viet-cung-mot-url-4257",
+      "code": "M-NGJS",
+      "title": "Hai cách viết cùng một URL repo thành một nguồn",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là một hub kỹ năng viết bằng Go, và người làm đang sửa bước migration để chạy được trên hub thật. Hai URL repo của cùng một kỹ năng, một có đuôi .git và một không, được chuẩn hoá bằng Python và cho ra cùng một chuỗi nên tưởng là xong. Nhưng code Go vẫn báo không khớp vì thứ tự trim khác nhau, và ai chuẩn hoá dữ liệu bằng ngôn ngữ khác rồi tin kết quả đó đều có thể gặp đúng lỗi này.",
+      "audience": "dev viết công cụ migrate dữ liệu bằng Go",
+      "spine": {
+        "context": {
+          "text": "Một hub kỹ năng viết bằng Go, người làm đang sửa bước migration để chạy trên hub thật theo yêu cầu của lead.",
+          "lines": [
+            "omp:cd4449ab#L6",
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "want": {
+          "text": "Gộp hai URL repo (một có đuôi .git, một không) thành một nguồn khi migrate metadata.",
+          "lines": [
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "obstacle": {
+          "text": "Code Go vẫn báo matches=false cho hai URL đã được chuẩn hoá.",
+          "lines": [
+            "omp:cd4449ab#L1818"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng: chuẩn hoá bằng Python cho ra cùng một chuỗi thì Go cũng khớp. Hoá ra: Go vẫn lệch vì thứ tự trim khác nhau.",
+          "lines": [
+            "omp:cd4449ab#L1803",
+            "omp:cd4449ab#L1818"
+          ]
+        },
+        "action": {
+          "text": "Sửa thứ tự trim khoảng trắng và đuôi .git trong hàm chuẩn hoá Go, rồi chạy lại test.",
+          "lines": [
+            "omp:cd4449ab#L1824",
+            "omp:cd4449ab#L1827"
+          ]
+        },
+        "outcome": {
+          "text": "Test migration v1→v2→v3 trên fixture pass.",
+          "lines": [
+            "omp:cd4449ab#L1827"
+          ]
+        },
+        "takeaway": {
+          "text": "Chuẩn hoá dữ liệu phải dùng đúng code của repo; kết quả thử bằng ngôn ngữ khác có thể không khớp.",
+          "lines": [
+            "omp:cd4449ab#L1803",
+            "omp:cd4449ab#L1818"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-mot-dong-yaml-thut-le-lam-4257",
+      "code": "M-2JES",
+      "title": "Một dòng YAML thụt lề làm receipt không đọc được",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một dự án hub kỹ năng cho agent (MCP), đang được đơn giản hoá trong worktree riêng.",
+          "lines": [
+            "omp:cd4449ab#L6",
+            "omp:cd4449ab#L2374"
+          ]
+        },
+        "want": {
+          "text": "Viết test migration v3 sang v4 với fixture trước Phase 3.",
+          "lines": [
+            "omp:cd4449ab#L2374"
+          ]
+        },
+        "obstacle": {
+          "text": "Test migration đỏ; decoder YAML báo lỗi khi đọc receipt.",
+          "lines": [
+            "omp:cd4449ab#L2713",
+            "omp:cd4449ab#L2743"
+          ]
+        },
+        "action": {
+          "text": "Thử lại chuỗi YAML với block scalar đã sửa và qua decoder thật.",
+          "lines": [
+            "omp:cd4449ab#L2741",
+            "omp:cd4449ab#L2744"
+          ]
+        },
+        "outcome": {
+          "text": "Decode thành công sau khi sửa chỉ báo thụt lề của block scalar.",
+          "lines": [
+            "omp:cd4449ab#L2746"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-09-noi-regex-bang-chung-de-test-4257",
+      "code": "M-0XTG",
+      "title": "Nới regex bằng chứng để test qua, người duyệt yêu cầu siết lại",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án mcp-skill-hub đang đơn giản hoá code và chuyển dữ liệu từ v3 sang v4. Người làm nới regex bằng chứng và schema dùng chung để test qua, vì dữ liệu cũ thiếu đường dẫn; việc này cho thấy họ tin nới chung là đủ. Người duyệt chỉ ra schema chung phải giữ chặt cho lesson mới, ngoại lệ chỉ đặt trong bước migrate. Nới schema chung để qua test là nợ kỹ thuật, lần sau dữ liệu thiếu đường dẫn sẽ lọt vào.",
+      "audience": "dev làm migration dữ liệu và schema cho công cụ AI",
+      "spine": {
+        "context": {
+          "text": "Dự án mcp-skill-hub đang đơn giản hoá code và chuyển dữ liệu từ v3 sang v4.",
+          "lines": [
+            "omp:cd4449ab#L6",
+            "omp:cd4449ab#L2374"
+          ]
+        },
+        "want": {
+          "text": "Lesson mới phải có bằng chứng đúng dạng repo@sha:path, và migration phải fail closed.",
+          "lines": [
+            "omp:cd4449ab#L3656"
+          ]
+        },
+        "obstacle": {
+          "text": "Dữ liệu cũ dùng dạng repo@sha không có path nên không khớp quy tắc mới.",
+          "lines": [
+            "omp:cd4449ab#L3656"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng nới regex và schema chung để dạng repo@sha không path lọt qua là đủ; hoá ra schema phải giữ chặt, ngoại lệ chỉ được đặt trong bước migrate.",
+          "lines": [
+            "omp:cd4449ab#L3656",
+            "omp:cd4449ab#L3963",
+            "omp:cd4449ab#L3966"
+          ]
+        },
+        "action": {
+          "text": "Nới EvidencePattern và distill.schema.json để chấp nhận repo@sha không có :path.",
+          "lines": [
+            "omp:cd4449ab#L3963",
+            "omp:cd4449ab#L3966"
+          ]
+        },
+        "takeaway": {
+          "text": "Nới schema chung để qua test là nợ kỹ thuật; đặt ngoại lệ ở chỗ migrate dữ liệu cũ và giữ quy tắc mới chặt.",
+          "lines": [
+            "omp:cd4449ab#L3656"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-09-xoa-17-tool-mcp-cu-va-4257",
+      "code": "M-FKGC",
+      "title": "Xóa 17 tool MCP cũ và đặt test ranh giới curator trước",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một agent làm worktree C của dự án mcp-skill-hub, đơn giản hoá bề mặt MCP và web theo mô hình distill tối giản, theo kế hoạch Phase 3 và 4 của lead.",
+          "lines": [
+            "omp:cd4449ab#L6",
+            "omp:cd4449ab#L2374"
+          ]
+        },
+        "want": {
+          "text": "Làm Phase 3 theo thứ tự đã định, mỗi phase một commit, make check xanh.",
+          "lines": [
+            "omp:cd4449ab#L2374"
+          ]
+        },
+        "obstacle": {
+          "text": "Main đã đi trước (worktree D đã merge), nên nhánh cần rebase lên main.",
+          "lines": [
+            "omp:cd4449ab#L2345"
+          ]
+        },
+        "action": {
+          "text": "Commit thay đổi căn chỉnh, xoá 17 tool MCP cũ, cập nhật SKILL.md của curator bằng cp sang bản copy.",
+          "lines": [
+            "omp:cd4449ab#L3485",
+            "omp:cd4449ab#L3596",
+            "omp:cd4449ab#L3956"
+          ]
+        },
+        "outcome": {
+          "text": "Commit c75baca: 19 file, +350 và -1650 dòng.",
+          "lines": [
+            "omp:cd4449ab#L3956",
+            "omp:cd4449ab#L3959"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-09-golden-file-duoc-doi-de-test-4257",
+      "code": "M-3Q4Z",
+      "title": "Golden file được đổi để test qua",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một agent làm việc trên worktree của dự án mcp-skill-hub, đang đơn giản hoá các phase.",
+          "lines": [
+            "omp:cd4449ab#L6"
+          ]
+        },
+        "obstacle": {
+          "text": "Test eval và test web đỏ khi chạy.",
+          "lines": [
+            "omp:cd4449ab#L1086",
+            "omp:cd4449ab#L1302"
+          ]
+        },
+        "action": {
+          "text": "Sửa experiment_id trong manifest eval thành cli-replay-v1, rồi cập nhật golden web bằng cờ -update.",
+          "lines": [
+            "omp:cd4449ab#L1087",
+            "omp:cd4449ab#L1089",
+            "omp:cd4449ab#L1303"
+          ]
+        },
+        "outcome": {
+          "text": "Test web xanh sau khi cập nhật golden.",
+          "lines": [
+            "omp:cd4449ab#L1305",
+            "omp:cd4449ab#L1308"
+          ]
+        }
+      },
+      "completeness": 4
+    },
+    {
+      "id": "2026-10-09-model-distill-test-reopen-va-go-4257",
+      "code": "M-HB0Z",
+      "title": "Model distill: test reopen và gỡ revision packages đỏ liên tục",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Một dự án hub quản lý skill cho agent đang đơn giản hoá qua các phase. Người làm xoá revision_package.go cùng test, tưởng thế là gọn, nhưng test distill đỏ liên tục qua nhiều vòng sửa validate vì chỗ khác vẫn đọc lớp đó. Ai đang gỡ một lớp dữ liệu nên grep chỗ đọc trước khi xoá để khỏi mất nhiều vòng sửa.",
+      "audience": "dev đang xoá code cũ trong dự án có nhiều chỗ đọc chung",
+      "spine": {
+        "context": {
+          "text": "Một dự án hub quản lý skill cho agent, đang đơn giản hoá qua các phase; người làm đang ở worktree riêng.",
+          "lines": [
+            "omp:cd4449ab#L6"
+          ]
+        },
+        "want": {
+          "text": "Gỡ lớp revision package và đưa model distill mới lên.",
+          "lines": [
+            "omp:cd4449ab#L3083"
+          ]
+        },
+        "obstacle": {
+          "text": "Sau khi xoá, test distill đỏ liên tục qua nhiều vòng sửa validate.",
+          "lines": [
+            "omp:cd4449ab#L3088",
+            "omp:cd4449ab#L3262"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng xoá revision_package.go cùng test của nó là gọn; hoá ra chỗ khác vẫn đọc lớp đó nên test tombstone vẫn đỏ.",
+          "lines": [
+            "omp:cd4449ab#L3083",
+            "omp:cd4449ab#L3088"
+          ]
+        },
+        "action": {
+          "text": "Xoá file và test, thêm nhánh skipRuntimePackages, rồi sửa validate qua nhiều lần chạy test.",
+          "lines": [
+            "omp:cd4449ab#L3083",
+            "omp:cd4449ab#L3238"
+          ]
+        },
+        "outcome": {
+          "text": "Chưa xanh: go test ./internal/app vẫn FAIL ở lần chạy cuối.",
+          "lines": [
+            "omp:cd4449ab#L3346"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi xoá một lớp dữ liệu, grep toàn bộ chỗ đọc nó để biết test nào sẽ đỏ.",
+          "lines": [
+            "omp:cd4449ab#L3083",
+            "omp:cd4449ab#L3088"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-mot-builder-cho-ba-writer-meta-4257",
+      "code": "M-E6HY",
+      "title": "Một builder cho ba writer .meta/skill.yaml",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-quy-tac-an-toan-chan-commit-4257",
+      "code": "M-17F6",
+      "title": "Quy tắc an toàn chặn commit vì file của worktree khác",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-test-meta-upstream-khong-tu-duyet-4257",
+      "code": "M-GW1Q",
+      "title": "Test 'meta upstream không tự duyệt' đỏ 5 lần",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-commit-mang-ten-tac-gia-la-4257",
+      "code": "M-75G0",
+      "title": "Commit mang tên tác giả là model",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-vong-sua-test-sau-khi-doi-4257",
+      "code": "M-G98K",
+      "title": "Vòng sửa test sau khi đổi schema: 24 package, lặp đi lặp lại",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-cong-cu-sua-file-neo-dong-4257",
+      "code": "M-R8V5",
+      "title": "Công cụ sửa file neo dòng sai, phải đọc lại",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-phase-0-distill-1184-dong-42-4257",
+      "code": "M-HH0H",
+      "title": "Phase 0 distill: 1184 dòng, 42 lesson, 77 mục commit viết tắt",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-11-commit-rebase-len-main-khong-4257",
+      "code": "M-YMS3",
+      "title": "11 commit rebase lên main không xung đột",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-fixture-test-duoc-copy-nguyen-byte-4257",
+      "code": "M-FC23",
+      "title": "Fixture test được copy nguyên byte từ file dữ liệu thật của hub (chỉ đọc, trong thư mục scratch), thay vì viết tay một mẫu đơn giản.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-agent-dung-sau-moi-checkpoint-commit-4257",
+      "code": "M-86XB",
+      "title": "Agent dừng sau mỗi checkpoint (commit, rebase, báo hash) và chờ người review/merge trước khi làm phần tiếp theo, dù đã có sẵn danh sách việc cần làm.",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-migration-co-marker-phien-ban-ro-4257",
+      "code": "M-TZ2K",
+      "title": "Migration có marker phiên bản rõ ràng (file schema-version), mỗi bước là một hàm đăng ký theo thứ tự, có bước preview, rồi apply với receipt có thể replay.",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-so-sanh-dau-ra-that-cua-4257",
+      "code": "M-GKR1",
+      "title": "So sánh đầu ra thật của sản phẩm trước và sau thay đổi: chạy binary cũ và binary mới trên hai bản clone mới của dữ liệu thật, rồi diff từng trường của lệnh 'skill show --json'.",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+Dưới đây là 7 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+Thường là 0, ở mọi nghề, vì không đổi kết quả việc chính:
+- việc dọn dẹp, đổi tên, định dạng lại, chuyển sang mẫu khác (đổi tên loạt file, kẻ lại một bảng, sửa lỗi chính tả, dọn nhánh git);
+- trục trặc do cài đặt hay môi trường, chỉnh xong là chạy (thiếu phần mềm, chưa đăng nhập, file chưa gửi lên, đường dẫn đổi chỗ);
+- lỗi tự hết khi làm lại, công cụ trục trặc rồi chạy lại được;
+- việc một lần trơn tru, không có gì bất ngờ (xuất báo cáo ra PDF, lên lịch gửi thư, nhập danh sách khách);
+- bước kiểm tra thường lệ không tìm ra gì đáng kể.
+Ngoại lệ: việc vặt mà lộ ra một điều bất ngờ, gây mất dữ liệu, tiền, khách hay thời gian, hoặc buộc phải quyết định, thì chấm theo đúng mức nó làm đổi kết quả.
+
+M1. Sáu món chiếm gần ba phần tư lãi gộp, cắt 15 món bán chậm
+   Sáu món đầu làm ra khoảng 71% tổng lãi gộp cả năm. Mười lăm món bán chậm nhất cộng lại chỉ lãi 6,2 triệu cả năm. Chủ tiệm quyết định cắt 15 món và agent xuất danh sách ra file cho bếp. Agent đề nghị giữ bánh flan kiểu đặt trước vì có khách quen hỏi.
+M2. Trước khi chốt danh sách cắt 15 món, agent nhận ra một món có khách quen và đề xuất giữ lại theo kiểu đặt trước thay vì xoá hẳn.
+   Trước khi chốt danh sách cắt 15 món, agent nhận ra một món có khách quen và đề xuất giữ lại theo kiểu đặt trước thay vì xoá hẳn. Thường người ta làm đúng theo bảng xếp hạng lợi nhuận, không xét đến khách hàng trung thành hay ngoại lệ.
+M3. Kết thúc phiên, agent hẹn sẽ kiểm tra lại ở lần gửi dữ liệu tiếp theo xem việc cắt món và tắt mã có làm lợi nhuận tăng hay không.
+   Kết thúc phiên, agent hẹn sẽ kiểm tra lại ở lần gửi dữ liệu tiếp theo xem việc cắt món và tắt mã có làm lợi nhuận tăng hay không. Phần lớn các phiên làm việc kết thúc khi bàn giao kết quả, không có bước theo dõi kết quả sau khi thay đổi.
+M4. Biểu đồ in trắng đen: đổi từ cam nhạt sang nâu đậm và ghi số trên cột
+   Agent vẽ lần đầu bằng màu cam, chữ cỡ 18, chưa có nhãn số. Chủ tiệm báo màu cam nhạt khi in trắng đen và yêu cầu ghi số triệu trên đầu mỗi cột. Agent vẽ lại bằng màu nâu đậm #5a3420 có nhãn số, ảnh 1600x900. Vòng sửa chỉ gồm hai lần chạy script.
+M5. Mã nhân viên 30% lọt ra ngoài: 212 lần dùng trong hai tháng, từ 4 nhân viên
+   Mã NV30 đã dùng 247 lần với 163 số điện thoại khác nhau, trong khi tiệm chỉ có 4 nhân viên. Lượt dùng tháng 6-8 chỉ 7-17 lần mỗi tháng, nhưng tháng 9 lên 98 và tháng 10 là 114. Ghi chú thu ngân cho thấy khách nói có thấy mã trên một nhóm Facebook, ước tính khoảng 8 triệu tiền giảm ngoài quy định. Chủ tiệm tắt mã ngay trong tối đó.
+M6. Một dòng định dạng ngày làm mất nửa số hoá đơn và suýt khuyên nghỉ đúng mùa Tết
+   Agent đọc cột ngày theo kiểu tháng/ngày trong khi KiotViet ghi ngày/tháng, nên 15.240 trên 28.197 hoá đơn (hơn một nửa) không đọc được và bị bỏ, còn ngày 03/11 bị đọc thành tháng 3. Bảng sai cho tháng 2 chỉ 18,9 triệu, thấp nhất năm, và agent khuyên nghỉ hai tuần quanh Tết. Chủ tiệm phản đối vì tháng Tết bán nhiều nhất; khi đọc đúng định dạng, tháng 2 đạt 168,3 triệu, cao nhất năm, còn các tháng thường là 70-95 triệu. Agent ghi quy tắc định dạng ngày vào file ghi chú.
+M7. Trước khi gộp hai file có định dạng khác nhau, agent đồng bộ tên cột rồi in số dòng của từng file và tổng để đối chiếu.
+   Trước khi gộp hai file có định dạng khác nhau, agent đồng bộ tên cột rồi in số dòng của từng file và tổng để đối chiếu. Nhiều người gộp file rồi tin kết quả mà không đếm lại số dòng.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

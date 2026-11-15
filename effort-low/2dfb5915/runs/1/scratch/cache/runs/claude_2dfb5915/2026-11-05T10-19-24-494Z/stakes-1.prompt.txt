@@ -1,0 +1,35 @@
+Dưới đây là 12 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Đổi cơ chế tìm kiếm MCP: hai agent độc lập đi đến cùng một thiết kế và từ chối code mode
+   Cả hai đề xuất bộ 13 tool và đều từ chối code mode vì Claude Desktop không có shell và không có sandbox. Ước tính token định nghĩa giảm từ khoảng 6 nghìn xuống 4,4 nghìn. Hai bên khác nhau ở chỗ read: một bên chuyển sang OHS, một bên tự đọc file; người dùng chọn tự đọc.
+M2. Ghi lại quyết định kỹ thuật vào một file nhật ký riêng (DECISIONS) và ghi cả ngày, lý do, phương án bị bỏ, để agent và người đọc sau này không phải hỏi lại.
+   Ghi lại quyết định kỹ thuật vào một file nhật ký riêng (DECISIONS) và ghi cả ngày, lý do, phương án bị bỏ, để agent và người đọc sau này không phải hỏi lại. Dev thường quyết định trong đầu hoặc trong tin nhắn chat, rồi quên. Ít khi có nhật ký có cấu trúc cho từng lựa chọn.
+M3. Phát hiện Python phụ thuộc thứ tự liệt kê file của hệ điều hành
+   Python liệt kê note theo thứ tự NTFS hoặc APFS trả về. Đảo thứ tự làm 593 trên 726 edges.id đổi, điểm related lệch khoảng 1e-5, vượt ngưỡng 1e-6 của đặc tả. Quyết định ghim thứ tự theo đường dẫn đã sắp và ghi vào DECISIONS.
+M4. Job macOS build bị huỷ vì chờ runner quá lâu, không phải lỗi code
+   GitHub huỷ job sau khoảng 15 phút chờ runner. Agent chạy lại đúng job lỗi và qua. Một lần rerun trả HTTP 500 và phải thử lại.
+M5. Viết ghi chú tiến độ cho người dùng theo kiểu nêu rõ đã xong gì, đã kiểm bằng cách nào, còn chờ ai, và lệnh cụ thể để người dùng tự chạy trên máy của họ.
+   Viết ghi chú tiến độ cho người dùng theo kiểu nêu rõ đã xong gì, đã kiểm bằng cách nào, còn chờ ai, và lệnh cụ thể để người dùng tự chạy trên máy của họ. Báo cáo tiến độ thường chung chung, hoặc liệt kê việc đã làm mà không nói đã kiểm chưa, và thiếu lệnh để người đọc chạy lại.
+M6. Alias bomb YAML làm tràn bộ nhớ, reviewer agent phát hiện trước khi chạy thật
+   Note 338 byte với 7 tầng alias tạo 11,1 triệu props và 1,45 GB RSS trong Rust; tầng thứ 8 cần khoảng 14 GB. Python cũng bị như vậy nên khớp đặc tả, nhưng vẫn là lỗ hổng từ chối dịch vụ. Sửa bằng ngân sách 1 triệu props và 64 MiB mỗi note.
+M7. Lỗi cache làm CI đỏ: target/ bị rust-cache xoá file ngoài thư mục build
+   Swatinem/rust-cache chỉ giữ thư mục build của cargo, xoá file khác và giữ lại thư mục rỗng. Lần chạy đầu ghi cache với thư mục dump rỗng, các lần sau khôi phục đúng cache đó và kiểm tra thấy thư mục không có manifest. Sửa bằng cách ghi dump ra ngoài target/.
+M8. Trước khi phát hành bản thử, agent đưa bản đó qua một vòng kiểm tra độc lập: tải file phát hành về, kiểm sha256 từng file, chạy thử binary, rồi mới báo xong.
+   Trước khi phát hành bản thử, agent đưa bản đó qua một vòng kiểm tra độc lập: tải file phát hành về, kiểm sha256 từng file, chạy thử binary, rồi mới báo xong. Dev thường đẩy tag rồi tin CI là đủ, ít khi tự tải file về để kiểm lại checksum.
+M9. Đưa mọi quyết định bị chặn (cổng người dùng, câu hỏi thiết kế, lựa chọn kỹ thuật) vào một lần hỏi có cấu trúc, gom nhiều câu, và tiếp tục làm mọi việc không phụ thuộc vào câu trả lời đó.
+   Đưa mọi quyết định bị chặn (cổng người dùng, câu hỏi thiết kế, lựa chọn kỹ thuật) vào một lần hỏi có cấu trúc, gom nhiều câu, và tiếp tục làm mọi việc không phụ thuộc vào câu trả lời đó. Dev thường hỏi từng câu khi gặp, hoặc dừng hẳn cả việc chờ trả lời. Khi việc dài, người ta hay quên câu hỏi đã hỏi hay nhầm ngữ cảnh.
+M10. Bản phát hành thử bị GitHub Actions chặn vì thanh toán, phải đổi repo sang public
+   Thông báo báo lỗi thanh toán hoặc hết hạn mức. Người dùng đổi repo sang public, Actions miễn phí, CI chạy lại xanh rồi phát hành rc.3 với 7 file có checksum khớp.
+M11. Agent tự dựng pipeline 17 phase Rust cho bản Python, chạy song song bằng nhiều agent
+   Wave đầu gồm 7 phase chạy đồng thời; CI xanh trên Linux, macOS và Windows sau mỗi lần merge. Bộ so khớp với Python ra 64 mục, 0 lệch. Nhiều lần merge xung đột ở spec/PORTING.md và Cargo.lock, phải gỡ tay và merge lại.
+M12. Agent tự chạy đối chiếu với bản gốc (Python) và coi kết quả so khớp là bằng chứng: so sánh từng bảng, từng câu trả lời, từng lệnh CLI, đến cấp byte, và dùng golden file đã ghim theo commit để so.
+   Agent tự chạy đối chiếu với bản gốc (Python) và coi kết quả so khớp là bằng chứng: so sánh từng bảng, từng câu trả lời, từng lệnh CLI, đến cấp byte, và dùng golden file đã ghim theo commit để so. Dev thường viết vài unit test rồi tin kết quả. Khi chuyển ngôn ngữ, phần lớn chỉ kiểm vài ví dụ tay, không có bộ so khớp tự động trên dữ liệu thật ở cấp từng byte.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

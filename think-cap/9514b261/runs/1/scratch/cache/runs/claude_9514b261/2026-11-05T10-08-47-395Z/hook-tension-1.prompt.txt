@@ -1,0 +1,63 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Commit giữa cây bẩn của chủ: pathspec, pull rebase, và bảng log bị remote đổi cấu trúc
+   Agent lưu patch của hai file trước khi restore. Lệnh commit đầu tiên lỗi vì thư mục plan chưa được git biết. Sau khi pull, remote đã đổi bảng log sang file riêng nên agent phải hoàn các thay đổi cũ và ghi lại ba mục theo cấu trúc mới. Ba commit được đẩy lên, mỗi commit chỉ chứa file của agent.
+M2. Trần 32 KiB của file hướng dẫn agent: khối chưa commit đưa file vượt trần
+   Cây làm việc của chủ có file này 46.754 byte, vượt trần 32 KiB. Sau khi pull, file tăng lên 46.919 byte vì khối AgentKit chưa commit. Agent không commit nguyên file mà quy định quy trình chỉ commit từng phần.
+M3. Khi đưa ba family khác nhau vào mỗi ghế, mã có sẵn chỉ là ưu tiên mềm
+   Mã gán vai có chế độ spread, nhưng chỉ là ưu tiên mềm: family ít được dùng nhất được chọn trước. Khi một family hỏng, walk phải có dự phòng để đủ ghế. Mô phỏng sau cùng cho 11/11 ghế với bốn family.
+M4. Khoá API dán thừa một ký tự cho 401, và lệnh ghi đè không sao lưu đã xoá khoá đang chạy
+   Lệnh agent đưa ra ghi đè khoá cũ mà không sao lưu. Khoá mới dài 25 ký tự, bị API từ chối 401. Khoá đúng dài 24 ký tự, lỗi là một ký tự thừa khi dán. Sau khi người dùng nhập lại với lọc khoảng trắng và kiểm bằng curl trả 200, cả pi và omp đều trả OK.
+M5. Probe vào thư mục đăng nhập chưa có dữ liệu treo 200–300 giây thay vì lỗi nhanh
+   Probe vào kho trống treo khoảng 200 đến 300 giây, còn stderr chỉ báo credential refresh bị bỏ qua vì thiếu file. Agent tự gây lỗi này và phải gỡ quarantine, tắt tài khoản và chạy lại. Sau khi đăng nhập xong, probe pass trong 23 giây.
+M6. Tìm định dạng cấu hình provider của omp bằng chuỗi trong file nhị phân khi thiếu tài liệu
+   Binary omp nặng khoảng 256 MB. Agent dùng strings lọc theo tên file cấu hình và tìm được thông báo lỗi có nhắc tới models.yml và quy tắc khoá OAuth. Từ đó agent viết models.yml với khoá dạng lệnh và gọi thử thành công, trả OK. Một lệnh quét thư mục bị bộ lọc của công cụ chặn vì thư mục node_modules.
+M7. Khi kiểm tài khoản và file đăng nhập, agent chỉ đọc số dòng, số bảng, độ dài khoá và loại ký tự. Email được che. Cơ sở dữ liệu được mở ở chế độ chỉ đọc. Nội dung khoá không bao giờ được in ra.
+   Khi kiểm tài khoản và file đăng nhập, agent chỉ đọc số dòng, số bảng, độ dài khoá và loại ký tự. Email được che. Cơ sở dữ liệu được mở ở chế độ chỉ đọc. Nội dung khoá không bao giờ được in ra. Nhiều người mở file đăng nhập bằng cat hoặc dán nguyên nội dung vào chat để xem, hoặc không kiểm gì mà cứ thử.
+M8. Bốn agent soát chéo nhau: con số của subagent cần chạy lại trước khi kết luận
+   Registry tài liệu có 479 doc, 332 doc đang provisional và 147 active; có doc đã provisional 47 đến 55 ngày. Check doc-provisional-aged không bao giờ bắn vì nó trừ hai chuỗi thời gian ISO, cho kết quả NaN. Agent chạy lại đúng lệnh đếm và xác nhận 332/147, còn con số “332/332 đã migrate” từ subagent không được xác nhận.
+M9. Sửa tài liệu khi kế hoạch khoá digest: ghi chú thêm có thể làm lệch bản vá
+   Đề xuất đã khác nhánh bảo trì 5 dòng thêm và 3 dòng xoá. Phase 8 khoá digest nên ghi chú có thể làm lệch bản vá nếu file nằm trong manifest. Agent không biết manifest thật vì chưa đọc được, nên ghi điều kiện đảo lại vào bảng và báo người dùng.
+M10. Bản đồ ranh giới có 0 dòng cho năm tên component đã nói đến
+   Năm tên (Knowledge and Documentation Engine, Agent Context Engine, Effective Decision Reducer, Claim registry, và các tên decision projection) đều cho 0 kết quả ở ba file. Bản nháp bản đồ có 686 dòng nhưng cũng không có tên nào. Chỉ có một hàng gần nghĩa về registry tài liệu và không nhắc quyết định.
+M11. Quan hệ thay thế quyết định: 7 cặp ghi được, phần còn lại chỉ nằm trong câu chữ
+   Có 36 quyết định ADR, trong đó 7 cặp có quan hệ thay thế ghi trong dữ liệu. Năm trong bảy cặp chỉ thay một phần. Ít nhất 4 quyết định chỉ nói “thay thế” trong câu chữ và 1 đích thay thế không phải quyết định. Agent từng nói đề xuất “không nhắc state.decisions”, sau đó phải đính chính là đề xuất có ý nhập kho này vào.
+M12. Agent kết luận component “không tồn tại” vì danh sách mặc định ẩn mục đã xong
+   Lệnh liệt kê mặc định chỉ trả 269 mục đang mở, trong khi bản đầy đủ có 1195 mục. Component canonical-decision-projection (mục tsk-1lv, sáu mục con) đã done nên không hiện ra. Người dùng nhớ đúng có component này, và agent phải đính chính kết luận trước đó.
+M13. Đổi tên tài khoản: kiểm đăng nhập trước khi đổi để không làm mất phiên
+   Trước khi xoá hoặc đổi tên, agent đếm số dòng trong bảng đăng nhập của từng profile. Một profile vừa tạo có 0 đăng nhập nên an toàn để chuyển đi. Profile còn lại có 1 đăng nhập và được nối vào fgOS sau khi đổi tên. Agent chỉ đếm số dòng, không đọc nội dung đăng nhập.
+M14. Báo cáo phân tách rõ phần 'đã kiểm bằng mã' và phần 'chỉ suy luận'. Khi phát hiện mình đã nói sai trước đó, agent viết mục 'đính chính' nêu rõ điều sai và điều đúng.
+   Báo cáo phân tách rõ phần 'đã kiểm bằng mã' và phần 'chỉ suy luận'. Khi phát hiện mình đã nói sai trước đó, agent viết mục 'đính chính' nêu rõ điều sai và điều đúng. Người ta thường viết báo cáo như mọi thứ đều đã chắc chắn, và khi sai thì âm thầm sửa hoặc chỉ nói chung chung 'có vẻ đã thay đổi'.
+M15. Năm alias trỏ vào profile chưa có, và sáu tài khoản chỉ có alias zsh
+   Có alias cho codex, pi, omp và agy. Khoảng sáu alias trỏ vào thư mục chưa tồn tại. Agent tạo khung profile cho bốn alias omp theo người dùng chọn và không sửa zshrc. Còn một alias trỏ vào chỗ trống.
+M16. “Kho tài khoản rỗng” không có nghĩa là tài khoản hỏng; chuỗi dự phòng chỉ thu hẹp
+   Lệnh inspect trả providers rỗng vì cấu hình không khai tài khoản nào, nên fgOS không theo dõi quota. Lượt probe đầu chỉ có một family chạy được. Sau khi người dùng copy lại phiên đăng nhập, hai family khác chạy được, nhưng walk dự phòng chỉ liệt kê bốn family nên deepseek và glm không bao giờ được chọn dù chạy được.
+M17. Hội đồng 11 ghế: bước shaping thất bại, và script đọc trạng thái sai cấu trúc
+   Framing đã pass. Shaping với ba panelist mù thất bại, và ghế thất bại được báo execution-failure. Script đọc trạng thái lỗi ở AttributeError vì cấu trúc JSON khác với giả định, nên agent phải xem lại khoá thực tế trước khi đọc từng bước.
+M18. Mọi lần sửa file cấu hình đều được sao lưu có dấu thời gian trước. Khi thay chuỗi trong file, agent dùng script có khẳng định rằng chuỗi cần thay chỉ xuất hiện đúng một lần. Kết quả probe cũ được chuyển vào thư mục riêng, không xoá.
+   Mọi lần sửa file cấu hình đều được sao lưu có dấu thời gian trước. Khi thay chuỗi trong file, agent dùng script có khẳng định rằng chuỗi cần thay chỉ xuất hiện đúng một lần. Kết quả probe cũ được chuyển vào thư mục riêng, không xoá. Thường người ta sửa thẳng bằng sed hoặc chỉnh tay, và chỉ sao lưu khi đã lỡ làm hỏng.
+M19. Mô phỏng hội đồng gán sai ghế vì không bật môi trường có herdr
+   Bộ mô phỏng chạy không có herdr nên chọn invocation khác với phiên thật. Lệnh explain (có herdr) cho kết quả khác, và các capability mức critical dùng tầng frontier chứ không bị giới hạn ở flagship như agent đã nói. Agent phải đính chính ba điều đã nói trước và đưa bảng ghế mới.
+M20. Thêm khoá vào config toàn cục có thể làm hỏng workspace bản cũ
+   Hướng dẫn yêu cầu cập nhật các máy khác trước rồi mới đổi config toàn cục. Agent không kiểm được workspace khác từ máy này nên để việc đó như một bước còn lại và báo người dùng.
+M21. Trước khi giao việc cho subagent, agent chạy một lệnh kiểm tra cách điều phối (`dispatch decide`) và lấy đường dẫn file báo cáo từ lệnh quy ước của repo, thay vì tự đặt tên file.
+   Trước khi giao việc cho subagent, agent chạy một lệnh kiểm tra cách điều phối (`dispatch decide`) và lấy đường dẫn file báo cáo từ lệnh quy ước của repo, thay vì tự đặt tên file. Phần lớn người dùng AI mở thẳng một subagent, bảo nó ghi kết quả vào một file tự đặt tên, rồi đọc kết quả.
+M22. File digest sinh tự động xung đột khi pull: lấy bản đã sinh lại, giữ bản chủ trong stash
+   File mutation-census là digest sinh tự động và có năm dấu xung đột. Bản của chủ sinh từ nguồn cũ, bản remote đã sinh lại. Agent lấy bản remote và để bản của chủ trong stash, kèm lệnh xem và lệnh xoá nếu không cần.
+M23. Máy kiểm ghi đè baseline và không chạy ở đâu: 374 vi phạm bị giấu
+   Hai script kiểm quyết định đều ghi đè baseline vô điều kiện, nên chạy lại lệnh ghi baseline là mọi vi phạm mới thành “đã biết”. Script kiểm mã quyết định báo 374 vi phạm nhưng không được gọi từ npm test, nên không ai thấy. Đối chiếu với bản đồ kiến trúc thì ba máy kiểm này không có hàng chủ nào.
+M24. Ràng buộc chính sách cho hội đồng: chỉ đọc và chặn ghi trước khi giao việc
+   Agent kiểm posture read-only, policy host-write-denied ở chế độ required, và cả năm invocation đều qua kiểm resolvePostureInvocation. Agent nói rõ đây chỉ là kiểm chính sách, chưa chứng minh cách ly lúc chạy.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

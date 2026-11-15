@@ -1,0 +1,142 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+fgOPC là bộ dựng công ty một người vận hành bằng AI agent, chạy trên nền Multica tự host. Làm cho người muốn giao việc cho các team agent (Coding, Content, SEO & Analytics) qua issue, với bước chờ chủ duyệt ở những việc quan trọng. Mỗi khách có một workspace riêng, dựng từ một file cấu hình; thông tin riêng và secret của khách nằm ngoài repo. Hiện chạy với runtime Claude Code.
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L3647] USER: lấy mã
+[L3752] USER: có cách set passowrd cho user ower không.
+[L3775] USER: đặt demo làm mã cố định. chỉ đang test thôi.
+</asks>
+
+<story>
+hook: Cả chuẩn đóng gói công ty mở, chỉ một nền tảng làm được
+tension: khac (Chuẩn mở thì ai cũng hiện thực được / Chỉ Paperclip đóng gói được cả công ty, và vẫn thiếu workflow nhiều bước)
+stakes: 2/3
+# Chuẩn đóng gói công ty mở: chỉ Paperclip thực hiện được
+
+**Bối cảnh:** Nghiên cứu cách đóng gói một công ty OPC (agent, team, project, task, skill) để triển khai lại trên nhiều nền tảng.
+**Chuyện gì xảy ra:** Agent Companies v1 là chuẩn markdown mở, mở rộng SKILL.md, gồm COMPANY, TEAM, AGENTS, PROJECT và TASK. Chỉ Paperclip hiện thực chuẩn này: đóng gói và nhập được cả công ty, nhưng không có workflow nhiều bước. AICoworker đóng gói được một agent (.agent) kèm kiểm tra secret. Multica chỉ đóng gói được skill. Đề xuất là gói OPC = chuẩn trên + phần mở rộng WORKFLOW.md, deploy lại không tạo trùng.
+**Bài học:** Khi chọn chuẩn đóng gói, đếm xem bao nhiêu hệ thống thực sự đọc và ghi được nó. Chuẩn chưa có ai hiện thực thì chưa đáng làm nền.
+**Artefact:** Bảng ba cột (đóng được gì, thiếu gì) trong tài liệu nghiên cứu.
+</story>
+
+<excerpt>
+[L3819] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: afe001521087a3d80 (internal ID - do not mention to user. Use SendMessa …[+86]
+[L3829] AGENT: Trong lúc chờ, mình tìm thêm các chuẩn đóng gói agent bên ngoài, như chuẩn mở về skill và "agent companies", để đối chiếu.
+[L3830] TOOL WebSearch: {"query":"\"Agent Companies\" specification open standard package AI agent company markdown 2026","mode":"extended"}
+[L3831] TOOL WebSearch: {"query":"Agent Skills open standard SKILL.md specification agentskills.io portable across agents","mode":"standard"}
+[L3832] RESULT: Web search results for query: "Agent Skills open standard SKILL.md specification agentskills.io portable across agents" | Links: [{"title":"Agent Skills specification (agentskills/agentskills)","url":"https://moltchat-agent-commons.onrender.com/wiki/ …[+999]
+[L3833] RESULT: Web search results for query: ""Agent Companies" specification open standard package AI agent company markdown 2026" | Links: [{"title":"Top 16+ AI Agent Development Companies in 2026","url":"https://masterofcode.com/blog/top-ai-agent-development-com …[+1123]
+[L3835] TOOL WebFetch: Summarize the Agent Companies specification precisely: the package layout, each manifest file (COMPANY.md, TEAM.md, AGENTS.md, PROJECT.md, TASK.md, others) with its required/optional frontmatter fields, how agents reference skills, how routines/recurring tasks or workflows are expressed, how secrets …[+82]
+[L3836] RESULT: # Agent Companies Specification Summary | Agent Companies is a vendor-neutral extension of Agent Skills. It adds company, team, agent, project, and task manifests around the existing `SKILL.md` format without changing that format.
+[L3844] AGENT: Có thêm một chuẩn bên ngoài đáng chú ý: **Agent Companies** (`agentcompanies.io`). Đây là định dạng gói công ty, markdown là chính, mở rộng chuẩn **Agent Skills** (SKILL.md). Một gói gồm các file:
+- `COMPANY.md`
+- `teams/*/TEAM.md`
+- `agents/*/AGENTS.md`
+- `projects/*/PROJECT.md`
+- `tasks/*/TASK.md`
+- `skills/*/SKILL.md`
+
+Hiện chỉ có Paperclip hiện thực chuẩn này. Bản spec **chưa định nghĩa** cách mô tả workflow (chỉ có `schedule` trong TASK.md), cách khai báo secret, và luật về phiên bản. Mình đang chờ 3 agent đọc xong ba hệ thống để tổng hợp.
+[L3849] USER: đặt lại 123456 cho dễ nhớ
+[L3850] TOOL Bash: sed -i 's/^MULTICA_DEV_VERIFICATION_CODE=.*$/MULTICA_DEV_VERIFICATION_CODE=123456/' ~/multica-spike/.env && cd ~/multica-spike && docker compose -p multica-spike -f docker-compose.selfhost.yml --env-file .env up -d backend 2>&1 | tail -1; for i in $(seq 1 30); do curl -sf http://127.0.0.1:8310/healt …[+872]
+…
+[L3883] AGENT: Đã có kết quả của Paperclip (gói công ty theo chuẩn Agent Companies) và AICoworker (gói `.agent`). Còn chờ agent đọc Multica, sau đó mình viết tài liệu và commit.
+[L3889] USER: <task-notification>
+<task-id>afe001521087a3d80</task-id>
+<tool-use-id>toolu_016gtAUhiocSu2XAiaf3j8tN</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/afe001521087a3d80.output</output-file>
+<status>completed</status>
+<summary>Agent "Multica packaging of agents and workflows" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Everything below comes from reading the repo at HEAD 139b13a462c9. I ran no project scripts.
+
+## 1. Workflow templates
+
+- The built-in templates live only in the frontend, at `packages/views/workflows/templates.ts#L1-L30`. Each one is just a set of middle columns:
+  - `{ id: "delivery", columns: [{ status: "in_progress" }, { status: "in_review" }, { name: "qa", category: "started" }] }`
+  - content: `drafting`, `editing`, `scheduled` (all `category: "started"`)
+  - community: `triage` (unstarted), then `replying` and `waiting` (started)
+  - The comment at L3-7 says: "Starting points for a new workflow (MUL-7420). Each lists only its middle columns; `status` names a status in the library, `name` creates one ... when the workflow is saved."
+- The templates carry **no handlers and no instructions**. Their labels and summaries are in `packages/views/locales/en/issues.json#L1748-L1772`, for example "Build, review, then QA before done", "Draft, edit and schedule", and "Triage, reply, wait on the reporter".
+- The server-side step model is in `server/internal/issueworkflow/issueworkflow.go#L157-L171`: `Handler{Type, ID}` and `Step{status_key, handler, instructions, next_status_key, back_status_key}`. The comment there says "ID is set only for the concrete types (agent, squad, member)".
+- The docs at `apps/docs/content/docs/workflows.mdx#L30` say: "Start blank or use the **Delivery**, **Content**, or **Community** template." Line L83 says: "A workflow can be shared by several projects ... To give one project a different process, duplicate the workflow."
+- The API routes are at `server/cmd/server/router.go#L2152-L2162`:
+  - GET and POST on `/api/issue-workflows`
+  - GET, PATCH and DELETE on `/{id}`
+  - PUT `/{id}/handoffs/{status}`
+  - POST `/{id}/brief`
+  - Projects get POST `/api/projects/{id}/workflow` (L2173).
+- **Export/import:** there is no export/import endpoint and no cross-workspace sharing.  …[+7413]
+[L3897] AGENT: Đủ kết quả cả 3 hệ thống. Mình viết tài liệu nghiên cứu.
+[L3898] TOOL Write: /home/vantt/project/fgOPC/docs/research/opc-packaging-deployment.md
+[L3899] RESULT: File created successfully at: /home/vantt/project/fgOPC/docs/research/opc-packaging-deployment.md (file state is current in your context — no need to Read it back)
+…
+[L3924] TOOL Bash: cd /home/vantt/project/fgOPC; export GIT_INDEX_FILE=/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/commit2.index; git commit -q -F - <<'EOF' docs: Multica spikes, OPC packaging research, review corrections - docs/research/opc-packaging-deployment.md: how A …[+1017]
+[L3925] RESULT: 152f378 docs: Multica spikes, OPC packaging research, review corrections | M README.md
+[L3927] AGENT: Mình đã ghi kết quả nghiên cứu vào `docs/research/opc-packaging-deployment.md` và commit `152f378` trên nhánh `docs/opc-research`. Chưa push.
+
+## Kết luận chính
+
+**Chưa có hệ thống nào đóng gói được cả một công ty OPC.** Mỗi nơi giỏi một phần:
+
+| | Đóng gói được | Thiếu |
+|---|---|---|
+| **Paperclip** | **Cả công ty** theo chuẩn mở **Agent Companies v1** (`COMPANY.md`, `TEAM.md`, `AGENTS.md`, `PROJECT.md`, `TASK.md`, `SKILL.md`): xuất/nhập từ thư mục hoặc GitHub; khi trùng thì đổi tên, bỏ qua hoặc ghi đè; có chế độ an toàn; có catalog template phòng ban | **Workflow nhiều bước** |
+| **AICoworker** | **Một agent** (`.agent`): kiểm tra an toàn mạnh (quét secret, chặn file nhạy cảm), wizard hỏi secret, **cập nhật giữ được file người dùng đã sửa**, bán trên store bằng VND | Gói nhiều agent; workflow chỉ đi kèm bên trong skill |
+| **Multica** | **Chỉ skill** (import từ GitHub hoặc zip) | Workflow, agent, squad, autopilot **không export được**; template workflow không có người xử lý; CLI không có lệnh workflow |
+
+**Đề xuất:**
+- **Gói OPC** = chuẩn Agent Companies v1 + phần mở rộng `fgopc`, gồm:
+  - `WORKFLOW.md`: các cột, người xử lý theo slug, chỉ dẫn, bước tiếp và bước quay lại, luật cứng;
+  - `.fgopc.yaml`: khai báo secret, cấu hình runtime cho từng nền tảng, budget.
+- **Công cụ `opc deploy --target paperclip|multica|aicoworker`**, chạy lại không tạo trùng (khớp theo slug).
+- **Công cụ `opc lint`** để kiểm tra gói trước khi deploy.
+- Gói nằm trong git: mỗi cải tiến từ vòng retro là một PR sửa gói, rồi deploy lại.
+
+## Commit này còn gồm
+
+- **Spike Multica + AICoworker** (trượt vì phiên bản OpenClaw không tương thích).
+- **Runbook Multica + Claude Code** (đạt 5/5): setup, Tailscale, mã đăng nhập test `123456`, 3 script.
+- Các đính chính về `executionPolicy` của Paperclip.
+- Cập nhật vision và tài liệu so sánh.
+- Learning area: 52 lessons.
+
+Như các lần trước, mình chỉ commit tài liệu của mình. Các thay đổi đang dở ở `company/` và dòng `structure.md` trong README vẫn để ng …[+386]
+[L3956] USER: vậy em nói multica có thể dựng workflow theo column là sao? làm sao làm?
+[L3976] TOOL Read: /home/vantt/project/fgOPC/docs/spikes/2026-10-29-multica-claude/scripts/workflow.py
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

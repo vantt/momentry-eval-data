@@ -1,0 +1,76 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Artifact CI không tải ẩn danh được, nên bộ cài dùng gh rồi chuyển sang Release
+   GitHub yêu cầu đăng nhập để tải artifact dù repo công khai, nên máy khách không có gh không tải được. Chủ dự án chọn giữ repo private và installer thử URL công khai trước, dự phòng bằng gh. Sau đó fork đăng Release, nên OHS tải được không cần đăng nhập.
+M2. Trước khi công khai repo, quét lịch sử git tìm khoá
+   Agent quét toàn bộ lịch sử git bằng các mẫu token GitHub, khoá Anthropic, khoá AWS và private key: 0 kết quả khớp. Trong quá trình này có một lần đọc file bị hook chặn, agent không đi vòng qua.
+M3. Hook dừng mục tiêu lặp hơn 20 lần vì điều kiện 'toàn bộ plan' không khớp phạm vi đã thu hẹp
+   Stop hook chặn dừng nhiều lần vì plan còn mục mở chờ Windows và người duyệt. Agent lặp lại gần như cùng một đoạn trả lời, và người dùng phải hỏi cách dừng. Chỉ khi người dùng xoá goal thì phiên mới kết thúc.
+M4. Dry run release: 7 file, sha256 khớp, không tạo Release thật
+   Lần dispatch đầu ra đủ bốn binary, mọi sha256 khớp, và không tạo Release. Sau đó bản rc thật được đăng với 7 file và agent tải về kiểm lại từng checksum.
+M5. Agent review tìm 2 lỗi High, agent viết nhận và sửa trong một commit
+   Review chỉ ra hai kịch bản treo: stderr dừng đọc khi gặp byte UTF-8 hỏng làm pipe đầy, và stdin giữ mutex không có thời hạn làm pkm không thoát được. Review gửi lại kèm file:line và kịch bản, agent viết sửa cả 2 lỗi High và 4 lỗi Medium trong một commit, rồi merge.
+M6. Installer chuyển sang tiếng Anh vì PowerShell 5.1 làm hỏng dấu tiếng Việt
+   Khi đọc script qua irm, PowerShell 5.1 làm hỏng dấu tiếng Việt trong thông điệp. Thông điệp chuyển sang tiếng Anh và script chỉ dùng ASCII.
+M7. GitHub không chạy job vì hết hạn mức thanh toán
+   Mọi job bị từ chối với thông báo thanh toán thất bại hoặc hết hạn mức, kể cả job dựng binary, nên không tạo được tag rc.3. Agent không dựng thay được binary Windows và macOS trên máy Linux. Chủ dự án chuyển repo sang public, Actions chạy lại bình thường.
+M8. Đầu ra Python đổi theo thứ tự hệ điều hành liệt kê file
+   Python không có ORDER BY, nên thứ tự cạnh phụ thuộc thứ tự hệ điều hành trả về. Thử đảo thứ tự cho thấy 593 trên 726 edges.id đổi và điểm related lệch khoảng 1e-5, vượt ngưỡng. Chốt sắp xếp theo đường dẫn, ghi vào quyết định.
+M9. Người duyệt chọn để pkm tự đọc file thay vì chuyển sang OHS
+   Hai agent cùng đề xuất 13 tool và cùng bác code mode. Plan ghi tool read chuyển sang OHS, nhưng cả hai phản đối vì OHS chỉ đọc được note đã index. Ước lượng token theo ký tự: từ khoảng 6,0 nghìn xuống 4,4 nghìn; bản phản biện đo danh sách golden được 13.381 ký tự, cao gấp đôi ước tính ban đầu. Người duyệt chọn read do pkm tự đọc.
+M10. Cache CI giữ thư mục rỗng, CI đỏ từ lần chạy kế tiếp
+   Action cache xoá mọi file ngoài thư mục build và giữ lại thư mục rỗng. Lần chạy đầu lưu cache hỏng; các lần sau khôi phục đúng khớp nên bước kiểm thấy thư mục có sẵn mà không có manifest, và sập cả ba nền. Local vẫn xanh vì target không bao giờ bị dọn. Sửa bằng cách xuất dump ra thư mục tạm ngoài cache.
+M11. Build lỗi giữa chừng để index sai mãi, và Python cũng sai y như vậy
+   Review phát hiện nếu build lỗi sau transaction đầu, lần build sau thấy không đổi nên không tính lại edges. Python có đúng cấu trúc hai transaction nên bộ so khớp không bắt được. Sửa bằng cờ dirty trong meta để buộc tính lại, có test mô phỏng lỗi.
+M12. Bắt CI chạy lại mỗi lần đẩy mã và theo dõi cả đường phát hành thử trước khi báo xong
+   Bắt CI chạy lại mỗi lần đẩy mã và theo dõi cả đường phát hành thử trước khi báo xong Thường đẩy mã rồi quên, hoặc chỉ kiểm tra CI một lần khi có lỗi.
+M13. Seed 11 nằm trong preset của fixture, test Python không truyền seed
+   Test Python gọi generate không có --seed, nên giá trị thật lấy từ mặc định của preset, là 11. Tài liệu bench cũng ghi 11. Agent đọc mặc định trong mã thay vì tin vào tài liệu.
+M14. Máy Windows thật tìm ra lỗi mà máy Linux không thấy
+   Đường dẫn Windows có gạch chéo ngược khi escape trong JSON lọt qua bộ che, gây 2 lệch ở CLI. Tiếng Việt in qua pipe làm sập script Python. Cờ -I của Python ẩn user site nên không thấy PyYAML cài bằng --user; đổi sang -E -P. Các sửa đưa vào main và CI xanh cả ba nền.
+M15. Một note 338 byte đẩy RAM lên 1,45 GB
+   Bảy tầng alias trong note 338 byte sinh 11,1 triệu props và 1,45 GB RSS; thêm một tầng là khoảng 14 GB. Python cũng phình (877 MB) nên khớp spec nhưng vẫn là lỗ DoS. Sửa bằng ngân sách 1.000.000 props và 64 MiB cho mỗi note, vượt thì báo MemoryError và ghi là lệch có chủ ý.
+M16. Mục PORTING.md bị nhân đôi sau mỗi lần merge nhánh
+   Mục MCP server xuất hiện hai lần sau merge, rồi mục query lại bị nhân đôi ở lần merge khác. Agent phải tìm bằng grep và xoá bản cũ. Không có lỗi code nhưng mất vài vòng kiểm.
+M17. Thư viện YAML 'an toàn' panic trên 242 note, thư viện đã archive lại khớp 0 lệch
+   Trên 25.000 note sinh ngẫu nhiên, libyaml-safer panic 242 lần, saphyr lệch 6.510 note, còn unsafe-libyaml lệch 0 trên cả 58 ca biên lẫn 25.000 note. Chọn unsafe-libyaml dù đã archive, vì nó là cùng libyaml 0.2.5 với PyYAML.
+M18. Đổi quyết định kỹ thuật thành một điều kiện phát hành mà người dùng có thể kiểm, thay vì thương lượng bằng lời
+   Đổi quyết định kỹ thuật thành một điều kiện phát hành mà người dùng có thể kiểm, thay vì thương lượng bằng lời Thường quyết định nằm trong đầu người viết hoặc trong một cuộc chat, khó tìm lại.
+M19. Chọn tự viết JSON-RPC thay vì rmcp: binary 0,68 MB so với 2,79 MB
+   rmcp kéo 56 crate và tokio, build sạch 16,5 giây so với 2,5 giây, binary 2,79 MB so với 0,68 MB. rmcp lệch Python ở 5 điểm trong tầng giao thức. Claude Code thử server/discover trước rồi mới fallback sang initialize, đúng nhánh Python đang dùng, nên ghi lại như điều kiện xem lại.
+M20. Phase 15: Python thêm gói tiếng Việt, Rust phải bật cùng biến môi trường
+   Nếu pkm không đặt biến OHS_LANGUAGE_PACK như bản Python, pkm và MCP ohs của người dùng sẽ dùng cấu hình khác trên cùng index. Agent chuyển commit này sang Rust, mọi tiến trình OHS do pkm khởi động đều đặt biến, và kiểm bằng gói OHS thật.
+M21. Máy audit chỉ đọc mã vì hook chặn cargo build, và báo sai một chi tiết
+   Hook của repo chặn lệnh cargo build và thư mục target, nên audit không chạy được binary và suy luận từ mã nguồn. Kết quả: ba blocker, trong đó vcruntime140.dll có thể làm pkm.exe không chạy trên máy Windows sạch. Báo cáo nói chưa có bằng chứng action chạy được, trong khi lần dispatch trước đã chạy thành công; chủ dự án chỉ ra và báo cáo được sửa.
+M22. Bản sửa OHS hạ cấp gói mới hơn về bản ghim cũ
+   Gói vantt.4 trong thư mục của pkm bị thay bằng vantt.3 vì ghim là vantt.3, tức là hạ cấp. Review bắt được trước khi phát hành. Sửa: chỉ nâng khi gói cũ hơn hoặc không đọc được phiên bản, và có test cho gói đưa vào bằng cờ.
+M23. Dùng agent khác để review mã và báo lỗi, rồi chuyển lỗi về đúng agent đã viết để nó tự sửa
+   Dùng agent khác để review mã và báo lỗi, rồi chuyển lỗi về đúng agent đã viết để nó tự sửa Thường người viết tự sửa theo ý mình, hoặc người review sửa thẳng code của người khác.
+M24. Panic lúc build đầu làm mọi lệnh gọi tool treo, và truy vấn đường đi bùng nổ tổ hợp
+   Panic trong build đầu không đặt cờ sẵn sàng, nên tools/call chờ vô hạn. Truy vấn paths với max_len 8 đến 10 ăn hết CPU và RAM, hành vi này kế thừa từ Python. Sửa bằng trần max_len 12, dừng sau 10 giây; bộ golden chỉ dùng tối đa 4 và answer key tối đa 10 nên không ảnh hưởng.
+M25. Giao một nhiệm vụ lớn cho AI rồi để nó tự chạy nhiều agent song song đến khi xong, thay vì hỏi từng bước
+   Giao một nhiệm vụ lớn cho AI rồi để nó tự chạy nhiều agent song song đến khi xong, thay vì hỏi từng bước Thường người dùng chat từng bước, duyệt từng thay đổi, và chia nhỏ việc thành nhiều lượt trò chuyện.
+M26. Mỗi subagent làm việc trong worktree git riêng và báo kết quả bằng một bản tóm tắt có cấu trúc
+   Mỗi subagent làm việc trong worktree git riêng và báo kết quả bằng một bản tóm tắt có cấu trúc Thường nhiều agent cùng sửa một thư mục làm và xung đột file, hoặc người dùng tự chia nhánh và gộp tay.
+M27. compact() xoá khoá null làm lỗi ohs_not_ready mất 2 trong 5 khoá
+   Khi OHS ở trạng thái starting, progress và eta_s là null nên bị bỏ, agent chỉ nhận 3 khoá trong khi hợp đồng yêu cầu 5. Test cũ kiểm 5 khoá trước khi compact nên không bắt được. Sửa bằng miễn trừ cho lỗi ohs_not_ready và thêm test ở tầng MCP.
+M28. Bảy agent chạy song song, số mục chưa có đếm ngược từ 47 về 0
+   Sau đợt đầu, bộ so khớp báo 47 trên 64 mục 'chưa có'. Các đợt merge sau giảm dần: 44, 34, 15, 1, rồi 0 khi mọi phase lõi đã vào main. Mỗi lần merge đều chạy lại bộ so khớp, nên con số là kết quả đo chứ không phải tự báo.
+M29. rc.3 phát hành từ nhánh chưa merge theo lựa chọn của người dùng
+   Người dùng chọn thử luôn bản một cửa nên agent đánh tag rc.3 từ nhánh phase 17. Các job CI đều xanh sau khi repo công khai, và release có đủ 7 file với checksum khớp. Main vẫn ở rc.2.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

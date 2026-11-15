@@ -1,0 +1,59 @@
+Dưới đây là 24 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Thử tự tính trusted_hash của Codex rồi chuyển sang cờ bỏ duyệt
+   Agent định tự tái tạo cách tính hash từ mã nguồn, nhận ra dễ sai khi phải mô phỏng cách chuẩn hoá cấu hình, nên tìm cờ bypass_hook_trust chính thức. Probe chạy với cờ vẫn không thấy hook gọi. Nhiều khả năng phiên dừng trước bước hook, nhưng chưa chứng minh được.
+M2. Cắt v0.1.0: lệnh cài một dòng chạy được từ GitHub thật
+   Trước khi tag, agent kiểm HEAD trùng origin/main, CI trên commit đó xanh, chưa có tag, VERSION và CHANGELOG khớp. Sau khi push tag, release.yml chạy CI chín ô, tạo bản nháp, cài thử bản nháp trên ba hệ điều hành, rồi mới công bố. Agent chạy đúng lệnh curl rồi sh trong HOME tạm: cài được 0.1.0, init báo sẵn sàng, uninstall gỡ sạch và giữ dữ liệu.
+M3. Thả chuyện đang giữ bằng quarantine --release all, vẫn kiểm riêng tư lại từng chuyện
+   Agent thiết kế lệnh kiểm lại mọi chuyện đang giữ: chuyện sạch được đưa vào hộp, chuyện còn chuỗi riêng tư vẫn bị giữ. Test mới có hai chuyện, một sạch và một còn lộ, và kiểm được cả hai kết quả. Tham chiếu lệnh được sinh lại vì bảng lệnh đổi; số test từ 234 lên 235.
+M4. Push bị từ chối: đọc commit lạ rồi rebase, không force
+   Agent đọc diff của hai commit lạ trước, không force, rồi rebase ba commit của mình lên trên. Sau rebase chạy lại 230 test qua, rồi push thành công.
+M5. Một commit kéo theo việc đổi tên README của phiên khác, main mất README.md
+   Một commit đưa lên main cả việc đổi tên README.md thành README.vi.md mà phiên khác đã stage sẵn. Kết quả là main không còn README.md và CI đỏ toàn bộ. Chủ chọn commit README song ngữ, CI xanh lại. Từ đó agent chỉ stage đúng file của mình và kiểm git diff --cached trước khi commit.
+M6. Hook của Codex không bao giờ chạy: tên sự kiện viết sai kiểu chữ
+   Agent tra mã nguồn Codex: tên đúng là PreCompact, SessionEnd và SessionStart. momentry ghi pre_compact và session_start nên Codex bỏ qua mà không báo lỗi, từ đầu dự án. Đã sửa và thêm SessionEnd. Test cũ vẫn xanh vì chỉ kiểm chuỗi trong file, không kiểm sự kiện có chạy hay không.
+M7. Plan do công cụ sinh: 8 phase, 45 việc, validate qua ngay từ đầu
+   Plan có tám phase và 45 việc, ước khoảng 9 ngày công. Sau khi validate qua, agent dùng awk để chuyển các mục đánh số trong phần Tasks thành checkbox, và đếm số checkbox của từng phase để theo dõi tiến độ.
+M8. Mã thoát đảo ngược: mã 2 từ 'vi phạm riêng tư' thành 'sai cú pháp'
+   Agent đề xuất giữ bảng cũ vì đổi mã có thể làm script đọc sai đúng ở chỗ kiểm riêng tư, loại sai nguy hiểm nhất. Chủ chọn chuẩn: 0 xong, 1 có lỗi kể cả khi check thấy vi phạm, 2 sai cú pháp. Hai test đổi từ mã 2 sang mã 1, và thay đổi được ghi là Breaking trong CHANGELOG.
+M9. Hook chặn lệnh bash có chuỗi nhạy: dist, .git và xoá biến rỗng
+   Lần đầu: lệnh xoá thư mục tạm bằng biến shell bị chặn vì có thể thành xoá gốc khi biến rỗng. Lần hai: lệnh có chuỗi dist bị chặn khi tạo workflow, agent chuyển sang công cụ Write. Lần ba: lệnh sửa test có chuỗi .git bị chặn, agent đổi sang Edit.
+M10. Đảo PRD: để công cụ tự cài hook vào file cấu hình của người dùng
+   Chủ đổi sang để init tự cài. Agent ước khoảng 200 đến 300 dòng code cộng test, phần khó là ghi file an toàn: sao lưu, từ chối khi file hỏng, ghi qua file tạm rồi đổi tên, và kiểm file không bị đổi giữa chừng. Cái giá được nêu rõ là có thể đổi định dạng nhẹ của file người dùng khi ghi lại. Plan được sửa để khớp quyết định mới.
+M11. Đóng plan ở 45/45 khi điều kiện 'tốt đẹp' chưa đạt, hook phải nhắc ba lần
+   Lần nhắc đầu: agent dừng ở 43/45 để hỏi quyền push. Sau khi đạt 45/45 và CI xanh, agent vẫn báo plan đã đóng. Lần nhắc thứ hai: v0.1.0 chưa cắt nên lệnh cài trong README chưa chạy được. Lần thứ ba: hook trên Windows chưa được đo trong phiên thật.
+M12. Bốn điểm agent không tự chọn, đưa đánh đổi cho chủ quyết
+   Agent liệt kê từng điểm (hook chỉ in hay tự cài, mã thoát giữ hay theo chuẩn, hỗ trợ nền tảng nào, thứ tự làm) kèm đánh đổi và một đề xuất. Chủ chọn tự cài hook, mã thoát theo chuẩn, hỗ trợ Linux, macOS, Windows và WSL, và chọn phương án A cho điểm thứ tư. Agent ghi ba quyết định vào checklist ngay sau khi có câu trả lời.
+M13. Tự tìm profile trên máy: 4 Codex, 9 pi, 10 omp, 4 agy
+   Agent liệt kê profile trên máy, chỉ lấy tên thư mục: 4 thư mục Codex, 9 của pi, 10 của omp, 4 của agy. Hàm hostRoots gộp cả bốn để scan và cài vào mọi profile. Chủ chọn để agy gom khi mở phiên sau và tự tìm mọi profile.
+M14. Tài liệu lệnh sinh từ bảng lệnh, test khoá: đổi bảng là test đỏ
+   Sau khi đổi bảng lệnh, test kiểm tài liệu có đúng với bảng không đã đỏ, và agent phải chạy lại script sinh tài liệu rồi mới qua test. Cơ chế này bắt được việc quên cập nhật tài liệu.
+M15. Antigravity không có sự kiện kết thúc phiên: chốt gom khi mở phiên sau
+   Researcher đọc tài liệu và mã: pi và omp dùng extension TypeScript với sự kiện session_shutdown. Antigravity chỉ có SessionStart và Stop, trong đó Stop chạy sau mỗi lượt và chặn agent đang chạy. Chủ chọn gom khi mở phiên sau. Các nguồn bên ngoài nói hai định dạng transcript khác nhau, nên agent kiểm trực tiếp trên máy.
+M16. Lệnh có dấu nháy lồng làm installer Windows luôn báo Node quá cũ
+   Reviewer tìm 4 lỗi nặng, 5 lỗi trung bình và 7 lỗi nhẹ. Lỗi nặng nhất: dấu nháy đôi bên trong lệnh node -p bị PowerShell 5.1 truyền thô, Node đọc thành cú pháp lỗi và phiên bản thành 0, nên installer luôn báo Node quá cũ. Một lỗi khác khiến uninstall trên Windows không xoá gì nhưng vẫn báo thành công. Agent sửa cả bốn lỗi nặng và năm lỗi trung bình trong một lượt.
+M17. Hook trên Windows: một đường dẫn chạy được cả Git Bash lẫn cmd
+   Theo báo cáo cộng đồng, Claude Code chạy hook qua Git Bash còn Codex chạy qua cmd. Agent đổi lệnh hook sang dấu gạch chéo trong đường dẫn momentry.cmd để chạy được cả hai, và /bip gọi momentry theo tên vì installer đưa thư mục shim vào PATH. Tài liệu ghi rõ phần nào chưa kiểm.
+M18. Viết install.ps1 từ một installer đã chạy thật ở dự án khác
+   Đường dẫn installer của một dự án thứ nhất không tồn tại. Agent tìm được installer PowerShell của một dự án khác và đọc để viết lại. Thông báo chỉ dùng ASCII vì PowerShell 5.1 đọc sai UTF-8 khi chạy qua irm và iex. Không có Windows để chạy thử, nên CI Windows là nơi xác nhận.
+M19. CI lần đầu: Windows đỏ 38 test vì test viết cho POSIX
+   Linux xanh cả ba bản Node, macOS đỏ 2 test, Windows đỏ 38 test. Phần lớn lỗi Windows là test giả định POSIX: chèn đường dẫn thô vào JSON, kiểm quyền 0600, tách PATH bằng dấu hai chấm, và claude giả không chạy được. Sau sửa, Windows còn 4 lỗi, macOS còn 2 lỗi, do repo nằm sau symlink /var trỏ tới /private/var.
+M20. Agent mới đọc --help: lệnh gợi ý phải chạy được, vòng thử hội tụ từ hai xuống một
+   Vòng thử đầu, agent vướng vì gợi ý sửa nguồn chặn là một câu mô tả như sửa bằng config set, không chạy được. Agent thêm lệnh config privacy-add nhận tên làm đối số. Sau đó vòng thử hội tụ ngay ở lần đầu, từ hai vòng xuống một vòng.
+M21. Subagent rút gọn 8 chỗ, agent chạy lại toàn bộ kiểm trước khi tin
+   Subagent báo đã rút gọn 8 chỗ trong 7 file, như helper bullets, một hàm backup chung, và repoRootOf. Agent không chỉ tin báo cáo mà chạy lại node test, lifecycle installer và vòng agent, kết quả 232/232 vẫn qua và đầu ra không đổi.
+M22. Đo hook Claude Code trên Windows mà không dùng khoá API của ai
+   Agent viết workflow chạy tay trên runner windows-2025: cài Claude Code, cài momentry, init, rồi mở claude -p không đăng nhập. Hook SessionStart chạy lúc mở phiên, nên dòng hook.spawned trong hook.log chứng minh hook được gọi trước khi phiên báo lỗi đăng nhập. Kết quả: Claude Code gọi được hook trên Windows, Codex còn mở. Tài liệu và issue được cập nhật theo đúng phạm vi đã đo.
+M23. Audit: 205/205 test qua nhưng người mới không cài được gì
+   Bộ test báo 205/205 qua trên clone sạch, nhưng trong workspace chỉ còn 202/203 vì test quét cả thư mục chưa đưa vào git. Quick start cho thấy init --yes lỗi 'Unknown option', list và check thoát 1 vì chưa có hộp, và init không tạo hook hay lệnh bip nào trong HOME trống. Kết luận: phần lõi ổn, phần phân phối gần như bằng 0.
+M24. Đo cấu trúc transcript thật mà không in nội dung
+   Agent viết script chỉ in kiểu và tên khoá của từng bản ghi JSONL, không in giá trị. Lần đầu lệnh lỗi vì pi và omp là hàm shell bọc, phải tìm đường dẫn chương trình thật. Một probe gọi thật tới API và báo lỗi khoá, nên các probe sau chạy trong namespace mạng rỗng. Từ schema thật, bộ đọc được viết và đọc được năm transcript Antigravity.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

@@ -1,0 +1,149 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L915] USER: báo cáo tiến độ
+[L925] USER: kết nối với OHS anh sẽ kêu một agent khác ở windows làm và test luôn nhé. em chỉ đảm bảo mọi việc xong tới khi cài được và em không còn làm gì tiếp nữa.
+[L1017] USER: bật 1 agent dùng skill cs-packaging-distribution để audit co dữ án này
+</asks>
+
+<story>
+hook: Thiếu một cờ build, binary Windows đòi người dùng cài thêm vcruntime
+tension: nho_ma_to (thiếu một cờ crt-static trong cấu hình / binary Windows phụ thuộc DLL runtime người dùng chưa có)
+stakes: 2/3
+# Phát hành binary cho Windows không cần vcruntime: một bước kiểm DLL trong CI
+
+**Bối cảnh:** Audit đóng gói phát hiện binary pkm.exe phụ thuộc vcruntime140.dll, nhiều máy Windows sạch không có DLL đó, nên Claude Desktop không khởi động được.
+**Chuyện gì xảy ra:** Gốc lỗi nhỏ: không có cờ crt-static trong cấu hình build. Sửa bằng .cargo/config.toml và một bước CI dùng dumpbin liệt kê DLL, fail nếu còn C runtime. Release dry run ra 7 file, sha256 đều khớp.
+**Bài học:** Thêm một bước kiểm phụ thuộc DLL vào CI để lỗi đóng gói lộ sớm, thay vì chờ người dùng báo.
+**Artefact:** Danh sách 7 file release và kết quả sha256; che tên tài khoản.
+**Góc người ngoài:** cách làm phổ biến là Build thủ công trên máy dev, copy file lên release, không kiểm checksum hay phụ thuộc DLL; ở đây khác ở Gắn thêm bước CI cho từng nguy cơ đã biết (thiếu DLL, lệch checksum, tag không khớp version), và dùng workflow_dispatch để thử phát hành trước khi gắn tag thật. Người đọc muốn biết cách làm kiểm tra này trước khi người dùng gặp lỗi.
+</story>
+
+<excerpt>
+[L1063] USER: <task-notification>
+<task-id>a214f1b56d60c2fba</task-id>
+<tool-use-id>toolu_01KMQ3AXtpUemkPmbfg1UoXE</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a214f1b56d60c2fba.output</output-file>
+<status>completed</status>
+<summary>Agent "Packaging distribution audit" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I've written the audit (in Vietnamese) to `/home/vantt/projects/obsidian-pkm/plans/reports/packaging-audit-261102-1505-cs-packaging-distribution.md`. The first installable Windows release has three blockers: the Windows binary may not start on a clean machine, there is no installer, and there are no user install steps.
+
+The audit covers `main` at `7d14601` and was read-only. I could not run the binary-based checks: the repo's `scout-block` hook blocks both `cargo build` and the `target/` folder. So those results come from reading the source, not from running `pkm`. The project fits the skill's "single binary" model, and mdview is the closest reference project. The report has 3 blockers, 9 important findings and 8 nice-to-haves, each with file:line evidence, the rule it breaks and a fix. It also has the skill's 12-step check table, what is already done well, a suggested fix order, and three questions about recorded decisions. Those questions are about the OHS artifact pinning, the command names (`mcp install` versus the skill's `init`/`update`/`uninstall`), and Linux using `-gnu` rather than `-musl`. None of them asks to change a decision.
+
+Top 5 findings:
+- **Blocker, the Windows binary needs `vcruntime140.dll`** (`release.yml:91`, no `crt-static` setting anywhere). Many clean Windows machines don't have that DLL, so Claude Desktop would fail to start `pkm.exe`. Fix: build with `crt-static` and add a CI check that the DLL dependency is gone.
+- **Blocker, no installer or stable install location.** The release ships a bare `.exe` (`release.yml:100`), and `mcp install` records wherever that file happens to be (`install.rs:182`), for example the Downloads folder. Fix: an `install.ps1` that verifies the hash, installs to `%LOCALAPPDATA%\pkm\bin`, and also handles update and uninstall. Also make `mcp install` warn when it is run from outside that folder.
+- **Blocker, no quick start for users.** `README …[+1576]
+[L1071] AGENT: The audit found three blockers for the first Windows release:
+- `pkm.exe` needs `vcruntime140.dll`, so it may not start on a clean machine.
+- There is no install script and no fixed install location.
+- There is no quick start for users.
+
+These touch files no one else is editing, so I'm fixing them now in parallel. I'll handle the `doctor`/OHS findings after phase 12 merges, to avoid a conflict.
+[L1072] TOOL Agent: Fix packaging blockers
+[L1073] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: a1f9526676784076c (internal ID - do not mention to user. Use SendMessa …[+86]
+[L1078] AGENT: Audit xong; báo cáo ở `plans/reports/packaging-audit-261102-1505-cs-packaging-distribution.md`. Agent không dựng được binary vì hook của repo chặn lệnh `cargo build` và thư mục `target/`. Vì vậy các lỗi liên quan tới binary là suy từ mã nguồn, chưa chạy thật để kiểm.
+
+**Ba lỗi chặn bản cài đầu tiên trên Windows:**
+- `pkm.exe` cần `vcruntime140.dll`, nhiều máy Windows sạch không có, nên Claude Desktop có thể không chạy được `pkm`.
+- Không có script cài và không có chỗ cài cố định. `mcp install` ghi lại đường dẫn nơi file `.exe` đang nằm, ví dụ thư mục Downloads.
+- README chưa có hướng dẫn cho người dùng từ con số 0 tới lúc Claude Desktop gọi được `kg`.
+
+Một agent đang sửa cả ba, kèm các mục của pipeline release: chạy test trước khi phát hành, kiểm tag khớp phiên bản crate, gom một file `checksums.txt`, và chạy thử từng binary sau khi build.
+
+**Hai lỗi quan trọng của `doctor`:** thiếu gói OHS thì `doctor` báo lỗi, trong khi `mcp install` coi OHS là tuỳ chọn. Ngoài ra `doctor` mặc định khởi động OHS. Hai chỗ này tôi sửa sau khi phase 12 merge để không đụng file của nhau. Phần chạy thật với OHS vẫn để agent trên Windows làm như anh/chị đã nói.
+
+**Đang chạy song song:** sửa phase 09 theo review, phase 10, phase 12, và sửa phần đóng gói.
+…
+[L1122] TOOL Read: /home/vantt/projects/obsidian-pkm/plans/reports/packaging-audit-261102-1505-cs-packaging-distribution.md
+[L1123] RESULT: 51 ## 3. Phát hiện, xếp theo mức | 52
+[L1132] AGENT: Audit tìm ra 3 lỗi chặn, 9 lỗi quan trọng và 8 mục nên có. Phần lớn đã có người sửa hoặc đã xếp lịch. Phần cần anh/chị quyết chỉ có 3 câu hỏi ở cuối. Báo cáo đầy đủ ở `plans/reports/packaging-audit-261102-1505-cs-packaging-distribution.md`.
+
+**Chỗ báo cáo sai:** báo cáo nói chưa có bằng chứng các action `checkout@v7`, `upload-artifact@v7`, `download-artifact@v8` chạy được. Thật ra lúc làm phase 14, tôi đã chạy `workflow_dispatch` thành công với chính các bản này và kiểm sha256 của cả 4 binary.
+
+**1. Đang sửa (agent đang chạy, xong là merge):**
+- **Lỗi chặn 1:** build `pkm.exe` với CRT tĩnh để không cần `vcruntime140.dll`. Kèm một bước CI fail nếu binary còn phụ thuộc DLL đó.
+- **Lỗi chặn 2, phần script:** `install.ps1` và `install.sh` tải bản release, kiểm sha256 và cài vào `%LOCALAPPDATA%\pkm\bin`. Chạy lại thì cập nhật, thêm cờ thì gỡ. Script cũng chạy `Unblock-File` để Windows không chặn file vừa tải.
+- **Lỗi chặn 3:** đưa phần "bắt đầu nhanh" lên đầu README: cài, chạy `pkm mcp install "<vault>"`, nếu lỗi thì chạy `pkm doctor`.
+- **Workflow release:** chạy test trước khi phát hành, kiểm tag khớp phiên bản crate, gộp một file `checksums.txt`, chạy thử `pkm --version` cho từng binary, đánh dấu tag có `-rc` là prerelease. CI cũng build bản release trên mỗi lần push, để lỗi đóng gói lộ sớm thay vì đợi lúc gắn tag.
+
+**2. Tôi làm ngay sau khi phase 12 merge (đụng `crates/pkm`, đang có agent khác sửa):**
+- **Lỗi chặn 2, phần `mcp install`:** cảnh báo khi `pkm.exe` đang nằm ngoài thư mục cài chuẩn, ví dụ trong Downloads.
+- **`doctor` báo OHS:** thiếu gói OHS thì chỉ cảnh báo, giống `mcp install`. Nếu không, máy không có OHS sẽ không qua được nghiệm thu "`doctor` không báo lỗi".
+- **`doctor` mặc định chỉ đọc:** chỉ kiểm gói OHS có đủ, không khởi động OHS trừ khi có cờ.
+- **Chốt định dạng JSON của `doctor`:** dạng `{schema, ok, data, error, next}`, mỗi lỗi có một lệnh sửa chép chạy được. Nên chốt bây giờ vì chưa có ai gọi `doctor`.
+- **`mcp install` an toàn khi file cấu hì …[+1051]
+[L1140] USER: b,c đồng ý. chưa hiểu a. do ohs của tôi là private?
+[L1142] TOOL Bash: gh repo view vantt/obsidian-hybrid-search --json visibility,isFork,parent -q '.visibility+" fork="+(.isFork|tostring)+" parent="+(.parent.owner.login // "")+"/"+(.parent.name // "")'; gh repo view vantt/obsidian-pkm --json visibility -q .visibility
+…
+[L1218] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: adf22cef46fb9ce43 (internal ID - do not mention to user. Use SendMessa …[+86]
+[L1227] AGENT: Phase 12, without the tools wiring, is merged and pushed. Three agents are running in parallel:
+- **Phase 10:** `query` and `tools`.
+- **Packaging fixes:** CRT, install scripts, README, release workflow.
+- **`doctor` and `mcp install` fixes from the audit.**
+
+When phase 10 finishes I'll connect it to the MCP server and CLI and add `related`.
+[L1237] USER: <task-notification>
+<task-id>a1f9526676784076c</task-id>
+<tool-use-id>toolu_0123pniuquBFznMtx8oNjy2E</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a1f9526676784076c.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix packaging blockers" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Phase Implementation Report
+
+All three blockers and the release-pipeline items are fixed, including the private-repo change: the installers try the public URL first and fall back to `gh` on 401/403/404. The Windows installer (`install.ps1`) has never been run, because the worktree hook blocks `pwsh` here. Its first real run will be on the Windows CI runner.
+
+- **Branch:** `worktree-agent-a1f9526676784076c`, HEAD `4cc7dbd7be74daa2456a6f5f4d8dd97cdf94c989`, five commits on top of `7d14601`. Nothing pushed, merged or tagged.
+
+### What changed
+- **Blocker 1, no `vcruntime140.dll`:** `.cargo/config.toml` builds the Windows binary with a static CRT. On every packaging run, `scripts/release-assets.sh` lists the DLLs `pkm.exe` imports with `dumpbin` and fails if any C runtime DLL is still there.
+- **Blocker 2, install scripts:** `scripts/install.ps1` and `scripts/install.sh` do the following:
+  - Check sha256 against one combined `checksums.txt` and run `pkm --version` before replacing anything.
+  - Install to `%LOCALAPPDATA%\pkm\bin` or `~/.local/bin` and add it to the user PATH. Uninstall removes exactly what was added.
+  - Update when re-run; the same version does nothing. On Windows, a `pkm.exe` that Claude Desktop is running gets renamed out of the way.
+  - Offer `--uninstall`, `--dry-run`, and `--mcp-install &lt;vault&gt;` (only runs `pkm mcp install` when passed).
+  - Let you change the source repo or URL with `PKM_RELEASE_REPO` / `-Repo` and `PKM_RELEASE_BASE_URL` / `-ReleaseBaseUrl`.
+  - Stay ASCII-only. Windows PowerShell 5.1 garbles Vietnamese diacritics when it reads a script through `irm`, so installer messages are in English.
+- **Blocker 3, README:** Vietnamese quick start using `gh auth login`, the `gh release download … | Out-String | iex` one-liner, `pkm mcp install`, `pkm doctor`, update/uninstall, and the SmartScreen workaround. The status line now says no release exists yet.
+- **Release  …[+4364]
+[L1245] TOOL Bash: git merge --no-edit worktree-agent-a1f9526676784076c 2>&1 | tail -1; git diff --name-only --diff-filter=U
+[L1246] RESULT: create mode 100755 scripts/test-installer.sh
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,563 @@
+{
+  "id": "0faf0bb2",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "6c65e9b384447dc5",
+  "at": "2026-11-10T12:45:38.505Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.052568,
+  "dryRun": {
+    "usd": 0.4,
+    "tokens": 112227,
+    "chunks": 1,
+    "hotspots": 30,
+    "entries": 1213,
+    "gitCommits": 4
+  },
+  "report": {
+    "sid": "claude:0faf0bb2",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.29535480000000003,
+    "secs": 21.2,
+    "exitCode": 0,
+    "status": "done",
+    "written": 12,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-29-doi-huong-multica-claude-code-dat-c455",
+        "status": "angle",
+        "angle": "Dự án là bộ dựng công ty một người chạy bằng AI agent, nền Multica, và người làm đang thử runtime thay thế. Người làm tưởng Multica cần runtime của OpenClaw (AICoworker) mới chạy được, nhưng spike với OpenClaw đã trượt. Khi đổi sang Claude Code, cùng bộ 5 tiêu chí đạt đủ 5/5: agent tự comment, tự chuyển in_review, và dừng hỏi chủ khi thiếu giá thay vì tự bịa. Người dùng agent nên quan tâm vì chỗ cần đổi có thể chỉ là runtime, không phải cả ý tưởng.",
+        "audience": "dev dùng AI agent muốn giao việc nhưng vẫn giữ quyền duyệt",
+        "evidence": [
+          3373,
+          3394,
+          3747
+        ],
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người chạy bằng AI agent, nền là Multica; đang thử một runtime thay thế.",
+            "evidence": [
+              "profile",
+              3398
+            ]
+          },
+          "want": {
+            "text": "Muốn biết Multica có chạy được với Claude Code không.",
+            "evidence": [
+              3398
+            ]
+          },
+          "obstacle": {
+            "text": "AICoworker trên OpenClaw không chạy được với Multica; spike trước đó trượt.",
+            "evidence": [
+              3394
+            ]
+          },
+          "turn": {
+            "text": "Tưởng Multica cần runtime của OpenClaw; hoá ra Claude Code cũng chạy và đạt đủ 5/5 tiêu chí.",
+            "evidence": [
+              3373,
+              3747
+            ]
+          },
+          "action": {
+            "text": "Chạy spike Multica với Claude Code theo 5 tiêu chí.",
+            "evidence": [
+              3404,
+              3405
+            ]
+          },
+          "outcome": {
+            "text": "Đạt 5/5; comment và chuyển in_review trong 16 giây; không agent nào tự chuyển done.",
+            "evidence": [
+              3747
+            ]
+          },
+          "takeaway": {
+            "text": "Khi một runtime trượt, thử đổi runtime trước khi bỏ cả hướng; chỉ dẫn không đủ để chặn agent tự done, cần kiểm ở phía server.",
+            "evidence": [
+              3747
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-nho-mot-lan-tra-cuu-nguon-c455",
+        "status": "angle",
+        "angle": "Một người đang dựng công ty một người chạy bằng AI agent và thử Paperclip như một lựa chọn thay thế Multica. Phiên làm việc tin rằng Paperclip thiếu luồng duyệt, vì cờ reviewPolicy human_only không chặn được agent tự đóng task. Đọc kỹ tài liệu thì reviewPolicy chỉ áp khi trả lời xác nhận, còn executionPolicy mới là cổng review thật, nên kết luận cũ phải đính chính. Người dùng công cụ có cổng duyệt cần biết chi tiết này để không đánh giá sai một hệ thống chỉ vì đọc tên cờ.",
+        "audience": "dev dùng AI agent và đang chọn công cụ quản lý task có cổng duyệt",
+        "evidence": [
+          712,
+          1326,
+          2310
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người đang dựng bộ công ty một người vận hành bằng AI agent, nền Multica, và đang thử Paperclip như một lựa chọn thay thế.",
+            "evidence": [
+              "profile",
+              712
+            ]
+          },
+          "want": {
+            "text": "Muốn biết có thể dùng Paperclip luôn, chỉ cần setup, thay vì tự làm.",
+            "evidence": [
+              712
+            ]
+          },
+          "obstacle": {
+            "text": "Task đặt reviewPolicy human_only, nhưng agent vẫn tự chuyển sang done.",
+            "evidence": [
+              1326
+            ]
+          },
+          "turn": {
+            "text": "Tưởng Paperclip thiếu luồng duyệt vì reviewPolicy human_only không chặn được agent; hoá ra executionPolicy mới là cổng review thật.",
+            "evidence": [
+              1326,
+              2310
+            ]
+          },
+          "action": {
+            "text": "Đọc doc/execution-semantics.md, sửa §6.3 và §8 trong bảng so sánh, thêm lesson mới.",
+            "evidence": [
+              2306,
+              2313
+            ]
+          },
+          "outcome": {
+            "text": "Tài liệu và lesson đã sửa nhưng chưa commit; chưa kiểm chứng trên Paperclip đang chạy.",
+            "evidence": [
+              2328
+            ]
+          },
+          "takeaway": {
+            "text": "Cờ tên 'người duyệt' có thể chỉ áp cho một loại xác nhận; đọc cơ chế trước khi kết luận hệ thống thiếu tính năng.",
+            "evidence": [
+              2307,
+              2310
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-phan-tich-lai-vi-sao-bridge-c455",
+        "status": "angle",
+        "angle": "Người làm đang dựng bộ công ty một người (OPC) chạy bằng agent, muốn bỏ server Node và giữ trạng thái việc trên Cloudflare D1. Agent từng nói cầu nối chỉ còn là tuỳ chọn, vì agent tự kéo việc theo heartbeat là đủ. Kiểm tra lại thì mỗi lần heartbeat kiểm tra inbox là một lượt LLM, có thể trễ tới 60 phút, nên vẫn cần một cầu nối đơn giản không dùng LLM. Dev tự host agent nên quan tâm vì chi phí của việc 'thức dậy để hỏi' thường bị bỏ qua.",
+        "audience": "dev tự host hệ thống agent",
+        "evidence": [
+          493,
+          657,
+          707
+        ],
+        "spine": {
+          "context": {
+            "text": "Đang dựng bộ công ty một người (OPC) chạy bằng agent, muốn bỏ server Node và giữ trạng thái việc trên Cloudflare D1.",
+            "evidence": [
+              "profile",
+              493
+            ]
+          },
+          "want": {
+            "text": "Agent nhận việc từ D1 mà không cần chạy server Node.",
+            "evidence": [
+              493
+            ]
+          },
+          "obstacle": {
+            "text": "Cloudflare không gọi trực tiếp được gateway OpenClaw chạy cục bộ, và mỗi lần heartbeat kiểm tra inbox là một lượt LLM.",
+            "evidence": [
+              707
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bridge chỉ còn là tuỳ chọn vì agent tự kéo việc từ D1 là đủ; hoá ra heartbeat mặc định chậm tới 60 phút và mỗi lần kiểm tra tốn một lượt LLM, nên vẫn cần một bridge đơn giản không dùng LLM.",
+            "evidence": [
+              657,
+              707
+            ]
+          },
+          "action": {
+            "text": "Kiểm tra heartbeat-runner.ts, thấy lượt heartbeat chỉ bị bỏ qua khi HEARTBEAT.md rỗng; rồi đề xuất bridge ba tầng với waker không dùng LLM.",
+            "evidence": [
+              659,
+              707
+            ]
+          },
+          "outcome": {
+            "text": "Agent sửa câu trả lời: vẫn cần bridge, chỉ là loại không dùng LLM; ước tính 5 agent kiểm tra mỗi 5 phút sẽ tốn khoảng 1.440 lượt LLM mỗi ngày nếu không có waker.",
+            "evidence": [
+              707
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi chọn kiến trúc poll, hãy tính chi phí của mỗi lần agent thức dậy; một lượt LLM trả lời 'không có việc' vẫn tốn tiền.",
+            "evidence": [
+              707
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-multica-bo-soul-va-bo-nho-c455",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-4: spine.context: evidence ngoài các dòng đã đưa: 3398; spine.want: evidence ngoài các dòng đã đưa: \"profile\"; spine.obstacle: evidence ngoài các dòng đã đưa: 3712; spine.action: evidence ngoài các dòng đã đưa: 3712; spine.outcome: evidence ngoài các dòng đã đưa: 3707, 3712 (+1) | angle-4-retry: spine.context: evidence ngoài các dòng đã đưa: 3691; spine.want: evidence ngoài các dòng đã đưa: 3398; spine.obstacle: evidence ngoài các dòng đã đưa: 3712; spine.action: evidence ngoài các dòng đã đưa: 3691, 3712; spine.outcome: evidence ngoài các dòng đã đưa: 3707, 3712 (+1)"
+      },
+      {
+        "id": "2026-10-29-agent-biet-dung-lai-hoi-chu-c455",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-5: spine.context: evidence ngoài các dòng đã đưa: 2130; spine.want: evidence ngoài các dòng đã đưa: 2081; spine.obstacle: evidence ngoài các dòng đã đưa: 2105; spine.turn: evidence ngoài các dòng đã đưa: 2081, 2336; spine.action: evidence ngoài các dòng đã đưa: 2104, 2114 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/0faf0bb2/runs/3/llm/angle-5-retry.json"
+      },
+      {
+        "id": "2026-10-29-model-mac-dinh-cua-aicoworker-da-c455",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-6: spine.context: evidence ngoài các dòng đã đưa: 2772; spine.want: evidence ngoài các dòng đã đưa: 3150; spine.obstacle: evidence ngoài các dòng đã đưa: 3041; spine.turn: evidence ngoài các dòng đã đưa: 3061, 3150; spine.action: evidence ngoài các dòng đã đưa: 3061, 3160 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/0faf0bb2/runs/3/llm/angle-6-retry.json"
+      },
+      {
+        "id": "2026-10-29-spike-paperclip-3-agent-vao-trang-c455",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-7: spine.want: evidence ngoài các dòng đã đưa: 1515; spine.obstacle: evidence ngoài các dòng đã đưa: 1523; spine.turn: evidence ngoài các dòng đã đưa: 1519, 1574; spine.action: evidence ngoài các dòng đã đưa: 1529, 1562; spine.outcome: evidence ngoài các dòng đã đưa: 1576, 1584 (+2) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/0faf0bb2/runs/3/llm/angle-7-retry.json"
+      },
+      {
+        "id": "2026-10-29-chu-tu-dang-nhap-bang-ma-c455",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-8: spine.context: evidence ngoài các dòng đã đưa: 724; spine.want: evidence ngoài các dòng đã đưa: 712, 724; spine.obstacle: evidence ngoài các dòng đã đưa: 1120; spine.action: evidence ngoài các dòng đã đưa: 1074, 1079, 1114; spine.outcome: evidence ngoài các dòng đã đưa: 1080, 1115 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/0faf0bb2/runs/3/llm/angle-8-retry.json"
+      },
+      {
+        "id": "2026-10-29-spike-multica-aicoworker-truot-openclaw-2026-c455",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-9: spine.context: evidence ngoài các dòng đã đưa: 724; spine.want: evidence ngoài các dòng đã đưa: 712, 724; spine.obstacle: evidence ngoài các dòng đã đưa: 916; spine.turn: evidence ngoài các dòng đã đưa: 916, 984, 988; spine.action: evidence ngoài các dòng đã đưa: 987, 988, 1174 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/0faf0bb2/runs/3/llm/angle-9-retry.json"
+      },
+      {
+        "id": "2026-10-29-loi-gemini-3-pro-no-longer-c455",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-10: spine.context: evidence ngoài các dòng đã đưa: 3643; spine.want: evidence ngoài các dòng đã đưa: 3634; spine.obstacle: evidence ngoài các dòng đã đưa: 3650, 3772; spine.action: evidence ngoài các dòng đã đưa: 3850; spine.outcome: evidence ngoài các dòng đã đưa: 3851, 3856 (+1) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/0faf0bb2/runs/3/llm/angle-10-retry.json"
+      }
+    ],
+    "message": "claude:0faf0bb2 L1-L4000: done; 10 chuyện thô, 12 cụm; ghi 12 mới, gộp 0\nđiểm nóng 30 (thiếu 0); 4 commit git; lần chạy 1/1; 0.30 USD\ngóc kể: 3 có, 0 không ra chuyện, 7 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: fgOPC tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-29-doi-huong-multica-claude-code-dat-c455",
+      "code": "M-GAXP",
+      "title": "Đổi hướng: Multica + Claude Code đạt 5/5 tiêu chí sau khi Multica + AICoworker trượt",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là bộ dựng công ty một người chạy bằng AI agent, nền Multica, và người làm đang thử runtime thay thế. Người làm tưởng Multica cần runtime của OpenClaw (AICoworker) mới chạy được, nhưng spike với OpenClaw đã trượt. Khi đổi sang Claude Code, cùng bộ 5 tiêu chí đạt đủ 5/5: agent tự comment, tự chuyển in_review, và dừng hỏi chủ khi thiếu giá thay vì tự bịa. Người dùng agent nên quan tâm vì chỗ cần đổi có thể chỉ là runtime, không phải cả ý tưởng.",
+      "audience": "dev dùng AI agent muốn giao việc nhưng vẫn giữ quyền duyệt",
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người chạy bằng AI agent, nền là Multica; đang thử một runtime thay thế.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L3398"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết Multica có chạy được với Claude Code không.",
+          "lines": [
+            "claude:0faf0bb2#L3398"
+          ]
+        },
+        "obstacle": {
+          "text": "AICoworker trên OpenClaw không chạy được với Multica; spike trước đó trượt.",
+          "lines": [
+            "claude:0faf0bb2#L3394"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng Multica cần runtime của OpenClaw; hoá ra Claude Code cũng chạy và đạt đủ 5/5 tiêu chí.",
+          "lines": [
+            "claude:0faf0bb2#L3373",
+            "claude:0faf0bb2#L3747"
+          ]
+        },
+        "action": {
+          "text": "Chạy spike Multica với Claude Code theo 5 tiêu chí.",
+          "lines": [
+            "claude:0faf0bb2#L3404",
+            "claude:0faf0bb2#L3405"
+          ]
+        },
+        "outcome": {
+          "text": "Đạt 5/5; comment và chuyển in_review trong 16 giây; không agent nào tự chuyển done.",
+          "lines": [
+            "claude:0faf0bb2#L3747"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi một runtime trượt, thử đổi runtime trước khi bỏ cả hướng; chỉ dẫn không đủ để chặn agent tự done, cần kiểm ở phía server.",
+          "lines": [
+            "claude:0faf0bb2#L3747"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-nho-mot-lan-tra-cuu-nguon-c455",
+      "code": "M-1BFV",
+      "title": "Nhờ một lần tra cứu nguồn, phát hiện spike Paperclip bị ghi nhầm: 'reviewPolicy' không chặn được việc agent tự đóng task",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người đang dựng công ty một người chạy bằng AI agent và thử Paperclip như một lựa chọn thay thế Multica. Phiên làm việc tin rằng Paperclip thiếu luồng duyệt, vì cờ reviewPolicy human_only không chặn được agent tự đóng task. Đọc kỹ tài liệu thì reviewPolicy chỉ áp khi trả lời xác nhận, còn executionPolicy mới là cổng review thật, nên kết luận cũ phải đính chính. Người dùng công cụ có cổng duyệt cần biết chi tiết này để không đánh giá sai một hệ thống chỉ vì đọc tên cờ.",
+      "audience": "dev dùng AI agent và đang chọn công cụ quản lý task có cổng duyệt",
+      "spine": {
+        "context": {
+          "text": "Một người đang dựng bộ công ty một người vận hành bằng AI agent, nền Multica, và đang thử Paperclip như một lựa chọn thay thế.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L712"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết có thể dùng Paperclip luôn, chỉ cần setup, thay vì tự làm.",
+          "lines": [
+            "claude:0faf0bb2#L712"
+          ]
+        },
+        "obstacle": {
+          "text": "Task đặt reviewPolicy human_only, nhưng agent vẫn tự chuyển sang done.",
+          "lines": [
+            "claude:0faf0bb2#L1326"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng Paperclip thiếu luồng duyệt vì reviewPolicy human_only không chặn được agent; hoá ra executionPolicy mới là cổng review thật.",
+          "lines": [
+            "claude:0faf0bb2#L1326",
+            "claude:0faf0bb2#L2310"
+          ]
+        },
+        "action": {
+          "text": "Đọc doc/execution-semantics.md, sửa §6.3 và §8 trong bảng so sánh, thêm lesson mới.",
+          "lines": [
+            "claude:0faf0bb2#L2306",
+            "claude:0faf0bb2#L2313"
+          ]
+        },
+        "outcome": {
+          "text": "Tài liệu và lesson đã sửa nhưng chưa commit; chưa kiểm chứng trên Paperclip đang chạy.",
+          "lines": [
+            "claude:0faf0bb2#L2328"
+          ]
+        },
+        "takeaway": {
+          "text": "Cờ tên 'người duyệt' có thể chỉ áp cho một loại xác nhận; đọc cơ chế trước khi kết luận hệ thống thiếu tính năng.",
+          "lines": [
+            "claude:0faf0bb2#L2307",
+            "claude:0faf0bb2#L2310"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-phan-tich-lai-vi-sao-bridge-c455",
+      "code": "M-ZDMQ",
+      "title": "Phân tích lại vì sao 'bridge chỉ là tuỳ chọn' là sai: heartbeat 60 phút và chi phí một lượt LLM mỗi lần kiểm tra",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang dựng bộ công ty một người (OPC) chạy bằng agent, muốn bỏ server Node và giữ trạng thái việc trên Cloudflare D1. Agent từng nói cầu nối chỉ còn là tuỳ chọn, vì agent tự kéo việc theo heartbeat là đủ. Kiểm tra lại thì mỗi lần heartbeat kiểm tra inbox là một lượt LLM, có thể trễ tới 60 phút, nên vẫn cần một cầu nối đơn giản không dùng LLM. Dev tự host agent nên quan tâm vì chi phí của việc 'thức dậy để hỏi' thường bị bỏ qua.",
+      "audience": "dev tự host hệ thống agent",
+      "spine": {
+        "context": {
+          "text": "Đang dựng bộ công ty một người (OPC) chạy bằng agent, muốn bỏ server Node và giữ trạng thái việc trên Cloudflare D1.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L493"
+          ]
+        },
+        "want": {
+          "text": "Agent nhận việc từ D1 mà không cần chạy server Node.",
+          "lines": [
+            "claude:0faf0bb2#L493"
+          ]
+        },
+        "obstacle": {
+          "text": "Cloudflare không gọi trực tiếp được gateway OpenClaw chạy cục bộ, và mỗi lần heartbeat kiểm tra inbox là một lượt LLM.",
+          "lines": [
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bridge chỉ còn là tuỳ chọn vì agent tự kéo việc từ D1 là đủ; hoá ra heartbeat mặc định chậm tới 60 phút và mỗi lần kiểm tra tốn một lượt LLM, nên vẫn cần một bridge đơn giản không dùng LLM.",
+          "lines": [
+            "claude:0faf0bb2#L657",
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "action": {
+          "text": "Kiểm tra heartbeat-runner.ts, thấy lượt heartbeat chỉ bị bỏ qua khi HEARTBEAT.md rỗng; rồi đề xuất bridge ba tầng với waker không dùng LLM.",
+          "lines": [
+            "claude:0faf0bb2#L659",
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "outcome": {
+          "text": "Agent sửa câu trả lời: vẫn cần bridge, chỉ là loại không dùng LLM; ước tính 5 agent kiểm tra mỗi 5 phút sẽ tốn khoảng 1.440 lượt LLM mỗi ngày nếu không có waker.",
+          "lines": [
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi chọn kiến trúc poll, hãy tính chi phí của mỗi lần agent thức dậy; một lượt LLM trả lời 'không có việc' vẫn tốn tiền.",
+          "lines": [
+            "claude:0faf0bb2#L707"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-multica-bo-soul-va-bo-nho-c455",
+      "code": "M-DRMX",
+      "title": "Multica bỏ SOUL và bộ nhớ của agent OpenClaw: mất 'con người' của agent khi ghép với AICoworker",
+      "tension": "hop_ma_tan",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-agent-biet-dung-lai-hoi-chu-c455",
+      "code": "M-F570",
+      "title": "Agent biết dừng lại hỏi chủ thay vì tự bịa số liệu bán hàng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-model-mac-dinh-cua-aicoworker-da-c455",
+      "code": "M-PRK1",
+      "title": "Model mặc định của AICoworker đã ngừng, làm hỏng cả agent chính ngay cả khi không chạy spike",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-spike-paperclip-3-agent-vao-trang-c455",
+      "code": "M-3RRH",
+      "title": "Spike Paperclip: 3 agent vào trạng thái 'paused' vì lệch giao thức v3/v4 và một lỗi budget im lặng",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-chu-tu-dang-nhap-bang-ma-c455",
+      "code": "M-S1QZ",
+      "title": "Chủ tự đăng nhập bằng mã cố định vì Multica không có mật khẩu và chỉ gửi mã vào log",
+      "tension": "khac",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-spike-multica-aicoworker-truot-openclaw-2026-c455",
+      "code": "M-A8R9",
+      "title": "Spike Multica + AICoworker trượt: OpenClaw 2026.3.13 dưới phiên bản tối thiểu 2026.5.5 của Multica",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-loi-gemini-3-pro-no-longer-c455",
+      "code": "M-8SHY",
+      "title": "Lỗi 'Gemini 3 Pro no longer available' và sự cố tự đóng task: hai bằng chứng cho ranh giới giữa lớp điều phối và lớp runtime",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-don-sach-thu-nghiem-sau-khi-c455",
+      "code": "M-SGTS",
+      "title": "Dọn sạch thử nghiệm sau khi xong: gỡ CLI, container, volume, thư mục dữ liệu, và các session/cache do thử nghiệm sinh ra, rồi kiểm lại bằng grep và kiểm tra cổng",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-tu-chia-mot-yeu-cau-mo-c455",
+      "code": "M-VDQ2",
+      "title": "Tự chia một yêu cầu mơ hồ thành các nhánh nghiên cứu song song (distill từng repo, kiểm kê nhiều hệ thống cùng lúc) rồi gom kết quả thành một bảng so sánh có dẫn chứng file:dòng",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

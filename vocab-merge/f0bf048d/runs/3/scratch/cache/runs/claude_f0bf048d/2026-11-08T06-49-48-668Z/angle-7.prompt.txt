@@ -1,0 +1,120 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L1957] USER: làm giai đoạn 0 đi
+[L2373] USER: thôi để như hiện tại đi. ghi nhận c' defer làm sao
+[L2400] USER: sudo bash ~/project/fgOPC/multica/stack/agent-user.sh login [sudo: authenticate] Password: no /home/vantt/multica-spike/.agents-opc.pat: the owner mints it for agents-opc first
+</asks>
+
+<story>
+hook: Script đăng nhập chạy đúng một lần, xoá luôn chìa khoá của chính nó
+tension: giup_ma_hai (Script xoá PAT sau khi dùng cho an toàn / Lần hai lỗi, 3 chỗ còn PAT, backup cũ vô dụng)
+stakes: 2/3
+# Chủ tài khoản bị đưa vào daemon chạy agent: thay bằng user riêng, script xoá PAT sau lần chạy đầu
+
+**Bối cảnh:** Daemon của agent nghiệp vụ đăng nhập bằng PAT của chủ nên agent có quyền của chủ.
+**Chuyện gì xảy ra:** Script login đã chạy thành công lần đầu và xoá file PAT sau khi dùng; lần hai báo lỗi vì file không còn. Tìm thấy 3 chỗ chứa PAT trong home (hai config CLI và một file). Tạo PAT mới, cập nhật cả 3, kiểm PAT mới chạy được, rồi mới thu hồi PAT cũ (HTTP 204). Hệ quả: bản backup login cũ không còn dùng được để quay lại.
+**Bài học:** Thu hồi credential cũ chỉ sau khi xác nhận credential mới dùng được; script tiêu thụ secret phải ghi rõ trạng thái để lần chạy sau biết đã làm xong.
+**Artefact:** Bảng kiểm trước và sau: PAT cũ hết dùng, PAT mới dùng được (che token).
+**Góc người ngoài:** cách làm phổ biến là Thu hồi token cũ ngay sau khi đổi, rủi ro gián đoạn cao; ở đây khác ở Người đọc hay bỏ qua thứ tự này, và muốn biết vì sao thứ tự này giữ hệ thống chạy liên tục.
+</story>
+
+<excerpt>
+[L2393] RESULT: 1 | Shell cwd was reset to /opt/AICoworker
+[L2394] AGENT: Đã ghi xong vào tài liệu `plans/2026-10-31-agent-permissions.md`. Trên GitHub không đổi gì.
+
+- **Mục 10, Giai đoạn 0:** bước 5 (bảo vệ `main`) ghi là *hoãn, theo lựa chọn của bạn*. Tôi thêm phần "Hoãn: (c′)" gồm:
+  - **Vì sao (c) gốc không làm được:** repo private của tài khoản cá nhân không cấp được quyền chỉ đọc. Hiện bot đang có quyền ghi trên `opc-studio-app`.
+  - **5 bước khi làm (c′):** tạo organization miễn phí và chuyển repo sang đó, cho bot quyền Read, bật fork và CI cho PR từ fork, sửa skill `git-workflow`, chạy thử trọn một vòng.
+  - **Điểm chưa chắc:** chưa rõ gói Free của organization có hai cài đặt fork đó không, phải thử bằng một PR từ fork trước.
+  - **Đường thay thế:** GitHub Pro.
+  - **Khi nào làm:** khi có repo thứ hai bot được ghi, khi repo chứa mã của khách, hoặc lần đầu bot đẩy nhầm lên `main`.
+- **Mục 10, phần "Trạng thái 2026-10-31":** ghi những gì đã làm và đang làm ở bước 1–4.
+- **Mục 12 (rủi ro chấp nhận):** thêm hai dòng.
+  - Rủi ro H10: bot vẫn ghi đè được `main`. Gỡ được nhờ lịch sử còn trong các bản clone, và Giai đoạn 1 nên backup thêm `git bundle` của repo này.
+  - Mã đăng nhập qua email có thể bị dò ra trong vài tháng.
+
+Giai đoạn 0 chỉ còn bước 4, và đang chờ bạn chạy:
+```
+! sudo bash ~/project/fgOPC/multica/stack/agent-user.sh login
+```
+Chạy xong tôi chuyển agent sang runtime mới, chạy thử, rồi commit tài liệu cùng `agent-user.sh`.
+[L2400] USER: sudo bash ~/project/fgOPC/multica/stack/agent-user.sh login
+[sudo: authenticate] Password:
+no /home/vantt/multica-spike/.agents-opc.pat: the owner mints it for agents-opc first
+[L2409] TOOL Bash: ls -la ~/multica-spike/.agents-opc.pat ~/multica-spike/.pat 2>&1; ls -la ~/multica-spike | head -5; findmnt -T /home/vantt -o TARGET,FSTYPE,OPTIONS
+[L2412] RESULT: ls: cannot access '/home/vantt/multica-spike/.agents-opc.pat': No such file or directory | -rw------- 1 vantt vantt 44 Oct 29 18:58 /home/vantt/multica-spike/.pat
+[L2414] TOOL Bash: cd ~/multica-spike && P=$(cat .pat); curl -fsS -H "Authorization: Bearer $P" -H "X-Workspace-ID: 011422fd-27a5-4ced-8ad7-f533cf7e1718" http://127.0.0.1:8310/api/runtimes | python3 -c 'import sys,json d=json.load(sys.stdin); d=d.get("runtimes",d) if isinstance(d,dict) else d for r in d: print(r["id"] …[+196]
+[L2417] RESULT: 5d7337de Claude (fg-server-spike) offline owner bd181249 2026-10-29T14:36:20Z | 20c23194 Claude (fg-server-ops) offline owner bd181249 2026-10-29T20:18:27Z
+…
+[L2533] RESULT: spike-cli mul_9b7aaf52 last_used 2026-10-31T17:29:17Z expires 2027-01-27T11:58:31Z | Shell cwd was reset to /opt/AICoworker
+[L2536] TOOL Bash: cd ~ && grep -rlF --exclude-dir=node_modules --exclude-dir=.cache --exclude-dir=.npm --exclude-dir=multica_workspaces_spike --exclude-dir=multica_workspaces_ops --exclude-dir=projects -f ~/multica-spike/.pat ~ 2>/dev/null | grep -v "\.jsonl$" | head -20; echo ---; grep -rlF -f ~/multica-spike/.pat ~ …[+69]
+[L2543] RESULT: /home/vantt/.multica/profiles/ops/config.json | /home/vantt/.multica/profiles/spike/config.json
+[L2548] AGENT: Chỉ có 3 chỗ, đều nằm trong home của `vantt`. Tôi tạo PAT mới, cập nhật cả 3 chỗ, kiểm PAT mới dùng được rồi mới thu hồi PAT cũ.
+[L2549] TOOL Bash: cd ~/multica-spike && python3 -I - <<'EOF' import json, os, urllib.request, urllib.error A="http://127.0.0.1:8310"; H=os.path.expanduser("~") old=open(f"{H}/multica-spike/.pat").read().strip() def call(m,p,tok,b=None): r=urllib.request.Request(A+p,method=m,data=json.dumps(b).encode() if b is not Non …[+1309]
+[L2550] RESULT: revoke old: 204 | old still works: False | new works: True | expires 2027-01-29T17:30:04Z | Shell cwd was reset to /opt/AICoworker
+[L2555] TOOL Bash: cd ~/project/fgOPC/multica && node tools/opc.mjs client plan ~/opc-clients/opc-studio 2>&1 | grep -E "^plan|rror"; ~/multica-spike/bin/multica --profile ops workspace list 2>&1 | head -4
+[L2556] RESULT: plan: 0 change(s) in workspace opc-studio | plan: 0 change(s) in workspace opc-studio
+…
+[L2574] TOOL Bash: cd ~/.claude/projects/-opt-AICoworker/memory && sed -i 's/^- \[Multica two daemons\](multica-two-daemons.md) — .*/- [Multica daemons](multica-two-daemons.md) — opc-agent daemon logs in as member agents-opc; ops\/spike stopped; daemon.id and runtime-owner pitfalls/' MEMORY.md && cat MEMORY.md
+[L2577] RESULT: - [Multica daemons](multica-two-daemons.md) — opc-agent daemon logs in as member agents-opc; ops/spike stopped; daemon.id and runtime-owner pitfalls | - [OPC sets per client](opc-packages-shared-workspace.md) — one workspace per client, one package p …[+101]
+[L2578] AGENT: Giai đoạn 0 xong 4/5 bước, bước bảo vệ `main` để sau theo lựa chọn của bạn. Agent không còn đường nào để thành bạn hay giao việc cho System Operator.
+
+Lệnh `sudo` của bạn báo lỗi vì đây là lần chạy thứ hai: lần đầu lúc 23:09 đã thành công, và nó xoá file PAT sau khi dùng.
+
+**Kết quả**
+- **Daemon `opc-agent`** giờ đăng nhập bằng `agents-opc`. User này chỉ là member của `sen-coffee` và `opc-studio`, không có trong `system`.
+  - 12 agent opc-studio cùng Mai và Long (sen-coffee) đã chuyển sang runtime mới. Mai và Long hoạt động lại, lần này chạy dưới `opc-agent` chứ không phải `vantt`.
+  - Chạy thử với Hà (issue STU-9): agent chạy là `opc-agent`, và `multica.pat` đã không còn bên đó.
+  - `client plan` của opc-studio báo 0 thay đổi.
+- **PAT của bạn đã được thay:** tạo PAT mới 90 ngày và thu hồi PAT cũ. Mọi bản sao cũ, kể cả bản backup trong `/root`, đều hết dùng được.
+  - PAT mới chỉ nằm ở 3 chỗ trong home của `vantt`. `opc.mjs` và CLI vẫn chạy bình thường.
+  - Hệ quả: bản backup login cũ trong `/root` không còn dùng để quay lại được. Muốn quay lại thì chạy lại `login` với một PAT mới.
+- **Daemon ops và spike** đã dừng. System Operator tạm ngừng cho đến Giai đoạn 2.
+- Commit `dea3300` gồm tài liệu (có ghi trạng thái từng bước) và `agent-user.sh`. Chưa push.
+
+**Việc còn lại phát sinh từ thay đổi này**
+- **Workspace khách mới** phải mời `agents-opc` vào và chấp nhận lời mời, nếu không daemon sẽ không có runtime ở workspace đó. Lần này tôi làm bằng tay. Trước khi deploy finejapan nên có script `stack/agents-member.sh` để làm việc này.
+- **Runtime cũ của bạn** đang offline. Tôi để nguyên, xoá sau khi có backup.
+- **File cũ `~opc-agent/.config/opc/google-sa.json`** còn sót từ trước khi chuyển secret sang `/opt/opc-agent/secrets`. Bạn xoá bằng `sudo` khi tiện.
+
+Bước tiếp theo là **Giai đoạn 1: backup**. Việc đầu tiên thuộc phần bạn: tạo bucket B2 hoặc GCS với key không có quyền xoá. Bạn muốn làm Giai đoạn 1 ngay, hay viết script `agents-member.sh` trước để deploy finejapan?
+[L2582] USER: tại sao backup hourly, nhiefu quá
+[L2592] TOOL Bash: docker exec $(docker ps --filter name=postgres -q | head -1) psql -U multica -d multica -Atc "select pg_size_pretty(pg_database_size('multica'))" 2>&1; docker run --rm -v multica-spike_backend_uploads:/u alpine du -sh /u 2>&1 | tail -1
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

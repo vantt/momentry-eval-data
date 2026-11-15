@@ -1,0 +1,135 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L413] USER: tại sao phải thiết kế lại stackui nhỉ. Research thêm có stack nào sẵn có không. Chứ đi viêt lại tốn lắm
+[L493] USER: không, chạy node thì không phù hợp. hãy distill paperclip xem kiến trúc nội tại của nó có gì hay ho khác biệt. thật ra về cơ chế chúng ta chỉ cần một schema chuẩn cho cac entity khớp với ui, từ schema đó mà ra cả api/mcp rồi agent kết nối. cloudlfare d1 đủ sức cho opc. node server là over rồi
+[L657] USER: tại sao không cần cái này `Bridge push chuyển thành agent tự kéo việc; bridge chỉ còn là tuỳ chọn`
+</asks>
+
+<story>
+hook: Bỏ bridge cho gọn, rồi 1.440 lượt LLM mỗi ngày chỉ để trả lời 'không có việc'
+tension: giup_ma_hai (Bỏ bridge cho đơn giản / Heartbeat đốt 1.440 lượt LLM mỗi ngày)
+stakes: 2/3
+# Bỏ bridge rồi phải nhận lại: mỗi heartbeat của OpenClaw tốn một lượt LLM
+
+**Bối cảnh:** Sau khi chọn Paperclip với kiến trúc không server, agent đề xuất để agent tự kéo việc và coi bridge chỉ là tuỳ chọn.
+**Chuyện gì xảy ra:** Agent khẳng định 'bridge chỉ còn là tuỳ chọn'. Người dùng hỏi lại, agent kiểm tra heartbeat-runner và thấy OpenClaw chỉ bỏ qua lượt khi HEARTBEAT.md rỗng. Nếu agent kiểm tra inbox qua heartbeat, 5 agent mỗi 5 phút sẽ tốn khoảng 1.440 lượt LLM mỗi ngày, gần như chỉ để trả lời 'không có việc'. Kết luận đảo ngược: cần một bridge không dùng LLM, poll mỗi 15–30 giây.
+**Bài học:** Trước khi chọn pull hay push, hãy đếm chi phí của mỗi lần 'thức dậy' khi không có việc.
+**Artefact:** Sơ đồ ba khối: waker không dùng LLM, gateway, heartbeat thưa.
+</story>
+
+<excerpt>
+[L645] USER: <task-notification>
+<task-id>b2ytwdrq8</task-id>
+<tool-use-id>toolu_018Khdtt6Lg5wDv5bmyCH7ov</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/b2ytwdrq8.output</output-file>
+<status>completed</status>
+<summary>Background command "Validate area and get Paperclip delta commit" completed (exit code 0)</summary>
+</task-notification>
+[L647] AGENT: Lệnh `delta` của Paperclip mà mình để chạy nền đã kết thúc. Nó chỉ dùng để lấy commit cần ghim (`e8b78cce5bb5`), và pass đã được seal ở đúng commit đó, nên không có gì thay đổi. Ba câu hỏi ở cuối báo cáo trước vẫn đang chờ bạn trả lời.
+[L657] USER: tại sao không cần cái này `Bridge push chuyển thành agent tự kéo việc; bridge chỉ còn là tuỳ chọn`
+[L659] AGENT: Mình kiểm tra một chi tiết quyết định câu trả lời: heartbeat của OpenClaw có tốn một lượt LLM mỗi lần chạy không.
+[L660] TOOL Bash: G=/opt/AICoworker/resources/app-source/gateway-source/src; grep -rln "HEARTBEAT_OK\|isHeartbeatContentEffectivelyEmpty\|heartbeat.*empty" $G --include=*.ts 2>/dev/null | grep -v test | head; grep -rn "isHeartbeatContentEffectivelyEmpty\|effectively empty\|skip.*heartbeat\|heartbeat.*skip" $G --inclu …[+44]
+[L663] RESULT: (eval):1: no matches found: --include=*.ts | (eval):1: no matches found: --include=*.ts
+[L664] TOOL Bash: G=/opt/AICoworker/resources/app-source/gateway-source/src; grep -rn "EffectivelyEmpty\|HEARTBEAT_OK" "$G" 2>/dev/null | grep -v "\.test\." | head -10
+[L667] RESULT: /opt/AICoworker/resources/app-source/gateway-source/src/gateway/transcript-share/snapshot.ts:142: if (t.includes("[auto-heartbeat]") || /(^|\b)HEARTBEAT_OK\b|\bHEARTBEAT\.md\b/i.test(t)) return true; | /opt/AICoworker/resources/app-source/gateway-sou …[+134]
+[L671] TOOL Bash: sed -n 535,560p /opt/AICoworker/resources/app-source/gateway-source/src/infra/heartbeat-runner.ts
+[L672] RESULT: if (shouldBypassFileGates) { | return basePreflight;
+[L679] TOOL Bash: cd /home/vantt/project/fgOPC; grep -n "bridge becomes" -r docs/distillery/lessons/ | head; grep -n "bridge" docs/distillery/lessons/agent-bridge.yaml | head
+…
+[L692] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; node $S/scripts/distill.mjs format 2>&1 | head -2
+[L693] RESULT: OK: wrote 30 lessons in 8 domain file(s). | Warnings (1):
+[L707] AGENT: Câu hỏi của bạn đúng chỗ. Mình vừa kiểm tra code của OpenClaw và phải **sửa lại**: câu "bridge chỉ còn là tuỳ chọn" là nói quá. Bridge vẫn cần, chỉ là nó rất đơn giản.
+
+## Vì sao lúc đầu mình nói vậy
+
+Theo mô hình của Paperclip, trạng thái công việc nằm hết trong D1. Agent tự kéo việc theo vòng `inbox → checkout → làm → comment → release`. Nếu bridge chết thì việc không mất, chỉ chờ trong D1. Ý này đúng.
+
+## Vì sao chỉ để agent tự kéo việc là không ổn với OpenClaw
+
+1. **Cloudflare không gọi thẳng được agent.** Gateway OpenClaw chỉ nghe trên máy cục bộ (`127.0.0.1:18789`, `mode: local`). Worker trên Cloudflare không có đường nào tới đó, trừ khi mở tunnel.
+2. **Mỗi heartbeat tốn một lượt LLM, kể cả khi không có việc.** Mình đã kiểm tra `heartbeat-runner.ts`: OpenClaw chỉ bỏ qua lượt heartbeat khi `HEARTBEAT.md` **rỗng**. Muốn agent kiểm tra inbox thì phải ghi chỉ dẫn vào file đó, và lúc đó mỗi heartbeat là một lần gọi model.
+   - Ví dụ 5 agent, mỗi 5 phút kiểm tra một lần, thì có khoảng 1.440 lượt LLM mỗi ngày, gần như toàn bộ chỉ để trả lời "không có việc".
+3. **Phản hồi chậm.** Heartbeat mặc định 60 phút một lần. Bạn giao việc xong có thể phải chờ tới một tiếng.
+
+## Vì vậy cần bridge, nhưng là loại "ngốc"
+
+```
+Máy chạy agent:
+  opc-waker (không dùng LLM, khoảng 100 dòng, chạy bằng systemd timer hoặc vòng lặp)
+    mỗi 15–30 giây: GET https://opc.../api/wakeups?since=<cursor>   (gọi Worker + D1)
+    có việc        → POST 127.0.0.1:18789/hooks/agent {agentId, sessionKey: task, message}
+    không có việc  → không làm gì: 0 token
+  Heartbeat của agent: thưa (ví dụ 1 lần/ngày), làm lưới an toàn
+```
+
+- **Không vi phạm nguyên tắc "không server Node".** Nguyên tắc đó áp dụng cho workspace trên Cloudflare. Máy chạy agent vốn đã có tiến trình chạy liên tục (AICoworker, gateway), thêm một script nhỏ ở đó không làm tăng chi phí hạ tầng.
+- **Không cần WebSocket hay Durable Object.** Bridge chỉ hỏi định kỳ. Khoảng 3.000 request/ngày, nằm gọn trong free tier của Workers. Độ trễ kho …[+1338]
+[L712] USER: vậy nếu dùng paperclip là dùng được luôn, không cần làm, chỉ cần setup?
+[L716] AGENT: Gần đúng, nhưng có vài điều kiện. Câu trả lời thật sự phụ thuộc vào **lý do bạn thấy "chạy Node không phù hợp"**.
+
+## Dùng Paperclip thì việc còn lại chủ yếu là setup
+
+Nếu chạy Paperclip **trên chính máy đang chạy AICoworker**:
+
+| Việc | Ước lượng |
+|---|---|
+| Cài: `npx paperclipai onboard` (Postgres đi kèm, không cài riêng) | vài phút |
+| Nối OpenClaw: dùng flow "OpenClaw Invite Prompt", chọn adapter `openclaw_gateway`, đặt `sessionKeyStrategy=issue` | nửa ngày, **nếu tương thích** |
+| Tạo công ty: org chart theo `departments.md`, agent marketing/sales/finance, `reviewPolicy: human_only`, ngân sách | nửa ngày |
+| Truy cập từ xa: Cloudflare Tunnel + Access (miễn phí) | 1–2 giờ |
+| Backup Postgres lên R2 | 1–2 giờ |
+
+Cách này **không cần bridge**: Paperclip gọi gateway qua `127.0.0.1` ngay trên máy. Chi phí hạ tầng là 0 USD, vì máy này vốn đã phải bật thì agent mới làm việc được.
+
+## Những gì setup không giải quyết được
+
+1. **Tương thích chưa được kiểm chứng.** Gateway của AICoworker (OpenClaw 2026.3.13, bản đã chỉnh sửa) có đủ các lệnh `connect.challenge`, `agent`, `agent.wait`, `device.pair.approve`. Nhưng phần ghép thiết bị (device pairing), scope và việc dùng sessionKey cần chạy thử mới biết. Đây là rủi ro lớn nhất.
+2. **Phụ thuộc vào một máy.** Máy tắt thì workspace cũng tắt. Bù lại, máy tắt thì agent cũng không làm việc, nên hai thứ sống chết cùng nhau.
+3. **Nặng và thay đổi liên tục.** Paperclip có 177 bảng, khoảng 5.900 commit trong 8 tháng. Mỗi lần nâng cấp có thể làm vỡ adapter hoặc cấu hình. Phần lớn tính năng (chat, connector, runner, eval) bạn sẽ không dùng.
+4. **Không chỉnh theo ý mình được nếu không fork.** Bạn sẽ dùng UI và quy tắc của họ:
+   - @mention không đánh thức agent.
+   - Không có ACL theo project.
+   - Giao diện không phải kiểu gr8r, và có thể không có tiếng Việt.
+5. **Chuyển PARA sang khái niệm của Paperclip** (company, goal, project, issue, routine) là việc cấu hình, nhưng phải tự nghĩ cách ánh xạ.
+
+## Đề xuất
+
+Làm một **spike 1–2 ngày vớ …[+813]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

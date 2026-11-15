@@ -1,0 +1,333 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) là tầng nền tảng để xây và chạy các ứng dụng agent, gồm hạ tầng, skill và tự động hoá nằm dưới mọi app agent, để lập trình viên tạo agent mới thay vì làm lại từ đầu. Hiện đang ở bản alpha v0.2.0-rc.2 cho Linux x86_64 (glibc 2.35 trở lên) và Windows 10 trở lên x86_64; macOS và Windows ARM chưa được hỗ trợ. Cài bằng một file nhị phân `fgctl` và chạy trong một kho git có sẵn, không cần clone, npm hay Rust toolchain.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L2371] USER: đưa vào sử dụng luôn đi `3. Tài khoản có trên đĩa nhưng fgOS chưa khai`
+[L2645] USER: đồng ý
+[L2982] USER: em tạo profile omp-xai-grok đi, anh chưa thấy zsh alias
+</asks>
+
+<story>
+hook: Trước khi đổi tên tài khoản, agent đếm đăng nhập rồi chuyển chứ không xoá
+tension: khac (Đổi tên cho thống nhất, dễ làm mất đăng nhập / Kiểm bảng auth trước, chuyển sang chỗ tạm thay vì xoá)
+stakes: 1/3
+# Đổi tên tài khoản cho thống nhất: đặt tên theo nhà cung cấp, kiểm đăng nhập trước khi di chuyển
+
+**Bối cảnh:** Profile và alias của hai CLI đặt tên lộn xộn, chủ muốn một tên chung theo nhà cung cấp.
+**Chuyện gì xảy ra:** Agent tạo rồi bỏ một profile trùng tên. Trước khi đổi tên một profile vừa tạo, agent đếm bảng auth để chắc chưa có đăng nhập, rồi chuyển thư mục đó sang chỗ tạm thay vì xoá. Thư mục tài khoản pi, alias zsh và config được đổi theo. Agent cũng phát hiện bốn alias trỏ tới profile chưa tồn tại và tạo khung cho chúng. Kết quả: 8 tài khoản trong 5 pool.
+**Bài học:** Đặt quy tắc tên một lần. Trước khi di chuyển thông tin xác thực, kiểm nó có đăng nhập không, và chuyển sang chỗ tạm thay vì xoá.
+**Artefact:** Bảng alias theo CLI, không chứa giá trị khoá. Không cần ảnh.
+</story>
+
+<excerpt>
+[L2959] RESULT: - executor "glm" invocation "pi-cli-bwrap": no runner.providers.z-ai.accounts in the global config, so its pane starts in an empty private home, logged out | - executor "openai" invocation "codex-cli-bwrap": account "openai-tetcu72" declares no crede …[+74]
+[L2966] AGENT: Số ghế **đã đủ**: 11 ghế của hội đồng đều gán được, và ghế nào cũng có family dự phòng. Em chưa mở hội đồng. Có hai điều chưa hoàn hảo nên em báo trước.
+
+## Đã làm theo ba mục anh duyệt
+
+| Mục | Thay đổi | Kết quả |
+|---|---|---|
+| 1. openai | Thêm `pi-herdr` vào executor openai, đặt trước `codex-herdr` | **Chạy được.** Probe trả "OK" qua `pi-herdr`; hợp đồng thực thi của run ghi tài khoản `openai-tetcu72` (tetcu72 đi trước, đúng ý anh) |
+| 2. Dự phòng | Thêm `deepseek` và `z-ai` vào `tierFallback.flagship` và `frontier` | Walk của mọi ghế giờ có deepseek; `doctor` các check `tier-fallback`, `llm-accounts-shape`, `model-policy-pools` đều đạt |
+| 3. xai | Thêm `pi-herdr` cho xai, khai lại pool `xai` với tài khoản `grok-vantt` chỉ có kho pi | **Không chạy được**, em đã tắt tạm (xem dưới) |
+
+Sao lưu: config dự án `project-config.backup-261021-190816.json` và config toàn cục `fgos-global-config.backup-261021-183758.json`, cả hai nằm trong thư mục scratchpad của phiên.
+
+## 11 ghế của hội đồng (cấu hình đã gộp, có herdr)
+
+| Bước | Ghế | Family | Độc lập? |
+|---|---|---|---|
+| Framing | producer | openai | |
+| Shaping | panelist-1 / 2 / 3 | openai / claude / gemini | 3 family khác nhau |
+| Shaping | synthesizer | deepseek | family thứ tư |
+| Critique | producer / reviewer | deepseek / gemini | Khác nhau |
+| Synthesis | producer / reviewer / red-team | claude / gemini / deepseek | 3 family khác nhau |
+| Explanation | producer | claude | Solo |
+
+Bốn family cùng làm việc: **openai, claude, gemini, deepseek**. Mô phỏng cho kết quả 11/11. Khi em bỏ thêm bất kỳ family nào, số ghế vẫn đủ nhờ walk có deepseek (em đã thử loại xai, và loại cả xai với openai).
+
+## Hai điều chưa hoàn hảo
+
+1. **xai vẫn không chạy.** Probe treo 200 giây với lỗi `credential refresh-ahead ... (pi): failed (scratch-copy-failed)`, và đây là tài khoản mà mô tả cũ của executor xai đã ghi là hay phải đăng nhập OAuth lại. Em đã đặt `disabled: true` cho `grok-vantt` để xai bị loại ngay thay vì treo ghế. Muốn dùn …[+1682]
+[L2982] USER: em tạo profile omp-xai-grok đi, anh chưa thấy zsh alias
+[L2987] AGENT: Em xem cách các profile omp hiện có được gọi trong zsh (alias hay function) để tạo profile mới đúng cùng kiểu, chỉ đọc và che giá trị nhạy cảm.
+[L2988] TOOL Bash: cd ~ && grep -n -i "omp" ~/.zshrc ~/.zshenv ~/.zprofile ~/.zsh/*.zsh ~/.config/zsh/* 2>/dev/null | sed 's/\(KEY\|TOKEN\|SECRET\)=[^ ]*/\1=<masked>/Ig' | cut -c1-230 | head -40; echo "--- file zsh khác định nghĩa _omp_current_account:"; grep -rln "_omp_current_a" ~/.zshrc ~/.zsh* ~/.config/zsh ~/.oh- …[+35]
+…
+[L3012] TOOL Bash: sed -n 350,425p ~/.zshrc | sed -E 's/((KEY|TOKEN|SECRET)[A-Z_]*=)[^ ]+/\1<masked>/Ig' | cut -c1-260; echo "=== config.yml của xai-vantt (chỉ dòng không giống khoá bí mật)"; grep -v -i -E "key|token|secret|password" ~/.omp/profiles/xai-vantt/agent/config.yml | head -20; echo "=== cây profile xai-vant …[+175]
+[L3016] RESULT: alias pi-openrouter='PI_CODING_AGENT_DIR="$HOME/.pi/accounts/openrouter" pi' | # OMP: multi-account switcher via omp's native --profile isolation. Keep the
+[L3027] TOOL Bash: cd ~/.omp/profiles && ls -la --time-style='+%Y-%m-%d %H:%M' | awk 'NR>1 && $8!="." && $8!=".." {print $6" "$7" "$8}'; echo ---; for p in grok-vantt xai-vantt; do echo "## $p"; ls -la --time-style='+%Y-%m-%d %H:%M' $p/agent 2>/dev/null | awk 'NR>1 && $8!="." && $8!=".." {printf " %-22s %s %s %9s\n",$ …[+18]
+[L3031] RESULT: 2026-10-14 22:48 gemini-tetcu72 | 2026-10-21 20:00 grok-vantt
+[L3038] TOOL Bash: cd ~ && S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; cp -p ~/.zshrc $S/zshrc.backup-$(date +%y%m%d-%H%M%S) && echo "backup zshrc ok"; python3 - <<'EOF' import os,re p=os.path.expanduser('~/.zshrc') s=open(p,encoding='utf8').read() assert 'omp-xai-g …[+1018]
+…
+[L3057] RESULT: cú pháp zshrc: ok | omp-xai-grok is an alias for OMP_PROFILE="xai-grok" omp
+[L3062] AGENT: Em đã tạo xong profile `xai-grok` và alias `omp-xai-grok`. Anh còn một bước đăng nhập phải tự làm.
+
+## Đã làm
+
+- **Alias zsh:** thêm `omp-xai-grok` vào `~/.zshrc` đúng khuôn các alias omp hiện có (dòng `alias omp-xai-grok='OMP_PROFILE="xai-grok" omp'`). Em cũng thêm `xai-grok` vào bảng `OMP_ACCOUNTS` và vào hai dòng `unalias`/`unfunction` để source lại không bị lỗi. Cú pháp zshrc đã kiểm: ổn. Mở shell mới em thấy `omp-xai-grok is an alias for OMP_PROFILE="xai-grok" omp`, và `omp-switch` đã liệt kê `xai-grok -> profile xai-grok`.
+- **Profile omp:** `~/.omp/profiles/xai-grok/agent/config.yml`, chép từ `xai-vantt` (chỉ cấu hình giao diện, không chứa đăng nhập).
+- **Sao lưu zshrc:** `zshrc.backup-261021-…` trong thư mục scratchpad của phiên; chép đè lại `~/.zshrc` là hoàn tác.
+
+## Anh cần làm (em không làm thay được vì phải đăng nhập tương tác)
+
+1. Mở shell mới, hoặc chạy `source ~/.zshrc`.
+2. Chạy `omp-xai-grok`, rồi gõ `/login` và chọn xai.
+3. Thoát omp và báo em. Khi đó profile sẽ có `agent.db`, và em nối nó vào fgOS.
+
+## Điều em muốn anh biết
+
+- Profile **`grok-vantt` đã tồn tại từ 20:00 hôm nay**, em đoán do anh chạy alias `omp-grok-vantt` có sẵn trong zshrc (alias này trỏ tới một profile chưa có thư mục). `agent.db` của nó có ngày sửa 20:01, nhưng em không biết đã đăng nhập chưa. Nếu anh đã đăng nhập xai ở đó thì không cần tạo `xai-grok`: em chỉ cần nối `grok-vantt` vào fgOS. Anh cho em biết nhé.
+- Trong zshrc `omp-grok-vantt` và `xai-grok` sẽ là hai profile cho cùng một dịch vụ. Anh muốn giữ cả hai hay bỏ một?
+
+## Bước fgOS em làm sau khi anh đăng nhập
+
+Hiện tài khoản xai trong `llmAccounts` đang `disabled` và trỏ vào kho pi. Em sẽ chuyển nó sang kho omp của profile mới (`${HOME}/.omp/profiles/xai-grok/agent`), bỏ cờ `disabled`, chạy probe xai, rồi kiểm lại số ghế. Em chưa làm trước vì kho omp còn trống sẽ lặp lại lỗi treo mà em đã gây ra lúc nãy.
+[L3070] USER: em tạo profile omp-xai-grok đi, anh chưa thấy zsh alias hoặc rename omp-grok-vantt thành xai-vantt nên thống nhất
+[L3074] AGENT: Em hiểu: anh muốn tên thống nhất theo họ nhà cung cấp, tức `xai-…`, thay vì giữ `grok-vantt`. Trước khi đổi, em kiểm profile `grok-vantt` vừa tạo lúc 20:00 đã có đăng nhập chưa (chỉ đếm số bảng và số dòng, không đọc nội dung), vì nếu có thì không được làm mất nó.
+[L3075] TOOL Bash: cd ~ && python3 - <<'EOF' import sqlite3,os for prof in ('grok-vantt','xai-vantt','gemini-tetcu72'): f=os.path.expanduser(f'~/.omp/profiles/{prof}/agent/agent.db') if not os.path.isfile(f): print(prof,': không có agent.db'); continue try: c=sqlite3.connect(f'file:{f}?mode=ro',uri=True) tabs=[r[0] fo …[+300]
+…
+[L3102] TOOL Bash: cd ~ && S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; cp -p ~/.zshrc $S/zshrc.backup2-$(date +%y%m%d-%H%M%S) && python3 - <<'EOF' import os p=os.path.expanduser('~/.zshrc') s=open(p,encoding='utf8').read() def once(a,b): global s assert s.count(a)== …[+1143]
+[L3111] RESULT: zshrc đã cập nhật | đã xoá profile xai-grok (em tạo, chỉ có config.yml chép)
+[L3118] AGENT: Em đã đổi cho thống nhất theo họ nhà cung cấp, nên giờ chỉ còn một profile omp cho xai: `xai-vantt`, với alias `omp-xai-vantt`.
+
+## Đã đổi
+
+- **Alias omp:** `omp-grok-vantt` thành `omp-xai-vantt='OMP_PROFILE="xai-vantt" omp'`, và khoá trong bảng `OMP_ACCOUNTS` thành `xai-vantt`. Em giữ tên cũ `omp-grok-vantt` trong dòng `unalias`/`unfunction` để source lại xoá alias cũ trong shell đang mở. Mở shell mới em thấy `omp-xai-vantt is an alias for OMP_PROFILE="xai-vantt" omp`, còn `omp-grok-vantt` không còn, và `omp-switch` liệt kê `xai-vantt -> profile xai-vantt`. Cú pháp zshrc đã kiểm: ổn.
+- **Profile `xai-grok` em tạo lúc nãy:** đã xoá (chỉ có `config.yml` chép từ `xai-vantt`), cùng với alias và dòng bảng tương ứng.
+- **Profile `grok-vantt` tạo lúc 20:00:** em đã kiểm nó chưa đăng nhập (bảng `auth_credentials` có 0 dòng), nên em chuyển vào thư mục scratchpad của phiên (`omp-profile-grok-vantt.moved-aside`), không xoá. Không mất gì.
+- **Sao lưu zshrc:** hai bản `zshrc.backup-…` và `zshrc.backup2-…` nằm trong scratchpad của phiên.
+
+## Không đổi
+
+- Phần pi: alias `pi-grok-vantt` và thư mục `~/.pi/accounts/grok-vantt` giữ nguyên, vì fgOS đang trỏ tới đường dẫn đó. Muốn đổi tên pi cho thống nhất thì phải sửa cả config fgOS; anh quyết thì em làm.
+- `xai-vantt` là profile mà mô tả executor xai trong fgOS đã tham chiếu từ đầu, nên không cần sửa gì bên fgOS cho tên này.
+
+## Anh cần làm một bước
+
+Profile `xai-vantt` vẫn **chưa có đăng nhập** (không có `agent.db`). Em không đăng nhập thay được vì cần thao tác tương tác:
+
+1. Mở shell mới (hoặc `source ~/.zshrc`).
+2. Chạy `omp-xai-vantt`, gõ `/login`, chọn xai.
+3. Thoát omp và báo em.
+
+Sau đó em làm các bước fgOS đã nêu: chuyển tài khoản xai sang kho omp `${HOME}/.omp/profiles/xai-vantt/agent`, bỏ cờ `disabled`, probe xai và kiểm lại số ghế.
+
+Có một điều em thấy khi kiểm: profile `gemini-tetcu72` **đã đăng nhập** (`auth_credentials` có 1 dòng), nhưng lúc probe omp vẫn ghi `no-model`. Vậy lỗi gemini nằm ở chọn model chứ không ở đăng  …[+89]
+[L3127] USER: em đổi pi luôn đi
+[L3130] AGENT: Em tìm mọi chỗ còn dùng tên `grok-vantt` (zshrc, config fgOS, trạng thái, file tài khoản đang chọn của pi) trước khi đổi, để không bỏ sót.
+[L3131] TOOL Bash: cd ~ && echo "--- zshrc:"; grep -n "grok-vantt" ~/.zshrc | cut -c1-200; echo "--- ~/.fgos (tên file, không in nội dung):"; grep -rl "grok-vantt" ~/.fgos --include='*.json' --include='*.jsonl' --include='*.yaml' 2>/dev/null | sed "s#$HOME#~#" | head; echo "--- repo .fgos/config.json:"; grep -c "grok- …[+375]
+[L3135] RESULT: --- zshrc: | 288:unalias pi pi-switch pi-codex-tetnu pi-codex-fgovn pi-codex-tetcu72 pi-openai-tetnu pi-openai-fgovn pi-openai-tetcu72 pi-claude-01 pi-grok-vantt pi-openrouter 2>/dev/null
+[L3148] TOOL Bash: cd ~ && S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; cp -p ~/.zshrc $S/zshrc.backup3-$(date +%y%m%d-%H%M%S); cp -p ~/.fgos/config.json $S/fgos-global-config.backup2-$(date +%y%m%d-%H%M%S).json; [ -e ~/.pi/accounts/xai-vantt ] && echo "ĐÃ CÓ xai-van …[+1404]
+[L3153] RESULT: zshrc ok | đã đổi tên thư mục ~/.pi/accounts/grok-vantt -> xai-vantt
+[L3161] AGENT: Em kiểm đăng nhập của profile `xai-vantt` trước (chỉ đếm số dòng), rồi nối vào fgOS.
+[L3162] TOOL Bash: cd ~ && python3 - <<'EOF' import sqlite3,os f=os.path.expanduser('~/.omp/profiles/xai-vantt/agent/agent.db') print('agent.db:', 'có' if os.path.isfile(f) else 'KHÔNG CÓ') if os.path.isfile(f): c=sqlite3.connect(f'file:{f}?mode=ro',uri=True) print('auth_credentials:',c.execute('select count(*) from a …[+344]
+…
+[L3189] TOOL Bash: /tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad/probe-xai-only.sh
+[L3195] RESULT: Command running in background with ID: bhij1fk1d. Output is being written to: /tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/tasks/bhij1fk1d.output. You will be notified when it completes — do not poll that file or …[+164]
+[L3202] AGENT: Em đã kiểm tra, profile `xai-vantt` đã đăng nhập (một đăng nhập `xai-oauth`), nên em nối vào fgOS và đang probe xai, chạy nền.
+
+## Đã làm trong lượt này
+
+**Đổi tên pi cho thống nhất** (anh dặn lượt trước):
+- `~/.pi/accounts/grok-vantt` thành `~/.pi/accounts/xai-vantt` (thư mục giữ nguyên nội dung, chỉ đổi tên).
+- Trong zshrc: alias `pi-grok-vantt` thành `pi-xai-vantt`, khoá trong bảng tài khoản pi thành `xai-vantt`. Tên cũ còn trong dòng `unalias` để source lại dọn alias cũ. Cú pháp zshrc kiểm: ổn.
+- Ba bản sao lưu zshrc và hai bản sao lưu config toàn cục nằm trong thư mục scratchpad của phiên.
+
+**Nối omp vào fgOS:**
+- Tài khoản xai trong config toàn cục giờ là `xai-vantt`, kho `omp` trỏ `${HOME}/.omp/profiles/xai-vantt/agent`, đã bỏ cờ `disabled`.
+- Em gỡ invocation `pi-herdr` khỏi executor xai trong `.fgos/config.json` (do em thêm lúc nãy, giờ thừa vì omp đã đăng nhập và bộ gán vai luôn chọn invocation herdr đầu tiên). Executor xai quay về `omp-cli-bwrap` và `omp-herdr`.
+- `explain` cho `architecture:critique` đã chọn lại xai (`grok-4.6`) qua `omp-herdr`, trạng thái `in`.
+
+## Còn lại
+
+Kết quả probe xai sẽ có trong vài phút (tối đa 200 giây). Em sẽ báo kết quả, rồi kiểm lại số ghế với xai trở lại.
+
+Hai điều em chưa xử lý:
+- `.fgos/state.json` của runtime còn một mục cũ cho `xai/grok-vantt` (trạng thái đã gỡ quarantine). Em không sửa tay trạng thái runtime; tài khoản mới `xai-vantt` có trạng thái sạch.
+- Mô tả executor xai trong `.fgos/config.json` vẫn nhắc "pi grok-vantt" (lịch sử). Em chưa sửa vì đó là chữ mô tả, không ảnh hưởng chạy.
+[L3212] USER: <task-notification>
+<task-id>bhij1fk1d</task-id>
+<tool-use-id>toolu_01CrqdPEfL5GzkX8gRrsU2Uc</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/tasks/bhij1fk1d.output</output-file>
+<status>completed</status>
+<summary>Background command "Probe xai through the logged-in omp profile" completed (exit code 0)</summary>
+</task-notification>
+[L3214] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; cat $S/probe-summary.txt; python3 - "$S/probe-xai.json" <<'EOF' import sys,json,re raw=open(sys.argv[1],encoding='utf8',errors='replace').read() try: d=json.loads(raw); d=d.get('data',d) def pick(o,keys, …[+782]
+…
+[L3565] RESULT: glm2() { | ANTHROPIC_AUTH_TOKEN=<masked> \
+[L3570] AGENT: Đây là toàn bộ alias, hàm và công tắc tài khoản LLM trên máy này, lấy từ shell zsh tương tác nên là bản có hiệu lực thật. Tên là biến đã che, em không in giá trị khoá nào.
+
+## Alias theo từng CLI
+
+**codex** (mỗi tài khoản một `CODEX_HOME`)
+
+| Alias | Thư mục | Đăng nhập |
+|---|---|---|
+| `codex-tetnu` | `~/.codex-tetnu` | Có |
+| `codex-fgovn` | `~/.codex-fgovn` | Có |
+| `codex-tetcu72` | `~/.codex-tetcu72` | Có |
+
+**pi** (mỗi tài khoản một `PI_CODING_AGENT_DIR`)
+
+| Alias | Thư mục | Đăng nhập |
+|---|---|---|
+| `pi-openai-tetnu` | `~/.pi/accounts/openai-tetnu` | Có (`openai-codex`) |
+| `pi-openai-fgovn` | `~/.pi/accounts/openai-fgovn` | Có (`openai-codex`) |
+| `pi-openai-tetcu72` | `~/.pi/accounts/openai-tetcu72` | Có (`openai-codex`) |
+| `pi-xai-vantt` | `~/.pi/accounts/xai-vantt` | Có (`xai`) |
+| `pi-openrouter` | `~/.pi/accounts/openrouter` | Có (`openrouter`) |
+| `pi-claude-01` | `~/.pi/accounts/claude-01` | **Thư mục chưa có** |
+
+**omp** (mỗi tài khoản một `OMP_PROFILE`)
+
+| Alias | Profile | Đăng nhập |
+|---|---|---|
+| `omp-xai-vantt` | `xai-vantt` | Có |
+| `omp-gemini-tetcu72` | `gemini-tetcu72` | Có |
+| `omp-openai-tetcu72` | `openai-tetcu72` | Có |
+| `omp-openai-tetnu` | `openai-tetnu` | Có `agent.db` nhưng 0 đăng nhập (em kiểm lần trước) |
+| `omp-openai-fgovn` | `openai-fgovn` | **Profile chưa tạo** |
+| `omp-gemini-tetnu` | `gemini-tetnu` | **Profile chưa tạo** |
+| `omp-gemini-mucdong` | `gemini-mucdong` | **Profile chưa tạo** |
+| `omp-claude-01` | `claude-01` | **Profile chưa tạo** |
+| `omp-openrouter` | `openrouter` | **Profile chưa tạo** |
+
+**agy** (mỗi tài khoản một `AGY_HOME`)
+
+| Alias | Thư mục | Ghi chú |
+|---|---|---|
+| `agy-tetnu`, `agy-mucdong`, `agy-tetcu72` | `~/.agy-homes/<tên>` | Thư mục có; em không kiểm đăng nhập vì chưa biết agy lưu ở file nào |
+
+**Khác**
+- `claude='command claude --dangerously-skip-permissions'`.
+- Hàm `glm2` và `glm3`: chạy `claude` qua OpenRouter với `z-ai/glm-5.2` và `z-ai/glm-5.3-flash` (có biến token, em đã che).
+
+## C …[+1561]
+[L3579] USER: 3
+[L3590] AGENT: Em hiểu "3" là mục 3 trong danh sách em đưa: bốn alias omp chưa có profile (`openai-fgovn`, `gemini-tetnu`, `gemini-mucdong`, `openrouter`). Cách xử lý ít rủi ro nhất là tạo thư mục profile cho chúng, theo đúng khuôn các profile đang có, để alias và `omp-switch` dùng được ngay, không xoá alias nào của anh.
+[L3591] TOOL Bash: cd ~ && for n in openai-fgovn gemini-tetnu gemini-mucdong openrouter; do d=$HOME/.omp/profiles/$n/agent; if [ -e "$d/config.yml" ]; then echo "$n: đã có, giữ nguyên"; else mkdir -p "$d" && cp ~/.omp/profiles/xai-vantt/agent/config.yml "$d/config.yml" && echo "$n: đã tạo ~/.omp/profiles/$n/agent/conf …[+365]
+[L3595] RESULT: openai-fgovn: đã tạo ~/.omp/profiles/openai-fgovn/agent/config.yml | gemini-tetnu: đã tạo ~/.omp/profiles/gemini-tetnu/agent/config.yml
+[L3600] AGENT: Em đã tạo bốn profile omp còn thiếu, nên giờ chỉ còn `omp-claude-01` trỏ vào chỗ trống (mục 2 trong danh sách em đưa, anh chưa chọn).
+
+## Đã làm
+
+Em tạo `~/.omp/profiles/<tên>/agent/config.yml` cho bốn profile: `openai-fgovn`, `gemini-tetnu`, `gemini-mucdong`, `openrouter`. `config.yml` chép từ `xai-vantt` và chỉ chứa cấu hình giao diện (theme, composer, paste), không có đăng nhập. Em không sửa `~/.zshrc`, không xoá alias nào, và không đụng profile đã có. Em đã kiểm: zsh tương tác liệt kê đủ tám profile, và alias omp trỏ vào chỗ trống chỉ còn `omp-claude-01`.
+
+Em hiểu "3" là bốn alias omp đó. Nếu anh có ý khác (ví dụ muốn xoá bớt alias thay vì tạo profile), anh nói để em đổi.
+
+## Chưa đăng nhập, anh cần làm (em không làm thay được)
+
+Bốn profile mới chỉ là khung: chưa có `agent.db` nên chưa đăng nhập. Muốn dùng, mở alias tương ứng rồi gõ `/login`:
+
+| Alias | Dùng cho |
+|---|---|
+| `omp-openai-fgovn` | openai |
+| `omp-gemini-tetnu` | gemini |
+| `omp-gemini-mucdong` | gemini |
+| `omp-openrouter` | openrouter |
+
+Cùng nhóm "có profile nhưng chưa đăng nhập" là `omp-openai-tetnu` (0 đăng nhập từ trước).
+
+Không cái nào trong số này chặn hội đồng: fgOS chỉ dùng omp cho `gemini-tetcu72` và `xai-vantt`, cả hai đã đăng nhập. Hội đồng vẫn đang chạy nền (`wf-run-1792588557887-a8496d01`), em chưa xem được kết quả nên chưa có gì để báo.
+
+Còn ba mục em chưa làm: thêm alias `pi-thehive`, xử lý `pi-claude-01` và `omp-claude-01` (trỏ vào chỗ trống), và khai kho `codex` cho ba tài khoản openai trong fgOS. Anh muốn làm mục nào tiếp?
+[L3609] USER: cài đặt thehive cho pi và omp theo hướng dẫn: 
+
+<pasted_content id="f677">
+1. Chuẩn bị trên máy mới
+
+- Cài pi CLI, cùng bản với máy này nếu được. Máy này đang chạy settings có lastChangelogVersion 1.2.0.
+- Lấy repo bằng git pull, để có .fgos/config.json có sẵn các model thehive/...@thehive.
+- Lấy API key TheHive qua password manager hoặc dashboard TheHive. Không gửi key qua git hoặc chat.
+
+2. Tạo thư mục tài khoản
+
+D=~/.pi/accounts/thehive
+mkdir -p "$D" && chmod 700 "$D"
+
+# models.json: khai báo provider và 2 model
+cat > "$D/models.json" <<'EOF'
+{
+  "providers": {
+    "thehive": {
+      "baseUrl": "https://api.thehive.ai/api/v3",
+      "api": "openai-completions",
+      "models": [
+        { "id": "deepseek-ai/deepseek-v4.1-flash-1017", "reasoning": true },
+        { "id": "zai-org/glm-5.3-flash", "reasoning": true }
+      ]
+    }
+  }
+}
+EOF
+
+# settings.json: provider và model mặc định
+cat > "$D/settings.json" <<'EOF'
+{"theme":"dark","defaultProvider":"thehive","defaultModel":"deepseek-ai/deepseek-v4.1-flash-1017"}
+EOF
+
+echo '{}' > "$D/models-store.json"
+
+3. Đặt API key
+
+Dán key vào chỗ <KEY>, rồi xóa dòng lệnh khỏi history của shell:
+printf '{"thehive":{"type":"api_key","key":"%s"}}' '<KEY>' > "$D/auth.json"
+chmod 600 "$D/auth.json"
+Ngoài ra có thể chạy PI_CODING_AGENT_DIR=$D pi rồi dùng /login để pi tự ghi auth.json. Em chưa thử cách này với TheHive.
+
+4. Alias (không bắt buộc)
+
+Máy này hiện không có alias cho thehive. Nếu muốn, thêm vào ~/.zshrc:
+alias pi-thehive='PI_CODING_AGENT_DIR="$HOME/.pi/accounts/thehive" pi'
+Có thể thêm thehive "$HOME/.pi/accounts/thehive" vào map PI_ACCOUNTS để
+
+5. Khai báo cho fgOS
+
+.fgos/config.json của repo đã có 4 chỗ tham chiếu thehive: ở z-ai standưng ~/.fgos/config.json (global) phải khai báo tài khoản thì fgOS mới tìm thấy thư mục:
+"llmAccounts": {
+  "thehive": {
+    "thehive": {
+      "label": "thehive",
+      "credentialStore": { "pi": "${HOME}/.pi/accounts/thehive" }
+    }
+  }
+}
+Sửa file này bằng cách thêm block trên, hoặc copy ~/.fgos/config.json ti khoản máy mới không có. Thêm một khóa mới vào config global từng làmhỏng các workspace chạy release cũ (ghi nhận ngày 13/10). Vì vậy hãy cập nhật các máy trước, rồi mới đổi config global.
+</pasted_content id="f677">
+[L3620] AGENT: Máy này đã có sẵn tài khoản pi `thehive` (em thấy `auth.json`, `models.json`, `settings.json`, `models-store.json` và fgOS đã khai pool `thehive`), nên phần lớn hướng dẫn là cho máy mới. Em kiểm hiện trạng pi so với hướng dẫn, rồi tìm cách omp khai provider tuỳ chọn như TheHive.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

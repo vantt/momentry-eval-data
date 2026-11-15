@@ -1,0 +1,91 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+Thường KHÔNG phải chuyện, ở mọi nghề (tension none, strength 0):
+- việc dọn dẹp, đổi tên, định dạng lại, chuyển sang mẫu khác (đổi tên loạt file, kẻ lại một bảng, sửa lỗi chính tả, dọn nhánh git);
+- trục trặc do cài đặt hay môi trường, chỉnh xong là chạy (thiếu phần mềm, chưa đăng nhập, file chưa gửi lên, đường dẫn đổi chỗ);
+- lỗi tự hết khi làm lại, công cụ trục trặc rồi chạy lại được: điều đáng nhớ là làm lại, không phải cái lỗi;
+- việc một lần trơn tru, không có gì bất ngờ (xuất báo cáo ra PDF, lên lịch gửi thư, nhập danh sách khách);
+- bước kiểm tra thường lệ không tìm ra gì đáng kể.
+Ngoại lệ: việc vặt mà lộ ra một điều bất ngờ cụ thể, một cái giá thật (mất dữ liệu, tiền, khách, thời gian) hay một quyết định phải chọn thì vẫn là chuyện, chấm như thường; khi đó side_a và side_b phải nêu đúng chỗ bất ngờ ấy.
+
+M1. Lỗi nằm cả ở spec Python: build lỗi giữa chừng khiến index sai mãi
+   Bản ghi note được commit trong transaction đầu, còn edges ở transaction sau. Nếu build lỗi giữa chừng, lần build tiếp theo không thấy note nào đổi nên không tính lại edges, và index sai mãi cho tới khi chạy --full. Parity không bắt được vì bản Python cũng làm vậy. Fix thêm cờ dirty trong meta và khoá file cho build đồng thời.
+M2. Actions bị khoá vì thanh toán lỗi, mọi job không chạy kể cả dựng binary
+   Mọi job bị từ chối với thông báo thanh toán lỗi hoặc đã vượt hạn mức chi tiêu. Agent không tạo được tag rc.3 vì workflow phát hành cũng không chạy. Người dùng đổi repo sang public, Actions chạy miễn phí, CI xanh và rc.3 được phát hành với đủ 7 file.
+M3. CI đỏ trên cả ba OS vì cache xoá file dump, và tên vault trên Windows bị sai
+   Rust-cache lưu target nhưng xoá mọi file ngoài thư mục build của cargo, chỉ giữ lại các thư mục rỗng. Từ lần chạy sau, cache được khôi phục khớp chính xác nên bước check thấy thư mục dump không rỗng mà không có manifest, từ chối ghi đè và thoát mã 2 trên cả ba OS. Chạy cục bộ thì không lỗi vì không ai xoá target. Ở lỗi thứ hai, hàm basename chỉ tách đường dẫn theo dấu /, nên trên Windows tên vault thành cả đường dẫn ổ đĩa.
+M4. Cờ --force bị tách thành hai cờ riêng
+   Ban đầu --force vừa bỏ qua kiểm Claude Desktop đang chạy, vừa cho phép cài từ vị trí bất thường. Agent tách thành --allow-any-location để cờ này không tắt luôn bước bảo vệ cấu hình. Đây là thêm một cờ, không đổi tên lệnh nào.
+M5. Repo private: artifact của Actions bắt đăng nhập, đến rc.3 đổi sang public
+   GitHub chỉ cho tải artifact của Actions khi đã đăng nhập, dù fork là public. Người dùng chọn giữ repo private, và bộ cài thử tải công khai trước rồi dự phòng bằng gh. Khi OHS có Release public, nguồn đổi sang Release. Đến rc.3 người dùng chuyển repo sang public, bộ cài không còn cần gh.
+M6. Hai agent thiết kế MCP độc lập, phản biện chéo và sửa con số token
+   Hai agent làm độc lập và đi tới kết luận gần như trùng: giữ tool rời, không làm code mode, read do pkm tự đọc. Số token định nghĩa giảm từ khoảng 6,0 nghìn xuống 4,4 nghìn. Khi phản biện chéo, một agent chỉ ra bản kia tính thấp số token danh sách tool: 7 KB là khoảng 1,9 nghìn token, nhưng file thật 13.381 ký tự cho ra khoảng 3,3 đến 3,8 nghìn.
+M7. Hook chặn thư mục build và lệnh sleep dài
+   Hook chặn cả cargo build lẫn đọc thư mục target, nên agent audit không chạy được binary để kiểm chứng và phải suy từ mã nguồn. Một lệnh sleep 30 nối với lệnh khác bị chặn, hook yêu cầu dùng vòng until hoặc chạy nền.
+M8. Một note 338 byte làm RAM lên 1,45 GB: bom alias YAML
+   Note 338 byte với 7 tầng alias tạo 11,1 triệu props và chiếm 1,45 GB RAM trong Rust. Thêm một tầng nữa (vẫn dưới 400 byte) cần khoảng 14 GB. Agent đặt ngân sách mỗi note là 1 triệu props và 64 MiB, vượt thì báo lỗi MemoryError và ghi như một lệch có chủ ý.
+M9. Rà lịch sử git tìm khoá trước khi đổi repo sang public
+   Lệnh rà đầu tiên bị hook chặn vì đụng vào một file nhạy cảm. Agent không đi đường vòng mà thu hẹp lệnh: chỉ grep các mẫu token, khoá Anthropic, khoá AWS và private key trong lịch sử. Kết quả là 0 khớp.
+M10. Phát hành rc.3 từ nhánh chưa merge, theo ý người duyệt
+   Người dùng yêu cầu ra rc.3 từ nhánh phase 17 để thử luôn. Agent tạo tag từ commit 535bc55, release có đủ 7 file và checksum khớp. Main vẫn ở rc.2, nhánh chờ merge sau tuần chạy song song.
+M11. OHS tắt khi stdin đóng, probe 6 truy vấn đồng thời khớp 6 trên 6 với CLI
+   Probe gửi 6 truy vấn search cùng lúc, ghép trả lời theo id, và kết quả khớp 6 trên 6 với CLI của OHS trên cùng DB. Sau khi probe bị kill -9, OHS thấy stdin đóng và thoát trong dưới 1 giây, không còn tiến trình node sót lại.
+M12. Khoá ohs_not_ready bị compact() xoá, test không bắt được
+   Ở trạng thái starting, model_missing hay broken, progress và eta_s là null, nên compact xoá chúng và agent chỉ nhận 3 khoá thay vì 5. Test 5 khoá kiểm trước khi compact nên không bắt được. Fix là miễn compact cho lỗi ohs_not_ready và thêm test ở tầng MCP.
+M13. Parity harness: số mục «chưa có» từ 47 giảm về 0 qua từng merge
+   Sau khi merge phase 08, 17 mục khớp và 47 mục còn «chưa có». Các phase 09, 10, 11 và 12 lần lượt làm giảm số này: 44, 34, 15 rồi 0 trên 64 mục. Golden được commit và CI chạy được mà không cần Python.
+M14. Rust rename ghi đè file trên Windows, Python thì không
+   std::fs::rename của Rust trên Windows ghi đè đích, còn os.rename của Python thì không. Trên Windows, agent gọi trực tiếp MoveFileExW không có cờ thay thế, kèm hỗ trợ đường dẫn dài. Bộ test có 15 ca, và 19 ca của Python được đánh giá riêng.
+M15. Thử 5 thư viện YAML: 0 lệch trên 746 note, nhưng 25.000 note sinh ngẫu nhiên lộ panic
+   Trên bộ kg-solo 746 note, cả 5 thư viện đều 0 lệch nên không phân biệt được. Trên 58 ca biên, số lệch là 0, 1, 9, 35 và 36. Trên 25.000 note ngẫu nhiên, libyaml-safer panic 242 lần, saphyr-parser lệch 6.510, còn bản chọn unsafe-libyaml 0 lệch. Bốn dạng YAML làm bản Python crash cũng được phát hiện.
+M16. Stop hook giữ agent lại suốt nhiều lượt vì điều kiện 'xong cả plan' không đạt được
+   Phần còn lại của plan phụ thuộc vào máy Windows, vault thật và một tuần dùng song song, tức các cổng chỉ người mới mở được. Hook chặn dừng hơn 20 lượt với cùng một lý do, còn agent lặp lại câu «vẫn đang chờ». Người dùng phải tự xoá goal thì mới dừng được.
+M17. Python thêm gói tiếng Việt: thiếu biến môi trường thì index dựng lại mãi
+   Commit chỉ 54 dòng, nhưng nếu OHS của pkm và OHS của MCP người dùng dùng cấu hình gói khác nhau trên cùng index, OHS sẽ dựng lại view gói liên tục. Agent đặt biến OHS_LANGUAGE_PACK cho mọi lần khởi động OHS, dựng lại golden với ghim mới, và follow báo 0 commit chưa chuyển.
+M18. Thu hẹp phạm vi phát hành sang bản dùng được trước rồi phát hành pre-release nhiều đợt (rc.1, rc.2, rc.3) có checksum được kiểm từng file
+   Thu hẹp phạm vi phát hành sang bản dùng được trước rồi phát hành pre-release nhiều đợt (rc.1, rc.2, rc.3) có checksum được kiểm từng file Chờ bản hoàn chỉnh rồi mới phát hành một lần, hoặc phát hành mà không kiểm sha256
+M19. Thứ tự liệt kê file của hệ điều hành làm đầu ra Python đổi
+   Khi đảo thứ tự liệt kê, 593 trên 726 edges.id đổi, và điểm related lệch khoảng 1e-5, vượt ngưỡng 1e-6 của PRD. Agent ghim thứ tự theo đường dẫn đã sắp và ghi vào nhật ký quyết định. Các phase sau phải giữ thứ tự này.
+M20. OHS đứng hẳn khi stderr gặp byte UTF-8 lỗi, trên máy có code page Việt
+   Trên Windows có code page như CP1258, một dòng stderr có byte không hợp lệ làm reader thoát. Pipe đầy, mọi console.error của OHS block và event loop dừng. Vì stdout vẫn mở nên không có sự kiện Exited, không restart, và mọi search timeout sau 60 giây. Fix là đọc tới EOF với from_utf8_lossy, và ghi nhận test có byte 0xFF.
+M21. Gom các câu hỏi cổng thành một lần hỏi người dùng
+   Agent hỏi gom một lần: đã test chưa và có đổi schema không. Người dùng trả lời đồng ý chạy tiếp. Sau đó người dùng hỏi có câu nào còn chặn bản cài được không, và agent trả lời là không, chỉ còn ba việc để nghiệm thu sau.
+M22. PowerShell 5.1 làm hỏng dấu tiếng Việt khi đọc script qua irm
+   Windows PowerShell 5.1 đọc script tải qua irm làm hỏng dấu tiếng Việt. Agent viết toàn bộ thông báo trong script cài bằng tiếng Anh và chỉ dùng ASCII, còn README vẫn viết tiếng Việt.
+M23. Kiểm downgrade: «khác phiên bản» suýt hạ cấp gói OHS đang mới hơn
+   Nếu máy đã có vantt.4 mới hơn trong khi bản ghim là vantt.3, nhánh gốc sẽ hạ cấp về vantt.3. Agent đổi sang so sánh thứ tự phiên bản, chỉ nâng khi gói cũ hơn hoặc không rõ phiên bản, và không bao giờ ghi đè gói đưa vào bằng --ohs.
+M24. Máy Windows thử ra ba lỗi harness: đường dẫn JSON, UTF-8 khi pipe, và -I ẩn user site
+   Ba lỗi: Scrub không che đường dẫn Windows dạng escape trong JSON nên CLI lệch 2 mục; in tiếng Việt qua pipe khiến script sập với cp1252; và probe chạy python -I làm ẩn user site, nên không thấy PyYAML cài bằng --user. Fix bằng -E -P, giữ được bảo vệ không import code từ vault.
+M25. Audit đóng gói nói chưa kiểm được, hoá ra đã chạy thử được bằng workflow
+   Audit liệt kê 3 lỗi chặn bản cài đầu tiên trên Windows: pkm.exe cần vcruntime140.dll, không có script cài, và không có hướng dẫn cho người dùng. Khi tổng hợp, agent phát hiện mình đã viết sai: báo cáo nói chưa có bằng chứng về các action trong release, nhưng thực tế workflow_dispatch trước đó đã chạy thành công và kiểm sha256 cả bốn binary.
+M26. read: pkm tự đọc file thay vì chuyển qua OHS
+   OHS chỉ đọc được note đã index, nên trong lúc khởi động hoặc index có thể mất khoảng 10 phút mà agent không đọc được note nào. Agent đề nghị pkm tự đọc file trong vault, luôn dùng được. Người dùng đồng ý, và plan lệch khỏi thiết kế ban đầu.
+M27. Release rc: job macOS bị huỷ vì chờ runner 15 phút, rerun gặp HTTP 500
+   Job dựng binary macOS chờ runner quá 15 phút rồi bị GitHub huỷ, không phải lỗi code. Khi rerun job lỗi, API trả HTTP 500 lần đầu, lần hai mới nhận. Watch thoát sớm trước khi rerun xong, phải dùng vòng kiểm tra trạng thái. Cuối cùng release thành công với 7 file.
+M28. Reviewer agent tìm lệnh đường đi có thể làm treo server MCP
+   Với max_len 8 đến 10 trên vault dày liên kết, số đường đi tăng theo cấp số nhân, CPU 100% và RAM tăng cho tới khi bị OS giết. Server đơn luồng giữ khoá state nên mọi request sau đó, kể cả ping, đều treo. Fix: max_len tối đa 12, và tự dừng sau 10 giây.
+M29. Gộp 7 nhánh song song vào main, PORTING.md bị lặp hai lần
+   Mỗi lần merge sinh xung đột ở cùng một file. Có lần mục MCP server bị lặp hai bản, phải xoá bản cũ. Có lần đến 4 bản lặp của mục khác. Agent chốt quy trình: giải xung đột bằng script, rồi kiểm lại số mục trước khi commit.
+M30. Chạy Claude Code headless với config MCP tạm, không đụng config thật
+   Agent chạy headless với --mcp-config tạm và --strict-mcp-config. Mười tool, trừ related, chạy đúng trên bản copy của kg-solo, kể cả khi wrong id trả về did_you_mean và more chạy qua một lần tự rebuild. Log và câu trả lời được lưu vào báo cáo.
+M31. Code mode bị loại vì Claude Desktop không có shell
+   Cơ chế đó chạy mã trên shell của agent, còn Claude Desktop không có shell hay sandbox. Với khoảng 13 tool, meta-tool làm mỗi phiên tốn thêm lượt gọi và che mất bước chọn giữa find và search. Quyết định là không làm code mode ở phase 17, và ghi một điều kiện xem lại nếu có từ 2 câu trở lên vượt giới hạn lượt gọi.
+M32. Port cả hệ thống Python sang Rust bằng 14 phase, chạy nhiều agent song song
+   Phase 01 (khung workspace) chạy một mình làm nền, xong mới mở 7 phase song song, mỗi phase một worktree. Sau mỗi phase, agent kiểm tra, merge, push và đợi CI xanh trên Linux, macOS và Windows. Đợt đầu có 5 phase xong mà CI vẫn xanh trên cả ba nền.
+M33. Thư viện MCP chính thức lớn gấp 4 lần, nên tự viết JSON-RPC
+   Bản tự viết có binary 0,68 MB và 12 crate, rmcp là 2,79 MB và 56 crate, thời gian build sạch 2,5 giây so với 16,5 giây. rmcp cần tokio và khác Python ở 5 điểm của tầng giao thức. Claude Code thử server/discover trước, rồi fallback về initialize, và bản Python dựa vào đường fallback đó.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

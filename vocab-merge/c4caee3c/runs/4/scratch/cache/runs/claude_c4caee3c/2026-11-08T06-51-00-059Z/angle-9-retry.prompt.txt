@@ -1,0 +1,108 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L1112] USER: báo cáo tiến độ
+[L1504] USER: Goal check-in: «bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng &gt;=50%.» is still active, and evaluation has been deferred for 30 min because background work is still running: - a6ab6bed080f63d2b · subagent · V02 CI catchup and pr-check - a484f8e19b0d45969 · subagent · V12 invariance and quality gate - ab4083b0629bd363b · subagent · V20 Vietnamese word segmentation - ab37a12c9eca42ac2 · subagent · V22 semantic branch eval - a11e4af …[+936]
+[L1526] USER: Tiếp tục điều phối plan vantt/plans/261102-0349-fork-master-roadmap/plan.md: đọc /home/vantt/projects/ohs-wt/lead-state.txt, ghép việc đã xong (commit/push), khởi chạy việc kế theo phụ thuộc.
+</asks>
+
+<story>
+hook: Gói P01 thiếu năm điểm sau khi xong, vá mà hai gói cũ không cần sửa
+tension: it_ma_nhieu (năm chỗ thiếu bị phát hiện sau khi làm xong / hợp đồng chỉ thêm, nên hai gói cũ không phải sửa)
+stakes: 2/3
+# Gói P01 bị phát hiện thiếu năm điểm sau khi làm xong, vá thêm không phá gói cũ
+
+**Bối cảnh:** Gói tiếng Việt cần thêm khả năng mà hợp đồng P01 chưa có.
+**Chuyện gì xảy ra:** Năm chỗ thiếu gồm khớp chính xác và khớp cụm, trọng số view theo câu tìm, matchedTerms cho rescore, ngữ cảnh trong signature, và cận trên cho lệnh dò tiền tố. Hợp đồng vẫn apiVersion 1 và chỉ thêm, nên hai gói cũ không cần sửa.
+**Bài học:** Viết hợp đồng plug-in từ test của người dùng gói, không từ suy đoán; nếu phải thêm thì chỉ thêm, không đổi.
+</story>
+
+<excerpt>
+[L1559] TOOL Bash: cd /home/vantt/projects/ohs-wt/chk-series && R=/home/vantt/projects/obsidian-hybrid-search/vantt/patches && git format-patch -1 65e54d5 --stdout > $R/0004-stdio-parity.patch && git format-patch -1 3d9f985 --stdout > $R/0009-unicode-inline-tags.patch && git format-patch -1 fc0a88f --stdout > $R/0005- …[+4241]
+[L1564] RESULT: fork-identity,language-pack-api,db-path,vector-export,stdio-parity,unicode-inline-tags,block-anchors,restrict-paths | 16
+[L1570] TOOL Agent: V11b P01 contract fixes
+[L1571] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: a081aeb1492f27532 (internal ID - do not mention to user. Use SendMessa …[+86]
+[L1576] TOOL Bash: echo "13:20 Pushed f147fea: series P00,P01,P02,P03,P04,P09,P05,P06 (2083 tests, all gates green); chk-series branch vantt/work/series. Spawned a081aeb1492f27532 V11b P01 contract fixes (worktree wt-p01b, branch vantt/work/series-p01b; re-exports all patches). Pending: V25 P07 needs rebase onto final …[+70]
+…
+[L1694] AGENT: Đã sửa hai test chạy lúc qua lúc hỏng của gói tiếng Việt, merge và push lên `master` (`0c3442d`, ghi chú plan ở `b2eb35a`). Gói giờ qua cả 456 test.
+
+- **Test thuộc tính (fast-check):** hỏng là do hàm đếm token của chính test, còn gói vẫn đúng. Hàm đếm đã được thay bằng hàm mới đếm đúng như bộ tách token của view. Phép kiểm giữ nguyên: cùng đầu vào, cùng điều kiện, vẫn 400 lần chạy mặc định. Chạy 20.000 lần vẫn qua.
+- **Test tốc độ trên 1 MB:** giờ lấy lần nhanh nhất trong 3 lần chạy, ngưỡng 200 ms giữ nguyên. Ba lần chạy liên tiếp đo được 143–144 ms.
+
+Còn đang chạy:
+- **V02:** CI, đã gần xong.
+- **V12:** cổng chất lượng.
+- **V22:** eval nhánh nghĩa.
+- **V25:** P07, đang thêm thời gian chờ của watcher đặt được và dựng lại trên chuỗi P00–P06.
+- **V11b:** bổ sung hợp đồng P01.
+[L1711] USER: <task-notification>
+<task-id>a081aeb1492f27532</task-id>
+<tool-use-id>toolu_01NEpy2VsPr2n3aExZCE1g8F</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a081aeb1492f27532.output</output-file>
+<status>completed</status>
+<summary>Agent "V11b P01 contract fixes" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+Summary: All five gaps are fixed inside the P01 commit. The contract is still `apiVersion: 1` and the changes only add things, so the existing packs keep working without edits. The later patches rebased onto it without conflicts, and every gate passes on the new branch head.
+
+**Branch:** `vantt/work/series-p01b` in `/home/vantt/projects/ohs-wt/wt-p01b`. I removed the build output there afterwards, so rebuild it before running the probe again. Head is `632209f`. Per-patch shas:
+- P00 fork-identity `a9e2c33` (unchanged)
+- P01 language-pack-api `d526669` (was `4a396f2`)
+- P02 db-path `532efb4`
+- P03 vector-export `d112c08`
+- P04 stdio-parity `9815b08`
+- P09 unicode-inline-tags `40d7e72`
+- P05 block-anchors `39e5a20`
+- P06 restrict-paths `632209f`
+
+**Files in the shared tree:**
+- Re-exported `vantt/patches/0001`–`0006` and `0009-*.patch`. The 0002–0006 and 0009 exports differ only in line offsets and index hashes, so no other spec's "Điểm chạm" needed changing. Applying 0000–0006 + 0009 onto `v0.17.2` with `git am` gives a tree identical to the branch.
+- Updated `vantt/patches/0001-language-pack-api.spec.md`: requirement 2.10, touch points, tests, and a conflict note for `searchLanguageViews`/`toFtsQuery`.
+- New sub-plan `vantt/plans/261102-1245-v11b-p01-contract-fixes/plan.md`.
+- `series.toml` is not edited and needs no change; the `test_command` already covers the new tests.
+
+**Changelog for pack authors** (P01 contract, apiVersion 1, additive only):
+1. **`QueryAnalysis.viewTerms?: Record&lt;view, Array&lt;string | { text: string; prefix?: boolean }&gt; | null&gt;`**
+   - A structured query per view; the terms are joined with OR.
+   - A plain string matches exactly: one token, or a phrase if it has several tokens. `{ text, prefix: true }` matches as a prefix (`"text"*`).
+   - A non-empty array replaces `viewQueries[v]`. `null`, an empty array, or only blank terms fall back to `vie …[+2951]
+[L1715] AGENT: V11b xong: cả năm chỗ thiếu của P01 đã được bổ sung, chỉ thêm vào, vẫn `apiVersion: 1`. Các bản vá sau P01 dựng lại không xung đột, 2088 test xanh, eval tiếng Việt không hạng mục nào tụt. Commit, rồi báo V25 dựng lên nhánh mới.
+[L1716] TOOL Bash: git status --short | grep -v '^??'; python3 - <<'EOF' p='vantt/plans/261102-0349-fork-master-roadmap/phase-03-language-pack-api.md' s=open(p).read() s=s.replace("\n\n## Risk","\n- V11b bổ sung P01 (vẫn `apiVersion: 1`, chỉ thêm): `viewTerms` (khớp chính xác, cụm, tiền tố theo từng term), `viewWeight …[+794]
+[L1721] RESULT: M vantt/README.md | M vantt/patches/0001-language-pack-api.patch
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

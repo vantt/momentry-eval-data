@@ -1,0 +1,145 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L1458] USER: ok, sửa luôn hai mục đó rồi đẩy lên hub
+[L1489] USER: sao chưa bấm duyệt mà hub đã để là active nhỉ
+[L1507] USER: à, ui của web, tại skill khong có thông báo là skill đang cần duyệt lại, chỉ vào mục wait for review mới có.
+</asks>
+
+<story>
+hook: Thấy trang web không báo có bản chờ duyệt, tôi sửa luôn thay vì mở issue
+tension: khac (Thói quen ghi issue rồi chờ / Sửa tại chỗ ngay khi thấy)
+stakes: 1/3
+# Phát hiện một chỗ UX tệ trên sản phẩm (trang web không báo có bản chờ duyệt) và sửa tại chỗ thay vì chỉ ghi nhận
+
+**Chuyện gì xảy ra:** Phát hiện một chỗ UX tệ trên sản phẩm (trang web không báo có bản chờ duyệt) và sửa tại chỗ thay vì chỉ ghi nhận
+**Góc người ngoài:** cách làm phổ biến là Hầu hết người ta ghi thành issue rồi chờ, hoặc chỉ nhắc với người phụ trách; ở đây khác ở Phiên này đọc mã nguồn web, viết thêm component kèm test, chạy đủ kiểm tra kiểu, lint, build và đẩy lên, rồi báo rõ phần nào chưa kiểm tra bằng trình duyệt thật. Người đọc sẽ hỏi vì sao làm được nhanh như vậy và vì sao dừng lại trước bước mở PR.
+</story>
+
+<excerpt>
+[L1503] AGENT: Bản đang **active** trên hub không phải bản vừa gửi. Đó là bản của một lần duyệt trước đó.
+
+Tôi so bản hub đang phục vụ (bản mà `skill_get` tải về máy này) với thư mục skill ở đây:
+- **Nội dung giống hệt.** Chỉ khác một dòng trống mà hub tự chèn sau phần frontmatter của `SKILL.md`.
+- **Routing trên hub đúng là bản tôi soạn**, gồm 9 trigger, 5 example và 5 not_for. Lúc trước tôi đưa routing này kèm lệnh `skillstation skill review SUB-01M6DMW0CATJGWRG5C15R2J1D4 --trigger …`.
+- **Không có `skill.yaml`**, vì tôi mới tạo file này cho lần gửi gần nhất.
+
+Vậy là đã có người duyệt một bản gửi trước trên máy hub, kèm routing đó. Rất có thể là `SUB-01M6DMW0…`, duyệt bằng chính lệnh tôi đưa, có thể qua curator hoặc qua trang web. Hub tạo skill mới bằng một lần chạy duyệt + approve + activate, nên skill lên active ngay. Từ máy này tôi không xem được lịch sử duyệt, nên không biết chắc ai duyệt và duyệt bản nào. Anh xem trên máy hub bằng `skillstation skill show cs-packaging-distribution --verbose`, hoặc ở mục lịch sử trên trang web.
+
+Bản mới `SUB-01M6NB8WMEJCZHFQ8RGPR0PZ2F` vẫn **đang chờ duyệt**. Trước khi bản này được duyệt, hub tiếp tục dùng bản active hiện tại, chưa có operations hay topics.
+
+Thêm một điều: thư mục skill ở đây vẫn giữ thời gian sửa đổi là ngày 2/11. Vì vậy nếu lúc trước anh "vừa chỉnh xong" ở một chỗ khác thì các chỉnh sửa đó chưa nằm trong bản gửi. Ba bản gửi đều có cùng nội dung hướng dẫn; bản cuối chỉ khác là có thêm `skill.yaml`.
+[L1507] USER: à, ui của web, tại skill khong có thông báo là skill đang cần duyệt lại, chỉ vào mục wait for review mới có.
+[L1515] AGENT: Đúng vậy. Trên hub, bản gửi chờ duyệt (`SUB-…`) và skill đang active là hai thứ tách riêng. Bản gửi chỉ gắn vào skill khi được áp dụng lúc duyệt. Vì thế trang của skill vẫn hiện bản cũ là active và không cho biết đang có bản thay thế chờ duyệt. Người xem phải tự vào **Waiting for review** mới thấy.
+
+Đây là một thiếu sót về UX. Người mở trang skill sẽ tưởng bản đang chạy là mới nhất, và dễ quên duyệt bản mới. Ở đây có ba bản gửi cho cùng một skill, nên càng dễ duyệt nhầm bản cũ.
+
+Tôi đề xuất sửa phía skillstation như sau:
+- **Trên trang skill:** hiện một dải thông báo, ví dụ "1 update waiting for review (SUB-…, sent 14:53 from <máy>)", kèm nút đi thẳng tới trang duyệt.
+- **Trong danh sách skill:** thêm nhãn "update pending" cạnh skill có bản chờ duyệt.
+- **Khi có nhiều bản cùng chờ:** gom chúng lại, chỉ đề xuất bản mới nhất và cho bỏ các bản cũ chỉ bằng một thao tác.
+- **Trong CLI:** `skillstation status` và `skill show <id>` cũng nên hiện dòng "update waiting for review".
+
+Tôi chưa đọc mã web UI của skillstation, nên chưa biết chắc hiện tại có chỗ nào khác đã hiện thông tin này hay không. Anh muốn tôi soạn issue cho `vantt/skillstation` gồm ý này và lỗi gợi ý cờ `--user` lúc trước không? Tôi sẽ đưa nội dung cho anh xem trước rồi mới tạo.
+[L1520] USER: ok.  dùng `/ak:frontend-development` skill để làm. còn việc phía trên, có vẻ skillstation-send không có năng lực để quản lý routing/metadata hay sao á. lúc kêu sửa phải nhắc tới mấy lần và không hiển thị được metadata hiện tại.
+[L1525] TOOL Skill: {"skill":"ak:frontend-development","args":"In the vantt/skillstation web UI: on a skill's page and in the skills list, show that an update for that skill is waiting for review (pending SUB-… submissions), with a link to review it; group several pending submissions for the same skill and propose the  …[+9]
+[L1526] RESULT (exit error): <tool_use_error>Unknown skill: ak:frontend-development</tool_use_error>
+…
+[L1835] RESULT: (eval):1: no matches found: --include=*.ts
+[L1838] TOOL Bash: cd /home/vantt/projects/skillstation/web/src && grep -rn "render.ERROR" . | grep -v test
+[L1844] RESULT: screens/skill-detail/AddSourceForm.tsx:36: if (err instanceof ApiError) return err.render.WHY || err.render.ERROR || err.message; | screens/skill-add/AddSkillScreen.tsx:162: setErrorMessage(err.render.WHY || err.render.ERROR || err.message);
+[L1857] TOOL Edit: /home/vantt/projects/skillstation/web/src/screens/skill-detail/PendingSubmissionsNote.tsx
+[L1858] RESULT: The file /home/vantt/projects/skillstation/web/src/screens/skill-detail/PendingSubmissionsNote.tsx has been updated successfully. (file state is current in your context — no need to Read it back)
+…
+[L2001] TOOL Bash: cd /home/vantt/projects/skillstation/web && npm run build 2>&1 | tail -4; cd .. && git status --short | grep -v '^ M web/src\|^?? web/src'
+[L2004] RESULT: - Adjust chunk size limit for this warning via build.chunkSizeWarningLimit. | [33m[INEFFECTIVE_DYNAMIC_IMPORT] [0msrc/design-system/fonts/precision.ts is dynamically imported by src/state/appearance.ts but also statically imported by src/main.tsx,  …[+55]
+[L2008] AGENT: Đã làm xong phần giao diện trên nhánh `feat/web-pending-submission-notice` trong `~/projects/skillstation`. Toàn bộ 229 test của web đều qua, kiểm tra kiểu, lint và build cũng sạch. Tôi chưa commit hay đẩy lên GitHub, chờ anh xem trước.
+
+**Những gì đã đổi:**
+- **Trang chi tiết skill:** khi có bản gửi đang chờ duyệt, trang hiện dòng thông báo màu cảnh báo, ví dụ *"An update to this skill is waiting for review: SUB-…, sent 2026-11-05 from <máy>."*, kèm nút **Review it →** dẫn tới bản mới nhất. Nếu còn bản cũ hơn thì có thêm câu "2 older submissions are also waiting…" và nút **Discard older**. Nút này hỏi xác nhận rồi mới bỏ các bản cũ, bản mới nhất vẫn nằm chờ duyệt.
+- **Danh sách skill:** skill nào có bản chờ duyệt thì có nhãn **Update waiting for review** cạnh trạng thái.
+- **Mục Waiting for review:** bản nào đã có bản mới hơn cho cùng skill thì gắn nhãn **Older · a newer submission is waiting**.
+
+Bản mới nhất được xác định theo mã `SUB-…`, vì mã này có thứ tự theo thời gian gửi. Tôi không sửa backend, chỉ đọc danh sách chờ duyệt mà hub đã có sẵn.
+
+Code chính nằm ở:
+- `web/src/domain/pending-submissions.ts`
+- `web/src/screens/skill-detail/PendingSubmissionsNote.tsx`
+
+Mỗi phần đều có test riêng.
+
+Vài chỗ cần lưu ý:
+- Skill `ak-frontend-development` có trong `.claude/skills/` của dự án nhưng chưa nạp vào phiên này, nên tôi đọc thẳng file `SKILL.md` của nó và làm theo.
+- Phía CLI (`skillstation status` và `skill show` báo có bản chờ duyệt) là code Go, tôi chưa làm.
+- Tôi chưa kiểm tra bằng cách mở web thật trên trình duyệt, chỉ mới chạy test.
+
+**Về metadata, câu hỏi "folder này phải có sẵn skill cs-* kèm meta rồi chứ":** hiện chưa, vì cách skillstation đang chạy:
+- `skills/cs-packaging-distribution` trong devops là thư mục gốc anh tự viết. Đây không phải bản checkout từ hub, bản xem trước có ghi `checked_out: false`.
+- Routing do người duyệt đặt chỉ được lưu trên hub và không bao giờ chép ngược về thư mục đã gửi. Vì thế trước hôm nay thư mục này không có `skill.yaml`.
+ …[+1084]
+[L2018] USER: này là em code và fix luôn rồi?
+[L2029] AGENT: Đúng, tôi đã viết code và test xong, nhưng mới chỉ nằm trên máy này:
+
+- **Đã làm:** sửa code trong bản clone `~/projects/skillstation`, trên nhánh `feat/web-pending-submission-notice`. Gồm 4 file mới và 6 file sửa. Toàn bộ 229 test của web đều qua, kiểm tra kiểu, lint và build cũng sạch.
+- **Chưa làm:** chưa commit, chưa đẩy lên GitHub, chưa mở PR. Tôi cũng chưa mở web thật để xem giao diện.
+- **Hub của anh chưa thay đổi gì.** Máy hub đang chạy bản skillstation cũ, nên muốn thấy thông báo mới trên web thì cần ba bước: gộp code vào repo, phát hành bản mới, rồi chạy `skillstation update` trên máy hub và khởi động lại `skillstation serve`.
+
+Tôi làm luôn vì anh bảo dùng `ak:frontend-development` để làm. Nhưng repo đó là của anh và có quy trình riêng (`make check`, quy tắc trong `AGENTS.md`), nên tôi dừng lại trước bước commit.
+
+Anh muốn bước tiếp theo là gì: tôi mở web trên máy này để anh xem thử giao diện, hay commit và mở PR luôn?
+[L2038] USER: merge và push luôn đi em
+[L2046] TOOL Bash: cd /home/vantt/projects/skillstation && grep -n "^check:\|^check " -A8 Makefile; git fetch -q origin && git log --oneline -1 origin/main; git merge-base --is-ancestor origin/main HEAD && echo "branch is on top of origin/main"
+[L2049] RESULT: 70:check: fmt-check vet lint deadcode test | 71-
+…
+[L2098] TOOL Bash: cd /home/vantt/projects/skillstation && id=$(gh run list --branch main --workflow CI --limit 1 --json databaseId --jq '.[0].databaseId'); gh run watch "$id" --exit-status >/dev/null 2>&1; echo "CI exit=$?"; gh run view "$id" --json conclusion,jobs --jq '.conclusion, (.jobs[] | "\(.name): \(.conclusi …[+6]
+[L2099] RESULT: Command running in background with ID: bu7dj3l46. Output is being written to: /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/tasks/bu7dj3l46.output. You will be notified when it completes — do not poll that file or  …[+302]
+[L2103] AGENT: Đã merge và push lên `main` của `vantt/skillstation`, commit `185b75d` (feat(web): show updates waiting for review on the skill page and list). Tôi gộp thẳng nhánh vào `main` (fast-forward), không mở PR, rồi xóa nhánh trên máy này.
+
+- **Kiểm tra trên máy này:** web qua cả 229 test, kiểm tra kiểu, lint và build. `make check` thì có **5 test Go trong `internal/delivery/cli` bị lỗi**, nhưng 5 test này lỗi y hệt trên `main` trước khi có commit của tôi. Lần này tôi không sửa dòng Go nào. Chúng là các test về `doctor` và `status`, có vẻ phụ thuộc môi trường máy này (cấu hình hub toàn cục hoặc danh tính git). Tôi chưa tìm nguyên nhân.
+- **CI trên GitHub:** đang chạy cho `185b75d`. Tôi đang theo dõi và có kết quả sẽ báo anh.
+- **Commit không có dòng đồng tác giả AI**, theo quy tắc commit trong `.claude/rules/development-rules.md` của dự án.
+
+Hub của anh chưa đổi gì. Muốn thấy thông báo mới thì phải phát hành bản skillstation mới rồi chạy `skillstation update` trên máy hub.
+
+Còn cần anh quyết định:
+1. Có tìm nguyên nhân 5 test Go đang lỗi trên `main` không?
+2. Anh có muốn tôi chuẩn bị phát hành bản mới không, hay để anh tự làm theo quy trình release của repo?
+[L2113] USER: mô tả rõ 5 lỗi go
+[L2122] TOOL Bash: cat /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/tasks/bu7dj3l46.output; cd /home/vantt/projects/skillstation && go test ./internal/delivery/cli -run 'TestDoctorReportsAMissingGitIdentity|TestStatusSaysTheIndexIsBehind|TestStatusNeverCallsACommittedHubNew|TestSta …[+158]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,125 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) là tầng nền tảng để xây và chạy các ứng dụng agent, gồm hạ tầng, skill và tự động hoá nằm dưới mọi app agent, để lập trình viên tạo agent mới thay vì làm lại từ đầu. Hiện đang ở bản alpha v0.2.0-rc.2 cho Linux x86_64 (glibc 2.35 trở lên) và Windows 10 trở lên x86_64; macOS và Windows ARM chưa được hỗ trợ. Cài bằng một file nhị phân `fgctl` và chạy trong một kho git có sẵn, không cần clone, npm hay Rust toolchain.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L3127] USER: em đổi pi luôn đi
+[L3271] USER: openai-fgovn, openai-tetcu72
+[L3300] USER: probe đi em
+</asks>
+
+<story>
+hook: Hội đồng 11 ghế sập ngay lần chạy đầu ở bước shaping
+tension: khac (Framing chạy được, hội đồng 11 ghế tưởng đã sẵn sàng / Shaping lỗi execution-failure, ghế shape-proposals hỏng)
+stakes: 1/3
+# Hội đồng kiến trúc 11 ghế: bước shaping lỗi ngay lần chạy đầu
+
+**Bối cảnh:** Chủ chọn commit config trước rồi mới mở hội đồng gồm framing, shaping ba panelist đề xuất mù, critique, synthesis, explanation và một cổng người.
+**Chuyện gì xảy ra:** Agent commit và push 42 dòng .fgos/config.json sau khi quét bí mật, rồi rebase lên 28 commit mới của remote. Workflow architecture-advisory chạy được bước framing, nhưng shaping kết thúc với execution-failure. Lần đầu agent không đọc được status vì lỗi parse, sau đó mới thấy ghế shape-proposals lỗi.
+**Bài học:** Chạy bước rẻ trước và đọc trạng thái từng ghế ngay khi bắt đầu, đừng đợi đến cổng người mới phát hiện hỏng.
+**Artefact:** Bảng các bước workflow và trạng thái pass hoặc execution-failure. Không cần ảnh.
+</story>
+
+<excerpt>
+[L3342] RESULT: openai-tetnu exit=0 secs=24 | openai-fgovn exit=0 secs=45
+[L3353] AGENT: Cả hai tài khoản dự phòng đều chạy được, nên ba tài khoản openai giờ đều đã được kiểm chứng.
+
+| Tài khoản | Đường `pi-herdr` | Đường `pi-cli-bwrap` | Thời gian |
+|---|---|---|---|
+| `openai-tetnu` | ok, trả đúng "OK" | ok (xem lưu ý) | 24 giây |
+| `openai-fgovn` | ok, trả đúng "OK" | ok (xem lưu ý) | 45 giây |
+| `openai-tetcu72` | pass ở lượt probe trước | | |
+
+**Lưu ý nhỏ:** với `pi-cli-bwrap`, lệnh xếp loại `ok` nhưng đoạn bằng chứng không phải chữ "OK" mà là một đoạn chữ lấy từ tài liệu dự án (pi nạp các luật của repo vào ngữ cảnh). Em coi đó là bằng chứng yếu hơn. Đường `pi-herdr` mới là đường hội đồng dùng (invocation herdr đầu tiên của openai), và nó trả đúng "OK" ở cả hai.
+
+Các tài khoản không hết quota hay hết phiên đăng nhập, đúng như em đã lo cho hai tài khoản đăng nhập từ 10-13. Em đã kiểm: không còn tiến trình `fgos` nào chạy dở và không có pane nào liên quan còn sót.
+
+## Tổng kết chuẩn bị hội đồng
+
+| Family | Tài khoản (thứ tự dùng) | Trạng thái |
+|---|---|---|
+| openai | `openai-tetcu72` → `openai-tetnu` → `openai-fgovn` | Cả ba chạy được |
+| claude | `~/.claude` | Chạy được |
+| gemini | omp `gemini-tetcu72` | Chạy được (run từng gắn `inconclusive`) |
+| xai | omp `xai-vantt` | Chạy được |
+| deepseek, glm | pi `openrouter`, `thehive` | Chạy được |
+
+11/11 ghế gán được, với walk đủ năm family. Chưa mở hội đồng và `.fgos/config.json` vẫn sửa chưa commit (74 dòng thêm, 2 dòng xoá).
+
+Anh chọn bước tiếp theo:
+1. **Commit và push `.fgos/config.json`** trước (invocation `pi-herdr` cho openai, `deepseek` và `z-ai` trong `tierFallback`, gỡ `pi-herdr` thừa của xai).
+2. **Mở hội đồng** ngay với bảng ghế trên.
+3. **Cả hai:** commit trước, rồi mở hội đồng.
+[L3362] USER: 3
+[L3365] AGENT: Em commit và push `.fgos/config.json` trước. Em kiểm diff để chắc không có bí mật và không có gì ngoài các thay đổi đã duyệt.
+[L3366] TOOL Bash: /usr/bin/git diff -- .fgos/config.json | grep '^[+-]' | grep -v '^+++\|^---' | grep -i -E "token|secret|password|api[_-]?key|bearer|sk-" | head -3; echo "(quét bí mật: hết)"; /usr/bin/git diff --stat -- .fgos/config.json | cat; /usr/bin/git diff -- .fgos/config.json | grep '^-[^-]' | cut -c1-140
+…
+[L3407] TOOL Bash: /usr/bin/git fetch origin 2>&1 | tail -1; echo "remote đi trước: $(/usr/bin/git rev-list --count HEAD..origin/main)"; /usr/bin/git push origin main 2>&1 | tail -3; /usr/bin/git status -sb | head -2; /usr/bin/git log origin/main --oneline -1 | cat
+[L3413] RESULT: remote đi trước: 0 | To https://github.com/vantt/forgent.git
+[L3423] AGENT: Đã push (`0fc014d3e`). Giờ em mở hội đồng. Trước hết đọc cách truyền câu hỏi và bằng chứng vào `fgos workflow start`.
+[L3424] TOOL Bash: sed -n 1,30p core/skills/fgos-architecture-panel/SKILL.md | cut -c1-220; echo ----; grep -n "workflow start\|--input\|--objective\|--param\|--var" core/skills/fgos-architecture-panel/SKILL.md | head -12 | cut -c1-220; echo ----; node -e " const r=require('child_process').spawnSync('fgos',['workflow' …[+203]
+[L3429] RESULT: --- | name: fgos-architecture-panel
+…
+[L3502] TOOL Bash: REQ=$(cat <<'EOF' Owner's words, verbatim: 1. "như vậy nhìn tổng quan sẽ có 3 hệ : decision engine, document engine và context engine. và 3 hệ là liên quan sử dụng lẫn nhau" 2. "bật một hội đồng cấp cao để phân component authority/boundary như thế nào cho hợp lý" Question for the panel: how should c …[+2501]
+[L3507] RESULT: { | "contract": "fgos.v1",
+[L3518] AGENT: Hội đồng đã mở, chạy nền, và em chưa xem được kết quả nên chưa kết luận gì. Mã chạy là `wf-run-1792588557887-a8496d01`.
+
+## Đã làm
+
+**Commit và push:** `0fc014d3e feat(runner): route openai through its pi accounts and let deepseek and z-ai back up the flagship and frontier tiers`. Em đã quét diff không thấy bí mật, và chỉ có `.fgos/config.json` được commit. Remote đã đi trước 28 commit, em rebase lên rồi đẩy; các file dirty của anh vẫn nguyên chưa commit (`AGENTS.md`, `.claude/settings.json`, `.fgos/distribution.json`, `engineer/`). `stash@{0}` còn một autostash cũ của lần pull đầu (chứa bản `mutation-census.v1.json` của anh), anh hết cần thì drop.
+
+**Điều kiện an toàn trước khi mở:** posture `read-only`, policy `host-write-denied`, `mode: required`, `hostWrite: deny`, và cả năm invocation (`pi-herdr` openai, `claude-herdr-bwrap`, `omp-herdr` gemini và xai, `pi-herdr` deepseek) đều qua kiểm `resolvePostureInvocation`. Đây chỉ chứng minh chính sách, không chứng minh cách ly thật lúc chạy.
+
+**Câu hỏi giao cho hội đồng**, giữ nguyên lời anh (hai câu của anh nằm đầu `--request`), kèm các sự thật cần đối chiếu: ba hệ decision/document/context; hai phương án (proposal có hai engine, anh nêu ba); các vấn đề phải chốt (ai sở hữu đồ thị supersession và bảng id, vòng phụ thuộc của bước quét lúc ghi, đơn vị luật nằm đâu, Knowledge Registry với engine đề xuất, nội dung `component-boundary.md`, thứ tự với Phase 9). Em chỉ đưa bằng chứng và đường dẫn, không đưa kết luận của em, và ghi rõ hội đồng chỉ tư vấn, không sửa file.
+
+## Tiến trình
+
+Workflow chạy nền theo các bước: framing, shaping (3 panelist mù), critique, synthesis (reviewer và red-team tấn công bản tổng hợp), explanation, rồi một **cổng người** hỏi anh một lần: có mời thêm chuyên môn còn thiếu hay không. Bản tổng hợp là JSON thô có trường `"missing expertise"`, giữ nguyên ý kiến bất đồng. Em sẽ không poll liên tục. Khi hội đồng đến cổng của anh, em đọc các báo cáo đã chốt và trình anh nội dung kèm câu hỏi cổng, đúng nh …[+122]
+[L3527] USER: liệt kê lại cho anh toàn bộ zsh alias của llm acounts trên máy này
+[L3530] AGENT: Em trích từ `~/.zshrc` (và từ shell tương tác để chắc alias nào thật sự có hiệu lực), che mọi giá trị giống khoá bí mật.
+…
+[L3961] AGENT: Em kiểm bản sao đúng là khoá hỏng (chỉ đếm độ dài) rồi xoá, sau đó xem trạng thái hội đồng.
+[L3962] TOOL Bash: cd ~ && python3 -c " import json,os b=json.load(open(os.path.expanduser('~/.pi/accounts/thehive/auth.json.bak')))['thehive']['key'] a=json.load(open(os.path.expanduser('~/.pi/accounts/thehive/auth.json')))['thehive']['key'] print('độ dài khoá trong .bak:',len(b),'| khoá hiện dùng:',len(a),'| giống n …[+787]
+[L3966] RESULT (exit 1): ^^^^^ | AttributeError: 'str' object has no attribute 'get' | {"workflowRunId": "wf-run-1792588557887-a8496d01", "status": "failed"}
+[L3970] TOOL Bash: fgos workflow status wf-run-1792588557887-a8496d01 --dir /home/vantt/projects/forgent --json </dev/null 2>&1 | python3 -c " import sys,json,re raw=sys.stdin.read() d=json.loads(raw); d=d.get('data',d) print('khoá cấp 1:',list(d.keys())) def short(o,depth=0): if isinstance(o,dict): return {k:short(v, …[+352]
+[L3980] RESULT: khoá cấp 1: ['workflowRunId', 'workflowId', 'workflow', 'request', 'stanceOptions', 'contextRefs', 'status', 'outcome', 'worktrees', 'steps', 'questions', 'advance', 'case'] | ## steps
+[L3987] AGENT: Framing đã xong (`pass`), còn shaping (ba panelist mù) bị `execution-failure`. Em xem ghế nào hỏng và lý do.
+[L3988] TOOL Bash: fgos workflow status wf-run-1792588557887-a8496d01 --dir /home/vantt/projects/forgent --json </dev/null 2>&1 | python3 -c " import sys,json,re d=json.load(sys.stdin); d=d.get('data',d) u=d['steps']['shaping']['units']['shape-proposals'] def short(o,depth=0): if isinstance(o,dict): return {k:short(v, …[+432]
+[L3993] RESULT: {"unitId": "shape-proposals", "status": "completed", "unitRunId": "unit-run-1792588822710-867f76c7", "outcome": "execution-failure", "results": [{"outcome": "pass", "role": "panelist-1", "round": 1, "runResult": {"contract": {"id": "assignment-run-re …[+3234]
+[L4005] TOOL Bash: fgos workflow status wf-run-1792588557887-a8496d01 --dir /home/vantt/projects/forgent --json </dev/null 2>&1 | python3 -c " import sys,json,re d=json.load(sys.stdin); d=d.get('data',d) for u in d['steps']['framing']['units'].values(): print('framing:',u.get('outcome'),[ (r['role'],r['outcome'],r['bi …[+982]
+[L4010] RESULT: framing: pass [('producer', 'pass', 'openai', 'gpt-6.1-sol')] | seat panelist-1 pass openai pi-herdr gpt-6-astra
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

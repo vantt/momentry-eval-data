@@ -1,0 +1,112 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian: note nào nối với note nào, đi từ ý này tới ý kia qua đâu, note nào lạc khỏi mạng. Làm cho người làm một mình, freelancer, có tiếng Việt. Dùng dưới dạng một file chạy trên máy, người dùng không phải cài Python; có bộ cài cho Windows, macOS và Linux. Mục tiêu hiện tại: thay bản Python đang dùng bằng lõi viết bằng Rust cho Claude Desktop và chat trong Obsidian.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L477] USER: Stop hook feedback: [bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.]: The goal was to complete the whole plan (all milestones M1 to M4, phases 01 to 17). The transcript shows only phases 01, 04, 06, 07 and 14 done, with 02, 03 and 05 in-progress waiting on user-only steps, and phases 08 to 13 and 15 to 17 still todo behind gate G0. The last assistant message says 'Blocked: chờ user', so the plan is not finished and the condition  …[+14]
+[L555] USER: mấy câu hỏi có block em trong việc chạy tới một phiên bản installable?
+[L571] USER: ok làm tiếp tới bản installable
+</asks>
+
+<story>
+hook: Note 338 byte ngốn 1,45 GB RAM
+tension: nho_ma_to (Một note chỉ 338 byte / Bung ra 11,1 triệu props, 1,45 GB RAM; thêm một tầng là 14 GB)
+stakes: 2/3
+# Một note 338 byte làm RAM lên 1,45 GB: bom alias YAML
+
+**Bối cảnh:** Review code phát hiện YAML có alias lồng nhau gây bùng nổ bộ nhớ, cả Rust lẫn Python đều dính.
+**Chuyện gì xảy ra:** Note 338 byte với 7 tầng alias tạo 11,1 triệu props và chiếm 1,45 GB RAM trong Rust. Thêm một tầng nữa (vẫn dưới 400 byte) cần khoảng 14 GB. Agent đặt ngân sách mỗi note là 1 triệu props và 64 MiB, vượt thì báo lỗi MemoryError và ghi như một lệch có chủ ý.
+**Bài học:** Với đầu vào không tin cậy, một đoạn văn bản nhỏ có thể nhân lên thành dữ liệu rất lớn. Cần giới hạn ngân sách ngay từ đầu.
+**Artefact:** Số liệu theo từng tầng alias (không có nội dung note).
+</story>
+
+<excerpt>
+[L792] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: aee0656d37cda0d6d (internal ID - do not mention to user. Use SendMessa …[+86]
+[L801] AGENT: Three agents are running in parallel:
+- **Phase 09:** index, adapter and validate.
+- **Code review of phase 08.**
+- **Phase 13, install and doctor:** only the parts that don't depend on the tools layer.
+
+I'll merge each one as it finishes.
+[L811] USER: <task-notification>
+<task-id>a915ec990b082a8de</task-id>
+<tool-use-id>toolu_01Br3BJ2NpVCzcDWmVqTVg9r</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a915ec990b082a8de.output</output-file>
+<status>completed</status>
+<summary>Agent "Review vault and schema" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I found no memory-safety defects in the libyaml FFI. The YAML layer matched Python on all 33 hostile cases I ran through both. The real problems are one memory blow-up, one confirmed difference from Python on deeply nested dicts, and one slow path with many keys. I did not edit any code. The test binary I built lives only in the scratchpad (`/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/2dfb5915-3011-441f-a6fb-2c7cb5abd60b/scratchpad/rv`).
+
+**Checks I ran:**
+- **Differential test against Python 3.14.4 + PyYAML 6.0.3 (with libyaml):** duplicate anchors, self-referencing aliases, `!!set`, `!!omap`, `&lt;&lt;` merges, CRLF inside block and quoted scalars, control characters, unknown tags, `!!python/name`, `0o17`, sexagesimal numbers, `1e400`, keys `1`/`1.0`/`true`. Errors and `props` were identical in every case.
+- **FFI in `vault/yaml/libyaml.rs`:** every event is deleted after it is copied, the parser is only deleted after a successful init, null pointers are checked, and the input outlives the parser.
+
+**High**
+1. **An alias bomb runs the process out of memory** in `crates/pkm-core/src/vault.rs:347-367` (`flat`) and `crates/pkm-core/src/vault/yaml.rs:306-400` (`repr_into`).
+   - **Scenario:** a 338-byte note with 7 levels of `&amp;aN [*aN-1 ×10]` produces 11.1M props and 1.45 GB RSS in Rust. One more level (still under 400 bytes) needs about 14 GB, so the indexer gets OOM-killed. Python behaves the same (877 MB at 7 levels), so this matches the spec but is still a real denial of service.
+   - **Fix:** give each note a budget for `flat` leaves and `repr` length. Over budget, return `Fail::Crash("MemoryError")` and record it as a deliberate deviation from Python.
+
+**Medium**
+2. **Dicts nested deeper than 1000 fail in Rust but parse in Python**: `yaml.rs:43` (`MAX_DEPTH`), `yaml.rs:600` (composer), `yaml.rs:388` (repr of dicts).
+   - **Scenario:** `a:\n  b: {x: {x: …}}` at 1200 or 3000 levels. Pytho …[+3017]
+[L819] AGENT: The review found three issues in phase 08. I'm sending them back to the agent that wrote it to fix. Matching Python where it reasonably can and recording deliberate deviations for the cases that would hurt users is a technical call under the PRD rule that clearly wrong Python behaviour is not copied, so I made it without asking you.
+[L820] TOOL SendMessage: {"to":"a2d7d372b318c9833","summary":"Fix vault/schema code-review findings","message":"Your branch is merged to main (merge commit 8f64929). A code review found issues; report: /home/vantt/projects/obsidian-pkm/plans/reports/code-reviewer-261102-1440-vault-schema.md (read it). First `git merge main` …[+1739]
+[L821] RESULT: {"success":true,"message":"Resuming agent a2d7d37","resumedAgentId":"a2d7d372b318c9833","pin":{"id":"a2d7d372b318c9833","name":"a2d7d372b318c9833","ref":"c9bd66"}}
+[L826] AGENT: Three agents are running in parallel:
+- the fixes to `vault`/`schema` from the review,
+- phase 09,
+- the install and doctor part of phase 13.
+[L833] USER: <task-notification>
+<task-id>a2d7d372b318c9833</task-id>
+<tool-use-id>toolu_015kjV1DK3KtHVcJBpFAPgZk</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a2d7d372b318c9833.output</output-file>
+<status>completed</status>
+<summary>Agent "Phase 08 vault and schema" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I fixed all six review findings in commit `2661aa01a31c1fde5de60ad022cc9c43d0036900` on `worktree-agent-a2d7d372b318c9833`, after a fast-forward merge of main (`8f64929`). Not pushed or merged.
+
+All checks pass:
+- **Build gates:** fmt check, clippy with `-D warnings` (Linux, `x86_64-pc-windows-msvc`, `aarch64-apple-darwin`) and workspace tests.
+- **kg-solo parity (CI-style, no Python on `PATH`):** exit 0. The 17 tables match with 0 unnamed diffs. Both YAML exceptions (`yaml-python-dung-build` and the new `yaml-ngan-sach-note`) are listed as unused, which is expected since kg-solo has neither case.
+- **Fuzz comparison against Python:** I reran the earlier fuzz vaults (25,000 YAML notes, about 1,000 link notes) after the change, and they still show 0 differences.
+
+1. **High, alias bomb:** each note now has a budget of 1,000,000 props and 64 MiB of text (keys, values and printed strings). Over budget, that note gets `YAML lỗi: MemoryError`, its frontmatter is dropped, and its body is still read. The public `py_str`/`py_repr` stop at 64 MiB too. I recorded it as a new deliberate deviation in PORTING with a new named exception, `yaml-ngan-sach-note` (table `nodes`, column `yaml_error`). The `props` and `raw_links` rows of such a note also differ from Python, and that exception doesn't cover them.
+2. **Medium, deep nesting:** printing is now a loop instead of recursion, and the parser no longer limits depth. Dicts nested thousands deep parse and print like Python. Only lists that the flattening step walks raise `RecursionError`, starting at 997 levels. I measured that boundary with Python 3.14 + PyYAML/libyaml calling `vault.parse` directly; through a full index build Python fails a few levels earlier. Boundary tests: lists at 990/996 work, 997/999/1000/1001/3000 fail; dicts at 999/1000/1001/3000 parse and match Python's output.
+3. **Medium, duplicate keys:** keys are now looked up by hash, with Python's  …[+1646]
+[L844] TOOL Bash: git merge --no-edit worktree-agent-a2d7d372b318c9833 2>&1 | tail -1; git diff --name-only --diff-filter=U; cargo clippy --workspace --all-targets --locked -q -- -D warnings && cargo test --workspace --locked -q 2>&1 | grep -E "failed;" | grep -v " 0 failed"; cargo run -q --locked -p pkm-parity -- ch …[+306]
+[L847] RESULT: 6 files changed, 456 insertions(+), 149 deletions(-) | tail: cannot open '-n2' for reading: No such file or directory
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

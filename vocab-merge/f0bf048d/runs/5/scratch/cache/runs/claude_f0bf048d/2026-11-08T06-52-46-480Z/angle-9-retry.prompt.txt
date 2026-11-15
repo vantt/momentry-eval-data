@@ -1,0 +1,96 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L84] USER: ai companies v1 có nhiều profile chi tiết hơn cho phòng marketing khong?
+[L174] USER: chúng ta phải chuẩn bị công cụ đầy đủ cho nó chứ
+[L175] USER: bộ đóng gói phải cài được.
+</asks>
+
+<story>
+hook: Agent tự tìm ra file key bị sót và báo blocked sau 20 giây
+tension: cam_ma_van_lot (Đóng gói xong mà vẫn sót bước chép key / Agent tự phát hiện lỗi chỉ sau 20 giây)
+stakes: 2/3
+# Bước sudo chép key bị sót: agent kiểm thử báo blocked sau 20 giây
+
+**Bối cảnh:** Thử nghiệm đầu tiên: giao issue SEO cho agent đã cài MCP nhưng chưa có file key.
+**Chuyện gì xảy ra:** Agent khởi động được cả hai MCP server, gọi được list_sites, rồi tự phát hiện thiếu file key dưới user daemon và chuyển issue sang blocked sau 20 giây. Nguyên nhân là bước sudo install chép key nằm ngoài công cụ đóng gói nên bị bỏ sót. Sau đó đưa khai báo files vào manifest và kiểm MCP dưới đúng user daemon.
+**Bài học:** Bước đặt bí mật lên máy phải nằm trong công cụ đóng gói, và việc kiểm phải chạy bằng đúng user sẽ chạy agent chứ không bằng user người triển khai.
+**Artefact:** Comment blocked của agent (che đường dẫn home).
+</story>
+
+<excerpt>
+[L478] AGENT: Không có biến môi trường thì server MCP không được tạo và chỉ có cảnh báo, đúng như thiết kế. Tôi kiểm xem có sudo không, để cài thật vào `/opt/opc-agent`:
+[L479] TOOL Bash: sudo -n true 2>&1 && echo SUDO_OK
+[L480] RESULT (exit 1): Exit code 1 | sudo: interactive authentication is required
+[L482] AGENT: Không có sudo nên phần cài vào `/opt/opc-agent` bạn sẽ chạy. Tôi cập nhật tài liệu: spec, README gói, `COMPANY.md`.
+[L483] TOOL Bash: cd ~/project/fgOPC/multica; python3 - <<'EOF' def edit(p, pairs): t=open(p).read() for a,b in pairs: assert t.count(a)==1, (p,a[:50]); t=t.replace(a,b) open(p,"w").write(t) edit("spec/package-format.md", [ (""" .fgopc.yaml # fgopc: project→workflow, secret, lịch, cấu hình theo nền tảng""", """ .fgop …[+5396]
+…
+[L950] USER: <task-notification>
+<task-id>b9v526mcp</task-id>
+<tool-use-id>toolu_014KkRbuQKkixJgUzqhkhKnS</tool-use-id>
+<output-file>/tmp/claude-1000/-opt-AICoworker/903e1533-50c2-451b-b5e3-571f6dec4570/tasks/b9v526mcp.output</output-file>
+<status>completed</status>
+<summary>Background command "Wait for SEO Specialist to finish STU-6, print comments" completed (exit code 0)</summary>
+</task-notification>
+[L954] TOOL Bash: cat /tmp/claude-1000/-opt-AICoworker/903e1533-50c2-451b-b5e3-571f6dec4570/tasks/b9v526mcp.output
+[L955] RESULT: status=blocked after 20s | ----- agent 2026-10-30T10:32:02
+[L963] AGENT: Kết quả chạy thử STU-6 cho thấy hạ tầng gần như ổn. Agent làm đúng vai:
+- Cả hai MCP server đều khởi động được trên `opc-agent`, agent gọi được `list_sites` và `get_account_summaries`.
+- Agent tự kiểm biến môi trường và thư mục, tìm ra nguyên nhân chính xác, không bịa số. Nó chuyển issue sang `blocked` và ghi rõ chủ cần làm gì.
+
+Chỗ hỏng là phần hạ tầng tôi lo: **file key chưa có ở `/home/opc-agent/.config/opc/google-sa.json`**. Ở bước trước, phần cài MCP đã chạy (bin có trong `/opt/opc-agent/bin`), nhưng lệnh `install` key phía sau thì không. Mục 2 và 4 trong danh sách agent đưa ra thì đã xong: service account đã có quyền và property `274853955` là đúng.
+
+Bạn chạy lệnh này (cần sudo):
+```
+! sudo install -m 600 -o opc-agent -g opc-agent /tmp/claude-1000/-opt-AICoworker/f0bf048d-0996-462f-94f4-0d8f367f342c/scratchpad/google-sa.json /home/opc-agent/.config/opc/google-sa.json && sudo -u opc-agent test -r /home/opc-agent/.config/opc/google-sa.json && echo KEY_OK
+```
+
+In ra `KEY_OK` là xong. Sau đó tôi chuyển STU-6 về `todo` để SEO Specialist chạy lại.
+
+Lần chạy lại sẽ kiểm tra nốt điều quan trọng nhất: agent có **tự phát hiện** property Search Console đang là bản `www` cũ, trong khi website đã chuyển sang bản không `www`, hay không. Tôi chưa ghi điểm đó vào issue. `GSC_SITE_URL` cũng chưa đặt, vì chọn đúng site cũng là việc của agent.
+[L968] USER: việc của em là đóng gói làm sao để khi anh deploy lại team cho multica thì có đủ agent và có đủ tooll cho nó.
+[L975] AGENT: Rõ: việc của tôi là **gói**, không phải tự làm thay. Mục tiêu là deploy lại từ đầu thì có đủ agent lẫn công cụ, với tối thiểu bước tay.
+
+Lỗi vừa rồi đúng là lỗ hổng của gói. File key phải chép tay bằng một lệnh `sudo install` riêng, bước đó sót thì agent mù. Ngoài ra mỗi lần deploy lại phải gõ lại các biến môi trường. Tôi sửa gói như sau:
+
+1. `.fgopc.yaml` khai báo **daemon chạy dưới user nào** (`host: { user: opc-agent }`) và **file bí mật cần đặt lên máy** (`files:`, vd key Google). MCP tham chiếu file đó bằng `${file:google-sa}`, không còn đường dẫn viết cứng.
+2. `opc.mjs tools` cài MCP **và** đặt file bí mật vào home của user daemon (quyền 600). Sau đó nó chạy `--check` **dưới chính user daemon**, nên bắt được đúng loại lỗi vừa gặp.
+3. Giá trị theo máy (đường dẫn key gốc, `GA4_PROPERTY_ID`…) để trong `<gói>/.opc/env`, quyền 600 và không commit. `tools`, `plan`, `deploy` tự đọc file này, nên deploy lại chỉ cần một lệnh.
+[L976] TOOL Bash: cd ~/project/fgOPC/multica; grep -n "renderMcp\|^function\|^async function\|^class\|DEFAULT_PREFIX\|const pkg = new Package\|opts.prefix\|mcpServers()" tools/opc.mjs
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

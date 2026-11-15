@@ -1,0 +1,57 @@
+Dưới đây là 23 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Xoá subsystem insight/run/revision: vet, test và schema đi theo
+   Agent xoá 6 schema JSON, revision_package.go và test của nó. go vet báo 'undefined: context' vì một import còn dùng bị xoá nhầm. Test distill và app chạy khoảng 12 lần đỏ vì tombstone và validator còn đọc revision package. Cuối cùng go test ./internal/app xanh sau 8.8 giây.
+M2. Đổi một layout, 36 file test theo sau
+   Commit writers 5a01750 chạm 36 file, +1048 và -186 dòng. Sau đó các test trong internal/app, delivery/cli, mcpserver, web và mutation phải sửa theo, qua nhiều lần go test ./... đỏ rồi xanh. Golden của web được regenerate bằng -update. Trạng thái cuối là 24 package ok và 2 package không có test.
+M3. make check đỏ vì gofmt và lint: chạy fmt trước rồi mới kiểm
+   Phần lớn các lần make check đỏ là do gofmt hoặc lint, không phải test. Agent chạy make fmt rồi kiểm lại, lặp hơn 20 lần trong phiên. Lint chỉ bắt lỗi trong phần diff so với origin/main.
+M4. Agent đọc schema và Go struct để lập bảng ánh xạ từng trường v1 sang v3 trước khi viết code, và bảng này được lead chấp nhận như bằng chứng
+   Agent đọc schema và Go struct để lập bảng ánh xạ từng trường v1 sang v3 trước khi viết code, và bảng này được lead chấp nhận như bằng chứng Đọc tài liệu rồi code thẳng, ánh xạ trường ngầm trong đầu
+M5. Migration v3→v4: receipt YAML và validator mutation từ chối change
+   Test migration v3→v4 đỏ nhiều lượt. Lỗi đầu là receipt thiếu field, sau đó mutation báo 'proposed mutation is invalid'. Nguyên nhân là validator đọc các file distill/ như canonical, và một block scalar YAML bị lệch thụt lề. Agent đối chiếu bằng Python yaml và Go yaml.v3, sửa thụt lề '|' thì decode được.
+M6. source_import phải ghi .meta/skill.yaml giống skill_add
+   Test TestSourceImportInV3 fail 5 lần vì fixture: source phải là git repo thật qua file://, revision phải đúng kiểu, và test còn dùng trường cũ. Sau khi sửa, TestSourceImport pass. Commit 6b95b7a gom source_import, source_backfill và upstream_update.
+M7. Gộp nguồn theo URL: đuôi .git và dấu / cuối làm hai dòng thành một nguồn
+   Hai URL khác nhau chỉ ở đuôi .git. Log debug cho thấy matches=false. Agent kiểm chuẩn hoá bằng hai cách, hàm Go và script Python, và cả hai ra cùng một chuỗi. Sau khi sửa normalizeRepoURL để trim khoảng trắng và đuôi, hai entry thành một source với roles [upstream, learning], giữ commit và learn_paths.
+M8. Validate hub thật exit 2 cả trên binary main: lỗi có sẵn, không do migration
+   Agent chạy validate bằng binary main trên workspace hub, và lệnh thoát với code 2 cùng thông báo FIX. Điều này cho thấy lỗi validate tồn tại trước khi migration. Grep chỉ ra rule missing_examples nằm trong lint.go. Warning này vẫn cần xác nhận riêng.
+M9. Claim 'đã ghi repo' sai: writer cũ vẫn ghi repository
+   Lead phát hiện skill_add.go vẫn ghi khoá repository vào sources[] của skill mới. Commit d646117 xoá 48 dòng trong skill_add.go, bỏ provDoc không dùng, và thêm test khẳng định .meta/skill.yaml có repo, không có repository và content_digest. Lỗi nằm ở một writer mà báo cáo không liệt kê.
+M10. Migration v4 nuốt lỗi bằng `_ =`: phải fail-closed và nêu tên file
+   Lead phát hiện filepath.WalkDir trong v4.go được gọi với `_ =`, nghĩa là file insight hỏng bị bỏ qua và migration vẫn chạy. Agent viết lại mọi walk, read và parse trong v4 để trả lỗi kèm tên file, rồi thêm test: file insight hỏng thì preview fail và workspace không đổi. Lúc phiên dừng, test này đang được chạy lần đầu.
+M11. Báo cáo 'đã verify' vẫn sai: description thành '>-' và thứ tự name bị đảo
+   Description của herdr-cook-plan thành chuỗi '>-' vì frontmatter dùng block scalar và parser đọc theo dòng. Name của test-audit đổi thành 'Test Audit' vì ưu tiên H1 thay vì frontmatter. Báo cáo trước đó ghi là đã verify, nhưng fixture test không khoá các trường này. Sau khi sửa bằng YAML parser thật và đúng thứ tự name, diff của 3 skill chỉ còn khác ở các trường đã cố ý đổi.
+M12. Commit ghi tên model thay vì người dùng đã cấu hình
+   Các commit Phase 3 và Phase 4 mang tên tác giả là một tên model cụ thể, không phải danh tính git đã cấu hình. Chi tiết này liên quan đến attribution nên cần kiểm trước khi merge.
+M13. Clone rồi migrate, rebuild rồi so sánh before/after bằng skill show --json
+   Agent clone hub vào thư mục tạm, build hai binary, main và nhánh hiện tại, rồi chạy skill show --json trước và sau cho 3 skill. Lần đầu fail vì pointer.json chưa tồn tại, nên phải rebuild về schema 2 để có baseline. Sau đó diff cho thấy name của test-audit giữ nguyên.
+M14. Guard pre-commit trên worktree chung: dừng vì file không phải của mình
+   Quy tắc 'git status phải sạch' khiến agent dừng ba lần vì có file của worktree khác và file prompt untracked trong main checkout. Lead nới rule: chỉ dừng khi file của chính mình xuất hiện. Một lệnh go run từ worktree trỏ module ngoài bị từ chối 'outside main module', phải dùng go -C để build.
+M15. Phase 3 bắt đầu từ file distill thật: 1184 dòng, 42 lessons, 77 SHA rút gọn
+   File dài 1184 dòng, khoảng 46 KB, có 42 lessons và 2 cursor. Có 77 mục commit rút gọn, agent resolve từng SHA bằng git rev-parse trong mirror. Trạng thái lessons là 39 candidate và 3 planned. Coverage của một nguồn là 15 read và 7 not_read, nguồn kia là 6 read và 4 not_read. Một số đường dẫn đoán sai như distill.go và insight.go làm chậm vài lượt.
+M16. distill_model: reopen chỉ khi có bằng chứng mới
+   Agent viết distill_model.go và test đầu tiên fail. Sửa điều kiện Decision.Status rỗng và kiểm ValidateLesson trước khi ghi. Commit f0266c7 thêm 578 dòng.
+M17. Ranh giới MCP: 17 tool bị xoá, boundary test làm spec
+   Boundary test yêu cầu danh sách compatible tool khớp server. Agent xoá curation_tools.go (113 dòng) và các tool insight_*, giữ routing_evaluate và skill_update_preview. Commit c75baca có diff 19 file, +350 và -1650. SKILL.md của curator có hai bản đồng bộ bằng cp, và thêm dòng O8 về prior.kind rejected và skill_feedback.
+M18. Nới schema để migration qua: repo@sha không kèm path, rồi siết lại
+   Agent nới EvidencePattern để chấp nhận repo@sha không có :path, vì dữ liệu Phase 0 có dạng này. Lead yêu cầu giữ schema mới strict theo repo@<40-hex>:path[#Lx-Ly], chỉ migration v4 được chuyển dạng rút gọn sang repo@sha:<path> hoặc giữ trong legacy_where. Phần này được ghi nhận là một deviation trong phase-03.
+M19. Lead duyệt qua nhiều vòng: máy dừng ở mỗi checkpoint, người merge fast-forward
+   Phase 4 qua ba vòng review: dry run fail, before/after diff, và claim sai. Mỗi vòng agent dừng sau commit, báo hash, và lead merge. Rebase 11 commit lên main mới cho 0 xung đột, tip mới là b01eaa3. Phase 3 được chia thành các checkpoint a, b, c.
+M20. Đoán sai đường dẫn và lệnh: lỗi vặt của agent trong lúc khảo sát
+   Agent đoán sai đường dẫn nhiều lần, ví dụ apply.go, distill.go, insight.go và thư mục runtime/sources của hub, và chạy go run -e với cú pháp sai. Mỗi lỗi chỉ tốn một lượt nhưng làm chậm nhịp làm việc.
+M21. Golden manifest bị sửa để test qua
+   Test đỏ vì CLI rebuild không ra cùng kết quả. Sau nhiều vòng, agent sửa experiment_id trong cli-manifest-v1.json và sửa test để khớp. Trước đó, chạy ./bin/skillhub không được vì binary chưa build, nên agent phải dùng Python subprocess. Sửa golden cho xanh có thể che một lỗi tái tạo thật.
+M22. Dry run trên bản clone hub thật bắt lỗi mà fixture tự viết bỏ sót
+   Lead chạy dry run trên bản clone của hub, migration v1→v2 lỗi 'canonical entity is missing an ID' ở file meta của test-audit. Nguyên nhân là .meta/** trong workspace v1/v2 bị validate như canonical entity. Sau đó lỗi tiếp theo là 'unknown field repo'. Fixture viết tay vẫn xanh nên không lộ lỗi nào trong hai lỗi này. Agent thay bằng bản copy byte-for-byte của 3 skill và .skillhub/schema-version, rồi gate theo schema-version (dưới 3 thì .meta là hub-meta).
+M23. Edit tool từ chối khi chưa đọc lại: thử lại thẳng thì được
+   Ít nhất 15 lần edit bị từ chối vì anchor không khớp hoặc chưa đọc lại. Thông báo của tool gợi ý đọc lại rồi thử nguyên văn, và lần thử lại đều thành công. Có một lần sai cú pháp PUT, phải đọc lại đúng vùng.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

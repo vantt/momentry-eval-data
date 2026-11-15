@@ -1,0 +1,30 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Thêm quy tắc config một cửa vào skill sau khi đọc thay đổi của momentry
+   Quy tắc mới của momentry (commit de173ef, một ngày trước) gồm 6 điểm: một cửa config, cờ --project, khoá chỉ máy không ghi vào file repo, không tự bật dự án, giao diện web gọi đúng hàm ghi CLI. Skill được thêm CMD-22..24, nâng CFG-12 lên MUST. Lint và kiểm tra đường dẫn đều qua (215 rule), rồi gửi lên hub.
+M2. fgos tưởng là alias của doctor, hoá ra setup làm thêm 5 việc doctor không làm
+   fgos có ba lệnh chồng chéo: init, setup và doctor --fix. Lệnh setup ghi dòng source vào rc, tạo config, cài git hook, cài Claude hook và copy skill, trong khi doctor --fix chỉ chạy các fix đã đăng ký. Mô tả của chính lệnh setup thừa nhận điều này. Quyết định chuẩn hoá: doctor là bộ máy duy nhất, init = doctor --fix cộng quyền tạo mới, setup bỏ.
+M3. Người dùng chỉ cần nói ngắn 'đẩy lên hub đi' hay 'merge và push luôn', agent tự làm đủ chuỗi: kiểm tra, chạy lệnh kiểm tra của dự án, gửi, rồi theo dõi CI đến khi xong và báo kết quả, mà không hỏi lại từng bước
+   Người dùng chỉ cần nói ngắn 'đẩy lên hub đi' hay 'merge và push luôn', agent tự làm đủ chuỗi: kiểm tra, chạy lệnh kiểm tra của dự án, gửi, rồi theo dõi CI đến khi xong và báo kết quả, mà không hỏi lại từng bước Nhiều dev làm tay từng bước và phải tự nhớ quy trình; ngược lại, nếu giao cho AI thì hay bị hỏi lại liên tục, hoặc AI làm mà không đợi CI xong
+M4. Lỗi UX từ chính công cụ của mình: gợi ý cờ --user không tồn tại, và hub 'active' không phải bản vừa gửi
+   Thông báo lỗi gợi ý cờ --user, nhưng connect không có cờ đó (skillstation 0.8.0 trên máy, hub 0.12.0). Sau khi kết nối toàn cục và đẩy bản gửi, trang skill vẫn hiện bản cũ là 'active' mà không báo có bản chờ duyệt. Ba bản gửi cùng một skill cùng nằm trong hàng chờ. Agent đã viết một thay đổi UI cho trang chi tiết và danh sách skill (229 test web qua), merge và push lên main, CI xanh.
+M5. Một skill packaging ban đầu 212 rule, dư thừa 46% chữ, và phải viết lại theo tầng ưu tiên UX
+   Bản đầu có khoảng 11.900 từ và 183 rule. Sau lần rút gọn đầu, còn khoảng 6.400 từ (−46%), rule chuyển sang một dòng. Qua các vòng chủ góp ý, số rule lên 230 rồi chuốt về 212, và tầng ưu tiên UX → an toàn → đúng đắn → nhanh được đưa lên đầu. Một agent review độc lập chỉ ra các lệnh mâu thuẫn nhau (setup vs init) và installer mẫu vi phạm chính rule của nó.
+M6. 5 test Go lỗi chỉ trên máy chủ vì HOME đổi mà thư mục làm việc vẫn là HOME thật
+   Test đổi HOME sang thư mục tạm nhưng không đổi thư mục làm việc. Lệnh status và doctor đi ngược lên thư mục cha, gặp ~/.codex/config.toml và ~/.gemini/settings.json đã trỏ tới hub vừa kết nối lúc 14:46. Code coi /home/vantt là một dự án, so sánh binary đăng ký với binary test, thấy khác nhau và báo FAILED. Các test chỉ lỗi trên máy có cấu hình thật, nên 5 lỗi không xuất hiện trên CI.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

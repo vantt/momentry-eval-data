@@ -1,0 +1,129 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian: note nào nối với note nào, đi từ ý này tới ý kia qua đâu, note nào lạc khỏi mạng. Làm cho người làm một mình, freelancer, có tiếng Việt. Dùng dưới dạng một file chạy trên máy, người dùng không phải cài Python; có bộ cài cho Windows, macOS và Linux. Mục tiêu hiện tại: thay bản Python đang dùng bằng lõi viết bằng Rust cho Claude Desktop và chat trong Obsidian.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L1177] USER: vậy với ohs, khách có gh cũng phải login github
+[L2147] USER: Stop hook feedback: [bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.]: The goal was to complete the whole plan (M1–M4, phases 01–17). The transcript shows phases 02, 03, 05, 08–13 still waiting on user-only or Windows steps, and phases 15, 16 and 17 not started (they wait on the user). The final message says these remain open ('Còn lại, nằm ngoài phần tôi làm') and the plan's own M3/M4 milestones are not reached, so the condition  …[+14]
+[L2157] USER: Stop hook feedback: [bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.]: The plan is not complete. Phases 02, 03, 05, 08-11 and 13 still have open boxes that need Windows, OHS or vault-B checks (the transcript says the phase files stay in-progress and point to handoff-windows-test.md). Phases 15, 16 and 17 are not started and wait on user gates (follow/cutover decision, tag and one-week parallel run, Q2 and spec-repo edits). Milesto …[+169]
+</asks>
+
+<story>
+hook: Commit 54 dòng, nhưng thiếu một biến môi trường thì index dựng lại mãi
+tension: nho_ma_to (Commit chỉ 54 dòng / Hai OHS khác cấu hình gói khiến index dựng lại liên tục)
+stakes: 2/3
+# Python thêm gói tiếng Việt: thiếu biến môi trường thì index dựng lại mãi
+
+**Bối cảnh:** Commit 223c9c3 của bản Python làm OHS chạy từ bundle có sẵn gói tiếng Việt.
+**Chuyện gì xảy ra:** Commit chỉ 54 dòng, nhưng nếu OHS của pkm và OHS của MCP người dùng dùng cấu hình gói khác nhau trên cùng index, OHS sẽ dựng lại view gói liên tục. Agent đặt biến OHS_LANGUAGE_PACK cho mọi lần khởi động OHS, dựng lại golden với ghim mới, và follow báo 0 commit chưa chuyển.
+**Bài học:** Hai tiến trình dùng chung một index phải dùng cùng cấu hình, nếu không sẽ tranh nhau dựng lại.
+</story>
+
+<excerpt>
+[L2168] RESULT: The user answered: "The goal's stop hook won't let me stop until the whole plan is done (phases 15 to 17, milestones M3 and M4), but every remaining step is behind a gate only you can open. What should I do next?"="phase 15 là anh làm trên windows đú …[+141]
+[L2174] TOOL Bash: python3 parity/follow.py 2>&1 | tail -15
+[L2178] RESULT: Commit chạm đường dẫn theo dõi, từ 5a3eb2f tới origin/main: | 223c9c3 2026-11-02 feat(e12): run OHS from the fork's prebuilt bundle with the Vietnamese pack | scripts/e11/graph_index.py, scripts/kg/desktop_config.py, scripts/kg/related.py, scripts/pl …[+25]
+[L2187] TOOL AskUserQuestion: {"questions":[{"question":"Phase 15: Python has 1 new commit, 223c9c3 (runs OHS from the fork's prebuilt bundle with the Vietnamese pack; 54 lines in related.py, desktop_config.py, platform_paths.py and e11/graph_index.py). Should I port it to Rust now, raise the pin in spec.lock and rebuild the gol …[+370]
+[L2188] RESULT: Your questions have been answered: "Phase 15: Python has 1 new commit, 223c9c3 (runs OHS from the fork's prebuilt bundle with the Vietnamese pack; 54 lines in related.py, desktop_config.py, platform_paths.py and e11/graph_index.py). Should I port it  …[+128]
+[L2196] TOOL Agent: Port Python commit 223c9c3
+[L2197] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: ae8cc8b9ca4b8eb75 (internal ID - do not mention to user. Use SendMessa …[+86]
+[L2211] TOOL Bash: git fetch -q && git status -sb | head -1 && git log --oneline -1 origin/main && git status --short | grep -v '^??' | wc -l
+…
+[L2231] RESULT: # Phase 16: Chạy song song và chuyển hẳn (R13) | ## Mục tiêu
+[L2240] AGENT: Hai phase cuối là bước bỏ hẳn bản Python, rồi gộp hai MCP (`kg` và `ohs`) thành một. Cả hai chủ yếu chờ anh/chị dùng thử và quyết định.
+
+## Phase 16: chạy song song rồi chuyển hẳn
+
+**Mục tiêu:** anh/chị dùng `pkm` thay bản Python một tuần. Nếu không kém hơn thì bỏ bản Python cho phần lõi.
+
+**Bốn điều kiện để chuyển hẳn (PRD mục 13):**
+1. Bộ so khớp sạch: kg-solo trong CI (đã đạt) và vault bản B trên máy anh/chị (agent Windows sẽ chạy).
+2. `follow` báo 0 commit Python chưa chuyển. Lần cuối báo 1 commit (`223c9c3`) và đang được chuyển.
+3. Điểm chất lượng không giảm. Anh/chị chạy các nhóm câu hỏi A–C và F trong playbook (`07-kg-challenges.md` ở repo đặc tả) bằng bản Python để lấy mốc. Sau một tuần dùng `pkm` thì chạy lại để so.
+4. Anh/chị đồng ý chuyển hẳn.
+
+**Tôi làm:** kiểm điều kiện 1 và 2, gắn tag phát hành thử (cần anh/chị cho phép), ghi điểm hai bên vào `plans/reports/cutover-*.md`.
+
+**Anh/chị làm:** dùng Claude Desktop và chat trong Obsidian trỏ vào `pkm` một tuần, chạy lại các nhóm câu hỏi, rồi quyết định.
+
+**Sau khi anh/chị đồng ý và cho phép sửa repo Python:**
+- `setup_vault.py` và hướng dẫn cài trỏ sang `pkm`.
+- `scripts/kg` đóng băng, chỉ còn sửa lỗi.
+- Ghi quy tắc hội tụ của mục 5.7 vào mục GATES.
+
+## Phase 17: một cửa
+
+**Mục tiêu:** hiện agent phải dùng hai MCP: `kg` để hỏi graph và `ohs` để tìm theo nghĩa và đọc note. Sau phase này agent chỉ cần nói với `pkm`:
+- `pkm` thêm hai tool `search` và `read`, chuyển tiếp sang OHS qua kết nối OHS mà nó đã giữ sẵn.
+- `related` nhận thẳng câu hỏi làm đường chính, tức là tìm và đi graph trong một lần gọi. Vẫn nhận `hits` như cũ.
+- `instructions` của MCP hướng dẫn agent chỉ dùng `pkm`.
+- `pkm mcp install` thôi đăng ký MCP `ohs`. MCP `ohs` anh/chị tự thêm thì giữ nguyên, vẫn dùng song song được.
+- Mỗi thay đổi hợp đồng tool được ghi vào `docs/MCP-CHANGELOG.md`.
+
+**Nghiệm thu:** agent làm đủ nhóm A–D playbook chỉ với `pkm`, và số lượt gọi tool cùng số token mỗi câu không cao hơn khi dùng hai MCP.
+
+**Cần anh/chị quyết t …[+510]
+[L2247] USER: <task-notification>
+<task-id>ae8cc8b9ca4b8eb75</task-id>
+<tool-use-id>toolu_016Vk1u7p7dHgRztAnBxhZkY</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/ae8cc8b9ca4b8eb75.output</output-file>
+<status>completed</status>
+<summary>Agent "Port Python commit 223c9c3" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I ported 223c9c3 into the Rust OHS module, raised the pin to 223c9c3 and rebuilt the golden. All gates pass and parity is clean.
+
+Branch `worktree-agent-ae8cc8b9ca4b8eb75`, two commits, not pushed or merged:
+- `ae2ffa1` feat(ohs): run OHS with the bundle's Vietnamese language pack
+- `8f37d6f` chore(spec): pin the Python spec at 223c9c3 and regenerate the golden
+
+**What was ported.** The part that matters is that every OHS process gets `OHS_LANGUAGE_PACK` pointing at the bundle's `lang/ohs-lang-vi`. Without that, `pkm` and the user's MCP `ohs` would use different pack settings on the shared index, and OHS would keep rebuilding its pack views. `OhsPackage` now has a `pack` field, set when that folder exists, and `ohs::LANGUAGE_PACK_ENV` is new. Every OHS launch in `pkm` sets the variable when there is a pack and leaves the environment alone when there isn't. That covers MCP, `pkm VAULT related` and `doctor --deep`. Adding the field is additive within the workspace; only two test struct literals needed it.
+
+**Marked not applicable** (each with its reason in the PORTING row):
+- The npm-install branch of `ohs_install`: Rust only runs the fork bundle (PRD §9).
+- `WSLENV`: WSL-only.
+- The bundle's own node in `related` and `desktop_config`: Rust already does this, and the `kg` entry doesn't carry `--ohs-node`.
+- The new `OHS_CLI` constants: Rust finds the bundle another way, and an old `--ohs-cli` pointing at `app/dist/src/cli.js` is still accepted.
+
+There are no new deliberate deviations.
+
+**Bundle pin unchanged.** I checked the installer's pinned artifact (run 41398112909, linux-x64, sha matches the pin). It already contains `lang/ohs-lang-vi` (vi 0.2.0), and its `bin/ohs` does not set the variable, so `pkm` has to. Running that real bundle with the variable on kg-solo, `status` reported `language_pack.loaded: true`, and the ignored `ohs_real` test passed.
+
+**Gates:**
+- `cargo fmt --all --check`, `cargo …[+2834]
+[L2251] TOOL Bash: cd /home/vantt/projects/obsidian-pkm && git merge --no-edit worktree-agent-ae8cc8b9ca4b8eb75 2>&1 | tail -1; git diff --name-only --diff-filter=U; cargo clippy --workspace --all-targets --locked -q -- -D warnings && cargo test --workspace --locked -q 2>&1 | grep -E "failed;" | grep -v " 0 failed"; S …[+361]
+[L2254] RESULT: create mode 100644 plans/reports/fullstack-developer-261102-1615-chase-223c9c3.md | Tổng: 64 mục, 0 lệch chưa có tên, 0 mục chưa có.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,847 @@
+{
+  "id": "cd4449ab",
+  "run": 3,
+  "host": "omp",
+  "transcript": "/home/vantt/.omp/profiles/gemini-tetcu72/agent/sessions/-projects-mcp-skill-hub-simplify/2026-10-09T02-40-10-134Z_01a11e88-4796-7023-a511-4a8dcd4449ab.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "dadb4c5597fabafa",
+  "at": "2026-11-10T12:45:40.332Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.057544000000000005,
+  "dryRun": {
+    "usd": 0.35,
+    "tokens": 92346,
+    "chunks": 1,
+    "hotspots": 144,
+    "entries": 2664,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "omp:cd4449ab",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.35717119999999997,
+    "secs": 22.8,
+    "exitCode": 0,
+    "status": "done",
+    "written": 17,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-09-dry-run-tren-ban-sao-hub-4257",
+        "status": "angle",
+        "angle": "Một hub skill cho AI agent đang chuyển định dạng dữ liệu qua nhiều phiên bản, và người làm muốn bước migrate chạy được trên dữ liệu thật. Test trên dữ liệu mẫu đều qua nên họ tin bước này đã xong. Khi chạy thử trên bản sao hub thật, validator lại coi thư mục .meta (metadata của hub) như một skill chính và chặn migration vì thiếu ID. Ai làm công cụ có bước kiểm tự động theo cấu trúc thư mục nên chạy thử trên dữ liệu thật trước khi tin là xong.",
+        "audience": "dev làm công cụ có migration hoặc validator đọc cấu trúc thư mục",
+        "evidence": [
+          1461,
+          1462
+        ],
+        "spine": {
+          "context": {
+            "text": "Một hub skill cho AI agent lưu skill dưới dạng file, đang chuyển định dạng workspace từ v1 sang v3 qua từng phase; người làm đang hoàn thiện Phase 4 (migration).",
+            "evidence": [
+              6,
+              1713
+            ]
+          },
+          "want": {
+            "text": "Muốn Phase 4 chạy đúng trên hub thật để được merge.",
+            "evidence": [
+              1462
+            ]
+          },
+          "obstacle": {
+            "text": "Test trên dữ liệu mẫu đều xanh, nhưng dry run trên bản sao hub thật dừng ở bước v1→v2.",
+            "evidence": [
+              1461,
+              1462
+            ]
+          },
+          "turn": {
+            "text": "Tưởng xong vì test xanh; hoá ra validator đọc .meta như skill chính trong workspace v1/v2, nơi .meta là metadata của hub.",
+            "evidence": [
+              1461,
+              1462
+            ]
+          },
+          "action": {
+            "text": "Đọc phiên bản workspace, bỏ .meta khỏi bộ kiểm canonical khi dưới v3, và gộp nguồn theo URL repo đã chuẩn hoá.",
+            "evidence": [
+              1712
+            ]
+          },
+          "outcome": {
+            "text": "Migration v1→v2→v3 chạy được trên bản sao hub thật; validate pass, trust không đổi.",
+            "evidence": [
+              1713
+            ]
+          },
+          "takeaway": {
+            "text": "Thư mục metadata phải được loại khỏi bộ kiểm theo phiên bản dữ liệu; test trên mẫu tự làm không đủ, cần chạy trên bản sao dữ liệu thật.",
+            "evidence": [
+              1462,
+              1713
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-09-test-xanh-nhung-description-thanh-va-4257",
+        "status": "angle",
+        "angle": "Một công cụ quản lý skill cho agent AI đang chuyển dữ liệu của hub thật sang định dạng mới trước khi merge. Người làm tin rằng fixture test đã xanh và báo cáo đã kiểm đủ sáu mục thì migration giữ nguyên nội dung skill. Khi so sánh đầu ra lệnh show trước và sau, description của một skill thành đúng hai ký tự '>-' và thứ tự tên bị đảo, dù test vẫn xanh. Ai làm công cụ có migration dữ liệu nên biết rằng test kiểm giá trị kỳ vọng có thể bỏ sót lỗi hiển thị.",
+        "audience": "dev làm công cụ có migration dữ liệu và test fixture",
+        "evidence": [
+          6,
+          1712,
+          1713
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ quản lý skill cho agent AI, có workspace và các bước migration; người làm đang đưa phase 4 qua review trước khi merge.",
+            "evidence": [
+              6,
+              1713
+            ]
+          },
+          "want": {
+            "text": "Muốn migration chạy được trên bản sao hub thật.",
+            "evidence": [
+              1462
+            ]
+          },
+          "obstacle": {
+            "text": "Migration thật lỗi ở bước v1 sang v2 vì .meta/** bị kiểm tra như một entity.",
+            "evidence": [
+              1462
+            ]
+          },
+          "turn": {
+            "text": "Tưởng fixture test đã xanh và sáu mục review đều đã kiểm, nên migration giữ nguyên nội dung skill. Hoá ra so sánh đầu ra show trước và sau cho thấy description thành '>-' và tên bị đảo thứ tự, test không bắt được.",
+            "evidence": [
+              1712,
+              1713
+            ]
+          },
+          "action": {
+            "text": "Viết lại fixture test và đọc lại logic gộp routing trong migration v3 để tìm nguyên nhân.",
+            "evidence": [
+              1714,
+              1776,
+              1780
+            ]
+          },
+          "outcome": {
+            "text": "Với test-audit, tên trước và sau migration đều là 'test-audit'. Các skill còn lại và phần diff đầy đủ chưa được xác nhận trong đoạn này.",
+            "evidence": [
+              1890
+            ]
+          },
+          "takeaway": {
+            "text": "Test xanh chỉ chứng minh những gì test kiểm tra. Để bắt lỗi hiển thị, hãy so sánh đầu ra thật của hai phiên bản trên dữ liệu thật.",
+            "evidence": [
+              1713
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-09-bao-cao-noi-da-xong-lead-4257",
+        "status": "angle",
+        "angle": "Một dự án skill hub cho AI agent đang gom việc đơn giản hoá thành nhiều phase, và phase 4 phải qua review trước khi merge. Báo cáo của agent nói đã xong, nhưng khi lead đọc lại, skill_add vẫn ghi key repository vào danh sách nguồn của skill mới, và một khẳng định trong báo cáo là sai. Điều đáng nghe là báo 'đã sạch' chỉ đáng tin khi đã grep khoá đó trên mọi đường ghi.",
+        "audience": "dev dùng AI agent và muốn biết cách kiểm chứng báo cáo của agent",
+        "evidence": [
+          2024,
+          2025,
+          2122
+        ],
+        "spine": {
+          "context": {
+            "text": "Một dự án skill hub cho AI agent, đang tách việc đơn giản hoá thành nhiều phase; phase 4 phải qua review trước khi merge.",
+            "evidence": [
+              6
+            ]
+          },
+          "want": {
+            "text": "Muốn phase 4 qua được review và merge vào main.",
+            "evidence": [
+              1462
+            ]
+          },
+          "obstacle": {
+            "text": "Lead chạy thử trên bản sao hub thật và thấy lỗi; báo cáo cũng có một khẳng định sai.",
+            "evidence": [
+              1462,
+              2025
+            ]
+          },
+          "turn": {
+            "text": "Báo cáo nói đã xong, tưởng không còn ghi key cũ; hoá ra skill_add vẫn ghi key repository vào sources[] của skill mới.",
+            "evidence": [
+              2024,
+              2025
+            ]
+          },
+          "action": {
+            "text": "Đổi sang ghi key repo, xoá helper không dùng, thêm test kiểm tra .meta/skill.yaml có repo và không có repository hay content_digest.",
+            "evidence": [
+              2053,
+              2077
+            ]
+          },
+          "outcome": {
+            "text": "make check xanh ở 24 package, commit d646117; lead xác nhận, trust verdict giữ nguyên.",
+            "evidence": [
+              2122,
+              2123
+            ]
+          },
+          "takeaway": {
+            "text": "Khi báo cáo đã sạch, grep khoá cần bỏ trên mọi đường ghi trước khi viết, đừng chỉ dựa vào test có sẵn.",
+            "evidence": [
+              2025,
+              2029
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-09-go-17-tool-mcp-cu-test-4257",
+        "status": "angle",
+        "angle": "Một người làm dự án MCP skill hub đang đưa bề mặt MCP về bản tối giản theo bảng contract. Họ tưởng xoá file curation_tools.go là gỡ xong các tool cũ, nhưng test ranh giới curator vẫn đỏ, nên phải đưa lại các tool tương thích. Dev viết công cụ cho AI nên quan tâm vì test ranh giới chạy sau khi xoá cho biết chính xác tool nào còn được gọi, không cần đoán. Kết quả là một commit gom 19 file, +350 -1650 dòng.",
+        "audience": "dev viết test cho công cụ MCP",
+        "evidence": [
+          3485,
+          3490,
+          3956
+        ],
+        "spine": {
+          "context": {
+            "text": "Worktree của người làm dự án MCP skill hub, đang chạy Phase 3: đưa bề mặt MCP về bản tối giản theo contract.",
+            "evidence": [
+              6,
+              2374
+            ]
+          },
+          "want": {
+            "text": "Gỡ 17 tool MCP cũ để bề mặt khớp bảng contract.",
+            "evidence": [
+              3957
+            ]
+          },
+          "obstacle": {
+            "text": "Test ranh giới curator đỏ sau khi xoá curation_tools.go.",
+            "evidence": [
+              3490,
+              3502
+            ]
+          },
+          "turn": {
+            "text": "Tưởng xoá curation_tools.go là gỡ xong; test vẫn đỏ, và các tool tương thích còn nằm trong insight_tools nên phải đưa lại.",
+            "evidence": [
+              3485,
+              3490,
+              3493
+            ]
+          },
+          "action": {
+            "text": "Xoá curation_tools.go, viết lại source_tools và insight_tools, sửa server.go, rồi commit 19 file.",
+            "evidence": [
+              3485,
+              3499,
+              3957
+            ]
+          },
+          "outcome": {
+            "text": "Một commit c75baca: 19 file, +350 -1650 dòng.",
+            "evidence": [
+              3956,
+              3959
+            ]
+          },
+          "takeaway": {
+            "text": "Chạy test ranh giới sau khi xoá code: test đỏ chỉ ra tool nào còn được gọi, không phải đoán.",
+            "evidence": [
+              3490,
+              3502
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-09-migration-phai-fail-closed-loi-doc-4257",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-5: spine.context: evidence ngoài các dòng đã đưa: \"profile\" | angle-5-retry: spine.context: evidence ngoài các dòng đã đưa: \"profile\""
+      },
+      {
+        "id": "2026-10-09-mot-hau-to-git-lam-hong-4257",
+        "status": "angle",
+        "angle": "Người làm đang đơn giản hoá schema của mcp-skill-hub và chuyển một hub thật từ v1 sang v3. Họ tưởng so sánh chuỗi URL là đủ để gộp hai nguồn cùng repo, nhưng một bên có đuôi .git nên không khớp và hai nguồn không gộp được. Dev làm công cụ đồng bộ hay di chuyển dữ liệu nào cũng có thể dính đúng kiểu lỗi này.",
+        "audience": "dev làm công cụ đồng bộ hoặc di chuyển dữ liệu",
+        "evidence": [
+          1812,
+          1818
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đang đơn giản hoá schema của mcp-skill-hub và chuyển một hub thật từ v1 sang v3.",
+            "evidence": [
+              6
+            ]
+          },
+          "want": {
+            "text": "Gộp provenance.origin với các nguồn Phase 0 theo URL repo đã chuẩn hoá, để openclaw thành một nguồn với hai role.",
+            "evidence": [
+              1462
+            ]
+          },
+          "obstacle": {
+            "text": "Migration trên hub thật lỗi, và so khớp chuỗi thô không nhận ra hai URL cùng repo khi một bên có đuôi .git.",
+            "evidence": [
+              1462,
+              1818
+            ]
+          },
+          "turn": {
+            "text": "Tưởng so sánh chuỗi URL là đủ để gộp nguồn; hoá ra đuôi .git làm hai URL cùng repo bị coi là khác.",
+            "evidence": [
+              1812,
+              1818
+            ]
+          },
+          "action": {
+            "text": "Thêm hàm normalizeRepoURL bỏ .git và dấu / cuối, đưa host về chữ thường, rồi dùng để so khớp khi gộp.",
+            "evidence": [
+              1846,
+              1848
+            ]
+          },
+          "outcome": {
+            "text": "Hai URL chuẩn hoá ra cùng một giá trị khi kiểm bằng script; chưa thấy kết quả test Go sau khi sửa.",
+            "evidence": [
+              1803
+            ]
+          },
+          "takeaway": {
+            "text": "So khớp định danh như URL cần hàm chuẩn hoá riêng và test cho biến thể .git, đừng so chuỗi thô.",
+            "evidence": [
+              1818
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-09-migration-v3-sang-v4-block-scalar-4257",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-7: spine.action: evidence ngoài các dòng đã đưa: 2352, 2963, 3368, 3957; spine.outcome: evidence ngoài các dòng đã đưa: 2354, 2357 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/cd4449ab/runs/3/llm/angle-7-retry.json"
+      },
+      {
+        "id": "2026-10-09-xoa-revision-package-va-schema-test-4257",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-8: spine.want: evidence ngoài các dòng đã đưa: 2687; spine.obstacle: evidence ngoài các dòng đã đưa: 2713; spine.turn: evidence ngoài các dòng đã đưa: 2719, 2743; spine.action: evidence ngoài các dòng đã đưa: 2744; spine.outcome: evidence ngoài các dòng đã đưa: 2746, 2770 (+2) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/cd4449ab/runs/3/llm/angle-8-retry.json"
+      },
+      {
+        "id": "2026-10-09-doi-dinh-dang-mot-file-keo-4257",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-9: spine.context: evidence ngoài các dòng đã đưa: 2374; spine.want: evidence ngoài các dòng đã đưa: 2374; spine.obstacle: evidence ngoài các dòng đã đưa: 3088, 3286; spine.turn: evidence ngoài các dòng đã đưa: 3053, 3055, 3088; spine.action: evidence ngoài các dòng đã đưa: 3056, 3080, 3083 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/cd4449ab/runs/3/llm/angle-9-retry.json"
+      },
+      {
+        "id": "2026-10-09-quy-tac-pre-commit-chan-commit-4257",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-10: spine.want: evidence ngoài các dòng đã đưa: 1309, 1311; spine.obstacle: evidence ngoài các dòng đã đưa: 1084, 1221, 1290; spine.action: evidence ngoài các dòng đã đưa: 1087, 1089, 1303; spine.outcome: evidence ngoài các dòng đã đưa: 1311; spine.takeaway: evidence ngoài các dòng đã đưa: 1303 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/cd4449ab/runs/3/llm/angle-10-retry.json"
+      }
+    ],
+    "message": "omp:cd4449ab L1-L4000: done; 17 chuyện thô, 17 cụm; ghi 17 mới, gộp 0\nđiểm nóng 144 (thiếu 0); lần chạy 1/1; 0.36 USD\ngóc kể: 5 có, 0 không ra chuyện, 5 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: repo không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-09-dry-run-tren-ban-sao-hub-4257",
+      "code": "M-XAEC",
+      "title": "Dry run trên bản sao hub thật: thư mục .meta bị coi như entity canonical",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một hub skill cho AI agent đang chuyển định dạng dữ liệu qua nhiều phiên bản, và người làm muốn bước migrate chạy được trên dữ liệu thật. Test trên dữ liệu mẫu đều qua nên họ tin bước này đã xong. Khi chạy thử trên bản sao hub thật, validator lại coi thư mục .meta (metadata của hub) như một skill chính và chặn migration vì thiếu ID. Ai làm công cụ có bước kiểm tự động theo cấu trúc thư mục nên chạy thử trên dữ liệu thật trước khi tin là xong.",
+      "audience": "dev làm công cụ có migration hoặc validator đọc cấu trúc thư mục",
+      "spine": {
+        "context": {
+          "text": "Một hub skill cho AI agent lưu skill dưới dạng file, đang chuyển định dạng workspace từ v1 sang v3 qua từng phase; người làm đang hoàn thiện Phase 4 (migration).",
+          "lines": [
+            "omp:cd4449ab#L6",
+            "omp:cd4449ab#L1713"
+          ]
+        },
+        "want": {
+          "text": "Muốn Phase 4 chạy đúng trên hub thật để được merge.",
+          "lines": [
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "obstacle": {
+          "text": "Test trên dữ liệu mẫu đều xanh, nhưng dry run trên bản sao hub thật dừng ở bước v1→v2.",
+          "lines": [
+            "omp:cd4449ab#L1461",
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng xong vì test xanh; hoá ra validator đọc .meta như skill chính trong workspace v1/v2, nơi .meta là metadata của hub.",
+          "lines": [
+            "omp:cd4449ab#L1461",
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "action": {
+          "text": "Đọc phiên bản workspace, bỏ .meta khỏi bộ kiểm canonical khi dưới v3, và gộp nguồn theo URL repo đã chuẩn hoá.",
+          "lines": [
+            "omp:cd4449ab#L1712"
+          ]
+        },
+        "outcome": {
+          "text": "Migration v1→v2→v3 chạy được trên bản sao hub thật; validate pass, trust không đổi.",
+          "lines": [
+            "omp:cd4449ab#L1713"
+          ]
+        },
+        "takeaway": {
+          "text": "Thư mục metadata phải được loại khỏi bộ kiểm theo phiên bản dữ liệu; test trên mẫu tự làm không đủ, cần chạy trên bản sao dữ liệu thật.",
+          "lines": [
+            "omp:cd4449ab#L1462",
+            "omp:cd4449ab#L1713"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-test-xanh-nhung-description-thanh-va-4257",
+      "code": "M-8PEM",
+      "title": "Test xanh nhưng description thành '>-' và thứ tự tên bị đảo",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ quản lý skill cho agent AI đang chuyển dữ liệu của hub thật sang định dạng mới trước khi merge. Người làm tin rằng fixture test đã xanh và báo cáo đã kiểm đủ sáu mục thì migration giữ nguyên nội dung skill. Khi so sánh đầu ra lệnh show trước và sau, description của một skill thành đúng hai ký tự '>-' và thứ tự tên bị đảo, dù test vẫn xanh. Ai làm công cụ có migration dữ liệu nên biết rằng test kiểm giá trị kỳ vọng có thể bỏ sót lỗi hiển thị.",
+      "audience": "dev làm công cụ có migration dữ liệu và test fixture",
+      "spine": {
+        "context": {
+          "text": "Một công cụ quản lý skill cho agent AI, có workspace và các bước migration; người làm đang đưa phase 4 qua review trước khi merge.",
+          "lines": [
+            "omp:cd4449ab#L6",
+            "omp:cd4449ab#L1713"
+          ]
+        },
+        "want": {
+          "text": "Muốn migration chạy được trên bản sao hub thật.",
+          "lines": [
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "obstacle": {
+          "text": "Migration thật lỗi ở bước v1 sang v2 vì .meta/** bị kiểm tra như một entity.",
+          "lines": [
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng fixture test đã xanh và sáu mục review đều đã kiểm, nên migration giữ nguyên nội dung skill. Hoá ra so sánh đầu ra show trước và sau cho thấy description thành '>-' và tên bị đảo thứ tự, test không bắt được.",
+          "lines": [
+            "omp:cd4449ab#L1712",
+            "omp:cd4449ab#L1713"
+          ]
+        },
+        "action": {
+          "text": "Viết lại fixture test và đọc lại logic gộp routing trong migration v3 để tìm nguyên nhân.",
+          "lines": [
+            "omp:cd4449ab#L1714",
+            "omp:cd4449ab#L1776",
+            "omp:cd4449ab#L1780"
+          ]
+        },
+        "outcome": {
+          "text": "Với test-audit, tên trước và sau migration đều là 'test-audit'. Các skill còn lại và phần diff đầy đủ chưa được xác nhận trong đoạn này.",
+          "lines": [
+            "omp:cd4449ab#L1890"
+          ]
+        },
+        "takeaway": {
+          "text": "Test xanh chỉ chứng minh những gì test kiểm tra. Để bắt lỗi hiển thị, hãy so sánh đầu ra thật của hai phiên bản trên dữ liệu thật.",
+          "lines": [
+            "omp:cd4449ab#L1713"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-bao-cao-noi-da-xong-lead-4257",
+      "code": "M-Q2RR",
+      "title": "Báo cáo nói đã xong, lead bắt được key repository còn sót",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một dự án skill hub cho AI agent đang gom việc đơn giản hoá thành nhiều phase, và phase 4 phải qua review trước khi merge. Báo cáo của agent nói đã xong, nhưng khi lead đọc lại, skill_add vẫn ghi key repository vào danh sách nguồn của skill mới, và một khẳng định trong báo cáo là sai. Điều đáng nghe là báo 'đã sạch' chỉ đáng tin khi đã grep khoá đó trên mọi đường ghi.",
+      "audience": "dev dùng AI agent và muốn biết cách kiểm chứng báo cáo của agent",
+      "spine": {
+        "context": {
+          "text": "Một dự án skill hub cho AI agent, đang tách việc đơn giản hoá thành nhiều phase; phase 4 phải qua review trước khi merge.",
+          "lines": [
+            "omp:cd4449ab#L6"
+          ]
+        },
+        "want": {
+          "text": "Muốn phase 4 qua được review và merge vào main.",
+          "lines": [
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "obstacle": {
+          "text": "Lead chạy thử trên bản sao hub thật và thấy lỗi; báo cáo cũng có một khẳng định sai.",
+          "lines": [
+            "omp:cd4449ab#L1462",
+            "omp:cd4449ab#L2025"
+          ]
+        },
+        "turn": {
+          "text": "Báo cáo nói đã xong, tưởng không còn ghi key cũ; hoá ra skill_add vẫn ghi key repository vào sources[] của skill mới.",
+          "lines": [
+            "omp:cd4449ab#L2024",
+            "omp:cd4449ab#L2025"
+          ]
+        },
+        "action": {
+          "text": "Đổi sang ghi key repo, xoá helper không dùng, thêm test kiểm tra .meta/skill.yaml có repo và không có repository hay content_digest.",
+          "lines": [
+            "omp:cd4449ab#L2053",
+            "omp:cd4449ab#L2077"
+          ]
+        },
+        "outcome": {
+          "text": "make check xanh ở 24 package, commit d646117; lead xác nhận, trust verdict giữ nguyên.",
+          "lines": [
+            "omp:cd4449ab#L2122",
+            "omp:cd4449ab#L2123"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi báo cáo đã sạch, grep khoá cần bỏ trên mọi đường ghi trước khi viết, đừng chỉ dựa vào test có sẵn.",
+          "lines": [
+            "omp:cd4449ab#L2025",
+            "omp:cd4449ab#L2029"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-go-17-tool-mcp-cu-test-4257",
+      "code": "M-0PAE",
+      "title": "Gỡ 17 tool MCP cũ, test ranh giới curator buộc tool phải đăng ký đủ",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người làm dự án MCP skill hub đang đưa bề mặt MCP về bản tối giản theo bảng contract. Họ tưởng xoá file curation_tools.go là gỡ xong các tool cũ, nhưng test ranh giới curator vẫn đỏ, nên phải đưa lại các tool tương thích. Dev viết công cụ cho AI nên quan tâm vì test ranh giới chạy sau khi xoá cho biết chính xác tool nào còn được gọi, không cần đoán. Kết quả là một commit gom 19 file, +350 -1650 dòng.",
+      "audience": "dev viết test cho công cụ MCP",
+      "spine": {
+        "context": {
+          "text": "Worktree của người làm dự án MCP skill hub, đang chạy Phase 3: đưa bề mặt MCP về bản tối giản theo contract.",
+          "lines": [
+            "omp:cd4449ab#L6",
+            "omp:cd4449ab#L2374"
+          ]
+        },
+        "want": {
+          "text": "Gỡ 17 tool MCP cũ để bề mặt khớp bảng contract.",
+          "lines": [
+            "omp:cd4449ab#L3957"
+          ]
+        },
+        "obstacle": {
+          "text": "Test ranh giới curator đỏ sau khi xoá curation_tools.go.",
+          "lines": [
+            "omp:cd4449ab#L3490",
+            "omp:cd4449ab#L3502"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng xoá curation_tools.go là gỡ xong; test vẫn đỏ, và các tool tương thích còn nằm trong insight_tools nên phải đưa lại.",
+          "lines": [
+            "omp:cd4449ab#L3485",
+            "omp:cd4449ab#L3490",
+            "omp:cd4449ab#L3493"
+          ]
+        },
+        "action": {
+          "text": "Xoá curation_tools.go, viết lại source_tools và insight_tools, sửa server.go, rồi commit 19 file.",
+          "lines": [
+            "omp:cd4449ab#L3485",
+            "omp:cd4449ab#L3499",
+            "omp:cd4449ab#L3957"
+          ]
+        },
+        "outcome": {
+          "text": "Một commit c75baca: 19 file, +350 -1650 dòng.",
+          "lines": [
+            "omp:cd4449ab#L3956",
+            "omp:cd4449ab#L3959"
+          ]
+        },
+        "takeaway": {
+          "text": "Chạy test ranh giới sau khi xoá code: test đỏ chỉ ra tool nào còn được gọi, không phải đoán.",
+          "lines": [
+            "omp:cd4449ab#L3490",
+            "omp:cd4449ab#L3502"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-migration-phai-fail-closed-loi-doc-4257",
+      "code": "M-18G4",
+      "title": "Migration phải fail closed: lỗi đọc file bị nuốt trong vòng WalkDir",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-mot-hau-to-git-lam-hong-4257",
+      "code": "M-2D0H",
+      "title": "Một hậu tố .git làm hỏng việc gộp nguồn; key repo và repository lệch nhau",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang đơn giản hoá schema của mcp-skill-hub và chuyển một hub thật từ v1 sang v3. Họ tưởng so sánh chuỗi URL là đủ để gộp hai nguồn cùng repo, nhưng một bên có đuôi .git nên không khớp và hai nguồn không gộp được. Dev làm công cụ đồng bộ hay di chuyển dữ liệu nào cũng có thể dính đúng kiểu lỗi này.",
+      "audience": "dev làm công cụ đồng bộ hoặc di chuyển dữ liệu",
+      "spine": {
+        "context": {
+          "text": "Người làm đang đơn giản hoá schema của mcp-skill-hub và chuyển một hub thật từ v1 sang v3.",
+          "lines": [
+            "omp:cd4449ab#L6"
+          ]
+        },
+        "want": {
+          "text": "Gộp provenance.origin với các nguồn Phase 0 theo URL repo đã chuẩn hoá, để openclaw thành một nguồn với hai role.",
+          "lines": [
+            "omp:cd4449ab#L1462"
+          ]
+        },
+        "obstacle": {
+          "text": "Migration trên hub thật lỗi, và so khớp chuỗi thô không nhận ra hai URL cùng repo khi một bên có đuôi .git.",
+          "lines": [
+            "omp:cd4449ab#L1462",
+            "omp:cd4449ab#L1818"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng so sánh chuỗi URL là đủ để gộp nguồn; hoá ra đuôi .git làm hai URL cùng repo bị coi là khác.",
+          "lines": [
+            "omp:cd4449ab#L1812",
+            "omp:cd4449ab#L1818"
+          ]
+        },
+        "action": {
+          "text": "Thêm hàm normalizeRepoURL bỏ .git và dấu / cuối, đưa host về chữ thường, rồi dùng để so khớp khi gộp.",
+          "lines": [
+            "omp:cd4449ab#L1846",
+            "omp:cd4449ab#L1848"
+          ]
+        },
+        "outcome": {
+          "text": "Hai URL chuẩn hoá ra cùng một giá trị khi kiểm bằng script; chưa thấy kết quả test Go sau khi sửa.",
+          "lines": [
+            "omp:cd4449ab#L1803"
+          ]
+        },
+        "takeaway": {
+          "text": "So khớp định danh như URL cần hàm chuẩn hoá riêng và test cho biến thể .git, đừng so chuỗi thô.",
+          "lines": [
+            "omp:cd4449ab#L1818"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-09-migration-v3-sang-v4-block-scalar-4257",
+      "code": "M-XYB3",
+      "title": "Migration v3 sang v4: block scalar YAML sai làm receipt WAL không đọc được",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-xoa-revision-package-va-schema-test-4257",
+      "code": "M-QA0Z",
+      "title": "Xoá revision package và schema: test validation đỏ hơn 10 lần",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-doi-dinh-dang-mot-file-keo-4257",
+      "code": "M-FZ8D",
+      "title": "Đổi định dạng một file kéo theo test đỏ ở 7 package và cờ -update golden",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-quy-tac-pre-commit-chan-commit-4257",
+      "code": "M-V9XT",
+      "title": "Quy tắc pre-commit chặn commit khi worktree khác để file dở trên main",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-commit-do-agent-tao-mang-ten-4257",
+      "code": "M-3JTF",
+      "title": "Commit do agent tạo mang tên tác giả khác với chủ repo",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-test-source-import-v3-fixture-repo-4257",
+      "code": "M-1SWK",
+      "title": "Test source_import v3: fixture repo file:// phải khớp kiểu Revision và Record",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-checkpoint-agent-dung-cho-lead-merge-4257",
+      "code": "M-EES8",
+      "title": "Checkpoint: agent dừng chờ lead merge rồi mới làm Phase 3",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-doc-file-distill-1184-dong-cua-4257",
+      "code": "M-YTC6",
+      "title": "Đọc file distill 1184 dòng của hub thật: 77 hash rút gọn cần nở ra đầy đủ",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-cong-cu-sua-file-tu-choi-4257",
+      "code": "M-TYN9",
+      "title": "Công cụ sửa file từ chối khoảng 15 lần vì số dòng không khớp",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-make-check-do-nhieu-lan-vi-4257",
+      "code": "M-09TA",
+      "title": "make check đỏ nhiều lần vì gofmt và lint, phải chạy make fmt trước",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-09-rebase-11-commit-len-main-moi-4257",
+      "code": "M-F042",
+      "title": "Rebase 11 commit lên main mới: hash đổi nhưng không xung đột",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

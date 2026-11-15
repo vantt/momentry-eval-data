@@ -1,0 +1,678 @@
+{
+  "id": "5a1e7c04",
+  "run": 2,
+  "host": "claude",
+  "transcript": "/home/vantt/projects/momentry/.claude/worktrees/agent-a16218d210d5a04c4/scripts/eval/synthetic/5a1e7c04-71b3-4f0d-9e52-a8c9d0e1f344.jsonl",
+  "fromLine": 1,
+  "toLine": 48,
+  "windowSha": "1201019219071119",
+  "at": "2026-11-10T12:47:19.373Z",
+  "git": true,
+  "refreshedFrom": 1,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.04986,
+  "dryRun": {
+    "usd": 0.11,
+    "tokens": 2963,
+    "chunks": 1,
+    "hotspots": 0,
+    "entries": 48,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:5a1e7c04",
+    "fromLine": 1,
+    "toLine": 48,
+    "usd": 0.09100639999999999,
+    "secs": 19.2,
+    "exitCode": 0,
+    "status": "done",
+    "written": 10,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-29-doi-tin-tiktok-keo-don-nhung-87d9",
+        "status": "angle",
+        "angle": "Một đội đang chuẩn bị launch tuần đầu cho serum vitamin C và phải lập ngân sách tuần 2. Cả đội tin TikTok kéo đơn, vì video creator đạt 380k view và sếp muốn nhân đôi ngân sách cho kênh này. Khi chia 614 pre-order theo nguồn, 61% đến từ một bản tin đối tác gần như bị quên, còn TikTok chỉ chuyển đổi 0,4%. Nhân đôi chi tiêu cho kênh được khen nhiều nhất là đổ tiền vào kênh kém nhất, nên chia đơn theo nguồn trước khi quyết ngân sách là việc đáng làm.",
+        "audience": "người làm marketing lập ngân sách cho đợt launch sản phẩm tiêu dùng",
+        "evidence": [
+          1,
+          14,
+          17,
+          19,
+          20
+        ],
+        "spine": {
+          "context": {
+            "text": "Một đội đang chuẩn bị launch tuần đầu cho serum vitamin C và phải lập ngân sách tuần 2.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn ngân sách tuần 2 dựa trên số liệu; sếp muốn nhân đôi ngân sách TikTok.",
+            "evidence": [
+              14
+            ]
+          },
+          "obstacle": {
+            "text": "Lượt xem TikTok cao nhất nên cả đội mặc định kênh này kéo đơn.",
+            "evidence": [
+              14,
+              21
+            ]
+          },
+          "turn": {
+            "text": "Tưởng TikTok kéo đơn vì video creator đạt 380k view; hoá ra 61% pre-order đến từ bản tin đối tác gần như bị quên, còn TikTok chỉ chuyển đổi 0,4%.",
+            "evidence": [
+              14,
+              20
+            ]
+          },
+          "action": {
+            "text": "Đối chiếu 614 pre-order theo mã giảm giá và nguồn, chạy script chuyển phiên thành đơn, rồi viết lại kế hoạch tuần 2.",
+            "evidence": [
+              16,
+              17,
+              18,
+              23,
+              24
+            ]
+          },
+          "outcome": {
+            "text": "Kế hoạch tuần 2: TikTok giữ phẳng, xin thêm một slot bản tin có trả phí, các kênh khác giữ phẳng. Bản tin chuyển đổi 9,0%, TikTok 0,4%.",
+            "evidence": [
+              19,
+              20,
+              23
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi nhân đôi chi tiêu cho kênh được khen nhiều nhất, chia đơn theo nguồn và xem tỉ lệ chuyển đổi, đừng chỉ nhìn lượt xem.",
+            "evidence": [
+              20
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-30-agent-tinh-sai-chenh-lech-giam-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-2: spine.action: evidence ngoài các dòng đã đưa: 41, 44; spine.outcome: evidence ngoài các dòng đã đưa: 42, 44; evidence ngoài các dòng đã đưa: 42 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-old-wording/5a1e7c04/runs/2/llm/angle-2-retry.json"
+      },
+      {
+        "id": "2026-10-30-ma-test-noi-bo-chua-xoa-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-3: spine.want: evidence ngoài các dòng đã đưa: 14; spine.obstacle: evidence ngoài các dòng đã đưa: 14; spine.turn: evidence ngoài các dòng đã đưa: 14, 20, 21; spine.action: evidence ngoài các dòng đã đưa: 18, 23, 24; spine.outcome: evidence ngoài các dòng đã đưa: 20 (+2) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-old-wording/5a1e7c04/runs/2/llm/angle-3-retry.json"
+      },
+      {
+        "id": "2026-10-29-subject-sap-het-han-lam-ti-87d9",
+        "status": "angle",
+        "angle": "Một đội đang chuẩn bị tuần ra mắt serum vitamin C, email ra mắt gửi vào tối hôm sau. Họ tin rằng subject kiểu 'còn 3 tiếng' làm tỉ lệ mở tăng là dấu hiệu tốt, và định dùng lại cho email ra mắt. Tỉ lệ mở đúng là tăng khoảng 9 điểm, nhưng hủy đăng ký tăng gần 5 lần, có khiếu nại spam, và một khách viết rằng hôm qua vẫn nghe còn 3 tiếng. Ai dùng AI để tối ưu chỉ số email nên xem kỹ chuyện này.",
+        "audience": "người làm email marketing và dev dùng AI để tối ưu chỉ số",
+        "evidence": [
+          1,
+          26,
+          29,
+          30
+        ],
+        "spine": {
+          "context": {
+            "text": "Một đội chuẩn bị tuần ra mắt serum vitamin C, email ra mắt gửi vào tối hôm sau.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn dùng lại kiểu subject gây gấp gáp đã làm tỉ lệ mở tăng ở hai email trước.",
+            "evidence": [
+              26
+            ]
+          },
+          "obstacle": {
+            "text": "Email 3 nói 'Last chance' nhưng pre-order vẫn mở, và khách bắt đầu nhận ra.",
+            "evidence": [
+              29,
+              30
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tỉ lệ mở tăng là dấu hiệu tốt; hoá ra hủy đăng ký tăng gần 5 lần và có khiếu nại spam, còn tỉ lệ click gần như không đổi.",
+            "evidence": [
+              26,
+              29
+            ]
+          },
+          "action": {
+            "text": "Chọn subject không có deadline giả và thêm luật vào email-rules: chỉ dùng deadline khi có thật, và theo dõi hủy đăng ký cùng khiếu nại song song với tỉ lệ mở.",
+            "evidence": [
+              31,
+              32,
+              34
+            ]
+          },
+          "takeaway": {
+            "text": "Đừng tối ưu chỉ theo tỉ lệ mở; deadline giả tăng lượt mở nhưng làm mất niềm tin.",
+            "evidence": [
+              29,
+              31
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-10-29-agent-noi-chac-ve-moc-thoi-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-5: spine.context: evidence ngoài các dòng đã đưa: 35; spine.want: evidence ngoài các dòng đã đưa: 37; spine.obstacle: evidence ngoài các dòng đã đưa: 35; spine.turn: evidence ngoài các dòng đã đưa: 36; spine.action: evidence ngoài các dòng đã đưa: 37, 38 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-old-wording/5a1e7c04/runs/2/llm/angle-5-retry.json"
+      },
+      {
+        "id": "2026-10-29-don-ten-chien-dich-utm-4-87d9",
+        "status": "none",
+        "none": true,
+        "reason": "Đây là sửa dữ liệu thường. Chưa thấy ai tin sai điều gì rồi bị chứng minh sai; bước kiểm chứng thiếu nhưng không lộ ra lỗi nào. Chỉ có một bài học quy trình, không đủ chỗ ngoặt để kể.",
+        "spine": {
+          "context": {
+            "text": "Người làm đang chuẩn bị tuần ra mắt serum vitamin C, gồm banner, sheet link UTM và kế hoạch ngân sách.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Sheet link UTM gọn, tên chiến dịch thống nhất.",
+            "evidence": [
+              8
+            ]
+          },
+          "obstacle": {
+            "text": "Tên chiến dịch viết hoa lẫn thường: 4 link 'VitC_Launch' và 6 link 'vitc-launch'.",
+            "evidence": [
+              10
+            ]
+          },
+          "action": {
+            "text": "Đổi cả 15 dòng CSV sang chữ thường, gạch ngang, bằng script Python ghi đè thẳng links.csv, không sao lưu.",
+            "evidence": [
+              7,
+              11
+            ]
+          },
+          "outcome": {
+            "text": "Bước kiểm chỉ in số dòng 15. Agent báo cả 15 link đã thống nhất, nhưng đoạn này không đếm lại giá trị sau khi sửa.",
+            "evidence": [
+              12,
+              13
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi ghi đè CSV, hãy sao lưu và đếm lại giá trị sau khi sửa, đừng chỉ đếm số dòng.",
+            "evidence": [
+              11,
+              12
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-10-29-banner-ba-kich-thuoc-mot-headline-87d9",
+        "status": "none",
+        "none": true,
+        "reason": "Chỉ là soạn copy và alt text cho banner rồi lưu file; không ai tin sai điều gì, không có chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Launch serum vitamin C của Mộc Lan, lên sóng ngày mai 8 giờ tối; cần copy banner cho ba kích thước.",
+            "evidence": [
+              1,
+              4
+            ]
+          },
+          "want": {
+            "text": "Có alt text và copy cho banner 1200×628, 1080×1080 và 1080×1920.",
+            "evidence": [
+              1
+            ]
+          },
+          "action": {
+            "text": "Lấy headline từ banner-v3, rút gọn phụ đề ở khung vuông, rồi lưu vào banner-sizes.md.",
+            "evidence": [
+              3,
+              4,
+              5,
+              6
+            ]
+          },
+          "outcome": {
+            "text": "File banner-sizes.md đã được tạo.",
+            "evidence": [
+              7
+            ]
+          }
+        },
+        "completeness": 4
+      },
+      {
+        "id": "2026-10-30-khi-su-co-xay-ra-gan-87d9",
+        "status": "angle",
+        "angle": "Một người làm chiến dịch ra mắt serum vitamin C, ra mắt lúc 8 giờ tối mai. Tối nay influencer đăng mã GLOW30 (giảm 30%) thay vì GLOW15 (giảm 15%). Người làm tưởng mã test cho nhân viên đã vô hại vì chưa bao giờ xoá, nhưng hoá ra nó vẫn đang chạy và đã có 431 lượt dùng. Ai có mã test cũ chưa xoá nên kiểm tra trạng thái thật trước khi tin là nó đã chết.",
+        "audience": "người làm marketing hoặc bán hàng trực tuyến dùng mã giảm giá",
+        "evidence": [
+          1,
+          35,
+          40
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người làm chiến dịch ra mắt serum vitamin C, ra mắt lúc 8 giờ tối mai, đang chuẩn bị banner, bảng UTM và ngân sách tuần 2.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn xử lý được mã giảm giá lộn trước khi ra mắt.",
+            "evidence": [
+              35
+            ]
+          },
+          "obstacle": {
+            "text": "Influencer đăng mã GLOW30 (30%) lúc 8 giờ tối thay vì GLOW15 (15%), và một người khác đang trên máy bay nên không liên lạc được.",
+            "evidence": [
+              35
+            ]
+          },
+          "turn": {
+            "text": "Mã test cho nhân viên được tạo tuần trước và chưa bao giờ xoá, nên người làm ngầm coi nó không còn dùng được. Hoá ra mã vẫn đang chạy ở 30% và đã có 431 lượt dùng, không phải 400 như Shopify báo lúc đầu.",
+            "evidence": [
+              35,
+              40
+            ]
+          },
+          "action": {
+            "text": "Đặt giới hạn 500 lượt cho GLOW30 và tắt mã STAFFTEST.",
+            "evidence": [
+              41
+            ]
+          },
+          "outcome": {
+            "text": "GLOW30 có giới hạn 500 lượt, đã dùng 431; STAFFTEST đã tắt.",
+            "evidence": [
+              42
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi xoá hay tin một mã cũ đã chết, xem số lượt dùng thật trên hệ thống.",
+            "evidence": [
+              40
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-30-ngay-trong-dem-ra-mat-khi-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-9: spine.context: evidence ngoài các dòng đã đưa: 26; spine.want: evidence ngoài các dòng đã đưa: 26; spine.obstacle: evidence ngoài các dòng đã đưa: 26; spine.turn: evidence ngoài các dòng đã đưa: 30, 31; spine.action: evidence ngoài các dòng đã đưa: 32, 33 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-old-wording/5a1e7c04/runs/2/llm/angle-9-retry.json"
+      },
+      {
+        "id": "2026-10-29-bai-hoc-tu-lan-sai-duoc-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-10: spine.want: evidence ngoài các dòng đã đưa: 37; spine.action: evidence ngoài các dòng đã đưa: 42, 43, 44; spine.outcome: evidence ngoài các dòng đã đưa: 42, 43, 44; spine.takeaway: evidence ngoài các dòng đã đưa: 43 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-old-wording/5a1e7c04/runs/2/llm/angle-10-retry.json"
+      }
+    ],
+    "message": "claude:5a1e7c04 L1-L48: done; 7 chuyện thô, 10 cụm; ghi 10 mới, gộp 0\nđiểm nóng 0 (thiếu 0); lần chạy 1/1; 0.09 USD\ngóc kể: 3 có, 2 không ra chuyện, 5 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: repo không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-29-doi-tin-tiktok-keo-don-nhung-87d9",
+      "code": "M-4V8Y",
+      "title": "Đội tin TikTok kéo đơn, nhưng 61% pre-order đến từ một bản tin đối tác gần như bị quên",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một đội đang chuẩn bị launch tuần đầu cho serum vitamin C và phải lập ngân sách tuần 2. Cả đội tin TikTok kéo đơn, vì video creator đạt 380k view và sếp muốn nhân đôi ngân sách cho kênh này. Khi chia 614 pre-order theo nguồn, 61% đến từ một bản tin đối tác gần như bị quên, còn TikTok chỉ chuyển đổi 0,4%. Nhân đôi chi tiêu cho kênh được khen nhiều nhất là đổ tiền vào kênh kém nhất, nên chia đơn theo nguồn trước khi quyết ngân sách là việc đáng làm.",
+      "audience": "người làm marketing lập ngân sách cho đợt launch sản phẩm tiêu dùng",
+      "spine": {
+        "context": {
+          "text": "Một đội đang chuẩn bị launch tuần đầu cho serum vitamin C và phải lập ngân sách tuần 2.",
+          "lines": [
+            "claude:5a1e7c04#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn ngân sách tuần 2 dựa trên số liệu; sếp muốn nhân đôi ngân sách TikTok.",
+          "lines": [
+            "claude:5a1e7c04#L14"
+          ]
+        },
+        "obstacle": {
+          "text": "Lượt xem TikTok cao nhất nên cả đội mặc định kênh này kéo đơn.",
+          "lines": [
+            "claude:5a1e7c04#L14",
+            "claude:5a1e7c04#L21"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng TikTok kéo đơn vì video creator đạt 380k view; hoá ra 61% pre-order đến từ bản tin đối tác gần như bị quên, còn TikTok chỉ chuyển đổi 0,4%.",
+          "lines": [
+            "claude:5a1e7c04#L14",
+            "claude:5a1e7c04#L20"
+          ]
+        },
+        "action": {
+          "text": "Đối chiếu 614 pre-order theo mã giảm giá và nguồn, chạy script chuyển phiên thành đơn, rồi viết lại kế hoạch tuần 2.",
+          "lines": [
+            "claude:5a1e7c04#L16",
+            "claude:5a1e7c04#L17",
+            "claude:5a1e7c04#L18",
+            "claude:5a1e7c04#L23",
+            "claude:5a1e7c04#L24"
+          ]
+        },
+        "outcome": {
+          "text": "Kế hoạch tuần 2: TikTok giữ phẳng, xin thêm một slot bản tin có trả phí, các kênh khác giữ phẳng. Bản tin chuyển đổi 9,0%, TikTok 0,4%.",
+          "lines": [
+            "claude:5a1e7c04#L19",
+            "claude:5a1e7c04#L20",
+            "claude:5a1e7c04#L23"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi nhân đôi chi tiêu cho kênh được khen nhiều nhất, chia đơn theo nguồn và xem tỉ lệ chuyển đổi, đừng chỉ nhìn lượt xem.",
+          "lines": [
+            "claude:5a1e7c04#L20"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-30-agent-tinh-sai-chenh-lech-giam-87d9",
+      "code": "M-80HA",
+      "title": "Agent tính sai chênh lệch giảm giá, khiến thiệt hại bị đánh giá thấp khoảng một phần ba",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-ma-test-noi-bo-chua-xoa-87d9",
+      "code": "M-26C9",
+      "title": "Mã test nội bộ chưa xoá bị dùng 400 lần ngay đêm ra mắt",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-subject-sap-het-han-lam-ti-87d9",
+      "code": "M-XZX0",
+      "title": "Subject 'sắp hết hạn' làm tỉ lệ mở tăng, nhưng hủy đăng ký tăng 5 lần và bị khiếu nại",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một đội đang chuẩn bị tuần ra mắt serum vitamin C, email ra mắt gửi vào tối hôm sau. Họ tin rằng subject kiểu 'còn 3 tiếng' làm tỉ lệ mở tăng là dấu hiệu tốt, và định dùng lại cho email ra mắt. Tỉ lệ mở đúng là tăng khoảng 9 điểm, nhưng hủy đăng ký tăng gần 5 lần, có khiếu nại spam, và một khách viết rằng hôm qua vẫn nghe còn 3 tiếng. Ai dùng AI để tối ưu chỉ số email nên xem kỹ chuyện này.",
+      "audience": "người làm email marketing và dev dùng AI để tối ưu chỉ số",
+      "spine": {
+        "context": {
+          "text": "Một đội chuẩn bị tuần ra mắt serum vitamin C, email ra mắt gửi vào tối hôm sau.",
+          "lines": [
+            "claude:5a1e7c04#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn dùng lại kiểu subject gây gấp gáp đã làm tỉ lệ mở tăng ở hai email trước.",
+          "lines": [
+            "claude:5a1e7c04#L26"
+          ]
+        },
+        "obstacle": {
+          "text": "Email 3 nói 'Last chance' nhưng pre-order vẫn mở, và khách bắt đầu nhận ra.",
+          "lines": [
+            "claude:5a1e7c04#L29",
+            "claude:5a1e7c04#L30"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tỉ lệ mở tăng là dấu hiệu tốt; hoá ra hủy đăng ký tăng gần 5 lần và có khiếu nại spam, còn tỉ lệ click gần như không đổi.",
+          "lines": [
+            "claude:5a1e7c04#L26",
+            "claude:5a1e7c04#L29"
+          ]
+        },
+        "action": {
+          "text": "Chọn subject không có deadline giả và thêm luật vào email-rules: chỉ dùng deadline khi có thật, và theo dõi hủy đăng ký cùng khiếu nại song song với tỉ lệ mở.",
+          "lines": [
+            "claude:5a1e7c04#L31",
+            "claude:5a1e7c04#L32",
+            "claude:5a1e7c04#L34"
+          ]
+        },
+        "takeaway": {
+          "text": "Đừng tối ưu chỉ theo tỉ lệ mở; deadline giả tăng lượt mở nhưng làm mất niềm tin.",
+          "lines": [
+            "claude:5a1e7c04#L29",
+            "claude:5a1e7c04#L31"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-29-agent-noi-chac-ve-moc-thoi-87d9",
+      "code": "M-PT3Q",
+      "title": "Agent nói chắc về mốc thời gian mà chưa đưa truy vấn ra",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-don-ten-chien-dich-utm-4-87d9",
+      "code": "M-ZMWS",
+      "title": "Dọn tên chiến dịch UTM: 4 tên viết hoa lẫn 6 tên thường, và script ghi đè thẳng file gốc",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Người làm đang chuẩn bị tuần ra mắt serum vitamin C, gồm banner, sheet link UTM và kế hoạch ngân sách.",
+          "lines": [
+            "claude:5a1e7c04#L1"
+          ]
+        },
+        "want": {
+          "text": "Sheet link UTM gọn, tên chiến dịch thống nhất.",
+          "lines": [
+            "claude:5a1e7c04#L8"
+          ]
+        },
+        "obstacle": {
+          "text": "Tên chiến dịch viết hoa lẫn thường: 4 link 'VitC_Launch' và 6 link 'vitc-launch'.",
+          "lines": [
+            "claude:5a1e7c04#L10"
+          ]
+        },
+        "action": {
+          "text": "Đổi cả 15 dòng CSV sang chữ thường, gạch ngang, bằng script Python ghi đè thẳng links.csv, không sao lưu.",
+          "lines": [
+            "claude:5a1e7c04#L7",
+            "claude:5a1e7c04#L11"
+          ]
+        },
+        "outcome": {
+          "text": "Bước kiểm chỉ in số dòng 15. Agent báo cả 15 link đã thống nhất, nhưng đoạn này không đếm lại giá trị sau khi sửa.",
+          "lines": [
+            "claude:5a1e7c04#L12",
+            "claude:5a1e7c04#L13"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi ghi đè CSV, hãy sao lưu và đếm lại giá trị sau khi sửa, đừng chỉ đếm số dòng.",
+          "lines": [
+            "claude:5a1e7c04#L11",
+            "claude:5a1e7c04#L12"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-29-banner-ba-kich-thuoc-mot-headline-87d9",
+      "code": "M-ENAF",
+      "title": "Banner ba kích thước: một headline, cắt phụ đề theo khung",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Launch serum vitamin C của Mộc Lan, lên sóng ngày mai 8 giờ tối; cần copy banner cho ba kích thước.",
+          "lines": [
+            "claude:5a1e7c04#L1",
+            "claude:5a1e7c04#L4"
+          ]
+        },
+        "want": {
+          "text": "Có alt text và copy cho banner 1200×628, 1080×1080 và 1080×1920.",
+          "lines": [
+            "claude:5a1e7c04#L1"
+          ]
+        },
+        "action": {
+          "text": "Lấy headline từ banner-v3, rút gọn phụ đề ở khung vuông, rồi lưu vào banner-sizes.md.",
+          "lines": [
+            "claude:5a1e7c04#L3",
+            "claude:5a1e7c04#L4",
+            "claude:5a1e7c04#L5",
+            "claude:5a1e7c04#L6"
+          ]
+        },
+        "outcome": {
+          "text": "File banner-sizes.md đã được tạo.",
+          "lines": [
+            "claude:5a1e7c04#L7"
+          ]
+        }
+      },
+      "completeness": 4
+    },
+    {
+      "id": "2026-10-30-khi-su-co-xay-ra-gan-87d9",
+      "code": "M-NB5P",
+      "title": "Khi sự cố xảy ra gần giờ ra mắt, agent tính chi phí bằng tiền thật, đưa hai phương án có đánh đổi rõ ràng, rồi kiểm tra trạng thái thật trước khi đổi. User chọn phương án.",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": "Một người làm chiến dịch ra mắt serum vitamin C, ra mắt lúc 8 giờ tối mai. Tối nay influencer đăng mã GLOW30 (giảm 30%) thay vì GLOW15 (giảm 15%). Người làm tưởng mã test cho nhân viên đã vô hại vì chưa bao giờ xoá, nhưng hoá ra nó vẫn đang chạy và đã có 431 lượt dùng. Ai có mã test cũ chưa xoá nên kiểm tra trạng thái thật trước khi tin là nó đã chết.",
+      "audience": "người làm marketing hoặc bán hàng trực tuyến dùng mã giảm giá",
+      "spine": {
+        "context": {
+          "text": "Một người làm chiến dịch ra mắt serum vitamin C, ra mắt lúc 8 giờ tối mai, đang chuẩn bị banner, bảng UTM và ngân sách tuần 2.",
+          "lines": [
+            "claude:5a1e7c04#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn xử lý được mã giảm giá lộn trước khi ra mắt.",
+          "lines": [
+            "claude:5a1e7c04#L35"
+          ]
+        },
+        "obstacle": {
+          "text": "Influencer đăng mã GLOW30 (30%) lúc 8 giờ tối thay vì GLOW15 (15%), và một người khác đang trên máy bay nên không liên lạc được.",
+          "lines": [
+            "claude:5a1e7c04#L35"
+          ]
+        },
+        "turn": {
+          "text": "Mã test cho nhân viên được tạo tuần trước và chưa bao giờ xoá, nên người làm ngầm coi nó không còn dùng được. Hoá ra mã vẫn đang chạy ở 30% và đã có 431 lượt dùng, không phải 400 như Shopify báo lúc đầu.",
+          "lines": [
+            "claude:5a1e7c04#L35",
+            "claude:5a1e7c04#L40"
+          ]
+        },
+        "action": {
+          "text": "Đặt giới hạn 500 lượt cho GLOW30 và tắt mã STAFFTEST.",
+          "lines": [
+            "claude:5a1e7c04#L41"
+          ]
+        },
+        "outcome": {
+          "text": "GLOW30 có giới hạn 500 lượt, đã dùng 431; STAFFTEST đã tắt.",
+          "lines": [
+            "claude:5a1e7c04#L42"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi xoá hay tin một mã cũ đã chết, xem số lượt dùng thật trên hệ thống.",
+          "lines": [
+            "claude:5a1e7c04#L40"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-30-ngay-trong-dem-ra-mat-khi-87d9",
+      "code": "M-HSJX",
+      "title": "Ngay trong đêm ra mắt, khi sự cố còn tươi, user yêu cầu ghi retro theo khung sự cố, quyết định và chi phí. Agent ghi xong và hẹn lấy số liệu theo mã vào hôm sau.",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-bai-hoc-tu-lan-sai-duoc-87d9",
+      "code": "M-FZ2K",
+      "title": "Bài học từ lần sai được ghi thành quy tắc trong tài liệu chung của dự án, với hai điều kiện đo lường cụ thể: không dùng từ hạn chót giả, và theo dõi hủy đăng ký cùng khiếu nại chứ không chỉ tỉ lệ mở.",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

@@ -1,0 +1,473 @@
+{
+  "at": "2026-11-05T10:07:30.903Z",
+  "manifest": "/home/vantt/projects/momentry/.claude/worktrees/agent-a73050abc839225de/docs/_private/eval/manifest.json",
+  "rows": [
+    {
+      "id": "0faf0bb2",
+      "run": 1,
+      "stories": 27,
+      "usd": 0.6254549,
+      "secs": 62.4,
+      "modelSecs": 171.48899999999998,
+      "status": "done",
+      "dryRunUsd": 0.66,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 188959,
+          "tokOut": 24096,
+          "usd": 0.2465209,
+          "secs": 112.579,
+          "share": 0.39414656436459283
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 134337,
+          "tokOut": 2939,
+          "usd": 0.29806400000000005,
+          "secs": 27.541,
+          "share": 0.4765555438129912
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 9179,
+          "tokOut": 2960,
+          "usd": 0.047958,
+          "secs": 21.08,
+          "share": 0.0766769914185659
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 8931,
+          "tokOut": 1505,
+          "usd": 0.032912,
+          "secs": 10.289,
+          "share": 0.052620900403850056
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 341406,
+          "tokOut": 31500,
+          "usd": 0.6254549,
+          "secs": 171.48899999999998,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 27,
+        "labels": 8,
+        "found": 8,
+        "recall": 1,
+        "p5": 0.6,
+        "p10": 0.8,
+        "tLabels": 4,
+        "tFound": 4,
+        "tMeanRank": 5.25,
+        "half": 14,
+        "tTopHalf": 4,
+        "perLabel": [
+          {
+            "name": "khong-viet-lai-ui",
+            "t": false,
+            "rank": 8,
+            "ranks": [
+              8
+            ]
+          },
+          {
+            "name": "bridge-van-can",
+            "t": false,
+            "rank": 4,
+            "ranks": [
+              4
+            ]
+          },
+          {
+            "name": "va-minprotocol",
+            "t": true,
+            "rank": 6,
+            "ranks": [
+              6,
+              14,
+              19
+            ]
+          },
+          {
+            "name": "agent-tu-dong-done",
+            "t": true,
+            "rank": 5,
+            "ranks": [
+              5
+            ]
+          },
+          {
+            "name": "paperclip-la-runtime",
+            "t": true,
+            "rank": 7,
+            "ranks": [
+              7,
+              14
+            ]
+          },
+          {
+            "name": "goal-mau-thuan-don-dep",
+            "t": false,
+            "rank": 16,
+            "ranks": [
+              16
+            ]
+          },
+          {
+            "name": "multica-openclaw-cu",
+            "t": true,
+            "rank": 3,
+            "ranks": [
+              3,
+              6,
+              9,
+              10
+            ]
+          },
+          {
+            "name": "multica-claude-5-5",
+            "t": false,
+            "rank": 3,
+            "ranks": [
+              3,
+              11,
+              21,
+              23,
+              24
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "2dfb5915",
+      "run": 1,
+      "stories": 13,
+      "usd": 0.3894974499999999,
+      "secs": 45.7,
+      "modelSecs": 63.653999999999996,
+      "status": "done",
+      "dryRunUsd": 0.58,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 144183,
+          "tokOut": 4008,
+          "usd": 0.15358544999999998,
+          "secs": 21.424,
+          "share": 0.3943169589428634
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 80498,
+          "tokOut": 2595,
+          "usd": 0.186946,
+          "secs": 24.6,
+          "share": 0.4799671987582974
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 6593,
+          "tokOut": 1499,
+          "usd": 0.028176,
+          "secs": 10.934,
+          "share": 0.07233936961589865
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 6345,
+          "tokOut": 810,
+          "usd": 0.02079,
+          "secs": 6.696,
+          "share": 0.053376472682940546
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 237619,
+          "tokOut": 8912,
+          "usd": 0.38949744999999997,
+          "secs": 63.653999999999996,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 13,
+        "labels": 8,
+        "found": 7,
+        "recall": 0.875,
+        "p5": 0.8,
+        "p10": 0.7,
+        "tLabels": 4,
+        "tFound": 3,
+        "tMeanRank": 4.666666666666667,
+        "half": 7,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "vcruntime-audit",
+            "t": false,
+            "rank": 5,
+            "ranks": [
+              5
+            ]
+          },
+          {
+            "name": "artifact-can-gh-login",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4,
+              5
+            ]
+          },
+          {
+            "name": "mcp-treo-panic",
+            "t": false,
+            "rank": 7,
+            "ranks": [
+              7
+            ]
+          },
+          {
+            "name": "windows-parity-backslash",
+            "t": false,
+            "rank": 1,
+            "ranks": [
+              1,
+              2
+            ]
+          },
+          {
+            "name": "stop-hook-vong-lap",
+            "t": true,
+            "rank": null,
+            "ranks": []
+          },
+          {
+            "name": "hai-agent-mcp-mot-cua",
+            "t": true,
+            "rank": 6,
+            "ranks": [
+              6
+            ]
+          },
+          {
+            "name": "actions-het-tien",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4,
+              13
+            ]
+          },
+          {
+            "name": "ohs-pin-thay-ban-moi",
+            "t": false,
+            "rank": 9,
+            "ranks": [
+              9
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "f0bf048d",
+      "run": 1,
+      "stories": 11,
+      "usd": 0.37744740000000004,
+      "secs": 39.2,
+      "modelSecs": 56.946,
+      "status": "done",
+      "dryRunUsd": 0.54,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 142596,
+          "tokOut": 4591,
+          "usd": 0.1513954,
+          "secs": 21.361,
+          "share": 0.40110330605006156
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 78660,
+          "tokOut": 2326,
+          "usd": 0.18058,
+          "secs": 19.661,
+          "share": 0.47842427845575297
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 5962,
+          "tokOut": 1350,
+          "usd": 0.025424000000000002,
+          "secs": 9.439,
+          "share": 0.06735772984527115
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 5714,
+          "tokOut": 862,
+          "usd": 0.020048000000000003,
+          "secs": 6.485,
+          "share": 0.053114685648914264
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 232932,
+          "tokOut": 9129,
+          "usd": 0.37744740000000004,
+          "secs": 56.946,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 11,
+        "labels": 8,
+        "found": 5,
+        "recall": 0.625,
+        "p5": 0.8,
+        "p10": 0.5,
+        "tLabels": 4,
+        "tFound": 3,
+        "tMeanRank": 2,
+        "half": 6,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "google-chan-gcloud",
+            "t": false,
+            "rank": 4,
+            "ranks": [
+              4
+            ]
+          },
+          {
+            "name": "em-lam-thay-agent",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4
+            ]
+          },
+          {
+            "name": "workspace-va-goi",
+            "t": false,
+            "rank": 2,
+            "ranks": [
+              2
+            ]
+          },
+          {
+            "name": "plan-tao-dataforseo",
+            "t": false,
+            "rank": null,
+            "ranks": []
+          },
+          {
+            "name": "red-team-quyen",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              6
+            ]
+          },
+          {
+            "name": "github-khong-cho-chi-doc",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              5
+            ]
+          },
+          {
+            "name": "backup-moi-gio",
+            "t": false,
+            "rank": null,
+            "ranks": []
+          },
+          {
+            "name": "system-operator-offline",
+            "t": true,
+            "rank": null,
+            "ranks": []
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    }
+  ],
+  "diffs": [],
+  "overall": {
+    "sessions": 3,
+    "captures": 3,
+    "usd": 1.39239975,
+    "secs": 147.3,
+    "recall": 0.8333333333333334,
+    "p5": 0.7333333333333334,
+    "p10": 0.6666666666666666,
+    "tMeanRank": 3.9722222222222228,
+    "tTopHalf": 10,
+    "tLabels": 12,
+    "steps": {
+      "harvest": {
+        "calls": 3,
+        "tokIn": 475738,
+        "tokOut": 32695,
+        "usd": 0.5515017499999999,
+        "secs": 155.36399999999998,
+        "share": 0.39608004095088345
+      },
+      "outsider": {
+        "calls": 3,
+        "tokIn": 293495,
+        "tokOut": 7860,
+        "usd": 0.66559,
+        "secs": 71.802,
+        "share": 0.47801646043099333
+      },
+      "hook-tension": {
+        "calls": 3,
+        "tokIn": 21734,
+        "tokOut": 5809,
+        "usd": 0.10155800000000001,
+        "secs": 41.452999999999996,
+        "share": 0.07293738741334879
+      },
+      "stakes": {
+        "calls": 3,
+        "tokIn": 20990,
+        "tokOut": 3177,
+        "usd": 0.07375000000000001,
+        "secs": 23.47,
+        "share": 0.052966111204774353
+      },
+      "total": {
+        "calls": 12,
+        "tokIn": 811957,
+        "tokOut": 49541,
+        "usd": 1.39239975,
+        "secs": 292.08899999999994,
+        "share": 1
+      }
+    }
+  }
+}

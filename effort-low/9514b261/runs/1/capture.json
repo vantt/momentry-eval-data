@@ -1,0 +1,222 @@
+{
+  "id": "9514b261",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "72eb302fb732e9b8",
+  "at": "2026-11-05T10:21:16.356Z",
+  "dryRun": {
+    "usd": 0.2,
+    "tokens": 64046,
+    "chunks": 1,
+    "hotspots": 14,
+    "entries": 614
+  },
+  "report": {
+    "sid": "claude:9514b261",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.2179075,
+    "secs": 111.7,
+    "exitCode": 0,
+    "status": "done",
+    "written": 21,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:9514b261 L1-L4000: done; 16 chuyện thô, 21 cụm; ghi 21 mới, gộp 0\nđiểm nóng 14 (thiếu 0); lần chạy 1/1; 0.22 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-21-mo-phong-ghe-sai-vi-thieu",
+      "title": "Mô phỏng ghế sai vì thiếu cờ herdr, và 'trần flagship' hoá ra không chặn",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-agent-noi-khong-co-chu-nhung",
+      "title": "Agent nói 'không có chủ', nhưng tracker đã có đủ chủ",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-ba-agent-quet-song-song-knowledge",
+      "title": "Ba agent quét song song: Knowledge Registry đã chạy, KDE gần như trùng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-ba-he-decision-document-context-va",
+      "title": "Ba hệ decision, document, context và vòng phụ thuộc phải cắt theo lớp",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-kiem-doc-qua-han-khong-bao",
+      "title": "Kiểm 'doc quá hạn' không bao giờ báo, vì so chuỗi ISO với số",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-may-kiem-bao-374-vi-pham",
+      "title": "Máy kiểm báo 374 vi phạm nhưng không chạy ở đâu cả",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-chuoi-du-phong-la-danh-sach",
+      "title": "Chuỗi dự phòng là danh sách trắng: deepseek và glm không bao giờ được chọn",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-dem-quan-he-thay-the-18",
+      "title": "Đếm quan hệ thay thế: 18 quan hệ, chỉ 7 cặp ghi được bằng quan hệ",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-hoi-dong-11-ghe-va-cong",
+      "title": "Hội đồng 11 ghế và cổng người: bốn family độc lập cho một câu hỏi kiến trúc",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-kho-tai-khoan-rong-fgos-khong",
+      "title": "Kho tài khoản rỗng: fgOS không quản quota, probe là cách duy nhất biết",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-dan-khoa-thua-mot-ky-tu",
+      "title": "Dán khoá thừa một ký tự, API từ chối 401, ghi đè khoá cũ không sao lưu",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-ratchet-ghi-de-baseline-nuot-luon",
+      "title": "Ratchet ghi đè baseline nuốt luôn vi phạm mới",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-alias-zsh-tro-toi-profile-chua",
+      "title": "Alias zsh trỏ tới profile chưa tồn tại, grep rc file không thấy đủ",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-kiem-tra-tung-tai-khoan-bang",
+      "title": "Kiểm tra từng tài khoản bằng một lượt hỏi đọc-chỉ rất ngắn (\"trả lời đúng một chữ OK\") cùng một bộ kịch bản, chạy nền, phân loại kết quả (ok, quota, auth, trust-prompt). Kết quả cũ được chuyển sang thư mục phụ thay vì xoá, để so sánh giữa các lần.",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-regex-tieng-viet-ky-tu-d",
+      "title": "Regex tiếng Việt: ký tự đ ở đầu từ không khớp với \\b",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-doi-config-toan-cuc-lam-hong",
+      "title": "Đổi config toàn cục làm hỏng workspace bản cũ",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-pull-gap-file-sinh-tu-dong",
+      "title": "Pull gặp file sinh tự động xung đột, và restore làm mất sửa chưa commit",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-khi-can-doc-file-chua-bi",
+      "title": "Khi cần đọc file chứa bí mật hoặc cấu hình nhạy cảm, agent chỉ đếm số dòng, số bảng, tên khoá, hoặc che giá trị bằng regex trước khi in ra. Email và khoá API không bao giờ hiện nguyên văn trong kết quả.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-khi-commit-agent-chi-stage-dung",
+      "title": "Khi commit, agent chỉ stage đúng các file do chính mình sửa bằng pathspec, giữ nguyên các thay đổi đang dở của người dùng (chưa commit), và kiểm trước xem remote có đụng file đó không rồi mới rebase hoặc push.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-truoc-khi-chay-viec-ton-kem",
+      "title": "Trước khi chạy việc tốn kém hoặc ra ngoài (mở hội đồng nhiều model, probe tài khoản), agent liệt kê rõ family, model và ghế sẽ dùng rồi dừng chờ xác nhận. Khi có kết quả sai, agent nêu lỗi trong chính báo cáo, không giấu.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-21-truoc-moi-lan-sua-config-hoac",
+      "title": "Trước mỗi lần sửa config hoặc dotfile, agent sao lưu bản gốc kèm dấu thời gian, kiểm cú pháp (zsh -n), rồi kiểm hành vi thật (alias hiển thị đúng, probe trả OK). Khi cần gỡ, chỉ cần chép đè bản sao lưu.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

@@ -1,0 +1,102 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh cho vault Obsidian, có thêm cửa MCP để hỏi Claude Desktop về graph của vault: note nào nối với note nào, đi từ ý này sang ý khác qua đâu, và note nào bị lạc khỏi mạng. Làm cho người làm một mình hoặc freelancer dùng tiếng Việt, nên phải cài được mà không cần Python và chỉ là một file chạy trên Windows, macOS hoặc Linux. Chạy ngay trên máy của người dùng, nơi giữ vault. Mục tiêu hiện tại: viết lại lõi bằng Rust để cho kết quả khớp với bản Python trên cùng một vault.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+</asks>
+
+<story>
+hook: Thư viện 'an toàn' panic 242 lần, thư viện đã archive lệch 0
+tension: tuong_ma_hoa_ra (Thư viện an toàn, còn được bảo trì / Panic 242 lần, bản đã archive lại khớp hoàn toàn)
+stakes: 3/3
+# Thư viện YAML 'an toàn' panic trên 242 note, thư viện đã archive lại khớp 0 lệch
+
+**Bối cảnh:** Chọn thư viện parse YAML cho frontmatter, phải khớp PyYAML.
+**Chuyện gì xảy ra:** Trên 25.000 note sinh ngẫu nhiên, libyaml-safer panic 242 lần, saphyr lệch 6.510 note, còn unsafe-libyaml lệch 0 trên cả 58 ca biên lẫn 25.000 note. Chọn unsafe-libyaml dù đã archive, vì nó là cùng libyaml 0.2.5 với PyYAML.
+**Bài học:** Chọn thư viện theo tiêu chí khớp với thứ đang đối chiếu, không theo 'an toàn' chung chung.
+</story>
+
+<excerpt>
+[L315] RESULT: create mode 100644 probes/s3-ohs/tests/stdio_client.rs | 5
+[L325] AGENT: Phase 04 is merged and pushed. The node processes still running belong to your other OHS session, not the probe, so I left them alone. Phases 02 and 05 are still running.
+[L335] USER: <task-notification>
+<task-id>abecb24486c780cd3</task-id>
+<tool-use-id>toolu_01XdLU5AsxJ3Kjq9uueXrf4T</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/abecb24486c780cd3.output</output-file>
+<status>completed</status>
+<summary>Agent "Phase 02 YAML probe" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>The phase is done except for vault B, so I've set it to `in-progress`. Q3 is decided: use **`unsafe-libyaml` 0.2.11 for parsing only, plus our own PyYAML compatibility layer**. That combination matched the Python spec exactly on every note I tested. The vault-B run is one command, left for when you lift the hold. Everything is committed on branch `worktree-agent-abecb24486c780cd3` at `148bfe6`, not pushed and not merged.
+
+## Phase Implementation Report
+
+### Executed Phase
+- Phase: phase-02-spec-probe-yaml
+- Plan: `plans/261102-0535-rust-core-port-master/`
+- Status: partial. Only the vault-B checkbox is open; it is a user gate.
+
+### Results
+Count of notes the index would see differently from Python (different props, different YAML error text, or one side stops):
+
+| Candidate | kg-solo (746) | 58 edge cases | 25,000 random notes |
+|---|---|---|---|
+| `unsafe-libyaml` + layer | 0 | 0 | 0 |
+| `libyaml-safer` + layer | 0 | 1 | 242 (all panics) |
+| `saphyr-parser` + layer | 0 | 9 | 6,510 |
+| `serde_norway`, used directly | 0 | 35 | 20,916 |
+| `saphyr`, used directly | 0 | 36 | 21,317 |
+
+- **kg-solo cannot tell the crates apart.** It only has strings, plain integers and lists; dates stay strings on both sides. The decision therefore rests on the edge cases and the random notes.
+- **`libyaml-safer` panics** when a `|` or `&gt;` block is the last frontmatter value. That is a common shape in real notes (e.g. `description: &gt;` at the end). The bug is already reported upstream (issues #6 and #7, both open).
+- **`unsafe-libyaml` is archived**, but it is the same libyaml 0.2.5 that PyYAML uses. If `libyaml-safer` fixes those two issues and the probe shows 0, switching to it removes the `unsafe` code.
+- The report covers the mismatch kinds with counts and handling, and gives the layer design phase 08 should follow.
+
+### Things phase 08 needs to know
+- **Four YAML forms make the Python indexer crash** with an uncaught  …[+3209]
+[L342] TOOL Bash: git merge --no-edit worktree-agent-abecb24486c780cd3 2>&1 | tail -2; git diff --name-only --diff-filter=U; (cd probes/s1-yaml && cargo test -q 2>&1 | grep "test result" | head -3); grep -c "^## Q[34]" docs/DECISIONS.md; git push -q origin main && echo pushed
+[L343] RESULT: create mode 100644 probes/s1-yaml/src/record.rs | create mode 100644 probes/s1-yaml/src/vault.rs
+[L352] AGENT: Phase 02 is merged and pushed; it chose `unsafe-libyaml` plus a PyYAML compatibility layer for Q3. Only phase 05 is still running.
+[L361] USER: <task-notification>
+<summary>Goal check-in: background work still running</summary>
+</task-notification>
+<system-reminder>
+Goal check-in: «bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng &gt;=50%.» is still active, and evaluation has been deferred for 30 min because background work is still running:
+- a3296207282664313 · subagent · Phase 05 parity harness golden
+Check on their progress (e.g. read their output). If they are progressing, say so briefly and keep waiting; if they are stuck or no longer needed, fix or stop them and continue toward the goal.
+</system-reminder>
+[L363] TOOL Bash: cd /home/vantt/projects/obsidian-pkm/.claude/worktrees/agent-a3296207282664313 && git log --oneline -3 && git status --short | head -20 && ls parity 2>/dev/null; stat -c '%y' /tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a3296207282664313.output; date
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

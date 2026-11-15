@@ -1,0 +1,82 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L9] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-research # Research ## Research Methodology Always honoring **KISS** and **DRY** principles. Deliver the full requested scope — never trim or defer what the user explicitly asked for. Add nothing unrequested. With `--yagni`, additionally challenge and cut any scope not needed for the stated outcome. **Be honest, be brutal, straight to the point, and be concise.** ### Phase 1: Scope Definition First, you will clearly define the research scope by: - Identifying key terms and concepts to investigate - Determining the r …[+5899]
+[L2948] USER: Stop hook feedback: [dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: Plan 45/45 tasks are checked and CI is green on the latest commit, but the condition requires the work to be complete 'tốt đẹp' (done well). The transcript shows an open item the assistant itself lists: v0.1.0 is not cut, so release.yml has never run and the README install command does not work yet, and the Windows hook shell behavior is unverified against a real Claude Code/Codex session. The plan was marked completed while these remain outstanding.
+[L3047] USER: Stop hook feedback: [dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: The plan is 45/45 and v0.1.0 is published with CI green, but the Windows hook behavior in a real Claude Code/Codex session is unverified and was only moved to issue #1, so the work is not fully complete 'tốt đẹp'.
+[L3315] USER: thêm vào goal, làm `momentry quarantine --release all`
+</asks>
+
+<story>
+hook: Một máy, 10 thư mục omp: mỗi host có nhiều profile
+tension: tuong_ma_hoa_ra (Tưởng mỗi host chỉ có một thư mục dữ liệu / Máy có 4 của Codex, 9 của pi, 10 của omp, 4 của agy)
+stakes: 2/3
+# Ba host mới: một người có nhiều profile, số lượng tìm được
+
+**Bối cảnh:** Ngoài Claude Code và Codex, người dùng muốn gom chuyện từ pi, omp và Antigravity (agy).
+**Chuyện gì xảy ra:** Máy có nhiều profile cho mỗi host. Hàm hostRoots tìm được 4 thư mục Codex, 9 của pi, 10 của omp và 4 của agy. Bộ đọc agy parse đúng 5 transcript thật.
+**Bài học:** Một host có thể đăng nhập nhiều tài khoản. Hãy tìm profile theo mẫu thư mục, đừng hardcode một đường dẫn.
+**Artefact:** Bảng số profile theo host. Không ghi tên profile.
+</story>
+
+<excerpt>
+[L3428] RESULT: Your questions have been answered: "Antigravity (agy) không có sự kiện kết thúc phiên hay trước compact; chỉ có SessionStart và Stop (Stop chạy sau MỖI lượt và chặn agent trong lúc chạy). Gom chuyện agy lúc nào?"="Khi mở phiên sau (Recommended)", "Má …[+283]
+[L3433] AGENT: Bạn chọn: agy gom khi mở phiên sau, và tự tìm mọi profile. Xem cấu trúc thư mục profile trên máy (chỉ tên thư mục) để thiết kế phần tự tìm cho đúng.
+[L3434] TOOL Bash: ls -d ~/.pi/accounts/* ~/.omp/profiles/*/agent ~/.agy-homes/* 2>/dev/null | sed "s|$HOME|~|"; ls ~/.pi/accounts/* 2>/dev/null | head -12; ls ~/.agy-homes/*/.gemini 2>/dev/null | head; ls ~/.agents 2>/dev/null; grep -n "PI_CODING_AGENT_DIR\|HOME=\|--profile" ~/.zshrc ~/.zsh* 2>/dev/null | head -8
+[L3437] RESULT: ~/.agy-homes/mucdong | ~/.agy-homes/tetcu72
+[L3447] TOOL Bash: ls -d ~/.codex* ~/.claude* 2>/dev/null | sed "s|$HOME|~|"; sed -n 220,240p ~/.zshrc | grep -v -i "key\|token"
+[L3450] RESULT: ~/.claude | ~/.claude.json
+…
+[L3521] RESULT: OMP dir=-projects-mcp-skill-hub-curator file=2026-10-10T04-34-19-952Z_01a12417-28b0-7 | 400 lines
+[L3528] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/shape.mjs; find ~/.agy-homes ~/.gemini -path '*.system_generated/logs/*' -name 'transcript*.jsonl' 2>/dev/null | sed "s|$HOME|~|" | head -4; f=$(find ~/.agy-homes ~/.gemini -path '*.system_generated/logs …[+148]
+[L3529] RESULT: ~/.agy-homes/tetnu/.gemini/antigravity-cli/brain/5b57eb1b-60a0-4e0f-992b-de57953aa055/.system_generated/logs/transcript_full.jsonl | ~/.agy-homes/tetnu/.gemini/antigravity-cli/brain/5b57eb1b-60a0-4e0f-992b-de57953aa055/.system_generated/logs/transcri …[+8]
+[L3539] AGENT: Đã thấy đủ schema thật. Xem cách `claude.mjs` gán `op`/`paths` cho tool để bộ đọc mới theo cùng quy ước.
+[L3540] TOOL Bash: cd /home/vantt/projects/momentry; sed -n 8,40p lib/sources/claude.mjs; sed -n 146,200p lib/sources/claude.mjs; grep -n "^export function\|^export const" lib/sources/codex.mjs
+…
+[L3565] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' def edit(p, pairs): s=open(p).read() for a,b in pairs: assert a in s, (p, a[:80]); s=s.replace(a,b) open(p,'w').write(s) edit('lib/paths.mjs', [ ("""/** * @param {NodeJS.ProcessEnv} [env] @param {{platform?: string, homedir?: string}} [opts] * @ret …[+1165]
+[L3566] RESULT: claude ~/.claude | codex ~/.codex ~/.codex-fgovn ~/.codex-tetcu72 ~/.codex-tetnu
+[L3574] AGENT: `hostRoots` tìm đúng mọi profile trên máy: 4 thư mục Codex, 9 pi, 10 omp, 4 agy. Giờ viết bộ đọc pi/omp.
+[L3575] TOOL Write: /home/vantt/projects/momentry/lib/sources/pi.mjs
+[L3578] RESULT: File created successfully at: /home/vantt/projects/momentry/lib/sources/pi.mjs (file state is current in your context — no need to Read it back)
+…
+[L3601] RESULT: File created successfully at: /home/vantt/projects/momentry/lib/sources/agy.mjs (file state is current in your context — no need to Read it back)
+[L3605] TOOL Bash: cd /home/vantt/projects/momentry; node -e 'import("./lib/sources/agy.mjs").then(m=>{const fs=require("fs");const fsx=require("child_process").execSync(`find ${process.env.HOME}/.agy-homes -name transcript_full.jsonl -path "*logs*" 2>/dev/null`).toString().trim().split("\n").filter(Boolean); for(cons …[+231]
+[L3606] RESULT: agy:2b5f63eb {"user":1,"tool:shell":1,"result":1,"assistant":2} run_command | agy:93743dfa {"tool:shell":1,"result":3,"tool:other":2,"assistant":1} run_command,read_file,send_message
+[L3619] AGENT: Bộ đọc agy cũng chạy được trên 5 transcript thật. Giờ nối vào pipeline: `SOURCES`, `sourceOf`, `scan` và việc quét Claude/Codex ở mọi profile.
+[L3620] TOOL Bash: cd /home/vantt/projects/momentry; grep -n "SOURCES\|sourceOf\|transcriptDirs\|claudeSrc\|codexSrc\|opts.codex\|opts.claude\|both" lib/pipeline.mjs | head -40; sed -n 66,90p lib/pipeline.mjs; sed -n 478,500p lib/pipeline.mjs
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

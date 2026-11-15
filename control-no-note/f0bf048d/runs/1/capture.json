@@ -1,0 +1,1438 @@
+{
+  "id": "f0bf048d",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-opt-AICoworker/f0bf048d-0996-462f-94f4-0d8f367f342c.jsonl",
+  "fromLine": 1,
+  "toLine": 3520,
+  "windowSha": "f5e08a50c088b598",
+  "at": "2026-11-10T04:02:35.744Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.32,
+    "tokens": 81961,
+    "chunks": 1,
+    "hotspots": 25,
+    "entries": 1012,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:f0bf048d",
+    "fromLine": 1,
+    "toLine": 3520,
+    "usd": 0.3216515,
+    "secs": 356.2,
+    "exitCode": 0,
+    "status": "done",
+    "written": 25,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-31-chuoi-leo-thang-agent-khach-giu-f60d",
+        "status": "angle",
+        "angle": "Một người làm dự án multica, cho team marketing có agent làm SEO, GA4 và đọc số liệu, đang thiết kế quyền để agent tự làm nhiều mà không mất dữ liệu. Bản nháp giả định PAT không nằm trên máy, nhưng phản biện chỉ ra opc-agent đang dùng PAT của chủ: một agent bị chèn lệnh từ trang web có thể giao việc cho System Operator chạy gần root. Đây là lý do nên chặn bằng quyền hệ điều hành thay vì chỉ dặn trong prompt.",
+        "audience": "dev dùng AI agent tự động hoá, quan tâm đến an toàn quyền hạn",
+        "evidence": [
+          7,
+          1794,
+          1867,
+          1891
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người làm dự án multica, cho team marketing có agent làm SEO, GA4 và đọc số liệu, đang thiết kế quyền để agent tự làm được nhiều việc.",
+            "evidence": [
+              7,
+              1794
+            ]
+          },
+          "want": {
+            "text": "Muốn agent tự làm nhiều nhất có thể mà không gây hậu quả nghiêm trọng và không mất dữ liệu.",
+            "evidence": [
+              1794
+            ]
+          },
+          "obstacle": {
+            "text": "Phản biện chỉ ra một agent bị chèn lệnh qua trang web có thể đi lên tới quyền root trên máy.",
+            "evidence": [
+              1867,
+              1891
+            ]
+          },
+          "turn": {
+            "text": "Bản nháp giả định PAT không nằm trên máy; hoá ra opc-agent đang dùng PAT của chủ, nên agent có thể giao việc cho System Operator chạy gần root.",
+            "evidence": [
+              1867,
+              1891
+            ]
+          },
+          "action": {
+            "text": "Viết bản nháp thiết kế quyền, nhờ một agent độc lập phản biện, rồi sửa thành bản v2.",
+            "evidence": [
+              1861,
+              1884,
+              1891
+            ]
+          },
+          "outcome": {
+            "text": "Trên máy chưa thay đổi gì; tài liệu chưa commit; có ba lỗ khẩn cấp và thứ tự xử lý theo giai đoạn.",
+            "evidence": [
+              1891
+            ]
+          },
+          "takeaway": {
+            "text": "Lời dặn trong prompt không phải ranh giới bảo mật; chặn bằng quyền hệ điều hành và danh tính riêng cho agent.",
+            "evidence": [
+              1891
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-01-ba-runtime-chay-that-lan-dau-f60d",
+        "status": "angle",
+        "angle": "Người làm đang dựng hệ thống giao việc cho agent AI chạy trên ba runtime và muốn biết chúng có chạy thật không. Họ tin model đang chạy là gpt-5.5 và grok-4.6 theo đúng cấu hình. Thống kê token cho thấy model thật là gpt-6.1-sol và grok-4.7, nên file cấu hình không đáng tin để biết model nào đang xử lý việc. Ai chạy agent với nhiều model nên đọc model từ thống kê sử dụng, không đọc từ cấu hình.",
+        "audience": "dev dùng agent AI và muốn biết model thật đang chạy trong hệ thống của mình",
+        "evidence": [
+          2890,
+          3079,
+          3133,
+          3165
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đang dựng hệ thống giao việc cho agent AI (multica) chạy trên ba runtime: Pi·OpenAI, Pi·Grok và Gemini qua omp.",
+            "evidence": [
+              2890,
+              3165
+            ]
+          },
+          "want": {
+            "text": "Muốn kiểm xem ba runtime có chạy thật không, không chỉ cấu hình xong.",
+            "evidence": [
+              3079
+            ]
+          },
+          "obstacle": {
+            "text": "Gemini (omp) chưa có lượt chạy nào; Google và DuckDuckGo chặn truy cập từ máy chủ.",
+            "evidence": [
+              3165
+            ]
+          },
+          "turn": {
+            "text": "Tưởng model chạy là gpt-5.5 và grok-4.6 theo cấu hình; hoá ra thống kê ghi gpt-6.1-sol và grok-4.7.",
+            "evidence": [
+              3165
+            ]
+          },
+          "action": {
+            "text": "Chạy năm issue nhỏ trên hai agent thử, rồi đọc thống kê token của runtime.",
+            "evidence": [
+              3133,
+              3165
+            ]
+          },
+          "outcome": {
+            "text": "Năm issue chạy xong không lỗi; trong các công cụ tìm kiếm chỉ Bing còn dùng được.",
+            "evidence": [
+              3165
+            ]
+          },
+          "takeaway": {
+            "text": "Đừng tin model trong cấu hình: đọc model thật từ thống kê sử dụng, và đo công cụ tìm kiếm trên máy chủ trước khi dựa vào nó.",
+            "evidence": [
+              3133,
+              3165
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-31-cong-cu-tra-phi-lot-vao-f60d",
+        "status": "angle",
+        "angle": "Một bộ công cụ đang đóng gói các vai marketing (SEO, nội dung, quảng cáo) thành agent cho từng khách, và SEO được làm trước. Người làm tin bộ lọc add-on chưa mua sẽ chặn công cụ trả phí ở mọi đường đi; nhưng khi khách chưa có workspace, plan đi một nhánh riêng và vẫn tạo DataForSEO. Sau khi lọc ở nhánh đó, khách chưa mua chỉ còn PageSpeed. Ai viết script cấu hình có nhiều nhánh tuỳ trạng thái đều có thể dính lỗi này.",
+        "audience": "dev viết công cụ tự động cấu hình agent hoặc dịch vụ theo gói cho khách",
+        "evidence": [
+          1282,
+          1603,
+          1623
+        ],
+        "spine": {
+          "context": {
+            "text": "Một bộ công cụ đóng gói các vai marketing (SEO, nội dung, quảng cáo) thành agent cho từng khách, và người làm đang ưu tiên SEO.",
+            "evidence": [
+              7,
+              1282
+            ]
+          },
+          "want": {
+            "text": "Đóng gói vai SEO, social, content và ads thành agent, làm SEO trước.",
+            "evidence": [
+              1282
+            ]
+          },
+          "obstacle": {
+            "text": "Khách chưa mua add-on DataForSEO vẫn bị tạo server đó khi chạy plan.",
+            "evidence": [
+              1603
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bộ lọc add-on chặn công cụ trả phí ở mọi trường hợp; hoá ra nhánh workspace chưa tồn tại bỏ qua bộ lọc.",
+            "evidence": [
+              1603,
+              1619
+            ]
+          },
+          "action": {
+            "text": "Lọc add-on chưa mua ở nhánh đó, rồi plan thử ba trường hợp: có add-on, không có, và workspace đã tồn tại.",
+            "evidence": [
+              1620,
+              1625
+            ]
+          },
+          "outcome": {
+            "text": "PageSpeed được gắn, DataForSEO không được tạo; lint các gói đều ok.",
+            "evidence": [
+              1623,
+              1639
+            ]
+          },
+          "takeaway": {
+            "text": "Mọi nhánh của một kịch bản cấu hình phải dùng cùng bộ lọc; kiểm từng nhánh riêng.",
+            "evidence": [
+              1603,
+              1623
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-31-doi-danh-tinh-daemon-sang-agents-f60d",
+        "status": "none",
+        "none": true,
+        "reason": "Đoạn trích cho thấy việc làm (tìm token ở 3 chỗ trước khi thu hồi) nhưng không có dòng nào lộ ra ai tin token chỉ nằm một chỗ; tình huống 'tưởng một chỗ' chỉ có trong phần tóm tắt, không có bằng chứng trong trích đoạn.",
+        "spine": {
+          "context": {
+            "text": "Một agent đang chuyển daemon của dự án Multica sang một user riêng, agents-opc, để agent không còn chạy bằng token của chủ.",
+            "evidence": [
+              2394
+            ]
+          },
+          "want": {
+            "text": "Chuyển 12 agent của opc-studio sang runtime mới của user agents-opc mà không làm gián đoạn.",
+            "evidence": [
+              2435
+            ]
+          },
+          "obstacle": {
+            "text": "Bước đăng nhập báo lỗi vì file token dành cho agents-opc chưa được tạo.",
+            "evidence": [
+              2412
+            ]
+          },
+          "action": {
+            "text": "Tạo token mới, cập nhật ở các chỗ lưu token cũ, kiểm token mới dùng được, rồi mới thu hồi token cũ.",
+            "evidence": [
+              2548,
+              2550
+            ]
+          },
+          "outcome": {
+            "text": "Token cũ bị thu hồi (204), token mới hoạt động, và kế hoạch quyền hiển thị 0 thay đổi.",
+            "evidence": [
+              2550,
+              2556
+            ]
+          },
+          "takeaway": {
+            "text": "Tạo token mới và kiểm tra nó hoạt động trước khi thu hồi token cũ, và ghi lại mọi nơi token được lưu.",
+            "evidence": [
+              2550
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-10-30-deploy-mot-goi-ghi-de-team-f60d",
+        "status": "angle",
+        "angle": "Một công ty phần mềm chỉ có một người, dùng nhiều AI agent trên Multica, đang muốn team marketing có agent làm SEO và đọc số liệu GA4. Khi deploy gói Marketing, người làm tin rằng lệnh chỉ đụng phần Marketing. Hoá ra gói Coding cũ nằm trong cùng workspace, nên deploy đã đưa các agent Coding về bản cũ và gỡ chúng khỏi squad. Ai có nhiều gói cấu hình trỏ vào một workspace nên đọc toàn bộ plan trước khi deploy.",
+        "audience": "dev dùng nhiều AI agent và quản lý cấu hình nhiều gói",
+        "evidence": [
+          902,
+          915
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công ty phần mềm chỉ có một người, dùng nhiều AI agent trên Multica, đang muốn team marketing có agent làm SEO và đọc số liệu GA4.",
+            "evidence": [
+              7,
+              920
+            ]
+          },
+          "want": {
+            "text": "Muốn có agent SEO và GA4 trong team marketing, chạy được trên site của khách.",
+            "evidence": [
+              7,
+              675
+            ]
+          },
+          "obstacle": {
+            "text": "Search Console chưa có số liệu vì quyền được cấp nhầm property.",
+            "evidence": [
+              915
+            ]
+          },
+          "turn": {
+            "text": "Tưởng deploy gói Marketing chỉ đụng phần Marketing; hoá ra gói Coding cũ nằm trong cùng workspace và bị ghi đè về bản cũ.",
+            "evidence": [
+              902,
+              915
+            ]
+          },
+          "action": {
+            "text": "Deploy lại gói Coding từ file gốc, bỏ phần Coding khỏi gói Marketing, rồi deploy 3 agent SEO và GA4.",
+            "evidence": [
+              865,
+              896,
+              915
+            ]
+          },
+          "outcome": {
+            "text": "Plan Coding về 0 thay đổi; GA4 trả số liệu thật, kênh Direct có 58 session trong 7 ngày; Search Console vẫn chưa có số liệu.",
+            "evidence": [
+              915
+            ]
+          },
+          "takeaway": {
+            "text": "Khi nhiều gói cùng trỏ vào một workspace, mỗi gói chỉ giữ phần của nó; đọc toàn bộ plan trước khi deploy.",
+            "evidence": [
+              902
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-30-mo-hinh-mot-workspace-cho-moi-f60d",
+        "status": "angle",
+        "angle": "Người làm đang đóng gói bộ agent AI để triển khai cho từng khách trên Multica, mỗi khách một workspace và mua bộ nào cài bộ đó. Gói đầu tiên lại mang tên workspace của chính họ và mặc định cài vào đó, nên quên một tham số là cài nhầm, như sự cố trước. Đổi tên theo bộ nghiệp vụ và bắt buộc chỉ định workspace đích giúp công cụ tự chặn lỗi này, điều đáng biết với ai triển khai nhiều khách trên cùng một nền tảng.",
+        "audience": "người triển khai agent AI cho nhiều khách trên cùng nền tảng",
+        "evidence": [
+          1122,
+          1125,
+          1165
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đóng gói bộ agent AI để triển khai cho từng khách trên Multica, đang chuẩn bị cài cho khách đầu tiên.",
+            "evidence": [
+              968
+            ]
+          },
+          "want": {
+            "text": "Mỗi khách có một workspace riêng, mua bộ nào thì cài bộ đó.",
+            "evidence": [
+              1122
+            ]
+          },
+          "obstacle": {
+            "text": "Gói đầu tiên mang tên workspace nội bộ và mặc định cài vào đó, nên dễ cài nhầm.",
+            "evidence": [
+              1125
+            ]
+          },
+          "turn": {
+            "text": "Tưởng gói là đơn vị cài cho khách mà vẫn cài đúng chỗ khi quên tham số đích; hoá ra gói mặc định cài vào workspace của chính mình.",
+            "evidence": [
+              1125
+            ]
+          },
+          "action": {
+            "text": "Đổi tên gói thành opc-content, bỏ deploy mặc định và bắt buộc truyền file env của khách.",
+            "evidence": [
+              1125,
+              1126
+            ]
+          },
+          "outcome": {
+            "text": "Commit 237d250, chưa push; plan bộ Content chỉ đổi đúng phần Content, bộ coding báo 0 change.",
+            "evidence": [
+              1165
+            ]
+          },
+          "takeaway": {
+            "text": "Đặt tên đơn vị triển khai theo bộ nghiệp vụ, không theo tên workspace; để công cụ từ chối chạy khi thiếu đích.",
+            "evidence": [
+              1125,
+              1165
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-01-bot-khong-co-quyen-ghi-git-f60d",
+        "status": "angle",
+        "angle": "Người làm đang dựng một agent vận hành chạy trên máy chủ, và muốn đưa bộ cài đặt của nó lên git để chạy đúng phiên bản đã duyệt. Ban đầu cách tự nhiên là cho bot push thẳng, dựa vào hook pre-push để chặn push xấu. Hoá ra repo private gói Free không khoá được nhánh main, và bot có quyền ghi thì chỉ cần --no-verify là vượt hook. Ai cho agent quyền git nên biết: chặn bằng quyền truy cập, không bằng lời dặn hay hook.",
+        "audience": "dev dùng agent có quyền truy cập git",
+        "evidence": [
+          3324,
+          3327,
+          3340
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đang dựng một System Operator, một agent vận hành chạy trên máy chủ, và chuẩn bị đưa bộ cài đặt của nó lên git.",
+            "evidence": [
+              3320
+            ]
+          },
+          "want": {
+            "text": "Muốn bộ cài đặt được push lên git để System Operator chạy theo đúng phiên bản đã duyệt.",
+            "evidence": [
+              3324,
+              3333
+            ]
+          },
+          "obstacle": {
+            "text": "Repo private trên gói GitHub Free không khoá được nhánh main, và bot có quyền ghi thì vượt được hook pre-push bằng --no-verify.",
+            "evidence": [
+              3327
+            ]
+          },
+          "turn": {
+            "text": "Tưởng cho bot push thẳng là ổn vì hook pre-push sẽ chặn push xấu; hoá ra bot có quyền ghi thì bỏ qua được hook, nên quyền ghi chính là chỗ cần chặn.",
+            "evidence": [
+              3324,
+              3327
+            ]
+          },
+          "action": {
+            "text": "Bỏ phương án bot push. System Operator chỉ có deploy key đọc, commit vào nhánh ops/ rồi người làm fetch về xem diff và merge.",
+            "evidence": [
+              3340
+            ]
+          },
+          "outcome": {
+            "text": "Người làm duyệt làm 2.1 và 2.2; bước đầu mới là kiểm tra trạng thái hệ thống, chưa có kết quả triển khai.",
+            "evidence": [
+              3345,
+              3352
+            ]
+          },
+          "takeaway": {
+            "text": "Đừng dựa vào lời dặn hay hook để chặn agent ghi vào repo; không cấp quyền ghi thì nó không ghi được.",
+            "evidence": [
+              3340
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-31-red-team-tim-lo-dev-login-f60d",
+        "status": "angle",
+        "angle": "Dự án Multica là công cụ quản lý agent trên máy, và người làm đang thiết kế cách cấp quyền để agent tự làm được nhiều việc mà không gây hậu quả hay mất dữ liệu. Bản phản biện từ một agent khác cho rằng mã đăng nhập dev 6 ký tự có thể giả làm chủ, và xếp đây là lỗ hổng nặng nhất. Khi kiểm lại trên máy, biến mã đó đã trống, nên lỗ hổng không mở như bản phản biện nêu. Điều đáng nghe là phản biện bằng agent khác có ích, nhưng mỗi phát hiện phải tự kiểm trước khi đưa vào tài liệu.",
+        "audience": "dev dùng agent AI hằng ngày muốn cấp quyền an toàn",
+        "evidence": [
+          1794,
+          1867,
+          1975
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án Multica là công cụ quản lý agent trên máy; người làm đang thiết kế cách cấp quyền cho agent và người dùng.",
+            "evidence": [
+              1794
+            ]
+          },
+          "want": {
+            "text": "Muốn agent tự làm được nhiều việc nhất mà không gây hậu quả nghiêm trọng hay mất dữ liệu.",
+            "evidence": [
+              1794
+            ]
+          },
+          "obstacle": {
+            "text": "Bản phản biện chỉ ra mã đăng nhập dev 6 ký tự có thể đăng nhập thành chủ, và xếp đây là lỗ hổng nặng nhất.",
+            "evidence": [
+              1867
+            ]
+          },
+          "turn": {
+            "text": "Phản biện tưởng mã đăng nhập dev còn hiệu lực, ai biết email chủ là vào được; kiểm lại thì biến mã đó trống.",
+            "evidence": [
+              1867,
+              1975
+            ]
+          },
+          "action": {
+            "text": "Nhờ một agent khác phản biện bản nháp, rồi tự kiểm từng điểm nặng trên máy trước khi sửa tài liệu.",
+            "evidence": [
+              1855,
+              1875,
+              1884
+            ]
+          },
+          "outcome": {
+            "text": "Tài liệu được cập nhật. Khi kiểm tra, mã dev trống nên đường đăng nhập bằng mã đó không mở như bản phản biện nêu.",
+            "evidence": [
+              1884,
+              1975
+            ]
+          },
+          "takeaway": {
+            "text": "Phản biện bằng agent khác có ích, nhưng mỗi phát hiện phải tự kiểm trên máy trước khi đưa vào tài liệu.",
+            "evidence": [
+              1874,
+              1975
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-30-agent-lam-thay-viec-cua-agent-f60d",
+        "status": "angle",
+        "angle": "Một đội marketing đang dựng bộ agent AI để tự làm SEO và phân tích GA4 thay cho người, nên việc của agent hạ tầng là đóng gói đủ công cụ cho chúng. Agent hạ tầng lại tin mình phải làm luôn việc chuyên môn: tự tìm property, tự chẩn đoán Search Console. Người dùng kéo lại: việc của nó là đóng gói để deploy lại có đủ agent và công cụ, còn SEO thì giao cho agent SEO qua issue. Ai dựng hạ tầng cho agent AI dễ rơi vào đúng bẫy này.",
+        "audience": "dev dựng hạ tầng cho agent AI",
+        "evidence": [
+          7,
+          920,
+          923,
+          968,
+          975
+        ],
+        "spine": {
+          "context": {
+            "text": "Một đội marketing đang dựng bộ agent AI để làm SEO và phân tích GA4, vì trong team chưa có ai làm các việc này.",
+            "evidence": [
+              7
+            ]
+          },
+          "want": {
+            "text": "Muốn agent tự làm được SEO và phân tích số liệu bằng công cụ đã gắn, không cần người làm thay.",
+            "evidence": [
+              920
+            ]
+          },
+          "obstacle": {
+            "text": "Gói deploy thiếu bước đặt file bí mật, nên agent chạy lên mà không có key và bị chặn.",
+            "evidence": [
+              975
+            ]
+          },
+          "turn": {
+            "text": "Tưởng việc của mình là tự làm chuyên môn: tự tìm property, tự chẩn đoán Search Console. Hoá ra việc của agent hạ tầng chỉ là đóng gói công cụ để agent chuyên môn tự làm.",
+            "evidence": [
+              923,
+              968
+            ]
+          },
+          "action": {
+            "text": "Giao vụ Search Console cho SEO Specialist qua issue, rồi sửa gói: khai báo user daemon và file bí mật trong .fgopc.yaml, còn opc.mjs tools cài MCP, đặt file bí mật và kiểm dưới đúng user daemon.",
+            "evidence": [
+              923,
+              975
+            ]
+          },
+          "outcome": {
+            "text": "Agent khởi động được MCP và gọi được list_sites, get_account_summaries, nhưng issue bị blocked vì thiếu file key. Trước đó GA4 đã trả số liệu thật, ví dụ kênh Direct có 58 session trong 7 ngày.",
+            "evidence": [
+              915,
+              955,
+              963
+            ]
+          },
+          "takeaway": {
+            "text": "Agent hạ tầng nên đóng gói công cụ, quy trình và file bí mật để deploy lại là đủ. Việc chuyên môn giao cho agent chuyên môn qua issue.",
+            "evidence": [
+              968,
+              975
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-30-agent-seo-mu-vi-buoc-dat-f60d",
+        "status": "angle",
+        "angle": "Một team marketing đang dựng agent AI làm SEO, GA4 và Search Console để agent tự làm việc, không chỉ có người làm. Khi chạy thử, agent SEO báo blocked: phần cài MCP đã xong, nên việc tưởng là agent đã chạy được, nhưng file key Google chưa được đặt, agent không đọc được gì. Lỗi nằm ở gói chứ không ở agent, vì bước chép key bằng tay dễ bị sót. Ai dựng agent cho team không rành kỹ thuật nên nghe, vì một bước tay bị sót có thể làm agent mù mà không báo rõ ngay.",
+        "audience": "dev và người dựng agent AI cho team nghiệp vụ",
+        "evidence": [
+          963,
+          975
+        ],
+        "spine": {
+          "context": {
+            "text": "Một team marketing đang dựng agent AI làm SEO, GA4 và Search Console, để agent tự làm việc thay vì chỉ có người làm.",
+            "evidence": [
+              7,
+              946
+            ]
+          },
+          "want": {
+            "text": "Muốn agent có đủ công cụ để tự làm việc, và khi deploy lại team thì đủ cả agent lẫn công cụ.",
+            "evidence": [
+              920,
+              968
+            ]
+          },
+          "obstacle": {
+            "text": "Agent SEO chạy thử báo blocked vì không đọc được file key Google.",
+            "evidence": [
+              963
+            ]
+          },
+          "turn": {
+            "text": "Tưởng cài MCP xong là agent chạy được; hoá ra thiếu file key nên agent không đọc được gì.",
+            "evidence": [
+              963,
+              975
+            ]
+          },
+          "action": {
+            "text": "Khai báo file bí mật trong manifest của gói, cài nó vào home của user daemon, và kiểm lại dưới đúng user đó.",
+            "evidence": [
+              975
+            ]
+          },
+          "outcome": {
+            "text": "Chưa có kết quả: STU-6 chưa chạy lại, đang chờ chủ đặt key rồi mới chuyển về todo.",
+            "evidence": [
+              963
+            ]
+          },
+          "takeaway": {
+            "text": "Một bước tay dễ sót sẽ khiến agent mù; đưa bước đó vào khai báo gói và kiểm dưới đúng user chạy agent.",
+            "evidence": [
+              975
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:f0bf048d L1-L3520: done; 23 chuyện thô, 25 cụm; ghi 25 mới, gộp 0\nđiểm nóng 25 (thiếu 0); lần chạy 1/1; 0.32 USD\ngóc kể: 9 có, 1 không ra chuyện\nhồ sơ dự án: AICoworker không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-31-chuoi-leo-thang-agent-khach-giu-f60d",
+      "code": "M-GNK7",
+      "title": "Chuỗi leo thang: agent khách giữ PAT chủ, giao việc cho System Operator có docker",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người làm dự án multica, cho team marketing có agent làm SEO, GA4 và đọc số liệu, đang thiết kế quyền để agent tự làm nhiều mà không mất dữ liệu. Bản nháp giả định PAT không nằm trên máy, nhưng phản biện chỉ ra opc-agent đang dùng PAT của chủ: một agent bị chèn lệnh từ trang web có thể giao việc cho System Operator chạy gần root. Đây là lý do nên chặn bằng quyền hệ điều hành thay vì chỉ dặn trong prompt.",
+      "audience": "dev dùng AI agent tự động hoá, quan tâm đến an toàn quyền hạn",
+      "spine": {
+        "context": {
+          "text": "Một người làm dự án multica, cho team marketing có agent làm SEO, GA4 và đọc số liệu, đang thiết kế quyền để agent tự làm được nhiều việc.",
+          "lines": [
+            "claude:f0bf048d#L7",
+            "claude:f0bf048d#L1794"
+          ]
+        },
+        "want": {
+          "text": "Muốn agent tự làm nhiều nhất có thể mà không gây hậu quả nghiêm trọng và không mất dữ liệu.",
+          "lines": [
+            "claude:f0bf048d#L1794"
+          ]
+        },
+        "obstacle": {
+          "text": "Phản biện chỉ ra một agent bị chèn lệnh qua trang web có thể đi lên tới quyền root trên máy.",
+          "lines": [
+            "claude:f0bf048d#L1867",
+            "claude:f0bf048d#L1891"
+          ]
+        },
+        "turn": {
+          "text": "Bản nháp giả định PAT không nằm trên máy; hoá ra opc-agent đang dùng PAT của chủ, nên agent có thể giao việc cho System Operator chạy gần root.",
+          "lines": [
+            "claude:f0bf048d#L1867",
+            "claude:f0bf048d#L1891"
+          ]
+        },
+        "action": {
+          "text": "Viết bản nháp thiết kế quyền, nhờ một agent độc lập phản biện, rồi sửa thành bản v2.",
+          "lines": [
+            "claude:f0bf048d#L1861",
+            "claude:f0bf048d#L1884",
+            "claude:f0bf048d#L1891"
+          ]
+        },
+        "outcome": {
+          "text": "Trên máy chưa thay đổi gì; tài liệu chưa commit; có ba lỗ khẩn cấp và thứ tự xử lý theo giai đoạn.",
+          "lines": [
+            "claude:f0bf048d#L1891"
+          ]
+        },
+        "takeaway": {
+          "text": "Lời dặn trong prompt không phải ranh giới bảo mật; chặn bằng quyền hệ điều hành và danh tính riêng cho agent.",
+          "lines": [
+            "claude:f0bf048d#L1891"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-01-ba-runtime-chay-that-lan-dau-f60d",
+      "code": "M-E1ZV",
+      "title": "Ba runtime chạy thật lần đầu: model khác cấu hình, Google và DuckDuckGo chặn máy chủ",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang dựng hệ thống giao việc cho agent AI chạy trên ba runtime và muốn biết chúng có chạy thật không. Họ tin model đang chạy là gpt-5.5 và grok-4.6 theo đúng cấu hình. Thống kê token cho thấy model thật là gpt-6.1-sol và grok-4.7, nên file cấu hình không đáng tin để biết model nào đang xử lý việc. Ai chạy agent với nhiều model nên đọc model từ thống kê sử dụng, không đọc từ cấu hình.",
+      "audience": "dev dùng agent AI và muốn biết model thật đang chạy trong hệ thống của mình",
+      "spine": {
+        "context": {
+          "text": "Người làm đang dựng hệ thống giao việc cho agent AI (multica) chạy trên ba runtime: Pi·OpenAI, Pi·Grok và Gemini qua omp.",
+          "lines": [
+            "claude:f0bf048d#L2890",
+            "claude:f0bf048d#L3165"
+          ]
+        },
+        "want": {
+          "text": "Muốn kiểm xem ba runtime có chạy thật không, không chỉ cấu hình xong.",
+          "lines": [
+            "claude:f0bf048d#L3079"
+          ]
+        },
+        "obstacle": {
+          "text": "Gemini (omp) chưa có lượt chạy nào; Google và DuckDuckGo chặn truy cập từ máy chủ.",
+          "lines": [
+            "claude:f0bf048d#L3165"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng model chạy là gpt-5.5 và grok-4.6 theo cấu hình; hoá ra thống kê ghi gpt-6.1-sol và grok-4.7.",
+          "lines": [
+            "claude:f0bf048d#L3165"
+          ]
+        },
+        "action": {
+          "text": "Chạy năm issue nhỏ trên hai agent thử, rồi đọc thống kê token của runtime.",
+          "lines": [
+            "claude:f0bf048d#L3133",
+            "claude:f0bf048d#L3165"
+          ]
+        },
+        "outcome": {
+          "text": "Năm issue chạy xong không lỗi; trong các công cụ tìm kiếm chỉ Bing còn dùng được.",
+          "lines": [
+            "claude:f0bf048d#L3165"
+          ]
+        },
+        "takeaway": {
+          "text": "Đừng tin model trong cấu hình: đọc model thật từ thống kê sử dụng, và đo công cụ tìm kiếm trên máy chủ trước khi dựa vào nó.",
+          "lines": [
+            "claude:f0bf048d#L3133",
+            "claude:f0bf048d#L3165"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-31-cong-cu-tra-phi-lot-vao-f60d",
+      "code": "M-J6W5",
+      "title": "Công cụ trả phí lọt vào plan khi khách chưa mua",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một bộ công cụ đang đóng gói các vai marketing (SEO, nội dung, quảng cáo) thành agent cho từng khách, và SEO được làm trước. Người làm tin bộ lọc add-on chưa mua sẽ chặn công cụ trả phí ở mọi đường đi; nhưng khi khách chưa có workspace, plan đi một nhánh riêng và vẫn tạo DataForSEO. Sau khi lọc ở nhánh đó, khách chưa mua chỉ còn PageSpeed. Ai viết script cấu hình có nhiều nhánh tuỳ trạng thái đều có thể dính lỗi này.",
+      "audience": "dev viết công cụ tự động cấu hình agent hoặc dịch vụ theo gói cho khách",
+      "spine": {
+        "context": {
+          "text": "Một bộ công cụ đóng gói các vai marketing (SEO, nội dung, quảng cáo) thành agent cho từng khách, và người làm đang ưu tiên SEO.",
+          "lines": [
+            "claude:f0bf048d#L7",
+            "claude:f0bf048d#L1282"
+          ]
+        },
+        "want": {
+          "text": "Đóng gói vai SEO, social, content và ads thành agent, làm SEO trước.",
+          "lines": [
+            "claude:f0bf048d#L1282"
+          ]
+        },
+        "obstacle": {
+          "text": "Khách chưa mua add-on DataForSEO vẫn bị tạo server đó khi chạy plan.",
+          "lines": [
+            "claude:f0bf048d#L1603"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bộ lọc add-on chặn công cụ trả phí ở mọi trường hợp; hoá ra nhánh workspace chưa tồn tại bỏ qua bộ lọc.",
+          "lines": [
+            "claude:f0bf048d#L1603",
+            "claude:f0bf048d#L1619"
+          ]
+        },
+        "action": {
+          "text": "Lọc add-on chưa mua ở nhánh đó, rồi plan thử ba trường hợp: có add-on, không có, và workspace đã tồn tại.",
+          "lines": [
+            "claude:f0bf048d#L1620",
+            "claude:f0bf048d#L1625"
+          ]
+        },
+        "outcome": {
+          "text": "PageSpeed được gắn, DataForSEO không được tạo; lint các gói đều ok.",
+          "lines": [
+            "claude:f0bf048d#L1623",
+            "claude:f0bf048d#L1639"
+          ]
+        },
+        "takeaway": {
+          "text": "Mọi nhánh của một kịch bản cấu hình phải dùng cùng bộ lọc; kiểm từng nhánh riêng.",
+          "lines": [
+            "claude:f0bf048d#L1603",
+            "claude:f0bf048d#L1623"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-31-doi-danh-tinh-daemon-sang-agents-f60d",
+      "code": "M-9A43",
+      "title": "Đổi danh tính daemon sang agents-opc: thu hồi PAT chủ, chuyển 12 agent",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một agent đang chuyển daemon của dự án Multica sang một user riêng, agents-opc, để agent không còn chạy bằng token của chủ.",
+          "lines": [
+            "claude:f0bf048d#L2394"
+          ]
+        },
+        "want": {
+          "text": "Chuyển 12 agent của opc-studio sang runtime mới của user agents-opc mà không làm gián đoạn.",
+          "lines": [
+            "claude:f0bf048d#L2435"
+          ]
+        },
+        "obstacle": {
+          "text": "Bước đăng nhập báo lỗi vì file token dành cho agents-opc chưa được tạo.",
+          "lines": [
+            "claude:f0bf048d#L2412"
+          ]
+        },
+        "action": {
+          "text": "Tạo token mới, cập nhật ở các chỗ lưu token cũ, kiểm token mới dùng được, rồi mới thu hồi token cũ.",
+          "lines": [
+            "claude:f0bf048d#L2548",
+            "claude:f0bf048d#L2550"
+          ]
+        },
+        "outcome": {
+          "text": "Token cũ bị thu hồi (204), token mới hoạt động, và kế hoạch quyền hiển thị 0 thay đổi.",
+          "lines": [
+            "claude:f0bf048d#L2550",
+            "claude:f0bf048d#L2556"
+          ]
+        },
+        "takeaway": {
+          "text": "Tạo token mới và kiểm tra nó hoạt động trước khi thu hồi token cũ, và ghi lại mọi nơi token được lưu.",
+          "lines": [
+            "claude:f0bf048d#L2550"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-30-deploy-mot-goi-ghi-de-team-f60d",
+      "code": "M-6CCS",
+      "title": "Deploy một gói ghi đè team của gói khác trong cùng workspace",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công ty phần mềm chỉ có một người, dùng nhiều AI agent trên Multica, đang muốn team marketing có agent làm SEO và đọc số liệu GA4. Khi deploy gói Marketing, người làm tin rằng lệnh chỉ đụng phần Marketing. Hoá ra gói Coding cũ nằm trong cùng workspace, nên deploy đã đưa các agent Coding về bản cũ và gỡ chúng khỏi squad. Ai có nhiều gói cấu hình trỏ vào một workspace nên đọc toàn bộ plan trước khi deploy.",
+      "audience": "dev dùng nhiều AI agent và quản lý cấu hình nhiều gói",
+      "spine": {
+        "context": {
+          "text": "Một công ty phần mềm chỉ có một người, dùng nhiều AI agent trên Multica, đang muốn team marketing có agent làm SEO và đọc số liệu GA4.",
+          "lines": [
+            "claude:f0bf048d#L7",
+            "claude:f0bf048d#L920"
+          ]
+        },
+        "want": {
+          "text": "Muốn có agent SEO và GA4 trong team marketing, chạy được trên site của khách.",
+          "lines": [
+            "claude:f0bf048d#L7",
+            "claude:f0bf048d#L675"
+          ]
+        },
+        "obstacle": {
+          "text": "Search Console chưa có số liệu vì quyền được cấp nhầm property.",
+          "lines": [
+            "claude:f0bf048d#L915"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng deploy gói Marketing chỉ đụng phần Marketing; hoá ra gói Coding cũ nằm trong cùng workspace và bị ghi đè về bản cũ.",
+          "lines": [
+            "claude:f0bf048d#L902",
+            "claude:f0bf048d#L915"
+          ]
+        },
+        "action": {
+          "text": "Deploy lại gói Coding từ file gốc, bỏ phần Coding khỏi gói Marketing, rồi deploy 3 agent SEO và GA4.",
+          "lines": [
+            "claude:f0bf048d#L865",
+            "claude:f0bf048d#L896",
+            "claude:f0bf048d#L915"
+          ]
+        },
+        "outcome": {
+          "text": "Plan Coding về 0 thay đổi; GA4 trả số liệu thật, kênh Direct có 58 session trong 7 ngày; Search Console vẫn chưa có số liệu.",
+          "lines": [
+            "claude:f0bf048d#L915"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi nhiều gói cùng trỏ vào một workspace, mỗi gói chỉ giữ phần của nó; đọc toàn bộ plan trước khi deploy.",
+          "lines": [
+            "claude:f0bf048d#L902"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-30-mo-hinh-mot-workspace-cho-moi-f60d",
+      "code": "M-0YPE",
+      "title": "Mô hình một workspace cho mỗi khách: đổi tên gói vì gói mang tên workspace",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang đóng gói bộ agent AI để triển khai cho từng khách trên Multica, mỗi khách một workspace và mua bộ nào cài bộ đó. Gói đầu tiên lại mang tên workspace của chính họ và mặc định cài vào đó, nên quên một tham số là cài nhầm, như sự cố trước. Đổi tên theo bộ nghiệp vụ và bắt buộc chỉ định workspace đích giúp công cụ tự chặn lỗi này, điều đáng biết với ai triển khai nhiều khách trên cùng một nền tảng.",
+      "audience": "người triển khai agent AI cho nhiều khách trên cùng nền tảng",
+      "spine": {
+        "context": {
+          "text": "Người làm đóng gói bộ agent AI để triển khai cho từng khách trên Multica, đang chuẩn bị cài cho khách đầu tiên.",
+          "lines": [
+            "claude:f0bf048d#L968"
+          ]
+        },
+        "want": {
+          "text": "Mỗi khách có một workspace riêng, mua bộ nào thì cài bộ đó.",
+          "lines": [
+            "claude:f0bf048d#L1122"
+          ]
+        },
+        "obstacle": {
+          "text": "Gói đầu tiên mang tên workspace nội bộ và mặc định cài vào đó, nên dễ cài nhầm.",
+          "lines": [
+            "claude:f0bf048d#L1125"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng gói là đơn vị cài cho khách mà vẫn cài đúng chỗ khi quên tham số đích; hoá ra gói mặc định cài vào workspace của chính mình.",
+          "lines": [
+            "claude:f0bf048d#L1125"
+          ]
+        },
+        "action": {
+          "text": "Đổi tên gói thành opc-content, bỏ deploy mặc định và bắt buộc truyền file env của khách.",
+          "lines": [
+            "claude:f0bf048d#L1125",
+            "claude:f0bf048d#L1126"
+          ]
+        },
+        "outcome": {
+          "text": "Commit 237d250, chưa push; plan bộ Content chỉ đổi đúng phần Content, bộ coding báo 0 change.",
+          "lines": [
+            "claude:f0bf048d#L1165"
+          ]
+        },
+        "takeaway": {
+          "text": "Đặt tên đơn vị triển khai theo bộ nghiệp vụ, không theo tên workspace; để công cụ từ chối chạy khi thiếu đích.",
+          "lines": [
+            "claude:f0bf048d#L1125",
+            "claude:f0bf048d#L1165"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-01-bot-khong-co-quyen-ghi-git-f60d",
+      "code": "M-G41F",
+      "title": "Bot không có quyền ghi: git fetch thay vì push",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang dựng một agent vận hành chạy trên máy chủ, và muốn đưa bộ cài đặt của nó lên git để chạy đúng phiên bản đã duyệt. Ban đầu cách tự nhiên là cho bot push thẳng, dựa vào hook pre-push để chặn push xấu. Hoá ra repo private gói Free không khoá được nhánh main, và bot có quyền ghi thì chỉ cần --no-verify là vượt hook. Ai cho agent quyền git nên biết: chặn bằng quyền truy cập, không bằng lời dặn hay hook.",
+      "audience": "dev dùng agent có quyền truy cập git",
+      "spine": {
+        "context": {
+          "text": "Người làm đang dựng một System Operator, một agent vận hành chạy trên máy chủ, và chuẩn bị đưa bộ cài đặt của nó lên git.",
+          "lines": [
+            "claude:f0bf048d#L3320"
+          ]
+        },
+        "want": {
+          "text": "Muốn bộ cài đặt được push lên git để System Operator chạy theo đúng phiên bản đã duyệt.",
+          "lines": [
+            "claude:f0bf048d#L3324",
+            "claude:f0bf048d#L3333"
+          ]
+        },
+        "obstacle": {
+          "text": "Repo private trên gói GitHub Free không khoá được nhánh main, và bot có quyền ghi thì vượt được hook pre-push bằng --no-verify.",
+          "lines": [
+            "claude:f0bf048d#L3327"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng cho bot push thẳng là ổn vì hook pre-push sẽ chặn push xấu; hoá ra bot có quyền ghi thì bỏ qua được hook, nên quyền ghi chính là chỗ cần chặn.",
+          "lines": [
+            "claude:f0bf048d#L3324",
+            "claude:f0bf048d#L3327"
+          ]
+        },
+        "action": {
+          "text": "Bỏ phương án bot push. System Operator chỉ có deploy key đọc, commit vào nhánh ops/ rồi người làm fetch về xem diff và merge.",
+          "lines": [
+            "claude:f0bf048d#L3340"
+          ]
+        },
+        "outcome": {
+          "text": "Người làm duyệt làm 2.1 và 2.2; bước đầu mới là kiểm tra trạng thái hệ thống, chưa có kết quả triển khai.",
+          "lines": [
+            "claude:f0bf048d#L3345",
+            "claude:f0bf048d#L3352"
+          ]
+        },
+        "takeaway": {
+          "text": "Đừng dựa vào lời dặn hay hook để chặn agent ghi vào repo; không cấp quyền ghi thì nó không ghi được.",
+          "lines": [
+            "claude:f0bf048d#L3340"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-31-red-team-tim-lo-dev-login-f60d",
+      "code": "M-5ECK",
+      "title": "Red-team tìm lỗ dev login code: chủ bị giả mạo qua API",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án Multica là công cụ quản lý agent trên máy, và người làm đang thiết kế cách cấp quyền để agent tự làm được nhiều việc mà không gây hậu quả hay mất dữ liệu. Bản phản biện từ một agent khác cho rằng mã đăng nhập dev 6 ký tự có thể giả làm chủ, và xếp đây là lỗ hổng nặng nhất. Khi kiểm lại trên máy, biến mã đó đã trống, nên lỗ hổng không mở như bản phản biện nêu. Điều đáng nghe là phản biện bằng agent khác có ích, nhưng mỗi phát hiện phải tự kiểm trước khi đưa vào tài liệu.",
+      "audience": "dev dùng agent AI hằng ngày muốn cấp quyền an toàn",
+      "spine": {
+        "context": {
+          "text": "Dự án Multica là công cụ quản lý agent trên máy; người làm đang thiết kế cách cấp quyền cho agent và người dùng.",
+          "lines": [
+            "claude:f0bf048d#L1794"
+          ]
+        },
+        "want": {
+          "text": "Muốn agent tự làm được nhiều việc nhất mà không gây hậu quả nghiêm trọng hay mất dữ liệu.",
+          "lines": [
+            "claude:f0bf048d#L1794"
+          ]
+        },
+        "obstacle": {
+          "text": "Bản phản biện chỉ ra mã đăng nhập dev 6 ký tự có thể đăng nhập thành chủ, và xếp đây là lỗ hổng nặng nhất.",
+          "lines": [
+            "claude:f0bf048d#L1867"
+          ]
+        },
+        "turn": {
+          "text": "Phản biện tưởng mã đăng nhập dev còn hiệu lực, ai biết email chủ là vào được; kiểm lại thì biến mã đó trống.",
+          "lines": [
+            "claude:f0bf048d#L1867",
+            "claude:f0bf048d#L1975"
+          ]
+        },
+        "action": {
+          "text": "Nhờ một agent khác phản biện bản nháp, rồi tự kiểm từng điểm nặng trên máy trước khi sửa tài liệu.",
+          "lines": [
+            "claude:f0bf048d#L1855",
+            "claude:f0bf048d#L1875",
+            "claude:f0bf048d#L1884"
+          ]
+        },
+        "outcome": {
+          "text": "Tài liệu được cập nhật. Khi kiểm tra, mã dev trống nên đường đăng nhập bằng mã đó không mở như bản phản biện nêu.",
+          "lines": [
+            "claude:f0bf048d#L1884",
+            "claude:f0bf048d#L1975"
+          ]
+        },
+        "takeaway": {
+          "text": "Phản biện bằng agent khác có ích, nhưng mỗi phát hiện phải tự kiểm trên máy trước khi đưa vào tài liệu.",
+          "lines": [
+            "claude:f0bf048d#L1874",
+            "claude:f0bf048d#L1975"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-30-agent-lam-thay-viec-cua-agent-f60d",
+      "code": "M-Y15Q",
+      "title": "Agent làm thay việc của agent: người dùng kéo lại về đóng gói",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một đội marketing đang dựng bộ agent AI để tự làm SEO và phân tích GA4 thay cho người, nên việc của agent hạ tầng là đóng gói đủ công cụ cho chúng. Agent hạ tầng lại tin mình phải làm luôn việc chuyên môn: tự tìm property, tự chẩn đoán Search Console. Người dùng kéo lại: việc của nó là đóng gói để deploy lại có đủ agent và công cụ, còn SEO thì giao cho agent SEO qua issue. Ai dựng hạ tầng cho agent AI dễ rơi vào đúng bẫy này.",
+      "audience": "dev dựng hạ tầng cho agent AI",
+      "spine": {
+        "context": {
+          "text": "Một đội marketing đang dựng bộ agent AI để làm SEO và phân tích GA4, vì trong team chưa có ai làm các việc này.",
+          "lines": [
+            "claude:f0bf048d#L7"
+          ]
+        },
+        "want": {
+          "text": "Muốn agent tự làm được SEO và phân tích số liệu bằng công cụ đã gắn, không cần người làm thay.",
+          "lines": [
+            "claude:f0bf048d#L920"
+          ]
+        },
+        "obstacle": {
+          "text": "Gói deploy thiếu bước đặt file bí mật, nên agent chạy lên mà không có key và bị chặn.",
+          "lines": [
+            "claude:f0bf048d#L975"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng việc của mình là tự làm chuyên môn: tự tìm property, tự chẩn đoán Search Console. Hoá ra việc của agent hạ tầng chỉ là đóng gói công cụ để agent chuyên môn tự làm.",
+          "lines": [
+            "claude:f0bf048d#L923",
+            "claude:f0bf048d#L968"
+          ]
+        },
+        "action": {
+          "text": "Giao vụ Search Console cho SEO Specialist qua issue, rồi sửa gói: khai báo user daemon và file bí mật trong .fgopc.yaml, còn opc.mjs tools cài MCP, đặt file bí mật và kiểm dưới đúng user daemon.",
+          "lines": [
+            "claude:f0bf048d#L923",
+            "claude:f0bf048d#L975"
+          ]
+        },
+        "outcome": {
+          "text": "Agent khởi động được MCP và gọi được list_sites, get_account_summaries, nhưng issue bị blocked vì thiếu file key. Trước đó GA4 đã trả số liệu thật, ví dụ kênh Direct có 58 session trong 7 ngày.",
+          "lines": [
+            "claude:f0bf048d#L915",
+            "claude:f0bf048d#L955",
+            "claude:f0bf048d#L963"
+          ]
+        },
+        "takeaway": {
+          "text": "Agent hạ tầng nên đóng gói công cụ, quy trình và file bí mật để deploy lại là đủ. Việc chuyên môn giao cho agent chuyên môn qua issue.",
+          "lines": [
+            "claude:f0bf048d#L968",
+            "claude:f0bf048d#L975"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-30-agent-seo-mu-vi-buoc-dat-f60d",
+      "code": "M-QMGQ",
+      "title": "Agent SEO mù vì bước đặt key bị sót",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một team marketing đang dựng agent AI làm SEO, GA4 và Search Console để agent tự làm việc, không chỉ có người làm. Khi chạy thử, agent SEO báo blocked: phần cài MCP đã xong, nên việc tưởng là agent đã chạy được, nhưng file key Google chưa được đặt, agent không đọc được gì. Lỗi nằm ở gói chứ không ở agent, vì bước chép key bằng tay dễ bị sót. Ai dựng agent cho team không rành kỹ thuật nên nghe, vì một bước tay bị sót có thể làm agent mù mà không báo rõ ngay.",
+      "audience": "dev và người dựng agent AI cho team nghiệp vụ",
+      "spine": {
+        "context": {
+          "text": "Một team marketing đang dựng agent AI làm SEO, GA4 và Search Console, để agent tự làm việc thay vì chỉ có người làm.",
+          "lines": [
+            "claude:f0bf048d#L7",
+            "claude:f0bf048d#L946"
+          ]
+        },
+        "want": {
+          "text": "Muốn agent có đủ công cụ để tự làm việc, và khi deploy lại team thì đủ cả agent lẫn công cụ.",
+          "lines": [
+            "claude:f0bf048d#L920",
+            "claude:f0bf048d#L968"
+          ]
+        },
+        "obstacle": {
+          "text": "Agent SEO chạy thử báo blocked vì không đọc được file key Google.",
+          "lines": [
+            "claude:f0bf048d#L963"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng cài MCP xong là agent chạy được; hoá ra thiếu file key nên agent không đọc được gì.",
+          "lines": [
+            "claude:f0bf048d#L963",
+            "claude:f0bf048d#L975"
+          ]
+        },
+        "action": {
+          "text": "Khai báo file bí mật trong manifest của gói, cài nó vào home của user daemon, và kiểm lại dưới đúng user đó.",
+          "lines": [
+            "claude:f0bf048d#L975"
+          ]
+        },
+        "outcome": {
+          "text": "Chưa có kết quả: STU-6 chưa chạy lại, đang chờ chủ đặt key rồi mới chuyển về todo.",
+          "lines": [
+            "claude:f0bf048d#L963"
+          ]
+        },
+        "takeaway": {
+          "text": "Một bước tay dễ sót sẽ khiến agent mù; đưa bước đó vào khai báo gói và kiểm dưới đúng user chạy agent.",
+          "lines": [
+            "claude:f0bf048d#L975"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-30-chon-cong-cu-seo-tra-tien-f60d",
+      "code": "M-7WY5",
+      "title": "Chọn công cụ SEO trả tiền: DataForSEO nạp $50, ước $2-5 mỗi khách",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-01-chep-phien-dang-nhap-claude-giua-f60d",
+      "code": "M-P1T2",
+      "title": "Chép phiên đăng nhập Claude giữa hai user Linux: token xoay vòng",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-31-moi-buoc-tay-cua-system-operator-f60d",
+      "code": "M-2CS8",
+      "title": "Mọi bước tay của System Operator phải dạy lại vào skill",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-31-repo-private-ca-nhan-khong-cap-f60d",
+      "code": "M-HMER",
+      "title": "Repo private cá nhân không cấp quyền chỉ đọc: đề xuất sai rồi đính chính",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-google-chan-scope-quan-tri-ga4-f60d",
+      "code": "M-MX01",
+      "title": "Google chặn scope quản trị GA4 của gcloud, phải thêm tay",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-search-console-trong-vi-property-www-f60d",
+      "code": "M-WZ7Q",
+      "title": "Search Console trống vì property www cũ trong khi site 301 sang không www",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-service-account-mien-phi-project-khong-f60d",
+      "code": "M-389E",
+      "title": "Service account miễn phí, project không billing, và chỗ tốn tiền thật là token Claude",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-01-backup-hourly-bi-hoi-lai-doi-f60d",
+      "code": "M-2F87",
+      "title": "Backup hourly bị hỏi lại: đổi từ chắc ăn sang agent tự làm được",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-01-runtime-offline-du-lenh-boc-da-f60d",
+      "code": "M-SDHG",
+      "title": "Runtime offline dù lệnh bọc đã có: daemon chỉ dò lại khi profile đổi",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-khao-sat-mcp-quang-cao-google-f60d",
+      "code": "M-5Y2R",
+      "title": "Khảo sát MCP quảng cáo: Google chỉ đọc, Meta tạo chiến dịch paused, TikTok đăng nhập lại 30 ngày",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-mot-lenh-root-de-system-operator-f60d",
+      "code": "M-HTFG",
+      "title": "Một lệnh root để System Operator tự cài pi/omp không cần sudo",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-skillstation-hub-chon-loc-skill-qua-f60d",
+      "code": "M-XRPA",
+      "title": "skillstation: hub chọn lọc skill qua tailnet, phải dùng proxy vì daemon bị cắt home",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-01-gemini-qua-omp-chay-lan-dau-f60d",
+      "code": "M-8XJ2",
+      "title": "Gemini qua omp chạy lần đầu, khoảng 30 giây, không lỗi",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-10-ghi-lai-thao-tac-tay-thanh-f60d",
+      "code": "M-W2VS",
+      "title": "Ghi lại thao tác tay thành bài dạy cho agent vận hành: mỗi bước làm bằng tay trên máy đều được chép vào skill của System Operator rồi deploy lại, để agent tự làm lần sau",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-10-co-y-chi-dong-goi-cong-f60d",
+      "code": "M-3JFS",
+      "title": "Cố ý chỉ đóng gói công cụ đúng với thứ được phép chạy, chặn các việc không đảo ngược được, hỏi người trước khi tốn tiền hoặc đổi quyền",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

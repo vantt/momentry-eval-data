@@ -1,0 +1,122 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh cho vault Obsidian, có thêm cửa MCP để hỏi Claude Desktop về graph của vault: note nào nối với note nào, đi từ ý này sang ý khác qua đâu, và note nào bị lạc khỏi mạng. Làm cho người làm một mình hoặc freelancer dùng tiếng Việt, nên phải cài được mà không cần Python và chỉ là một file chạy trên Windows, macOS hoặc Linux. Chạy ngay trên máy của người dùng, nơi giữ vault. Mục tiêu hiện tại: viết lại lõi bằng Rust để cho kết quả khớp với bản Python trên cùng một vault.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L915] USER: báo cáo tiến độ
+[L925] USER: kết nối với OHS anh sẽ kêu một agent khác ở windows làm và test luôn nhé. em chỉ đảm bảo mọi việc xong tới khi cài được và em không còn làm gì tiếp nữa.
+[L1017] USER: bật 1 agent dùng skill cs-packaging-distribution để audit co dữ án này
+</asks>
+
+<story>
+hook: Build lỗi giữa chừng, index sai mãi mà test vẫn xanh
+tension: tuong_ma_hoa_ra (Bộ so khớp với Python khớp nghĩa là đúng / Python sai y hệt nên không ai bắt được)
+stakes: 2/3
+# Build lỗi giữa chừng để index sai mãi, và Python cũng sai y như vậy
+
+**Bối cảnh:** Quá trình build ghi note và edges bằng hai transaction tách rời.
+**Chuyện gì xảy ra:** Review phát hiện nếu build lỗi sau transaction đầu, lần build sau thấy không đổi nên không tính lại edges. Python có đúng cấu trúc hai transaction nên bộ so khớp không bắt được. Sửa bằng cờ dirty trong meta để buộc tính lại, có test mô phỏng lỗi.
+**Bài học:** Parity test chỉ chứng minh giống bản gốc, không chứng minh bản gốc đúng.
+</story>
+
+<excerpt>
+[L1029] AGENT: Đã bật một agent audit đóng gói và phân phối theo skill `cs-packaging-distribution`. Agent chỉ đọc, không sửa gì, và xếp lỗi theo mức "chặn bản cài đầu tiên trên Windows", "quan trọng", "nên có". Báo cáo sẽ nằm ở `plans/reports/packaging-audit-261102-1505-cs-packaging-distribution.md`. Có kết quả tôi sẽ báo lại, và đưa những lỗi chặn vào việc phải xong trước khi gọi là cài được.
+[L1038] USER: <task-notification>
+<task-id>a8d8aed1127aa7c55</task-id>
+<tool-use-id>toolu_01EonekCHFko4SCu3grMj6Jp</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a8d8aed1127aa7c55.output</output-file>
+<status>completed</status>
+<summary>Agent "Review index validate adapter" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I found no SQL injection and no panics in this diff. The main real defect is a build that fails partway through and leaves the index wrong for good. The Python spec has the same flaw, so the parity tests can't catch it. `cargo test -p pkm-core` exited without errors, but I only saw the last lines (the doctest run with 0 tests), so I haven't confirmed the unit tests themselves passed. The full report, in Vietnamese, is at `/home/vantt/projects/obsidian-pkm/plans/reports/code-reviewer-261102-1500-index.md`.
+
+**High**
+
+1. **A failed build leaves links and edges stale until someone runs `--full`.** (`crates/pkm-core/src/index.rs:655-679`, `693-707`, `781-791`)
+   - **What happens:** note rows, including the new mtime and size, are saved in the first transaction. Edges and views are saved in a second one, and meta in a third.
+   - **Failure scenario:** if `derive` fails after the first transaction is saved, the next incremental build sees no changed notes. That can happen if the adapter returns an error (e.g. a bad `data.score` at `adapter/e11.rs:603`), the schema fails to load, or the process is killed. The schema digest in meta still matches, so it skips recomputing edges. Old links and edges then stay in place, and no note ever looks "changed" again to trigger a fix.
+   - **Same in Python:** `index.py:186` and `:215` use two separate `with db` blocks.
+   - **Fix:** write a `meta.dirty=1` flag before the first transaction, clear it in the meta transaction, and force `derive` while it is set. Alternatively, merge the first two transactions. Either way, a successful build produces the same rows and `edges.id` values.
+
+2. **The write lock is held while files are read, and lock conflicts aren't handled.** (`index.rs:656-678`, `618`)
+   - **What happens:** `write_note` reads and parses each file inside the write transaction. On a large vault or a synced or network drive on Windows, the lock lasts second …[+3667]
+[L1045] AGENT: The phase 09 review found two High issues on build-failure paths: a failed build leaves the index stale, and two builds running together hit lock errors. Both matter once MCP refreshes the index while the CLI is also running, so I'm sending them back to the phase 09 agent to fix.
+[L1046] TOOL SendMessage: {"to":"ad762b84a2a65e3be","summary":"Fix index code-review findings","message":"Your branch is merged to main (7d14601). Code review report: /home/vantt/projects/obsidian-pkm/plans/reports/code-reviewer-261102-1500-index.md (read it). First `git merge main` into your worktree branch, then fix in a n …[+1544]
+[L1047] RESULT: {"success":true,"message":"Resuming agent ad762b8","resumedAgentId":"ad762b84a2a65e3be","pin":{"id":"ad762b84a2a65e3be","name":"ad762b84a2a65e3be","ref":"c463a8"}}
+[L1052] AGENT: Four agents are running in parallel:
+- the phase 09 fixes from the review,
+- phase 10,
+- phase 12 (CLI and MCP),
+- the packaging audit.
+…
+[L1073] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: a1f9526676784076c (internal ID - do not mention to user. Use SendMessa …[+86]
+[L1078] AGENT: Audit xong; báo cáo ở `plans/reports/packaging-audit-261102-1505-cs-packaging-distribution.md`. Agent không dựng được binary vì hook của repo chặn lệnh `cargo build` và thư mục `target/`. Vì vậy các lỗi liên quan tới binary là suy từ mã nguồn, chưa chạy thật để kiểm.
+
+**Ba lỗi chặn bản cài đầu tiên trên Windows:**
+- `pkm.exe` cần `vcruntime140.dll`, nhiều máy Windows sạch không có, nên Claude Desktop có thể không chạy được `pkm`.
+- Không có script cài và không có chỗ cài cố định. `mcp install` ghi lại đường dẫn nơi file `.exe` đang nằm, ví dụ thư mục Downloads.
+- README chưa có hướng dẫn cho người dùng từ con số 0 tới lúc Claude Desktop gọi được `kg`.
+
+Một agent đang sửa cả ba, kèm các mục của pipeline release: chạy test trước khi phát hành, kiểm tag khớp phiên bản crate, gom một file `checksums.txt`, và chạy thử từng binary sau khi build.
+
+**Hai lỗi quan trọng của `doctor`:** thiếu gói OHS thì `doctor` báo lỗi, trong khi `mcp install` coi OHS là tuỳ chọn. Ngoài ra `doctor` mặc định khởi động OHS. Hai chỗ này tôi sửa sau khi phase 12 merge để không đụng file của nhau. Phần chạy thật với OHS vẫn để agent trên Windows làm như anh/chị đã nói.
+
+**Đang chạy song song:** sửa phase 09 theo review, phase 10, phase 12, và sửa phần đóng gói.
+[L1091] USER: <task-notification>
+<task-id>ad762b84a2a65e3be</task-id>
+<tool-use-id>toolu_015zFEYbMUciHhdvC1EAyvuv</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/ad762b84a2a65e3be.output</output-file>
+<status>completed</status>
+<summary>Agent "Phase 09 index adapter validate" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I fixed all seven review findings in commit `53c1156fd0dcc062602838318775bceb26e8b4ff` on `worktree-agent-ad762b84a2a65e3be`. I merged main first (a fast-forward to 7d14601) and did not push or merge.
+
+Successful builds are still byte-identical to Python. I re-compared whole databases after full, no-change, edited-incremental, second incremental and full-rebuild steps. That covered kg-solo, the planted-error vault from `test_kg.py` and the e11 vault from `test_kg_adapter.py`. The CI-style parity check on kg-solo shows 0 unnamed diffs, exit 0.
+
+1. **Failed build leaves edges stale (high):** the note-table transaction now also writes a `dirty` row in `meta`, which only goes away when the final `meta` is written. If that row is still there on the next build, edges are re-derived. `failed_build_is_rederived_next_time` injects an adapter failure to check this.
+2. **Concurrent builds (high):**
+   - Notes are now read and parsed before the write transaction opens.
+   - All write transactions are `IMMEDIATE`, with an explicit 30 s busy timeout.
+   - A lock file `&lt;db&gt;.lock` sits next to the DB, so only one build writes at a time. A second build waits up to 5 minutes, then fails with an error. Python has no such lock, so this is recorded as an intended deviation.
+   - If the filesystem doesn't support file locks (some network drives), the build runs unlocked, as Python does.
+   - Because builds are serialized, the previous file list and `meta` are read under the lock rather than inside a transaction.
+   - `concurrent_builds_take_turns` covers this.
+3. **WAL mode (medium):** the build only switches to WAL if the DB isn't already in WAL, and doesn't wait for a lock when switching. If the switch fails, it keeps the old mode and carries on (`wal_switch_failure_is_not_fatal`).
+4. **mtime+size detection (medium):** the limits (FAT/exFAT, sync tools keeping the original mtime) and `--full` as the fix are …[+1534]
+[L1093] TOOL Bash: git merge --no-edit worktree-agent-ad762b84a2a65e3be 2>&1 | tail -1; git diff --name-only --diff-filter=U; cargo clippy --workspace --all-targets --locked -q -- -D warnings && cargo test --workspace --locked -q 2>&1 | grep -E "failed;" | grep -v " 0 failed"; cargo run -q --locked -p pkm-parity -- ch …[+307]
+[L1094] RESULT: 5 files changed, 395 insertions(+), 23 deletions(-) | Tổng: 64 mục, 0 lệch chưa có tên, 44 mục chưa có.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,144 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent (Claude Code, Codex và một số agent khác). Sau mỗi phiên, công cụ đọc transcript, tìm các khoảnh khắc đáng kể như con số đổi, lỗi có gốc bất ngờ, quyết định bị đảo, rồi ghi mỗi chuyện thành một file markdown trong repo và xếp hạng theo độ hấp dẫn. Làm cho người làm một mình, build in public, viết blog kỹ thuật hoặc báo cáo tuần, không muốn để mất chất liệu. Ràng buộc chính: chạy trên máy của người dùng, không để lọt tên riêng tư vào repo, và giao diện CLI cùng tài liệu hiện viết bằng tiếng Việt. Mục tiêu hiện tại: chưa có trong phần tài liệu đã đọc, nên bỏ qua.
+</project>
+
+<asks>
+[L9] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-research # Research ## Research Methodology Always honoring **KISS** and **DRY** principles. Deliver the full requested scope — never trim or defer what the user explicitly asked for. Add nothing unrequested. With `--yagni`, additionally challenge and cut any scope not needed for the stated outcome. **Be honest, be brutal, straight to the point, and be concise.** ### Phase 1: Scope Definition First, you will clearly define the research scope by: - Identifying key terms and concepts to investigate - Determining the r …[+5899]
+[L664] USER: A session-scoped Stop hook is now active with condition: "dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that's only for clearing a goal early.
+[L681] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-cook # Cook Invoke `/ak-cook <task|plan-path> [flags]` in Claude Code; use the runtime's installed invocation form elsewhere. Implement the full authorized outcome through verification and review. Capture or reuse outcome, constraints, non-goals and acceptance criteria; inspect nearby code and tests. Ask only for a material missing decision or an action outside that authorization. Repair regressions caused by the change and rerun affected checks before finishing. ## Select a mode | Input | Route | |---|---| | No fla …[+2997]
+[L2233] USER: Stop hook feedback: [dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: Plan có 45 việc, mới xong 43/45. Hai việc còn lại là push lên GitHub để CI chạy lần đầu và kiểm nhánh Windows trên máy thật; cả hai chưa thực hiện, và assistant đã hỏi user có cho phép push không mà chưa có phản hồi.
+</asks>
+
+<story>
+hook: Plan xong 45/45 việc, nhưng chưa tính là xong
+tension: tuong_ma_hoa_ra (Cả 45 việc trong plan đã đánh dấu xong / Stop hook bắt làm tiếp tới khi release thật chạy xanh)
+stakes: 3/3
+# Plan 45/45 chưa đủ: release thật mới đóng được việc
+
+**Bối cảnh:** Stop hook của phiên yêu cầu làm tới khi hoàn tất. Plan đã đánh dấu 45/45 việc.
+**Chuyện gì xảy ra:** Ba lần stop hook bắt agent làm tiếp: đẩy lên main, chạy CI thật trên 9 tổ hợp, rồi cắt v0.1.0. Release chạy xanh từ đầu đến cuối trong một lần, và lệnh cài một dòng trong README chạy được với bản vừa phát hành.
+**Bài học:** Plan xong khác release xong. Chỉ đóng việc khi lệnh cài thật chạy được từ nguồn công khai.
+**Artefact:** Trang release trên GitHub và đầu ra lệnh cài trong HOME tạm. Che tên người dùng.
+</story>
+
+<excerpt>
+[L2217] RESULT: status: in-progress | /home/vantt/projects/momentry/plans/journals/2026-11-03-trin-khai-ng-gi-v-phn-phi-momentry.md
+[L2230] AGENT: Plan đóng gói và phân phối đã làm xong 43/45 việc, kiểm tra trên Linux đều xanh. Hai việc còn lại cần push lên GitHub (việc ra ngoài, tôi cần bạn cho phép) và một máy Windows thật. Tôi chưa commit gì.
+
+**Đã kiểm trên Linux:**
+- 232 test qua.
+- Vòng đời installer chạy từ đầu đến cuối: cài, cài lại không đổi gì, `init`, `doctor`, `update --check` báo mã 10, cập nhật giữ nguyên cấu hình. Archive bị sửa thì bị từ chối, bản cài hỏng thì được sửa lại, cài vào `--home`/`--install-dir` tuỳ chỉnh vẫn được nhận, `uninstall` gỡ sạch mà giữ dữ liệu.
+- Một agent mới, chỉ đọc `--help` và `--json`, tự cài và đưa `momentry doctor` tới `ok`. Lần thử đầu nó vướng vì lệnh sửa cho nguồn chặn là câu văn chứ không chạy được. Tôi thêm `momentry config privacy-add "<tên>"`, giờ vòng đó qua ngay lần đầu.
+
+**Bạn có được gì:**
+- **Cài một lệnh:** `install.sh` cho Linux, macOS, WSL và `install.ps1` cho Windows. Installer kiểm sha256 và chạy thử bản mới trước khi đổi sang nó.
+- **`momentry init`:** tạo `.momentry.json` và hộp chuyện, cài hook và `/bip` cho Claude Code và Codex (có sao lưu, chỉ sửa đúng phần của momentry), rồi in "✓ Sẵn sàng" và bước tiếp theo.
+- **Lệnh mới:** `doctor`, `status`, `connect`, `config`, `paths`, `version`, `update`, `uninstall`.
+- **Hook gọi qua lệnh `momentry` đã cài**, không còn ghi cứng đường dẫn Node, nên nâng Node không làm hook chết nữa.
+- **CI** chạy trên ba hệ điều hành với Node 20/22/24. Khi phát hành, workflow tạo bản nháp, cài thử bản nháp trên cả ba hệ, rồi mới công bố.
+- **Tài liệu:** README viết lại cho người mới, thêm `docs/installation.md`, `docs/cli-reference.md` (sinh từ code), `docs/development.md`, `docs/release-runbook.md`, CHANGELOG. PRD đã sửa theo quyết định tự cài hook và mã thoát mới.
+
+**Thay đổi phá tương thích** (ghi trong CHANGELOG):
+- Mã thoát: 1 giờ là lỗi, kể cả khi `check` thấy vi phạm (trước là 2); 2 giờ là sai cú pháp (trước là 1).
+- `list --json` giờ nằm trong khuôn chung `{schema, ok, data, error, next}`, mảng ở `data`.
+
+**Revie …[+1164]
+[L2233] USER: Stop hook feedback:
+[dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: Plan có 45 việc, mới xong 43/45. Hai việc còn lại là push lên GitHub để CI chạy lần đầu và kiểm nhánh Windows trên máy thật; cả hai chưa thực hiện, và assistant đã hỏi user có cho phép push không mà chưa có phản hồi.
+[L2240] AGENT: Hai việc còn lại không thể xong nếu không push lên GitHub. Push lên `main` là việc ra ngoài và khó đảo ngược, mà mục tiêu "làm tới khi hoàn tất" không nói rõ là cho phép push, nên tôi hỏi bạn trực tiếp.
+[L2241] TOOL AskUserQuestion: {"questions":[{"question":"Để chạy CI lần đầu (cũng là cách duy nhất để kiểm nhánh Windows, vì máy này không có Windows), tôi cần commit và push lên github.com/vantt/momentry. Làm thế nào?","header":"Push","multiSelect":false,"options":[{"label":"Commit + push lên main (Recommended)","description":" …[+565]
+…
+[L2939] RESULT: /home/vantt/projects/momentry/plans/journals/2026-11-03-ci-ba-h-iu-hnh-xanh-cho-momentry.md | pushed
+[L2945] AGENT: Đã xong cả 45/45 việc của plan, đã push lên `main`, và CI xanh 9/9 tổ hợp (Linux, macOS, Windows × Node 20/22/24), tính cả lần chạy trên commit mới nhất.
+
+**Lần push đầu lộ ra lỗi mà máy Linux không thấy; đã sửa hết:**
+- **macOS:** không tìm thấy transcript khi repo nằm sau symlink (`/var` trỏ tới `/private/var`). Giờ momentry so khớp theo cả đường dẫn thật.
+- **Windows, phần code:**
+  - tên thư mục ngắn kiểu `RUNNER~1` và chữ hoa/thường của ổ đĩa làm so khớp thư mục transcript thất bại;
+  - PowerShell 5.1 làm hỏng đối số JSON truyền cho chương trình ngoài, nên trên Windows dùng `momentry config privacy-add` thay cho `config set` kèm JSON;
+  - runner CI chạy quyền Administrator, nên test bật `MOMENTRY_ALLOW_ROOT=1`.
+- **Windows, phần test:** 38 test cũ viết chỉ cho Linux/macOS (chèn đường dẫn thô vào JSON, kiểm quyền 0600, tách bằng `:`, `claude` giả không chạy được); đã làm cho chạy được trên Windows.
+- **Hook trên Windows:** theo các báo cáo cộng đồng, Claude Code chạy hook qua Git Bash, còn Codex qua cmd. Lệnh hook vì vậy dùng `"C:/…/momentry.cmd"`, chạy được ở cả hai; `/bip` gọi `momentry` theo tên vì installer đã đưa thư mục shim vào PATH.
+
+Runner Windows của CI là máy Windows thật, với PowerShell 5.1. Trên đó, cài → `init` ghi hook → `doctor` → `update` → `uninstall` đều chạy qua.
+
+**Một sự cố do tôi gây ra:** một lần commit của tôi đã kéo theo việc đổi tên `README.md` thành `README.vi.md` mà phiên làm việc khác stage sẵn. Kết quả là `main` mất `README.md` và CI đỏ toàn bộ. Bạn chọn commit README song ngữ đang có, và CI xanh lại. Từ đó tôi chỉ stage đúng file của mình. Hiện `README.md` và `README.vi.md` lại đang được phiên kia sửa, tôi không đụng vào.
+
+**Còn lại (ngoài phạm vi bạn đã cho phép):**
+- Cắt `v0.1.0`. Lệnh cài một dòng trong README và workflow phát hành chỉ chạy được sau tag đầu tiên. Cách làm: `node scripts/prepare-release.mjs 0.1.0` (script tự kiểm cây sạch và test, rồi in lệnh tag và push để bạn chạy).
+- Chưa đo bằng một phiên Claude Code hay Cod …[+818]
+[L2948] USER: Stop hook feedback:
+[dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: Plan 45/45 tasks are checked and CI is green on the latest commit, but the condition requires the work to be complete 'tốt đẹp' (done well). The transcript shows an open item the assistant itself lists: v0.1.0 is not cut, so release.yml has never run and the README install command does not work yet, and the Windows hook shell behavior is unverified against a real Claude Code/Codex session. The plan was marked completed while these remain outstanding.
+[L2961] AGENT: Hai việc còn mở đều không làm được nếu chỉ có quyền hiện tại. Cắt `v0.1.0` là phát hành công khai, mà lúc trước bạn đã chọn push `main` chứ không chọn tag. Còn đo một phiên Claude Code hay Codex thật gọi hook trên Windows thì cần một máy Windows có cài hai công cụ đó, máy này không có. Tôi hỏi bạn.
+[L2962] TOOL AskUserQuestion: {"questions":[{"question":"Có cắt bản phát hành công khai v0.1.0 bây giờ không? (release.yml sẽ chạy CI, tạo bản nháp, cài thử trên 3 OS rồi mới công bố; sau đó lệnh cài một dòng trong README mới dùng được.)","header":"Release","multiSelect":false,"options":[{"label":"Cắt v0.1.0 (Recommended)","desc …[+1138]
+…
+[L2988] TOOL Bash: cd /home/vantt/projects/momentry; gh issue list --search "Windows hook" --state all --limit 5; cat > /tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/issue.md <<'EOF' ## Mục tiêu Xác nhận trên một máy Windows thật rằng Claude Code và Codex gọi được hook  …[+1717]
+[L2991] RESULT: https://github.com/vantt/momentry/issues/1
+[L2994] TOOL Bash: cd /home/vantt/projects/momentry; gh run watch 41621216728 --interval 30 >/dev/null 2>&1; gh run view 41621216728 --json conclusion,jobs --jq '.conclusion, (.jobs[] | "\(.conclusion)\t\(.name)")'
+[L2995] RESULT: Command running in background with ID: btqi5ymad. Output is being written to: /tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/tasks/btqi5ymad.output. You will be notified when it completes — do not poll that file o …[+306]
+[L2999] AGENT: Đã mở issue #1 cho việc kiểm hook trên Windows. Đang chờ `release.yml` của `v0.1.0` chạy xong (CI → bản nháp → cài thử trên 3 OS → công bố).
+[L3014] USER: <task-notification>
+<task-id>btqi5ymad</task-id>
+<tool-use-id>toolu_016Gmm4XFnNJoM3UrvzeBKCK</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/tasks/btqi5ymad.output</output-file>
+<status>completed</status>
+<summary>Background command "cd /home/vantt/projects/momentry; gh run watch 41621216728 --interval 30 &gt;/dev/null 2&gt;&amp;1; gh run view 41621216728 --json conclusion,jobs --jq '.conclusion, (.jobs[] | "\(.conclusion)\t\(.name)")'" completed (exit code 0)</summary>
+</task-notification>
+[L3015] TOOL Bash: cat /tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/tasks/btqi5ymad.output; cd /home/vantt/projects/momentry; gh release view v0.1.0 --json isDraft,isPrerelease,assets --jq '{isDraft,isPrerelease,assets:[.assets[].name]}' 2>&1
+[L3018] RESULT: success | success ci / test (macos-15, node 24)
+[L3021] AGENT: Release `v0.1.0` đã công bố, mọi bước đều xanh. Giờ thử đúng lệnh cài một dòng trong README, tải thật từ GitHub, trong HOME tạm.
+[L3022] TOOL Bash: SP=/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad; mkdir -p $SP/pub/home/.claude $SP/pub/repo && (cd $SP/pub/repo && git init -q); bash -c " export HOME=$SP/pub/home PATH=/home/vantt/projects/momentry/test/fixtures/fake-claude:\$PATH curl -fsSL https:/ …[+339]
+…
+[L3030] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' def edit(p, pairs): s=open(p).read() for a,b in pairs: assert a in s, (p, a[:70]); s=s.replace(a,b) open(p,'w').write(s) edit('docs/packaging-checklist.md', [ ("| ONB-09 khối lệnh chạy được nguyên văn | MUST | partial | Khối cài trỏ tới `releases/l …[+2618]
+[L3039] RESULT: docs/packaging-checklist.md | 10 +++++----- | .../phase-04-host-integration.md | 2 +-
+[L3042] AGENT: momentry v0.1.0 đã phát hành công khai, và lệnh cài một dòng trong README chạy được thật với bản này.
+
+- **Phát hành:** workflow phát hành chạy xanh từ đầu đến cuối: CI 9/9 tổ hợp, tạo bản nháp, cài thử bản nháp trên Linux, macOS và Windows, rồi công bố. Bản phát hành có tarball, `install.sh`, `install.ps1` và `checksums.txt`: https://github.com/vantt/momentry/releases/tag/v0.1.0
+- **Thử từ GitHub thật:** trong một HOME tạm, tôi chạy `curl -fsSL …/install.sh | sh`. Kết quả: cài được v0.1.0 (đúng commit `a2fcfcb`), `init --yes` báo "✓ Sẵn sàng", `update --check` báo đã mới nhất, `uninstall` gỡ sạch và giữ dữ liệu.
+- **Hook trên Windows:** việc đo bằng một phiên Claude Code hay Codex thật đã thành issue #1, kèm các bước kiểm cụ thể: https://github.com/vantt/momentry/issues/1. Các bước còn lại trên Windows (cài, ghi hook, `doctor`, `update`, `uninstall`) đã chạy qua trên runner Windows của CI.
+
+Plan đã đóng ở 45/45 việc. Checklist đóng gói không còn MUST nào ở trạng thái thiếu. Những SHOULD còn để sau: completions, ký số cosign, gợi ý bản mới định kỳ, `config edit`.
+
+`README.md` và `README.vi.md` hiện vẫn có thay đổi chưa commit của phiên làm README song ngữ; tôi để nguyên, không đụng tới.
+
+Files:
+- /home/vantt/projects/momentry/docs/packaging-checklist.md
+- /home/vantt/projects/momentry/plans/261103-0921-packaging-distribution/plan.md
+[L3047] USER: Stop hook feedback:
+[dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: The plan is 45/45 and v0.1.0 is published with CI green, but the Windows hook behavior in a real Claude Code/Codex session is unverified and was only moved to issue #1, so the work is not fully complete 'tốt đẹp'.
+[L3052] AGENT: Không có máy Windows với Claude Code đã đăng nhập, nhưng vẫn đo được phần quan trọng nhất của issue #1: Claude Code trên Windows có gọi được lệnh hook của momentry không và qua shell nào. Hook `SessionStart` chạy lúc mở phiên. Tôi sẽ thêm một workflow chỉ chạy tay trên runner Windows: cài Claude Code và Codex thật, cài momentry, `init`, rồi mở một phiên `claude -p` không có khoá API. Nếu `hook.log` có dòng `hook.spawned`, tức là hook đã được gọi trước khi phiên báo lỗi đăng nhập. Không dùng bí mật hay tài khoản nào của bạn.
+[L3053] TOOL Write: /home/vantt/projects/momentry/.github/workflows/windows-hook-probe.yml
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

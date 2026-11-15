@@ -1,0 +1,74 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: hey, launch week for the vit C serum. Launch is tomorrow 8pm. Today: banner copy, the UTM sheet, and the budget plan for week 2. Files are in this folder. Start with the banner: I need alt text and copy for 1200x628, 1080x1080 and 1080x1920.
+[L26] USER: last thing today. the pre-launch emails. last week you suggested urgency subject lines for emails 3 and 4 ('Last chance: 3 hours left', 'Final call before it's gone'). open rate went way up, I want to use the same style for the launch email tomorrow. pull the stats from data/klaviyo-campaigns.csv to confirm.
+[L30] USER: ugh yes. I didn't connect it. we got like 6 replies, one said 'you said last chance yesterday, stop lying to me'. I thought it was just one cranky person.
+[L32] USER: agreed. use 'Brightness, bottled. Now live.' for tomorrow. and add a rule to copy/email-rules.md: no deadline wording unless the deadline is real, and we check unsub + complaints, not only opens.
+</asks>
+
+<story>
+hook: Sai một lần, nhưng quy tắc nằm trong tài liệu chung, không nằm trong đầu
+tension: khac (Bài học từ lần sai dễ nhớ trong đầu hoặc cuộc trò chuyện / Chỉ khi ghi thành quy tắc đo được thì lần sau mới không lặp lại)
+stakes: 1/3
+# Bài học từ lần sai được ghi thành quy tắc trong tài liệu chung của dự án, với hai điều kiện đo lường cụ thể: không dùng từ hạn chót giả, và theo dõi hủy đăng ký cùng khiếu nại chứ không chỉ tỉ lệ mở.
+
+**Chuyện gì xảy ra:** Bài học từ lần sai được ghi thành quy tắc trong tài liệu chung của dự án, với hai điều kiện đo lường cụ thể: không dùng từ hạn chót giả, và theo dõi hủy đăng ký cùng khiếu nại chứ không chỉ tỉ lệ mở.
+**Góc người ngoài:** cách làm phổ biến là Chỉ nhớ trong đầu hoặc trong cuộc trò chuyện, nên lần sau dễ lặp lại lỗi cũ; ở đây khác ở Lỗi được biến thành quy tắc có thể kiểm tra và đặt đúng chỗ người khác cũng sẽ đọc. Người đọc muốn áp dụng cách này cho quy trình của mình.
+</story>
+
+<excerpt>
+[L30] USER: ugh yes. I didn't connect it. we got like 6 replies, one said 'you said last chance yesterday, stop lying to me'. I thought it was just one cranky person.
+[L31] AGENT: I'd say that's on my suggestion: I optimized for opens and didn't weigh unsubscribes or trust. For the launch email I'd use a plain, true subject line, e.g. "It's here: Vitamin C serum, 15% off this week" or "Brightness, bottled. Now live." No false deadline. If you want urgency, use a real one only when it is real (e.g. the actual last day of the launch discount).
+[L32] USER: agreed. use 'Brightness, bottled. Now live.' for tomorrow. and add a rule to copy/email-rules.md: no deadline wording unless the deadline is real, and we check unsub + complaints, not only opens.
+[L33] TOOL Edit: /Users/jess/work/moclan/vitc-launch/copy/email-rules.md
+[L34] RESULT: The file /Users/jess/work/moclan/vitc-launch/copy/email-rules.md has been updated successfully.
+[L35] USER: HELP. 8:25pm. Linh Chi (the influencer) posted at 8pm with code GLOW30 instead of GLOW15. GLOW30 was the test code I made last week for staff and never deleted. Shopify says it has been used 400 times already. what do I do. Tuan is on a plane.
+[L36] AGENT: Okay, quickly. First, the numbers so you can decide:
+
+- Serum price 690k. At 30% off, each order earns about 70k less than at 15%. 400 orders so far ≈ 28m VND of margin given away. Every additional 100 orders ≈ 7m more.
+- Our margin at 30% is still positive (unit cost ~210k), so you're not losing money per bottle, just profit.
+
+Two real options:
+
+**A. Kill GLOW30 now.** Stops the loss immediately. But Linh Chi's followers who click the link will hit 'code invalid' on launch night, in her comments, in public. That likely costs more trust than 28m.
+
+**B. Honor it with a cap.** Set GLOW30 usage limit to 500 total (Shopify > Discounts > Usage limits), then it expires. Ask Linh Chi to pin a comment: "First 500 got 30%, it's GLOW15 from now on 💛". Create GLOW15 if it doesn't exist yet.
+
+I'd pick B. Want the steps?
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

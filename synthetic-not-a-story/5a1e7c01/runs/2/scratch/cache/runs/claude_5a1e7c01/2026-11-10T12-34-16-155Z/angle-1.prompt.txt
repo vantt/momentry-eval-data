@@ -1,0 +1,88 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Chào bạn, sáng nay mình viết số 48 của Thư Chủ Nhật. Chủ đề: "Quỹ khẩn cấp: bao nhiêu là đủ?". Bản nháp ở drafts/48-quy-khan-cap.md, sổ tay giọng văn ở style.md. Đọc giúp mình cả hai trước nhé.
+[L7] USER: Đánh dấu thôi, mình tự sửa câu chữ. À mà trước khi vào bài, có chuyện này làm mình lo cả tuần. Tỉ lệ mở thư 4 số gần đây tụt thảm: từ 52% xuống 31%. Mình nghĩ là do tiêu đề dạo này dài quá, mình hay viết kiểu câu hỏi dài dòng. Bạn viết lại giúp mình 10 tiêu đề ngắn cho số 48 được không?
+</asks>
+
+<story>
+hook: Mở thư tụt từ 52% xuống 31%, thủ phạm không phải tiêu đề
+tension: tuong_ma_hoa_ra (tưởng tiêu đề dở nên tỉ lệ mở tụt từ 52% xuống 31% / 840 người nhập tay từ workshop chỉ mở 8,8%, còn số có tiêu đề dài nhất vẫn mở 52,2%)
+stakes: 3/3
+# Tỉ lệ mở tụt từ 52% xuống 31%: lỗi nằm ở 840 người nhập tay, không nằm ở tiêu đề
+
+**Bối cảnh:** Bản tin hằng tuần gửi qua MailerLite. Tỉ lệ mở giảm qua 4 số liên tiếp, và chủ bản tin nghi tiêu đề dài là thủ phạm, định viết lại tiêu đề.
+**Chuyện gì xảy ra:** Tỉ lệ mở chung của 4 số gần nhất giảm từ 52% xuống 31%. Trước khi viết lại tiêu đề, agent xem file xuất thống kê và thấy số người nhận ở số 44 nhảy từ 2.325 lên 3.171, tăng 846 người. Nguyên nhân là 840 địa chỉ nhập một lần ngày 14/9 từ danh sách ký tên ở một workshop. Tách theo nguồn: người đăng ký qua form mở 53,0%, còn nhóm nhập từ workshop chỉ mở 8,8%. Số 43 có tiêu đề dài nhất bảng nhưng vẫn mở 52,2%, nên giả thuyết tiêu đề bị loại.
+**Bài học:** Trước khi đổi nội dung vì tỉ lệ tụt, hãy tách số liệu theo nguồn đăng ký; một đợt nhập danh sách lớn có thể kéo cả con số chung xuống.
+**Artefact:** Bảng so sánh tỉ lệ mở theo nguồn đăng ký (form và nhập từ sự kiện), chỉ hiện số người nhận và tỉ lệ; che email, tên và ngày cụ thể nếu cần.
+**Góc người ngoài:** cách làm phổ biến là Làm đúng việc được yêu cầu (viết 10 tiêu đề mới) rồi mới xem kết quả. Gần như không ai dừng lại kiểm tra giả thuyết trước khi thay đổi; ở đây khác ở Chỉ vài lệnh đọc dữ liệu đã tránh được việc tối ưu sai hướng suốt nhiều tuần. Người đọc sẽ hỏi vì sao agent dám từ chối làm việc được giao khi chưa có bằng chứng.
+</story>
+
+<excerpt>
+[L5] RESULT: # Quỹ khẩn cấp: bao nhiêu là đủ? | Tháng trước một bạn đọc nhắn mình: "Em có 20 triệu tiết kiệm, vậy đã đủ chưa chị?"
+[L6] AGENT: Mình đã đọc xong. Bản nháp khoảng 1.240 chữ, chia 4 phần: câu hỏi của bạn đọc, công thức 3–6 tháng chi tiêu, chỗ để quỹ (tiết kiệm có kỳ hạn ngắn, tài khoản linh hoạt), và một ví dụ cụ thể. Giọng văn khá khớp sổ tay. Có ba chỗ dài hơn 4 câu một đoạn (phần 2 và phần 4), và một chỗ dùng "bí quyết" ở tiêu đề phụ thứ ba. Bạn muốn mình sửa luôn hay chỉ đánh dấu?
+[L7] USER: Đánh dấu thôi, mình tự sửa câu chữ. À mà trước khi vào bài, có chuyện này làm mình lo cả tuần. Tỉ lệ mở thư 4 số gần đây tụt thảm: từ 52% xuống 31%. Mình nghĩ là do tiêu đề dạo này dài quá, mình hay viết kiểu câu hỏi dài dòng. Bạn viết lại giúp mình 10 tiêu đề ngắn cho số 48 được không?
+[L8] AGENT: Được, mình viết ngay. Nhưng trước khi đổi cách đặt tiêu đề, mình xem số liệu một chút để chắc là tiêu đề là nguyên nhân. Bạn có file xuất thống kê từ MailerLite không? Nếu có cột ngày gửi, tiêu đề và tỉ lệ mở từng số là đủ.
+[L9] USER: Có, stats/mailerlite-export.csv, mình xuất hôm qua. Có cả file subscribers.csv nữa nhưng chắc không cần.
+[L10] TOOL Bash: head -5 /Users/linh/Documents/thu-chu-nhat/stats/mailerlite-export.csv && wc -l /Users/linh/Documents/thu-chu-nhat/stats/mailerlite-export.csv
+[L11] RESULT: issue,sent_at,subject,recipients,opens,open_rate | 41,2026-08-23,"Tiền lương về là hết: 3 cái túi",2310,1205,52.2%
+[L12] TOOL Bash: cut -d, -f1,2,4,6 /Users/linh/Documents/thu-chu-nhat/stats/mailerlite-export.csv | tail -8
+[L13] RESULT: 40,2026-08-16,2301,51.9% | 41,2026-08-23,2310,52.2%
+[L14] AGENT: Có một điều lạ: số người nhận nhảy từ 2.325 (số 43) lên 3.171 (số 44), tăng khoảng 846 người chỉ trong hai tuần. Tỉ lệ mở bắt đầu tụt đúng ở số 44. Còn số 43 có tiêu đề dài nhất trong cả bảng ("Mua nhà hay thuê nhà khi mới 28 tuổi và chưa có gì trong tay?") mà vẫn mở 52,2%. Mình nghĩ nên xem subscribers.csv: mấy người mới này đến từ đâu?
+[L15] USER: Ơ… à đúng rồi, giữa tháng 9 mình có nhập danh sách người ký tên ở workshop "Tiền Không Ngủ". Khoảng 800 mấy người. Nhưng họ đăng ký tham gia workshop mà, chắc cũng quan tâm chứ.
+[L16] TOOL Bash: python3 -c "import csv,collections;r=list(csv.DictReader(open('/Users/linh/Documents/thu-chu-nhat/stats/subscribers.csv')));c=collections.Counter((x['source'],x['subscribed_at'][:10]) for x in r if x['subscribed_at']>='2026-09-01');print(c.most_common(5))"
+[L17] RESULT: [(('import', '2026-09-14'), 840), (('form', '2026-09-22'), 4), (('form', '2026-09-17'), 3), (('form', '2026-10-01'), 3), (('form', '2026-09-09'), 2)]
+[L18] TOOL Bash: python3 /Users/linh/Documents/thu-chu-nhat/stats/open_by_source.py
+[L19] RESULT: source recipients opens open_rate | form 2346 1243 53.0%
+[L20] AGENT: Đây rồi. Tách theo nguồn đăng ký thì:
+
+- Người đọc đăng ký qua form (người đọc cũ): trung bình 53,0% ở các số 44–47, thậm chí cao hơn trước.
+- 840 địa chỉ nhập từ workshop ngày 14/9: chỉ 8,8%.
+
+Nghĩa là tiêu đề không làm tỉ lệ mở tụt. Người đọc cũ vẫn mở như cũ. Con số chung 31% tụt vì mẫu số phình thêm 840 người hầu như không mở thư. Nhiều người ký tên ở workshop để nhận tài liệu buổi đó, không hẳn để nhận bản tin hằng tuần, và một số địa chỉ có thể viết tay sai.
+
+Nếu mình viết lại 10 tiêu đề ngắn bây giờ, số tiếp theo vẫn sẽ ra khoảng 31% và bạn sẽ nghĩ tiêu đề mới cũng hỏng.
+[L21] USER: Trời. Vậy là cả tuần mình tự trách cách đặt tiêu đề vô ích. Thế giờ làm gì với 840 người đó? Xoá thì tiếc, giữ thì kéo số xuống và còn có nguy cơ bị đánh dấu spam nữa đúng không?
+[L22] AGENT: Đúng, giữ nhiều địa chỉ không mở lâu dài làm nhà cung cấp email đánh giá thấp, thư dễ vào mục quảng cáo hoặc spam, và lúc đó người đọc cũ cũng bị ảnh hưởng. Mình đề xuất:
+
+1. Gửi riêng cho nhóm workshop một thư xác nhận lại: "Bạn có muốn tiếp tục nhận Thư Chủ Nhật không?" kèm nút đồng ý.
+2. Ai bấm đồng ý thì chuyển sang nhóm chính. Sau 14 ngày ai không phản hồi thì ngừng gửi (không xoá dữ liệu, chỉ chuyển sang trạng thái không nhận).
+3. Từ nay báo cáo tỉ lệ mở tách riêng hai nhóm cho đến khi làm sạch xong.
+
+Tiêu đề số 48 bạn cứ đặt như bình thường.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

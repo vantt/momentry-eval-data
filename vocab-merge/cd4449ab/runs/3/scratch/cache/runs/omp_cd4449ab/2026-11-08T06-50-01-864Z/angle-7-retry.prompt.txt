@@ -1,0 +1,95 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L6] USER: You are worktree C. Your worktree is /home/vantt/projects/mcp-skill-hub-simplify (branch wave2/simplify-p4-p3). It already holds your earlier uncommitted work: internal/workspace/workspace.go, internal/migration/migration.go, internal/migration/v3.go, and the phase-03 and phase-04 files. Rules before anything else: - Every read, edit and write call uses an absolute path that starts with /home/vantt/projects/mcp-skill-hub-simplify/. Every bash call runs there. - Never write to /home/vantt/projects/mcp-skill-hub (the lead's main checkout) or to /home/vantt/skill-hub (the live hub). That means no …[+798]
+</asks>
+
+<story>
+hook: Test 'meta không tự duyệt' đỏ 6 lần, lỗi nằm chỗ khác
+tension: tuong_ma_hoa_ra (tưởng lỗi ở bước duyệt / lỗi thật ở hàm đọc skill, vốn tin vào nội dung meta)
+stakes: 2/3
+# Test 'meta không tự duyệt' đỏ sáu lần vì hàm đọc tracked skill
+
+**Bối cảnh:** Invariant: upstream update không được tự duyệt nội dung đến từ meta. Test này tìm ra đường đọc provenance chưa đúng.
+**Chuyện gì xảy ra:** Test đỏ sáu lần. Nguyên nhân nằm ở hàm đọc tracked skill, không nằm ở bước approve. Sửa qua nhiều lượt, gồm thêm test song song và đổi cách đọc meta. Test xanh khi nguồn được đọc đúng thay vì tin vào nội dung meta.
+**Bài học:** Test invariant bảo mật thường bắt lỗi ở tầng đọc dữ liệu, không phải tầng quyết định.
+**Artefact:** Không cần.
+</story>
+
+<excerpt>
+[L529] TOOL bash: go test -v ./internal/migration
+[L531] RESULT: go test: 1 packages ok | [raw output: artifact://12]
+[L532] TOOL bash: go test -v ./internal/app -run TestUpstreamMetaCannotSelfApproveOnImportAndUpstreamUpdate
+[L534] RESULT (exit 1): FAIL | Wall time: 0.31 seconds | Command exited with code 1
+[L535] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/catalog/input.go:237-255
+[L537] RESULT: [internal/catalog/input.go#6E00] | 236:
+[L538] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/catalog/input.go
+[L540] RESULT: [internal/catalog/input.go#A7CA] | 238: name, desc := "", ""
+[L541] TOOL bash: go test -v ./internal/app -run TestUpstreamMetaCannotSelfApproveOnImportAndUpstreamUpdate
+[L543] RESULT (exit 1): FAIL | Wall time: 0.35 seconds | Command exited with code 1
+[L544] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/skill/lifecycle.go:225-235
+[L546] RESULT: [internal/skill/lifecycle.go#D026] | 224: metadataPath := directory + "/.meta/skill.yaml"
+[L547] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/skill/lifecycle.go
+[L549] RESULT: [internal/skill/lifecycle.go#562A] | 226: if exists(root, metadataPath) || exists(root, directory+"/skill.meta.yaml") || exists(root, entrypointPath) {
+[L550] TOOL bash: go test -v ./internal/app -run TestUpstreamMetaCannotSelfApproveOnImportAndUpstreamUpdate
+[L552] RESULT (exit 1): FAIL | Wall time: 1.37 seconds | Command exited with code 1
+[L553] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/app/skill_add.go:625-648
+[L555] RESULT: [internal/app/skill_add.go#3947] | 624: if captured.sourceID != "" {
+[L556] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/app/skill_add.go
+[L558] RESULT: [internal/app/skill_add.go#6EEA] | 629: if srcID == "" {
+[L559] TOOL bash: go test -v ./internal/app -run TestUpstreamMetaCannotSelfApproveOnImportAndUpstreamUpdate
+[L561] RESULT (exit 1): FAIL | Wall time: 1.32 seconds | Command exited with code 1
+[L562] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/app/upstream_update_test.go:705-730
+[L564] RESULT: [internal/app/upstream_update_test.go#6F1D] | 704:
+…
+[L571] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/app/upstream_update_test.go
+[L573] RESULT: [internal/app/upstream_update_test.go#E520] | 650: t.Parallel()
+[L574] TOOL bash: go test -v ./internal/app -run TestUpstreamMetaCannotSelfApproveOnImportAndUpstreamUpdate
+[L576] RESULT (exit 1): FAIL | Wall time: 1.36 seconds | Command exited with code 1
+[L577] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/app/skill_add.go:660-690
+[L579] RESULT: [internal/app/skill_add.go#6EEA] | 573: targetID := item.TargetID
+…
+[L604] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/app/upstream.go
+[L606] RESULT: [internal/app/upstream.go#2590] | 213: if err != nil || len(metaBytes) == 0 {
+[L607] TOOL bash: go test -v ./internal/app -run TestUpstreamMetaCannotSelfApproveOnImportAndUpstreamUpdate
+[L609] RESULT: === RUN TestUpstreamMetaCannotSelfApproveOnImportAndUpstreamUpdate | === PAUSE TestUpstreamMetaCannotSelfApproveOnImportAndUpstreamUpdate
+[L610] TOOL bash: go test -v ./internal/canonical -run TestDistillYamlDoesNotChangeCatalogSnapshot
+[L612] RESULT: === RUN TestDistillYamlDoesNotChangeCatalogSnapshot | === PAUSE TestDistillYamlDoesNotChangeCatalogSnapshot
+[L613] TOOL grep: GetSkillUpstream
+[L615] RESULT: # internal/app/ | ## skill_sources.go#9C7E
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

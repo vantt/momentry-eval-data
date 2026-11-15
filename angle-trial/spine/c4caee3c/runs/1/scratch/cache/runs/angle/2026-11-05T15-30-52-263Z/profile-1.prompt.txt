@@ -1,0 +1,147 @@
+Bạn đọc tài liệu của một dự án phần mềm và viết hồ sơ ngắn cho người ngoài chưa từng nghe về nó. Hồ sơ này sẽ đứng đầu mọi câu chuyện kể về dự án, để người nghe biết đang nói về cái gì.
+
+Trả:
+- profile: 3-5 câu, chữ thường ngày. Theo thứ tự: dự án là gì; làm cho ai; ràng buộc chính (ví dụ chạy trên máy, giữ riêng tư, ngôn ngữ người dùng, nền tảng); mục tiêu hiện tại nếu tài liệu có nói.
+
+Luật cứng:
+- Chỉ dùng điều tài liệu nói. Không đoán, không thêm con số, khách hàng, kế hoạch hay động cơ tài liệu không ghi. Ý nào tài liệu không nói thì bỏ hẳn ý đó, không viết câu nói về tài liệu (như "tài liệu không nói mục tiêu").
+- Không đoán người làm là một nhóm hay một người khi tài liệu không nói.
+- Không chép lệnh, đường dẫn, khoá, địa chỉ hay tên người.
+- Tài liệu không cho biết dự án làm gì (chỉ có quy tắc cho agent, mẫu trống, danh sách lệnh) thì trả none kèm lý do ngắn.
+- Viết cùng ngôn ngữ với phần lớn tài liệu.
+
+Ví dụ:
+{"profile":"Một công cụ dòng lệnh sao lưu ảnh từ điện thoại vào ổ cứng trong nhà. Làm cho người không rành kỹ thuật, nên chỉ có một lệnh và không phải cấu hình gì. Ảnh không bao giờ rời mạng nhà. Mục tiêu hiện tại: chạy được trên Windows."}
+
+Ví dụ không có:
+{"none":true,"reason":"chỉ có quy tắc viết code cho agent, không nói dự án làm gì"}
+
+<sources>
+### README.md
+# Obsidian Hybrid Search
+
+[![npm version](https://img.shields.io/npm/v/obsidian-hybrid-search)](https://www.npmjs.com/package/obsidian-hybrid-search)
+[![Tests](https://github.com/flowing-abyss/obsidian-hybrid-search/actions/workflows/ci.yml/badge.svg)](https://github.com/flowing-abyss/obsidian-hybrid-search/actions)
+[![Total downloads](https://badgen.net/npm/dt/obsidian-hybrid-search)](https://www.npmjs.com/package/obsidian-hybrid-search)
+
+<p align="center">
+  <img src="assets/banner.png" alt="Obsidian Hybrid Search explains hybrid retrieval from Obsidian notes" />
+</p>
+
+Your Obsidian vault already contains your best thinking. Obsidian Hybrid Search makes that thinking easier to find, reuse, and bring into AI-assisted work.
+
+It gives your vault one retrieval engine and three practical ways to use it. The native [Obsidian plugin][obsidian-plugin] gives you fast search, previews, similar notes, link discovery, and graph views while you write. The MCP server lets AI agents search and read your notes as tool calls. The CLI gives power users the same engine for indexing, filtering, reranking, reading, and scripting.
+
+The search understands how real vaults are built. It combines semantic search, BM25 full text, fuzzy title and alias matching, tags, folders, frontmatter, wikilinks, backlinks, and similar-note lookup. You can search by idea, phrase, title, relationship, or metadata without remembering the exact words you wrote.
+
+That turns Obsidian into a stronger personal knowledge system and a better starting point for AI work. Agents can begin from your own notes, pull cited context from source files, follow related material, and work with knowledge you already trust. OHS runs locally by default with SQLite, FTS5, sqlite-vec, RRF ranking, and optional OpenAI-compatible embedding APIs.
+
+## Search quality
+
+Evaluated on the [Obsidian Help vault](eval/README.md) (171 notes, 58 queries, local model):
+
+|                | **OHS** (this project) | [qmd](https://github.com/tobi/qmd) |
+| -------------- | :--------------------: | :--------------------------------: |
+| nDCG@5         |       **0.733**        |               0.659                |
+| MRR            |       **0.788**        |               0.665                |
+| Hit@1          |       **0.724**        |               0.500                |
+| Avg query time |      **571 ms** ¹      |              754 ms ²              |
+| Model download |      **~117 MB**       |              ~2.2 GB               |
+
+¹ CPU (Apple Silicon), hybrid mode, no rerank. ² GPU (Apple Silicon Metal), LLM query expansion + reranking.
+
+OHS uses `Xenova/multilingual-e5-small`. [How to reproduce →](eval/COMPARISON.md) · [Full benchmark →](eval/README.md)
+
+### Real knowledge-vault benchmark
+
+OHS is also evaluated on Andy Matuschak’s public evergreen notes, converted into an Obsidian vault with title-based note filenames, source URLs in frontmatter, local attachments, and `5,000+` internal note links across `1,357` notes.
+
+The curated golden set includes `78` hand-judged queries across known-item lookup, paraphrases, quote fragments, ambiguous topics, citation lookup, and multi-note evidence.
+
+Using the default local embedding model, OHS performs strongly on this dense note network.
+
+| Metric    | Value     |
+| --------- | --------- |
+| nDCG@5    | **0.722** |
+| nDCG@10   | 0.753     |
+| MRR       | 0.874     |
+| Hit@1     | 0.795     |
+| Hit@5     | 0.974     |
+| Recall@10 | 0.972     |
+| AllRel@10 | 0.949     |
+
+The benchmark exercises retrieval over a highly connected real-world knowledge vault, including queries that do not simply repeat note titles.
+
+[Result JSON](eval/results/evergreen-notes-no-rerank.json) · [Reproduce and interpret →](fixtures/evergreen-notes/README.md)
+
+### Large memory benchmark
+
+To test retrieval on a larger public dataset,
+[LongMemEval-S](https://huggingface.co/datasets/xiaowu0162/longmemeval-cleaned)
+was converted into a `22,419`-note Obsidian-style vault with `470` retrieval
+quer …[+22042]
+
+### AGENTS.md
+# Project guide
+
+This npm package searches local Obsidian vaults through CLI, JSON-lines IPC, and MCP.
+Read `ARCHITECTURE.md` before changing module boundaries. Put new code in its owning
+source directory; architecture tests enforce dependency direction.
+
+Use npm and the committed lockfile. `npm install` prepares dependencies, hooks,
+agent symlinks, skills, and a checkout-local CodeGraph index.
+
+After changes, run:
+
+```bash
+npm run format
+npm run verify:task
+```
+
+Before a PR or push, run `npm run verify`, including for documentation changes.
+Compare ranking before and after changes to retrieval, models, chunking, or indexing.
+Never lower quality floors or coverage thresholds to make a change pass.
+See `CONTRIBUTING.md` for commands and the verification skill for targeted checks.
+
+Preserve CLI/MCP contracts, NFD paths, native recovery, FTS trigger ownership, and
+test module isolation. Keep secrets, `docs/`, `.superpowers/`, and generated agent
+files out of commits. Leave `obsidian-plugin` alone unless requested.
+
+Use checkout-local CodeGraph before broad source searches; fall back to file reads
+and `rg` when needed. Run it through `node .ai/codegraph.mjs` with this checkout's
+absolute path. Read relevant skills in `.ai/skills`; user instructions and the
+current tool schema take priority. Release only on an explicit request.
+
+### CLAUDE.md
+# Project guide
+
+This npm package searches local Obsidian vaults through CLI, JSON-lines IPC, and MCP.
+Read `ARCHITECTURE.md` before changing module boundaries. Put new code in its owning
+source directory; architecture tests enforce dependency direction.
+
+Use npm and the committed lockfile. `npm install` prepares dependencies, hooks,
+agent symlinks, skills, and a checkout-local CodeGraph index.
+
+After changes, run:
+
+```bash
+npm run format
+npm run verify:task
+```
+
+Before a PR or push, run `npm run verify`, including for documentation changes.
+Compare ranking before and after changes to retrieval, models, chunking, or indexing.
+Never lower quality floors or coverage thresholds to make a change pass.
+See `CONTRIBUTING.md` for commands and the verification skill for targeted checks.
+
+Preserve CLI/MCP contracts, NFD paths, native recovery, FTS trigger ownership, and
+test module isolation. Keep secrets, `docs/`, `.superpowers/`, and generated agent
+files out of commits. Leave `obsidian-plugin` alone unless requested.
+
+Use checkout-local CodeGraph before broad source searches; fall back to file reads
+and `rg` when needed. Run it through `node .ai/codegraph.mjs` with this checkout's
+absolute path. Read relevant skills in `.ai/skills`; user instructions and the
+current tool schema take priority. Release only on an explicit request.
+</sources>
+
+Chỉ trả JSON theo một trong hai dạng trên.

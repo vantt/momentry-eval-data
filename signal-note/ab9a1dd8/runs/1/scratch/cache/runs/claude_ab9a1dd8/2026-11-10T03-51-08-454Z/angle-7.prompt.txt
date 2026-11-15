@@ -1,0 +1,73 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+momentry là công cụ đọc transcript của các phiên làm việc với coding agent như Claude Code, Codex, pi, omp và Antigravity, rồi nhặt ra những chuyện đáng kể để kể ra ngoài. Mỗi chuyện được ghi thành một file markdown trong repo và xếp hạng theo độ hấp dẫn, độ căng thẳng và mức quan trọng. Làm cho người làm một mình, build in public, viết blog kỹ thuật hoặc báo cáo tuần, không muốn đánh mất chất liệu. Công cụ chạy trên máy của người dùng và dùng claude CLI đã đăng nhập để đọc phiên, mỗi phiên khoảng 150k token tốn khoảng 1 USD; bộ kiểm riêng tư chặn những tên người dùng khai báo trước khi ghi vào repo. Giao diện dòng lệnh và tài liệu hiện viết bằng tiếng Việt. Mục tiêu v2 hiện tại: nhặt, ghi và xếp hạng chuyện; biên tập và viết bản nháp bài để sau.
+</project>
+
+<asks>
+[L9] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-research # Research ## Research Methodology Always honoring **KISS** and **DRY** principles. Deliver the full requested scope — never trim or defer what the user explicitly asked for. Add nothing unrequested. With `--yagni`, additionally challenge and cut any scope not needed for the stated outcome. **Be honest, be brutal, straight to the point, and be concise.** ### Phase 1: Scope Definition First, you will clearly define the research scope by: - Identifying key terms and concepts to investigate - Determining the r …[+5899]
+[L664] USER: A session-scoped Stop hook is now active with condition: "dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that's only for clearing a goal early.
+[L681] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-cook # Cook Invoke `/ak-cook <task|plan-path> [flags]` in Claude Code; use the runtime's installed invocation form elsewhere. Implement the full authorized outcome through verification and review. Capture or reuse outcome, constraints, non-goals and acceptance criteria; inspect nearby code and tests. Ask only for a material missing decision or an action outside that authorization. Repair regressions caused by the change and rerun affected checks before finishing. ## Select a mode | Input | Route | |---|---| | No fla …[+2997]
+</asks>
+
+<story>
+hook: Gỡ cài Windows: shim đang chạy không xoá được, thư mục cache bị sót
+tension: cam_ma_van_lot (Điều kiện an toàn chặn xoá thư mục không tên momentry / Thư mục tên cache bị sót khi purge)
+stakes: 2/3
+# Gỡ cài trên Windows: shim đang chạy không xoá được ngay, và thư mục cache tên cache bị bỏ sót
+
+**Bối cảnh:** Uninstall phải gỡ đúng phần của momentry và giữ dữ liệu trừ khi có --purge.
+**Chuyện gì xảy ra:** Trên Windows, file shim đang chạy không xoá được ngay, nên agent thêm cơ chế xoá trễ sau khi lệnh thoát. Điều kiện an toàn yêu cầu tên thư mục chứa momentry, nên thư mục cache tên cache bị bỏ sót khi --purge; phải nới điều kiện thêm thư mục cha tên momentry.
+**Bài học:** Điều kiện an toàn khi xoá theo tên dễ bỏ sót thư mục đúng. Kiểm cả thư mục cha và viết test purge cho từng hệ điều hành.
+**Artefact:** Kết quả gỡ cài: giữ hộp chuyện và cấu hình, xoá cache khi có --purge.
+</story>
+
+<excerpt>
+[L1558] TOOL Write: /home/vantt/projects/momentry/scripts/test-installer.ps1
+[L1568] RESULT: File created successfully at: /home/vantt/projects/momentry/scripts/test-installer.ps1 (file state is current in your context — no need to Read it back)
+[L1574] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' p='lib/uninstall.mjs'; s=open(p).read() a=""" for (const shim of st.shims) { if (isOurShim(shim)) steps.push({ what: `xoá ${shim}`, run: () => fs.rmSync(shim, { force: true }) }); else if (fs.existsSync(shim)) skipped.push(`${shim} không phải shim  …[+1987]
+[L1575] RESULT: 40: const later = []; | 42: if (platform === 'win32') { later.push({ target, dir }); steps.push({ what: `${what} (ngay sau khi lệnh này thoát)`, run: () => {} }); }
+[L1588] AGENT: Đã thêm cơ chế xoá trễ trên Windows (file shim đang chạy). Giờ viết CI workflow; tra SHA thật của các action để ghim.
+[L1589] TOOL Bash: gh api repos/actions/checkout/git/ref/tags/v4.2.2 --jq .object.sha 2>&1; gh api repos/actions/setup-node/git/ref/tags/v4.4.0 --jq '.object.sha + " " + .object.type' 2>&1; gh api repos/actions/checkout/releases/latest --jq .tag_name; gh api repos/actions/setup-node/releases/latest --jq .tag_name
+[L1590] RESULT: 11bd71901bbe5b1630ceea73d27597364c9af683 | 49933ea5288caeca8642d1e84afbd3f7d6820020 commit
+…
+[L2130] TOOL Bash: cd /home/vantt/projects/momentry; SP=/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad; node scripts/package-release.mjs --out $SP/rel-new >/dev/null; mkdir -p $SP/c4/home/.claude; bash -c " HOME=$SP/c4/home sh $SP/rel-new/install.sh --local-fixture $SP/r …[+176]
+[L2133] RESULT: Giữ lại: hộp chuyện và .momentry.json trong các repo (xoá cả cấu hình và cache: --purge) | uninstall sẽ:
+[L2138] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' p='lib/uninstall.mjs'; s=open(p).read() a="""/** Refuses to delete anything that is not clearly a momentry dir. */ function safeToDelete(dir, env) { const r = path.resolve(dir); const home = path.resolve(env.HOME || env.USERPROFILE || os.homedir()) …[+1087]
+[L2147] RESULT: OK: installer lifecycle
+[L2151] AGENT: Còn một chỗ: trên Windows thư mục cache tên `cache` (nằm trong `momentry`), nên `--purge` sẽ bỏ qua nó. Nới điều kiện thêm thư mục cha tên `momentry`.
+[L2152] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' p='lib/uninstall.mjs'; s=open(p).read() a=" const ours = fs.existsSync(path.join(r, MARKER)) || /momentry/i.test(path.basename(r));" b=" const ours = fs.existsSync(path.join(r, MARKER)) || /momentry/i.test(path.basename(r)) || /^momentry$/i.test(pa …[+520]
+[L2155] RESULT: ℹ pass 232 | ℹ fail 0
+[L2160] TOOL Bash: cd /home/vantt/projects/momentry; cat >> plans/reports/code-reviewer-261103-1700-packaging-review.md <<'EOF' --- ## Xử lý (2026-11-03, phiên cook) Mọi phát hiện đã sửa; kiểm lại bằng `node --test` (232 qua), `scripts/test-installer.sh`, `scripts/test-agent-native.sh`. Các sửa riêng Windows chưa chạy …[+1146]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,1233 @@
+{
+  "id": "5a1e7c06",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/projects/momentry/scripts/eval/synthetic/5a1e7c06-4c85-4b13-a7d9-6e5f4a3b2c66.jsonl",
+  "fromLine": 1,
+  "toLine": 48,
+  "windowSha": "e125faf4b8541ebd",
+  "at": "2026-11-08T07:27:22.806Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.11,
+    "tokens": 2463,
+    "chunks": 1,
+    "hotspots": 0,
+    "entries": 48,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:5a1e7c06",
+    "fromLine": 1,
+    "toLine": 48,
+    "usd": 0.09368749999999997,
+    "secs": 295.9,
+    "exitCode": 0,
+    "status": "done",
+    "written": 14,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-11-06-cat-mot-doi-dien-de-giu-f922",
+        "status": "angle",
+        "angle": "Người làm đêm nhạc Gió Mùa (15/11) đang gộp tech rider của hai ban để chạy chung trên một sân khấu nhỏ. Hai ban nói dùng chung thiết bị được, nên mọi người tưởng trống là trống. Hoá ra in-ear và ampli đèn không chạy chung được, phải thuê dàn thứ hai, và ngân sách vẫn thiếu khoảng 12 triệu, buộc cắt suất diễn của một ban sinh viên. Ai gộp setup dùng chung thiết bị nên kiểm tra rider từng món trước khi tin.",
+        "audience": "người tổ chức sự kiện nhỏ và dev lên ngân sách",
+        "evidence": [
+          1,
+          27,
+          35,
+          36
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đêm nhạc Gió Mùa (15/11), đang gộp tech rider của hai ban và xếp tình nguyện viên.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Chạy đêm nhạc với hai ban trên một bộ thiết bị chung, trong ngân sách.",
+            "evidence": [
+              27,
+              32
+            ]
+          },
+          "obstacle": {
+            "text": "Thu 75 triệu, chi cũ 66 triệu; sau khi thêm dàn thứ hai vẫn thiếu khoảng 12 triệu.",
+            "evidence": [
+              34,
+              35
+            ]
+          },
+          "turn": {
+            "text": "Tưởng hai ban dùng chung được một bộ thiết bị vì sân khấu 'trống là trống'; hoá ra in-ear và ampli đèn không chạy chung được.",
+            "evidence": [
+              27,
+              36
+            ]
+          },
+          "action": {
+            "text": "Thuê dàn thứ hai (5,6 triệu) và tính lại ngân sách; khi vẫn thiếu, cắt suất mở màn của ban sinh viên, đền bằng 5 phút hát mộc và hứa suất buổi sau.",
+            "evidence": [
+              33,
+              38
+            ]
+          },
+          "outcome": {
+            "text": "Giữ kỹ thuật viên có kinh nghiệm, ban sinh viên mất suất diễn lớn; việc đã được ghi vào nhật ký.",
+            "evidence": [
+              38,
+              40
+            ]
+          },
+          "takeaway": {
+            "text": "Khi nghe 'dùng chung được', kiểm tra rider từng món trước; một lỗi tương thích có thể đẩy ngân sách vào thế phải cắt một bên.",
+            "evidence": [
+              27,
+              31,
+              35
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-06-phep-tinh-ngan-sach-bao-thieu-f922",
+        "status": "angle",
+        "angle": "Đêm nhạc Gió Mùa (15/11) đang chuẩn bị, người làm phải xếp lại ngân sách sau khi thêm dàn nhạc, mất cọc địa điểm cũ và hoàn vé. Phép tính trong phiên báo thiếu khoảng 12 triệu, nên quyết định cắt ban mở màn để bù. Cộng lại từ các số đã có thì thiếu gần 19,6 triệu, nghĩa là cắt như vậy vẫn còn thiếu hơn 7 triệu. Ai tin một con số đầu ra mà không cộng lại từ khoản gốc có thể cắt nhầm.",
+        "audience": "dev dùng AI để tính số liệu và người làm việc với bảng chi thu",
+        "evidence": [
+          34,
+          35,
+          38
+        ],
+        "spine": {
+          "context": {
+            "text": "Đêm nhạc Gió Mùa (15/11) đang chuẩn bị, cần xếp tình nguyện viên và gộp tech rider của hai ban nhạc.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Giữ đủ kỹ thuật cho đêm nhạc mà vẫn nằm trong ngân sách.",
+            "evidence": [
+              32
+            ]
+          },
+          "obstacle": {
+            "text": "Sau ba thay đổi (thêm dàn nhạc, mất cọc địa điểm cũ, hoàn vé), ngân sách không còn đủ.",
+            "evidence": [
+              35
+            ]
+          },
+          "turn": {
+            "text": "Phép tính trong phiên báo thiếu khoảng 12 triệu; cộng lại từ các khoản đã có thì thiếu khoảng 19,6 triệu.",
+            "evidence": [
+              34,
+              35
+            ]
+          },
+          "action": {
+            "text": "Giữ kỹ thuật âm thanh, cắt ban mở màn để bù khoản thiếu.",
+            "evidence": [
+              38
+            ]
+          },
+          "outcome": {
+            "text": "Quyết định cắt đã chốt; theo phép cộng, sau khi cắt vẫn thiếu khoảng 7,6 triệu.",
+            "evidence": [
+              34,
+              35,
+              38
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi cắt khoản nào dựa trên một con số, cộng lại từ các khoản gốc thay vì tin con số đã nói ra.",
+            "evidence": [
+              34,
+              35
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-06-san-thuong-bi-dinh-chi-9-f922",
+        "status": "none",
+        "none": true,
+        "reason": "Không ai tin sai điều gì: việc đình chỉ là sự kiện bên ngoài, còn lựa chọn Kho Gạo là đánh đổi có chủ đích giữa sức chứa và chi phí. Chỗ ngoặt không có.",
+        "spine": {
+          "context": {
+            "text": "Đêm nhạc Gió Mùa diễn ra 15/11, còn 9 ngày nữa là đến ngày diễn.",
+            "evidence": [
+              1,
+              9
+            ]
+          },
+          "want": {
+            "text": "Giữ được đêm nhạc đúng ngày, có chỗ diễn thay thế trước 17h.",
+            "evidence": [
+              9
+            ]
+          },
+          "obstacle": {
+            "text": "Sân thượng bị đình chỉ sau kiểm tra PCCC, và 300 vé đã bán.",
+            "evidence": [
+              9
+            ]
+          },
+          "action": {
+            "text": "Chốt Kho Gạo làm địa điểm thay thế và soạn email hỏi hoàn tiền tự nguyện cho 80 vé dư.",
+            "evidence": [
+              13,
+              15
+            ]
+          },
+          "outcome": {
+            "text": "Đã chốt Kho Gạo (220 chỗ); 80 vé dư chưa có kết quả.",
+            "evidence": [
+              13,
+              15
+            ]
+          },
+          "takeaway": {
+            "text": "Khi phải đổi địa điểm gấp, so các phương án bằng ngân sách dự phòng còn lại, không so cảm tính.",
+            "evidence": [
+              12,
+              13
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-11-06-doi-dia-diem-keo-theo-80-f922",
+        "status": "none",
+        "none": true,
+        "reason": "Sự cố là đình chỉ địa điểm từ bên ngoài. Không dòng nào cho thấy ai tin sai một điều rồi lộ ra qua việc làm của họ, nên ô turn để null.",
+        "spine": {
+          "context": {
+            "text": "Người làm đang tổ chức đêm nhạc Gió Mùa ngày 15/11 và đã bán 300 vé.",
+            "evidence": [
+              1,
+              9
+            ]
+          },
+          "want": {
+            "text": "Giữ được buổi nhạc đúng ngày với địa điểm có sẵn cho khách đã mua vé.",
+            "evidence": [
+              9,
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Sân thượng Lầu Bảy bị đình chỉ ít nhất một tháng sau kiểm tra phòng cháy, và phải trả lời chỗ thay trước 17h.",
+            "evidence": [
+              9
+            ]
+          },
+          "action": {
+            "text": "Chốt Kho Gạo (220 chỗ, 15 triệu) thay Lầu Bảy, đặt cọc 5 triệu, và soạn email hỏi tự nguyện trước khi hoàn tiền.",
+            "evidence": [
+              15,
+              16,
+              18
+            ]
+          },
+          "outcome": {
+            "text": "Chị Ngân xác nhận Kho Gạo lúc 11h20 với cọc 5 triệu; email đã soạn nhưng chưa có kết quả.",
+            "evidence": [
+              17,
+              18
+            ]
+          },
+          "takeaway": {
+            "text": "Đổi địa điểm sát ngày thì sức chứa mới quyết định bao nhiêu vé phải xử lý.",
+            "evidence": [
+              9,
+              11
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-11-06-dung-chung-dan-nhac-tiet-kiem-f922",
+        "status": "angle",
+        "angle": "Đêm nhạc Gió Mùa (15/11) đang chuẩn bị, người làm gộp tech rider của hai ban nhạc để thuê thiết bị chung cho rẻ. Hai ban đã đồng ý dùng chung trống và ampli nên người làm tin sẽ tiết kiệm được, có lẽ ai cũng nghĩ 'trống là trống'. Nhưng khi đặt hai rider cạnh nhau, setup trống, monitor và guitar đều khác nhau, đổi set mất khoảng 25 phút thay vì 10; chốt thuê hai dàn riêng làm tổng chi tăng từ 4,5 triệu lên 10,1 triệu. Ai lập ngân sách thiết bị chung nên đối chiếu rider từng dòng trước khi tin vào khoản tiết kiệm.",
+        "audience": "người tổ chức sự kiện hoặc dev lập ngân sách cho dự án chung",
+        "evidence": [
+          1,
+          21,
+          26,
+          27,
+          30,
+          31
+        ],
+        "spine": {
+          "context": {
+            "text": "Đêm nhạc Gió Mùa (15/11) đang chuẩn bị; người làm gộp tech rider của hai ban nhạc để thuê thiết bị chung.",
+            "evidence": [
+              1,
+              21
+            ]
+          },
+          "want": {
+            "text": "Muốn gộp hai rider thành một danh sách thuê để tiết kiệm tiền thuê và đổi set nhanh.",
+            "evidence": [
+              21
+            ]
+          },
+          "obstacle": {
+            "text": "Khi đặt hai rider cạnh nhau, setup trống, monitor và guitar đều khác nhau.",
+            "evidence": [
+              26
+            ]
+          },
+          "turn": {
+            "text": "Tưởng dùng chung trống và ampli là tiết kiệm được; hoá ra đổi set mất khoảng 25 phút, trong khi kịch bản chỉ để 10 phút.",
+            "evidence": [
+              21,
+              26,
+              27
+            ]
+          },
+          "action": {
+            "text": "Chốt thuê hai dàn riêng và định nhắn hai ban giải thích.",
+            "evidence": [
+              31
+            ]
+          },
+          "outcome": {
+            "text": "Tổng 10,1 triệu, so với 4,5 triệu trong ngân sách, thêm 5,6 triệu; đổi set còn khoảng 8 phút.",
+            "evidence": [
+              30
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi chốt dùng chung thiết bị, đối chiếu từng dòng rider: 'dùng chung' có thể chỉ đúng trên giấy.",
+            "evidence": [
+              26
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-06-hai-tech-rider-dung-chung-tan-f922",
+        "status": "angle",
+        "angle": "Người làm đang lo cho đêm nhạc Gió Mùa diễn ra 15/11 và cần gộp tech rider của hai ban thành một danh sách thuê thiết bị. Hai ban đã đồng ý dùng chung trống và ampli để tiết kiệm tiền thuê, nhưng khi đặt hai rider cạnh nhau thì trống, monitor và guitar đều khác: chỉ loa chính và mixer là dùng chung được. Ai ghép một thoả thuận từ tên hạng mục mà không đối chiếu từng dòng kỹ thuật sẽ dễ gặp đúng chuyện này trước đêm diễn.",
+        "audience": "người tổ chức sự kiện và dev lập danh sách thiết bị",
+        "evidence": [
+          1,
+          21,
+          23,
+          25,
+          26
+        ],
+        "spine": {
+          "context": {
+            "text": "Đêm nhạc Gió Mùa diễn ra 15/11; người làm đang gộp tech rider của hai ban để lập danh sách thuê thiết bị.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Gộp hai rider thành một danh sách thuê, để hai ban dùng chung trống và ampli và tiết kiệm tiền thuê.",
+            "evidence": [
+              21
+            ]
+          },
+          "obstacle": {
+            "text": "Khi đặt hai rider cạnh nhau, trống, monitor và guitar đều khác nhau.",
+            "evidence": [
+              23,
+              25
+            ]
+          },
+          "turn": {
+            "text": "Tưởng trống và ampli dùng chung được; hoá ra chỉ loa chính và mixer là dùng chung được thật.",
+            "evidence": [
+              21,
+              26
+            ]
+          },
+          "action": {
+            "text": "Đối chiếu từng hạng mục của hai rider và báo rằng thoả thuận dùng chung chỉ đúng trên giấy.",
+            "evidence": [
+              26
+            ]
+          },
+          "outcome": {
+            "text": "Người làm hỏi chi phí thuê hai bộ thiết bị; kết quả tra cứu chưa có trong trích đoạn.",
+            "evidence": [
+              27,
+              28
+            ]
+          },
+          "takeaway": {
+            "text": "Thoả thuận 'dùng chung' trên danh sách chưa phải là dùng chung được; cần đối chiếu từng dòng kỹ thuật trước khi chốt.",
+            "evidence": [
+              26
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-06-ghi-nhat-ky-ngay-khi-chot-f922",
+        "status": "angle",
+        "angle": "Đêm nhạc Gió Mùa (15/11) đang được xếp lịch cho hai ban nhạc cùng dùng chung dàn trống và ampli, vì gộp như vậy tiết kiệm tiền thuê. Người làm tưởng gộp thiết bị là cách rẻ mà không mất gì; nhưng in-ear và ampli đèn trên một sân khấu nhỏ mà thiếu kỹ thuật viên thì hỏng, nên giữ người đó đồng nghĩa với bỏ một ban sinh viên đã được hứa từ tháng 9. Ai gộp thiết bị để tiết kiệm nên tính luôn người vận hành trước khi cắt ai.",
+        "audience": "người tổ chức sự kiện nhỏ, người quản lý thiết bị dùng chung",
+        "evidence": [
+          1,
+          21,
+          36,
+          37
+        ],
+        "spine": {
+          "context": {
+            "text": "Đêm nhạc Gió Mùa ngày 15/11 của một nhóm tổ chức, còn vài ngày nữa là diễn ra, đang xếp ca tình nguyện viên và gộp tech rider của hai ban.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Gộp rider hai ban để dùng chung dàn nhạc, tiết kiệm tiền thuê và đổi set nhanh.",
+            "evidence": [
+              21
+            ]
+          },
+          "obstacle": {
+            "text": "In-ear và ampli đèn chung một sân khấu nhỏ mà không có kỹ thuật viên thì hỏng.",
+            "evidence": [
+              36
+            ]
+          },
+          "turn": {
+            "text": "Tưởng gộp dàn nhạc là cách tiết kiệm không mất gì; hoá ra giữ kỹ thuật viên thì phải bỏ một ban sinh viên.",
+            "evidence": [
+              21,
+              36
+            ]
+          },
+          "action": {
+            "text": "Giữ kỹ thuật viên, cắt ban sinh viên, cho ban đó hát mộc một bài lúc đón khách và ghi vào nhật ký.",
+            "evidence": [
+              38,
+              39
+            ]
+          },
+          "outcome": {
+            "text": "Kịch bản đã sửa: bỏ ban sinh viên, thêm 5 phút hát mộc lúc 19h.",
+            "evidence": [
+              41
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi gộp thiết bị để tiết kiệm, tính cả người vận hành; cắt một khoản có thể kéo theo việc bỏ cả một suất diễn.",
+            "evidence": [
+              21,
+              37
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-06-kich-ban-ngan-di-20-phut-f922",
+        "status": "none",
+        "none": true,
+        "reason": "Không có chỗ ngoặt: cắt suất diễn là đánh đổi có chủ đích, không ai tin sai điều gì. Việc chương trình sớm 20 phút là kết quả tính toán được báo lại, không phải một niềm tin bị bác bỏ.",
+        "spine": {
+          "context": {
+            "text": "Đêm nhạc Gió Mùa ngày 15/11, người làm đang xếp ca tình nguyện viên và gộp tech rider của hai ban.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Xếp ca tình nguyện viên và gộp tech rider cho đêm nhạc.",
+            "evidence": [
+              1
+            ]
+          },
+          "obstacle": {
+            "text": "Hai rider trên cùng một sân khấu nhỏ: in-ear và ampli đèn dễ xung đột nếu thiếu người lo kỹ thuật.",
+            "evidence": [
+              36
+            ]
+          },
+          "action": {
+            "text": "Giữ người lo kỹ thuật, cắt suất Mây Thấp, thêm 5 phút hát mộc lúc 19h, đổi kịch bản thành bảng.",
+            "evidence": [
+              38,
+              41
+            ]
+          },
+          "outcome": {
+            "text": "Kịch bản dạng bảng ba cột, chương trình kết thúc 21:15, sớm hơn bản cũ 20 phút.",
+            "evidence": [
+              46
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-06-xep-ca-tinh-nguyen-vien-theo-f922",
+        "status": "angle",
+        "angle": "Người làm đang tổ chức đêm nhạc Gió Mùa vào 15/11, hôm nay xếp ca cho 18 tình nguyện viên. Họ đã xếp ca và bán 300 vé như thể sân thượng Lầu Bảy còn dùng được, nhưng đội phòng cháy vừa đình chỉ sân thượng ít nhất một tháng, và chỗ thay phải trả lời trước 17h. Ai bán vé trước khi chắc địa điểm sẽ thấy rủi ro này.",
+        "audience": "người tự tổ chức sự kiện nhỏ, đã bán vé trước khi chốt địa điểm",
+        "evidence": [
+          1,
+          4,
+          9
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đang tổ chức đêm nhạc Gió Mùa vào 15/11, hôm nay xếp ca cho 18 tình nguyện viên.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Xếp xong ca tình nguyện viên và gộp tech rider trước ngày diễn.",
+            "evidence": [
+              1
+            ]
+          },
+          "obstacle": {
+            "text": "Sân thượng Lầu Bảy bị đình chỉ; phải trả lời chỗ thay trước 17h hôm nay.",
+            "evidence": [
+              9
+            ]
+          },
+          "turn": {
+            "text": "Đã xếp ca và bán 300 vé như thể sân thượng còn dùng được; hoá ra đội phòng cháy đình chỉ sân thượng ít nhất một tháng.",
+            "evidence": [
+              4,
+              9
+            ]
+          },
+          "action": {
+            "text": "Xếp 18 bạn vào ba ca và ghi ra ca-tnv.csv.",
+            "evidence": [
+              4,
+              6,
+              7
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi bán vé, hãy xác nhận địa điểm còn dùng được; kế hoạch ca phải gắn với địa điểm cụ thể.",
+            "evidence": [
+              9
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-11-06-truoc-khi-de-xuat-dia-diem-f922",
+        "status": "angle",
+        "angle": "Một nhóm đang chuẩn bị đêm nhạc Gió Mùa vào 15/11 và đã bán 300 vé. Người làm tin rằng sân thượng Lầu Bảy vẫn tổ chức được, nhưng đội phòng cháy kiểm tra và đình chỉ sân thượng ít nhất một tháng. Đáng để quan tâm vì vé đã bán nên mỗi lựa chọn thay thế đều có giá: Kho Gạo chỉ chứa 220 chỗ, còn 80 vé phải xử lý.",
+        "audience": "người tổ chức sự kiện nhỏ tự lo địa điểm",
+        "evidence": [
+          9,
+          11,
+          14
+        ],
+        "spine": {
+          "context": {
+            "text": "Một nhóm đang chuẩn bị đêm nhạc Gió Mùa vào 15/11, đã bán 300 vé.",
+            "evidence": [
+              1,
+              9
+            ]
+          },
+          "want": {
+            "text": "Giữ được đêm nhạc đúng ngày 15/11 cho 300 khán giả đã mua vé.",
+            "evidence": [
+              1,
+              9
+            ]
+          },
+          "obstacle": {
+            "text": "Sân thượng Lầu Bảy bị đội phòng cháy đình chỉ, ít nhất một tháng, đúng lúc phải trả lời trước 17h.",
+            "evidence": [
+              9
+            ]
+          },
+          "turn": {
+            "text": "Tưởng sân thượng Lầu Bảy dùng được cho 15/11; hoá ra bị đình chỉ ít nhất một tháng sau kiểm tra PCCC.",
+            "evidence": [
+              9
+            ]
+          },
+          "action": {
+            "text": "So hai địa điểm thay thế rồi chọn Kho Gạo (220 chỗ, 15 triệu) thay vì NVH Thanh Niên (350 chỗ, 37 triệu kèm sân khấu).",
+            "evidence": [
+              11,
+              12,
+              15
+            ]
+          },
+          "outcome": {
+            "text": "Chốt Kho Gạo; 80 vé vượt sức chứa cần xử lý bằng hoàn tiền tự nguyện, hạn trả lời 48 tiếng.",
+            "evidence": [
+              14,
+              15
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi bán vé, xác nhận địa điểm còn giấy phép và không nằm trong diện kiểm tra, vì một lần đình chỉ có thể lấy mất cả buổi diễn.",
+            "evidence": [
+              9
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:5a1e7c06 L1-L48: done; 9 chuyện thô, 14 cụm; ghi 14 mới, gộp 0\nđiểm nóng 0 (thiếu 0); lần chạy 1/1; 0.09 USD\ngóc kể: 7 có, 3 không ra chuyện\nhồ sơ dự án: repo không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-06-cat-mot-doi-dien-de-giu-f922",
+      "code": "M-6NZ9",
+      "title": "Cắt một đội diễn để giữ kỹ thuật, rồi tự bù bằng việc cụ thể",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đêm nhạc Gió Mùa (15/11) đang gộp tech rider của hai ban để chạy chung trên một sân khấu nhỏ. Hai ban nói dùng chung thiết bị được, nên mọi người tưởng trống là trống. Hoá ra in-ear và ampli đèn không chạy chung được, phải thuê dàn thứ hai, và ngân sách vẫn thiếu khoảng 12 triệu, buộc cắt suất diễn của một ban sinh viên. Ai gộp setup dùng chung thiết bị nên kiểm tra rider từng món trước khi tin.",
+      "audience": "người tổ chức sự kiện nhỏ và dev lên ngân sách",
+      "spine": {
+        "context": {
+          "text": "Người làm đêm nhạc Gió Mùa (15/11), đang gộp tech rider của hai ban và xếp tình nguyện viên.",
+          "lines": [
+            "claude:5a1e7c06#L1"
+          ]
+        },
+        "want": {
+          "text": "Chạy đêm nhạc với hai ban trên một bộ thiết bị chung, trong ngân sách.",
+          "lines": [
+            "claude:5a1e7c06#L27",
+            "claude:5a1e7c06#L32"
+          ]
+        },
+        "obstacle": {
+          "text": "Thu 75 triệu, chi cũ 66 triệu; sau khi thêm dàn thứ hai vẫn thiếu khoảng 12 triệu.",
+          "lines": [
+            "claude:5a1e7c06#L34",
+            "claude:5a1e7c06#L35"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng hai ban dùng chung được một bộ thiết bị vì sân khấu 'trống là trống'; hoá ra in-ear và ampli đèn không chạy chung được.",
+          "lines": [
+            "claude:5a1e7c06#L27",
+            "claude:5a1e7c06#L36"
+          ]
+        },
+        "action": {
+          "text": "Thuê dàn thứ hai (5,6 triệu) và tính lại ngân sách; khi vẫn thiếu, cắt suất mở màn của ban sinh viên, đền bằng 5 phút hát mộc và hứa suất buổi sau.",
+          "lines": [
+            "claude:5a1e7c06#L33",
+            "claude:5a1e7c06#L38"
+          ]
+        },
+        "outcome": {
+          "text": "Giữ kỹ thuật viên có kinh nghiệm, ban sinh viên mất suất diễn lớn; việc đã được ghi vào nhật ký.",
+          "lines": [
+            "claude:5a1e7c06#L38",
+            "claude:5a1e7c06#L40"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi nghe 'dùng chung được', kiểm tra rider từng món trước; một lỗi tương thích có thể đẩy ngân sách vào thế phải cắt một bên.",
+          "lines": [
+            "claude:5a1e7c06#L27",
+            "claude:5a1e7c06#L31",
+            "claude:5a1e7c06#L35"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-06-phep-tinh-ngan-sach-bao-thieu-f922",
+      "code": "M-6B1W",
+      "title": "Phép tính ngân sách báo thiếu 12 tr, nhưng số trong phiên cho thấy thiếu gần 20 tr",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Đêm nhạc Gió Mùa (15/11) đang chuẩn bị, người làm phải xếp lại ngân sách sau khi thêm dàn nhạc, mất cọc địa điểm cũ và hoàn vé. Phép tính trong phiên báo thiếu khoảng 12 triệu, nên quyết định cắt ban mở màn để bù. Cộng lại từ các số đã có thì thiếu gần 19,6 triệu, nghĩa là cắt như vậy vẫn còn thiếu hơn 7 triệu. Ai tin một con số đầu ra mà không cộng lại từ khoản gốc có thể cắt nhầm.",
+      "audience": "dev dùng AI để tính số liệu và người làm việc với bảng chi thu",
+      "spine": {
+        "context": {
+          "text": "Đêm nhạc Gió Mùa (15/11) đang chuẩn bị, cần xếp tình nguyện viên và gộp tech rider của hai ban nhạc.",
+          "lines": [
+            "claude:5a1e7c06#L1"
+          ]
+        },
+        "want": {
+          "text": "Giữ đủ kỹ thuật cho đêm nhạc mà vẫn nằm trong ngân sách.",
+          "lines": [
+            "claude:5a1e7c06#L32"
+          ]
+        },
+        "obstacle": {
+          "text": "Sau ba thay đổi (thêm dàn nhạc, mất cọc địa điểm cũ, hoàn vé), ngân sách không còn đủ.",
+          "lines": [
+            "claude:5a1e7c06#L35"
+          ]
+        },
+        "turn": {
+          "text": "Phép tính trong phiên báo thiếu khoảng 12 triệu; cộng lại từ các khoản đã có thì thiếu khoảng 19,6 triệu.",
+          "lines": [
+            "claude:5a1e7c06#L34",
+            "claude:5a1e7c06#L35"
+          ]
+        },
+        "action": {
+          "text": "Giữ kỹ thuật âm thanh, cắt ban mở màn để bù khoản thiếu.",
+          "lines": [
+            "claude:5a1e7c06#L38"
+          ]
+        },
+        "outcome": {
+          "text": "Quyết định cắt đã chốt; theo phép cộng, sau khi cắt vẫn thiếu khoảng 7,6 triệu.",
+          "lines": [
+            "claude:5a1e7c06#L34",
+            "claude:5a1e7c06#L35",
+            "claude:5a1e7c06#L38"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi cắt khoản nào dựa trên một con số, cộng lại từ các khoản gốc thay vì tin con số đã nói ra.",
+          "lines": [
+            "claude:5a1e7c06#L34",
+            "claude:5a1e7c06#L35"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-06-san-thuong-bi-dinh-chi-9-f922",
+      "code": "M-X6H0",
+      "title": "Sân thượng bị đình chỉ 9 ngày trước đêm nhạc: 300 vé đã bán, chốt địa điểm trong buổi chiều",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Đêm nhạc Gió Mùa diễn ra 15/11, còn 9 ngày nữa là đến ngày diễn.",
+          "lines": [
+            "claude:5a1e7c06#L1",
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "want": {
+          "text": "Giữ được đêm nhạc đúng ngày, có chỗ diễn thay thế trước 17h.",
+          "lines": [
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "obstacle": {
+          "text": "Sân thượng bị đình chỉ sau kiểm tra PCCC, và 300 vé đã bán.",
+          "lines": [
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "action": {
+          "text": "Chốt Kho Gạo làm địa điểm thay thế và soạn email hỏi hoàn tiền tự nguyện cho 80 vé dư.",
+          "lines": [
+            "claude:5a1e7c06#L13",
+            "claude:5a1e7c06#L15"
+          ]
+        },
+        "outcome": {
+          "text": "Đã chốt Kho Gạo (220 chỗ); 80 vé dư chưa có kết quả.",
+          "lines": [
+            "claude:5a1e7c06#L13",
+            "claude:5a1e7c06#L15"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi phải đổi địa điểm gấp, so các phương án bằng ngân sách dự phòng còn lại, không so cảm tính.",
+          "lines": [
+            "claude:5a1e7c06#L12",
+            "claude:5a1e7c06#L13"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-11-06-doi-dia-diem-keo-theo-80-f922",
+      "code": "M-AEA7",
+      "title": "Dời địa điểm kéo theo 80 vé dư: hỏi tự nguyện trước khi hoàn tiền",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Người làm đang tổ chức đêm nhạc Gió Mùa ngày 15/11 và đã bán 300 vé.",
+          "lines": [
+            "claude:5a1e7c06#L1",
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "want": {
+          "text": "Giữ được buổi nhạc đúng ngày với địa điểm có sẵn cho khách đã mua vé.",
+          "lines": [
+            "claude:5a1e7c06#L9",
+            "claude:5a1e7c06#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Sân thượng Lầu Bảy bị đình chỉ ít nhất một tháng sau kiểm tra phòng cháy, và phải trả lời chỗ thay trước 17h.",
+          "lines": [
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "action": {
+          "text": "Chốt Kho Gạo (220 chỗ, 15 triệu) thay Lầu Bảy, đặt cọc 5 triệu, và soạn email hỏi tự nguyện trước khi hoàn tiền.",
+          "lines": [
+            "claude:5a1e7c06#L15",
+            "claude:5a1e7c06#L16",
+            "claude:5a1e7c06#L18"
+          ]
+        },
+        "outcome": {
+          "text": "Chị Ngân xác nhận Kho Gạo lúc 11h20 với cọc 5 triệu; email đã soạn nhưng chưa có kết quả.",
+          "lines": [
+            "claude:5a1e7c06#L17",
+            "claude:5a1e7c06#L18"
+          ]
+        },
+        "takeaway": {
+          "text": "Đổi địa điểm sát ngày thì sức chứa mới quyết định bao nhiêu vé phải xử lý.",
+          "lines": [
+            "claude:5a1e7c06#L9",
+            "claude:5a1e7c06#L11"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-11-06-dung-chung-dan-nhac-tiet-kiem-f922",
+      "code": "M-06CA",
+      "title": "Dùng chung dàn nhạc tiết kiệm 4,5 tr, nhưng thuê riêng thành 10,1 tr",
+      "tension": "hop_ma_tan",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Đêm nhạc Gió Mùa (15/11) đang chuẩn bị, người làm gộp tech rider của hai ban nhạc để thuê thiết bị chung cho rẻ. Hai ban đã đồng ý dùng chung trống và ampli nên người làm tin sẽ tiết kiệm được, có lẽ ai cũng nghĩ 'trống là trống'. Nhưng khi đặt hai rider cạnh nhau, setup trống, monitor và guitar đều khác nhau, đổi set mất khoảng 25 phút thay vì 10; chốt thuê hai dàn riêng làm tổng chi tăng từ 4,5 triệu lên 10,1 triệu. Ai lập ngân sách thiết bị chung nên đối chiếu rider từng dòng trước khi tin vào khoản tiết kiệm.",
+      "audience": "người tổ chức sự kiện hoặc dev lập ngân sách cho dự án chung",
+      "spine": {
+        "context": {
+          "text": "Đêm nhạc Gió Mùa (15/11) đang chuẩn bị; người làm gộp tech rider của hai ban nhạc để thuê thiết bị chung.",
+          "lines": [
+            "claude:5a1e7c06#L1",
+            "claude:5a1e7c06#L21"
+          ]
+        },
+        "want": {
+          "text": "Muốn gộp hai rider thành một danh sách thuê để tiết kiệm tiền thuê và đổi set nhanh.",
+          "lines": [
+            "claude:5a1e7c06#L21"
+          ]
+        },
+        "obstacle": {
+          "text": "Khi đặt hai rider cạnh nhau, setup trống, monitor và guitar đều khác nhau.",
+          "lines": [
+            "claude:5a1e7c06#L26"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng dùng chung trống và ampli là tiết kiệm được; hoá ra đổi set mất khoảng 25 phút, trong khi kịch bản chỉ để 10 phút.",
+          "lines": [
+            "claude:5a1e7c06#L21",
+            "claude:5a1e7c06#L26",
+            "claude:5a1e7c06#L27"
+          ]
+        },
+        "action": {
+          "text": "Chốt thuê hai dàn riêng và định nhắn hai ban giải thích.",
+          "lines": [
+            "claude:5a1e7c06#L31"
+          ]
+        },
+        "outcome": {
+          "text": "Tổng 10,1 triệu, so với 4,5 triệu trong ngân sách, thêm 5,6 triệu; đổi set còn khoảng 8 phút.",
+          "lines": [
+            "claude:5a1e7c06#L30"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi chốt dùng chung thiết bị, đối chiếu từng dòng rider: 'dùng chung' có thể chỉ đúng trên giấy.",
+          "lines": [
+            "claude:5a1e7c06#L26"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-06-hai-tech-rider-dung-chung-tan-f922",
+      "code": "M-8KV7",
+      "title": "Hai tech rider 'dùng chung' tan khi đặt cạnh nhau: trống, monitor, ampli đều khác",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang lo cho đêm nhạc Gió Mùa diễn ra 15/11 và cần gộp tech rider của hai ban thành một danh sách thuê thiết bị. Hai ban đã đồng ý dùng chung trống và ampli để tiết kiệm tiền thuê, nhưng khi đặt hai rider cạnh nhau thì trống, monitor và guitar đều khác: chỉ loa chính và mixer là dùng chung được. Ai ghép một thoả thuận từ tên hạng mục mà không đối chiếu từng dòng kỹ thuật sẽ dễ gặp đúng chuyện này trước đêm diễn.",
+      "audience": "người tổ chức sự kiện và dev lập danh sách thiết bị",
+      "spine": {
+        "context": {
+          "text": "Đêm nhạc Gió Mùa diễn ra 15/11; người làm đang gộp tech rider của hai ban để lập danh sách thuê thiết bị.",
+          "lines": [
+            "claude:5a1e7c06#L1"
+          ]
+        },
+        "want": {
+          "text": "Gộp hai rider thành một danh sách thuê, để hai ban dùng chung trống và ampli và tiết kiệm tiền thuê.",
+          "lines": [
+            "claude:5a1e7c06#L21"
+          ]
+        },
+        "obstacle": {
+          "text": "Khi đặt hai rider cạnh nhau, trống, monitor và guitar đều khác nhau.",
+          "lines": [
+            "claude:5a1e7c06#L23",
+            "claude:5a1e7c06#L25"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng trống và ampli dùng chung được; hoá ra chỉ loa chính và mixer là dùng chung được thật.",
+          "lines": [
+            "claude:5a1e7c06#L21",
+            "claude:5a1e7c06#L26"
+          ]
+        },
+        "action": {
+          "text": "Đối chiếu từng hạng mục của hai rider và báo rằng thoả thuận dùng chung chỉ đúng trên giấy.",
+          "lines": [
+            "claude:5a1e7c06#L26"
+          ]
+        },
+        "outcome": {
+          "text": "Người làm hỏi chi phí thuê hai bộ thiết bị; kết quả tra cứu chưa có trong trích đoạn.",
+          "lines": [
+            "claude:5a1e7c06#L27",
+            "claude:5a1e7c06#L28"
+          ]
+        },
+        "takeaway": {
+          "text": "Thoả thuận 'dùng chung' trên danh sách chưa phải là dùng chung được; cần đối chiếu từng dòng kỹ thuật trước khi chốt.",
+          "lines": [
+            "claude:5a1e7c06#L26"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-06-ghi-nhat-ky-ngay-khi-chot-f922",
+      "code": "M-JG8K",
+      "title": "Ghi nhật ký ngay khi chốt, kể cả lời hứa không nằm trong hợp đồng",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Đêm nhạc Gió Mùa (15/11) đang được xếp lịch cho hai ban nhạc cùng dùng chung dàn trống và ampli, vì gộp như vậy tiết kiệm tiền thuê. Người làm tưởng gộp thiết bị là cách rẻ mà không mất gì; nhưng in-ear và ampli đèn trên một sân khấu nhỏ mà thiếu kỹ thuật viên thì hỏng, nên giữ người đó đồng nghĩa với bỏ một ban sinh viên đã được hứa từ tháng 9. Ai gộp thiết bị để tiết kiệm nên tính luôn người vận hành trước khi cắt ai.",
+      "audience": "người tổ chức sự kiện nhỏ, người quản lý thiết bị dùng chung",
+      "spine": {
+        "context": {
+          "text": "Đêm nhạc Gió Mùa ngày 15/11 của một nhóm tổ chức, còn vài ngày nữa là diễn ra, đang xếp ca tình nguyện viên và gộp tech rider của hai ban.",
+          "lines": [
+            "claude:5a1e7c06#L1"
+          ]
+        },
+        "want": {
+          "text": "Gộp rider hai ban để dùng chung dàn nhạc, tiết kiệm tiền thuê và đổi set nhanh.",
+          "lines": [
+            "claude:5a1e7c06#L21"
+          ]
+        },
+        "obstacle": {
+          "text": "In-ear và ampli đèn chung một sân khấu nhỏ mà không có kỹ thuật viên thì hỏng.",
+          "lines": [
+            "claude:5a1e7c06#L36"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng gộp dàn nhạc là cách tiết kiệm không mất gì; hoá ra giữ kỹ thuật viên thì phải bỏ một ban sinh viên.",
+          "lines": [
+            "claude:5a1e7c06#L21",
+            "claude:5a1e7c06#L36"
+          ]
+        },
+        "action": {
+          "text": "Giữ kỹ thuật viên, cắt ban sinh viên, cho ban đó hát mộc một bài lúc đón khách và ghi vào nhật ký.",
+          "lines": [
+            "claude:5a1e7c06#L38",
+            "claude:5a1e7c06#L39"
+          ]
+        },
+        "outcome": {
+          "text": "Kịch bản đã sửa: bỏ ban sinh viên, thêm 5 phút hát mộc lúc 19h.",
+          "lines": [
+            "claude:5a1e7c06#L41"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi gộp thiết bị để tiết kiệm, tính cả người vận hành; cắt một khoản có thể kéo theo việc bỏ cả một suất diễn.",
+          "lines": [
+            "claude:5a1e7c06#L21",
+            "claude:5a1e7c06#L37"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-06-kich-ban-ngan-di-20-phut-f922",
+      "code": "M-P6GE",
+      "title": "Kịch bản ngắn đi 20 phút sau khi bỏ một suất diễn, và chuyển sang bảng",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Đêm nhạc Gió Mùa ngày 15/11, người làm đang xếp ca tình nguyện viên và gộp tech rider của hai ban.",
+          "lines": [
+            "claude:5a1e7c06#L1"
+          ]
+        },
+        "want": {
+          "text": "Xếp ca tình nguyện viên và gộp tech rider cho đêm nhạc.",
+          "lines": [
+            "claude:5a1e7c06#L1"
+          ]
+        },
+        "obstacle": {
+          "text": "Hai rider trên cùng một sân khấu nhỏ: in-ear và ampli đèn dễ xung đột nếu thiếu người lo kỹ thuật.",
+          "lines": [
+            "claude:5a1e7c06#L36"
+          ]
+        },
+        "action": {
+          "text": "Giữ người lo kỹ thuật, cắt suất Mây Thấp, thêm 5 phút hát mộc lúc 19h, đổi kịch bản thành bảng.",
+          "lines": [
+            "claude:5a1e7c06#L38",
+            "claude:5a1e7c06#L41"
+          ]
+        },
+        "outcome": {
+          "text": "Kịch bản dạng bảng ba cột, chương trình kết thúc 21:15, sớm hơn bản cũ 20 phút.",
+          "lines": [
+            "claude:5a1e7c06#L46"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-11-06-xep-ca-tinh-nguyen-vien-theo-f922",
+      "code": "M-0AB5",
+      "title": "Xếp ca tình nguyện viên theo nhóm rảnh giờ, rồi ghi file ngay",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang tổ chức đêm nhạc Gió Mùa vào 15/11, hôm nay xếp ca cho 18 tình nguyện viên. Họ đã xếp ca và bán 300 vé như thể sân thượng Lầu Bảy còn dùng được, nhưng đội phòng cháy vừa đình chỉ sân thượng ít nhất một tháng, và chỗ thay phải trả lời trước 17h. Ai bán vé trước khi chắc địa điểm sẽ thấy rủi ro này.",
+      "audience": "người tự tổ chức sự kiện nhỏ, đã bán vé trước khi chốt địa điểm",
+      "spine": {
+        "context": {
+          "text": "Người làm đang tổ chức đêm nhạc Gió Mùa vào 15/11, hôm nay xếp ca cho 18 tình nguyện viên.",
+          "lines": [
+            "claude:5a1e7c06#L1"
+          ]
+        },
+        "want": {
+          "text": "Xếp xong ca tình nguyện viên và gộp tech rider trước ngày diễn.",
+          "lines": [
+            "claude:5a1e7c06#L1"
+          ]
+        },
+        "obstacle": {
+          "text": "Sân thượng Lầu Bảy bị đình chỉ; phải trả lời chỗ thay trước 17h hôm nay.",
+          "lines": [
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "turn": {
+          "text": "Đã xếp ca và bán 300 vé như thể sân thượng còn dùng được; hoá ra đội phòng cháy đình chỉ sân thượng ít nhất một tháng.",
+          "lines": [
+            "claude:5a1e7c06#L4",
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "action": {
+          "text": "Xếp 18 bạn vào ba ca và ghi ra ca-tnv.csv.",
+          "lines": [
+            "claude:5a1e7c06#L4",
+            "claude:5a1e7c06#L6",
+            "claude:5a1e7c06#L7"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi bán vé, hãy xác nhận địa điểm còn dùng được; kế hoạch ca phải gắn với địa điểm cụ thể.",
+          "lines": [
+            "claude:5a1e7c06#L9"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-11-06-truoc-khi-de-xuat-dia-diem-f922",
+      "code": "M-KTDT",
+      "title": "Trước khi đề xuất địa điểm, agent hỏi một con số quyết định (ngân sách dự phòng còn bao nhiêu) và nói rõ ngưỡng 22 triệu sẽ loại phương án nào.",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": "Một nhóm đang chuẩn bị đêm nhạc Gió Mùa vào 15/11 và đã bán 300 vé. Người làm tin rằng sân thượng Lầu Bảy vẫn tổ chức được, nhưng đội phòng cháy kiểm tra và đình chỉ sân thượng ít nhất một tháng. Đáng để quan tâm vì vé đã bán nên mỗi lựa chọn thay thế đều có giá: Kho Gạo chỉ chứa 220 chỗ, còn 80 vé phải xử lý.",
+      "audience": "người tổ chức sự kiện nhỏ tự lo địa điểm",
+      "spine": {
+        "context": {
+          "text": "Một nhóm đang chuẩn bị đêm nhạc Gió Mùa vào 15/11, đã bán 300 vé.",
+          "lines": [
+            "claude:5a1e7c06#L1",
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "want": {
+          "text": "Giữ được đêm nhạc đúng ngày 15/11 cho 300 khán giả đã mua vé.",
+          "lines": [
+            "claude:5a1e7c06#L1",
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "obstacle": {
+          "text": "Sân thượng Lầu Bảy bị đội phòng cháy đình chỉ, ít nhất một tháng, đúng lúc phải trả lời trước 17h.",
+          "lines": [
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng sân thượng Lầu Bảy dùng được cho 15/11; hoá ra bị đình chỉ ít nhất một tháng sau kiểm tra PCCC.",
+          "lines": [
+            "claude:5a1e7c06#L9"
+          ]
+        },
+        "action": {
+          "text": "So hai địa điểm thay thế rồi chọn Kho Gạo (220 chỗ, 15 triệu) thay vì NVH Thanh Niên (350 chỗ, 37 triệu kèm sân khấu).",
+          "lines": [
+            "claude:5a1e7c06#L11",
+            "claude:5a1e7c06#L12",
+            "claude:5a1e7c06#L15"
+          ]
+        },
+        "outcome": {
+          "text": "Chốt Kho Gạo; 80 vé vượt sức chứa cần xử lý bằng hoàn tiền tự nguyện, hạn trả lời 48 tiếng.",
+          "lines": [
+            "claude:5a1e7c06#L14",
+            "claude:5a1e7c06#L15"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi bán vé, xác nhận địa điểm còn giấy phép và không nằm trong diện kiểm tra, vì một lần đình chỉ có thể lấy mất cả buổi diễn.",
+          "lines": [
+            "claude:5a1e7c06#L9"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-06-cuoi-phien-agent-khong-ket-thuc-f922",
+      "code": "M-S2W5",
+      "title": "Cuối phiên, agent không kết thúc bằng 'xong'. Nó nêu rõ việc tiếp theo phụ thuộc vào một dữ kiện user sẽ có vào ngày mai (số người tự nguyện nhận hoàn tiền), và hẹn sẽ tính lại khi có số đó.",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-06-khi-user-quyet-dinh-ho-tra-f922",
+      "code": "M-66ZT",
+      "title": "Khi user quyết định, họ trả lời bằng một dòng ('Chốt Kho Gạo', 'Giữ anh Tùng, cắt Mây Thấp') sau khi agent đã nêu đủ cái giá của mỗi lựa chọn.",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-06-voi-email-gui-nguoi-mua-ve-f922",
+      "code": "M-PVS7",
+      "title": "Với email gửi người mua vé, agent viết bản nháp ra file markdown để user đọc lại, không gửi đi và không dán vào chat. Việc gọi điện cho địa điểm do user tự làm.",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-06-de-tinh-anh-huong-cua-tung-f922",
+      "code": "M-BR0S",
+      "title": "Để tính ảnh hưởng của từng thay đổi (thêm dàn, mất cọc, hoàn vé), agent chạy script ngân sách với các tham số --them cộng dồn, thay vì sửa trực tiếp bảng tính.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

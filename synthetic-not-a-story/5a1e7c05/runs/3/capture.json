@@ -1,0 +1,767 @@
+{
+  "id": "5a1e7c05",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/projects/momentry/.claude/worktrees/agent-a16218d210d5a04c4/scripts/eval/synthetic/5a1e7c05-9d24-4a6e-b1c8-0f1e2d3c4b55.jsonl",
+  "fromLine": 1,
+  "toLine": 55,
+  "windowSha": "bef0bf089e2bdbc3",
+  "at": "2026-11-10T12:45:30.333Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.038388000000000005,
+  "dryRun": {
+    "usd": 0.11,
+    "tokens": 2953,
+    "chunks": 1,
+    "hotspots": 1,
+    "entries": 55,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:5a1e7c05",
+    "fromLine": 1,
+    "toLine": 55,
+    "usd": 0.0599994,
+    "secs": 13.6,
+    "exitCode": 0,
+    "status": "done",
+    "written": 7,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-11-02-ma-nhan-vien-30-lot-ra-3eb3",
+        "status": "angle",
+        "angle": "Một tiệm bánh nhỏ ở Đà Lạt đang dùng AI agent để xem lại cả năm bán hàng và tìm chỗ thất thoát. Chủ tiệm tin mã giảm 30% chỉ nằm trong tay 4 nhân viên, nhưng mã đã được dùng 247 lần với 163 số điện thoại khác nhau. Hoá ra mã được đăng lên một nhóm Facebook, và lỗi nằm ở cơ chế: mã chung ai cũng dùng được, thu ngân không kiểm người dùng. Ai từng dùng mã giảm giá dùng chung nên đọc vì lỗ hổng này không cần ai làm sai mới xảy ra.",
+        "audience": "dev dùng AI hằng ngày muốn biết agent giúp việc kinh doanh thật",
+        "evidence": [
+          1,
+          34,
+          36,
+          38,
+          40,
+          41
+        ],
+        "spine": {
+          "context": {
+            "text": "Một tiệm bánh nhỏ ở Đà Lạt đang dùng AI agent để xem lại cả năm bán hàng từ KiotViet.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn biết có ai dùng mã giảm giá trên 10% không, vì quy định chỉ cho giảm tối đa 10% cho khách.",
+            "evidence": [
+              34
+            ]
+          },
+          "obstacle": {
+            "text": "Mã NV30 (giảm 30%, chỉ dành cho nhân viên) đã dùng 247 lần với 163 số điện thoại, trong khi tiệm chỉ có 4 nhân viên.",
+            "evidence": [
+              36,
+              38
+            ]
+          },
+          "turn": {
+            "text": "Chủ tiệm tin mã chỉ nằm trong tay 4 nhân viên; hoá ra khách lạ đã dùng mã vì mã được đăng lên nhóm Facebook.",
+            "evidence": [
+              38,
+              40
+            ]
+          },
+          "action": {
+            "text": "Agent quét lịch sử dùng mã và đọc ghi chú thu ngân, rồi đề xuất thay mã chung bằng giảm giá gắn với từng nhân viên; chủ tiệm tắt mã NV30.",
+            "evidence": [
+              35,
+              39,
+              41,
+              43,
+              44
+            ]
+          },
+          "outcome": {
+            "text": "Mã NV30 bị tắt ngay tối đó; ước tính khoảng 8 triệu tiền giảm ngoài quy định.",
+            "evidence": [
+              41,
+              44
+            ]
+          },
+          "takeaway": {
+            "text": "Mã giảm giá dùng chung cho nhân viên là lối đi vòng; nên gắn quyền giảm giá với từng người có tên.",
+            "evidence": [
+              41,
+              43
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-mot-dong-dinh-dang-ngay-lam-3eb3",
+        "status": "angle",
+        "angle": "Một chủ tiệm bánh đang xem lại doanh thu cả năm từ phần mềm bán hàng để lên kế hoạch năm sau. Agent đọc ngày trong file sai kiểu, bỏ mất hơn nửa hoá đơn và khuyên nghỉ hai tuần quanh Tết vì tháng 2 trông thấp nhất năm. Khi đọc đúng ngày/tháng, tháng 2 hoá ra đạt 168,3 triệu, cao nhất năm. Ai xử lý file xuất có kiểu ngày khác với máy nên đếm số dòng bị bỏ trước khi tin kết quả.",
+        "audience": "người làm số liệu dùng AI xử lý file xuất",
+        "evidence": [
+          12,
+          17,
+          20
+        ],
+        "spine": {
+          "context": {
+            "text": "Một chủ tiệm bánh muốn xem lại cả năm bán hàng từ phần mềm bán hàng để tính chuyện năm sau; agent gộp hai file xuất ra.",
+            "evidence": [
+              1,
+              8
+            ]
+          },
+          "want": {
+            "text": "Xem doanh thu từng tháng để lên kế hoạch năm sau.",
+            "evidence": [
+              1,
+              9
+            ]
+          },
+          "obstacle": {
+            "text": "Cột ngày ghi kiểu ngày/tháng, nhưng máy đọc mặc định kiểu tháng/ngày, nên ngày như 24/01/2026 không đọc được.",
+            "evidence": [
+              16,
+              17
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tháng 2 thấp vì nghỉ Tết nên khuyên nghỉ hai tuần; hoá ra lỗi đọc ngày làm mất hơn nửa hoá đơn, và tháng 2 thực ra cao nhất năm.",
+            "evidence": [
+              12,
+              17,
+              20
+            ]
+          },
+          "action": {
+            "text": "Đếm số dòng không đọc được ngày, rồi đọc lại với định dạng ngày/tháng.",
+            "evidence": [
+              15,
+              18
+            ]
+          },
+          "outcome": {
+            "text": "T2/2026 đạt 168,3 triệu, cao nhất năm; các tháng thường 70–95 triệu.",
+            "evidence": [
+              20
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi tin bảng tổng hợp, đếm số dòng không parse được ngày; số lớn là dấu hiệu sai định dạng, không phải thiếu dữ liệu.",
+            "evidence": [
+              11,
+              17
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-sau-mon-chiem-gan-ba-phan-3eb3",
+        "status": "angle",
+        "angle": "Một tiệm bánh ở Đà Lạt đang xem lại cả năm bán hàng để tính năm sau. Bản phân tích ban đầu cho thấy tháng 2 bán thấp, nhưng chủ tiệm biết tháng Tết mới là lúc đông khách nhất. Hoá ra file ghi ngày trước tháng nên cách đọc ban đầu đã làm lệch cả bức tranh. Ai xử lý số liệu xuất từ phần mềm bán hàng nên kiểm tra thứ tự ngày/tháng trước khi tin xu hướng theo tháng.",
+        "audience": "dev dùng AI để xử lý số liệu xuất từ phần mềm bán hàng",
+        "evidence": [
+          1,
+          13,
+          21
+        ],
+        "spine": {
+          "context": {
+            "text": "Một tiệm bánh ở Đà Lạt có 48 món, đang xem lại cả năm bán hàng để tính năm sau.",
+            "evidence": [
+              1,
+              24
+            ]
+          },
+          "want": {
+            "text": "Muốn biết món nào lời nhất để bớt việc bếp.",
+            "evidence": [
+              24
+            ]
+          },
+          "obstacle": {
+            "text": "File ngày xuất từ KiotViet là ngày/tháng, nhưng cách đọc ban đầu làm tháng 2 có vẻ thấp.",
+            "evidence": [
+              13,
+              21
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tháng 2 bán thấp; hoá ra tháng 2 là tháng bán nhiều nhất vì khách đặt bánh biếu trước Tết.",
+            "evidence": [
+              13,
+              21
+            ]
+          },
+          "action": {
+            "text": "Ghi chú định dạng ngày/tháng của file KiotViet vào ghi-chu.txt.",
+            "evidence": [
+              22,
+              23
+            ]
+          },
+          "outcome": {
+            "text": "Phân tích lại theo món: 6 món chiếm khoảng 71% lãi gộp; 15 món bán chậm cộng lại chỉ 6,2 triệu. Chủ tiệm quyết định cắt 15 món và có 15 dòng trong mon-cat.txt.",
+            "evidence": [
+              29,
+              30,
+              32
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi đọc xu hướng theo tháng, kiểm tra thứ tự ngày/tháng trong file xuất.",
+            "evidence": [
+              21
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-bieu-do-in-trang-den-doi-3eb3",
+        "status": "none",
+        "none": true,
+        "reason": "Đổi màu và thêm nhãn theo góp ý sau khi in là việc chỉnh sửa thường; không có ai tin sai điều gì rõ ràng để làm chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Chủ tiệm bánh ở Đà Lạt muốn xem lại doanh thu cả năm để tính năm sau.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Biểu đồ doanh thu theo tháng để in dán ở bếp, chữ to, màu dễ nhìn.",
+            "evidence": [
+              47
+            ]
+          },
+          "action": {
+            "text": "Vẽ biểu đồ, đổi sang màu nâu đậm và thêm nhãn số triệu trên mỗi cột theo góp ý.",
+            "evidence": [
+              48,
+              50,
+              51
+            ]
+          },
+          "outcome": {
+            "text": "Ảnh 1600x900 với cột nâu đậm, mỗi cột có số triệu đồng.",
+            "evidence": [
+              52,
+              53
+            ]
+          }
+        },
+        "completeness": 4
+      },
+      {
+        "id": "2026-11-02-truoc-khi-chot-danh-sach-cat-3eb3",
+        "status": "none",
+        "none": true,
+        "reason": "Agent đề xuất giữ bánh flan theo kiểu đặt trước, nhưng chưa ai tin sai điều gì rồi bị dữ liệu bác bỏ. Thông tin về khách quen chỉ là lời agent nêu, không có trong yêu cầu của chủ tiệm hay dữ liệu được trích.",
+        "spine": {
+          "context": {
+            "text": "Một tiệm bánh nhỏ ở Đà Lạt, chủ tiệm muốn xem lại cả năm bán hàng để tính chuyện năm sau.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn biết món nào lời nhất để quyết định cắt món nào.",
+            "evidence": [
+              24
+            ]
+          },
+          "obstacle": {
+            "text": "Tiệm có 48 món, nhiều món làm mệt mà bán không được bao nhiêu.",
+            "evidence": [
+              24
+            ]
+          },
+          "action": {
+            "text": "Chạy script xếp hạng lợi nhuận theo món và ghi 15 món thấp nhất vào file.",
+            "evidence": [
+              31
+            ]
+          },
+          "outcome": {
+            "text": "File mon-cat.txt có 15 dòng.",
+            "evidence": [
+              32
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-02-ket-thuc-phien-agent-hen-se-3eb3",
+        "status": "none",
+        "none": true,
+        "reason": "Không có chỗ ngoặt: không ai tin sai điều gì. Đây là việc vẽ biểu đồ và chỉnh màu theo yêu cầu. Câu agent hẹn kiểm tra lại lãi ở lần gửi file sau (L55) là kế hoạch theo dõi, chưa có kết quả nào trong tài liệu trái với niềm tin trước đó.",
+        "spine": {
+          "context": {
+            "text": "Một chủ tiệm bánh nhỏ ở Đà Lạt, đang xem lại doanh thu cả năm để tính chuyện năm sau.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn xem lại cả năm bán hàng để tính chuyện năm sau.",
+            "evidence": [
+              1
+            ]
+          },
+          "obstacle": {
+            "text": "Không rành Excel, nhờ người làm giúp.",
+            "evidence": [
+              1
+            ]
+          },
+          "action": {
+            "text": "Vẽ biểu đồ doanh thu theo tháng, đổi cột sang màu nâu đậm để in trắng đen vẫn rõ, ghi số triệu đồng trên đầu mỗi cột.",
+            "evidence": [
+              47,
+              50,
+              53
+            ]
+          },
+          "outcome": {
+            "text": "Biểu đồ đã vẽ lại: cột màu nâu đậm, mỗi cột có số triệu đồng ở trên. Chủ tiệm cảm ơn.",
+            "evidence": [
+              53,
+              54
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-02-truoc-khi-gop-hai-file-co-3eb3",
+        "status": "none",
+        "none": true,
+        "reason": "Gộp hai file có định dạng khác nhau và đếm dòng để kiểm tra là bước làm thường quy; không ai tin sai điều gì và không có chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Chị Thảo, chủ tiệm bánh ở Đà Lạt, muốn xem lại doanh thu cả năm để tính cho năm sau.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Xem lại cả năm bán hàng từ hai file xuất của KiotViet.",
+            "evidence": [
+              1
+            ]
+          },
+          "obstacle": {
+            "text": "Hai file cùng nội dung nhưng khác dấu phân cách và tên cột.",
+            "evidence": [
+              4
+            ]
+          },
+          "action": {
+            "text": "Đồng bộ tên cột, gộp hai file, rồi in số dòng từng file và tổng để đối chiếu.",
+            "evidence": [
+              6,
+              7,
+              8
+            ]
+          },
+          "outcome": {
+            "text": "Gộp được 28.197 hoá đơn (14.820 + 13.377), từ tháng 11/2025 đến tháng 10/2026.",
+            "evidence": [
+              8
+            ]
+          }
+        },
+        "completeness": 5
+      }
+    ],
+    "message": "claude:5a1e7c05 L1-L55: done; 4 chuyện thô, 7 cụm; ghi 7 mới, gộp 0\nđiểm nóng 1 (thiếu 0); lần chạy 1/1; 0.06 USD\ngóc kể: 3 có, 4 không ra chuyện\nhồ sơ dự án: repo không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-ma-nhan-vien-30-lot-ra-3eb3",
+      "code": "M-458A",
+      "title": "Mã nhân viên 30% lọt ra ngoài: 212 lần dùng trong hai tháng, từ 4 nhân viên",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một tiệm bánh nhỏ ở Đà Lạt đang dùng AI agent để xem lại cả năm bán hàng và tìm chỗ thất thoát. Chủ tiệm tin mã giảm 30% chỉ nằm trong tay 4 nhân viên, nhưng mã đã được dùng 247 lần với 163 số điện thoại khác nhau. Hoá ra mã được đăng lên một nhóm Facebook, và lỗi nằm ở cơ chế: mã chung ai cũng dùng được, thu ngân không kiểm người dùng. Ai từng dùng mã giảm giá dùng chung nên đọc vì lỗ hổng này không cần ai làm sai mới xảy ra.",
+      "audience": "dev dùng AI hằng ngày muốn biết agent giúp việc kinh doanh thật",
+      "spine": {
+        "context": {
+          "text": "Một tiệm bánh nhỏ ở Đà Lạt đang dùng AI agent để xem lại cả năm bán hàng từ KiotViet.",
+          "lines": [
+            "claude:5a1e7c05#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết có ai dùng mã giảm giá trên 10% không, vì quy định chỉ cho giảm tối đa 10% cho khách.",
+          "lines": [
+            "claude:5a1e7c05#L34"
+          ]
+        },
+        "obstacle": {
+          "text": "Mã NV30 (giảm 30%, chỉ dành cho nhân viên) đã dùng 247 lần với 163 số điện thoại, trong khi tiệm chỉ có 4 nhân viên.",
+          "lines": [
+            "claude:5a1e7c05#L36",
+            "claude:5a1e7c05#L38"
+          ]
+        },
+        "turn": {
+          "text": "Chủ tiệm tin mã chỉ nằm trong tay 4 nhân viên; hoá ra khách lạ đã dùng mã vì mã được đăng lên nhóm Facebook.",
+          "lines": [
+            "claude:5a1e7c05#L38",
+            "claude:5a1e7c05#L40"
+          ]
+        },
+        "action": {
+          "text": "Agent quét lịch sử dùng mã và đọc ghi chú thu ngân, rồi đề xuất thay mã chung bằng giảm giá gắn với từng nhân viên; chủ tiệm tắt mã NV30.",
+          "lines": [
+            "claude:5a1e7c05#L35",
+            "claude:5a1e7c05#L39",
+            "claude:5a1e7c05#L41",
+            "claude:5a1e7c05#L43",
+            "claude:5a1e7c05#L44"
+          ]
+        },
+        "outcome": {
+          "text": "Mã NV30 bị tắt ngay tối đó; ước tính khoảng 8 triệu tiền giảm ngoài quy định.",
+          "lines": [
+            "claude:5a1e7c05#L41",
+            "claude:5a1e7c05#L44"
+          ]
+        },
+        "takeaway": {
+          "text": "Mã giảm giá dùng chung cho nhân viên là lối đi vòng; nên gắn quyền giảm giá với từng người có tên.",
+          "lines": [
+            "claude:5a1e7c05#L41",
+            "claude:5a1e7c05#L43"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-mot-dong-dinh-dang-ngay-lam-3eb3",
+      "code": "M-PS16",
+      "title": "Một dòng định dạng ngày làm mất nửa số hoá đơn và suýt khuyên nghỉ đúng mùa Tết",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một chủ tiệm bánh đang xem lại doanh thu cả năm từ phần mềm bán hàng để lên kế hoạch năm sau. Agent đọc ngày trong file sai kiểu, bỏ mất hơn nửa hoá đơn và khuyên nghỉ hai tuần quanh Tết vì tháng 2 trông thấp nhất năm. Khi đọc đúng ngày/tháng, tháng 2 hoá ra đạt 168,3 triệu, cao nhất năm. Ai xử lý file xuất có kiểu ngày khác với máy nên đếm số dòng bị bỏ trước khi tin kết quả.",
+      "audience": "người làm số liệu dùng AI xử lý file xuất",
+      "spine": {
+        "context": {
+          "text": "Một chủ tiệm bánh muốn xem lại cả năm bán hàng từ phần mềm bán hàng để tính chuyện năm sau; agent gộp hai file xuất ra.",
+          "lines": [
+            "claude:5a1e7c05#L1",
+            "claude:5a1e7c05#L8"
+          ]
+        },
+        "want": {
+          "text": "Xem doanh thu từng tháng để lên kế hoạch năm sau.",
+          "lines": [
+            "claude:5a1e7c05#L1",
+            "claude:5a1e7c05#L9"
+          ]
+        },
+        "obstacle": {
+          "text": "Cột ngày ghi kiểu ngày/tháng, nhưng máy đọc mặc định kiểu tháng/ngày, nên ngày như 24/01/2026 không đọc được.",
+          "lines": [
+            "claude:5a1e7c05#L16",
+            "claude:5a1e7c05#L17"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tháng 2 thấp vì nghỉ Tết nên khuyên nghỉ hai tuần; hoá ra lỗi đọc ngày làm mất hơn nửa hoá đơn, và tháng 2 thực ra cao nhất năm.",
+          "lines": [
+            "claude:5a1e7c05#L12",
+            "claude:5a1e7c05#L17",
+            "claude:5a1e7c05#L20"
+          ]
+        },
+        "action": {
+          "text": "Đếm số dòng không đọc được ngày, rồi đọc lại với định dạng ngày/tháng.",
+          "lines": [
+            "claude:5a1e7c05#L15",
+            "claude:5a1e7c05#L18"
+          ]
+        },
+        "outcome": {
+          "text": "T2/2026 đạt 168,3 triệu, cao nhất năm; các tháng thường 70–95 triệu.",
+          "lines": [
+            "claude:5a1e7c05#L20"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi tin bảng tổng hợp, đếm số dòng không parse được ngày; số lớn là dấu hiệu sai định dạng, không phải thiếu dữ liệu.",
+          "lines": [
+            "claude:5a1e7c05#L11",
+            "claude:5a1e7c05#L17"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-sau-mon-chiem-gan-ba-phan-3eb3",
+      "code": "M-3SME",
+      "title": "Sáu món chiếm gần ba phần tư lãi gộp, cắt 15 món bán chậm",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Một tiệm bánh ở Đà Lạt đang xem lại cả năm bán hàng để tính năm sau. Bản phân tích ban đầu cho thấy tháng 2 bán thấp, nhưng chủ tiệm biết tháng Tết mới là lúc đông khách nhất. Hoá ra file ghi ngày trước tháng nên cách đọc ban đầu đã làm lệch cả bức tranh. Ai xử lý số liệu xuất từ phần mềm bán hàng nên kiểm tra thứ tự ngày/tháng trước khi tin xu hướng theo tháng.",
+      "audience": "dev dùng AI để xử lý số liệu xuất từ phần mềm bán hàng",
+      "spine": {
+        "context": {
+          "text": "Một tiệm bánh ở Đà Lạt có 48 món, đang xem lại cả năm bán hàng để tính năm sau.",
+          "lines": [
+            "claude:5a1e7c05#L1",
+            "claude:5a1e7c05#L24"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết món nào lời nhất để bớt việc bếp.",
+          "lines": [
+            "claude:5a1e7c05#L24"
+          ]
+        },
+        "obstacle": {
+          "text": "File ngày xuất từ KiotViet là ngày/tháng, nhưng cách đọc ban đầu làm tháng 2 có vẻ thấp.",
+          "lines": [
+            "claude:5a1e7c05#L13",
+            "claude:5a1e7c05#L21"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tháng 2 bán thấp; hoá ra tháng 2 là tháng bán nhiều nhất vì khách đặt bánh biếu trước Tết.",
+          "lines": [
+            "claude:5a1e7c05#L13",
+            "claude:5a1e7c05#L21"
+          ]
+        },
+        "action": {
+          "text": "Ghi chú định dạng ngày/tháng của file KiotViet vào ghi-chu.txt.",
+          "lines": [
+            "claude:5a1e7c05#L22",
+            "claude:5a1e7c05#L23"
+          ]
+        },
+        "outcome": {
+          "text": "Phân tích lại theo món: 6 món chiếm khoảng 71% lãi gộp; 15 món bán chậm cộng lại chỉ 6,2 triệu. Chủ tiệm quyết định cắt 15 món và có 15 dòng trong mon-cat.txt.",
+          "lines": [
+            "claude:5a1e7c05#L29",
+            "claude:5a1e7c05#L30",
+            "claude:5a1e7c05#L32"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi đọc xu hướng theo tháng, kiểm tra thứ tự ngày/tháng trong file xuất.",
+          "lines": [
+            "claude:5a1e7c05#L21"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-bieu-do-in-trang-den-doi-3eb3",
+      "code": "M-N38C",
+      "title": "Biểu đồ in trắng đen: đổi từ cam nhạt sang nâu đậm và ghi số trên cột",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Chủ tiệm bánh ở Đà Lạt muốn xem lại doanh thu cả năm để tính năm sau.",
+          "lines": [
+            "claude:5a1e7c05#L1"
+          ]
+        },
+        "want": {
+          "text": "Biểu đồ doanh thu theo tháng để in dán ở bếp, chữ to, màu dễ nhìn.",
+          "lines": [
+            "claude:5a1e7c05#L47"
+          ]
+        },
+        "action": {
+          "text": "Vẽ biểu đồ, đổi sang màu nâu đậm và thêm nhãn số triệu trên mỗi cột theo góp ý.",
+          "lines": [
+            "claude:5a1e7c05#L48",
+            "claude:5a1e7c05#L50",
+            "claude:5a1e7c05#L51"
+          ]
+        },
+        "outcome": {
+          "text": "Ảnh 1600x900 với cột nâu đậm, mỗi cột có số triệu đồng.",
+          "lines": [
+            "claude:5a1e7c05#L52",
+            "claude:5a1e7c05#L53"
+          ]
+        }
+      },
+      "completeness": 4
+    },
+    {
+      "id": "2026-11-02-truoc-khi-chot-danh-sach-cat-3eb3",
+      "code": "M-ECX1",
+      "title": "Trước khi chốt danh sách cắt 15 món, agent nhận ra một món có khách quen và đề xuất giữ lại theo kiểu đặt trước thay vì xoá hẳn.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một tiệm bánh nhỏ ở Đà Lạt, chủ tiệm muốn xem lại cả năm bán hàng để tính chuyện năm sau.",
+          "lines": [
+            "claude:5a1e7c05#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết món nào lời nhất để quyết định cắt món nào.",
+          "lines": [
+            "claude:5a1e7c05#L24"
+          ]
+        },
+        "obstacle": {
+          "text": "Tiệm có 48 món, nhiều món làm mệt mà bán không được bao nhiêu.",
+          "lines": [
+            "claude:5a1e7c05#L24"
+          ]
+        },
+        "action": {
+          "text": "Chạy script xếp hạng lợi nhuận theo món và ghi 15 món thấp nhất vào file.",
+          "lines": [
+            "claude:5a1e7c05#L31"
+          ]
+        },
+        "outcome": {
+          "text": "File mon-cat.txt có 15 dòng.",
+          "lines": [
+            "claude:5a1e7c05#L32"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-11-02-ket-thuc-phien-agent-hen-se-3eb3",
+      "code": "M-BH1V",
+      "title": "Kết thúc phiên, agent hẹn sẽ kiểm tra lại ở lần gửi dữ liệu tiếp theo xem việc cắt món và tắt mã có làm lợi nhuận tăng hay không.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một chủ tiệm bánh nhỏ ở Đà Lạt, đang xem lại doanh thu cả năm để tính chuyện năm sau.",
+          "lines": [
+            "claude:5a1e7c05#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn xem lại cả năm bán hàng để tính chuyện năm sau.",
+          "lines": [
+            "claude:5a1e7c05#L1"
+          ]
+        },
+        "obstacle": {
+          "text": "Không rành Excel, nhờ người làm giúp.",
+          "lines": [
+            "claude:5a1e7c05#L1"
+          ]
+        },
+        "action": {
+          "text": "Vẽ biểu đồ doanh thu theo tháng, đổi cột sang màu nâu đậm để in trắng đen vẫn rõ, ghi số triệu đồng trên đầu mỗi cột.",
+          "lines": [
+            "claude:5a1e7c05#L47",
+            "claude:5a1e7c05#L50",
+            "claude:5a1e7c05#L53"
+          ]
+        },
+        "outcome": {
+          "text": "Biểu đồ đã vẽ lại: cột màu nâu đậm, mỗi cột có số triệu đồng ở trên. Chủ tiệm cảm ơn.",
+          "lines": [
+            "claude:5a1e7c05#L53",
+            "claude:5a1e7c05#L54"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-11-02-truoc-khi-gop-hai-file-co-3eb3",
+      "code": "M-PZ9G",
+      "title": "Trước khi gộp hai file có định dạng khác nhau, agent đồng bộ tên cột rồi in số dòng của từng file và tổng để đối chiếu.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Chị Thảo, chủ tiệm bánh ở Đà Lạt, muốn xem lại doanh thu cả năm để tính cho năm sau.",
+          "lines": [
+            "claude:5a1e7c05#L1"
+          ]
+        },
+        "want": {
+          "text": "Xem lại cả năm bán hàng từ hai file xuất của KiotViet.",
+          "lines": [
+            "claude:5a1e7c05#L1"
+          ]
+        },
+        "obstacle": {
+          "text": "Hai file cùng nội dung nhưng khác dấu phân cách và tên cột.",
+          "lines": [
+            "claude:5a1e7c05#L4"
+          ]
+        },
+        "action": {
+          "text": "Đồng bộ tên cột, gộp hai file, rồi in số dòng từng file và tổng để đối chiếu.",
+          "lines": [
+            "claude:5a1e7c05#L6",
+            "claude:5a1e7c05#L7",
+            "claude:5a1e7c05#L8"
+          ]
+        },
+        "outcome": {
+          "text": "Gộp được 28.197 hoá đơn (14.820 + 13.377), từ tháng 11/2025 đến tháng 10/2026.",
+          "lines": [
+            "claude:5a1e7c05#L8"
+          ]
+        }
+      },
+      "completeness": 5
+    }
+  ]
+}

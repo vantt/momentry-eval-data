@@ -1,0 +1,195 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+</asks>
+
+<story>
+hook: 17 phase, 7 agent chạy song song, mà cái 'chặn' thật là chờ người
+tension: tuong_ma_hoa_ra (Hook tưởng còn việc chưa xong trong plan / Việc còn lại chỉ là chờ Windows và người duyệt)
+stakes: 2/3
+# Chạy song song bằng agent: 17 phase, merge từng cái, và cái 'chặn' thật ra là chờ người
+
+**Bối cảnh:** Dự án port một lõi Python sang Rust theo plan 17 phase. Agent chính điều phối nhiều subagent chạy song song, mỗi cái một git worktree, rồi merge về main từng cái khi xong.
+**Chuyện gì xảy ra:** Phase 01 chạy một mình, các phase W1 chạy song song (7 agent). Mỗi agent xong thì được review bởi agent khác, rồi merge và push. Hook dừng phiên liên tục chặn vì điều kiện 'hoàn tất toàn bộ plan', trong khi các mục còn lại đều chờ Windows hoặc người duyệt. Tổng cộng 4 rc phát hành, mỗi cái qua CI ba nền.
+**Bài học:** Tách việc chạy song song theo worktree và để một agent khác review trước khi merge; nhưng đừng để điều kiện dừng yêu cầu việc mà chỉ người hoặc máy khác làm được.
+**Artefact:** Bảng trạng thái phase (xong / đang chạy / chờ người) trong plan.md; che đường dẫn vault và tên repo nếu cần.
+**Góc người ngoài:** cách làm phổ biến là Thường một người làm tuần tự từng nhánh feature, hoặc giao cho một agent làm cả chuỗi trong một phiên dài, merge cuối cùng; ở đây khác ở Lead tách việc theo phụ thuộc, chạy nhiều agent cùng lúc trên worktree tách biệt để không đụng file nhau, rồi tự xử lý xung đột merge và chạy lại kiểm tra sau mỗi lần merge. Người đọc sẽ hỏi làm sao tránh agent giẫm lên nhau.
+</story>
+
+<excerpt>
+[L56] RESULT: --- | title: "Phase 1: Khung workspace"
+[L62] AGENT: Phase 01 là nền cho mọi thứ khác nên chạy trước một mình; xong sẽ bung 7 phase W1 song song.
+[L63] TOOL Agent: Phase 01 workspace skeleton
+[L64] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: a873b85a9248d6237 (internal ID - do not mention to user. Use SendMessa …[+86]
+[L72] AGENT: Meanwhile, I'll skim the W1 phase files to prepare briefs.
+…
+[L111] TOOL Bash: cd /home/vantt/projects/obsidian-pkm && git log --oneline -3 && git status --short && cargo fmt --all --check && cargo clippy --workspace --all-targets --locked -q -- -D warnings && cargo test --workspace --locked -q 2>&1 | tail -3 && cargo run -q -p pkm -- --version && git push origin main 2>&1 | t …[+6]
+[L115] RESULT: b712228 build: add Cargo workspace skeleton, CI and spec seed | f843266 docs(plan): add master plan for the Rust core port
+[L120] AGENT: Phase 01 checks pass locally and it's pushed. I'm now starting the 7 W1 phases in parallel, each in its own worktree.
+[L121] TOOL Agent: Phase 02 YAML probe
+[L122] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: abecb24486c780cd3 (internal ID - do not mention to user. Use SendMessa …[+86]
+…
+[L171] TOOL Bash: gh run view 41399471546 --json jobs -q '.jobs[]|.name+" "+.conclusion'
+[L172] RESULT: macos-latest success | ubuntu-latest success
+[L178] AGENT: CI passes on all three platforms for phase 01. Seven W1 agents are now running in parallel; I'll merge each one as it finishes.
+[L189] USER: <task-notification>
+<task-id>a054502481761ef5d</task-id>
+<tool-use-id>toolu_01PPu6sFkLnF1ax9RasCjMYF</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a054502481761ef5d.output</output-file>
+<status>completed</status>
+<summary>Agent "Phase 14 release workflow" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS
+Summary: I created `.github/workflows/release.yml`, but it has not run on GitHub yet. `cargo build --release --locked` for linux-gnu passes locally and the YAML parses, but `actionlint` is not installed and the packaging step and the other three targets are untested. The phase stays `in-progress` with the acceptance checkbox unticked.
+
+Branch `worktree-agent-a054502481761ef5d`, commit `8591b16`. Nothing pushed, no tag or release created.
+
+What the workflow does:
+- **Triggers:** it runs on tag `v*` and on `workflow_dispatch`.
+- **Build job:** it builds `pkm` for the four targets. Both macOS targets build on `macos-latest`, so `x86_64-apple-darwin` is cross-compiled.
+- **Artifacts:** each target uploads artifact `pkm-&lt;target&gt;` containing `pkm-&lt;target&gt;[.exe]` and a `.sha256` file with a relative filename, so `sha256sum -c` works.
+- **Release job:** it runs only on tags, needs only `GITHUB_TOKEN`, re-checks the hashes, then runs `gh release create --generate-notes`. `workflow_dispatch` never creates a Release.
+- **Action versions:** checkout@v7, upload-artifact@v7, download-artifact@v8 and rust-cache@v2. I chose them from `gh api` latest releases, so `ci.yml` stays on checkout@v5 and the two workflows now differ.
+
+Commands for you after merging to main (also in the report):
+```
+gh workflow run release.yml --ref main
+gh run list --workflow release.yml --limit 1      # note RUN_ID
+gh run watch RUN_ID --exit-status
+mkdir -p /tmp/rel &amp;&amp; gh run download RUN_ID --dir /tmp/rel
+cd /tmp/rel &amp;&amp; for d in pkm-*/; do (cd "$d" &amp;&amp; sha256sum -c ./*.sha256); done
+```
+Expect four `pkm-&lt;target&gt;` directories, every checksum `OK`, and no Release created.
+
+Concerns/Blockers:
+- The `release` job has not been exercised, because that needs a real tag.
+- A hook in this environment blocked shell access to `target/`, so I could not test the packaging step locally …[+605]
+[L195] AGENT: Merging the release workflow, pushing, and triggering workflow_dispatch to verify it.
+…
+[L459] TOOL Bash: gh run watch 41402774100 --exit-status >/dev/null 2>&1; gh run view 41402774100 --json jobs -q '.jobs[]|.name+" "+.conclusion'
+[L463] RESULT: ubuntu-latest success | windows-latest success
+[L474] AGENT: Báo cáo tiến độ: đợt W0 và W1 đã xong phần máy làm được, mọi thứ đã commit và push lên `main`. CI xanh trên Windows, macOS và Linux, kể cả bước so khớp mới.
+
+**Đã xong (5 phase):**
+- **01, khung workspace:** hai crate `pkm-core` và `pkm`, CI chạy ba nền. `pkm --version` in đúng sha đặc tả. Seed của fixture là 11, lấy từ preset của fixture vì test Python không truyền `--seed`.
+- **04, bài thử OHS:** chạy được nhiều câu `search` đồng thời, kết quả trùng với CLI của OHS và không để lại tiến trình node nào.
+- **06, lệnh `follow`:** hiện báo 0 commit chưa chuyển. Tôi đã tự chạy lại để kiểm.
+- **07, module `platform`:** 15 test qua. Trong 19 test Python, 5 test chuyển được; 12 test chỉ dành cho WSL hoặc không cần nên ghi "không áp dụng"; 2 test thuộc `vault` nên đã chuyển sang phase 08.
+- **14, workflow release:** tôi đã chạy thử bằng `workflow_dispatch`. Ra đủ 4 binary, sha256 đều OK, và không tạo Release.
+
+**Xong phần máy, còn thiếu bước của anh/chị (3 phase):**
+- **02, bài thử YAML:** chốt Q3 là `unsafe-libyaml` cộng một lớp tương thích PyYAML. Trên kg-solo, 58 ca biên và 25.000 note sinh ngẫu nhiên đều 0 lệch. Còn thiếu lượt chạy trên bản B.
+- **03, bài thử MCP:** chốt Q4 là JSON-RPC tự viết, vì `rmcp` lệch Python ở 5 chỗ của tầng giao thức, binary to gấp 4 lần và kéo theo `tokio`. Claude Code đã gọi được tool. Còn thiếu lượt thử trên Claude Desktop Windows.
+- **05, bộ so khớp:** Python so với chính nó trên kg-solo ra 0 lệch. Golden đã commit và CI không cần Python. Còn thiếu lượt chạy trên bản B.
+
+**Một quyết định tôi đã tự chốt:** đầu ra của Python phụ thuộc thứ tự hệ điều hành liệt kê file. Đảo thứ tự thì 593 trên 726 `edges.id` đổi theo, và điểm `related` lệch cỡ 1e-5, lớn hơn mức 1e-6 PRD cho phép. Tôi ghim thứ tự theo đường dẫn đã sắp và vẫn so chặt như PRD, đã ghi vào `docs/DECISIONS.md`. Hệ quả là phase 09 và 11 phải giữ đúng thứ tự này. Nếu anh/chị muốn nới luật so thay vào đó thì báo tôi.
+
+**Blocked: chờ user.** Mọi phase còn lại (08 đến 13, 15 đến 17) nằm s …[+1243]
+[L477] USER: Stop hook feedback:
+[bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.]: The goal was to complete the whole plan (all milestones M1 to M4, phases 01 to 17). The transcript shows only phases 01, 04, 06, 07 and 14 done, with 02, 03 and 05 in-progress waiting on user-only steps, and phases 08 to 13 and 15 to 17 still todo behind gate G0. The last assistant message says 'Blocked: chờ user', so the plan is not finished and the condition does not hold.
+[L484] AGENT: The plan requires user gates before phase 08. I'll ask about them directly, so you can answer right away.
+…
+[L907] AGENT: The install and doctor libraries are merged and pushed. Phase 12 will register the subcommands, and their review will happen with phase 12's. Phase 09 is still running.
+[L915] USER: báo cáo tiến độ
+[L917] AGENT: Tiến độ: 4 trong 6 phase cần cho bản cài được đã xong hoặc xong phần lớn. Còn lại phase 10 (query, tools) và 12 (MCP server, CLI), sau đó nối mọi thứ lại. Phase 09 đang chạy. Mọi thứ đã merge đều đã push lên `main`, và CI xanh trên ba nền ở lần kiểm gần nhất.
+
+**Phần lõi cho bản cài được:**
+
+| Phase | Nội dung | Trạng thái |
+|---|---|---|
+| 08 | `vault` và `schema`: đọc note, YAML khớp PyYAML | Xong, đã review và sửa sau review. 17 bảng khớp golden kg-solo, 0 lệch. |
+| 11 (nửa đầu) | Module `ohs`: giữ một tiến trình OHS chạy lâu, tự khởi động lại, lỗi `ohs_not_ready` | Xong, đã review và sửa sau review. |
+| 13 (phần lớn) | `pkm mcp install`, `pkm doctor`, cài gói OHS | Đã merge. Chưa có lệnh nào gọi tới; phase 12 sẽ đăng ký lệnh con. |
+| 09 | `index`, adapter e11, `validate` (SQLite) | Đang chạy |
+| 10 | `query`, `tools`, `more` | Chờ phase 09 |
+| 11 (nửa sau) | `related` (PageRank) | Chờ phase 10 |
+| 12 | MCP server và CLI | Chờ phase 10 |
+
+Bộ so khớp hiện so được 17 trên 64 mục với golden, 0 lệch chưa có tên. 47 mục còn lại báo "chưa có" vì Rust chưa làm tới.
+
+**Lệch có chủ ý so với Python, đã ghi vào `spec/PORTING.md`:**
+- Một note có YAML độc hại (alias bomb) bị giới hạn bộ nhớ thay vì làm sập máy.
+- Một file đọc không được thì bỏ qua file đó, không dừng cả lượt liệt kê.
+- Không có đường lùi đọc thẳng DB của OHS (theo D7).
+
+**Việc cần biết:** người dùng chưa đăng nhập `gh` thì không tải được artifact OHS từ GitHub Actions. Lúc đó phải tải file zip bằng tay rồi chạy với `--ohs-package <file>`. Artifact hết hạn ngày 2027-01-31, nên trước ngày đó fork cần đưa gói lên GitHub Release.
+
+**Bước tiếp:** xong phase 09 thì chạy phase 10. Sau phase 10, chạy song song phase 12 và `related`, rồi nối install vào CLI. Cuối cùng là review và viết bản bàn giao cho agent test trên Windows.
+
+**Câu hỏi còn mở:**
+1. `pkm doctor` mặc định khởi động OHS tối đa 15 giây để kiểm tra, dùng chung DB của MCP `ohs` trong vault. Giữ như vậy, hay chỉ khởi động khi anh/chị yêu cầu?
+[L925] USER: kết nối với OHS anh sẽ kêu một agent khác ở windows làm và test luôn nhé. em chỉ đảm bảo mọi việc xong tới khi cài được và em không còn làm gì tiếp nữa.
+[L927] AGENT: Rõ. Phần kết nối và test OHS để agent trên Windows làm. Tôi làm tới khi `pkm` cài được (phase 09, 10, `related`, 12, rồi nối install và doctor vào CLI), viết bản bàn giao rồi dừng. `pkm doctor` giữ mặc định hiện tại; agent bên Windows chỉnh nếu cần. Đang chờ phase 09.
+…
+[L2128] TOOL Bash: p=plans/261102-0535-rust-core-port-master/plan.md && sed -i 's/^Mã của phase 01–14 đã xong tới bộ cài\. Chưa có tag hay Release nào\./Mã của phase 01–14 đã xong tới bộ cài. Chưa có tag hay Release nào. Chạy thử Release bằng `workflow_dispatch` (run 41417342596, commit 93d1251) ra đủ 7 file, `sha256s …[+445]
+[L2136] RESULT: 1 | d49aa0e docs(plan): record the verified release dry run
+[L2144] AGENT: `pkm` đã sẵn sàng để cài và thử trên Windows. Mã đã viết xong tới bộ cài, mọi thứ đã merge và push lên `main`. Phần còn lại là thử trên Windows thật, OHS và vault thật, đúng như anh/chị định giao cho agent khác.
+
+**Đã kiểm:**
+- **CI:** xanh trên Windows, macOS và Linux ở commit `93d1251`, gồm cả test trên Windows.
+- **So khớp với bản Python trên kg-solo:** 64 trên 64 mục khớp, 0 lệch, không còn mục nào "chưa có".
+  - Gồm các bảng index, 81 câu đáp án, 712 lời gọi tool kể cả `related`, phần bắt tay MCP và 21 lệnh CLI.
+  - Danh sách tool MCP và đầu ra CLI giống bản Python từng byte.
+- **Chạy thử Release (run `41417342596`, không tạo Release thật):**
+  - Ra đủ 7 file: 4 binary, `install.ps1`, `install.sh` và `checksums.txt`. Mọi mã sha256 đều đúng.
+  - Binary Windows không cần `vcruntime140.dll`, nên chạy được trên máy sạch.
+  - `install.ps1` và `install.sh` qua bài thử cài và gỡ trên runner của GitHub.
+- **Binary Linux tôi tự chạy:** `--version` in đúng sha đặc tả. `mcp install --dry-run` ghi đúng mục `kg` và giữ nguyên mục `ohs` có sẵn.
+
+**Những gì đã có:** CLI và MCP server `kg`, `pkm mcp install`, `pkm doctor`, script cài có kèm cập nhật và gỡ, phần "bắt đầu nhanh" trong README. Mỗi phần lõi đã qua code review và đã sửa hết các lỗi review tìm ra.
+
+**Bàn giao:** `plans/261102-0535-rust-core-port-master/handoff-windows-test.md`. Agent Windows đọc file này là đủ để làm, không cần ngữ cảnh khác. File gồm:
+- các bước cài bằng `gh`,
+- các câu thử trong Claude Desktop, kèm đáp án đúng,
+- cách kiểm OHS và `related`,
+- các lệnh chạy trên bản B, chỉ in số lệch,
+- bảng nghiệm thu ứng với các ô còn mở của phase 02, 03, 05, 08–11 và 13.
+
+**Thay đổi so với thoả thuận trước:** trong `pkm mcp install`, cờ `--force` giờ chỉ bỏ qua bước kiểm Claude Desktop đang chạy. Cài khi `pkm.exe` nằm ngoài thư mục chuẩn (ví dụ Downloads) dùng cờ mới `--allow-any-location`. Tôi tách ra vì gộp chung thì một cờ vô tình tắt luôn cả bước bảo vệ cấu hình. Đây là thêm một cờ, không đổi tên lệnh nào, n …[+771]
+[L2147] USER: Stop hook feedback:
+[bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.]: The goal was to complete the whole plan (M1–M4, phases 01–17). The transcript shows phases 02, 03, 05, 08–13 still waiting on user-only or Windows steps, and phases 15, 16 and 17 not started (they wait on the user). The final message says these remain open ('Còn lại, nằm ngoài phần tôi làm') and the plan's own M3/M4 milestones are not reached, so the condition does not hold.
+[L2154] AGENT: Tôi dừng ở đây. Phần anh/chị giao (làm tới bản cài được) đã xong. Plan gốc chưa xong hết, và mọi việc còn lại đều cần người hoặc máy mà tôi không có, nên tôi không tự làm tiếp được:
+
+- **Phase 02, 03, 05, 08–11, 13:** chỉ còn các bước kiểm trên Windows thật, OHS và vault thật (bản B). Anh/chị đã nói sẽ giao các bước này cho agent khác, làm theo `handoff-windows-test.md`.
+- **Phase 15:** chờ anh/chị bảo khi nào đuổi theo commit mới của Python. Lần chạy `follow` gần nhất báo 0 commit.
+- **Phase 16:** cần anh/chị đồng ý gắn tag, dùng song song một tuần rồi chuyển hẳn.
+- **Phase 17:** cần anh/chị quyết Q2 (giữ tên `kg` hay không) và cho phép sửa repo đặc tả.
+
+Stop hook vẫn chặn vì goal ghi "hoàn tất cả plan", nhưng phần còn lại đều nằm sau các cổng trên. Nếu anh/chị đồng ý dừng ở bản cài được, chạy `/goal clear` là xong. Khi mở cổng nào, ví dụ "chạy phase 15", báo tôi để tôi làm tiếp.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,857 @@
+{
+  "id": "5a1e7c03",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/projects/momentry/.claude/worktrees/agent-a16218d210d5a04c4/scripts/eval/synthetic/5a1e7c03-2e6a-4b9c-8d70-41f2a3b4c533.jsonl",
+  "fromLine": 1,
+  "toLine": 57,
+  "windowSha": "776a73030894e8fb",
+  "at": "2026-11-10T12:45:31.652Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.040458,
+  "dryRun": {
+    "usd": 0.11,
+    "tokens": 2864,
+    "chunks": 1,
+    "hotspots": 0,
+    "entries": 57,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:5a1e7c03",
+    "fromLine": 1,
+    "toLine": 57,
+    "usd": 0.06751760000000001,
+    "secs": 14.9,
+    "exitCode": 0,
+    "status": "done",
+    "written": 7,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-25-bai-mau-giup-hoc-sinh-yeu-63a6",
+        "status": "angle",
+        "angle": "Một giáo viên Ngữ văn 10 đang chấm bài nghị luận về lòng biết ơn và soạn đề kiểm tra giữa kỳ. Giáo viên nhờ soạn bài mẫu để giúp 6–7 em học yếu hay bỏ giấy trắng, và tưởng bài mẫu chỉ có lợi cho các em đó. Hoá ra 17 trong 42 bài chép đúng ví dụ của bài mẫu, cả những em khá, nên không còn thấy suy nghĩ riêng của học sinh. Người đọc làm chấm bài hay kiểm tra sao chép hàng loạt sẽ thấy cách đếm bằng grep và lý do chuyển sang chỉ phát câu hỏi gợi ý là dùng được ngay.",
+        "audience": "dev và giáo viên muốn kiểm tra sao chép hàng loạt",
+        "evidence": [
+          12,
+          13,
+          14,
+          15
+        ],
+        "spine": {
+          "context": {
+            "text": "Giáo viên Ngữ văn 10 chấm bài nghị luận xã hội về lòng biết ơn (42 bài) và soạn đề kiểm tra giữa kỳ.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn bài mẫu giúp 6–7 em học yếu biết bài văn trông thế nào.",
+            "evidence": [
+              15
+            ]
+          },
+          "obstacle": {
+            "text": "Chấm theo rubric thì bài nào cũng đủ ý, nhưng không thấy học sinh tự nghĩ gì; có vẻ nhiều em đã chép khung.",
+            "evidence": [
+              14,
+              15
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bài mẫu chỉ giúp các em yếu; hoá ra 17 bài chép đúng ví dụ, cả em khá cũng chép.",
+            "evidence": [
+              14,
+              15
+            ]
+          },
+          "action": {
+            "text": "Đếm bằng grep các cụm từ của bài mẫu, chọn cả ba hướng xử lý, rồi soạn dàn ý mở chỉ có câu hỏi gợi ý.",
+            "evidence": [
+              12,
+              17,
+              18
+            ]
+          },
+          "outcome": {
+            "text": "17 bài dùng ví dụ của bài mẫu, 14 bài mở giống câu mở; 7 em hay bỏ giấy trắng giờ viết đủ ba đoạn; đã tạo file dàn ý.",
+            "evidence": [
+              13,
+              16,
+              19
+            ]
+          },
+          "takeaway": {
+            "text": "Khi giúp người yếu, phát câu hỏi gợi ý thay vì bài đã viết sẵn; đếm cụm trùng bằng grep để biết có sao chép hàng loạt không.",
+            "evidence": [
+              17
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-25-phieu-on-trung-de-thi-that-63a6",
+        "status": "angle",
+        "angle": "Một giáo viên Ngữ văn lớp 10 đang chấm bài và soạn đề giữa kỳ cùng trợ lý AI trước buổi thi thứ Ba. Cô tin dán đề thật vào prompt để nhờ soạn phiếu ôn sát dạng là an toàn, nhưng phiếu ôn đã gửi Zalo phụ huynh có một đề luyện gần nguyên văn đề thật, đã lộ hai ngày. Trợ lý đổi đề thật sang câu khác cùng dạng và kiểm tra bằng grep, vì đề đã phát ra ngoài thì không rút lại được. Ai nhờ AI soạn đề luyện từ tài liệu thật nên đọc để biết cách xử lý khi lỡ lộ đề.",
+        "audience": "người dùng AI soạn tài liệu học tập và đề kiểm tra",
+        "evidence": [
+          40,
+          42,
+          51
+        ],
+        "spine": {
+          "context": {
+            "text": "Giáo viên Ngữ văn lớp 10 đang chấm bài nghị luận, sửa rubric và soạn đề giữa kỳ với trợ lý AI, thi thứ Ba tuần sau.",
+            "evidence": [
+              1,
+              36
+            ]
+          },
+          "want": {
+            "text": "Có đề giữa kỳ chính thức, và phiếu ôn sát dạng để học sinh luyện.",
+            "evidence": [
+              36,
+              42
+            ]
+          },
+          "obstacle": {
+            "text": "Bản nháp đề có ghi BẢO MẬT, nhưng phiếu ôn đã gửi qua Zalo có một đề luyện gần nguyên văn đề đó.",
+            "evidence": [
+              38,
+              40
+            ]
+          },
+          "turn": {
+            "text": "Tưởng dán đề nháp vào prompt để soạn đề luyện 'na ná' là an toàn; hoá ra đề luyện số 3 trùng gần nguyên văn đề thật, và đề thật đã nằm ngoài tay giáo viên hai ngày.",
+            "evidence": [
+              40,
+              41,
+              42
+            ]
+          },
+          "action": {
+            "text": "Đổi đề Phần II sang câu khác cùng dạng 600 chữ, ghi quy tắc không dán đề thật khi nhờ soạn đề luyện, rồi grep câu mới trên tài liệu.",
+            "evidence": [
+              44,
+              45,
+              47,
+              51
+            ]
+          },
+          "outcome": {
+            "text": "Đề Phần II đã đổi; grep câu mới không có kết quả. Đề cũ đã lộ hai ngày qua Zalo và không rút lại được.",
+            "evidence": [
+              41,
+              51
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi nhờ AI soạn đề luyện, đừng dán đề thật vào; chỉ đưa dạng bài. Sau khi đổi đề, grep cụm mới trên mọi tài liệu đã phát.",
+            "evidence": [
+              43,
+              51
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-25-rubric-10-tieu-chi-co-khong-63a6",
+        "status": "angle",
+        "angle": "Một giáo viên văn đang chấm 42 bài nghị luận của lớp 10A3, vừa muốn giảm thời gian chấm vừa muốn học sinh đọc nhận xét. Rubric 10 tiêu chí chấm có/không khiến bài chép khung mẫu vẫn đủ điểm, nên học sinh chỉ nhìn điểm. Khi thử rubric 3 tiêu chí với 8 bài, thời gian giảm từ 12 xuống khoảng 5 phút mỗi bài và cả 8 em đều đọc nhận xét, nên cách thử trên mẫu nhỏ có số liệu để quyết định đổi hay không.",
+        "audience": "giáo viên và người làm việc chấm bài muốn bớt giờ chấm mà vẫn có phản hồi có ích",
+        "evidence": [
+          1,
+          15,
+          22,
+          25,
+          28,
+          29,
+          30
+        ],
+        "spine": {
+          "context": {
+            "text": "Giáo viên văn đang chấm 42 bài nghị luận xã hội 'lòng biết ơn' của lớp 10A3, đồng thời sửa rubric và soạn đề kiểm tra giữa kỳ.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Chấm nhanh hơn và để học sinh đọc được nhận xét, không chỉ nhìn điểm.",
+            "evidence": [
+              22
+            ]
+          },
+          "obstacle": {
+            "text": "Rubric 10 tiêu chí chấm có/không mất hơn 8 tiếng cho 42 bài; 6–7 em hay bỏ giấy trắng, rồi cả lớp chép bài mẫu nên 17 bài giống nhau.",
+            "evidence": [
+              15,
+              22
+            ]
+          },
+          "turn": {
+            "text": "Tưởng rubric 10 tiêu chí chấm có/không là đủ để đánh giá; hoá ra bài chép khung mẫu vẫn đạt điểm cao, còn học sinh chỉ nhìn điểm vì rubric không nói phải làm gì khác.",
+            "evidence": [
+              15,
+              25
+            ]
+          },
+          "action": {
+            "text": "Đề xuất rubric 3 tiêu chí theo ba mức kèm một câu nhận xét, rồi thử trên 8 bài và bấm giờ.",
+            "evidence": [
+              25,
+              28
+            ]
+          },
+          "outcome": {
+            "text": "8 bài mất 41 phút, khoảng 5 phút mỗi bài thay vì 12; ước tính 42 bài còn khoảng 3 tiếng rưỡi. Cả 8 em đọc nhận xét và 5 em hỏi lại 'lần sau em thử là thử thế nào'.",
+            "evidence": [
+              29,
+              30
+            ]
+          },
+          "takeaway": {
+            "text": "Thử thay đổi quy trình trên mẫu nhỏ, bấm giờ và quan sát phản ứng trước khi áp dụng cho cả lớp.",
+            "evidence": [
+              28
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-25-chuyen-diem-sang-file-nhap-truong-63a6",
+        "status": "none",
+        "none": true,
+        "reason": "Đoạn trích chỉ cho thấy agent dùng round(1) và xuất đủ 42 dòng; không có điểm nào được chỉ ra là làm tròn sai, và yêu cầu không nói quy ước làm tròn. Ví dụ 6,25 thành 6,2 và quy ước nửa lên không có trong tài liệu, nên không đủ cơ sở để dựng chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Cô giáo ngữ văn đang chấm bài nghị luận, sửa rubric và soạn đề kiểm tra, cần nhập điểm lớp 10A3 vào file mẫu của trường.",
+            "evidence": [
+              1,
+              52
+            ]
+          },
+          "want": {
+            "text": "Chuyển điểm ĐĐGgk của lớp sang mẫu nhap-diem-mau.xlsx, làm tròn một chữ số.",
+            "evidence": [
+              52
+            ]
+          },
+          "action": {
+            "text": "Agent dùng pandas round(1) trên cột điểm, đổi tên cột và xuất file nhap-diem-10a3.xlsx.",
+            "evidence": [
+              53,
+              55
+            ]
+          },
+          "outcome": {
+            "text": "File có 42 dòng và ba cột đúng tên mẫu; không có bước nào trong phiên đối chiếu số làm tròn với quy ước của trường.",
+            "evidence": [
+              54,
+              55
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi xuất điểm cho hệ thống của trường, nên hỏi rõ quy ước làm tròn của trường thay vì dùng hàm mặc định.",
+            "evidence": [
+              52,
+              53
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-25-doi-ten-42-anh-chup-theo-63a6",
+        "status": "none",
+        "none": true,
+        "reason": "Không ai tin sai điều gì. Giáo viên và agent cùng giả định thứ tự chụp khớp sổ lớp, và đoạn trích không có dòng nào cho thấy giả định đó sai. Ghi chú chấm điểm chưa được đọc nên chưa xác định được chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Giáo viên Ngữ văn lớp 10A3, đang chấm bài nghị luận xã hội và soạn đề kiểm tra giữa kỳ.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Chấm nốt 42 bài nghị luận, sửa rubric và soạn đề kiểm tra.",
+            "evidence": [
+              1
+            ]
+          },
+          "obstacle": {
+            "text": "Bài scan mang tên ảnh chụp từ điện thoại, khó đối chiếu với sổ lớp.",
+            "evidence": [
+              4
+            ]
+          },
+          "action": {
+            "text": "Đổi tên 42 file theo danh sách lớp bằng script, rồi kiểm tra hai tên đầu tiên.",
+            "evidence": [
+              6,
+              7,
+              8
+            ]
+          },
+          "outcome": {
+            "text": "Đã đổi tên 42 file; giáo viên đã chấm được 20 bài.",
+            "evidence": [
+              8,
+              9
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-25-gap-van-de-agent-dung-viec-63a6",
+        "status": "angle",
+        "angle": "Một giáo viên Ngữ văn đang chấm bài nghị luận về 'lòng biết ơn' của cả lớp, 42 bài, cùng trợ lý AI đọc bài và tóm tắt. Cô phát một bài mẫu để giúp mấy em yếu, tin rằng nó chỉ là chỗ tựa cho các em bí. Hoá ra 17 bài chép nguyên ví dụ trong bài mẫu, cả mấy em khá cũng chép, và chấm theo rubric không lộ ra điều đó. Ai soạn tài liệu mẫu cho học sinh nên nghĩ trước về chuyện này.",
+        "audience": "giáo viên và người soạn tài liệu mẫu cho học sinh",
+        "evidence": [
+          1,
+          14,
+          15
+        ],
+        "spine": {
+          "context": {
+            "text": "Một giáo viên Ngữ văn đang chấm bài nghị luận xã hội về 'lòng biết ơn' của một lớp, 42 bài scan, cùng trợ lý AI đọc bài và tóm tắt.",
+            "evidence": [
+              1,
+              9
+            ]
+          },
+          "want": {
+            "text": "Chấm công bằng theo rubric và giúp các em yếu viết được bài.",
+            "evidence": [
+              15
+            ]
+          },
+          "obstacle": {
+            "text": "6–7 em hay bỏ giấy trắng.",
+            "evidence": [
+              15
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bài mẫu chỉ là chỗ tựa cho mấy em yếu; hoá ra 17 bài chép ví dụ của bài mẫu, cả mấy em khá cũng chép.",
+            "evidence": [
+              14,
+              15
+            ]
+          },
+          "action": {
+            "text": "Agent đếm 17 bài dùng ví dụ bác lao công và 14 bài mở bằng câu mẫu, rồi đưa ba phương án; giáo viên chọn không phát bài mẫu trọn vẹn nữa.",
+            "evidence": [
+              13,
+              14,
+              15,
+              17
+            ]
+          },
+          "outcome": {
+            "text": "7 em hay bỏ giấy trắng nay đều viết đủ ba đoạn, nhưng 17 bài giống nhau và khó thấy suy nghĩ riêng của từng em.",
+            "evidence": [
+              16
+            ]
+          },
+          "takeaway": {
+            "text": "Bài mẫu giúp người yếu có khung viết, nhưng cả lớp có thể chép cùng khung và ví dụ, mà chấm theo rubric không lộ ra điều đó.",
+            "evidence": [
+              15,
+              16
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-25-sau-khi-giao-vien-chi-ra-63a6",
+        "status": "angle",
+        "angle": "Một giáo viên Ngữ văn đang dùng agent AI để soạn đề giữa kỳ cho lớp 10A3. Người làm tưởng đề luyện 'na ná' đề thật là an toàn, nhưng đề luyện đó lại chép gần nguyên văn đề thật và đã nằm trong tay phụ huynh và học sinh. Chuyện đáng nghe vì lỗi nằm ở việc đưa tài liệu nhạy cảm vào prompt, và cách sửa là đổi đề rồi ghi quy tắc vào file để phiên sau tự tuân theo.",
+        "audience": "dev dùng AI hằng ngày muốn biết cách ghi ràng buộc vào file dự án",
+        "evidence": [
+          36,
+          41,
+          42,
+          44,
+          46
+        ],
+        "spine": {
+          "context": {
+            "text": "Một giáo viên Ngữ văn đang dùng agent AI để chấm bài, sửa rubric và soạn đề giữa kỳ cho lớp 10A3.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Soạn đề giữa kỳ chính thức và phiếu ôn tập cho học sinh.",
+            "evidence": [
+              36
+            ]
+          },
+          "obstacle": {
+            "text": "Đề nháp đã bị đưa lên nhóm Zalo phụ huynh, và kỳ thi đang đến gần.",
+            "evidence": [
+              42
+            ]
+          },
+          "turn": {
+            "text": "Tưởng đề luyện soạn 'na ná' đề thật là an toàn; hoá ra đề luyện trùng gần như nguyên văn đề thật và đã nằm trong tay phụ huynh và học sinh.",
+            "evidence": [
+              36,
+              41
+            ]
+          },
+          "action": {
+            "text": "Đề xuất đổi hẳn chủ đề Phần II, giữ nguyên dạng bài, và ghi quy tắc không dán đề thật vào prompt.",
+            "evidence": [
+              43,
+              44
+            ]
+          },
+          "outcome": {
+            "text": "Đề Phần II đã được sửa; giáo viên sẽ báo tổ trưởng tối đó.",
+            "evidence": [
+              44,
+              46
+            ]
+          },
+          "takeaway": {
+            "text": "Đừng dán đề thật vào prompt nhờ AI soạn đề na ná; chỉ đưa dạng bài, và ghi quy tắc đó vào file ghi chú để các phiên sau đọc lại.",
+            "evidence": [
+              43,
+              44
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:5a1e7c03 L1-L57: done; 5 chuyện thô, 7 cụm; ghi 7 mới, gộp 0\nđiểm nóng 0 (thiếu 0); lần chạy 1/1; 0.07 USD\ngóc kể: 5 có, 2 không ra chuyện\nhồ sơ dự án: repo không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-25-bai-mau-giup-hoc-sinh-yeu-63a6",
+      "code": "M-3F1F",
+      "title": "Bài mẫu giúp học sinh yếu, nhưng 17/42 bài bị chép khung",
+      "tension": "giup_ma_hai",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một giáo viên Ngữ văn 10 đang chấm bài nghị luận về lòng biết ơn và soạn đề kiểm tra giữa kỳ. Giáo viên nhờ soạn bài mẫu để giúp 6–7 em học yếu hay bỏ giấy trắng, và tưởng bài mẫu chỉ có lợi cho các em đó. Hoá ra 17 trong 42 bài chép đúng ví dụ của bài mẫu, cả những em khá, nên không còn thấy suy nghĩ riêng của học sinh. Người đọc làm chấm bài hay kiểm tra sao chép hàng loạt sẽ thấy cách đếm bằng grep và lý do chuyển sang chỉ phát câu hỏi gợi ý là dùng được ngay.",
+      "audience": "dev và giáo viên muốn kiểm tra sao chép hàng loạt",
+      "spine": {
+        "context": {
+          "text": "Giáo viên Ngữ văn 10 chấm bài nghị luận xã hội về lòng biết ơn (42 bài) và soạn đề kiểm tra giữa kỳ.",
+          "lines": [
+            "claude:5a1e7c03#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn bài mẫu giúp 6–7 em học yếu biết bài văn trông thế nào.",
+          "lines": [
+            "claude:5a1e7c03#L15"
+          ]
+        },
+        "obstacle": {
+          "text": "Chấm theo rubric thì bài nào cũng đủ ý, nhưng không thấy học sinh tự nghĩ gì; có vẻ nhiều em đã chép khung.",
+          "lines": [
+            "claude:5a1e7c03#L14",
+            "claude:5a1e7c03#L15"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bài mẫu chỉ giúp các em yếu; hoá ra 17 bài chép đúng ví dụ, cả em khá cũng chép.",
+          "lines": [
+            "claude:5a1e7c03#L14",
+            "claude:5a1e7c03#L15"
+          ]
+        },
+        "action": {
+          "text": "Đếm bằng grep các cụm từ của bài mẫu, chọn cả ba hướng xử lý, rồi soạn dàn ý mở chỉ có câu hỏi gợi ý.",
+          "lines": [
+            "claude:5a1e7c03#L12",
+            "claude:5a1e7c03#L17",
+            "claude:5a1e7c03#L18"
+          ]
+        },
+        "outcome": {
+          "text": "17 bài dùng ví dụ của bài mẫu, 14 bài mở giống câu mở; 7 em hay bỏ giấy trắng giờ viết đủ ba đoạn; đã tạo file dàn ý.",
+          "lines": [
+            "claude:5a1e7c03#L13",
+            "claude:5a1e7c03#L16",
+            "claude:5a1e7c03#L19"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi giúp người yếu, phát câu hỏi gợi ý thay vì bài đã viết sẵn; đếm cụm trùng bằng grep để biết có sao chép hàng loạt không.",
+          "lines": [
+            "claude:5a1e7c03#L17"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-25-phieu-on-trung-de-thi-that-63a6",
+      "code": "M-KCBG",
+      "title": "Phiếu ôn trùng đề thi thật: bản nháp bị dán vào prompt, đề đã lộ qua Zalo",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một giáo viên Ngữ văn lớp 10 đang chấm bài và soạn đề giữa kỳ cùng trợ lý AI trước buổi thi thứ Ba. Cô tin dán đề thật vào prompt để nhờ soạn phiếu ôn sát dạng là an toàn, nhưng phiếu ôn đã gửi Zalo phụ huynh có một đề luyện gần nguyên văn đề thật, đã lộ hai ngày. Trợ lý đổi đề thật sang câu khác cùng dạng và kiểm tra bằng grep, vì đề đã phát ra ngoài thì không rút lại được. Ai nhờ AI soạn đề luyện từ tài liệu thật nên đọc để biết cách xử lý khi lỡ lộ đề.",
+      "audience": "người dùng AI soạn tài liệu học tập và đề kiểm tra",
+      "spine": {
+        "context": {
+          "text": "Giáo viên Ngữ văn lớp 10 đang chấm bài nghị luận, sửa rubric và soạn đề giữa kỳ với trợ lý AI, thi thứ Ba tuần sau.",
+          "lines": [
+            "claude:5a1e7c03#L1",
+            "claude:5a1e7c03#L36"
+          ]
+        },
+        "want": {
+          "text": "Có đề giữa kỳ chính thức, và phiếu ôn sát dạng để học sinh luyện.",
+          "lines": [
+            "claude:5a1e7c03#L36",
+            "claude:5a1e7c03#L42"
+          ]
+        },
+        "obstacle": {
+          "text": "Bản nháp đề có ghi BẢO MẬT, nhưng phiếu ôn đã gửi qua Zalo có một đề luyện gần nguyên văn đề đó.",
+          "lines": [
+            "claude:5a1e7c03#L38",
+            "claude:5a1e7c03#L40"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng dán đề nháp vào prompt để soạn đề luyện 'na ná' là an toàn; hoá ra đề luyện số 3 trùng gần nguyên văn đề thật, và đề thật đã nằm ngoài tay giáo viên hai ngày.",
+          "lines": [
+            "claude:5a1e7c03#L40",
+            "claude:5a1e7c03#L41",
+            "claude:5a1e7c03#L42"
+          ]
+        },
+        "action": {
+          "text": "Đổi đề Phần II sang câu khác cùng dạng 600 chữ, ghi quy tắc không dán đề thật khi nhờ soạn đề luyện, rồi grep câu mới trên tài liệu.",
+          "lines": [
+            "claude:5a1e7c03#L44",
+            "claude:5a1e7c03#L45",
+            "claude:5a1e7c03#L47",
+            "claude:5a1e7c03#L51"
+          ]
+        },
+        "outcome": {
+          "text": "Đề Phần II đã đổi; grep câu mới không có kết quả. Đề cũ đã lộ hai ngày qua Zalo và không rút lại được.",
+          "lines": [
+            "claude:5a1e7c03#L41",
+            "claude:5a1e7c03#L51"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi nhờ AI soạn đề luyện, đừng dán đề thật vào; chỉ đưa dạng bài. Sau khi đổi đề, grep cụm mới trên mọi tài liệu đã phát.",
+          "lines": [
+            "claude:5a1e7c03#L43",
+            "claude:5a1e7c03#L51"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-25-rubric-10-tieu-chi-co-khong-63a6",
+      "code": "M-ZDJA",
+      "title": "Rubric 10 tiêu chí có/không → 3 tiêu chí theo mức: chấm nhanh gấp đôi, học sinh đọc nhận xét",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một giáo viên văn đang chấm 42 bài nghị luận của lớp 10A3, vừa muốn giảm thời gian chấm vừa muốn học sinh đọc nhận xét. Rubric 10 tiêu chí chấm có/không khiến bài chép khung mẫu vẫn đủ điểm, nên học sinh chỉ nhìn điểm. Khi thử rubric 3 tiêu chí với 8 bài, thời gian giảm từ 12 xuống khoảng 5 phút mỗi bài và cả 8 em đều đọc nhận xét, nên cách thử trên mẫu nhỏ có số liệu để quyết định đổi hay không.",
+      "audience": "giáo viên và người làm việc chấm bài muốn bớt giờ chấm mà vẫn có phản hồi có ích",
+      "spine": {
+        "context": {
+          "text": "Giáo viên văn đang chấm 42 bài nghị luận xã hội 'lòng biết ơn' của lớp 10A3, đồng thời sửa rubric và soạn đề kiểm tra giữa kỳ.",
+          "lines": [
+            "claude:5a1e7c03#L1"
+          ]
+        },
+        "want": {
+          "text": "Chấm nhanh hơn và để học sinh đọc được nhận xét, không chỉ nhìn điểm.",
+          "lines": [
+            "claude:5a1e7c03#L22"
+          ]
+        },
+        "obstacle": {
+          "text": "Rubric 10 tiêu chí chấm có/không mất hơn 8 tiếng cho 42 bài; 6–7 em hay bỏ giấy trắng, rồi cả lớp chép bài mẫu nên 17 bài giống nhau.",
+          "lines": [
+            "claude:5a1e7c03#L15",
+            "claude:5a1e7c03#L22"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng rubric 10 tiêu chí chấm có/không là đủ để đánh giá; hoá ra bài chép khung mẫu vẫn đạt điểm cao, còn học sinh chỉ nhìn điểm vì rubric không nói phải làm gì khác.",
+          "lines": [
+            "claude:5a1e7c03#L15",
+            "claude:5a1e7c03#L25"
+          ]
+        },
+        "action": {
+          "text": "Đề xuất rubric 3 tiêu chí theo ba mức kèm một câu nhận xét, rồi thử trên 8 bài và bấm giờ.",
+          "lines": [
+            "claude:5a1e7c03#L25",
+            "claude:5a1e7c03#L28"
+          ]
+        },
+        "outcome": {
+          "text": "8 bài mất 41 phút, khoảng 5 phút mỗi bài thay vì 12; ước tính 42 bài còn khoảng 3 tiếng rưỡi. Cả 8 em đọc nhận xét và 5 em hỏi lại 'lần sau em thử là thử thế nào'.",
+          "lines": [
+            "claude:5a1e7c03#L29",
+            "claude:5a1e7c03#L30"
+          ]
+        },
+        "takeaway": {
+          "text": "Thử thay đổi quy trình trên mẫu nhỏ, bấm giờ và quan sát phản ứng trước khi áp dụng cho cả lớp.",
+          "lines": [
+            "claude:5a1e7c03#L28"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-25-chuyen-diem-sang-file-nhap-truong-63a6",
+      "code": "M-SA4Q",
+      "title": "Chuyển điểm sang file nhập trường: làm tròn kiểu Python có thể lệch với quy ước",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Cô giáo ngữ văn đang chấm bài nghị luận, sửa rubric và soạn đề kiểm tra, cần nhập điểm lớp 10A3 vào file mẫu của trường.",
+          "lines": [
+            "claude:5a1e7c03#L1",
+            "claude:5a1e7c03#L52"
+          ]
+        },
+        "want": {
+          "text": "Chuyển điểm ĐĐGgk của lớp sang mẫu nhap-diem-mau.xlsx, làm tròn một chữ số.",
+          "lines": [
+            "claude:5a1e7c03#L52"
+          ]
+        },
+        "action": {
+          "text": "Agent dùng pandas round(1) trên cột điểm, đổi tên cột và xuất file nhap-diem-10a3.xlsx.",
+          "lines": [
+            "claude:5a1e7c03#L53",
+            "claude:5a1e7c03#L55"
+          ]
+        },
+        "outcome": {
+          "text": "File có 42 dòng và ba cột đúng tên mẫu; không có bước nào trong phiên đối chiếu số làm tròn với quy ước của trường.",
+          "lines": [
+            "claude:5a1e7c03#L54",
+            "claude:5a1e7c03#L55"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi xuất điểm cho hệ thống của trường, nên hỏi rõ quy ước làm tròn của trường thay vì dùng hàm mặc định.",
+          "lines": [
+            "claude:5a1e7c03#L52",
+            "claude:5a1e7c03#L53"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-25-doi-ten-42-anh-chup-theo-63a6",
+      "code": "M-GPYM",
+      "title": "Đổi tên 42 ảnh chụp theo sổ lớp bằng script, chạy trước khi kiểm tra thứ tự",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Giáo viên Ngữ văn lớp 10A3, đang chấm bài nghị luận xã hội và soạn đề kiểm tra giữa kỳ.",
+          "lines": [
+            "claude:5a1e7c03#L1"
+          ]
+        },
+        "want": {
+          "text": "Chấm nốt 42 bài nghị luận, sửa rubric và soạn đề kiểm tra.",
+          "lines": [
+            "claude:5a1e7c03#L1"
+          ]
+        },
+        "obstacle": {
+          "text": "Bài scan mang tên ảnh chụp từ điện thoại, khó đối chiếu với sổ lớp.",
+          "lines": [
+            "claude:5a1e7c03#L4"
+          ]
+        },
+        "action": {
+          "text": "Đổi tên 42 file theo danh sách lớp bằng script, rồi kiểm tra hai tên đầu tiên.",
+          "lines": [
+            "claude:5a1e7c03#L6",
+            "claude:5a1e7c03#L7",
+            "claude:5a1e7c03#L8"
+          ]
+        },
+        "outcome": {
+          "text": "Đã đổi tên 42 file; giáo viên đã chấm được 20 bài.",
+          "lines": [
+            "claude:5a1e7c03#L8",
+            "claude:5a1e7c03#L9"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-25-gap-van-de-agent-dung-viec-63a6",
+      "code": "M-QXAR",
+      "title": "Gặp vấn đề, agent dừng việc đang làm, báo cáo mô hình phát hiện được, đưa ba phương án có khuyến nghị rõ, rồi chờ giáo viên chọn trước khi làm tiếp.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": "Một giáo viên Ngữ văn đang chấm bài nghị luận về 'lòng biết ơn' của cả lớp, 42 bài, cùng trợ lý AI đọc bài và tóm tắt. Cô phát một bài mẫu để giúp mấy em yếu, tin rằng nó chỉ là chỗ tựa cho các em bí. Hoá ra 17 bài chép nguyên ví dụ trong bài mẫu, cả mấy em khá cũng chép, và chấm theo rubric không lộ ra điều đó. Ai soạn tài liệu mẫu cho học sinh nên nghĩ trước về chuyện này.",
+      "audience": "giáo viên và người soạn tài liệu mẫu cho học sinh",
+      "spine": {
+        "context": {
+          "text": "Một giáo viên Ngữ văn đang chấm bài nghị luận xã hội về 'lòng biết ơn' của một lớp, 42 bài scan, cùng trợ lý AI đọc bài và tóm tắt.",
+          "lines": [
+            "claude:5a1e7c03#L1",
+            "claude:5a1e7c03#L9"
+          ]
+        },
+        "want": {
+          "text": "Chấm công bằng theo rubric và giúp các em yếu viết được bài.",
+          "lines": [
+            "claude:5a1e7c03#L15"
+          ]
+        },
+        "obstacle": {
+          "text": "6–7 em hay bỏ giấy trắng.",
+          "lines": [
+            "claude:5a1e7c03#L15"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bài mẫu chỉ là chỗ tựa cho mấy em yếu; hoá ra 17 bài chép ví dụ của bài mẫu, cả mấy em khá cũng chép.",
+          "lines": [
+            "claude:5a1e7c03#L14",
+            "claude:5a1e7c03#L15"
+          ]
+        },
+        "action": {
+          "text": "Agent đếm 17 bài dùng ví dụ bác lao công và 14 bài mở bằng câu mẫu, rồi đưa ba phương án; giáo viên chọn không phát bài mẫu trọn vẹn nữa.",
+          "lines": [
+            "claude:5a1e7c03#L13",
+            "claude:5a1e7c03#L14",
+            "claude:5a1e7c03#L15",
+            "claude:5a1e7c03#L17"
+          ]
+        },
+        "outcome": {
+          "text": "7 em hay bỏ giấy trắng nay đều viết đủ ba đoạn, nhưng 17 bài giống nhau và khó thấy suy nghĩ riêng của từng em.",
+          "lines": [
+            "claude:5a1e7c03#L16"
+          ]
+        },
+        "takeaway": {
+          "text": "Bài mẫu giúp người yếu có khung viết, nhưng cả lớp có thể chép cùng khung và ví dụ, mà chấm theo rubric không lộ ra điều đó.",
+          "lines": [
+            "claude:5a1e7c03#L15",
+            "claude:5a1e7c03#L16"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-25-sau-khi-giao-vien-chi-ra-63a6",
+      "code": "M-TQDJ",
+      "title": "Sau khi giáo viên chỉ ra quy tắc không đưa đề thật vào prompt, agent ghi quy tắc đó thành một mục cố định trong file ghi chú của dự án để áp dụng cho các lần sau.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": "Một giáo viên Ngữ văn đang dùng agent AI để soạn đề giữa kỳ cho lớp 10A3. Người làm tưởng đề luyện 'na ná' đề thật là an toàn, nhưng đề luyện đó lại chép gần nguyên văn đề thật và đã nằm trong tay phụ huynh và học sinh. Chuyện đáng nghe vì lỗi nằm ở việc đưa tài liệu nhạy cảm vào prompt, và cách sửa là đổi đề rồi ghi quy tắc vào file để phiên sau tự tuân theo.",
+      "audience": "dev dùng AI hằng ngày muốn biết cách ghi ràng buộc vào file dự án",
+      "spine": {
+        "context": {
+          "text": "Một giáo viên Ngữ văn đang dùng agent AI để chấm bài, sửa rubric và soạn đề giữa kỳ cho lớp 10A3.",
+          "lines": [
+            "claude:5a1e7c03#L1"
+          ]
+        },
+        "want": {
+          "text": "Soạn đề giữa kỳ chính thức và phiếu ôn tập cho học sinh.",
+          "lines": [
+            "claude:5a1e7c03#L36"
+          ]
+        },
+        "obstacle": {
+          "text": "Đề nháp đã bị đưa lên nhóm Zalo phụ huynh, và kỳ thi đang đến gần.",
+          "lines": [
+            "claude:5a1e7c03#L42"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng đề luyện soạn 'na ná' đề thật là an toàn; hoá ra đề luyện trùng gần như nguyên văn đề thật và đã nằm trong tay phụ huynh và học sinh.",
+          "lines": [
+            "claude:5a1e7c03#L36",
+            "claude:5a1e7c03#L41"
+          ]
+        },
+        "action": {
+          "text": "Đề xuất đổi hẳn chủ đề Phần II, giữ nguyên dạng bài, và ghi quy tắc không dán đề thật vào prompt.",
+          "lines": [
+            "claude:5a1e7c03#L43",
+            "claude:5a1e7c03#L44"
+          ]
+        },
+        "outcome": {
+          "text": "Đề Phần II đã được sửa; giáo viên sẽ báo tổ trưởng tối đó.",
+          "lines": [
+            "claude:5a1e7c03#L44",
+            "claude:5a1e7c03#L46"
+          ]
+        },
+        "takeaway": {
+          "text": "Đừng dán đề thật vào prompt nhờ AI soạn đề na ná; chỉ đưa dạng bài, và ghi quy tắc đó vào file ghi chú để các phiên sau đọc lại.",
+          "lines": [
+            "claude:5a1e7c03#L43",
+            "claude:5a1e7c03#L44"
+          ]
+        }
+      },
+      "completeness": 7
+    }
+  ]
+}

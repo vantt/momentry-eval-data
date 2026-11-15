@@ -1,0 +1,47 @@
+Dưới đây là 18 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Probe treo 300 giây: lỗi nhanh tốt hơn lỗi im lặng
+   Probe xai treo 200 đến 300 giây với lỗi refresh-ahead vì thư mục đăng nhập omp không tồn tại, trong khi kho pi của cùng tài khoản đã hết hạn OAuth. Hệ thống đặt quarantine, phải chạy lệnh reconcile để gỡ. Tạm thời agent đặt disabled=true để xai bị loại ngay khỏi chuỗi thay vì treo ghế hội đồng.
+M2. Kéo về trên cây bẩn: stash, file sinh tự động xung đột, và ghi lại log
+   Khi pull --rebase --autostash, file digest sinh tự động xung đột. Agent lấy bản remote vì bản local sinh từ nguồn cũ, còn bản của owner được giữ trong stash. Board đổi cấu trúc trên remote nên agent hoàn lại phần sửa, pull, rồi ghi lại các mục log theo thứ tự thời gian. Khi commit chỉ stage file của mình, một pathspec lỗi vì thư mục chưa được git theo dõi.
+M3. Tự khẳng định 'không thuộc component nào' rồi tự sửa
+   Người dùng nói có một component nhằm làm tươi các luật còn hiệu lực. Agent tìm lại và thấy một work item quyết định đã xong, cùng hai máy kiểm thuộc dòng việc đó. Agent đính chính: 'không có chủ trong bản đồ' là đúng, còn 'không thuộc dòng nào' là sai.
+M4. Hệ thống 'cần xây mới' hoá ra đã chạy một nửa
+   Ba agent nghiên cứu song song các mảng plans và reports, history, work items và mã. Registry tài liệu end-user đang chạy thật: 479 doc, khoảng 15% trong 3146 file md, trong đó 332 provisional và 147 active. Một work item quyết định đã xong đúng ở phần đề xuất coi là còn thiếu. Kết luận: engine mới chỉ là bước hoàn thiện, còn ba nhóm chưa có mã.
+M5. Bảng ghế sai vì mô phỏng chạy không có herdr
+   Bộ mô phỏng chạy không có biến herdr nên openai được gán qua một đường khác với phiên thật. Lệnh explain (có herdrPresent true) cho thấy capability mức critical nâng trần lên tầng frontier, khác giả định maxTier=flagship của agent. Agent đính chính ba điều trước khi người duyệt đồng ý, rồi dựng lại bảng từ explain.
+M6. Giao nghiên cứu cho ba agent chạy song song, mỗi agent quét một mảng (plans/reports, history/journals, work items/code/specs) và ghi báo cáo riêng. Sau đó một bản tổng hợp gộp lại và ghi rõ chỗ số liệu lệch giữa các agent.
+   Giao nghiên cứu cho ba agent chạy song song, mỗi agent quét một mảng (plans/reports, history/journals, work items/code/specs) và ghi báo cáo riêng. Sau đó một bản tổng hợp gộp lại và ghi rõ chỗ số liệu lệch giữa các agent. Hỏi một AI duy nhất trong một cuộc chat dài, hoặc tự đọc tài liệu rồi tóm tắt theo trí nhớ.
+M7. Alias trỏ vào thư mục chưa tồn tại
+   Liệt kê alias bằng shell tương tác cho thấy tám alias omp trỏ vào profile, trong đó bốn profile chưa có thư mục. Agent tạo khung profile chỉ có cấu hình, không có đăng nhập, để alias và công tắc chạy được. Không alias nào bị xoá.
+M8. Cảnh báo nằm ở cuối hướng dẫn, và việc kiểm tra còn để dở
+   Pool thehive đã được khai sẵn nên agent không sửa config toàn cục. Việc kiểm tra các workspace cũ bằng doctor vẫn để dở và được ghi là việc chưa làm. Đây không phải lỗi đã xảy ra, mà là rủi ro được đưa tới người đọc muộn.
+M9. Nhập API key bằng `read -rs` trong terminal: key chỉ đi vào ô ẩn, không nằm trong lệnh, không vào lịch sử shell và không dán vào chat. Sau đó kiểm bằng một lệnh gọi thật, không in giá trị key.
+   Nhập API key bằng `read -rs` trong terminal: key chỉ đi vào ô ẩn, không nằm trong lệnh, không vào lịch sử shell và không dán vào chat. Sau đó kiểm bằng một lệnh gọi thật, không in giá trị key. Nhiều người dán key thẳng vào lệnh (`export KEY=...`) hoặc gửi cho AI trong chat để nó 'ghi giúp'. Key khi đó nằm trong history shell và trong nội dung chat.
+M10. 374 vi phạm nằm trong máy kiểm không chạy ở đâu
+   Script check-decision-codes báo 374 vi phạm nhưng không được nối vào npm test, nên không ai thấy. Cờ --write-baseline ghi đè baseline mà không so với bản cũ, nên mọi vi phạm mới bị nuốt. Kế hoạch 1A tách sáu việc thành ba loại: máy canh yếu hoặc tắt, chỉ dẫn agent đọc sai, và giới hạn byte không có máy kiểm.
+M11. Khi commit, chỉ stage đúng file của mình bằng pathspec, để yên các file đang dirty của chủ repo. Trước khi rebase, kiểm xem remote có đụng các file đó không.
+   Khi commit, chỉ stage đúng file của mình bằng pathspec, để yên các file đang dirty của chủ repo. Trước khi rebase, kiểm xem remote có đụng các file đó không. Chạy `git add -A` hoặc `git commit -am`, rồi pull hoặc push mà không xem remote đổi gì.
+M12. fgos list mặc định ẩn việc đã xong, nên tìm thiếu
+   Lệnh mặc định trả 269 item đang mở, nên item quan trọng nhất đã xong không xuất hiện. Dùng --all thì có 1195 item. Lần parse đầu cũng hỏng vì cấu trúc JSON là dict chứ không phải list.
+M13. Khoá dán thừa một ký tự, và lệnh ghi đè không sao lưu
+   Khoá mới dài 25 ký tự, khoá cũ đang chạy được dài 24. API trả 401 cho cả pi lẫn omp, và gọi thẳng API cũng 401. Lệnh nhập đã ghi đè khoá cũ mà không sao lưu. Sau khi nhập lại và lọc khoảng trắng, khoá 24 ký tự nhận 200, bốn lượt kiểm pi và omp đều trả OK. Agent tự nhận lỗi vì lẽ ra phải đưa lệnh có sao lưu ngay từ đầu.
+M14. Người duyệt chỉ cần trả một chữ
+   Thay vì hỏi rải rác, agent gom các câu cần quyết định thành bộ câu hỏi đánh số, mỗi câu có khuyến nghị. Người dùng trả lời bằng 'đồng ý' hoặc một số, và agent làm ngay. Nhiều quyết định trong phiên kết thúc chỉ bằng một chữ như '3' hoặc 'đồng ý'.
+M15. Hội đồng kiến trúc qua framing nhưng shaping thất bại ngay vòng đầu
+   Framing đánh dấu pass, còn shaping đánh dấu execution-failure. Agent đọc trạng thái từng bước để tìm ghế nào hỏng, và lệnh status trả dạng JSON khác với dự đoán nên lần parse đầu tiên lỗi.
+M16. Phase ghi completed nhưng không có file bằng chứng
+   Phase 12 ghi completed, nhưng file spec mà nó hứa không tồn tại, và tài liệu vẫn giữ quy tắc cũ. Ở registry, check doc-provisional-aged không bao giờ bắn, vì so sánh chuỗi ISO với số làm ra NaN. Kết quả: 332 doc đã quá 47 đến 55 ngày vẫn không được ai nhắc.
+M17. Hỏi 'grok hết quota chưa' và phát hiện kho tài khoản của fgOS đang rỗng
+   Lần kiểm đầu, lệnh inspect trả providers rỗng. Chạy probe cho sáu family với cùng một prompt đọc-chỉ, chỉ claude chạy được. Sau khi người dùng copy phiên đăng nhập và khai tài khoản, số family chạy được tăng từ 1 lên 4 (claude, deepseek, glm, rồi xai và openai khi có thêm đường pi). Cấu hình đã gộp cho hội đồng 11/11 ghế gán được, nhưng khi chạy thật bước shaping vẫn thất bại.
+M18. Đếm lại quan hệ thay thế: giả định 'chưa có' bị sửa
+   Đếm trong event log: 36 quyết định, 18 quan hệ supersedes, nhưng chỉ 8 quyết định có trường relation. Trong 7 cặp nền tảng có quan hệ, 5 cặp chỉ thay một phần. Ít nhất 4 quyết định chỉ nêu việc thay thế trong câu chữ. Agent đính chính nhận định ban đầu rằng đề xuất không nhắc đến dữ liệu hiện có.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

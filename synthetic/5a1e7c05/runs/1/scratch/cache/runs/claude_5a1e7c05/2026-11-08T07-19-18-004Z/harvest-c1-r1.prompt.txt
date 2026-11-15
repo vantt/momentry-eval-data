@@ -1,0 +1,118 @@
+Dưới đây là transcript đã rút gọn của một phiên làm việc giữa user và coding agent (Claude Code). Mỗi dòng có nhãn [Lnnn] là số dòng trong transcript gốc.
+
+<transcript>
+[L1] USER: Chào em, chị là Thảo, chủ tiệm bánh Bếp Nhà Thảo ở Đà Lạt. Chị muốn xem lại cả năm bán hàng để tính chuyện năm sau. Chị xuất từ KiotViet được hai file trong thư mục này. Chị không rành Excel lắm nên em làm giúp chị nhé.
+[L2] TOOL Bash: ls -la /Users/thao/Desktop/bep-nha-thao/so-lieu && head -3 /Users/thao/Desktop/bep-nha-thao/so-lieu/*.csv
+[L3] RESULT: ==> hoadon_T11-2025_T4-2026.csv <== | Mã hóa đơn,Thời gian,Khách hàng,SĐT,Tổng tiền hàng,Giảm giá,Mã giảm giá,Khách cần trả
+[L4] AGENT: Hai file có cùng nội dung nhưng khác định dạng: file đầu dùng dấu phẩy và tên cột có dấu, file sau dùng dấu chấm phẩy và tên cột không dấu. Em gộp lại thành một file hoadon_ca_nam.csv với tên cột thống nhất (có dấu) nhé.
+[L5] USER: Ừ em gộp đi.
+[L6] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 -c "import pandas as pd;a=pd.read_csv('hoadon_T11-2025_T4-2026.csv');b=pd.read_csv('hoadon_T5-2026_T10-2026.csv',sep=';');b.columns=a.columns;d=pd.concat([a,b]);d.to_csv('hoadon_ca_nam.csv',index=False);print(len(a),len(b),len(d))"
+[L7] RESULT: 14820 13377 28197
+[L8] AGENT: Đã gộp: 14.820 + 13.377 = 28.197 hoá đơn, từ tháng 11/2025 đến tháng 10/2026.
+[L9] USER: Giờ em xem giúp chị doanh thu từng tháng.
+[L10] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 -c "import pandas as pd;d=pd.read_csv('hoadon_ca_nam.csv');d['t']=pd.to_datetime(d['Thời gian'],errors='coerce');print(d['t'].isna().sum());print(d.groupby(d['t'].dt.to_period('M'))['Khách cần trả'].sum())"
+[L11] RESULT: 15240 | t
+[L12] AGENT: Doanh thu theo tháng (triệu đồng): T11/2025 41,3; T12 39,9; T1/2026 44,1; **T2 18,9**; T3 52,3; ... Tháng 2 thấp nhất năm, chưa bằng một nửa các tháng khác. Có lẽ vì nghỉ Tết. Nếu tháng Tết bán kém như vậy, chị có thể cân nhắc nghỉ hẳn hai tuần quanh Tết để tiết kiệm chi phí nhân công và nguyên liệu.
+[L13] USER: Không đúng em ơi. Tháng Tết là tháng chị bán nhiều nhất năm. Hai tuần trước Tết khách đặt bánh biếu, hộp quà, chị với hai bạn làm tới 1 giờ sáng. Tết năm nay là 17/2, chị chỉ nghỉ từ 16 đến mùng 6 thôi. Tháng 2 sao thấp được.
+[L14] AGENT: Chị nói đúng, để em kiểm tra lại cách em đọc dữ liệu. Có một dấu hiệu em đã bỏ qua: dòng đầu kết quả là 15.240, tức là hơn một nửa số hoá đơn không đọc được ngày.
+[L15] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 -c "import pandas as pd;d=pd.read_csv('hoadon_ca_nam.csv');t=pd.to_datetime(d['Thời gian'],errors='coerce');print(d['Thời gian'].iloc[[0,5000]].tolist(),t.iloc[[0,5000]].tolist())"
+[L16] RESULT: ['03/11/2025 07:12', '24/01/2026 10:40'] [Timestamp('2025-03-11 07:12:00'), NaT]
+[L17] AGENT: Đúng là lỗi của em. KiotViet ghi ngày kiểu Việt Nam (ngày/tháng/năm), nhưng em để máy đọc mặc định kiểu Mỹ (tháng/ngày). Kết quả:
+
+- "03/11/2025" bị đọc thành 11 tháng 3 thay vì 3 tháng 11.
+- Ngày nào lớn hơn 12, như "24/01/2026", không đọc được và bị bỏ hẳn. Đó là 15.240 hoá đơn, hơn một nửa.
+
+Nên bảng lúc nãy vừa thiếu hơn nửa số liệu vừa dồn doanh thu sai tháng. Mùa cao điểm trước Tết rơi đúng vào những ngày 20–31/1 và 1–15/2, phần lớn có ngày > 12 nên bị bỏ. Em tính lại với định dạng ngày/tháng.
+[L18] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 -c "import pandas as pd;d=pd.read_csv('hoadon_ca_nam.csv');d['t']=pd.to_datetime(d['Thời gian'],format='%d/%m/%Y %H:%M');print(d['t'].isna().sum());print((d.groupby(d['t'].dt.to_period('M'))['Khách cần trả'].sum()/1e6).round(1))"
+[L19] RESULT: 0 | t
+[L20] AGENT: Giờ không còn hoá đơn nào bị bỏ. Doanh thu thật (triệu đồng):
+
+- **T2/2026: 168,3, cao nhất năm**, dù tiệm nghỉ hơn 10 ngày.
+- T1/2026: 142,6, đứng thứ hai.
+- Các tháng thường: 70–95.
+
+Chị đúng hoàn toàn. Lời khuyên nghỉ hai tuần quanh Tết của em là sai và nếu làm theo thì chị mất đúng mùa bán tốt nhất. Từ giờ em sẽ luôn khai báo định dạng ngày/tháng khi đọc file KiotViet và kiểm tra số dòng bị bỏ trước khi kết luận.
+[L21] USER: Đó, chị biết mà. Em ghi chú lại giùm chị ở file ghi-chu.txt: file KiotViet ngày là ngày/tháng, lần sau ai làm số liệu cũng phải để ý.
+[L22] TOOL Edit: /Users/thao/Desktop/bep-nha-thao/so-lieu/ghi-chu.txt
+[L23] RESULT: The file /Users/thao/Desktop/bep-nha-thao/so-lieu/ghi-chu.txt has been updated successfully.
+[L24] USER: Giờ chị muốn biết món nào lời nhất. Chị có file gia-von.csv ghi giá vốn từng món (bột, trứng, bơ, hộp…). Tiệm có 48 món, chị thấy nhiều món làm mệt mà chẳng bán được bao nhiêu.
+[L25] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 scripts/lai_theo_mon.py hoadon_chi_tiet.csv gia-von.csv | head -10
+[L26] RESULT: mon sl doanh_thu lai_gop %lai_cong_don | Bông lan trứng muối 9120 319200000 146900000 24.1%
+[L27] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 scripts/lai_theo_mon.py hoadon_chi_tiet.csv gia-von.csv | tail -16
+[L28] RESULT: Bánh cuộn lá dứa 210 8400000 1200000 | Muffin việt quất 180 7200000 900000
+[L29] AGENT: Kết quả khá rõ:
+
+- **6 món đầu (bông lan trứng muối, su kem, hộp quà Tết, bánh mì hoa cúc, tart trứng, cookie bơ hũ) làm ra 71% tổng tiền lãi gộp cả năm.** Chỉ 6 trên 48 món.
+- Ngược lại, 15 món bán chậm nhất cộng lại chỉ lãi 6,2 triệu cả năm, chưa bằng lãi của bông lan trứng muối trong hai tuần. Nhiều món trong đó (bánh bò nướng, muffin việt quất, bánh cuộn lá dứa) phải làm mỗi sáng, bỏ đi nhiều.
+
+Nếu cắt 15 món này, chị mất khoảng 6 triệu lãi một năm nhưng mỗi sáng bớt được việc chuẩn bị, và có thể dồn công vào 6 món chủ lực.
+[L30] USER: Chị đoán là có mấy món không lời, nhưng không ngờ 6 món mà ra gần ba phần tư. Ok chị cắt 15 món. Em liệt kê 15 món đó ra file mon-cat.txt để chị đưa các bạn bếp.
+[L31] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 scripts/lai_theo_mon.py hoadon_chi_tiet.csv gia-von.csv --bottom 15 --names > mon-cat.txt && wc -l mon-cat.txt
+[L32] RESULT: 15 mon-cat.txt
+[L33] AGENT: Đã ghi 15 món vào mon-cat.txt. Lưu ý nhỏ: trong 15 món có bánh flan cũ kiểu caramen đắng, chị có vài khách quen hỏi món này. Chị có thể giữ món đó theo kiểu đặt trước thay vì làm sẵn mỗi ngày.
+[L34] USER: À còn cái này. Chị có quy định: giảm giá cho khách tối đa 10% thôi. Mã 30% chỉ cho nhân viên, NV30, mua bánh mang về nhà. Em xem có ai dùng mã giảm giá trên 10% không.
+[L35] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 -c "import pandas as pd;d=pd.read_csv('hoadon_ca_nam.csv');d['t']=pd.to_datetime(d['Thời gian'],format='%d/%m/%Y %H:%M');x=d[d['Mã giảm giá']=='NV30'];print(len(x),x['SĐT'].nunique());print(x.groupby(x['t'].dt.to_period('M')).size())"
+[L36] RESULT: 247 163 | t
+[L37] AGENT: Mã NV30 đã được dùng 247 lần với 163 số điện thoại khác nhau. Tiệm mình có mấy nhân viên ạ? Đáng chú ý là tháng 6–8 chỉ 7–17 lần mỗi tháng, đến tháng 9 nhảy lên 98 và tháng 10 là 114. Riêng tháng 9–10 là 212 lần.
+[L38] USER: Tiệm có 4 bạn thôi. 163 số là sao?? Chị đã dặn kỹ không được đưa mã cho ai.
+[L39] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 -c "import pandas as pd;d=pd.read_csv('hoadon_ca_nam.csv');d['t']=pd.to_datetime(d['Thời gian'],format='%d/%m/%Y %H:%M');x=d[d['Mã giảm giá']=='NV30'].sort_values('t');print(x[x['t']>='2026-09-01'][['t','Khách hàng','Ghi chú']].head(6).to_string …[+4]
+[L40] RESULT: t Khách hàng Ghi chú | 2026-09-06 15:02 Khách lẻ khách nói thấy mã trên nhóm FB
+[L41] AGENT: Có manh mối rõ: ngày 6/9, ngay sau khi lượt dùng tăng vọt, thu ngân ghi chú "khách nói thấy mã trên nhóm FB", "Hội ăn vặt Đà Lạt", "khách đưa ảnh chụp màn hình". Có vẻ ai đó đã đăng mã NV30 lên nhóm Facebook "Hội ăn vặt Đà Lạt" khoảng ngày 6/9, và từ đó khách lạ dùng mã ngay tại quầy.
+
+Tính sơ: 212 lần trong tháng 9–10, giảm trung bình khoảng 38.000đ mỗi lần, tức khoảng 8 triệu tiền giảm giá ngoài quy định.
+
+Quy định "tối đa 10% cho khách" vẫn đúng trên giấy, nhưng mã nhân viên là một lối đi vòng: thu ngân thấy mã hợp lệ thì áp, không ai kiểm người dùng có phải nhân viên.
+[L42] USER: Trời đất. Chắc bạn nào đưa cho người nhà rồi người nhà đăng lên. Giờ chị làm sao?
+[L43] AGENT: Đề xuất:
+
+1. Tắt mã NV30 trên KiotViet ngay tối nay.
+2. Thay bằng giảm giá nhân viên gắn với tên từng bạn (KiotViet cho tạo khách hàng "nhân viên" với nhóm giá riêng), không dùng mã chung nữa.
+3. Dặn thu ngân: mã nào trên 10% mà không phải nhân viên trong ca thì không áp.
+4. Không cần truy ai đăng; chỉ cần đóng lối đi vòng.
+[L44] USER: Ừ chị tắt NV30 liền. Em ghi vào ghi-chu.txt luôn.
+[L45] TOOL Edit: /Users/thao/Desktop/bep-nha-thao/so-lieu/ghi-chu.txt
+[L46] RESULT: The file /Users/thao/Desktop/bep-nha-thao/so-lieu/ghi-chu.txt has been updated successfully.
+[L47] USER: Cuối cùng em vẽ giúp chị biểu đồ doanh thu theo tháng (bản đúng nhé) để chị in dán ở bếp. Chữ to, màu dễ nhìn.
+[L48] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 scripts/ve_bieu_do.py --font-size 18 --color '#c0723a' --out doanh-thu-thang.png
+[L49] RESULT: saved doanh-thu-thang.png (1600x900)
+[L50] USER: Màu cam hơi nhạt khi in trắng đen. Em đổi sang màu nâu đậm, và ghi số trên đầu mỗi cột.
+[L51] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 scripts/ve_bieu_do.py --font-size 18 --color '#5a3420' --labels --out doanh-thu-thang.png
+[L52] RESULT: saved doanh-thu-thang.png (1600x900)
+[L53] AGENT: Đã vẽ lại: cột màu nâu đậm, in trắng đen vẫn rõ, mỗi cột có số triệu đồng ở trên.
+[L54] USER: Cảm ơn em nhiều. Hôm nay chị biết thêm được bao nhiêu thứ.
+[L55] AGENT: Dạ, chị ngủ ngon. Tháng sau chị gửi file mới thì em xem lại xem việc cắt 15 món và tắt NV30 có làm lãi tăng lên không.
+</transcript>
+
+Nhiệm vụ: nhặt "chất liệu build in public" từ phiên này: những chuyện người ngoài sẽ thấy đáng đọc, để sau gom thành bài. Hộp chứa hiện đang rỗng.
+
+Tín hiệu gợi ý (để nhận ra, không phải ngưỡng):
+1. Số trước, số sau: một con số đổi rõ (điểm, thời gian, doanh số, lượt mở, số trang…).
+2. Nguyên nhân bất ngờ: hậu quả lớn mà gốc nhỏ, hoặc gốc nằm ở chỗ không ai nghi.
+3. Đảo quyết định có lý do: thử, trượt, đổi chiều (làm A, thấy kết quả tệ, bỏ A); điều tưởng đúng hoá sai.
+4. Người duyệt thứ máy soạn: máy soạn, người xem và sửa (bảng duyệt, hàng chờ), vòng lặp người với máy chạy được thật.
+5. Ràng buộc định hình cách làm: một giới hạn (riêng tư, ngân sách, thời hạn, công cụ, luật lệ…) buộc chọn cách làm khác thường.
+6. Có thứ nhìn thấy được: ảnh, bản nháp, sản phẩm, bảng hay biểu đồ đáng đưa người đọc xem.
+Không khớp tín hiệu nào mà thấy hay, thấy lạ: vẫn ghi, signals: ["khác"].
+Nguyên tắc: ghi thừa còn hơn bỏ sót.
+
+Riêng tư: chỉ ghi cơ chế, con số, tên công cụ. Không ghi tên note, đường dẫn trong vault, câu hỏi thật của golden set, nội dung vault, tên người.
+
+Mỗi chuyện: title (một dòng như tiêu đề bài), signals, lines (các [Lnnn] làm bằng chứng), context (1-2 câu), what_happened (3-5 câu, có con số), lesson (một câu người khác dùng được), artefact (thứ chụp hay dán được, phải che gì).
+Quan trọng: KHÔNG tự lọc. Chuyện nhỏ, vui, hỏng rồi sửa xong là quên, sự cố vặt của agent, lỗi quy trình, việc lặt vặt mà có điều bất ngờ: vẫn ghi thành chuyện riêng. Việc chấm và bỏ làm ở bước sau, không phải ở đây. Trước khi trả lời, rà lại toàn bộ transcript một lượt nữa tìm những chuyện nhỏ đã bỏ qua.
+Điểm nóng do script tính. Với TỪNG điểm nóng, trả trong "hotspots": id, verdict ("story" nếu thành chuyện hoặc góp vào chuyện, "skip" nếu không), story_title hoặc reason (vì sao không đáng, một câu). Không được bỏ qua điểm nóng nào.
+Nhãn điểm nóng:
+- exit N, exit error: lệnh hoặc tool trả lỗi.
+- bị chặn: hook, quyền hoặc sandbox chặn lệnh; ít khi là chuyện.
+- số a→b: cặp số trước/sau.
+- git …: git đảo hướng (reset, revert, rebase -i hoặc --abort, checkout --, commit --amend, push -f).
+- ghi meta X: ghi file cấu hình agent.
+- ghi bài học X, ghi quyết định X, ghi nhật ký X, ghi changelog X: agent ghi vào memory, bản ghi quyết định, nhật ký, CHANGELOG; thường là bước ngoặt đã tự dán nhãn.
+- chủ chọn: chủ dự án trả lời một lựa chọn.
+- chủ phản đối hoặc thúc: chủ dự án chê, cãi hoặc giục.
+- chủ ngắt, chủ từ chối tool: chủ dự án dừng agent hoặc từ chối một lệnh.
+- chủ trả lời ngắn sau chạy dài: câu ngắn sau một đoạn agent tự chạy dài; thường chỉ là "tiếp tục".
+<hotspots>
+H13 [L13] chủ phản đối hoặc thúc
+</hotspots>
+Chỉ trả về một JSON object, không có chữ nào khác, dạng:
+{"stories":[{"title":"","signals":[],"lines":[],"context":"","what_happened":"","lesson":"","artefact":""}],"hotspots":[{"id":"H1","verdict":"story|skip","story_title":"","reason":""}]}

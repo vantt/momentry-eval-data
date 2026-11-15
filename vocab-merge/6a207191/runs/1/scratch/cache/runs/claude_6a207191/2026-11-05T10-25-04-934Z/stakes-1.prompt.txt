@@ -1,0 +1,49 @@
+Dưới đây là 19 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Gửi skill lên hub: --yes bị chặn, lệnh ! không hỏi được, và gợi ý sai cờ
+   Lần gửi đầu bị từ chối khi dùng --yes vì hub chưa được tin cậy ở cấp user: token và file sẽ đi ra ngoài máy. Khi lệnh chạy qua khung ! của Claude Code, nó không có terminal tương tác nên chỉ in bản xem trước và chưa gửi gì. Lệnh tin cậy hub gợi ý cờ --user không tồn tại. CLI lúc đó là 0.8.0 còn hub là 0.12.0; sau khi cập nhật lên 0.13.0 thì lệnh kết nối có --global và gửi được bằng --yes.
+M2. Lint báo OK nhưng thoát mã 1 vì máy thiếu shellcheck
+   Script in 'OK: 183 rules, structure valid | install.sh syntax ok' nhưng exit code là 1. Nguyên nhân là shellcheck chưa được cài trên máy, trong khi output vẫn báo OK. Agent xác nhận lỗi do thiếu công cụ, không phải do cấu trúc skill.
+M3. Khi tài liệu hoặc công cụ không nói rõ cấu trúc dữ liệu, đọc thẳng mã nguồn để xác nhận tên trường, cách sắp xếp ID (ví dụ ID theo thứ tự thời gian nên có thể so chuỗi), thay vì đoán.
+   Khi tài liệu hoặc công cụ không nói rõ cấu trúc dữ liệu, đọc thẳng mã nguồn để xác nhận tên trường, cách sắp xếp ID (ví dụ ID theo thứ tự thời gian nên có thể so chuỗi), thay vì đoán. Đoán theo tên, hoặc hỏi lại người dùng, hoặc tin vào tài liệu dù nó thiếu.
+M4. Hub báo skill active khi bản mới còn chờ duyệt, và skill-curator không có trên máy khách
+   Agent không kích hoạt được skill-curator trên máy khách, vì skillstation chỉ cài curator trên máy chạy hub; skill_get trả not_found. Bản đang active trên hub là bản của một lần duyệt trước. Bản gửi mới nằm riêng trong Waiting for review và không gắn gì vào trang skill. Vì thế trang skill không cảnh báo có bản chờ duyệt, và người duyệt dễ duyệt nhầm bản cũ.
+M5. Người dùng đặt lại thứ tự ưu tiên: UX trước, rồi an toàn, đúng đắn, nhanh gọn
+   Agent mô tả hành trình người dùng mới gồm đọc giới thiệu, cài, quick start, rồi thấy chạy được; mất người dùng ở bất kỳ bước nào cũng là mất hẳn. Skill có thêm file 03-first-contact với 16 rule, gồm tagline, GIF dưới 40 giây, quick start chạy trong CI và tối đa 3 lệnh sau khi cài. Thứ tự 4 tầng được ghi ở đầu SKILL.md: UX, an toàn, đúng đắn, nhanh gọn. Một rule tầng dưới chỉ được vượt UX khi sắp vi phạm MUST của chính nó.
+M6. Agent review độc lập tìm 9 lỗi, trong đó skill mẫu vi phạm chính quy tắc của nó
+   Reviewer đóng vai một agent được giao việc thật, đi theo đúng quy trình trong skill và chạy thử script. Nó tìm ra ba nhóm lỗi: lệnh bị mâu thuẫn (một file dùng setup, file khác bỏ setup), installer mẫu thiếu --help và xóa cài đặt mà không hỏi, và nguyên tắc 'proven ways first' lại trỏ Go CLI sang code Rust. Lỗi nặng nhất là chuỗi lệnh dành cho agent không bao giờ chạy connect, nên agent chỉ đọc --help sẽ không đăng ký được MCP server. Sau đó agent sửa 9 điểm và thêm bước Verify 12 mục vào SKILL.md.
+M7. Khi một test đỏ, chứng minh lỗi có từ trước bằng cách tạm cất thay đổi (stash) rồi chạy lại đúng test đó trên nhánh gốc, thay vì chỉ nói là không do mình.
+   Khi một test đỏ, chứng minh lỗi có từ trước bằng cách tạm cất thay đổi (stash) rồi chạy lại đúng test đó trên nhánh gốc, thay vì chỉ nói là không do mình. Thường người ta chỉ nói "test này có vẻ không liên quan" hoặc bỏ qua, không có bằng chứng.
+M8. Quy tắc config một cửa từ momentry đưa vào skill: CMD-22..24, CFG-12 lên MUST
+   Agent đối chiếu sáu quy tắc của momentry với skill và thấy skill thiếu quy tắc cấm cờ lẻ, thiếu --project và --repo, và file config của repo có thể chứa khóa chỉ dành cho máy. Agent thêm ba rule CMD-22..24, nâng CFG-12 lên MUST (file repo không được chứa khóa máy, bí mật hay ngân sách), và thêm UX-17 yêu cầu giao diện gọi đúng hàm ghi của CLI. Lint tăng từ 212 lên 215 rule. Agent ghi chú rằng commit của momentry chưa nằm trong bản phát hành nào.
+M9. 5 test Go chỉ hỏng trên máy làm việc: test đổi HOME nhưng không đổi thư mục làm việc
+   Các test đổi HOME sang thư mục tạm nhưng không đổi cwd, nên status và doctor đi ngược lên thư mục cha và gặp ~/.codex/config.toml cùng ~/.gemini/settings.json. Hai file này vừa được ghi bởi lệnh connect --global vài phút trước. Code coi thư mục home là một dự án, so đường dẫn binary đã đăng ký với binary test, thấy khác nhau và báo Connection files FAILED. CI không có hai file này nên pass.
+M10. Web UI skillstation: banner update đang chờ duyệt, 229 test qua, merge thẳng vào main
+   Agent thêm 4 file mới và sửa 6 file: banner trên trang skill có nút Review it, nhãn Update waiting for review trong danh sách, và nhãn Older cho bản gửi cũ hơn. Mã SUB có thứ tự theo thời gian nên được dùng để tìm bản mới nhất. Một lỗi TypeScript strict được sửa, sau đó 229 test web, tsc, eslint và build đều qua. Chưa mở trình duyệt thật. Theo yêu cầu người dùng, agent merge fast-forward vào main và push, không mở PR.
+M11. Ba lệnh setup/init/doctor chồng chéo, và 'doctor là bộ máy duy nhất'
+   Agent đọc mã fgos và thấy setup không phải alias: nó gọi các fix của doctor rồi thêm việc ghi dòng source vào rc, tạo file config, cài git hook, cài Claude hook và copy skills. Lệnh init chạy fgos init, rồi doctor --fix, rồi doctor. Thiết kế đích là doctor làm máy duy nhất, init bằng doctor --fix cộng quyền tạo mới, còn setup bị bỏ. Sau khi gộp phần trùng, số rule của skill giảm từ 230 xuống 212.
+M12. Kiểm tra installer shell bằng cách chạy bằng dash để chắc đó là POSIX thật, dựng một bản release giả qua file:// rồi thử cài, cài lại, gỡ cài và checksum sai. Mọi thứ đều chạy trong thư mục tạm.
+   Kiểm tra installer shell bằng cách chạy bằng dash để chắc đó là POSIX thật, dựng một bản release giả qua file:// rồi thử cài, cài lại, gỡ cài và checksum sai. Mọi thứ đều chạy trong thư mục tạm. Chỉ chạy shellcheck hoặc đọc lại bằng mắt, ít khi thử trên shell tối giản như dash hay trên một bản cài cục bộ không cần mạng.
+M13. Agent khẳng định hub chưa có routing sau khi chỉ xem thư mục local
+   Agent chỉ xem thư mục local, thấy không có skill.yaml và kết luận hub chưa có routing. Người dùng hỏi lại thì thực tế hub đã có 9 trigger, 5 example và 5 not_for. skill show --verbose bị từ chối khi chạy từ máy khách, nên chỉ skill_get đọc được routing, nhưng nó không trả về operations, topics, technologies hay min_scope. Agent đã đọc nhầm nguồn và khẳng định sai.
+M14. Installer mẫu bị lỗi 'tồn tại nhưng không mở được' và chặn cả lệnh gỡ cài đặt
+   Lần chạy đầu, lệnh gỡ cài đặt bị chặn bởi kiểm tra 'unstamped installer' vì bản thử không có version, dù gỡ cài đặt không cần version; agent chuyển kiểm tra này xuống sau nhánh gỡ. Khi chạy bằng dash không có terminal, script kiểm tra /dev/tty tồn tại và có quyền đọc ghi, nhưng không mở được nên crash thay vì báo cần --yes. Sửa bằng cách thử mở /dev/tty thật. Sau đó không có terminal thì báo lỗi đúng, có terminal thì hỏi và hủy khi người dùng gõ n.
+M15. Biến tài liệu hướng dẫn cho agent thành bộ quy tắc có mã ID (ví dụ CMD-22), mỗi quy tắc một dòng. Một script lint kiểm tra cấu trúc và việc các ID được tham chiếu có tồn tại. Một script khác kiểm tra mọi đường dẫn tới code mẫu còn đúng trên GitHub.
+   Biến tài liệu hướng dẫn cho agent thành bộ quy tắc có mã ID (ví dụ CMD-22), mỗi quy tắc một dòng. Một script lint kiểm tra cấu trúc và việc các ID được tham chiếu có tồn tại. Một script khác kiểm tra mọi đường dẫn tới code mẫu còn đúng trên GitHub. Skill hoặc prompt thường là file markdown tự do, không có ID, và thường không ai kiểm tra xem liên kết hay đường dẫn trong đó còn đúng sau khi sửa.
+M16. Kiểm tra xem tài liệu có đủ để agent tự làm việc hay không bằng cách mở một agent mới, không cho đọc README, chỉ giao việc cài đặt và cho nó dùng --help để tự đi hết quy trình.
+   Kiểm tra xem tài liệu có đủ để agent tự làm việc hay không bằng cách mở một agent mới, không cho đọc README, chỉ giao việc cài đặt và cho nó dùng --help để tự đi hết quy trình. Người viết tài liệu tự đọc lại và tin là đủ, hoặc nhờ một người thật thử cài.
+M17. Skill frontend có trên đĩa nhưng không nạp vào phiên; routing kéo việc frontend sang skill packaging
+   Skill nằm trong .claude/skills của dự án nhưng chưa được nạp vào phiên nên các lần gọi bằng tên đều báo không tìm thấy. Khi hỏi skill_resolve cho việc frontend, hub trả về cs-packaging-distribution với độ tin cậy medium, tức là chọn sai vì việc này không liên quan đến packaging. Agent từ chối kết quả đó và đọc thẳng SKILL.md của ak-frontend-development để làm theo.
+M18. Skill 11.900 chữ bị gọi là dư thừa, cắt còn 6.400 chữ
+   Phiên bản đầu có 183 rule, mỗi rule kèm 2–6 dòng giải thích, tổng khoảng 11.900 chữ cùng 4 file case study. Agent đo bằng wc -w (common 5.507 chữ, languages 1.682 chữ), rồi viết lại thành mỗi rule một dòng và thay case study bằng references.md, một bảng đường dẫn tới code mẫu thật. Sau khi viết lại, cả skill còn khoảng 6.400 chữ (giảm 46%) dù đã thêm nhóm UX. Số rule qua các đợt là 183 → 190 → 202 → 212 → 221 → 230.
+M19. Scanner báo 11 finding, toàn là chữ trong tài liệu về curl | sh
+   Scanner báo rce.pipe-to-shell 7 lần (critical), persist.autostart 1 lần (high) và privesc.command 3 lần (medium). Agent đọc lại từng vị trí và xác nhận đó là mô tả installer, chú thích và ví dụ mẫu, không phải lệnh skill tự chạy; các chỗ sudo đều khuyên tránh. Người dùng chọn gửi dù còn 11 finding, và các lần gửi sau vẫn báo đúng 11 finding.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

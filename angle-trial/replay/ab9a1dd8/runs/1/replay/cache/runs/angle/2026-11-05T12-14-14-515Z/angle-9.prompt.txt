@@ -1,0 +1,44 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, không rành lĩnh vực của chuyện dưới đây.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Tìm chỗ ngoặt đó trong chuyện dưới đây, hoặc nói thẳng là không có.
+
+Có chỗ ngoặt thì trả:
+- angle: 1-3 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Theo thứ tự: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng (số trong [Lnnn]) của trích đoạn mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết trong angle phải đọc được trong chuyện hoặc trích đoạn. Trích đoạn không đỡ được thì trả none.
+- evidence chỉ gồm số dòng có trong trích đoạn bên dưới.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Viết angle, audience, reason bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"angle":"Test xanh trên máy, đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<story>
+hook: Antigravity không có sự kiện kết thúc, nên gom chuyện lúc mở phiên sau
+tension: khac (Muốn gom chuyện khi phiên kết thúc / Công cụ không có sự kiện đó, phải gom ở phiên sau)
+stakes: 2/3
+# Antigravity không có sự kiện kết thúc: gom chuyện khi mở phiên sau
+
+**Bối cảnh:** Pi và omp có extension TypeScript. Antigravity chỉ có SessionStart và Stop, không có sự kiện kết thúc hay trước compact.
+**Chuyện gì xảy ra:** Stop chạy sau mỗi lượt và chặn agent trong lúc chạy, nên không dùng được để gom. Người dùng chọn gom khi mở phiên sau và tự tìm mọi profile. Quyết định này đổi thời điểm gom so với Claude Code.
+**Bài học:** Host không có sự kiện kết thúc phiên buộc phải đổi thời điểm gom. Đừng mặc định mọi host đều có SessionEnd.
+**Artefact:** Bảng sự kiện hook của Claude Code, Codex, pi, agy. Không cần che.
+</story>
+
+<excerpt>
+[L3410] RESULT: 20 | Hooks | TypeScript extension `<agentDir>/extensions/*.ts`. Events: `session_start{reason}`, `session_before_compact`, `session_shutdown{reason: quit\|reload\|new\|resume\|fork}`. `ctx.cwd`, `ctx.sessionManager.getSessionFile()` and `getSessionId …[+1259]
+[L3426] AGENT: Báo cáo đủ chi tiết để lập plan. Còn hai quyết định sản phẩm chỉ bạn quyết được, vì nó ảnh hưởng chi phí và cách cài trên máy bạn:
+[L3427] TOOL AskUserQuestion: {"questions":[{"question":"Antigravity (agy) không có sự kiện kết thúc phiên hay trước compact; chỉ có SessionStart và Stop (Stop chạy sau MỖI lượt và chặn agent trong lúc chạy). Gom chuyện agy lúc nào?","header":"agy gom","multiSelect":false,"options":[{"label":"Khi mở phiên sau (Recommended)","des …[+1062]
+[L3428] RESULT: Your questions have been answered: "Antigravity (agy) không có sự kiện kết thúc phiên hay trước compact; chỉ có SessionStart và Stop (Stop chạy sau MỖI lượt và chặn agent trong lúc chạy). Gom chuyện agy lúc nào?"="Khi mở phiên sau (Recommended)", "Má …[+283]
+[L3433] AGENT: Bạn chọn: agy gom khi mở phiên sau, và tự tìm mọi profile. Xem cấu trúc thư mục profile trên máy (chỉ tên thư mục) để thiết kế phần tự tìm cho đúng.
+[L3434] TOOL Bash: ls -d ~/.pi/accounts/* ~/.omp/profiles/*/agent ~/.agy-homes/* 2>/dev/null | sed "s|$HOME|~|"; ls ~/.pi/accounts/* 2>/dev/null | head -12; ls ~/.agy-homes/*/.gemini 2>/dev/null | head; ls ~/.agents 2>/dev/null; grep -n "PI_CODING_AGENT_DIR\|HOME=\|--profile" ~/.zshrc ~/.zsh* 2>/dev/null | head -8
+[L3437] RESULT: ~/.agy-homes/mucdong | ~/.agy-homes/tetcu72
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

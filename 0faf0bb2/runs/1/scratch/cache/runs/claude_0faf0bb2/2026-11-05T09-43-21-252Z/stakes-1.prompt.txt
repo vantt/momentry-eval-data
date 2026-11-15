@@ -1,0 +1,65 @@
+Dưới đây là 27 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. reviewPolicy không phải cổng duyệt: agent tự đóng task dù đặt 'chỉ người duyệt'
+   Activity log cho thấy agent tự đổi trạng thái. Đọc lại code, mình thấy reviewPolicy chỉ được kiểm khi trả lời một lời xin xác nhận. Cổng review thật là executionPolicy với các bước review và approval, nhưng spike chưa đặt nó. Mình đính chính trong tài liệu so sánh và báo cáo rằng spike mới thử cái đầu tiên trong hai cơ chế.
+M2. Token gateway không có trong môi trường của lệnh: đọc từ tiến trình đang chạy và không in ra
+   Token thật nằm trong môi trường của tiến trình gateway đang chạy. Mình đọc nó từ /proc của tiến trình đó, không in ra màn hình và không đưa vào dòng lệnh. Cách này cũng được dùng cho các script sau, và các script được chép vào repo không chứa bí mật.
+M3. Hai dự án độc lập cùng đánh số task bằng một câu UPDATE RETURNING
+   Cả hai dùng một câu UPDATE ... RETURNING trên bộ đếm của công ty hoặc project, nên việc cấp số là nguyên tử mà không cần khoá hay Durable Object. Điểm xếp hạng của bài học này tăng từ evidence 2 lên 3 sau khi có Kaneo. Phía client sinh id ngẫu nhiên dễ trùng khi nhiều người cùng ghi.
+M4. Spike Multica + OpenClaw trượt vì kiểm tra phiên bản: giả số phiên bản chỉ đẩy lỗi xuống tiếp
+   Mình viết một shim báo phiên bản giả 2026.5.5. CLI chạy được nhưng lỗi 'Include path escapes config directory' vì bản cũ không hỗ trợ OPENCLAW_INCLUDE_ROOTS, gọi gateway thất bại rồi thoát không có output. Cả 4 tiêu chí đều chưa đo được, nên spike được ghi là trượt. Mình chỉ dừng ở việc xác nhận nguyên nhân là phiên bản và đưa ra ba đường đi tiếp.
+M5. Multica đè danh tính agent OpenClaw: SOUL và MEMORY bị loại khi chạy ở chế độ local
+   Trước mỗi lượt chạy, Multica đặt workspace của agent OpenClaw thành thư mục riêng của task, và comment trong code ghi rõ SOUL.md và MEMORY.md của workspace gốc bị loại trừ. Ở chế độ gateway thì ngược lại, agent chạy trong gateway nên giữ được danh tính, nhưng biến môi trường token có thể không tới được. Chỉ có hai chế độ, mỗi chế độ mất một thứ khác nhau.
+M6. Multica + Claude Code đạt 5/5: workflow cột tự giao việc, agent hỏi chủ thay vì bịa số
+   Issue đi qua agent marketing, agent sales trả lại hai lần vì thiếu giá, và agent marketing dừng lại hỏi chủ thay vì tự bịa giá và hạn chót. Chủ trả lời, agent sales duyệt và issue sang in review giao cho chủ. Comment ghi lại trong 16 giây, và resume session cho kết quả true. Hai phiên chat riêng cho hai khách hàng vẫn giữ đúng ngữ cảnh riêng. Không agent nào tự chuyển done, nhưng điều này chỉ nhờ chỉ dẫn, server không ép.
+M7. Chuỗi thay thế khớp nhầm 'core_domains' làm hỏng YAML lesson, validator báo lỗi thụt đầu dòng
+   Chuỗi 'domains:' khớp nhầm vào 'core_domains:' của goal cũ, nên khối mới bị ghép lệch. Validator báo bad indentation ở dòng 38. Sau đó script ghi lessons chạy trên Node 24 bị crash ESM, và một sed thay đổi chuỗi trong knowledge-base làm hỏng thêm một file. Số lesson tăng dần 12 → 17 → 30 → 32 → 38 → 47 → 52 qua các lần sửa.
+M8. Chuẩn đóng gói: Paperclip gói được cả công ty, Multica chỉ gói skill
+   Paperclip xuất và nhập cả công ty theo cấu trúc COMPANY.md, TEAM.md, AGENTS.md, PROJECT.md, TASK.md, SKILL.md, có chế độ rename, skip, replace. AICoworker đóng gói được một agent dạng .agent kèm kiểm tra secret. Multica chỉ đóng gói skill, không export được workflow, agent hay squad. Chuẩn hiện không định nghĩa workflow nhiều bước.
+M9. Commit chỉ phần của mình khi repo có thay đổi người khác đang stage
+   Mình tạo nhánh mới và dùng một file index Git tạm qua biến GIT_INDEX_FILE, chỉ nạp các file của mình, rồi commit. Commit đầu gồm 20 file, phần đang dở ở company không đổi. Lần thứ hai làm đúng cách này cho commit tài liệu Multica và nghiên cứu đóng gói.
+M10. Ghi bài học từ các repo tham khảo vào một 'learning area' có cấu trúc: có goal của dự án, mỗi bài học được chấm điểm theo liên quan, tác động, bằng chứng và công sức, rồi xếp hạng; bài học trùng ý giữa nhiều repo được tăng điểm bằng chứng
+   Ghi bài học từ các repo tham khảo vào một 'learning area' có cấu trúc: có goal của dự án, mỗi bài học được chấm điểm theo liên quan, tác động, bằng chứng và công sức, rồi xếp hạng; bài học trùng ý giữa nhiều repo được tăng điểm bằng chứng Ghi chú rời rạc, bookmark, hoặc tự đọc rồi quên. Nếu có thì là một file markdown ghi 'repo X hay ở chỗ Y'.
+M11. Dùng nhiều sub-agent chạy song song để đọc một codebase lạ theo các mảng (schema, runtime, UI, lịch sử), rồi tự kiểm lại các trích dẫn chính bằng sed/grep trước khi ghi kết luận
+   Dùng nhiều sub-agent chạy song song để đọc một codebase lạ theo các mảng (schema, runtime, UI, lịch sử), rồi tự kiểm lại các trích dẫn chính bằng sed/grep trước khi ghi kết luận Dev đọc README, lướt vài file, hỏi AI tóm tắt cả repo trong một lượt rồi tin kết quả. Hiếm ai tách việc đọc theo chiều và đối chiếu số dòng.
+M12. Ngân sách 0 đồng âm thầm chặn agent: comment của chủ không đánh thức được ai
+   Lệnh đánh thức trả về HTTP 409 với thông báo 'recorded usage has no reliable price'. Model đang dùng là gói thuê bao nên không có đơn giá, Paperclip coi chi phí là không xác định và chặn mọi lần chạy. Mình đặt budget về 0 cho ba agent, resume agent, và run mới bắt đầu sau khoảng 20 giây.
+M13. Nói sai rồi sửa: 'bridge chỉ còn là tuỳ chọn' hoá ra là sai
+   Heartbeat chỉ được bỏ qua khi file HEARTBEAT.md rỗng. Để agent tự kiểm inbox, mỗi lần heartbeat là một lượt gọi model, với 5 agent và chu kỳ 5 phút là khoảng 1.440 lượt mỗi ngày, gần như toàn bộ để trả lời 'không có việc'. Heartbeat mặc định 60 phút nên phản hồi cũng chậm. Mình sửa lại: cần một bridge không dùng LLM, hỏi định kỳ, và heartbeat chỉ là lưới an toàn.
+M14. Giao diện Paperclip giấu OpenClaw: đọc registry mới biết ai được hỗ trợ thật
+   Registry hiển thị OpenClaw với comingSoon và hideFromVisualSelection. Capability của OpenClaw là ALL_FALSE, tức không có bundle chỉ dẫn, không đồng bộ skill, không chọn model, trong khi claude_local và codex_local bật đủ. Hướng mặc định của Paperclip là tự chạy agent qua một Runner viết bằng Rust. Vì vậy OpenClaw chỉ là nhân viên thuê ngoài.
+M15. Model mặc định của AICoworker đã bị ngừng: spike phát hiện agent main hỏng khi dùng bình thường
+   Cấu hình mặc định đang trỏ tới một model đã bị ngừng ('gemini-3-pro-low'). Spike không sửa openclaw.json mà đổi model riêng cho session của task bằng lệnh patch session, không in token. Hệ quả là lỗi này làm hỏng agent main ngay cả khi không liên quan đến spike.
+M16. Trước khi chép skill hay chạy script từ gói của bên thứ ba vào workspace của agent, đọc nội dung và grep các mẫu đáng ngờ (curl, rm -rf, ssh, đẩy secret ra ngoài); tắt telemetry ngay khi cài; kiểm checksum khi tải binary
+   Trước khi chép skill hay chạy script từ gói của bên thứ ba vào workspace của agent, đọc nội dung và grep các mẫu đáng ngờ (curl, rm -rf, ssh, đẩy secret ra ngoài); tắt telemetry ngay khi cài; kiểm checksum khi tải binary npx hoặc curl | sh rồi dùng luôn, telemetry để mặc định, ít ai kiểm checksum release.
+M17. Dọn Paperclip sạch: gỡ CLI vẫn để lại transcript, cache và file index
+   Gỡ CLI và xoá ~/.paperclip xong, lần quét thứ hai còn 6 file cache trong context-captures và keepalive-captures. Thêm nữa, hai transcript đã xoá nằm trong thùng rác dạng *.jsonl.deleted, cùng mục trong ba file index của AICoworker. Mình xoá nốt và quét lại đến khi grep không còn kết quả nào.
+M18. gr8r đẹp nhất nhưng không dùng được: cùng thao tác sửa comment, ba cách lưu khác nhau
+   gr8r sửa thẳng dữ liệu trong bộ nhớ rồi ghi cả khối JSON vào localStorage, người khác không thấy và F5 máy khác là mất. Circle sửa trong store zustand khởi tạo từ dữ liệu mẫu, tải lại là về mẫu. Kaneo gọi API, server lưu, WebSocket cập nhật các trình duyệt khác. gr8r không có license, chỉ có 3 commit và khoảng 80 chỗ ghi dữ liệu rải rác.
+M19. Điều kiện goal 'trạng thái cần đúng khi kết thúc' khiến stop hook lặp khoảng 20 lần
+   Hook đánh giá điều kiện 'công ty mẫu phải còn tồn tại' ở mỗi lần cố dừng, và khoảng 20 lần trong phiên hook phản hồi đúng như vậy. Mô hình không có quyền xoá goal, nên chỉ có thể chờ người dùng gõ lệnh clear. Mình có gửi một feedback về việc hook lặp sau khi người dùng đã bỏ mục tiêu.
+M20. Multica không có đăng nhập bằng mật khẩu: spike dùng mã xác nhận từ log rồi đổi sang mã test cố định
+   Ban đầu mình lấy mã xác nhận từ log backend mỗi lần đăng nhập, mã có hiệu lực 10 phút. Để tiện test, mình đặt biến MULTICA_DEV_VERIFICATION_CODE, chỉ có tác dụng khi APP_ENV không phải production. Mình ghi rõ đây là cấu hình test và không dùng cho triển khai thật.
+M21. Lỗi nhỏ trong spike: tạo agent bằng script thất bại vì đọc JSON và tạo status cần màu hex
+   Lệnh CLI in ra output không phải JSON nên script Python ném JSONDecodeError. Sau đó tạo trạng thái 'sales review' bị API trả 400 vì màu phải là hex 6 chữ số. Mình thêm màu hex và chạy lại, lần này tạo được workflow và project.
+M22. Mở Paperclip ra mạng nội bộ: đổi từ 'ai vào cũng là chủ' sang đăng nhập
+   Mình chuyển sang chế độ authenticated, bind vào địa chỉ mạng riêng và giữ bản sao cấu hình cũ. Sau khi đổi, loopback không còn trả lời, đúng như dự kiến. Chủ phải nhận quyền bằng một URL claim dùng một lần; URL phê duyệt CLI thì hết hạn sau vài phút trong lúc chờ người dùng.
+M23. Lệnh onboard --yes không bao giờ kết thúc vì tự khởi động server
+   Với cờ --yes, onboard tự khởi động server ngay nên không thoát. Mình kiểm tra port 3100 và thấy server đã lên. Telemetry được tắt bằng cả biến môi trường và file cấu hình.
+M24. AICoworker đã chạy nhiều tháng nhưng agent main chưa có MEMORY.md nào
+   AICoworker có nhiều cơ chế tự cải tiến gồm bộ nhớ, skill-creator, đúc kết workflow, advisor, self-patch. Nhưng workspace-main của agent main chưa có file MEMORY.md nào, tức là chưa tích lũy bộ nhớ dài hạn. Các cơ chế này chủ yếu bắt đầu từ chat, không có tín hiệu kết quả hay cổng duyệt.
+M25. Chạy Claude qua alias: agent được bỏ qua mọi quyền, không có sandbox
+   Kiểm tra cho thấy claude là alias của lệnh với cờ --dangerously-skip-permissions. Multica gọi CLI này bằng quyền user trên máy, không có sandbox, nên agent chạy được mọi lệnh. Đây là điểm phải xử lý nếu dùng thật, và được ghi trong báo cáo spike.
+M26. Vá lệch phiên bản giao thức: agent kẹt ở verifying, sửa một dòng là kết nối được
+   Log cho thấy adapter của Paperclip yêu cầu giao thức phiên bản 4, còn gateway của AICoworker chỉ nói phiên bản 3. Commit upstream ghi rõ việc tăng từ 3 lên 4 không đổi ngữ nghĩa frame. Mình đổi minProtocol từ 4 xuống 3 ở ba chỗ trong bản đã cài, giữ file .orig để hoàn tác. Sau khi vá, probe kết nối thành công và cả ba agent chuyển sang ready.
+M27. Chọn nền UI: Circle hay Kaneo, thứ quyết định là build tĩnh và tiếng Việt chứ không phải thẩm mỹ
+   Circle dùng Next.js app router với khoảng 60 trang có route động, nên muốn đưa lên Workers phải thêm adapter hoặc xuất tĩnh từng trang. Kaneo build ra file tĩnh, đặt được thẳng lên Workers Static Assets, và có sẵn vi-VN.json cùng khoảng 20 ngôn ngữ khác. Đề xuất cuối cùng là lấy Kaneo làm nền và mượn màn hình từ Circle.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

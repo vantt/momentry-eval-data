@@ -1,0 +1,79 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L657] USER: tại sao không cần cái này `Bridge push chuyển thành agent tự kéo việc; bridge chỉ còn là tuỳ chọn`
+[L712] USER: vậy nếu dùng paperclip là dùng được luôn, không cần làm, chỉ cần setup?
+[L724] USER: A session-scoped Stop hook is now active with condition: "thử paperclip trước, chạy spike trên máy này đi, setup một sample opc company.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that's only for clearing a goal early.
+</asks>
+
+<story>
+hook: Đặt ngân sách 0 đồng vẫn chặn agent, và giao diện không báo lỗi
+tension: cam_ma_van_lot (Gói thuê bao không tốn tiền, đặt ngân sách chỉ để an toàn / Mọi lần đánh thức bị từ chối 409, UI im lặng, đợi 10 phút không run nào)
+stakes: 1/3
+# Ngân sách 0 đồng vẫn chặn agent: comment của chủ không đánh thức được ai
+
+**Bối cảnh:** Sau khi tạo task và chọn model cho agent, comment của người điều hành không tạo ra run mới.
+**Chuyện gì xảy ra:** Đợi 10 phút không có run nào. Lệnh wake trả 409 với thông báo 'cannot start work because recorded usage has no reliable price'. Model gói thuê bao không có giá, nên khi budget được đặt, Paperclip từ chối mọi lần đánh thức. Lỗi không hiện trên UI. Đặt budget về 0 cho ba agent rồi resume, và run chạy ngay.
+**Bài học:** Ngân sách theo token cần có giá cho model. Với model gói cố định không có giá, ngân sách sẽ chặn im lặng.
+**Artefact:** Thông báo 409 'no reliable price'. Id đã che.
+</story>
+
+<excerpt>
+[L1129] RESULT: { | "ok": true,
+[L1137] AGENT: Đã đặt model cho riêng session của SEN-1. Giờ chủ (board) comment vào SEN-1 để đánh thức lại agent.
+[L1138] TOOL Bash: curl -s -X POST -H 'Content-Type: application/json' -d '{"body":"Mai ơi, model đã được đổi. Làm lại task này nhé: viết 3 bài đăng Facebook theo mô tả, đăng kết quả thành comment ở đây, rồi chuyển task sang in_review để tôi duyệt."}' http://127.0.0.1:3100/api/issues/9df35c11-70cf-4392-9567-f50b1fe581 …[+104]
+[L1139] RESULT: cd10f5aa-169e-44ee-b6e3-94f43c450e8f user
+[L1141] TOOL Bash: I=9df35c11-70cf-4392-9567-f50b1fe581c8; for i in $(seq 1 40); do s=$(curl -s http://127.0.0.1:3100/api/issues/$I | python3 -c "import json,sys;print(json.load(sys.stdin)['status'])"); n=$(curl -s http://127.0.0.1:3100/api/issues/$I/comments | python3 -c "import json,sys;d=json.load(sys.stdin);d=d if …[+462]
+[L1142] RESULT: Command did not complete within its 600s timeout and was moved to the background (ID: bk36i8ivq). Output is being written to: /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/bk36i8ivq.output. You will be notified …[+498]
+[L1147] AGENT: Agent đang chạy hơn 10 phút. Mình xem trạng thái hiện tại thay vì chờ tiếp.
+[L1148] TOOL Bash: I=9df35c11-70cf-4392-9567-f50b1fe581c8; curl -s http://127.0.0.1:3100/api/issues/$I | python3 -c "import json,sys;i=json.load(sys.stdin);print('status:',i['status'])"; curl -s http://127.0.0.1:3100/api/issues/$I/comments | python3 -c " import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) …[+433]
+[L1149] RESULT: status: in_progress | --- user 2026-10-29T07:35:10.273Z
+[L1160] AGENT: Comment của board **không** đánh thức được agent: không có run mới nào. Mình kiểm tra lý do và tìm cách đánh thức chủ động.
+[L1161] TOOL Bash: cd ~; paperclipai agent wake --help 2>&1 | sed -n 1,25p; grep -iE "wake|comment" /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/b6nmmmf9k.output | sed 's/\x1b\[[0-9;]*m//g' | tail -8 | cut -c1-400
+[L1162] RESULT: Usage: paperclipai agent wake [options] <agentRef> | Request a heartbeat wakeup for an agent
+…
+[L1167] RESULT: Traceback (most recent call last): | File "<string>", line 1, in <module>
+[L1169] TOOL Bash: cd ~; paperclipai agent wake b8a772cf-4c0e-41b7-9b85-5eb99e7e2396 --reason "board_comment_retry" --payload '{"issueId":"9df35c11-70cf-4392-9567-f50b1fe581c8","taskId":"9df35c11-70cf-4392-9567-f50b1fe581c8"}' 2>&1 | head -15
+[L1170] RESULT: API error 409: Agent cannot start work because recorded usage has no reliable price. details={"scopeType":"agent","scopeId":"b8a772cf-4c0e-41b7-9b85-5eb99e7e2396"} | Shell cwd was reset to /home/vantt/project/fgOPC
+[L1174] TOOL Bash: for id in b8a772cf-4c0e-41b7-9b85-5eb99e7e2396 1c22f938-3a24-414d-bd2a-bd340fd4f080 a8d27cb7-acf5-485a-8cd0-cfe973982e32; do curl -s -X PATCH -H 'Content-Type: application/json' -d '{"budgetMonthlyCents":0}' http://127.0.0.1:3100/api/agents/$id | python3 -c "import json,sys;a=json.load(sys.stdin);pr …[+328]
+[L1175] RESULT: Mai (Marketing) 0 paused budget | Long (Sales) 0 idle None
+[L1183] AGENT: Lời đánh thức đã được nhận, nhưng Mai vẫn ở trạng thái `paused` (lý do `budget`). Mình resume agent.
+[L1184] TOOL Bash: cd ~; paperclipai agent resume b8a772cf-4c0e-41b7-9b85-5eb99e7e2396 2>&1 | grep -E '"status"|"pauseReason"|error|Error' | head -4; sleep 20; paperclipai run list -C 44a30586-28dc-45b7-b243-3a920c398032 --json 2>&1 | python3 -c " import json,sys d=json.load(sys.stdin); d=d if isinstance(d,list) else  …[+145]
+[L1185] RESULT: "status": "running", | "lifecycleError": null,
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,37 @@
+Dưới đây là 13 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Phát hiện lỗi lớn trước khi chúng gây hại thật: một agent review độc lập đọc code agent khác và tìm ra lỗi treo, ngốn bộ nhớ, hạ cấp ngầm; rồi gửi lại đúng agent viết code để sửa trên nhánh của nó.
+   Phát hiện lỗi lớn trước khi chúng gây hại thật: một agent review độc lập đọc code agent khác và tìm ra lỗi treo, ngốn bộ nhớ, hạ cấp ngầm; rồi gửi lại đúng agent viết code để sửa trên nhánh của nó. Thường tác giả tự review, hoặc chỉ review khi có PR; ít khi có vòng review tự động trước khi merge.
+M2. Sau khi user sửa một quyết định ngay trong lúc làm, agent không làm lại việc đã xong mà ghi quyết định vào tài liệu chung (DECISIONS, plan, handoff) và cập nhật các nơi bị ảnh hưởng.
+   Sau khi user sửa một quyết định ngay trong lúc làm, agent không làm lại việc đã xong mà ghi quyết định vào tài liệu chung (DECISIONS, plan, handoff) và cập nhật các nơi bị ảnh hưởng. Thường người làm sẽ sửa code mà quên sửa tài liệu, hoặc phải nhắc đi nhắc lại.
+M3. Parity lệch do thứ tự liệt kê file của hệ điều hành, không phải do thuật toán
+   Python liệt kê file theo thứ tự NTFS/APFS trả về, nên đổi thứ tự thì 593 trên 726 `edges.id` đổi, và điểm `related` lệch khoảng 1e-5, vượt dung sai PRD. Agent không nới dung sai mà ghim thứ tự liệt kê theo đường dẫn đã sắp, ghi vào DECISIONS, và yêu cầu phase sau giữ đúng thứ tự này.
+M4. Thiết kế MCP một cửa: hai agent độc lập gặp nhau ở 13 tool và bỏ code mode
+   Hai agent (một chạy model mạnh nhất) thiết kế độc lập rồi phản biện chéo, đều đi tới 13 tool và đều không làm code mode vì giá token định nghĩa và số lượt gọi thêm. Ước lượng định nghĩa tool giảm từ khoảng 6,0 nghìn xuống 3,8–4,4 nghìn token. Hai bên cùng đề xuất `read` do chính server đọc file, vì OHS chỉ đọc được note đã index; người dùng duyệt. Con số token là ước lượng theo số ký tự, chưa đo bằng tokenizer.
+M5. Bộ cài và phát hành Windows: vcruntime140.dll và script cài không kiểm sha
+   Audit (chạy bằng skill đóng gói) tìm ba chặn: `pkm.exe` cần `vcruntime140.dll` mà máy sạch có thể thiếu, không có chỗ cài cố định, và README thiếu hướng dẫn. Agent sửa bằng CRT tĩnh, script cài kiểm sha256 trước khi thay, và bước CI fail nếu còn phụ thuộc DLL. Repo private buộc script cài có đường dự phòng qua `gh`.
+M6. Agent làm bản cài Windows: tải sai bản OHS và hạ cấp ngầm
+   Nhánh gốc thay gói bất cứ khi nào phiên bản khác bản ghim, nên một gói vantt.4 đang dùng sẽ bị đè xuống vantt.3. Review tìm ra và sửa bằng so sánh phiên bản; gói đưa vào bằng `--ohs DIR` không bao giờ bị ghi đè.
+M7. Release lặp: CI không chạy vì hết hạn mức thanh toán, rồi public repo để thoát
+   Thông báo GitHub ghi 'recent account payments have failed or your spending limit needs to be increased', nên không job nào chạy kể cả build binary. Agent không tự dựng binary Windows/macOS được ở máy Linux nên dừng và chờ người dùng xử lý billing. Người dùng chuyển repo sang public, CI chạy lại xanh, rc.3 phát hành với 7 file và checksum khớp.
+M8. Lỗi trên Windows: đường dẫn vault bị lộ dạng JSON-escape trong bản so khớp
+   Trên Linux che đường dẫn là đủ, nhưng trên Windows dấu `\` trong JSON được escape thành `\\`, nên đường dẫn ở dạng escape không bị che. CI Windows đỏ ở đúng bước này; sửa bằng cách che cả dạng escape, dài nhất trước. Máy Windows thật của người dùng phát hiện thêm lỗi UTF-8 khi in tiếng Việt qua pipe và lỗi PyYAML không thấy trong `--user` site (do cờ `-I`).
+M9. Phát hành bản thử bằng pipeline tự động, rồi tải lại đúng các file vừa đăng và kiểm sha256 từng cái trước khi báo xong, không chỉ tin trạng thái CI xanh.
+   Phát hành bản thử bằng pipeline tự động, rồi tải lại đúng các file vừa đăng và kiểm sha256 từng cái trước khi báo xong, không chỉ tin trạng thái CI xanh. Nhiều người dừng ở 'CI xanh, đã release' mà không tải file về kiểm.
+M10. Agent không dừng ở việc khó, mà tự tìm cách kiểm chứng ngay trên máy: so sánh từng byte đầu ra với bản Python gốc (bộ parity), thay vì chỉ tin test của chính mình.
+   Agent không dừng ở việc khó, mà tự tìm cách kiểm chứng ngay trên máy: so sánh từng byte đầu ra với bản Python gốc (bộ parity), thay vì chỉ tin test của chính mình. Phần lớn người viết test đơn vị theo kỳ vọng của mình, và so với chuẩn cũ bằng vài ví dụ tay.
+M11. Lỗi `compact()` làm mất hai trong năm khoá của trạng thái OHS 'chưa sẵn sàng'
+   Khi OHS ở trạng thái starting/model_missing/broken, `progress` và `eta_s` là null nên bị bỏ, agent chỉ thấy 3 khoá thay vì 5 theo hợp đồng. Test 5 khoá kiểm trước khi compact nên không bắt được. Agent sửa bằng cách miễn compact cho lỗi `ohs_not_ready` và thêm test ở tầng MCP.
+M12. Một Claude Code agent đẩy cả plan Rust lên `main` với CI xanh, rồi hook dừng không chịu cho dừng
+   Chỉ trong một phiên, các agent con port được 17 phase với 7 phase chạy song song trong các worktree riêng; mỗi lượt merge phải chạy parity so với bản Python và CI ba nền. Parity đạt 64/64 mục, 0 lệch trên bộ vault thử. Bản cài đầu (rc.1) được phát hành sau khi sửa các lỗi review tìm ra. Sau đó phần còn lại của plan nằm sau cổng do người dùng mở (kiểm trên Windows, một tuần dùng song song), nên hook chặn dừng hàng chục lần với cùng một lý do dù agent đã nói rõ không còn việc làm được trên máy.
+M13. Agent dựng cả một dự án lớn (port core từ Python sang Rust) bằng cách bung nhiều agent chạy song song, mỗi agent làm một phase trong worktree riêng, rồi merge từng phần vào main sau khi tự kiểm.
+   Agent dựng cả một dự án lớn (port core từ Python sang Rust) bằng cách bung nhiều agent chạy song song, mỗi agent làm một phase trong worktree riêng, rồi merge từng phần vào main sau khi tự kiểm. Thường một người hoặc một agent làm tuần tự trên một nhánh, merge khi xong, ít khi tách song song nhiều phần rồi gộp lại trong cùng một phiên.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

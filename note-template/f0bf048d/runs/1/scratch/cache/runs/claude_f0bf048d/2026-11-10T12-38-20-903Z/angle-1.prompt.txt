@@ -1,0 +1,134 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L1439] USER: hãy support từ miễn phí đến trả tiền (dataforseo)
+[L1659] USER: có thể tổ chức để system-operator có thể tự cài theo hướng dẫn của gói được không
+[L1794] USER: hãy suy nghĩa thạt kỹ (có thể nhờ opus/fable) viết một tài liệu sâu về việc sẽ cấp quyền như thế nào cho agent và user trên máy để nó có thể tự động làm nhiều nhất, mà không gây các hậu quả nghiêm trọng và không làm mất dữ liệu. user chỉ đưa ý muốn. sau khi nhìn rõ rồi thì mới làm.
+</asks>
+
+<story>
+hook: Từ một trang web độc đến quyền root chỉ cách ba mắt xích
+tension: nho_ma_to (Ba cấu hình có vẻ vô hại / Nối lại thành đường tới quyền root)
+stakes: 3/3
+# Ba mắt xích từ trang web độc tới quyền root
+
+**Bối cảnh:** Agent SEO đọc web bên ngoài, nên có thể bị chèn lệnh qua nội dung trang.
+**Chuyện gì xảy ra:** Chuỗi leo thang gồm ba mắt xích: daemon của agent khách dùng PAT của chủ, agent đó giao được việc cho System Operator, và System Operator chạy dưới user có quyền docker, tương đương root. Trước khi làm gì, kiểm thấy hai daemon đều rảnh, không có task. Dừng cả hai, tạo user agents-opc chỉ là member của các workspace khách, rồi thu hồi PAT cũ. Đóng được mắt xích đầu tiên, còn mắt xích thứ ba phải đợi tách user riêng.
+**Bài học:** Mỗi daemon chạy agent phải dùng danh tính không có quyền quản trị. Cắt quyền bằng cách đổi danh tính, không bằng lời dặn trong instructions.
+**Artefact:** Sơ đồ ba mắt xích, không ghi token hay đường dẫn home.
+</story>
+
+<excerpt>
+[L1884] TOOL Write: /home/vantt/project/fgOPC/multica/plans/2026-10-31-agent-permissions.md
+[L1885] RESULT: The file /home/vantt/project/fgOPC/multica/plans/2026-10-31-agent-permissions.md has been updated successfully. (file state is current in your context — no need to Read it back)
+[L1891] AGENT: Tôi đã viết tài liệu thiết kế quyền và nhờ một agent độc lập (model Fable) phản biện, rồi sửa theo phản biện thành bản v2. Trên máy chưa thay đổi gì.
+
+Tài liệu ở `~/project/fgOPC/multica/plans/2026-10-31-agent-permissions.md`, chưa commit.
+
+**Ý chính:** những gì agent không được làm phải được chặn bằng cơ chế: quyền Unix, quyền Multica, quyền tài khoản bên ngoài, tường lửa. Lời dặn trong instructions có thể bị nội dung web ghi đè. Việc nào đảo ngược được thì agent tự làm, có backup trước. Chỉ những việc không đảo ngược được (xoá, đăng ra ngoài, tiêu tiền, chạy root) mới cần bạn.
+
+**Ba lỗ khẩn cấp đang có trên máy:**
+1. **Có đường đi từ một trang web độc hại lên tới root.**
+   - User `opc-agent` đang dùng PAT của bạn.
+   - Vì vậy một agent SEO bị chèn lệnh qua trang web có thể giao việc cho System Operator.
+   - System Operator chạy dưới `vantt`, user này thuộc nhóm docker, nên tương đương root.
+   - Daemon spike cũng đang chạy agent sen-coffee dưới `vantt`.
+2. **Mã đăng nhập dev 6 ký tự** vẫn nằm trong `.env` của Multica. Nếu mã này còn hiệu lực, agent hoặc bất kỳ máy nào trong tailnet đều đăng nhập được thành bạn. Tôi chưa thử đăng nhập để kiểm.
+3. **Không có backup nào.** Máy dùng đĩa đơn, chạy WiFi.
+
+**Thứ tự đề xuất:**
+
+| Giai đoạn | Việc | Thời gian |
+|---|---|---|
+| 0 | Dừng daemon spike, tạm dừng daemon ops; kiểm và tắt mã dev; tách PAT của bạn khỏi `opc-agent`; bảo vệ nhánh `main` | ~30 phút |
+| 1 | Backup mỗi giờ, đẩy ra ngoài máy vào kho chỉ ghi thêm (agent không xoá được), diễn tập khôi phục hằng tuần | 1–2 giờ |
+| 2 | Chuyển System Operator sang user `opc-ops` không có docker; broker root chỉ có 3 lệnh (xem trạng thái, restart daemon, backup ngay); tường lửa chặn agent khỏi mạng nội bộ; chặn agent cài cửa hậu qua cấu hình Claude và git | nửa ngày |
+| 3 | Mỗi khách một user Linux riêng | khi có trên 2 khách trả tiền |
+| 4 | Quyền tài khoản bên ngoài tự chặn việc đăng: WordPress Contributor, Ads chỉ đọc | theo từng bộ |
+
+Có một tác dụng phụ: trong Giai đoạ …[+383]
+[L1917] USER: đang làm tren repo nào
+[L1939] TOOL Bash: cd /home/vantt/project/fgOPC/multica && git remote -v | head -2; git branch --show-current; git log --oneline -3; git status --short
+…
+[L1981] RESULT: == multica-spike-daemon | multica(1184157)-+-{multica}(1184162)
+[L1983] AGENT: Cả hai daemon đang rảnh, không có task nào chạy. Tôi dừng chúng và tắt tự khởi động (bật lại được bằng `enable --now`).
+[L1984] TOOL Bash: systemctl --user disable --now multica-spike-daemon multica-ops-daemon 2>&1; systemctl --user is-active multica-spike-daemon multica-ops-daemon; systemctl --user is-enabled multica-spike-daemon multica-ops-daemon
+[L1987] RESULT (exit 1): inactive | not-found | disabled
+[L1989] TOOL Bash: ps -u vantt -o pid,args | grep -i "multica daemon\|multica.*daemon" | grep -v grep; systemctl --user list-unit-files | grep -i multica; ls ~/.config/systemd/user/ | grep -i multica
+…
+[L2277] TOOL Bash: cd ~/project/fgOPC/upstreams/multica/server && n=$(grep -n "func (h \*Handler) UpdateAgentRuntime" internal/handler/*.go); f=${n%%:*}; l=$(echo $n|cut -d: -f2); sed -n "$l,$((l+60))p" $f | grep -n -i "shared\|visibility\|owner\|role\|json" | head -20
+[L2278] RESULT: 24: if err := json.NewDecoder(r.Body).Decode(&req); err != nil { | 25: writeError(w, http.StatusBadRequest, "invalid JSON body")
+[L2284] AGENT: Giai đoạn 0 xong 3/5 bước. Hai bước còn lại cần bạn: một lệnh `sudo`, và một quyết định về GitHub.
+
+**Đã làm**
+1. **Dừng và tắt tự khởi động hai daemon spike và ops.** Lúc dừng, cả hai đều không có task nào đang chạy.
+   - Từ giờ System Operator và hai agent Mai, Long của sen-coffee tạm ngừng.
+   - Việc của System Operator thì tôi làm thay trong phiên này.
+   - Bật lại ops bằng `systemctl --user enable --now multica-ops-daemon`. Spike là unit tạm nên không có lệnh bật lại; nếu cần chạy lại thì phải khởi động bằng tay.
+2. **Mã đăng nhập dev cố định đã bị tắt.** Commit `9cbdecf` của phiên song song đã xoá nó, và tôi kiểm thấy biến này trống ngay trong container đang chạy.
+   - Đăng nhập bằng mã email vẫn còn: mỗi mã thử được 5 lần, mỗi phút xin được 1 mã mới. Dò ra mã sẽ mất nhiều tháng; tôi ghi đây là rủi ro chấp nhận.
+3. **Đã tạo user Multica `agents-opc@opc.local`.**
+   - Chỉ là member của `sen-coffee` và `opc-studio`, không vào được `system`.
+   - PAT của nó (365 ngày) nằm ở `~/multica-spike/.agents-opc.pat`.
+   - Tôi đã thêm lệnh `login` vào `stack/agent-user.sh`; `setup` từ nay cũng không chép PAT của bạn sang nữa.
+
+**Bạn chạy giúp tôi (cần root):**
+```
+! sudo bash ~/project/fgOPC/multica/stack/agent-user.sh login
+```
+Lệnh này:
+- dừng daemon `opc-agent`;
+- cất login cũ vào `/root/opc-agent-login.bak-*` (chỉ root đọc được, dùng khi cần quay lại);
+- đăng nhập lại daemon bằng `agents-opc` với daemon id mới;
+- xoá `multica.pat` (PAT của bạn) khỏi `opc-agent`;
+- báo nếu còn sót bản sao PAT của bạn ở đâu trong home của `opc-agent`;
+- khởi động lại daemon.
+
+Chạy xong, tôi sẽ:
+- cho runtime mới (thuộc `agents-opc`) chia sẻ riêng với bạn;
+- chuyển 12 agent opc-studio sang runtime mới, rồi chạy thử một agent;
+- kiểm `opc.mjs client plan` không báo thay đổi gì;
+- xem Mai và Long có chuyển sang được không.
+
+Agent opc-studio sẽ ngừng từ lúc chạy lệnh đến khi tôi chuyển xong, khoảng vài phút.
+
+Tôi đã kiểm trong mã nguồn Multica: việc giao task giữa các agent (Lan giao cho Mai …[+834]
+[L2289] USER: (c)
+[L2293] TOOL Bash: cd ~/project/fgOPC/multica && grep -rn -i "push\|pr create\|multica/\*\|no-verify\|origin" packages/opc-coding --include=*.md --include=*.yaml --include=*.sh | grep -v "^Binary" | head -40; git status --short packages/opc-coding
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

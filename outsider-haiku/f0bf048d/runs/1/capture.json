@@ -1,0 +1,150 @@
+{
+  "id": "f0bf048d",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-opt-AICoworker/f0bf048d-0996-462f-94f4-0d8f367f342c.jsonl",
+  "fromLine": 1,
+  "toLine": 3520,
+  "windowSha": "f5e08a50c088b598",
+  "at": "2026-11-05T10:08:05.739Z",
+  "dryRun": {
+    "usd": 0.54,
+    "tokens": 81961,
+    "chunks": 1,
+    "hotspots": 19,
+    "entries": 1012
+  },
+  "report": {
+    "sid": "claude:f0bf048d",
+    "fromLine": 1,
+    "toLine": 3520,
+    "usd": 0.28816240000000004,
+    "secs": 50.1,
+    "exitCode": 0,
+    "status": "done",
+    "written": 13,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:f0bf048d L1-L3520: done; 6 chuyện thô, 13 cụm; ghi 13 mới, gộp 0\nđiểm nóng 19 (thiếu 0); lần chạy 1/1; 0.29 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-31-ha-tang-an-toan-cho-agent",
+      "title": "Hạ tầng 'an toàn cho agent' bằng cơ chế, không bằng lời dặn",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-30-dong-goi-theo-khach-mot-workspace",
+      "title": "Đóng gói theo khách: một workspace, nhiều bộ, và sự cố ghi đè team Coding",
+      "tension": "giup_ma_hai",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-31-truoc-khi-chot-tai-lieu-thiet",
+      "title": "Trước khi chốt tài liệu thiết kế quyền, agent viết bản nháp rồi giao cho một agent độc lập phản biện. Phản biện đưa ra lỗ hổng cụ thể (mã đăng nhập dev, PAT của chủ dùng chung với agent, không có backup). Agent tự kiểm lại từng điểm trên máy trước khi sửa thành bản v2.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-01-runtime-theo-tai-khoan-pi-omp",
+      "title": "Runtime theo tài khoản: pi, omp và tên lệnh bọc",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-30-tram-tuan-tu-agent-seo-chay",
+      "title": "Trạm tuần tự: agent SEO chạy được trên MCP GA4 và Search Console thật, nhưng key bị thiếu quyền đọc",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-01-kiem-tra-bang-chay-that-khong",
+      "title": "Kiểm tra bằng chạy thật, không bằng --version",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-30-nguoi-dung-yeu-cau-agent-tu",
+      "title": "Người dùng yêu cầu agent 'tự làm', không phải làm thay. Agent chuyển sang vai trò giao việc: viết issue chỉ nêu mục tiêu, không kể trước lỗi đã thấy, rồi theo dõi kết quả để kiểm tra agent có tự phát hiện được không. Sau đó nó tự tạo agent thử và issue thử nghiệm, đọc số liệu chạy và comment để xác nhận.",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-30-khi-cai-cong-cu-agent-ghim",
+      "title": "Khi cài công cụ, agent ghim phiên bản đã phát hành ít nhất 14 ngày, và đối chiếu checksum (md5 hoặc sha256) với metadata chính thức trước khi dùng. Với công cụ bên thứ ba, nó đọc mã nguồn hoặc kiểm tra trên thư mục nháp trước khi đưa vào hệ thống.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-01-khi-can-chuyen-phien-dang-nhap",
+      "title": "Khi cần chuyển phiên đăng nhập Claude Code sang một user Linux khác, agent không chép file token. Nó giải thích rằng token OAuth tự làm mới, hai bản chép sẽ đá nhau và gây lỗi 401 giữa lúc chạy việc, rồi đưa phương án đăng nhập riêng cho từng user.",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-30-loi-nho-sua-xong-da-quen",
+      "title": "Lỗi nhỏ, sửa xong đã quên: kiểm chéo sau lệnh sudo",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-01-khi-can-thay-credential-token-quan",
+      "title": "Khi cần thay credential (token quản trị), agent tạo token mới, kiểm token mới hoạt động, rồi mới thu hồi token cũ. Trước đó nó tìm toàn bộ bản sao của token cũ trong home người dùng bằng cách grep nội dung, nên không sót chỗ nào.",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-01-moi-thao-tac-van-hanh-lam",
+      "title": "Mỗi thao tác vận hành làm bằng tay trên máy đều được ghi vào skill của agent vận hành rồi deploy lại. Người dùng đặt quy tắc này và agent lưu nó thành memory để áp dụng cho các bước sau.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-30-agent-kiem-chung-thong-tin-ben",
+      "title": "Agent kiểm chứng thông tin bên ngoài trước khi trả lời, và nhận lỗi công khai khi sai. Khi được hỏi về giá, điều khoản hay quyền của một dịch vụ, nó tra tài liệu gốc thay vì trả lời theo trí nhớ. Khi phát hiện đề xuất trước đó sai (quyền đọc của repo riêng trên GitHub), nó nói rõ 'tôi đã nói sai' và đưa lựa chọn thay thế.",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

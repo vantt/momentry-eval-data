@@ -1,0 +1,245 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L934] USER: ok, thêm bước verify vào SKILL.md luôn
+[L954] USER: khoan xong chưa
+[L967] USER: Thêm skill vào hub skillstation
+</asks>
+
+<story>
+hook: Agent chỉ hỏi lại ở việc khó hoàn tác, không hỏi cả chục lần
+tension: khac (Chạy thẳng hoặc hỏi mọi bước nhỏ / Chỉ hỏi trước đúng những việc khó rút lại)
+stakes: 0/3
+# Hỏi lại người dùng để xác nhận trước những hành động có thể bị hoàn tác khó, ví dụ gửi lên hub hay đẩy code lên GitHub
+
+**Chuyện gì xảy ra:** Hỏi lại người dùng để xác nhận trước những hành động có thể bị hoàn tác khó, ví dụ gửi lên hub hay đẩy code lên GitHub
+**Góc người ngoài:** cách làm phổ biến là Nhiều dev hoặc công cụ hoặc chạy thẳng, hoặc phải hỏi lại cả chục lần cho mọi bước nhỏ; ở đây khác ở Phiên này phân biệt rõ việc đọc, việc sửa file cục bộ (làm ngay), và việc gửi ra ngoài (chờ người dùng gõ xác nhận). Người đọc sẽ muốn biết ranh giới này được quyết định thế nào và khi nào được phép tự làm.
+</story>
+
+<excerpt>
+[L996] TOOL Bash: cd /home/vantt/projects/devops && skillstation skill commit ./skills/cs-packaging-distribution --yes --json 2>&1 | head -60
+[L1004] RESULT: {"schema_version":"1","status":"error","summary":"The request cannot be accepted.","items":[],"suggested_actions":[],"warnings":[],"error":{"code":"invalid_request","render":{"ERROR":"The request cannot be accepted.","WHY":"only this project's files  …[+249]
+[L1007] AGENT: Skillstation dừng lệnh này lại vì lý do an toàn. Nó không cho agent gửi token hub và file của anh lên hub từ xa `100.93.158.78:7420` bằng `--yes`, vì hub đó mới chỉ được khai báo trong cấu hình của project `devops`, chưa được anh tin cậy ở cấp user. Chặn như vậy là đúng, nên tôi không lách qua.
+
+Anh có hai cách:
+
+**Cách 1 (tôi đề xuất): tự chạy và tự xác nhận một lần.** Gõ vào prompt, có dấu `!` ở đầu:
+```
+! cd /home/vantt/projects/devops && skillstation skill commit ./skills/cs-packaging-distribution
+```
+Lệnh sẽ hiện các file sắp gửi và hỏi anh. Anh trả lời đồng ý thì skill vào hàng chờ review của hub.
+
+**Cách 2: tin cậy hub này ở cấp user,** để sau này agent tự gửi được:
+```
+! skillstation connect --hub http://100.93.158.78:7420 --user
+```
+Sau đó tôi chạy lại lệnh commit với `--yes`. Cách này áp dụng cho mọi project về sau, nên quyết định là của anh.
+
+Dù chọn cách nào, skill chỉ mới vào **hàng chờ review**. Anh cần lên máy chạy hub để duyệt và kích hoạt:
+```
+skillstation skill review <SUB-id>
+```
+Mã `SUB-id` sẽ hiện ra sau khi gửi xong. Lúc duyệt, nên đặt collection, ví dụ `code-standards` cho cả họ `cs-*`. Nên đặt thêm vài trigger để `skill_resolve` tìm đúng skill: "packaging", "install.sh", "release pipeline", "self-update", "doctor/init command".
+[L1012] USER: kích hoạt skill-curator
+[L1015] TOOL ToolSearch: {"query":"select:mcp__skillstation__skill_resolve,mcp__skillstation__skill_get,mcp__skillstation__skill_feedback","max_results":3}
+…
+[L1065] USER: <bash-input> cd /home/vantt/projects/devops && skillstation skill commit ./skills/cs-packaging-distribution</bash-input>
+[L1066] USER: <bash-stdout>cs-packaging-distribution was not checked out from the hub at http://100.93.158.78:7420: this
+submits it for review as a new skill, or as a replacement when the hub has one.
+Folder: skills/cs-packaging-distribution
+Files (29, 70.5 KB): CONTRIBUTING.md, SKILL.md, channels/_template.md,
+channels/agent-host-plugin.md, common/00-principles.md, common/03-first-contact.md,
+common/05-user-experience.md, common/07-command-surface.md, common/10-versioning.md,
+common/20-build-release.md, common/25-supply-chain.md, common/30-install.md,
+common/40-self-update.md, common/50-config-state.md, common/60-doctor.md, common/70-uninstall.md,
+common/80-agent-integration.md, common/85-service-daemon.md, common/90-testing.md,
+languages/_template.md, languages/go.md, languages/node.md, languages/polyglot.md,
+languages/rust.md, references.md, scripts/check-references.sh, scripts/lint-guides.sh,
+templates/install.sh, templates/project-checklist.md
+Nothing sent yet.
+Send: skillstation skill commit ./skills/cs-packaging-distribution --yes</bash-stdout><bash-stderr></bash-stderr>
+[L1068] AGENT: Bản xem trước đúng: 29 file, 70,5 KB, gửi lên như một skill mới. Nhưng chưa có gì được gửi. Lý do là lệnh chạy bằng `!` trong Claude Code không phải terminal tương tác, nên skillstation không hỏi được anh mà chỉ in bản xem trước.
+
+Dòng gợi ý `--yes` ở cuối nhiều khả năng sẽ bị chặn y như lúc tôi thử: hub này chưa được tin cậy ở cấp user, nên `--yes` không được phép gửi token. Anh có hai cách:
+
+**Cách 1: chạy trong một terminal thật** (cửa sổ terminal riêng, ngoài Claude Code) rồi trả lời câu hỏi:
+```
+cd /home/vantt/projects/devops && skillstation skill commit ./skills/cs-packaging-distribution
+```
+
+**Cách 2: tin cậy hub ở cấp user trước, rồi gửi bằng `--yes`.** Làm được ngay tại đây:
+```
+! skillstation connect --hub http://100.93.158.78:7420 --user
+! cd /home/vantt/projects/devops && skillstation skill commit ./skills/cs-packaging-distribution --yes
+```
+Lệnh đầu cho phép mọi project trên máy này dùng hub đó.
+
+Gửi xong, lệnh sẽ in mã `SUB-…`. Anh lên máy hub và bảo agent ở đó "curate my Skillstation" để duyệt và kích hoạt, như tôi đã ghi ở trên.
+[L1073] USER: <bash-input> skillstation connect --hub http://100.93.158.78:7420 --user</bash-input>
+[L1074] USER: <bash-stdout></bash-stdout><bash-stderr>ERROR: The request cannot be accepted.
+WHY: unknown argument "--user"
+FIX: Run `skillstation connect [&lt;path&gt;] [-g|--global] [--host claude|codex|gemini] [--dry-run]` in
+     the project folder, or `skillstation connect --hub &lt;url&gt; --token-file &lt;file&gt;` for a hub on
+     another machine.
+</bash-stderr>
+…
+[L1093] TOOL Bash: skillstation connect --hub http://100.93.158.78:7420 --token-file /home/vantt/.config/skillstation/hub-tokens/100.93.158.78-7420 -g --dry-run 2>&1 | head -30
+[L1094] RESULT: Dry run: agent connection for your user account (all projects) to the hub at | http://100.93.158.78:7420 was not written.
+[L1102] AGENT: Bản chạy thử ổn: hub kết nối được và chấp nhận token. Nếu chạy thật, lệnh sẽ ghi vào cấu hình user của Claude Code (`~/.claude.json`, `~/.claude/settings.json`), Codex và Gemini, để mọi project đều thấy hub. Chỉ đường dẫn token file được ghi vào, không ghi token.
+
+Có một điểm đáng chú ý: **skillstation trên máy này là 0.8.0, còn hub là 0.12.0.** Gợi ý sai về cờ `--user` có thể là lỗi của bản cũ này. Tôi đề xuất cập nhật trước, rồi kết nối và gửi skill:
+
+```
+! skillstation update
+! cd /home/vantt/projects/devops && skillstation connect --global --hub http://100.93.158.78:7420 --token-file /home/vantt/.config/skillstation/hub-tokens/100.93.158.78-7420
+! cd /home/vantt/projects/devops && skillstation skill commit ./skills/cs-packaging-distribution --yes
+```
+
+Lệnh `connect --global` thay đổi cấu hình agent cho mọi project, nên tôi để anh tự chạy. Nếu anh muốn tôi chạy hộ thì cứ nói. Gửi xong sẽ có mã `SUB-…` để duyệt trên máy hub.
+
+Một ghi chú cho skill của chúng ta: lỗi này là ví dụ thật của rule CMD-10 (phần Fix phải là một lệnh dán vào chạy được). Thông báo của skillstation lại gợi ý một cờ không tồn tại. Nếu sau khi update mà lỗi vẫn còn, nên báo cho repo skillstation.
+[L1107] USER: mới kết nối hub rồi xem ok không
+[L1109] TOOL Bash: cd /tmp && skillstation --version; skillstation status 2>&1 | head -20; echo ----; skillstation doctor 2>&1 | tail -25; echo ----; jq '.mcpServers.skillstation.args' ~/.claude.json 2>/dev/null
+…
+[L1144] TOOL Bash: find ~ -maxdepth 4 -newermt '-30 min' -type f \( -name '*.json' -o -name '*.toml' -o -name '*.yaml' \) -not -path '*/node_modules/*' -not -path '*/.cache/*' -not -path '*/projects/*' 2>/dev/null | xargs -r grep -l '100.93.158.78' 2>/dev/null; echo ---; ls -la --time-style=+%H:%M ~/.claude.json ~/.co …[+64]
+[L1145] RESULT: --- | -rw-rw-r-- 1 vantt vantt 109452 15:06 /home/vantt/.claude.json
+[L1147] AGENT: Vẫn chưa có kết nối cấp user. Trong 30 phút qua, không file cấu hình nào ở thư mục home được ghi địa chỉ hub `100.93.158.78`. `~/.claude.json` cũng không có mục skillstation. Lệnh `connect --global` hoặc chưa chạy, hoặc chạy ở terminal khác mà không thành công.
+
+Phần đang ổn vẫn giữ nguyên: kết nối cấp project `devops` khỏe, và skillstation đã lên 0.13.0.
+
+Anh chọn một trong hai:
+- **Anh tự chạy**, rồi dán kết quả vào đây nếu có lỗi:
+  ```
+  ! cd /home/vantt/projects/devops && skillstation connect --global --hub http://100.93.158.78:7420 --token-file /home/vantt/.config/skillstation/hub-tokens/100.93.158.78-7420
+  ```
+- **Để tôi chạy:** anh chỉ cần trả lời "chạy đi". Tôi sẽ kết nối, kiểm tra lại bằng `doctor`, rồi gửi `cs-packaging-distribution` lên hàng chờ review.
+[L1152] USER: đã kết nối bằng global
+[L1153] TOOL Bash: grep -l '100.93.158.78' ~/.claude.json ~/.claude/settings.json ~/.codex/config.toml ~/.gemini/settings.json 2>/dev/null; echo ----; cd /tmp && skillstation status 2>&1 | head -8; echo ----; cd /home/vantt/projects/devops && skillstation doctor 2>&1 | tail -14
+…
+[L1315] RESULT (exit 2): Exit code 2 | {"schema_version":"1","status":"error","summary":"The request cannot be accepted.","items":[],"suggested_actions":[],"warnings":[],"error":{"code":"invalid_request","render":{"ERROR":"The request cannot be accepted.","WHY":"the hub at http://100.93.158.78:7420 does not check routing","FIX":"Update skillstation on the hub machine, then restart `skillstation serve` there."}},"skill_id":"","hub":"http://100.93.158.78:7420","folder":"","description":"","routing":{"triggers":null,"examp …[+64]
+[L1318] AGENT: Tôi **chưa gửi**. Lượt quét bảo mật chặn lại với 11 cảnh báo, nên cần anh quyết định trước.
+
+**Bản xem trước:** sẽ gửi 29 file (72 KB), không bỏ file nào. Hub đã có sẵn một skill tên `cs-packaging-distribution`, có vẻ bản gửi trước đã được duyệt. Vì vậy lần này sẽ là **đề xuất thay thế** bản trên hub, người duyệt trên máy hub phải chấp nhận thì mới có hiệu lực.
+
+**Quét bảo mật:** 7 cảnh báo critical, 1 high, 3 medium.
+
+| Quy tắc | Nằm ở đâu | Đánh giá |
+|---|---|---|
+| `rce.pipe-to-shell` ×7 (critical) | `common/03-first-contact.md:33`, `common/30-install.md:12-13`, `templates/install.sh:4,18,19,149` | Đây là chữ trong tài liệu, không phải lệnh skill tự chạy. Skill dạy cách viết installer để người dùng chạy theo kiểu `curl … \| sh`, nên cụm này xuất hiện trong mô tả quy tắc, chú thích và đoạn usage của mẫu. |
+| `persist.autostart` (high) | `common/10-versioning.md:15` | VER-06 chỉ khuyên dự án *dùng* pre-commit hook; skill không cài hook nào. |
+| `privesc.command` ×3 (medium) | UPD-09, UNI-07, `references.md:33` | Các chỗ này đều nói *tránh hoặc từ chối* chạy bằng sudo. Mức medium nên không chặn. |
+
+Tôi tự đọc lại cả hai script: `check-references.sh` chỉ đọc qua `gh api`, còn `lint-guides.sh` chỉ đọc các file trong thư mục skill. Không có chỗ nào tự tải hay chạy thứ gì.
+
+Nói thẳng: tôi cho rằng không quy tắc nào khớp với hành vi nguy hiểm thật. Nhưng người duyệt trên hub sẽ quét lại và thấy đúng 11 cảnh báo này.
+
+**Kiểm tra routing:** không chạy được, vì hub vẫn đang chạy bản skillstation cũ chưa có tính năng này.
+```
+ERROR: The request cannot be accepted.
+WHY: the hub at http://100.93.158.78:7420 does not check routing
+FIX: Update skillstation on the hub machine, then restart `skillstation serve` there.
+```
+
+**Anh chọn một trong hai:**
+1. **Gửi luôn** dù còn các cảnh báo: anh nói "gửi" thì tôi chạy `skillstation skill commit ./skills/cs-packaging-distribution --yes --json`.
+2. **Sửa trước để quét sạch:** viết lại các chỗ đó cho máy quét không bắt, ví dụ ghi "pipe t …[+367]
+[L1324] USER: ok, vậy em đẩy lên hub đi
+[L1331] TOOL Bash: skillstation skill commit ./skills/cs-packaging-distribution --yes --json
+[L1334] RESULT: {"schema_version":"1","summary":"Sent cs-packaging-distribution as SUB-01M6NAX34J7THX6HNF2M584W8V.","items":[],"suggested_actions":[],"warnings":[],"error":null,"skill_id":"cs-packaging-distribution","hub":"http://100.93.158.78:7420","submission_id": …[+52]
+…
+[L1382] RESULT: 23:2. Constraint/user scope không bị positive retrieval lấn át. | 70:topics: [messaging, reliability]
+[L1386] TOOL Write: /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml
+[L1389] RESULT: File created successfully at: /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml (file state is current in your context — no need to Read it back)
+[L1396] AGENT: Đúng như anh thấy, skill hiện **không có `skill.yaml`**. Vì vậy trên hub nó không có topic, operation hay routing nào. Bản gửi lên hub từ xa cũng không nhận cờ routing, nên muốn những thông tin này đi kèm thì phải viết sẵn vào `skill.yaml` trong thư mục skill.
+
+Bản nháp ở `/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml`:
+
+**Trước:** không có gì.
+**Sau:**
+
+| Trường | Giá trị |
+|---|---|
+| `labels` | `code-standard` (để gom họ cs-* sau này) |
+| `topics` | packaging, distribution, installation, self-update, release-engineering, cli-ux, agent-native, supply-chain |
+| `technologies` | rust, go, node, posix-sh, powershell, github-actions, cosign, mcp |
+| `operations` | design, implement, review |
+| `min_scope` | `multi_step`: chỉ gợi ý skill cho việc lớn, không gợi ý cho một chỉnh sửa lẻ |
+| `triggers` (10) | install.sh one-line installer for a CLI · self-update or upgrade command for a binary · init and doctor commands for a tool · GitHub release pipeline with checksums and signing · agent-native --help and --json for setup · README intro and quick start for installing a tool · register MCP server in Claude Code, Codex or Gemini on install · uninstall command that keeps user config · config file location and paths for a CLI · packaging and distribution audit of a CLI |
+| `examples` (5) | giống bản nháp trước: Go CLI install/update/release · audit Rust tool · init/doctor cho agent · README quick start · uninstall giữ config |
+| `not_for` (6) | Docker/K8s cho web service · deploy web app · publish thư viện · review kiến trúc/test (để dành cho cs-* khác) · làm tính năng sản phẩm · **cài hoặc dùng một tool có sẵn với tư cách người dùng** |
+| `counter_examples` (3) | "install skillstation on my laptop" · "write a Dockerfile for the API service" · "review this pull request for bugs" |
+
+Tôi thêm `not_for` "cài hoặc dùng một tool có sẵn" và câu đối chứng "install skillstation on my laptop" vì skill có rất nhiều chữ "instal …[+511]
+[L1400] USER: ủa, anh thấy trước vẫn có triggers, examples và not_for mà?
+…
+[L2018] USER: này là em code và fix luôn rồi?
+[L2029] AGENT: Đúng, tôi đã viết code và test xong, nhưng mới chỉ nằm trên máy này:
+
+- **Đã làm:** sửa code trong bản clone `~/projects/skillstation`, trên nhánh `feat/web-pending-submission-notice`. Gồm 4 file mới và 6 file sửa. Toàn bộ 229 test của web đều qua, kiểm tra kiểu, lint và build cũng sạch.
+- **Chưa làm:** chưa commit, chưa đẩy lên GitHub, chưa mở PR. Tôi cũng chưa mở web thật để xem giao diện.
+- **Hub của anh chưa thay đổi gì.** Máy hub đang chạy bản skillstation cũ, nên muốn thấy thông báo mới trên web thì cần ba bước: gộp code vào repo, phát hành bản mới, rồi chạy `skillstation update` trên máy hub và khởi động lại `skillstation serve`.
+
+Tôi làm luôn vì anh bảo dùng `ak:frontend-development` để làm. Nhưng repo đó là của anh và có quy trình riêng (`make check`, quy tắc trong `AGENTS.md`), nên tôi dừng lại trước bước commit.
+
+Anh muốn bước tiếp theo là gì: tôi mở web trên máy này để anh xem thử giao diện, hay commit và mở PR luôn?
+[L2038] USER: merge và push luôn đi em
+[L2046] TOOL Bash: cd /home/vantt/projects/skillstation && grep -n "^check:\|^check " -A8 Makefile; git fetch -q origin && git log --oneline -1 origin/main; git merge-base --is-ancestor origin/main HEAD && echo "branch is on top of origin/main"
+[L2049] RESULT: 70:check: fmt-check vet lint deadcode test | 71-
+…
+[L2375] RESULT: 11 findings | critical rce.pipe-to-shell common/03-first-contact.md 33
+[L2385] AGENT: Tôi đã thêm quy tắc vào skill `cs-packaging-distribution` và đã kiểm tra:
+- `lint-guides.sh` qua: 215 quy tắc, nhiều hơn trước 3 quy tắc.
+- `check-references.sh` xác nhận mọi đường dẫn tham chiếu, kể cả 3 file mới bên momentry, đều có trên GitHub.
+
+**Những gì đã đổi**
+- **`common/07-command-surface.md`:**
+  - Dòng `config` trong khối lệnh chuẩn có thêm `[--project [--repo DIR]]`.
+  - Thêm mục mới **"6. Config — one door for every setting"**, gồm 3 quy tắc:
+    - **CMD-22 MUST:** mọi cài đặt, kể cả cài đặt riêng dự án, đều đổi qua `config show|get|set|unset`. Các lệnh khác không nhận cờ cài đặt, ví dụ không có `init --box`; cài đặt mới thêm thành một khoá trong schema. Lệnh tắt như `pause`/`resume` phải gọi đúng hàm ghi của khoá tương ứng, và help phải ghi rõ khoá đó. Giao diện web cũng gọi đúng các hàm ghi này.
+    - **CMD-23 SHOULD:** phạm vi dự án dùng cùng các lệnh trên, thêm `--project` hoặc `--repo DIR`. `show --project` in nguồn của từng giá trị. Dùng sai phạm vi thì báo lỗi kèm cách sửa. `--dry-run` cho biết file nào sẽ bị ghi.
+    - **CMD-24 MUST:** `config` không tự bật dự án. Lệnh ghi cần dự án đã init thì bị từ chối, kèm gợi ý `<app> init`.
+- **`common/50-config-state.md`, CFG-12:** nâng từ MAY lên **MUST** và mở rộng. File của repo không được đặt khoá của máy, khoá bí mật hay khoá giới hạn chi tiêu; hàm ghi không bao giờ ghi các khoá đó vào file repo; khi đọc file repo thì bỏ qua và báo từng khoá bị bỏ. Repo clone về không được nâng ngân sách hay tắt chế độ riêng tư.
+- **`common/05-user-experience.md`, UX-17:** trang cài đặt trên giao diện phải gọi *đúng hàm ghi* của `config set`, không chỉ ghi cùng file.
+- **`references.md`:** thêm dòng momentry trỏ tới `lib/config-cmd.mjs`, `lib/ui-api.mjs` và `test/config-project.test.mjs`.
+
+Theo `CONTRIBUTING.md`, cách làm chỉ được coi là "đã chứng minh" khi đã chạy thật với người dùng. Commit `de173ef` của momentry chưa nằm trong bản phát hành nào. Tôi vẫn đưa nó vào `references.md` vì đã có test đầy đủ, nhưng nên g …[+312]
+[L2393] USER: ok, đẩy lên hub đi
+[L2401] TOOL Bash: skillstation skill commit ./skills/cs-packaging-distribution --yes --json
+[L2404] RESULT: {"schema_version":"1","summary":"Sent cs-packaging-distribution as SUB-01M6NFEPA6DSJHQPAPKZ7WCJHP.","items":[],"suggested_actions":[],"warnings":[],"error":null,"skill_id":"cs-packaging-distribution","hub":"http://100.93.158.78:7420","submission_id": …[+52]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

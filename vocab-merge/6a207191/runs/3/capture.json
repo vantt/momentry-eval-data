@@ -1,0 +1,357 @@
+{
+  "id": "6a207191",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f.jsonl",
+  "fromLine": 1,
+  "toLine": 2412,
+  "windowSha": "225acd523cc5ad12",
+  "at": "2026-11-08T06:49:48.620Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension"
+  ],
+  "freshUsd": 0.039372000000000004,
+  "dryRun": {
+    "usd": 0.1,
+    "tokens": 53807,
+    "chunks": 1,
+    "hotspots": 39,
+    "entries": 636
+  },
+  "report": {
+    "sid": "claude:6a207191",
+    "fromLine": 1,
+    "toLine": 2412,
+    "usd": 0.10251370000000001,
+    "secs": 15.8,
+    "exitCode": 4,
+    "status": "partial",
+    "written": 19,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-11-02-agent-review-doc-lap-tim-9-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-1.json | thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-1-retry.json"
+      },
+      {
+        "id": "2026-11-02-hub-bao-skill-active-khi-ban-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-2.json | thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-2-retry.json"
+      },
+      {
+        "id": "2026-11-02-skill-11-900-chu-bi-goi-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-3.json | thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-3-retry.json"
+      },
+      {
+        "id": "2026-11-05-agent-khang-dinh-hub-chua-co-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-4.json | thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-4-retry.json"
+      },
+      {
+        "id": "2026-11-05-web-ui-skillstation-banner-update-dang-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-5.json | thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-5-retry.json"
+      },
+      {
+        "id": "2026-11-02-ba-lenh-setup-init-doctor-chong-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-6.json | thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-6-retry.json"
+      },
+      {
+        "id": "2026-11-02-installer-mau-bi-loi-ton-tai-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-7.json | thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-7-retry.json"
+      },
+      {
+        "id": "2026-11-02-nguoi-dung-dat-lai-thu-tu-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-8.json | thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-8-retry.json"
+      },
+      {
+        "id": "2026-11-05-5-test-go-chi-hong-tren-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-9.json | thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-9-retry.json"
+      },
+      {
+        "id": "2026-11-05-quy-tac-config-mot-cua-tu-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-10.json | thiếu file --fake-llm: /home/vantt/projects/momentry/docs/_private/eval/vocab-merge/6a207191/runs/3/llm/angle-10-retry.json"
+      }
+    ],
+    "message": "claude:6a207191 L1-L2412: partial; 14 chuyện thô, 19 cụm; ghi 19 mới, gộp 0\nđiểm nóng 41 (thiếu 3); lần chạy 1/1; 0.10 USD\nbước hỏng: harvest-fill-c1-r1\ngóc kể: 0 có, 0 không ra chuyện, 10 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: devops không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-agent-review-doc-lap-tim-9-c4b4",
+      "code": "M-086C",
+      "title": "Agent review độc lập tìm 9 lỗi, trong đó skill mẫu vi phạm chính quy tắc của nó",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-hub-bao-skill-active-khi-ban-c4b4",
+      "code": "M-QFMQ",
+      "title": "Hub báo skill active khi bản mới còn chờ duyệt, và skill-curator không có trên máy khách",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-skill-11-900-chu-bi-goi-c4b4",
+      "code": "M-P4CN",
+      "title": "Skill 11.900 chữ bị gọi là dư thừa, cắt còn 6.400 chữ",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-agent-khang-dinh-hub-chua-co-c4b4",
+      "code": "M-TNKJ",
+      "title": "Agent khẳng định hub chưa có routing sau khi chỉ xem thư mục local",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-web-ui-skillstation-banner-update-dang-c4b4",
+      "code": "M-ETKX",
+      "title": "Web UI skillstation: banner update đang chờ duyệt, 229 test qua, merge thẳng vào main",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-ba-lenh-setup-init-doctor-chong-c4b4",
+      "code": "M-YQFZ",
+      "title": "Ba lệnh setup/init/doctor chồng chéo, và 'doctor là bộ máy duy nhất'",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-installer-mau-bi-loi-ton-tai-c4b4",
+      "code": "M-T52X",
+      "title": "Installer mẫu bị lỗi 'tồn tại nhưng không mở được' và chặn cả lệnh gỡ cài đặt",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-nguoi-dung-dat-lai-thu-tu-c4b4",
+      "code": "M-NAHX",
+      "title": "Người dùng đặt lại thứ tự ưu tiên: UX trước, rồi an toàn, đúng đắn, nhanh gọn",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-5-test-go-chi-hong-tren-c4b4",
+      "code": "M-91Q7",
+      "title": "5 test Go chỉ hỏng trên máy làm việc: test đổi HOME nhưng không đổi thư mục làm việc",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-quy-tac-config-mot-cua-tu-c4b4",
+      "code": "M-CS50",
+      "title": "Quy tắc config một cửa từ momentry đưa vào skill: CMD-22..24, CFG-12 lên MUST",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-scanner-bao-11-finding-toan-la-c4b4",
+      "code": "M-C2ZR",
+      "title": "Scanner báo 11 finding, toàn là chữ trong tài liệu về curl | sh",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-gui-skill-len-hub-yes-bi-c4b4",
+      "code": "M-DHRT",
+      "title": "Gửi skill lên hub: --yes bị chặn, lệnh ! không hỏi được, và gợi ý sai cờ",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-skill-frontend-co-tren-dia-nhung-c4b4",
+      "code": "M-5C5Y",
+      "title": "Skill frontend có trên đĩa nhưng không nạp vào phiên; routing kéo việc frontend sang skill packaging",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-lint-bao-ok-nhung-thoat-ma-c4b4",
+      "code": "M-HXBH",
+      "title": "Lint báo OK nhưng thoát mã 1 vì máy thiếu shellcheck",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-bien-tai-lieu-huong-dan-cho-c4b4",
+      "code": "M-93HF",
+      "title": "Biến tài liệu hướng dẫn cho agent thành bộ quy tắc có mã ID (ví dụ CMD-22), mỗi quy tắc một dòng. Một script lint kiểm tra cấu trúc và việc các ID được tham chiếu có tồn tại. Một script khác kiểm tra mọi đường dẫn tới code mẫu còn đúng trên GitHub.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-kiem-tra-xem-tai-lieu-co-c4b4",
+      "code": "M-J24E",
+      "title": "Kiểm tra xem tài liệu có đủ để agent tự làm việc hay không bằng cách mở một agent mới, không cho đọc README, chỉ giao việc cài đặt và cho nó dùng --help để tự đi hết quy trình.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-khi-tai-lieu-hoac-cong-cu-c4b4",
+      "code": "M-BJFS",
+      "title": "Khi tài liệu hoặc công cụ không nói rõ cấu trúc dữ liệu, đọc thẳng mã nguồn để xác nhận tên trường, cách sắp xếp ID (ví dụ ID theo thứ tự thời gian nên có thể so chuỗi), thay vì đoán.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-kiem-tra-installer-shell-bang-cach-c4b4",
+      "code": "M-FCHC",
+      "title": "Kiểm tra installer shell bằng cách chạy bằng dash để chắc đó là POSIX thật, dựng một bản release giả qua file:// rồi thử cài, cài lại, gỡ cài và checksum sai. Mọi thứ đều chạy trong thư mục tạm.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-khi-mot-test-do-chung-minh-c4b4",
+      "code": "M-97BD",
+      "title": "Khi một test đỏ, chứng minh lỗi có từ trước bằng cách tạm cất thay đổi (stash) rồi chạy lại đúng test đó trên nhánh gốc, thay vì chỉ nói là không do mình.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

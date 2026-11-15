@@ -1,0 +1,85 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L1489] USER: sao chưa bấm duyệt mà hub đã để là active nhỉ
+[L1507] USER: à, ui của web, tại skill khong có thông báo là skill đang cần duyệt lại, chỉ vào mục wait for review mới có.
+[L1520] USER: ok. dùng `/ak:frontend-development` skill để làm. còn việc phía trên, có vẻ skillstation-send không có năng lực để quản lý routing/metadata hay sao á. lúc kêu sửa phải nhắc tới mấy lần và không hiển thị được metadata hiện tại.
+</asks>
+
+<story>
+hook: Skill đóng gói bị chọn cho việc giao diện dù đã có not_for
+tension: cam_ma_van_lot (Skill đã khai báo not_for để chặn / Hub vẫn chọn nó cho việc frontend thuần)
+stakes: 2/3
+# Routing quá rộng: skill đóng gói bị chọn cho việc frontend thuần
+
+**Bối cảnh:** Agent nhờ hub tìm skill cho việc sửa web UI. Hub trả về skill đóng gói và phát hành.
+**Chuyện gì xảy ra:** Lần đầu hub chọn skill đóng gói với độ tin cậy trung bình. Agent từ chối và hỏi lại, lần hai hub báo không có skill nào khớp. Skill đã có not_for nhưng vẫn bị chọn, nên cần thêm not_for cho việc giao diện.
+**Bài học:** Đặt not_for cho những việc gần giống nhưng khác bản chất, rồi thử lại bằng các câu đối chứng.
+**Artefact:** Phản hồi của hub đã che mã yêu cầu.
+**Góc người ngoài:** cách làm phổ biến là Phần lớn người viết skill chỉ viết một dòng mô tả và tin rằng máy sẽ tự chọn đúng; ở đây khác ở Routing là dữ liệu có cấu trúc để máy chọn skill, nên có thể viết, kiểm tra và sửa. Người đọc sẽ muốn biết vì sao một lần chọn nhầm (skill đóng gói bị chọn cho việc frontend) lại được coi là bằng chứng để siết lại.
+</story>
+
+<excerpt>
+[L1532] TOOL mcp__skillstation__skill_get: {"skill_id":"ak:frontend-development"}
+[L1533] RESULT (exit error): {"error":{"code":"not_found","message":"Skill ak:frontend-development not found","retryable":false,"suggested_action":"Run skill_resolve to find an available skill."},"schema_version":"1"}
+[L1534] TOOL mcp__skillstation__skill_resolve: {"schema_version":"1","request_id":"frontend-pending-review-1","task":{"description":"Implement a web UI change in the skillstation hub frontend: show a banner on a skill's page and a badge in the skill list when an update submission for that skill is waiting for review","scope":"multi_step"},"opera …[+18]
+[L1538] RESULT: {"result":{"activation_context_supported":true,"feedback_supported":true,"resolution":{"catalog_snapshot":"sha256:7f1ede0eb83d1909d42e388b69b0f3bfc24b6f62178fb79bb5973847287eeae1","context_revision":1,"policy_revision":"sha256:a0941b498b6fba4348f3ab4 …[+1465]
+[L1540] TOOL mcp__skillstation__skill_resolve: {"schema_version":"1","request_id":"frontend-pending-review-2","task":{"description":"Implement a web UI change in the skillstation hub frontend: show a banner on a skill's page and a badge in the skill list when an update submission for that skill is waiting for review","scope":"multi_step"},"opera …[+143]
+…
+[L1545] TOOL Bash: ls ~/projects 2>/dev/null | head -30; find ~/.claude ~/.agents ~/projects -maxdepth 6 -type d -name 'frontend-development' 2>/dev/null | head
+[L1548] RESULT: devops | forgent
+[L1555] AGENT: Tôi chưa bắt tay làm phần UI được. Có ba điều anh cần biết.
+
+**1. Không có skill `ak:frontend-development` trên máy này.**
+- Không có trong danh sách skill của phiên, trong `~/.claude` hay `~/.agents`, và hub cũng báo `not_found`.
+- Tôi thử nhờ hub tìm skill phù hợp cho việc này bằng `skill_resolve`. Lần đầu nó trả về **`cs-packaging-distribution`** với độ tin cậy medium, tức là chọn nhầm. Tôi từ chối và hỏi lại thì hub báo không có skill nào khớp.
+- Máy này cũng không có repo skillstation trong `~/projects`. Chỉ có một bản clone tạm trong thư mục scratchpad, không dùng để làm việc thật được.
+
+Anh chọn giúp: (a) cài AgentKit hoặc chỉ cho tôi chỗ để skill đó, hoặc (b) tôi làm luôn không cần skill: clone `vantt/skillstation` vào `~/projects/skillstation`, sửa trên một nhánh mới rồi mở PR.
+
+**2. Việc chọn nhầm ở trên là bằng chứng routing đang quá rộng.** Một việc frontend thuần túy vẫn bị chuyển sang skill đóng gói và phát hành. Hub đã trừ điểm vì `not_for` nhưng skill vẫn thắng. Bản `skill.yaml` mới đã thêm `operations` và `min_scope`. Tôi đề nghị thêm một mục `not_for: build or change a web UI or frontend page` rồi gửi lại lên hub. Anh đồng ý thì tôi làm.
+
+**3. Về `skillstation-send`: anh nhận xét đúng.** Lần này tôi gặp các thiếu sót sau:
+- **Không xem được metadata hiện tại từ máy khách.** `skill show` bị từ chối khi hub nằm ở máy khác. `skill_get` chỉ trả về triggers, examples và not_for, không có operations, topics, technologies hay min_scope. Vì vậy tôi đã khẳng định nhầm là "skill chưa có routing".
+- **Skill không nói `skill.yaml` có những trường nào.** Nó chỉ nhắc triggers, examples và not_for. Tôi phải đọc mã nguồn skillstation mới biết các trường `operations`, `topics`, `technologies`, `labels`, `min_scope` và `counter_examples`.
+- **Không có lệnh kéo routing đang có trên hub về `skill.yaml`.** Chỉ `checkout` hay `pull` mới kéo về, mà các lệnh đó dùng cho skill đã checkout từ trước.
+- **Lệnh kiểm tra routing `lint` phụ thuộc phiên bản skillstation trên máy  …[+545]
+[L1561] USER: đã có ak:frontend-development.
+[L1566] TOOL Skill: {"skill":"ak:frontend-development","args":"In the vantt/skillstation hub web UI: on a skill's page show a banner when an update submission (SUB-…) for that skill is waiting for review, linking to its review; in the skills list show an \"update pending\" badge; when several submissions for one skill  …[+50]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

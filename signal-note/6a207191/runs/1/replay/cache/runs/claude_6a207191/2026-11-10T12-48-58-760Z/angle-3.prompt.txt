@@ -1,0 +1,180 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L661] USER: bật một agent xịn nhờ nó đánh giá xem có ổn không. nó phải hiểu mục tiêu của việc mình đang làm là gì. ưu tiên ux, dễ hiểu, agent native. đây giống như là bộ bí kiếp sẽ được tích lũy dài lâu theo quá trình làm.
+[L695] USER: có nên đổi tên thành code-standard-packaging-installation hoặc cs-packaging-installagion, để sau này có thể thêm cs-architecture-quality cs-test-quality ....
+[L701] USER: ok, dùng cs-packaging-distribution. thảo luận về phần setup, init, doctor. cần làm rõ và chuẩn hóa ở chổ này. với fgos nó là một hệ lớn, chúng ta distribute đi kèm fgctl là bộ bộ cài và upgrade, không phải bin, nó download và deploy bin. ví thế với fgos nó có thể có thể setup, init và doctor. các hệ khác khi dùng install.sh chỉ cài 1 bin như mdview sẽ include luôn command update để tự upgrade. fgos thì làm thông qua fgctl. cần xem lại fgos, thực chất init hay setup gì đó chỉ là alias trỏ về bin doctor.
+</asks>
+
+<story>
+hook: Ba lệnh tưởng là một, đọc code mới biết mỗi lệnh làm khác
+tension: tuong_ma_hoa_ra (setup tưởng chỉ là tên gọi khác của doctor / Nó còn ghi file rc, cài hook; gộp lại bỏ 18 quy tắc)
+stakes: 3/3
+# fgos có ba lệnh init, setup, doctor chồng nhau; chốt doctor là bộ máy duy nhất
+
+**Bối cảnh:** Hệ fgos gồm fgctl, bộ cài và upgrade, và fgos, bộ deploy runtime. Chủ dự án giả định init và setup chỉ là alias của doctor.
+**Chuyện gì xảy ra:** Đọc code thì setup không phải alias: setup bằng doctor --fix cộng thêm ghi file rc, tạo config, cài git hook và Claude hook. init gọi các fix của doctor rồi tạo thư mục .fgos. Thiết kế mới: doctor chỉ đọc, doctor --fix chỉ sửa cái đã có, init bằng doctor --fix cộng quyền tạo mới, setup bỏ hoặc giữ làm alias ẩn. Sau khi viết lại, số quy tắc từ 230 còn 212.
+**Bài học:** Trước khi chuẩn hoá lệnh, đọc code để biết lệnh thực sự làm gì. Giả định về alias thường sai.
+**Artefact:** Bảng bốn lệnh và việc thật của từng lệnh. Không có thông tin cần che.
+</story>
+
+<excerpt>
+[L695] USER: có nên đổi tên thành code-standard-packaging-installation hoặc cs-packaging-installagion, để sau này có thể thêm cs-architecture-quality cs-test-quality ....
+[L697] AGENT: Nên đổi, và nên làm ngay bây giờ. Đặt tiền tố chung cho cả một họ skill là ý hay: nhìn danh sách là biết skill nào thuộc bộ chuẩn của anh, agent cũng hiểu chúng đi cùng nhau. Đổi bây giờ thì rẻ, vì chưa dự án nào dùng skill này.
+
+Tôi góp hai điểm về tên:
+
+**1. Giữ chữ `distribution`, đừng dùng `installation`.** Skill này bao cả release, update, config, doctor, uninstall và tích hợp agent; cài đặt chỉ là một phần. Tên `…-installation` sẽ khiến agent bỏ qua skill khi việc cần làm là "làm release pipeline" hay "thêm lệnh update".
+
+**2. Tiền tố: `cs-` ngắn nhưng dễ hiểu nhầm.** Người đọc có thể hiểu là C#, computer science hay customer success. Có hai cách:
+- **`cs-packaging-distribution`** (tôi đề xuất). Để bù cho chữ viết tắt, description của mọi skill trong họ sẽ mở đầu bằng "Code standard (cs-*): …". Agent chọn skill dựa trên description, nên vẫn hiểu đúng, mà tên gọn khi gõ và khi nhìn danh sách.
+- **`code-standard-packaging-distribution`:** rõ nghĩa ngay, nhưng dài (36 ký tự), và cả họ sẽ dài theo: `code-standard-architecture-quality`…
+
+Họ skill sau này sẽ như sau:
+```
+cs-packaging-distribution
+cs-architecture-quality
+cs-test-quality
+…
+```
+Thứ tự ưu tiên ở đầu SKILL.md (UX trước, agent-native, dùng lại cách đã kiểm chứng) có lẽ sẽ áp dụng cho cả họ. Hiện tôi để mỗi skill tự chứa đủ. Khi có skill `cs-` thứ hai, ta sẽ cân nhắc tách phần chung ra.
+
+Nếu đổi tên, tôi sẽ làm cùng lúc với đợt sửa theo review:
+- đổi tên thư mục và symlink `~/.claude/skills/…`;
+- sửa `name:` và description trong SKILL.md;
+- sửa các chỗ còn nhắc tên cũ trong các file.
+
+Anh xác nhận giúp: dùng **`cs-packaging-distribution`**, và **sửa hết các điểm review** (1–9 cùng các lỗi kỹ thuật nhỏ) luôn trong một lượt, đúng không?
+[L701] USER: ok, dùng cs-packaging-distribution. thảo luận về phần setup, init, doctor. cần làm rõ và chuẩn hóa ở chổ này. với fgos nó là một hệ lớn, chúng ta distribute đi kèm fgctl là bộ bộ cài và upgrade, không phải bin, nó download và deploy bin. ví thế với fgos nó có thể có thể setup, init và doctor. các hệ khác khi dùng install.sh chỉ cài 1 bin như mdview sẽ include luôn command update để tự upgrade. fgos thì làm thông qua fgctl. cần xem lại fgos, thực chất init hay setup gì đó chỉ là alias trỏ về bin doctor.
+[L709] AGENT: Trước khi chuẩn hóa, tôi xem lại fgos thực tế đang làm gì với `setup`, `init`, `doctor`, và `fgctl init`.
+[L710] TOOL Bash: cd /home/vantt/projects/forgent; grep -nE "case '(init|setup|doctor|uninstall)'|^async function (cmd|run)?(Init|Setup|Doctor)|function (init|setup|doctor)[A-Z]?\w*\(" bin/fgos.mjs | head -30; echo ---; grep -n "deprecat" bin/fgos.mjs | grep -i -E "setup|init" | head
+[L714] RESULT: 1046: case 'init': { | 3975: case 'setup': {
+[L719] TOOL Bash: cd /home/vantt/projects/forgent; sed -n 1046,1120p bin/fgos.mjs; echo ....; sed -n 3975,4060p bin/fgos.mjs; echo ....; grep -n "name: 'setup'" -A8 bin/fgos.mjs src -r 2>/dev/null | head -20
+[L720] RESULT: case 'init': { | // `init` is the first step of setup, and the store cannot open without a machine id and its locks directory,
+[L727] AGENT: Tôi đã đọc code fgos. Thực tế hiện tại hơi khác so với anh nghĩ, và chính chỗ khác này cho thấy vì sao cần chuẩn hóa.
+
+**fgos đang làm gì:**
+
+| Lệnh | Thực tế làm gì |
+|---|---|
+| `fgctl init` | tải, kiểm tra và kích hoạt runtime cho dự án, rồi gọi `fgos init` → `fgos doctor --fix` → `fgos doctor` |
+| `fgos init` | tạo kho dữ liệu `.fgos/` (machine id, locks, store, manifest). Hai bước đầu gọi chính các hàm fix của doctor |
+| `fgos setup` (legacy) | gọi `runFixes()`, tức đúng những gì `doctor --fix` làm, **cộng thêm** những việc doctor không làm: ghi dòng source vào rc, tạo file config, cài git hooks, cài Claude hook, copy skills |
+| `fgos doctor --fix` | chỉ chạy các fix đã đăng ký |
+
+Mô tả của chính lệnh `setup` trong code thừa nhận: *"doctor --fix runs only the registered fixes, so run fgos setup once … for the config defaults, git hook and Claude Code hook it does not write."*
+
+Vậy `setup` **chưa phải** alias của doctor. Nó là doctor cộng một mớ việc nằm ngoài doctor. Vì thế mới có ba lệnh chồng chéo, và người dùng (hay agent) không biết nên chạy lệnh nào. Ý của anh, "init/setup thực chất chỉ trỏ về doctor", **chính là thiết kế đích đúng**. fgos hiện mới đi được nửa đường.
+
+## Đề xuất chuẩn hóa
+
+**Nguyên tắc chung: doctor là bộ máy duy nhất.** Mọi trạng thái mong muốn (config, hooks, skills, MCP, PATH, service…) đều phải là **một check của doctor, kèm cách fix**. Không lệnh nào được tự ghi file ngoài bộ máy này.
+- `doctor`: chỉ đọc, báo cáo.
+- `doctor --fix`: sửa những gì **đã có** mà bị lệch hoặc hỏng.
+- `init`: **= `doctor --fix` + được phép tạo mới.** Cộng thêm "✓ Ready" và bước tiếp theo.
+- `setup`: bỏ. Nếu cần tương thích ngược thì giữ làm alias của `init`.
+
+**Một điểm cần anh quyết.** Có nên để `init` và `doctor --fix` khác nhau ở chỗ *tạo mới* không?
+
+Tôi đề xuất **có**: check nào tạo workspace hay dữ liệu dự án (như kho `.fgos/`, hay hub của skillstation) thì đánh dấu `creates`. Fix của nó chỉ chạy khi gọi `init`. Lý do: chạy `doctor --fix` nhầm ở một th …[+1681]
+[L732] USER: ok, đồng ý, làm hết luôn
+[L734] AGENT: Tôi bắt đầu bằng việc đổi tên, rồi viết lại các file `common/` theo mô hình mới. Mỗi ý chỉ còn một chỗ chứa, và ID sẽ được đánh số lại một lần.
+[L735] TOOL Bash: cd /home/vantt/projects/devops/skills && mv packaging-distribution-guide cs-packaging-distribution && rm ~/.claude/skills/packaging-distribution-guide && ln -s /home/vantt/projects/devops/skills/cs-packaging-distribution ~/.claude/skills/cs-packaging-distribution && ls -la ~/.claude/skills | grep cs …[+69]
+[L739] RESULT: lrwxrwxrwx 1 vantt vantt 60 Nov 2 14:49 cs-packaging-distribution -> /home/vantt/projects/devops/skills/cs-packaging-distribution | cs-packaging-distribution/SKILL.md
+[L749] TOOL Write: /home/vantt/projects/devops/skills/cs-packaging-distribution/common/00-principles.md
+[L750] RESULT: The file /home/vantt/projects/devops/skills/cs-packaging-distribution/common/00-principles.md has been updated successfully. (file state is current in your context — no need to Read it back)
+[L751] TOOL Write: /home/vantt/projects/devops/skills/cs-packaging-distribution/common/03-first-contact.md
+…
+[L788] TOOL Write: /home/vantt/projects/devops/skills/cs-packaging-distribution/common/60-doctor.md
+[L790] RESULT: The file /home/vantt/projects/devops/skills/cs-packaging-distribution/common/60-doctor.md has been updated successfully. (file state is current in your context — no need to Read it back)
+[L802] TOOL Write: /home/vantt/projects/devops/skills/cs-packaging-distribution/common/80-agent-integration.md
+[L803] RESULT: The file /home/vantt/projects/devops/skills/cs-packaging-distribution/common/80-agent-integration.md has been updated successfully. (file state is current in your context — no need to Read it back)
+[L804] TOOL Write: /home/vantt/projects/devops/skills/cs-packaging-distribution/common/85-service-daemon.md
+…
+[L891] TOOL Bash: cd /home/vantt/projects/devops/skills/cs-packaging-distribution; sh scripts/lint-guides.sh; grep -rn 'packaging-distribution-guide\|UX-2[0-9]\|case-studies' . ; grep -rn '`setup`\|<bin> setup\|setup/init' common languages | cut -c1-120; echo "words: $(find . -name '*.md' -exec cat {} + | wc -w)"; fi …[+19]
+[L892] RESULT: OK: 212 rules, structure valid | common/07-command-surface.md:43:- **CMD-01** MUST · `doctor` is the only engine that reaches the desired state. Every d
+[L897] AGENT: Xong cả ba phần: đổi tên, chuẩn hóa init/doctor, và sửa theo review. Script kiểm tra cấu trúc chạy qua với 212 rule. Script mới `check-references.sh` xác nhận mọi đường dẫn code mẫu đều có thật trên GitHub. `install.sh` mẫu đã được test lại bằng `dash`.
+
+**1. Đổi tên thành `cs-packaging-distribution`**
+- Thư mục và symlink `~/.claude/skills/cs-packaging-distribution` đều đã đổi.
+- Description mở đầu bằng "Code standard (cs-*)", sẵn cho cả họ `cs-` sau này.
+
+**2. Chuẩn hóa init / doctor / setup** (`common/07-command-surface.md`)
+- **Doctor là bộ máy duy nhất.** Mọi trạng thái mong muốn đều là một check có fix. Không lệnh nào được ghi file thiết lập ngoài doctor.
+- **`doctor`** chỉ đọc. **`doctor --fix`** chỉ sửa những gì đã có, không bao giờ biến một thư mục bất kỳ thành dự án.
+- **`init` = `doctor --fix` + được phép tạo mới,** rồi in "✓ Ready". Với công cụ cho agent, `init` tự kết nối các agent đã cài, nên chỉ `init --yes` là xong.
+- **Không có `setup`.** Lệnh cũ chỉ được giữ làm alias ẩn của `init`.
+- **Bảng hai kiểu phân phối:**
+  - **A, một binary:** `<app> update`, gõ `upgrade` cũng được.
+  - **B, bộ cài + runtime:** `<ctl> init`, `upgrade`, `repair`, `verify`, `self-update`. Còn `<app> update` chỉ chuyển sang `<ctl> upgrade`.
+- Agent chỉ cần nhớ: **`init` lần đầu, `doctor` khi có vấn đề, `update` khi muốn bản mới.**
+
+**3. Đã sửa theo review**
+- **Các mâu thuẫn về lệnh:** INS-13 giờ dùng `init`. `install.sh` in ra `Next: <đường-dẫn-tuyệt-đối> init`.
+- **MCP:** thêm lệnh `mcp`. Thêm rule CMD-09: stdout chỉ chứa kết quả, mọi thông báo đi ra stderr.
+- **Khuôn `--json` chung** cho mọi dự án: `{schema, ok, data, error:{code,why,fix}, next}`.
+- **`references.md`** có bảng "Start from" theo loại dự án, cột ngôn ngữ, và trỏ tới MCP proxy của skillstation. GO-03 giờ bảo bắt đầu từ pipeline của skillstation.
+- **Bỏ trùng lặp:**
+  - Principles chỉ còn định nghĩa các tầng và 8 rule dùng chung.
+  - Cú pháp lệnh chỉ nằm trong file CMD.
+  - Thứ tự ưu tiên chỉ viết một lần, ở đ …[+1515]
+[L900] USER: skill này có nên tự nó verify việc hiện tại không?
+[L910] AGENT: Có, nhưng chỉ ở mức vừa đủ. Skill hiện chỉ tự kiểm tra **chính nó** (`lint-guides.sh`, `check-references.sh`). Còn với **dự án đang làm**, agent phải tự đọc từng rule rồi tự đánh `done`/`gap`. Cách này dễ sai và mỗi lần lại ra một kiểu. Tôi đề xuất kiểm tra theo hai lớp:
+
+**Lớp 1: script tự động cho những gì kiểm được bằng máy**
+
+Thêm `scripts/audit-project.sh <repo-dir> [<binary>]`. Mỗi kết quả gắn với ID rule và có trạng thái `PASS` / `FAIL` / `MANUAL`. Agent điền thẳng kết quả vào checklist. Ví dụ những thứ kiểm được:
+
+| Nhóm | Kiểm tra |
+|---|---|
+| First contact | README có one-liner `releases/latest/download/install.sh`, có mục Quick start nằm trước phần kiến trúc (ONB-04/07) |
+| install.sh | có `set -eu`, dòng cuối là `main "$@"`, có `--help`, `--version`, `--uninstall`, chạy được `sh -n` (INS-02/04) |
+| Bộ lệnh | `--version` và `version` đều chạy; `init`, `doctor`, `update`, `uninstall` đều có `--help` (CMD-06/16) |
+| Agent-native | `--help` có ví dụ và exit code; cờ sai trả exit 2; `doctor --json` đúng khuôn `{schema,ok,data,error,next}`; stdout với `--json` không lẫn dòng thừa (CMD-08/09/11) |
+| Không hỏi khi không có terminal | `init` chạy với stdin `/dev/null` thì không treo (CMD-17) |
+| Release | workflow có tạo checksums, action pin theo SHA, có job kiểm tra tag khớp version (REL-06/10, VER-02) |
+
+Nên giới hạn khoảng 25–30 check, chỉ cho các MUST thật sự đo được. Script này cũng có thể chép sang CI của từng dự án để giữ chuẩn về sau.
+
+**Lớp 2: agent kiểm tra những gì cần phán đoán**
+
+Script không đánh giá được tagline có hay không, quick start có thật sự xong trong 2 phút không, hay `--help` có đủ để tự làm không. Phần này cần agent:
+- **Agent-native test (TST-04) làm thật:** bật một agent mới, không cho đọc README, chỉ giao "cài X giúp tôi" trong thư mục tạm. Agent phải tự đi qua `--help` → `init` → `doctor` đến khi ổn. Kiểm tra này đáng giá nhất, vì nó đo đúng điều anh muốn.
+- **Review first contact:** agent đọc màn hình đầu README như một người dùng …[+542]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

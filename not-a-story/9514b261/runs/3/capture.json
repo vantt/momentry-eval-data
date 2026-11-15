@@ -1,0 +1,562 @@
+{
+  "id": "9514b261",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "72eb302fb732e9b8",
+  "at": "2026-11-10T12:45:43.356Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.059306,
+  "dryRun": {
+    "usd": 0.28,
+    "tokens": 64045,
+    "chunks": 1,
+    "hotspots": 21,
+    "entries": 614,
+    "gitCommits": 30
+  },
+  "report": {
+    "sid": "claude:9514b261",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.26189650000000003,
+    "secs": 26.3,
+    "exitCode": 0,
+    "status": "done",
+    "written": 14,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-21-agent-noi-khong-co-chu-chu-fd46",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-1: spine.context: evidence ngoài các dòng đã đưa: 226; spine.want: evidence ngoài các dòng đã đưa: 226; spine.obstacle: evidence ngoài các dòng đã đưa: 262; spine.turn: evidence ngoài các dòng đã đưa: 262; spine.action: evidence ngoài các dòng đã đưa: 262 (+2) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/9514b261/runs/3/llm/angle-1-retry.json"
+      },
+      {
+        "id": "2026-10-21-may-kiem-da-viet-xong-nhung-fd46",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-2: spine.turn: evidence ngoài các dòng đã đưa: 542; spine.action: evidence ngoài các dòng đã đưa: 525, 863; spine.outcome: evidence ngoài các dòng đã đưa: 542, 890; spine.takeaway: evidence ngoài các dòng đã đưa: 542; evidence ngoài các dòng đã đưa: 542 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/9514b261/runs/3/llm/angle-2-retry.json"
+      },
+      {
+        "id": "2026-10-21-chuoi-thay-the-quyet-dinh-36-fd46",
+        "status": "angle",
+        "angle": "Forgent là nền tảng để xây app agent, và đội đang làm một bộ đọc để agent chỉ thấy quyết định còn hiệu lực, không đọc phải quyết định đã bị thay. Người làm tin rằng dữ liệu 'quyết định nào thay quyết định nào' đã đủ để dựng bộ đọc đó. Khi đếm trong nhật ký sự kiện thì chỉ 7 cặp quyết định nền tảng có khai quan hệ, 5 trên 7 chỉ thay một phần, và ít nhất 4 lần thay thế chỉ nằm trong câu chữ. Ai đang dựa vào chuỗi thay thế để lọc quyết định cũ nên kiểm trước khi tin máy đã đủ thông tin.",
+        "audience": "dev làm app agent và dev lưu quyết định kiến trúc",
+        "evidence": [
+          1128,
+          1237
+        ],
+        "spine": {
+          "context": {
+            "text": "Forgent (fgOS) là tầng nền tảng để xây và chạy app agent. Đội đang làm bộ đọc để agent chỉ thấy quyết định còn hiệu lực.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Bộ đọc tính ra tập quyết định hiệu lực, ẩn kết luận đã bị thay để agent không đọc nhầm.",
+            "evidence": [
+              1128
+            ]
+          },
+          "obstacle": {
+            "text": "Quan hệ thay thế chưa đủ và chưa có cấu trúc: chỉ 7 cặp quyết định nền tảng có khai quan hệ, phần còn lại nằm trong câu chữ.",
+            "evidence": [
+              1237
+            ]
+          },
+          "turn": {
+            "text": "Tưởng chuỗi thay thế đã đủ để bộ đọc dựa vào; hoá ra chỉ 7 cặp có khai quan hệ, 5 trên 7 chỉ thay một phần.",
+            "evidence": [
+              1128,
+              1237
+            ]
+          },
+          "action": {
+            "text": "Đếm 36 quyết định ADR và 18 quan hệ thay thế trong nhật ký, rồi đối chiếu id với state và index.",
+            "evidence": [
+              1121,
+              1212
+            ]
+          },
+          "outcome": {
+            "text": "Chưa đủ dữ liệu để tính tập hiệu lực: ít nhất 4 quyết định thay điều khoản chỉ ghi trong câu chữ, và một đích thay thế là mã băm tài liệu.",
+            "evidence": [
+              1237
+            ]
+          },
+          "takeaway": {
+            "text": "Quan hệ thay thế phải là dữ liệu có cấu trúc thì máy mới biết cái nào còn hiệu lực.",
+            "evidence": [
+              1237
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-21-mo-phong-noi-hoi-dong-du-fd46",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-4: spine.context: evidence ngoài các dòng đã đưa: 1325; spine.want: evidence ngoài các dòng đã đưa: 1325; spine.obstacle: evidence ngoài các dòng đã đưa: 1417; spine.turn: evidence ngoài các dòng đã đưa: 1572; spine.action: evidence ngoài các dòng đã đưa: 1384, 1476 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/9514b261/runs/3/llm/angle-4-retry.json"
+      },
+      {
+        "id": "2026-10-21-ba-agent-quet-song-song-knowledge-fd46",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-5: spine.context: evidence ngoài các dòng đã đưa: 1815; spine.want: evidence ngoài các dòng đã đưa: 1815; spine.obstacle: evidence ngoài các dòng đã đưa: 1906, 2605; spine.turn: evidence ngoài các dòng đã đưa: 1906, 2605, 2630; spine.action: evidence ngoài các dòng đã đưa: 2613, 2630, 2652 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/9514b261/runs/3/llm/angle-5-retry.json"
+      },
+      {
+        "id": "2026-10-21-nhap-lai-khoa-thehive-ghi-de-fd46",
+        "status": "none",
+        "none": true,
+        "reason": "Đây là việc cấu hình thường: dán khoá thừa một ký tự rồi sửa bằng cách nhập lại. Lỗi dán chỉ là việc vặt, không phải chỗ ngoặt về điều ai đó tin sai đáng kể.",
+        "spine": {
+          "context": {
+            "text": "Dự án Forgent (fgOS) là tầng nền để xây app agent; người làm đang cài nhà cung cấp TheHive cho hai CLI pi và omp.",
+            "evidence": [
+              "profile",
+              3609
+            ]
+          },
+          "want": {
+            "text": "Muốn cài TheHive cho pi và omp theo hướng dẫn.",
+            "evidence": [
+              3609
+            ]
+          },
+          "obstacle": {
+            "text": "Khoá mới bị API trả 401 khi gọi thẳng.",
+            "evidence": [
+              3915
+            ]
+          },
+          "action": {
+            "text": "Sao lưu auth.json, nhập lại khoá đã loại khoảng trắng, rồi gọi thử API.",
+            "evidence": [
+              3920
+            ]
+          },
+          "outcome": {
+            "text": "API trả 200; pi và omp đều trả OK với hai model; khoá dài 24 ký tự.",
+            "evidence": [
+              3934,
+              3949
+            ]
+          },
+          "takeaway": {
+            "text": "Sao lưu thông tin xác thực trước khi ghi đè; loại khoảng trắng khi dán; kiểm bằng lời gọi API thật.",
+            "evidence": [
+              3920
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-10-21-ke-hoach-260925-nam-tren-nhanh-fd46",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-7: spine.context: evidence ngoài các dòng đã đưa: 1940; spine.want: evidence ngoài các dòng đã đưa: 1940; spine.obstacle: evidence ngoài các dòng đã đưa: 1999; spine.turn: evidence ngoài các dòng đã đưa: 2191, 2278; spine.action: evidence ngoài các dòng đã đưa: 2212 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/9514b261/runs/3/llm/angle-7-retry.json"
+      },
+      {
+        "id": "2026-10-21-probe-sau-nha-cung-cap-kho-fd46",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-8: spine.context: evidence ngoài các dòng đã đưa: 3502; spine.want: evidence ngoài các dòng đã đưa: 3502; spine.obstacle: evidence ngoài các dòng đã đưa: 3966, 3993; spine.turn: evidence ngoài các dòng đã đưa: 3353, 3993; spine.action: evidence ngoài các dòng đã đưa: 3407, 3502 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/9514b261/runs/3/llm/angle-8-retry.json"
+      },
+      {
+        "id": "2026-10-21-hoi-dong-kien-truc-11-ghe-fd46",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-9: spine.context: evidence ngoài các dòng đã đưa: 917; spine.want: evidence ngoài các dòng đã đưa: 917; spine.obstacle: evidence ngoài các dòng đã đưa: 957; spine.turn: evidence ngoài các dòng đã đưa: 1048, 1082; spine.action: evidence ngoài các dòng đã đưa: 957, 1018 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/9514b261/runs/3/llm/angle-9-retry.json"
+      },
+      {
+        "id": "2026-10-21-commit-chi-file-cua-minh-giua-fd46",
+        "status": "none",
+        "none": true,
+        "reason": "Đây là quy trình git thường, có một lỗi pathspec vặt đã sửa ngay; không ai tin sai điều gì, nên không có chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Forgent là nền tảng cho app agent. Người làm đang có cây git bẩn với file đang sửa dở của chủ.",
+            "evidence": [
+              "profile",
+              8
+            ]
+          },
+          "want": {
+            "text": "Đưa phần việc của mình lên remote mà không đụng file đang sửa dở của người khác.",
+            "evidence": [
+              1703,
+              1772
+            ]
+          },
+          "obstacle": {
+            "text": "Cây có file dirty của chủ, có xung đột ở file contract, và lần commit đầu lỗi pathspec vì file chưa được git biết.",
+            "evidence": [
+              711,
+              1680
+            ]
+          },
+          "action": {
+            "text": "Khôi phục file, pull --rebase --autostash, tách ba commit chỉ chứa file của mình, ghi board rồi push.",
+            "evidence": [
+              692,
+              1675,
+              1687,
+              1743,
+              1773
+            ]
+          },
+          "outcome": {
+            "text": "Ba commit đã lên main, remote không có commit mới cần rebase trước khi push.",
+            "evidence": [
+              1765,
+              1778
+            ]
+          },
+          "takeaway": {
+            "text": "Stage bằng pathspec thay vì git add cả cây, và kiểm remote đụng file nào trước khi rebase.",
+            "evidence": [
+              1687,
+              1704
+            ]
+          }
+        },
+        "completeness": 6
+      }
+    ],
+    "message": "claude:9514b261 L1-L4000: done; 11 chuyện thô, 14 cụm; ghi 14 mới, gộp 0\nđiểm nóng 21 (thiếu 0); 30 commit git; lần chạy 1/1; 0.26 USD\ngóc kể: 1 có, 2 không ra chuyện, 7 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: forgent tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-21-agent-noi-khong-co-chu-chu-fd46",
+      "code": "M-ERK0",
+      "title": "Agent nói 'không có chủ', chủ nhớ ra một component đã làm xong: tsk-1lv",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-may-kiem-da-viet-xong-nhung-fd46",
+      "code": "M-R945",
+      "title": "Máy kiểm đã viết xong nhưng không chạy ở đâu: 374 vi phạm và một lệnh ghi đè nuốt vi phạm mới",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-chuoi-thay-the-quyet-dinh-36-fd46",
+      "code": "M-2E8X",
+      "title": "Chuỗi thay thế quyết định: 36 ADR, 18 quan hệ, và ít nhất 4 quyết định chỉ nói trong câu chữ",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Forgent là nền tảng để xây app agent, và đội đang làm một bộ đọc để agent chỉ thấy quyết định còn hiệu lực, không đọc phải quyết định đã bị thay. Người làm tin rằng dữ liệu 'quyết định nào thay quyết định nào' đã đủ để dựng bộ đọc đó. Khi đếm trong nhật ký sự kiện thì chỉ 7 cặp quyết định nền tảng có khai quan hệ, 5 trên 7 chỉ thay một phần, và ít nhất 4 lần thay thế chỉ nằm trong câu chữ. Ai đang dựa vào chuỗi thay thế để lọc quyết định cũ nên kiểm trước khi tin máy đã đủ thông tin.",
+      "audience": "dev làm app agent và dev lưu quyết định kiến trúc",
+      "spine": {
+        "context": {
+          "text": "Forgent (fgOS) là tầng nền tảng để xây và chạy app agent. Đội đang làm bộ đọc để agent chỉ thấy quyết định còn hiệu lực.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Bộ đọc tính ra tập quyết định hiệu lực, ẩn kết luận đã bị thay để agent không đọc nhầm.",
+          "lines": [
+            "claude:9514b261#L1128"
+          ]
+        },
+        "obstacle": {
+          "text": "Quan hệ thay thế chưa đủ và chưa có cấu trúc: chỉ 7 cặp quyết định nền tảng có khai quan hệ, phần còn lại nằm trong câu chữ.",
+          "lines": [
+            "claude:9514b261#L1237"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng chuỗi thay thế đã đủ để bộ đọc dựa vào; hoá ra chỉ 7 cặp có khai quan hệ, 5 trên 7 chỉ thay một phần.",
+          "lines": [
+            "claude:9514b261#L1128",
+            "claude:9514b261#L1237"
+          ]
+        },
+        "action": {
+          "text": "Đếm 36 quyết định ADR và 18 quan hệ thay thế trong nhật ký, rồi đối chiếu id với state và index.",
+          "lines": [
+            "claude:9514b261#L1121",
+            "claude:9514b261#L1212"
+          ]
+        },
+        "outcome": {
+          "text": "Chưa đủ dữ liệu để tính tập hiệu lực: ít nhất 4 quyết định thay điều khoản chỉ ghi trong câu chữ, và một đích thay thế là mã băm tài liệu.",
+          "lines": [
+            "claude:9514b261#L1237"
+          ]
+        },
+        "takeaway": {
+          "text": "Quan hệ thay thế phải là dữ liệu có cấu trúc thì máy mới biết cái nào còn hiệu lực.",
+          "lines": [
+            "claude:9514b261#L1237"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-21-mo-phong-noi-hoi-dong-du-fd46",
+      "code": "M-A48T",
+      "title": "Mô phỏng nói hội đồng đủ 11 ghế, nhưng bảng model đưa ra sai vì mô phỏng thiếu herdr",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-ba-agent-quet-song-song-knowledge-fd46",
+      "code": "M-04ZP",
+      "title": "Ba agent quét song song: Knowledge Registry đã chạy trên 479 tài liệu, đề xuất mới suýt trùng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-nhap-lai-khoa-thehive-ghi-de-fd46",
+      "code": "M-TGC6",
+      "title": "Nhập lại khoá TheHive ghi đè khoá cũ không sao lưu, bị 401, rồi lỗi một ký tự thừa",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Dự án Forgent (fgOS) là tầng nền để xây app agent; người làm đang cài nhà cung cấp TheHive cho hai CLI pi và omp.",
+          "lines": [
+            "profile",
+            "claude:9514b261#L3609"
+          ]
+        },
+        "want": {
+          "text": "Muốn cài TheHive cho pi và omp theo hướng dẫn.",
+          "lines": [
+            "claude:9514b261#L3609"
+          ]
+        },
+        "obstacle": {
+          "text": "Khoá mới bị API trả 401 khi gọi thẳng.",
+          "lines": [
+            "claude:9514b261#L3915"
+          ]
+        },
+        "action": {
+          "text": "Sao lưu auth.json, nhập lại khoá đã loại khoảng trắng, rồi gọi thử API.",
+          "lines": [
+            "claude:9514b261#L3920"
+          ]
+        },
+        "outcome": {
+          "text": "API trả 200; pi và omp đều trả OK với hai model; khoá dài 24 ký tự.",
+          "lines": [
+            "claude:9514b261#L3934",
+            "claude:9514b261#L3949"
+          ]
+        },
+        "takeaway": {
+          "text": "Sao lưu thông tin xác thực trước khi ghi đè; loại khoảng trắng khi dán; kiểm bằng lời gọi API thật.",
+          "lines": [
+            "claude:9514b261#L3920"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-21-ke-hoach-260925-nam-tren-nhanh-fd46",
+      "code": "M-19PJ",
+      "title": "Kế hoạch 260925 nằm trên nhánh chưa push: agent không đọc được manifest 331 file",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-probe-sau-nha-cung-cap-kho-fd46",
+      "code": "M-XBYQ",
+      "title": "Probe sáu nhà cung cấp: 'kho tài khoản rỗng' nghĩa là fgOS không quản lý tài khoản nào",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-hoi-dong-kien-truc-11-ghe-fd46",
+      "code": "M-0FJZ",
+      "title": "Hội đồng kiến trúc 11 ghế: bước shaping lỗi ngay lần chạy đầu",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-commit-chi-file-cua-minh-giua-fd46",
+      "code": "M-CTCH",
+      "title": "Commit chỉ file của mình giữa cây bẩn của người khác",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Forgent là nền tảng cho app agent. Người làm đang có cây git bẩn với file đang sửa dở của chủ.",
+          "lines": [
+            "profile",
+            "claude:9514b261#L8"
+          ]
+        },
+        "want": {
+          "text": "Đưa phần việc của mình lên remote mà không đụng file đang sửa dở của người khác.",
+          "lines": [
+            "claude:9514b261#L1703",
+            "claude:9514b261#L1772"
+          ]
+        },
+        "obstacle": {
+          "text": "Cây có file dirty của chủ, có xung đột ở file contract, và lần commit đầu lỗi pathspec vì file chưa được git biết.",
+          "lines": [
+            "claude:9514b261#L711",
+            "claude:9514b261#L1680"
+          ]
+        },
+        "action": {
+          "text": "Khôi phục file, pull --rebase --autostash, tách ba commit chỉ chứa file của mình, ghi board rồi push.",
+          "lines": [
+            "claude:9514b261#L692",
+            "claude:9514b261#L1675",
+            "claude:9514b261#L1687",
+            "claude:9514b261#L1743",
+            "claude:9514b261#L1773"
+          ]
+        },
+        "outcome": {
+          "text": "Ba commit đã lên main, remote không có commit mới cần rebase trước khi push.",
+          "lines": [
+            "claude:9514b261#L1765",
+            "claude:9514b261#L1778"
+          ]
+        },
+        "takeaway": {
+          "text": "Stage bằng pathspec thay vì git add cả cây, và kiểm remote đụng file nào trước khi rebase.",
+          "lines": [
+            "claude:9514b261#L1687",
+            "claude:9514b261#L1704"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-21-doi-ten-tai-khoan-cho-thong-fd46",
+      "code": "M-YSBE",
+      "title": "Đổi tên tài khoản cho thống nhất: đặt tên theo nhà cung cấp, kiểm đăng nhập trước khi di chuyển",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-10-doi-chieu-truoc-khi-bao-agent-fd46",
+      "code": "M-0VPV",
+      "title": "Đối chiếu trước khi báo: agent kiểm lại từng khẳng định quan trọng của sub-agent (đếm dòng, đọc lại file, chạy lại lệnh) rồi mới báo cho user, thay vì chuyển nguyên kết quả.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-10-tach-ro-da-kiem-bang-lenh-fd46",
+      "code": "M-XHR0",
+      "title": "Tách rõ 'đã kiểm bằng lệnh/mã' với 'suy luận' trong từng bảng báo cáo, và ghi rõ giới hạn của kết quả (vd: 'đếm thô', 'chưa đọc hết', 'không kiểm token còn hạn').",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-10-khi-user-yeu-cau-mo-mot-fd46",
+      "code": "M-MHH8",
+      "title": "Khi user yêu cầu mở một việc tốn thời gian hoặc tốn tiền (hội đồng nhiều model, probe ngoài), agent kiểm tra điều kiện an toàn và chi phí trước, báo danh sách cho user, rồi chờ duyệt trước khi chạy.",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

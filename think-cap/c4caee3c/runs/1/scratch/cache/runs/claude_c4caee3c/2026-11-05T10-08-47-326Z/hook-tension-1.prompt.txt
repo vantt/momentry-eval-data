@@ -1,0 +1,51 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Gói Mac Intel: một thư viện npm không còn file cho darwin-x64, và cách ghim bản cũ kèm điều kiện đạt
+   Smoke test trên runner Intel lỗi 'Cannot find module ... darwin/x64'. Đề xuất Rosetta không cứu được vì file thiếu trong gói npm. Người dùng chọn ghim 1.23.2 chỉ cho gói Intel. Đo cùng máy: multilingual +0,063, vi-synonym −0,017. Sau đó trên bản vantt.4 vi-snippet +0,024; người dùng đổi luật thành 'chỉ chặn khi tụt quá 0,01', nên danh sách cho phép không còn lỗi thời mỗi lần gói đổi.
+M2. Đọc giấy phép dữ liệu trước khi học từ điển từ ghép
+   Người dùng yêu cầu học từ điển mới bằng thống kê cặp âm tiết trên ba bộ CC BY 4.0 (ALT, Nemotron-Personas-Vietnam, văn bản pháp luật). Kết quả 20.523 từ, vi-compound từ 0,632 lên 0,983, và tốt hơn hoặc bằng danh sách pyvi ở mọi hạng mục.
+M3. Test npm pack trong gói tiếng Việt đọc sai đầu ra npm 12
+   Test chỉ đọc được mảng nên hỏng trên CI; sửa để đọc cả hai dạng, 23/23 xanh. Sau đó một lần khác đòi build/index.js khi gói chưa compile, sửa thành chỉ kiểm package.json khai đúng thư mục.
+M4. Hook pre-push của upstream chặn push vì HUSKY chưa tắt
+   Agent push lại với HUSKY=0 và từ đó đặt biến này cho mọi lệnh push. Lỗi vặt, sửa trong một lượt.
+M5. Eval vault thật cho thấy gói tiếng Việt tụt ở vài hạng mục dù tổng tăng
+   Tổng nDCG@5 tăng từ 0,600 lên 0,698 với gói vi, nhưng cổng theo hạng mục hỏng: vi-iy giảm 0,260 (một câu rơi khỏi top 5), vi-accented −0,052, vi-compound −0,041, vi-synonym −0,167 vì vault chưa có lexicon. Mỗi hạng mục chỉ 2–6 câu. Người dùng quyết dùng gói vi cho bộ cài, và thêm việc V15b: chế độ --private-detail ghi từng câu ra file ngoài repo, có guard chặn ghi trong repo.
+M6. Người dùng không đợi kết quả cuối cùng để ra quyết định: agent đưa ra hai hoặc ba phương án kèm bằng chứng đo được (bảng số, mức lệch, số câu), rồi hỏi một câu duy nhất với lựa chọn có khuyến nghị; người dùng trả lời ngắn gọn và việc tiếp tục ngay.
+   Người dùng không đợi kết quả cuối cùng để ra quyết định: agent đưa ra hai hoặc ba phương án kèm bằng chứng đo được (bảng số, mức lệch, số câu), rồi hỏi một câu duy nhất với lựa chọn có khuyến nghị; người dùng trả lời ngắn gọn và việc tiếp tục ngay. Thường AI hỏi lan man nhiều câu, hoặc tự quyết mà không báo, hoặc người dùng phải tự đọc log dài để hiểu.
+M7. Phục hồi dấu sai với 'Hội An': lỗi nằm ở cách dựng câu, không ở ngưỡng
+   'An' bị phục hồi thành 'ăn', từ hay gặp hơn trong vault. Ngưỡng 50% đúng PRD, lỗi là câu gửi cho model nhúng. Sửa: từ gõ có dấu giữ nguyên, từ không dấu chỉ được phục hồi khi vault không bao giờ viết trần và xác suất đủ cao. nDCG@5 tổng 0,932 → 0,954, bật mặc định.
+M8. Dọn 21G làm việc tạm sau khi các agent xong
+   Xoá worktree đã merge, nhánh nháp, dữ liệu eval tạm, artefact CI đã đọc; giữ lại thứ agent còn dùng. Giảm xuống 6,4G, không xoá dữ liệu của phiên khác.
+M9. Trước khi đẩy lên CI hoặc gộp vào nhánh chính, agent kiểm tra trên một nhánh ghép riêng (chk-series) rồi mới chuyển kết quả sang master; khi CI đỏ thì chẩn đoán nguyên nhân từ artifact và log trước khi đề xuất sửa.
+   Trước khi đẩy lên CI hoặc gộp vào nhánh chính, agent kiểm tra trên một nhánh ghép riêng (chk-series) rồi mới chuyển kết quả sang master; khi CI đỏ thì chẩn đoán nguyên nhân từ artifact và log trước khi đề xuất sửa. Dev thường push thẳng lên nhánh chính rồi xem CI, hoặc sửa theo cảm tính khi thấy đỏ, mỗi lần sửa chờ CI vài chục phút.
+M10. Hết dung lượng /tmp giữa lúc 11 agent đang chạy: worktree đặt nhầm chỗ
+   Ghi file trạng thái báo EDQUOT, lệnh shell của mọi agent hỏng. Chuyển toàn bộ worktree sang /home/.../ohs-wt, git worktree repair, gửi SendMessage cho 11 agent tiếp tục. Không mất phần việc dở; /tmp về 26%.
+M11. Khi nhận câu hỏi của người dùng về một khái niệm (L13, L22, L15, L24), agent trả lời ngắn, tách rõ phần nào thuộc repo nào, sau đó đối chiếu với PRD trước khi khẳng định, và sửa nhầm lẫn của chính mình ngay trong commit.
+   Khi nhận câu hỏi của người dùng về một khái niệm (L13, L22, L15, L24), agent trả lời ngắn, tách rõ phần nào thuộc repo nào, sau đó đối chiếu với PRD trước khi khẳng định, và sửa nhầm lẫn của chính mình ngay trong commit. Thường AI trả lời tự tin mà không đối chiếu tài liệu, hoặc giải thích dài dòng; khi sai thì không sửa lại tài liệu.
+M12. Fixture tải theo tag cố định v0.10.0 trong khi bộ eval đã sang v0.11.0
+   Golden set không khớp fixture, báo 'differs from the golden set generated with this fixture version'. Lỗi gốc là một chuỗi hardcode không đồng bộ. Sửa cho workflow đọc FIXTURE_TAG từ run-eval.mjs.
+M13. Một lần agent đổi nhầm dòng: sửa dòng N22 khi định sửa L24 trong PRD
+   Agent viết script thay chuỗi cho dòng L24 nhưng nhãn không đổi; kiểm git show thấy đã sửa nhầm dòng N22 cùng commit. Sửa lại trong cùng commit.
+M14. Agent Claude tự điều phối nhiều agent con chạy song song trên nhiều worktree và nhánh, mỗi agent một việc, rồi tự ghép (merge/cherry-pick) và kiểm chuỗi bản vá theo đúng thứ tự phụ thuộc trước khi push.
+   Agent Claude tự điều phối nhiều agent con chạy song song trên nhiều worktree và nhánh, mỗi agent một việc, rồi tự ghép (merge/cherry-pick) và kiểm chuỗi bản vá theo đúng thứ tự phụ thuộc trước khi push. Phần lớn dev dùng AI theo kiểu một phiên, một việc, làm tuần tự; khi việc lớn thì tự chia nhỏ rồi chờ từng phần xong mới làm tiếp, hoặc dùng một nhánh duy nhất cho mọi thay đổi.
+M15. Lead agent đổi trực tiếp kế hoạch và PRD khi người dùng đưa quyết định mới (ví dụ chuyển từ tự đuổi upstream sang ghim tag thủ công, bỏ lịch cron), rồi ghi lại quyết định vào tài liệu kèm ngày và lý do, thay vì để tài liệu cũ lệch với thực tế.
+   Lead agent đổi trực tiếp kế hoạch và PRD khi người dùng đưa quyết định mới (ví dụ chuyển từ tự đuổi upstream sang ghim tag thủ công, bỏ lịch cron), rồi ghi lại quyết định vào tài liệu kèm ngày và lý do, thay vì để tài liệu cũ lệch với thực tế. Thường quyết định chỉ nằm trong đầu hoặc trong tin nhắn chat; tài liệu dự án thường bị bỏ quên và lệch dần so với việc đã làm.
+M16. Chạy lại một agent đã dừng giữa chừng mà không báo
+   Lead kiểm tiến trình thấy không có gì chạy, gửi SendMessage yêu cầu tiếp tục; agent quay lại và báo lỗi npm 12 trong test. Việc đã xong vẫn được giữ trên nhánh.
+M17. Một agent PyPI/npm không tự nhận 'xong': cổng chất lượng đỏ vì baseline ghi trên máy khác CPU
+   CI báo QUALITY_FAILED ở đúng một mục: nDCG@5 eval tiếng Anh không có gói đo được 0,728 trên runner GitHub, nhưng baseline ghi trên máy dev là 0,735, vượt ngưỡng 0,005. Nguyên nhân: ONNX lượng tử cho số hơi khác theo loại CPU (AMD EPYC khác các loại khác). Cùng lỗi kiểu này cũng làm bước kiểm mức lệch của gói Mac Intel hỏng ở vài lần chạy. Sửa bằng cách so với upstream đo ngay trong cùng lần chạy, baseline ghi chỉ còn dùng báo trôi; CI xanh ở run 41410567165.
+M18. Snapshot test trong CI hỏng ngẫu nhiên vì điểm bằng nhau đổi chỗ
+   Sửa bằng so sánh chấp nhận hoán vị trong nhóm bằng điểm, các phần khác vẫn khớp tuyệt đối. Cùng commit phát hiện một test khác phụ thuộc biến môi trường do file khác để lại; sửa, chạy 10 lần với thứ tự xáo trộn đều xanh.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

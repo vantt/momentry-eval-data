@@ -1,0 +1,114 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Obsidian Hybrid Search is an npm package that searches a local Obsidian vault by meaning, exact words, titles, aliases, tags, and links, and returns results through a CLI, JSON-lines IPC, or an MCP server. It is for Obsidian users who want to find and reuse their own notes, and for AI agents that should start from those notes and cite their sources. It runs locally by default with SQLite, FTS5, and sqlite-vec, and can optionally call OpenAI-compatible embedding APIs. It also includes a native Obsidian plugin for search while writing.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L232] USER: Issues đang tắt trên fork (fork mặc định tắt). PRD dựa vào issue để báo khi catchup hỏng và để ghi báo cáo review. Cần bật lại bằng gh repo edit vantt/obsidian-hybrid-search --enable-issues; nên để agent kia làm. Actions trên fork vẫn tắt, đúng như PRD.
+[L264] USER: action là dùng để tự chạy ci catchup khi upstream thay đổi đúng không. cái này bật luôn nếu đúng
+</asks>
+
+<story>
+hook: Ổ /tmp đầy hạn mức làm mọi agent hỏng cùng lúc
+tension: nho_ma_to (Chỉ là thư mục tạm cho scratchpad / Mọi lệnh shell của mọi agent đều hỏng)
+stakes: 1/3
+# Ổ /tmp có hạn mức làm mọi agent hỏng, phải chuyển worktree sang ổ thật
+
+**Bối cảnh:** Điều phối 11 agent song song, mỗi worktree đặt trong /tmp (tmpfs 16G có hạn mức) và mỗi worktree tốn khoảng 1,3G cho thư viện phụ thuộc.
+**Chuyện gì xảy ra:** Khi ghi scratchpad, lệnh báo EDQUOT và mọi lệnh shell của mọi agent đều hỏng. Lead dừng toàn bộ agent, chuyển nguyên các worktree sang một thư mục trên ổ chính, sửa lại đường dẫn cho git, rồi chạy lại từng agent từ chỗ đã dừng mà không mất phần việc dở. /tmp sau đó còn 26%. Về sau, dọn dẹp theo từng việc đã xong đưa thư mục làm việc từ 21G xuống 6,4G.
+**Bài học:** Đặt worktree và bản dựng lớn trên ổ có dung lượng thật, không đặt trên tmpfs có hạn mức; và đưa quy tắc này vào brief của mọi agent ngay từ đầu.
+**Artefact:** Trạng thái điều phối lead-state và thông báo lỗi EDQUOT (không kèm đường dẫn cá nhân).
+**Góc người ngoài:** cách làm phổ biến là Dev thường để rác tích lũy đến khi đầy đĩa mới dọn một lần, hoặc xoá hết một lúc và làm hỏng việc đang chạy; ở đây khác ở Người đọc sẽ hỏi cách biết cái nào còn dùng được: lead liệt kê theo từng agent và chỉ xoá phần đã xác nhận xong.
+</story>
+
+<excerpt>
+[L487] AGENT: Ghi lại trạng thái điều phối vào scratchpad để còn dùng được sau khi compact.
+[L488] TOOL Write: /tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d/scratchpad/lead-state.md
+[L492] RESULT (exit error): EDQUOT: unknown error, write
+[L506] AGENT: Scratchpad `/tmp/claude-1000` đã chạm hạn mức đĩa: mỗi worktree có `node_modules` riêng. Kiểm tra dung lượng trước khi quyết định cách giải phóng.
+[L507] TOOL Bash: df -h /tmp /home/vantt 2>&1; quota -s 2>/dev/null | head; S=/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d/scratchpad; du -sh $S/* 2>/dev/null | sort -h | tail -20; du -sh /tmp/claude-1000 2>/dev/null
+[L508] RESULT (exit 134): Exit code 134 | Disk quota used up: a test write beside this command's output file, on the volume holding /tmp/claude-1000 (Claude Code's temporary directory), failed with EDQUOT, so whatever this command printed was lost and its own writes may have failed with "Disk quota exceeded". Delete files there that are no longer needed, or restart Claude Code with CLAUDE_CODE_TMPDIR set to a directory on another volume, then retry. If this is the user's own computer, tell them before deleting anything t …[+12]
+[L525] TOOL ToolSearch: {"query":"select:TaskStop","max_results":1}
+[L526] RESULT: 
+…
+[L615] TOOL Bash: df -h /home/vantt | tail -1
+[L618] RESULT: /dev/nvme0n1p2 457G 284G 150G 66% /
+[L621] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d/scratchpad; D=/home/vantt/projects/ohs-wt; mkdir -p $D; ls $S; cd /home/vantt/projects/obsidian-hybrid-search && git worktree list
+[L624] RESULT: ba-ci.log | baseline-test.log
+[L632] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d/scratchpad; D=/home/vantt/projects/ohs-wt; cd /home/vantt/projects/obsidian-hybrid-search; for w in wt-block-anchors wt-db-path wt-restrict-paths wt-unicode-inline-tags wt-v04 wt-v11 wt-vector-export  …[+187]
+…
+[L733] TOOL Bash: cat > /home/vantt/projects/ohs-wt/lead-state.txt <<'EOF' Lead state, roadmap vantt/plans/261102-0349-fork-master-roadmap (updated 12:10) Done+pushed on master: V00 40f46cf, V09 4029b85, V10 9f62f0d, V01 8fda93b, V11 8dbe5b9 (P01 in series.toml). Actions enabled, upstream workflows disabled. V02 enab …[+992]
+[L734] RESULT: saved
+[L740] AGENT: Tôi đã xử lý xong sự cố ổ đĩa và cho cả 11 agent chạy lại từ chỗ đã dừng.
+
+**Sự cố:** các worktree của agent nằm trong `/tmp`. Đó là một tmpfs 16G có hạn mức, và mỗi worktree tốn khoảng 1,3G cho thư viện phụ thuộc. Khi hạn mức đầy, mọi lệnh shell của mọi agent đều hỏng.
+
+**Cách xử lý:**
+- Dừng hết agent, chuyển nguyên các worktree sang `/home/vantt/projects/ohs-wt/` rồi cho git nhận lại đường dẫn mới.
+- Không xoá gì; phần việc dở dang trong các worktree vẫn còn.
+- `/tmp` giờ chỉ còn dùng 26%.
+- Brief chung cho agent đã ghi rõ: không bao giờ đặt worktree, bản dựng hay log lớn trong `/tmp`.
+
+**Đã commit và push lên `master`:**
+- V00: cài đặt fork.
+- V09: gói tiếng Việt M1.
+- V10: bộ eval tiếng Việt.
+- V01: script catchup. Nhánh `vantt/v0.17.2` đã lên origin, test upstream 1972/1972 đạt.
+- V11: bản vá P01 điểm cắm gói ngôn ngữ, đã vào `series.toml`.
+
+**GitHub Actions:** đã bật theo yêu cầu của bạn. Bốn workflow của upstream đều ở trạng thái tắt, và không có lượt chạy nào khởi động.
+
+**Đang chạy lại:**
+- Các bản vá V04, V05, V06, V07, V23, V24.
+- V02 (CI): agent này sẽ bật Issues trên fork.
+- V12: cổng chất lượng.
+- V13: gói tiếng Việt M2/M3.
+- V21: gói tiếng Đức.
+- Việc làm corpus khó hơn, theo lựa chọn của bạn ở câu hỏi G3.
+
+Khi từng việc xong, tôi sẽ ghép vào chuỗi bản vá, cập nhật plan, commit và push.
+[L748] USER: Tiếp tục điều phối plan vantt/plans/261102-0349-fork-master-roadmap/plan.md: kiểm tra agent Đ0 (V00, V09, V10), commit/push việc đã xong, khởi chạy đợt kế.
+[L750] AGENT: Lượt hẹn giờ đã tới. Việc của Đ0 (V00, V09, V10) đã commit từ trước, nên tôi chỉ kiểm tra xem có gì mới cần ghép.
+…
+[L3955] TOOL Bash: W=/home/vantt/projects/ohs-wt; for w in m-snip m-v13b m-v20b wt-p01fix wt-v11; do git worktree remove --force $W/$w 2>&1 | tail -1; done; git worktree prune; for b in v13b v17 v18 v19 v20 v20-fix v20b vi-snippet-fix p01-language-pack-api p03-resolved series-p03 series-p0506-old v04-fork-identity blo …[+213]
+[L3956] RESULT: 20 | * master
+[L3966] TOOL Bash: W=/home/vantt/projects/ohs-wt; cd $W && rm -rf tmp/v13 tmp/v13b tmp/v17 tmp/v18 tmp/v19 tmp/v20 tmp/v20b tmp/v22 tmp/p01b tmp/snip tmp/o1 tmp/ohs-indexer-test-* tmp/v13-nm.sh tmp/v19-npm.log ci-4* art-* art2-* dx ev fixture fixture-v20b *.log pack12.json cats.mjs fts.mjs cleanup-p09.sh dbp*.sh 2>/de …[+24]
+[L3967] RESULT: bin | brief-patch.md
+[L3972] AGENT: Đã giảm từ 21G xuống 7,8G. Phần còn lại phần lớn là đồ của V03 và V14, hai agent vẫn đang chạy, nên tôi chỉ xoá thêm những thứ của các agent đã xong.
+[L3973] TOOL Bash: W=/home/vantt/projects/ohs-wt; cd $W && rm -rf v12-bl.json v12-catchup.out v12-qg.json v12-report.json ohs-run noise pr pr2 docs-edit.py fix-fixture.py patch-parity.py setup-upstream-baseline.sh stdio-clean.sh stdio-parity-gates.sh stdio-upstream.sh th.mjs vault.bak logs 2>/dev/null; du -sh $W; cat  …[+438]
+[L3974] RESULT: 6.4G /home/vantt/projects/ohs-wt | Shell cwd was reset to /home/vantt/projects/obsidian-hybrid-search
+[L3979] TOOL Bash: git status --short | head; du -sh vantt/.work 2>/dev/null; ls vantt/.work 2>/dev/null; du -sh /tmp/claude-1000 2>/dev/null
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

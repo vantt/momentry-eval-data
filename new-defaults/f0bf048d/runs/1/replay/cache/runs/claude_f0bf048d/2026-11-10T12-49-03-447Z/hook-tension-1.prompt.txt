@@ -1,0 +1,74 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Kiểm MCP bằng bắt tay stdio thật: GA4 trả 9 tool, Search Console 8 tool, run_report ra số liệu
+   Khởi động từng server và gọi tools/list: GA4 có 9 tool, Search Console có 8 tool. Gọi run_report GA4 và nhận số liệu thật; kênh Direct có 58 session trong 7 ngày. Search Console trả rỗng vì chưa có quyền đúng property.
+M2. Model thật khác model khai báo: thống kê token cho thấy model khác cấu hình
+   Thống kê token ghi nhận model gpt-6.1-sol và grok-4.7, còn cấu hình ghi gpt-5.5 và grok-4.6. Có thể do lúc đăng nhập đã chọn model khác, hoặc agent tự chọn. Runtime Gemini qua omp dùng đúng model đã khai báo.
+M3. Chủ tài khoản bị đưa vào daemon chạy agent: thay bằng user riêng, script xoá PAT sau lần chạy đầu
+   Script login đã chạy thành công lần đầu và xoá file PAT sau khi dùng; lần hai báo lỗi vì file không còn. Tìm thấy 3 chỗ chứa PAT trong home (hai config CLI và một file). Tạo PAT mới, cập nhật cả 3, kiểm PAT mới chạy được, rồi mới thu hồi PAT cũ (HTTP 204). Hệ quả: bản backup login cũ không còn dùng được để quay lại.
+M4. Người vận hành bắt lỗi: đang tự làm việc của agent thay vì đóng gói
+   Người vận hành nói rõ: agent phải tự làm được bằng công cụ đã gắn, việc của tôi là đóng gói. Sau đó việc chuyên môn được chuyển sang issue giao cho agent, và việc đầu tiên là chính vụ Search Console, để xem agent có tự phát hiện lỗi không. Phạm vi được chia rõ: hạ tầng cho người, chuyên môn cho agent.
+M5. Backup mỗi giờ bị hỏi lại: database 27 MB, uploads gần rỗng
+   Đo thực tế: database 27 MB, thư mục uploads 4 KB. Lập luận lại theo câu hỏi mất tối đa bao nhiêu việc thay vì kích thước. Đề xuất: mỗi ngày một lần giữ 14 bản ngày và 8 bản tuần, cộng backup ngay trước thao tác rủi ro, chỉ chuyển sang mỗi giờ khi có khách trả tiền. Người vận hành tạm hoãn bước backup.
+M6. Runtime offline vì đổi tên lệnh bọc sau khi tạo profile: daemon chỉ dò lại khi profile đổi
+   Tên lệnh bọc đổi từ theo nhà cung cấp sang theo tài khoản, và profile được tạo trước khi lệnh tồn tại. Daemon bỏ qua profile có lệnh chưa có. Sau khi cài lệnh, runtime vẫn offline; bật rồi tắt profile để daemon dò lại, và cả ba lên online ở cả hai workspace (từ 2 trên 3 lên 3 trên 3). Cách xử lý được ghi vào skill của System Operator.
+M7. Tạo service account bằng gcloud: Google chặn scope GA4, phần còn lại làm được bằng lệnh
+   gcloud chưa có trên máy nên cài bản 589.0.0 đã ghim và kiểm md5 khớp metadata trên GCS. Tạo project, bật 3 API, tạo service account và key đều chạy được. Lệnh cấp quyền GA4 qua scope analytics.manage.users bị Google chặn với client mặc định của gcloud (This app is blocked). Kiểm key bằng cách gọi API, cả hai trả về rỗng, đúng vì chưa có quyền nào.
+M8. Ba runtime, ba issue thử: hai lượt Pi và Grok, một lượt Gemini hoàn thành trong 30 giây
+   Năm issue Pi và Grok chạy xong không lỗi: một issue bị CAPTCHA và tự chuyển blocked, một issue lấy đúng dữ liệu web, hai issue comment và đóng đúng yêu cầu, một issue gom kết quả con. Gemini chạy 30 giây, comment đúng một lần rồi chuyển in_review. Agent làm đúng vai trong quy trình.
+M9. Chọn nguồn SERP: DataForSEO rẻ hơn serper và có thêm search volume
+   Serper khoảng 1 USD cho 1.000 lượt và chỉ có SERP. DataForSEO SERP từ 0,0006 USD mỗi lượt, có thêm volume, độ khó, backlink, crawl và MCP chính thức. Đề xuất chuyển sang DataForSEO, bỏ serper. Ước tính của tôi: khoảng 2 đến 5 USD mỗi khách mỗi tháng, nạp 50 USD dùng được khoảng 10 khách. Điều kiện cam kết tối thiểu của backlink chưa xác nhận.
+M10. Credential OAuth của Claude Code không thể chép giữa hai user Linux: token làm mới làm hỏng bản còn lại
+   Phiên Claude Code tự làm mới token theo chu kỳ và token cũ bị thay. Hai user dùng chung một bản chép sẽ đá nhau, lỗi 401 xuất hiện giữa lượt chạy thật. Chép chỉ chạy được lúc đầu. Khuyến nghị: mỗi user tự /login.
+M11. Commit --amend thiếu file vì đường dẫn cũ đã đổi tên
+   Lệnh git add dùng đường dẫn file cũ nên báo fatal pathspec, và commit có thể thiếu file. Kiểm lại bằng git show --stat rồi add đúng đường dẫn mới và amend.
+M12. Red-team phát hiện mã đăng nhập dev 6 ký tự còn trong .env, kéo theo ba lỗ khẩn
+   Phản biện tìm ra mã đăng nhập dev 6 ký tự trong cấu hình backend. Nếu còn hiệu lực thì ai gọi được API và biết email chủ có thể đăng nhập thành chủ, hoặc dò tối đa 10 mũ 6 khả năng. Tôi kiểm lại bằng grep chỉ đọc độ dài, không in giá trị: mã đã trống trong container đang chạy. Harness còn gắn cờ kết quả phản biện là giống chỉ dẫn; xử lý nó như phát hiện để báo lại, không làm theo.
+M13. Gọi API cập nhật agent: 405 vì dùng sai method, PUT mới cập nhật được
+   PATCH trả 405. Đọc router thấy đăng ký PUT cho cập nhật từng phần. Chạy lại với PUT, cả hai agent thử trả 200.
+M14. Bước sudo chép key bị sót: agent kiểm thử báo blocked sau 20 giây
+   Agent khởi động được cả hai MCP server, gọi được list_sites, rồi tự phát hiện thiếu file key dưới user daemon và chuyển issue sang blocked sau 20 giây. Nguyên nhân là bước sudo install chép key nằm ngoài công cụ đóng gói nên bị bỏ sót. Sau đó đưa khai báo files vào manifest và kiểm MCP dưới đúng user daemon.
+M15. Daemon ops tắt mà kế hoạch có hai điều kiện bật lại mâu thuẫn
+   Kế hoạch ghi hai điều kiện: giai đoạn 0 bước 2 nói đến khi xong bước 4, giai đoạn 2 bước 7 nói khi System Operator đã ra khỏi user vantt. Daemon đang ở trạng thái disabled; bật được bằng một lệnh không cần sudo, nhưng là chấp nhận rủi ro. Unit của spike là transient nên không bật lại được bằng lệnh.
+M16. Property Search Console cũ đứng 0 lượt hiển thị vì site chuyển hướng 301 sang bản không www
+   Property đã cấp là bản www, có 0 lượt hiển thị từ tháng 7. Website chuyển 301 sang bản không www nên Search Console có hai property khác nhau. Agent phải tự chọn property khớp với canonical host, không phải người vận hành đoán.
+M17. Khi công cụ bên ngoài bị chặn hoặc sai thiết lập, agent kiểm trực tiếp chứ không đoán: đọc tài liệu, thử bắt tay thật, đọc mã nguồn trước khi tin
+   Khi công cụ bên ngoài bị chặn hoặc sai thiết lập, agent kiểm trực tiếp chứ không đoán: đọc tài liệu, thử bắt tay thật, đọc mã nguồn trước khi tin Tin vào trí nhớ hoặc bảng giá cũ, cài xong rồi mới thấy lỗi
+M18. opc.mjs nhầm skills/X/SKILL.md thành agent khi skill trùng tên agent
+   Trình đóng gói quét đường dẫn skills/X/SKILL.md và coi X là agent, nên plan báo thêm agent không tồn tại. Đã sửa khi dựng bộ SEO và ghi vào tóm tắt.
+M19. Đặt tên gói theo bộ bán, không theo workspace: opc-studio đổi thành opc-content
+   Đổi tên gói thành opc-content, bỏ deploy mặc định vào workspace nội bộ. Mọi deploy phải có file env của khách, thiếu thì công cụ từ chối. Kiểm bằng plan: bộ Content chỉ đổi phần Content và gỡ 3 agent SEO khỏi squad Marketing.
+M20. Backup là thứ cho phép agent tự làm: việc đảo ngược được thì không cần hỏi
+   Thiết kế phân loại việc theo tiêu chí đảo ngược được. Nếu có backup thì agent làm không cần hỏi; nếu không thì phải hỏi người. Không có backup, mọi việc sửa cấu hình, deploy lại, xoá issue đều thành nút thắt. Backup phải nằm ngoài máy, agent không được xoá, và phải diễn tập khôi phục.
+M21. Add-on trả phí bị tạo dù khách chưa mua: nhánh workspace chưa tồn tại bỏ qua kiểm tra
+   Plan có hai nhánh: workspace có sẵn và workspace chưa tồn tại. Kiểm add-on chỉ có ở nhánh thứ nhất. Sửa danh sách MCP ở nhánh thứ hai để lọc add-on chưa mua. Kiểm lại bằng ba trường hợp: khách chưa mua, khách đã mua, workspace đã có sẵn.
+M22. gcloud in nội dung key ra terminal khi tạo key: phải coi log phiên là nhạy cảm
+   Lệnh gcloud in nội dung key ra output của phiên, nên log có bí mật. Đã cảnh báo người dùng không chia sẻ log. Key PageSpeed (chỉ dùng cho PSI và CrUX, không gắn billing) gọi thử được, điểm performance mobile là 0,31.
+M23. Bot ghi được main vì repo cá nhân không cấp quyền chỉ đọc: kế hoạch ghi sai và được sửa
+   Phương án quyền chỉ đọc không làm được vì GitHub không cấp read-only cho collaborator của repo cá nhân private, nên bot hiện có quyền ghi. Ba lựa chọn: tổ chức miễn phí (chưa chắc có cài đặt fork cho CI), GitHub Pro khoảng 4 USD mỗi tháng để bật bảo vệ main, hoặc hoãn. Người vận hành chọn hoãn. Về sau cơ chế chặn là deploy key chỉ đọc, bộ cài đặt vẫn do chủ push.
+M24. Mỗi thao tác tay phải đi vào skill của System Operator, rồi deploy và kiểm plan
+   Ghi quy tắc vào memory. Mỗi bước phải có phần hướng dẫn trong skill, deploy lại, và plan ra 0 thay đổi trước khi kết thúc. Giai đoạn 2 gồm 7 bước, mỗi bước nêu rõ người vận hành cần làm gì. Viết references/privileged.md liệt kê các lệnh sudo phải soạn sẵn, cùng quy trình nâng cấp có tóm tắt changelog và đường quay lại.
+M25. Hub skill qua proxy: systemd ProtectHome giấu home của chủ nên không gọi HTTP thẳng được
+   Daemon chạy với ProtectHome=tmpfs nên không thấy home của chủ. Gọi skill_get qua HTTP sẽ trả đường dẫn nằm trong home chủ mà agent không đọc được. Vì vậy phải dùng proxy kéo skill về cache của chính user daemon và kiểm digest.
+M26. Google và DuckDuckGo chặn truy cập từ server, chỉ Bing trả kết quả
+   DuckDuckGo đòi CAPTCHA; Google trả lỗi 429 và chuyển sang trang sorry; Bing trả được 3 kết quả đầu. Agent SEO cần SERP nên không được cào Google từ server.
+M27. Deploy gói Marketing ghi đè team Coding của gói khác trong cùng workspace
+   Lần deploy đầu tiên đưa instructions, model và skill của 3 agent Coding về bản cũ, gỡ 3 agent khỏi squad và gắn sai workflow cho một project. Nguyên nhân: gói Marketing vẫn chứa bản Coding cũ, còn khi đọc plan chỉ xem phần Marketing. Khôi phục bằng cách deploy lại đúng gói của phiên kia, plan trả 0 thay đổi. Deploy không xoá thực thể trên server nên agent đang chạy không mất.
+M28. Ads: MCP chính thức của Google chỉ đọc, Meta tạo chiến dịch ở trạng thái paused
+   Google Ads có MCP chính thức chỉ đọc (0.0.5, Apache-2.0), dùng developer token của agency. Meta có MCP do nền tảng host, đọc và sửa được, nhưng chiến dịch tạo ra luôn ở trạng thái paused. TikTok đăng nhập OAuth phải làm lại mỗi 30 ngày. LinkedIn chưa có bản chính thức. MCP host qua HTTP buộc gói có kiểu cấu hình url và headers.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

@@ -1,0 +1,122 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L1112] USER: báo cáo tiến độ
+[L1504] USER: Goal check-in: «bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng &gt;=50%.» is still active, and evaluation has been deferred for 30 min because background work is still running: - a6ab6bed080f63d2b · subagent · V02 CI catchup and pr-check - a484f8e19b0d45969 · subagent · V12 invariance and quality gate - ab4083b0629bd363b · subagent · V20 Vietnamese word segmentation - ab37a12c9eca42ac2 · subagent · V22 semantic branch eval - a11e4af …[+936]
+[L1526] USER: Tiếp tục điều phối plan vantt/plans/261102-0349-fork-master-roadmap/plan.md: đọc /home/vantt/projects/ohs-wt/lead-state.txt, ghép việc đã xong (commit/push), khởi chạy việc kế theo phụ thuộc.
+</asks>
+
+<story>
+hook: Bộ test chung đã đạt, nhưng bộ khó mới cho thấy tác dụng: 0,52 lên 0,86
+tension: tuong_ma_hoa_ra (Tổng điểm đã đạt, tưởng đủ bằng chứng / Bộ câu từ ghép khó mới lộ mức tăng, từ 0,52 lên 0,86 đến 1,00)
+stakes: 2/3
+# Tách từ bật mặc định: vi-compound đã đạt trước nhưng bộ khó cho thấy tác dụng
+
+**Bối cảnh:** vi-compound đã đạt 1,00 trước khi tách từ nên không tăng thêm trên bộ hiện có.
+**Chuyện gì xảy ra:** Quyết định bật dựa vào nDCG@5 tổng tăng từ 0,909 lên 0,932 và một bộ câu từ ghép khó do agent tự dựng; trên bộ đó nDCG tăng từ 0,52 đến 0,79 lên 0,86 đến 1,00. Không hạng mục nào tụt. Người dùng đồng ý cách đọc quy tắc eval này.
+**Bài học:** Khi một hạng mục đã bão hoà, bộ khó riêng mới cho thấy tác dụng; ghi rõ đó là bộ tự dựng.
+</story>
+
+<excerpt>
+[L1616] RESULT: {"success":true,"message":"Resuming agent a11e4af","resumedAgentId":"a11e4afbeef7dec2f","pin":{"id":"a11e4afbeef7dec2f","name":"a11e4afbeef7dec2f","ref":"d10093"}}
+[L1622] AGENT: Tôi đã giao lại V25. Agent sẽ cho đặt thời gian chờ của watcher qua biến môi trường, mặc định vẫn 5 giây như upstream. Nó cũng thêm test chứng minh client nhận sự kiện trong 1 giây khi đặt thời gian chờ thấp. Bản vá sẽ được dựng lại ở cuối chuỗi P00 → P06, chạy đủ cổng, và probe được kiểm trên bản upstream nguyên gốc.
+[L1637] USER: <task-notification>
+<task-id>ab4083b0629bd363b</task-id>
+<tool-use-id>toolu_01Qp5r8H4F2M1vafagNfZJWn</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ab4083b0629bd363b.output</output-file>
+<status>completed</status>
+<summary>Agent "V20 Vietnamese word segmentation" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS
+
+Summary: V20 is finished. The pack now has word segmentation (`src/segment.ts`) and a third view, `seg`, which joins the syllables of a compound with `_` (`khách_hàng`). I turned `segment` on by default because the eval rule allows it. Compared with your merged V17+V18+V19 run (`tmp/v18/v18-m2.json`), the overall nDCG@5 goes from 0.909 to 0.932 and no category drops.
+
+**Branch and commits** (`vantt/work/v20`, worktree `/home/vantt/projects/ohs-wt/m-v20`, already contains the newest master `f147fea`):
+- `09a0678` adds segmentation, the `seg` view and the dictionary.
+- `9133625` merges master. I kept every feature and used V18's `LexiconStore.load().compounds` instead of writing a second parser. The compound hash now goes into `signature()` only when `segment` is on.
+- `9620155` adds a test that lexicon compounds reach the `seg` view.
+- `2544a44` turns `segment` on by default and adds the docs and plan.
+- `09e4e63` merges master again.
+
+**Dictionary (Q9):**
+- **Source:** the word list in `trungtv/pyvi` at commit `e2ac2ec`. I read its LICENSE: MIT. A copy ships as `data/LICENSE-pyvi.txt`, and source, license and filtering are recorded in `vantt/packages/ohs-lang-vi/data/README.md`.
+- **Filtering:** I kept only words of exactly two valid syllables, which gives 22,574 words.
+- **Size:** 266 KB raw, 86 KB gzipped.
+- **Why no longer words:** three-syllable entries steal the first syllable of the next word (`an toàn khu` + `vực` instead of `an toàn` + `khu vực`). Compounds the user writes in the lexicon's `## Từ ghép` section can be any length.
+- **Rejected sources:** `undertheseanlp/dictionary` and `duyet/vietnamese-wordlist` (GPL); the dictionaries inside underthesea (Apache-2.0, but built from GPL and CC-BY-SA sources); Wiktionary (CC-BY-SA); Wikidata lexemes (CC0, but only 91 Vietnamese entries).
+
+**Eval** (nDCG@5, chk-series `4c69fbf`, default options):
+
+| C …[+3722]
+[L1640] AGENT: V20 xong: tách từ bằng view `seg`, nDCG@5 tổng từ 0,909 lên 0,932, không hạng mục nào tụt, `vi-compound` hơn baseline upstream 0,156 (yêu cầu tối thiểu 0,1). Merge vào `master`.
+[L1641] TOOL Bash: HUSKY=0 git merge -q --no-ff vantt/work/v20 -m "merge(vantt): Vietnamese word segmentation and seg view Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && echo MERGED && (cd vantt/packages/ohs-lang-vi && npx tsc --noEmit -p tsconfig.json && echo TSC_OK; npx vitest run 2>&1 | grep -E "Test F …[+13]
+…
+[L1667] TOOL Bash: echo "13:35 Merged V20 de07ea6, phase 4 done a737fc1. V20 agent fixing flaky pack test on branch vantt/work/v20-fix. V25 asked: configurable debounce + rebase on vantt/work/series. Open user Qs: accented-query views (V13 vs PRD 10.3), pyvi dictionary provenance, segment default." >> /home/vantt/proj …[+26]
+[L1668] RESULT: (Bash completed with no output)
+[L1672] AGENT: Phase 4 (gói tiếng Việt) đã xong và đã push: V20 merge ở `de07ea6`, plan cập nhật ở `a737fc1`. Trên corpus sinh, nDCG@5 tổng tăng từ 0,666 (upstream) lên 0,932, không hạng mục nào tụt. Năm hạng mục `vi-telex`, `vi-typo`, `vi-synonym`, `vi-abbr`, `vi-alias` đều đạt Hit@5 1,00.
+
+Còn một test fast-check thỉnh thoảng hỏng, có từ thời V13 và hỏng cả trên `master`. Lỗi nằm ở hàm đếm token của chính test, không ở mã của gói. Agent V20 đang sửa hàm đếm đó và giữ nguyên phép kiểm.
+
+**Cần bạn chốt (chưa chặn việc nào):**
+1. **Câu tìm có dấu.** V13 mặc định không chạy hai view `norm` và `fold` cho câu có dấu, vì bật lên thì `vi-semantic` tụt 0,083 nDCG@5. View `fold` vẫn tự bật khi vault có từ viết không dấu. Cách này lệch PRD 10.3. Tôi đề nghị giữ cách của V13 và sửa PRD 10.3 cho khớp.
+2. **Nguồn từ điển từ ghép.** Danh sách lấy từ `trungtv/pyvi`, có giấy phép MIT nên đạt Q9 như câu chữ. Nhưng pyvi không ghi danh sách này lấy từ đâu, và 95% trùng với Viet74K (GPL). Bạn chấp nhận, hay muốn thay bằng nguồn khác? Thay chỉ cần đổi một file.
+3. **Mặc định bật tách từ (`segment`).** `vi-compound` đã đạt 1,00 từ trước nên không tăng thêm. Quyết định bật dựa vào mức tăng ở các hạng mục khác và một bộ câu từ ghép khó hơn mà agent tự dựng; trên bộ đó nDCG@5 tăng từ 0,52–0,79 lên 0,86–1,00. Bạn đồng ý cách đọc quy tắc eval như vậy không?
+[L1685] USER: <task-notification>
+<task-id>ab4083b0629bd363b</task-id>
+<tool-use-id>toolu_01VgeNR6LS99LLJ9CDyJctUp</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ab4083b0629bd363b.output</output-file>
+<status>completed</status>
+<summary>Agent "V20 Vietnamese word segmentation" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+Summary: I fixed both flaky tests on branch `vantt/work/v20-fix` (from master `a737fc1`), commit `a02b3b1`. Only test files changed. All 456 package tests pass and tsc is clean.
+
+**Token-invariant property test** (`test/pack.test.ts`):
+- **Cause:** the test swapped `+` and `#` for spaces before counting tokens. `"↚#"` is really `←` plus a combining stroke (U+0338) plus `#`, which the tokenizer reads as one token. The fold view drops the mark and keeps `#`, still one token. After the swap, the test counted one token in the source and none in the fold view, so it failed even though the pack was correct.
+- **Fix:** a new helper, `viewTokens` in `test/helpers.ts`, counts tokens exactly like the view tokenizer: letters, digits, combining marks, private-use characters, plus `+` and `#`. It is a separate split, not the pack's own pattern. The property is unchanged: same inputs, same assertions, and the default 400 runs.
+- **Regression case:** a new test runs `↚#` (both encodings) and similar inputs with a mark glued to `+` or `#` through all three option sets and both views. It also checks that fold turns `"←\u0338#"` into `"←#"`.
+- **Stability:** the run count can now be raised with `FC_NUM_RUNS`. The property passes at `FC_NUM_RUNS=20000`, and the seed that used to fail (`1198669405`) now passes over 30,000 runs.
+
+**1 MB distinct-words timing test** (`test/perf.test.ts`): it now takes the best of 3 runs, and the 200 ms budget is unchanged. Every repeat is still uncached: the text has about 80,000 distinct words and the per-word cache holds 32,768, so it never keeps the words the next run starts with. Three runs in a row gave 143–144 ms.</result>
+<usage><subagent_tokens>277709</subagent_tokens><tool_uses>134</tool_uses><duration_ms>1265757</duration_ms></usage>
+</task-notification>
+[L1687] TOOL Bash: HUSKY=0 git merge -q --no-ff vantt/work/v20-fix -m "merge(vantt): stabilise Vietnamese pack property and timing tests Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && (cd vantt/packages/ohs-lang-vi && npx vitest run 2>&1 | grep -E "Test Files|Tests ") && python3 - <<'EOF' p='vantt/plans/2 …[+625]
+[L1688] RESULT: Test Files 12 passed (12) | Tests 456 passed (456)
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

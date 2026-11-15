@@ -1,0 +1,61 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Chào em, chị là Thảo, chủ tiệm bánh Bếp Nhà Thảo ở Đà Lạt. Chị muốn xem lại cả năm bán hàng để tính chuyện năm sau. Chị xuất từ KiotViet được hai file trong thư mục này. Chị không rành Excel lắm nên em làm giúp chị nhé.
+[L21] USER: Đó, chị biết mà. Em ghi chú lại giùm chị ở file ghi-chu.txt: file KiotViet ngày là ngày/tháng, lần sau ai làm số liệu cũng phải để ý.
+[L24] USER: Giờ chị muốn biết món nào lời nhất. Chị có file gia-von.csv ghi giá vốn từng món (bột, trứng, bơ, hộp…). Tiệm có 48 món, chị thấy nhiều món làm mệt mà chẳng bán được bao nhiêu.
+[L30] USER: Chị đoán là có mấy món không lời, nhưng không ngờ 6 món mà ra gần ba phần tư. Ok chị cắt 15 món. Em liệt kê 15 món đó ra file mon-cat.txt để chị đưa các bạn bếp.
+</asks>
+
+<story>
+hook: Bảng lãi bảo cắt, nhưng một món có khách quen chờ
+tension: tuong_ma_hoa_ra (Xếp hạng lợi nhuận nói món này nên xoá / Khách quen vẫn hỏi, nên giữ theo kiểu đặt trước)
+stakes: 1/3
+# Trước khi chốt danh sách cắt 15 món, agent nhận ra một món có khách quen và đề xuất giữ lại theo kiểu đặt trước thay vì xoá hẳn.
+
+**Chuyện gì xảy ra:** Trước khi chốt danh sách cắt 15 món, agent nhận ra một món có khách quen và đề xuất giữ lại theo kiểu đặt trước thay vì xoá hẳn.
+**Góc người ngoài:** cách làm phổ biến là Thường người ta làm đúng theo bảng xếp hạng lợi nhuận, không xét đến khách hàng trung thành hay ngoại lệ; ở đây khác ở Agent đưa ra phương án trung gian, giữ được khách quen mà vẫn giảm công làm sẵn. Người đọc sẽ muốn học cách cân nhắc này.
+</story>
+
+<excerpt>
+[L31] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 scripts/lai_theo_mon.py hoadon_chi_tiet.csv gia-von.csv --bottom 15 --names > mon-cat.txt && wc -l mon-cat.txt
+[L32] RESULT: 15 mon-cat.txt
+[L33] AGENT: Đã ghi 15 món vào mon-cat.txt. Lưu ý nhỏ: trong 15 món có bánh flan cũ kiểu caramen đắng, chị có vài khách quen hỏi món này. Chị có thể giữ món đó theo kiểu đặt trước thay vì làm sẵn mỗi ngày.
+[L34] USER: À còn cái này. Chị có quy định: giảm giá cho khách tối đa 10% thôi. Mã 30% chỉ cho nhân viên, NV30, mua bánh mang về nhà. Em xem có ai dùng mã giảm giá trên 10% không.
+[L35] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 -c "import pandas as pd;d=pd.read_csv('hoadon_ca_nam.csv');d['t']=pd.to_datetime(d['Thời gian'],format='%d/%m/%Y %H:%M');x=d[d['Mã giảm giá']=='NV30'];print(len(x),x['SĐT'].nunique());print(x.groupby(x['t'].dt.to_period('M')).size())"
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

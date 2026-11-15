@@ -1,0 +1,68 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Hi! Picking up the Brightline Dental churn study. 14 patient interviews are in interviews/, the kickoff notes are in notes/kickoff.md, and the survey export is data/survey.csv. Today I need a synthesis draft and the outline for Thursday's exec readout. First can you list what's in interviews/?
+[L52] USER: Thursday is 20 minutes with Linda, Derek and Priya. Last time I showed nine findings to an exec team they picked the easiest one and ignored the rest. I want three. Help me choose, and be honest about what we lose.
+[L54] USER: No, I'm not swapping. Reminders is the cheapest win and it's the #1 survey reason. Pediatric hours goes to the appendix with the numbers. I'll call Linda Wednesday and tell her directly that her question is answered in the appendix and why it didn't make the top three. Better she hears it from me than discovers it on slide 14.
+[L60] USER: Last thing: make the quote bank a proper table (quote, participant, clinic, theme) and export the outline to docx, Brightline uses Word.
+</asks>
+
+<story>
+hook: Giữ markdown làm gốc, một lệnh Pandoc ra file Word cho khách
+tension: none
+stakes: 1/3
+# Từ ghi chú thô tới bảng trích dẫn và docx cho khách dùng Word
+
+**Bối cảnh:** Khách hàng dùng Word, nên mọi sản phẩm cuối phải là docx. Ghi chú gốc viết bằng markdown.
+**Chuyện gì xảy ra:** Một script Python chuyển ghi chú markdown thành bảng trích dẫn 4 cột (trích dẫn, người, phòng khám, chủ đề) với 29 trích dẫn trong 31 dòng, gồm tiêu đề và dòng phân cách. Pandoc xuất outline sang docx chỉ bằng một lệnh. Quy trình giữ markdown làm nguồn và chỉ xuất docx ở bước cuối.
+**Bài học:** Giữ nguồn là markdown, xuất docx ở bước cuối, và đưa cột nguồn vào bảng trích dẫn để truy ngược được từng câu về bản ghi gốc.
+**Artefact:** Ảnh bảng quote bank trong Word, với tên người và tên phòng khám đã được thay bằng mã.
+</story>
+
+<excerpt>
+[L58] TOOL Edit: /Users/maya/clients/brightline-dental/churn-study/notes/todo.md
+[L59] RESULT: The file /Users/maya/clients/brightline-dental/churn-study/notes/todo.md has been updated successfully.
+[L60] USER: Last thing: make the quote bank a proper table (quote, participant, clinic, theme) and export the outline to docx, Brightline uses Word.
+[L61] TOOL Bash: python3 /Users/maya/clients/brightline-dental/churn-study/scripts/quotes_to_table.py synthesis/pass1.md > synthesis/quote-bank.md && wc -l synthesis/quote-bank.md
+[L62] RESULT: 31 synthesis/quote-bank.md
+[L63] TOOL Bash: cd /Users/maya/clients/brightline-dental/churn-study && pandoc deck/outline.md -o deck/outline.docx && ls -la deck/
+[L64] RESULT: total 24 | -rw-r--r-- 1 maya staff 10512 Oct 14 17:41 outline.docx
+[L65] AGENT: Done: `synthesis/quote-bank.md` has 29 quotes in a 4-column table (quote, participant, clinic, theme), and `deck/outline.docx` is ready for Word.
+[L66] USER: Perfect, thanks. Tomorrow I'll draft the slides.
+[L67] AGENT: Sounds good. Tomorrow I'd start with the front-desk slide, since it's the one nobody in the room expects; the turnover-vs-churn table plus P09's quote should carry it.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

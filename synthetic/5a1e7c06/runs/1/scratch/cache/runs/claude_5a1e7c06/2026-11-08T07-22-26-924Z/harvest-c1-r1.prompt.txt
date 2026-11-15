@@ -1,0 +1,123 @@
+Dưới đây là transcript đã rút gọn của một phiên làm việc giữa user và coding agent (Claude Code). Mỗi dòng có nhãn [Lnnn] là số dòng trong transcript gốc.
+
+<transcript>
+[L1] USER: Chào bạn. Còn 9 ngày nữa là đến đêm nhạc Gió Mùa (15/11). Hôm nay mình cần xếp ca tình nguyện viên và gộp tech rider của hai ban. File ở thư mục này. Bắt đầu với tình nguyện viên nhé: tinh-nguyen-vien.csv có 18 bạn, cần chia 3 ca: dựng (14h–18h), soát vé (18h–20h30), dọn (22h–24h).
+[L2] TOOL Read: /home/quan/Documents/dem-nhac-gio-mua/tinh-nguyen-vien.csv
+[L3] RESULT: ten,sdt,co_the | An,0901...,ca ngay
+[L4] AGENT: 18 bạn: 7 bạn rảnh cả ngày, 8 bạn chỉ rảnh buổi tối, 3 bạn chỉ rảnh sau 21h. Mình chia: ca dựng 6 bạn (từ nhóm rảnh cả ngày), ca soát vé 7 bạn (8 bạn buổi tối, để 1 bạn dự phòng), ca dọn 3 bạn sau 21h cộng 1 bạn cả ngày còn lại. Ghi ra ca-tnv.csv nhé?
+[L5] USER: Ok.
+[L6] TOOL Write: /home/quan/Documents/dem-nhac-gio-mua/ca-tnv.csv
+[L7] RESULT: File created successfully at: /home/quan/Documents/dem-nhac-gio-mua/ca-tnv.csv
+[L8] AGENT: Đã ghi ca-tnv.csv. Bạn Sơn để dự phòng ca soát vé.
+[L9] USER: Toang rồi bạn ơi. Chị Ngân bên sân thượng Lầu Bảy vừa gọi: đội phòng cháy chữa cháy kiểm tra hôm qua, đình chỉ sân thượng cho đến khi lắp thêm lối thoát hiểm, ít nhất một tháng. Chị ấy giới thiệu hai chỗ thay, nhưng mình phải trả lời trước 17h hôm nay không thì người khác lấy. Mình đã bán 300 vé.
+[L10] AGENT: Mình giúp bạn chốt nhanh. Bạn gửi mình thông tin hai chỗ (sức chứa, giá, ngày trống, khoảng cách) là mình so ngay.
+[L11] USER: 1. Kho Gạo, quận 4: trong nhà, 220 chỗ đứng, giá 15 triệu (bằng giá Lầu Bảy), trống 15/11, có sẵn sân khấu nhỏ. 2. Nhà văn hoá Thanh Niên: 350 chỗ, 31 triệu, xa trung tâm, trống 15/11, phải thuê sân khấu riêng 6 triệu.
+[L12] AGENT: So nhanh:
+
+| | Kho Gạo | NVH Thanh Niên |
+|---|---|---|
+| Sức chứa | 220 (thiếu 80 so với vé đã bán) | 350 (đủ) |
+| Chi phí | 15 tr | 31 + 6 = 37 tr (thêm 22 tr) |
+| Đi lại | trung tâm | xa, khán giả phải đổi kế hoạch |
+| Không khí | gần gũi, hợp nhạc mộc | hội trường, rộng và lạnh |
+
+Ngân sách dự phòng còn bao nhiêu? Nếu dưới 22 triệu thì NVH Thanh Niên gần như không khả thi. Với Kho Gạo, bài toán là 80 vé dư: hoàn tiền, hoặc mời họ sang buổi sau.
+[L13] USER: Dự phòng còn 9 triệu thôi. Vậy là Kho Gạo. Còn 80 vé thì sao?
+[L14] AGENT: Cách gọn nhất trong ngày hôm nay: chốt Kho Gạo ngay để giữ chỗ, rồi xử lý 80 vé sau. Với 80 vé, đề xuất: hoàn tiền 100% cho 80 người mua sau cùng, kèm mã ưu tiên mua vé buổi Gió Mùa tiếp theo. Có thể hỏi trước ai muốn tự nguyện nhận hoàn tiền, thường sẽ có 20–30 người không đi được.
+
+Nếu bạn đồng ý, mình soạn tin nhắn trả lời chị Ngân và email cho người mua vé.
+[L15] USER: Chốt Kho Gạo. Mình gọi chị Ngân luôn. Bạn soạn email cho người mua vé, hỏi tự nguyện trước, hạn trả lời 48 tiếng.
+[L16] TOOL Write: /home/quan/Documents/dem-nhac-gio-mua/email/doi-dia-diem.md
+[L17] RESULT: File created successfully at: /home/quan/Documents/dem-nhac-gio-mua/email/doi-dia-diem.md
+[L18] USER: 11h20, chị Ngân xác nhận Kho Gạo rồi, cọc 5 triệu. Ghi vào nhat-ky.md giúp mình.
+[L19] TOOL Edit: /home/quan/Documents/dem-nhac-gio-mua/nhat-ky.md
+[L20] RESULT: The file /home/quan/Documents/dem-nhac-gio-mua/nhat-ky.md has been updated successfully.
+[L21] USER: Giờ tech rider. Ngõ Nhỏ và Chuồn Chuồn đã thống nhất dùng chung dàn nhạc (trống, ampli) để tiết kiệm tiền thuê và đổi set nhanh. Bạn gộp hai file rider/ thành một danh sách thuê thiết bị.
+[L22] TOOL Read: /home/quan/Documents/dem-nhac-gio-mua/rider/ngo-nho.md
+[L23] RESULT: # Ngõ Nhỏ – tech rider | - Trống: bộ 5 trống, setup TAY TRÁI (tay trống thuận tay trái)
+[L24] TOOL Read: /home/quan/Documents/dem-nhac-gio-mua/rider/chuon-chuon.md
+[L25] RESULT: # Chuồn Chuồn – tech rider | - Trống: bộ 4 trống, setup tay phải, cymbal riêng mang theo
+[L26] AGENT: Mình gộp thì thấy "dùng chung" chỉ đúng trên giấy:
+
+- **Trống**: Ngõ Nhỏ cần setup tay trái, Chuồn Chuồn tay phải. Đổi qua lại phải tháo và lắp lại gần hết, khoảng 15–20 phút, cymbal của Chuồn Chuồn cũng phải thay.
+- **Monitor**: Ngõ Nhỏ dùng in-ear, Chuồn Chuồn dùng 4 monitor sàn. Hai hệ thống khác nhau, phải có cả hai.
+- **Guitar**: Ngõ Nhỏ cắm Kemper thẳng DI, Chuồn Chuồn cần 2 ampli đèn có mic. Không có gì dùng chung được.
+
+Tổng thời gian đổi set ước khoảng 25 phút, trong khi kịch bản chỉ để 10 phút. Cái duy nhất hai ban thật sự dùng chung được là dàn loa chính và bàn mixer, vốn có sẵn.
+
+Nói cách khác, thoả thuận dùng chung không còn đứng được khi đặt hai rider cạnh nhau.
+[L27] USER: Hai ban nói với mình là ok dùng chung mà… chắc lúc đó mọi người chỉ nghĩ "trống là trống". Giờ sao, thuê hai bộ thì tốn bao nhiêu?
+[L28] TOOL Bash: cat /home/quan/Documents/dem-nhac-gio-mua/bao-gia/thue-thiet-bi.csv
+[L29] RESULT: hang_muc,don_gia | bo_trong_5,2500000
+[L30] AGENT: Thuê riêng cho mỗi ban:
+
+- Ngõ Nhỏ: trống 5 (2,5 tr) + in-ear 4 kênh (1,8 tr) = 4,3 tr
+- Chuồn Chuồn: trống 4 (2 tr) + 4 monitor sàn (2 tr) + 2 ampli đèn (1,8 tr) = 5,8 tr
+
+Tổng 10,1 tr, so với 4,5 tr trong ngân sách khi tính dùng chung, **thêm 5,6 tr**. Đổi set rút còn khoảng 8 phút vì dàn thứ hai dựng sẵn bên cánh gà.
+[L31] USER: Hết cách. Thuê hai dàn. Mình nhắn group hai ban giải thích luôn, đừng để tới hôm đó cãi nhau trên sân khấu.
+[L32] USER: Vậy tính lại ngân sách giúp mình. File ngan-sach.csv.
+[L33] TOOL Bash: cd /home/quan/Documents/dem-nhac-gio-mua && python3 scripts/ngan_sach.py ngan-sach.csv --them "thue dan 2:5600000" --them "hoan 80 ve x 250000:20000000" --them "coc Lau Bay mat:3000000"
+[L34] RESULT: thu: 75000000 (300 ve) | chi cu: 66000000
+[L35] AGENT: Sau ba thay đổi (thêm dàn nhạc 5,6 tr, mất cọc Lầu Bảy 3 tr, hoàn 80 vé 20 tr), dù đã dùng hết 9 tr dự phòng, **vẫn thiếu khoảng 12 tr**.
+
+Trong danh sách chi, chỉ có hai khoản đủ lớn để bù:
+
+1. **Kỹ thuật âm thanh anh Tùng**: 12 tr (gồm người và mixer kỹ thuật số). Thay bằng kỹ thuật viên của Kho Gạo thì miễn phí, nhưng anh ấy chưa từng làm với in-ear và hai ban có rider khó.
+2. **Ban mở màn Mây Thấp**: 8 tr thù lao + 4 tr thiết bị và đổi set thêm = 12 tr.
+
+Cắt bên nào cũng mất một thứ thật: âm thanh tệ thì cả đêm hỏng với 220 người; cắt Mây Thấp thì một ban sinh viên mất buổi diễn lớn đầu tiên.
+[L36] USER: Khó thật. Mây Thấp là mấy bạn sinh viên, mình hứa với tụi nó từ tháng 9. Tụi nó còn tự bán được 40 vé cho bạn bè. Nhưng với hai rider kiểu này mà không có anh Tùng thì in-ear với ampli đèn chung một sân khấu nhỏ là thảm hoạ.
+[L37] AGENT: Nếu tiêu chí là "đêm nhạc của 220 người không được hỏng", thì giữ anh Tùng. Cái giá rất rõ: Mây Thấp mất suất diễn, và 40 người bạn của các bạn ấy mua vé một phần vì Mây Thấp.
+
+Một vài cách làm cho cái giá đỡ nặng:
+- Nói trực tiếp với Mây Thấp hôm nay, không qua tin nhắn, và nói thật lý do (ngân sách sau sự cố địa điểm).
+- Cho các bạn 5 phút hát mộc một bài lúc khán giả vào cửa, không cần thiết bị thêm.
+- Hứa suất mở màn ở buổi Gió Mùa sau, ghi vào nhật ký để không quên.
+- 40 người mua vé qua Mây Thấp được ưu tiên hoàn tiền nếu muốn.
+[L38] USER: Giữ anh Tùng, cắt Mây Thấp. Mình sẽ gặp tụi nhỏ tối nay. Cho tụi nó hát mộc một bài lúc đón khách. Ghi hết vào nhật ký.
+[L39] TOOL Edit: /home/quan/Documents/dem-nhac-gio-mua/nhat-ky.md
+[L40] RESULT: The file /home/quan/Documents/dem-nhac-gio-mua/nhat-ky.md has been updated successfully.
+[L41] USER: Cuối ngày rồi. Định dạng lại kich-ban.md giúp mình thành bảng: giờ, mục, ai phụ trách. Bỏ Mây Thấp, thêm 5 phút hát mộc lúc 19h.
+[L42] TOOL Read: /home/quan/Documents/dem-nhac-gio-mua/kich-ban.md
+[L43] RESULT: 18:30 mở cửa - Quân | 19:00 Mây Thấp - Tùng
+[L44] TOOL Write: /home/quan/Documents/dem-nhac-gio-mua/kich-ban.md
+[L45] RESULT: File created successfully at: /home/quan/Documents/dem-nhac-gio-mua/kich-ban.md
+[L46] AGENT: Đã chuyển kich-ban.md thành bảng 3 cột, bỏ suất Mây Thấp, thêm 5 phút hát mộc lúc 19:00, đổi set còn 8 phút. Chương trình kết thúc 21:15, sớm hơn bản cũ 20 phút.
+[L47] USER: Cảm ơn bạn. Một ngày dài.
+[L48] AGENT: Một ngày nhiều quyết định. Ngày mai khi có kết quả email hoàn vé, gửi mình số người tự nguyện, mình tính lại xem có cần hoàn thêm không.
+</transcript>
+
+Nhiệm vụ: nhặt "chất liệu build in public" từ phiên này: những chuyện người ngoài sẽ thấy đáng đọc, để sau gom thành bài. Hộp chứa hiện đang rỗng.
+
+Tín hiệu gợi ý (để nhận ra, không phải ngưỡng):
+1. Số trước, số sau: một con số đổi rõ (điểm, thời gian, doanh số, lượt mở, số trang…).
+2. Nguyên nhân bất ngờ: hậu quả lớn mà gốc nhỏ, hoặc gốc nằm ở chỗ không ai nghi.
+3. Đảo quyết định có lý do: thử, trượt, đổi chiều (làm A, thấy kết quả tệ, bỏ A); điều tưởng đúng hoá sai.
+4. Người duyệt thứ máy soạn: máy soạn, người xem và sửa (bảng duyệt, hàng chờ), vòng lặp người với máy chạy được thật.
+5. Ràng buộc định hình cách làm: một giới hạn (riêng tư, ngân sách, thời hạn, công cụ, luật lệ…) buộc chọn cách làm khác thường.
+6. Có thứ nhìn thấy được: ảnh, bản nháp, sản phẩm, bảng hay biểu đồ đáng đưa người đọc xem.
+Không khớp tín hiệu nào mà thấy hay, thấy lạ: vẫn ghi, signals: ["khác"].
+Nguyên tắc: ghi thừa còn hơn bỏ sót.
+
+Riêng tư: chỉ ghi cơ chế, con số, tên công cụ. Không ghi tên note, đường dẫn trong vault, câu hỏi thật của golden set, nội dung vault, tên người.
+
+Mỗi chuyện: title (một dòng như tiêu đề bài), signals, lines (các [Lnnn] làm bằng chứng), context (1-2 câu), what_happened (3-5 câu, có con số), lesson (một câu người khác dùng được), artefact (thứ chụp hay dán được, phải che gì).
+Quan trọng: KHÔNG tự lọc. Chuyện nhỏ, vui, hỏng rồi sửa xong là quên, sự cố vặt của agent, lỗi quy trình, việc lặt vặt mà có điều bất ngờ: vẫn ghi thành chuyện riêng. Việc chấm và bỏ làm ở bước sau, không phải ở đây. Trước khi trả lời, rà lại toàn bộ transcript một lượt nữa tìm những chuyện nhỏ đã bỏ qua.
+Điểm nóng do script tính. Với TỪNG điểm nóng, trả trong "hotspots": id, verdict ("story" nếu thành chuyện hoặc góp vào chuyện, "skip" nếu không), story_title hoặc reason (vì sao không đáng, một câu). Không được bỏ qua điểm nóng nào.
+Nhãn điểm nóng:
+- exit N, exit error: lệnh hoặc tool trả lỗi.
+- bị chặn: hook, quyền hoặc sandbox chặn lệnh; ít khi là chuyện.
+- số a→b: cặp số trước/sau.
+- git …: git đảo hướng (reset, revert, rebase -i hoặc --abort, checkout --, commit --amend, push -f).
+- ghi meta X: ghi file cấu hình agent.
+- ghi bài học X, ghi quyết định X, ghi nhật ký X, ghi changelog X: agent ghi vào memory, bản ghi quyết định, nhật ký, CHANGELOG; thường là bước ngoặt đã tự dán nhãn.
+- chủ chọn: chủ dự án trả lời một lựa chọn.
+- chủ phản đối hoặc thúc: chủ dự án chê, cãi hoặc giục.
+- chủ ngắt, chủ từ chối tool: chủ dự án dừng agent hoặc từ chối một lệnh.
+- chủ trả lời ngắn sau chạy dài: câu ngắn sau một đoạn agent tự chạy dài; thường chỉ là "tiếp tục".
+<hotspots>
+(không có)
+</hotspots>
+Chỉ trả về một JSON object, không có chữ nào khác, dạng:
+{"stories":[{"title":"","signals":[],"lines":[],"context":"","what_happened":"","lesson":"","artefact":""}],"hotspots":[{"id":"H1","verdict":"story|skip","story_title":"","reason":""}]}

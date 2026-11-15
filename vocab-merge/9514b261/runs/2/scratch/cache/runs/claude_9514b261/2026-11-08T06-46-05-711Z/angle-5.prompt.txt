@@ -1,0 +1,110 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L1142] USER: kiểm hai điểm đó đi
+[L1253] USER: như vậy cần thêm note về canonical-decision-projection vào chổ tài liệu của Effective Decision Reducer để biết và nhớ rằng chúng ta đã có một phần liên quan. nhắc nhở thêm về việc cập nhật component authority/boundary
+[L1325] USER: cũng cần bật agents để dò vì có thể có sự trùng lắp giữa `Knowledge and Documentation Engine` và Knowledge Registry. Đâu đó chúng ta đã từng xây dựng phần quản lý document một cách sơ khai rồi. cấn scan plans, reports và work items, history
+</asks>
+
+<story>
+hook: 332 tài liệu quá hạn 55 ngày, máy cảnh báo chưa bao giờ kêu
+tension: cam_ma_van_lot (có máy kiểm tuổi tài liệu canh quá hạn / trừ chuỗi ngày ra NaN nên không bao giờ báo)
+stakes: 2/3
+# Máy kiểm tuổi tài liệu không bao giờ báo vì trừ chuỗi ngày ISO ra NaN
+
+**Bối cảnh:** Knowledge Registry chạy thật trên main cho tài liệu end-user. Ba agent quét song song để dò trùng lắp với engine tài liệu đề xuất.
+**Chuyện gì xảy ra:** Registry có 479 doc, trong đó 332 đang provisional và 147 active. Check cảnh báo doc provisional quá hạn trừ updatedAt là chuỗi ISO nên ra NaN, nên check chưa bao giờ bắn, trong khi 332 doc đã 47 đến 55 ngày. Cùng lúc có ba chỉ mục tài liệu song song với 492, 479 và 0 mục. Có 365 role khác nhau trên 479 doc, trong khi thiết kế là tập đóng nhỏ.
+**Bài học:** Kiểm kiểu dữ liệu trước khi trừ thời gian. Một cảnh báo chưa từng bắn không chứng minh là không có vi phạm.
+**Artefact:** Bảng ba chỉ mục với số mục và số provisional/active. Không kèm tên tài liệu.
+</story>
+
+<excerpt>
+[L1433] RESULT: docs: 479 | khoá mẫu: ['docId', 'topicId', 'role', 'framework', 'mode', 'docLifecycle', 'currentPath', 'aliases', 'sourceCaptureIds', 'createdAt']
+[L1447] TOOL Bash: python3 - <<'EOF' import json,collections L=json.load(open('docs/doc-registry.json'))['docs'] L=L if isinstance(L,list) else list(L.values()) print(collections.Counter(x.get('docLifecycle') for x in L).most_common()) EOF
+[L1448] RESULT: [('provisional', 332), ('active', 147)]
+[L1457] AGENT: Hai agent đã xong, còn agent 3 (work items, mã, specs) đang chạy nên em chưa gộp bản tổng hợp. Em đã kiểm các con số của agent 2 trong `docs/doc-registry.json`, và chúng đúng: 479 doc, 365 role khác nhau, và 332 doc `provisional` cộng 147 `active`. Báo cáo của agent 2 ở `plans/reports/research-261021-1752-knowledge-registry-overlap-history-journals.md`.
+
+## Kết quả của agent 2 (docs/history và docs/journals)
+
+**Kết luận: Knowledge and Documentation Engine (KDE) chồng nặng với thứ đã có.** Chồng với Knowledge Registry (`tsk-28x`), lớp decision (`tsk-1lv`) và `enduser-docs-index`. Phần KDE thật sự mới chỉ gồm ba thứ: đồ thị quan hệ có kiểu, supersession mức điều khoản (clause), và vocabulary authority-kind. `docs/journals/` không có mục nào về tài liệu hay tri thức.
+
+**Ba điều agent 2 nêu mà em thấy quan trọng nhất:**
+
+1. **Quyết định khoá D2 của `tsk-1lv`: "không stored graph, không daemon".** Đồ thị có kiểu của KDE vì vậy phải là bản dẫn xuất tái sinh được, không được là một store riêng. Proposal chưa nói điều này.
+2. **Hai index song song cùng liệt kê tài liệu, khác nhau:** `doc-registry.json` có 479 doc, `enduser-docs-index.json` có 492 mục. Cộng với bản thứ ba của agent 1 (`.fgos/docs/enduser-docs-index.json`, 0 mục), KDE phải gom về một read model, không được thêm cái thứ ba.
+3. **Registry hiện có chưa đạt thiết kế của chính nó:**
+   - 365 role khác nhau trên 479 doc, trong khi thiết kế là tập đóng nhỏ;
+   - 332 doc vẫn `provisional` và chỉ 147 `active`; agent ghi "332/332 doc đã migrate vẫn provisional", em chỉ kiểm được con số 332/147;
+   - metrics harness B6 chưa từng xây;
+   - `docs/specs/` không có spec area cho Knowledge Registry.
+
+**Giới hạn của agent 2:**
+- Không có store sống `.fgos/`, nên số liệu lấy từ snapshot `doc-registry.json` (commit cuối 2026-09-15), không phải trạng thái hiện tại.
+- Chưa đọc hết DISCUSSION 183 KB của `tsk-28x` (bỏ phần Q&A log §5) và không đọc 12 phase file của plan 260825.
+- Chưa biết vì sao 147 doc "active" vẫn nằm ở đường dẫ …[+636]
+[L1467] USER: <task-notification>
+<task-id>a6561473e191afd37</task-id>
+<tool-use-id>toolu_011ELWxtfkFgAR5Z59zHVdGv</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/tasks/a6561473e191afd37.output</output-file>
+<status>completed</status>
+<summary>Agent "Scan work items, code, specs for registry overlap" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS
+Summary: Báo cáo đã ghi tại `/home/vantt/projects/forgent/plans/reports/research-261021-1752-knowledge-registry-overlap-work-items-code-specs.md`. Kết luận: Knowledge Registry đã làm gần hết phần "Documentation Registry" của engine, nhưng chỉ cho tài liệu end-user. Registry gồm 479 topic và 479 doc, phủ khoảng 15% trong số 3146 file .md của `docs/`. Claim identity, typed graph, vocabulary đóng cho type/audience/authority-kind, supersession cấp clause và phần phủ `docs/platform`, `docs/architect`, `docs/specs` chưa có trong mã.
+
+Concerns/Blockers:
+- Registry đang dừng ở vận hành: không có event doc/topic nào sau 2026-09-11, và 10 doc end-user mới thêm sau 09-12 đều bỏ qua registry. 34 file end-user đã commit chưa đăng ký.
+- Check `doc-provisional-aged` (`registrations.mjs:4065`) không bao giờ bắn được vì `updatedAt` là chuỗi ISO nên phép trừ ra NaN. Hiện 332 doc đang `provisional` đã 47-55 ngày.
+- Registry không có spec area riêng, và `reading-map` cùng hai spec enduser còn mô tả layout quadrant cũ.
+- Có 4 cặp cơ chế song song làm cùng một việc (mục 5 của báo cáo).
+- `fgos list` mặc định chỉ trả 269 item mở. Báo cáo dùng `--all` (1195 item). Nhiều item chính, như tsk-1lv, tsk-28x và tsk-37i, là done nên không nằm trong 269 đó.
+- Hai báo cáo tham khảo chưa được đọc kỹ và chưa kiểm lại đầy đủ.
+- Các điểm chưa kiểm được ghi ở mục 7 của báo cáo. Hai điểm chính là kho event Rust có event mới hơn không, và giao của `authoritative_for` với `Canonical for:`.</result>
+<usage><subagent_tokens>191812</subagent_tokens><tool_uses>56</tool_uses><duration_ms>375104</duration_ms></usage>
+</task-notification>
+[L1476] AGENT: Cả ba agent đã xong. Em kiểm lại hai khẳng định cụ thể và quan trọng nhất của agent 3 trước khi gộp: lỗi của check `doc-provisional-aged`, và việc registry ngừng nhận sự kiện từ 2026-09-11.
+[L1477] TOOL Bash: sed -n 4060,4090p src/setup/registrations.mjs | cut -c1-170; echo "--- updatedAt trong registry:"; python3 - <<'EOF' import json L=json.load(open('docs/doc-registry.json'))['docs'] L=L if isinstance(L,list) else list(L.values()) x=[d for d in L if d.get('docLifecycle')=='provisional'][0] print({k:x[ …[+560]
+[L1482] RESULT: const view = rebuild(fgosDir); | const now = Date.now();
+…
+[L1500] RESULT: 134 plans/reports/research-261021-1752-knowledge-registry-overlap-work-items-code-specs.md | 5:## 1. Kết luận
+[L1506] TOOL Bash: f=plans/reports/research-261021-1752-knowledge-registry-overlap-work-items-code-specs.md; sed -n 5,11p $f | cut -c1-900; echo ......; sed -n 75,134p $f | cut -c1-560
+[L1511] RESULT: ## 1. Kết luận | - Knowledge Registry đã là một document-identity + lifecycle + alias + provenance engine chạy thật, nhưng chỉ cho **tài liệu end-user (Diataxis)**: 479 topic / 479 doc, toàn bộ nằm dưới `docs/knowledge|explanation|how-to|reference`;  …[+323]
+[L1523] AGENT: Em gộp ba báo cáo thành một bản tổng hợp, kèm các điểm em đã tự kiểm và hai chỗ số liệu lệch giữa các agent.
+[L1524] TOOL Bash: fgos convention path --kind report --type research --slug knowledge-registry-vs-knowledge-doc-engine-synthesis --json </dev/null | python3 -c "import sys,json;print(json.load(sys.stdin)['data']['path'])"; python3 - <<'EOF' import json,collections c=collections.Counter() import glob for f in sorted(g …[+205]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

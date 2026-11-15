@@ -1,0 +1,114 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) is a platform layer for building and running agent applications, providing the infrastructure, skills, and automation beneath each agent app so developers can build new agents without starting from scratch. It is in alpha and is installed as one small command-line binary, then set up inside an existing git repository. The alpha runs only on Linux (x86_64, glibc 2.35 or later) and Windows 10 or later (x86_64), since macOS and Windows on ARM are not supported yet.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L561] USER: Base directory for this skill: /home/vantt/projects/forgent/.claude/skills/ak-research This is a generated thin wrapper (tsk-1qi) -- do not edit directly, edit the source instead. The real skill content lives at `../../../.agents/skills/ak-research/SKILL.md`, an assembled projection whose generated header identifies its canonical source. Read that file and follow it directly.
+[L917] USER: bật một agent để tìm hiểu plans plans/260925-documentation-authority-unification/, docs/platform/proposals/documentation-system-unification.md; đọc kỹ 2 plans và tìm xem trong kế hoạch có dự định xây dựng các component giúp gom nhóm và giảm thiểu sự trùng lặp như canonical-decision-projection-component không?
+[L966] USER: component trong plan này tên gì và nó đã có mặt trong map của component authority/boundary chưa plans/reports/research-261021-1643-canonical-decision-projection-component.md
+</asks>
+
+<story>
+hook: Grep năm tên component trong bản đồ ranh giới, ra 0 lần
+tension: khac (Các component này được coi là có trong bản đồ / Cả ba tên đều 0 lần, chỉ có một hàng gần nghĩa không nhắc quyết định)
+stakes: 2/3
+# Đếm lại bản đồ ranh giới: ba tên component không xuất hiện lần nào
+
+**Bối cảnh:** Chủ dự án hỏi component trong plan 260925 có nằm trong bản đồ ranh giới chưa.
+**Chuyện gì xảy ra:** Agent grep năm tên trong ba file bản đồ và một bản nháp, đều ra 0. Bản đồ chỉ có một hàng gần nghĩa là Knowledge, Learning and Documentation Registry và không nhắc quyết định.
+**Bài học:** Một component đã có việc làm mà chưa có hàng trong bản đồ là nợ kiến trúc; cần ghi vào hướng dẫn cập nhật bản đồ.
+**Artefact:** Bảng đếm 5 tên trên 3 file, toàn số 0. Không che gì.
+</story>
+
+<excerpt>
+[L966] USER: component trong plan này tên gì và nó đã có mặt trong map của component authority/boundary chưa plans/reports/research-261021-1643-canonical-decision-projection-component.md
+[L969] AGENT: Em tra nhanh hai file bản đồ ranh giới trong repo. Đây chỉ là tra cứu hẹp, không trùng phần agent đang đọc.
+[L970] TOOL Bash: for t in "Knowledge and Documentation" "Agent Context Engine" "Effective Decision" "Claim registry" "Documentation Registry"; do echo "## $t"; for f in docs/platform/component-boundary.md docs/platform/architecture-map.md docs/specs/system-overview.md docs/architecture-map.md; do [ -f $f ] && printf …[+321]
+[L971] RESULT: ## Knowledge and Documentation | docs/platform/component-boundary.md: 0
+[L986] TOOL Bash: sed -n 73p docs/platform/component-boundary.md | cut -c1-700; echo; ls docs/architect/proposals/ 2>/dev/null | head; f=docs/architect/proposals/component-authority-boundary-map.md; [ -f $f ] && { wc -l $f; for t in "Knowledge and Documentation" "Agent Context Engine" "Effective Decision" "Claim regi …[+529]
+[L987] RESULT: | Knowledge, Learning, And Documentation Registry | Retrospective learning, doc registry, end-user docs index, trace/evolve signals. | Knowledge and docs registry docs | | README.md
+[L997] AGENT: Em tra bản đồ trực tiếp. Agent vẫn đang đọc kế hoạch, nên phần "kế hoạch có xây component nào" em chưa trả lời. Đây là câu trả lời cho hai thứ anh hỏi.
+
+## Component trong kế hoạch 260925 tên gì
+
+Theo bảng "Horizon" của proposal (`documentation-system-unification.md:36-40`), tên là:
+- **Knowledge and Documentation Engine** (H2, §4.7.1). Nó là thẩm quyền lâu dài cho tài liệu, claim, quyết định, provenance và đồ thị quan hệ. Proposal ghi nó là "preserved future architecture", bản bảo trì tối thiểu bắt đầu sau cutover H1.
+- **Agent Context Engine** (H3, §4.7.2). Nó biên dịch instruction, quyết định hiệu lực và kế hoạch đọc theo ngân sách. Cũng là "preserved future", "never a blocker for H1".
+
+H1 chính là kế hoạch 260925 (cutover thẩm quyền tài liệu sang `docs/platform/**`). Vậy H2 và H3 là hai component được nêu trong proposal, nhưng em chưa kiểm kế hoạch có phase nào xây chúng không. Đó là việc agent đang làm.
+
+## Chúng đã có trong bản đồ ranh giới component chưa
+
+**Chưa có, theo tên.** Em đếm tên trong ba nơi:
+
+| Tên | `docs/platform/component-boundary.md` | `docs/platform/architecture-map.md` | `docs/architect/proposals/component-authority-boundary-map.md` (686 dòng) |
+|---|---|---|---|
+| Knowledge and Documentation Engine | 0 | 0 | 0 |
+| Agent Context Engine | 0 | 0 | 0 |
+| Effective Decision Reducer | 0 | 0 | 0 |
+| Claim registry | 0 | 0 | 0 |
+| `decision-index`, `state.decisions`, canonical-decision-projection | 0 | 0 | 0 |
+
+Bản đồ chỉ có một hàng gần nghĩa: **"Knowledge, Learning, And Documentation Registry"** (`component-boundary.md:73`). Vai trò ghi ở đó là học từ retrospective, doc registry, index tài liệu người dùng cuối, tín hiệu trace/evolve. Hàng này **không nhắc quyết định, supersession hay bảng chiếu quyết định**. Bản nháp bản đồ thẩm quyền (`component-authority-boundary-map.md:148,200`) cũng chỉ mô tả cùng hàng đó.
+
+## Hệ quả
+
+1. **canonical-decision-projection (`tsk-1lv`) không có hàng hay chủ nào trong bản đồ.** Mã của nó đang nằm rải ở `src/state/st …[+649]
+[L1013] USER: <task-notification>
+<task-id>a25f87d3c133a5876</task-id>
+<tool-use-id>toolu_01FRBZGiJB9a1VbcVATpXvhM</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/tasks/a25f87d3c133a5876.output</output-file>
+<status>completed</status>
+<summary>Agent "Research doc-plan dedup components" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Báo cáo nằm ở `/home/vantt/projects/forgent/plans/reports/research-261021-1707-doc-plan-dedup-components.md`, nghiên cứu lúc 2026-10-21 17:13 (+07). Tôi chỉ đọc, không sửa file nào khác.
+
+**Kết luận chính**
+- **Đầu nhánh:** tôi chỉ thấy `168a27c6c` (2026-10-13), và GitHub API cũng trả đúng hash đó. Hai đầu nhánh trong board (`763568157`, `97c9694a4`) chưa được push ở đâu, nên Phase 7, Phase 8 Bước 3–5 và manifest 331 file không đọc được.
+- **Có, nhưng không phải component runtime.** Plan có bộ công cụ di trú dùng một lần để khử trùng và giữ một chủ cho một claim, chạy bằng script. Các component runtime (registry claim, Effective Decision Reducer, Agent Context Engine) chỉ có trong proposal và bị cố ý hoãn.
+- **Chưa có mã nào trên main.** Toàn bộ script di trú chỉ có trên nhánh `168a27c6c`, chưa merge. Phần runtime chưa có mã ở đâu, kể cả nhánh.
+- **Với tsk-1lv: bổ sung, ít chồng, không thay.** Plan không nhắc `--relation`, `authoritative_for` hay bốn cửa retrospective. Nó chạm tsk-1lv ở ba chỗ:
+  - giữ `docs/decisions/index.md` làm bản chiếu sinh ra (hàng này còn `pending`, chưa reviewed);
+  - dời chỗ ở của narrative "Lịch sử quyết định" sang `docs/platform/&lt;area&gt;/decisions/`;
+  - sửa các người đọc đường dẫn cũ.
+- **Chỗ chồng thật:**
+  - helper `cross-area-claims` trong nháp Phase 7 và `doc-near-duplicate`/`authoritative-match` cùng giải bài "hai tài liệu nhận cùng chủ đề". Chúng chạy trên hai corpus khác nhau (`Canonical for` ở `docs/platform`, `authoritative_for` ở tài liệu người dùng);
+  - proposal §4.7.3 muốn gỡ component Retrospective, trong khi bốn cửa của tsk-1lv-5 nằm bên trong nó. Việc này không nằm ở phase nào của plan.
+- **Tập quyết định đang hiệu lực:** proposal giao cho Effective Decision Reducer (H3), plan loại ra ngoài phạm vi, không có mã.
+- **Giao luật tới agent:** có chủ thẩm quyền là Agent Context Engine (RUL102, PF-I007) nhưng không phase nào thi công. Board đã chốt ghi …[+1574]
+[L1018] AGENT: Agent đã xong. Trước khi báo, em kiểm lại hai điểm quan trọng nhất của kết quả.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

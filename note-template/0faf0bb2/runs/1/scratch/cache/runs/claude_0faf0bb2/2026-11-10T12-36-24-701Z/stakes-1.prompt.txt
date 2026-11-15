@@ -1,0 +1,53 @@
+Dưới đây là 21 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Multica không chạy được với OpenClaw đóng gói: trượt vì phiên bản tối thiểu
+   Lượt chạy đầu bị từ chối với thông báo 'openclaw 2026.3.13 is below the minimum supported version 2026.5.5'. Thử giả phiên bản trong wrapper thì CLI báo lỗi đường dẫn include ngoài thư mục cấu hình, gọi gateway thất bại, rồi thoát không có output. Kết luận là cần đổi ba chỗ (kiểm tra phiên bản, cấu hình $include, định dạng JSON) và không có đường nào sạch. Agent OpenClaw riêng được tạo và trả lời đúng bộ nhớ, nhưng không điều khiển được qua Multica. Sau đó dọn stack Docker, 3 image khoảng 1,2 GB và thư mục cấu hình, giữ lại agent.
+M2. Đề xuất viết lại UI rồi tìm được nền có license: gr8r chỉ đáng học thiết kế
+   Đề xuất ban đầu là viết lại giao diện gr8r vì repo không có license. Người dùng hỏi có nền sẵn không, và tìm kiếm cho ra Paperclip (MIT, khoảng 108 nghìn sao, có commit trong ngày). Sau đó là Kaneo (MIT, 4.107 commit, 155 người đóng góp, đã nối API thật, có i18n tiếng Việt). Gr8r có 3 commit và 1 tác giả, lưu toàn bộ dữ liệu trong localStorage, nên chỉ là mẫu thiết kế. Khi sửa một comment, Kaneo gọi API còn gr8r ghi cả khối JSON.
+M3. Gỡ công cụ xong vẫn còn dấu vết trong runtime
+   Quét lại sau khi gỡ vẫn thấy 6 file cache và 2 transcript ở dạng '.deleted'. Ba file chỉ mục của runtime (sessions, system-prompt-reports, advisor-sessions) còn giữ tên các session của công cụ. Sau khi dọn thêm, grep toàn bộ thư mục runtime không còn chữ khoá tên công cụ. Công cụ tích hợp để dấu vết ở phía runtime, không chỉ trong thư mục cài đặt.
+M4. Đối chiếu mọi nhận định về repo khác với mã nguồn, và đính chính công khai khi phát hiện sai
+   Đối chiếu mọi nhận định về repo khác với mã nguồn, và đính chính công khai khi phát hiện sai Tin vào README hoặc trí nhớ, ít khi kiểm tra từng trích dẫn file:dòng, và khi sai thường lặng lẽ sửa
+M5. Model mặc định của runtime đã ngừng, làm hỏng agent chính
+   Lỗi 'model không còn khả dụng' khiến agent chính của runtime không trả lời được, dù lỗi không nằm ở công cụ điều phối. Thay vì sửa file cấu hình gốc, chỉ đặt model cho session riêng của công cụ điều phối sang bản flash, rồi comment để đánh thức lại. Lỗi vẫn còn nguyên với mọi việc khác của người dùng cho tới khi họ đổi model mặc định.
+M6. Tạo và thử các kịch bản bằng script nhỏ có sẵn, chép vào repo để người khác chạy lại, và giữ token không lộ qua dòng lệnh
+   Tạo và thử các kịch bản bằng script nhỏ có sẵn, chép vào repo để người khác chạy lại, và giữ token không lộ qua dòng lệnh Gõ lệnh tay trong shell, token dán thẳng vào lệnh hoặc file, không ghi lại từng bước để làm lại
+M7. Multica + Claude Code đạt 5/5: issue đi qua cột, agent hỏi chủ thay vì bịa số
+   Issue tạo không có người nhận được tự giao cho agent viết nội dung, rồi sang cột duyệt và tự giao cho agent khác. Từ lúc chạy tới in_review chỉ mất 16 giây. Người duyệt trả lại hai lần: lần đầu vì thiếu giá, agent sửa nhưng để chỗ trống; lần hai agent dừng và hỏi chủ giá cùng hạn chót thay vì tự điền. Sau khi chủ trả lời, issue đi tiếp tới chờ chủ duyệt. Hai phiên chat với cùng một agent giữ hai session riêng và không lẫn thông tin. Không agent nào tự chuyển done, nhưng điều này mới nằm trong chỉ dẫn, server chưa ép.
+M8. 'Chỉ người duyệt' không chặn được agent tự đóng việc; cổng thật là executionPolicy
+   Issue đặt reviewPolicy 'human_only' bị agent chuyển sang 'done' trong khoảng 26 giây mà không ai duyệt. Phân tích mã nguồn cho thấy reviewPolicy chỉ áp dụng khi trả lời một yêu cầu xác nhận, còn cổng review nhiều bước nằm ở executionPolicy. Trước đó đã kết luận Paperclip không có luồng review đáng tin, nên phải đính chính: server có chặn chuyển sang in_review khi thiếu đường duyệt (lỗi 422), và chỉ bước cuối được chấp nhận mới thành done. Phần đính chính này mới đọc từ mã, chưa chạy thử executionPolicy.
+M9. Ngân sách 0 đồng chặn mọi lần đánh thức agent, comment của chủ không đánh thức được
+   Sau khi đặt ngân sách tháng cho agent, mọi lần đánh thức bị từ chối với lỗi 409 'no reliable price' và không có thông báo nào trên giao diện. Comment của chủ trên issue không tạo run nào trong hơn 10 phút, và agent Marketing vẫn ở trạng thái paused với lý do budget. Cách sửa là đặt ngân sách về 0 cho cả ba agent rồi resume. Sau đó run mới chạy và hoàn thành trong khoảng 53 giây.
+M10. Chuẩn đóng gói công ty mở: chỉ Paperclip thực hiện được
+   Agent Companies v1 là chuẩn markdown mở, mở rộng SKILL.md, gồm COMPANY, TEAM, AGENTS, PROJECT và TASK. Chỉ Paperclip hiện thực chuẩn này: đóng gói và nhập được cả công ty, nhưng không có workflow nhiều bước. AICoworker đóng gói được một agent (.agent) kèm kiểm tra secret. Multica chỉ đóng gói được skill. Đề xuất là gói OPC = chuẩn trên + phần mở rộng WORKFLOW.md, deploy lại không tạo trùng.
+M11. Nhận nhầm rằng bridge là tuỳ chọn: mỗi heartbeat của agent tốn một lượt LLM
+   Đọc mã heartbeat cho thấy OpenClaw chỉ bỏ qua lượt khi HEARTBEAT.md rỗng. Nếu có chỉ dẫn kiểm tra inbox thì mỗi lượt là một lần gọi model. Ví dụ 5 agent mỗi 5 phút tạo khoảng 1.440 lượt mỗi ngày, gần như toàn bộ để trả lời 'không có việc'. Đã sửa lại: bridge vẫn cần, nhưng chỉ là một script không dùng LLM, hỏi định kỳ.
+M12. Chủ đổi hướng: bỏ server Node, chuyển sang schema sinh API và MCP trên D1
+   Người dùng nêu ý chính: một schema entity chuẩn khớp với UI, từ đó sinh D1, REST và MCP, agent kết nối qua đó. Phần cần Node của Paperclip được tách riêng, phần lõi (schema, API, cách agent nhận việc) được đánh giá là chạy được trên Workers với D1. Mục tiêu chi phí hạ tầng gần 0 đồng.
+M13. Stop hook giữ phiên lại gần 20 lần vì điều kiện là trạng thái
+   Sau khi người dùng yêu cầu gỡ công cụ, điều kiện không còn đúng nhưng stop hook vẫn chặn dừng, vì chỉ lệnh /goal clear mới tắt được và mô hình không có quyền làm việc đó. Khoảng 20 lần phản hồi 'điều kiện chưa thoả' lặp lại. Người dùng chọn 'bỏ goal' qua câu hỏi, nhưng hook vẫn chặn cho tới khi chính họ gõ lệnh.
+M14. Theo dõi tiến trình dài bằng Monitor thay vì để agent ngồi chờ hoặc poll liên tục
+   Theo dõi tiến trình dài bằng Monitor thay vì để agent ngồi chờ hoặc poll liên tục Chạy lệnh chờ hoặc vòng lặp sleep rồi đợi timeout, hoặc hỏi lại trạng thái thủ công nhiều lần
+M15. Đăng nhập không mật khẩu: mã xác nhận và mã cố định cho bản thử
+   Chưa cấu hình email nên mã xác nhận nằm trong log và hết hạn sau 10 phút. Phương án mã cố định qua biến môi trường chỉ chấp nhận đúng 6 chữ số, nên phải đặt lại mã có 6 chữ số thay vì chữ. Sau khi đổi, đăng nhập thử thành công và daemon vẫn online. Mã này chỉ dùng cho bản thử trong mạng riêng và không được bật ở chế độ production.
+M16. Mở công cụ điều phối ra mạng riêng: đổi sang chế độ có đăng nhập
+   Mạng riêng có 9 máy khác, nên phải chuyển sang chế độ có đăng nhập trước khi mở ra. Đổi địa chỉ lắng nghe làm địa chỉ cũ ngừng trả lời, nên các agent vẫn trỏ về địa chỉ nội bộ và không hoạt động cho tới khi cập nhật từng agent. Link tạo quyền chủ và link cấp quyền CLI đều hết hạn trong vài phút, nên phải tạo lại link sau khi đăng ký xong. Sau đó giao diện mở được cả qua tên máy lẫn IP trong mạng riêng.
+M17. Commit đúng phần của mình, giữ nguyên thay đổi dở của người khác
+   Thay vì add và commit thông thường, tạo index riêng bằng GIT_INDEX_FILE để chỉ đưa vào commit các file tài liệu và đúng hai dòng README. Commit c7181d6 có 20 file, +3.257 dòng. Commit 152f378 sau đó có 14 file. Phần dở của người khác không bị đụng tới. Lần thứ hai cũng làm theo cách này.
+M18. Dừng hẳn một tiến trình nền và tự kiểm tra cổng đã trống trước khi khởi động lại với cấu hình mới
+   Dừng hẳn một tiến trình nền và tự kiểm tra cổng đã trống trước khi khởi động lại với cấu hình mới Chạy lại server mà không chờ port cũ giải phóng, rồi gặp lỗi 'address already in use' và phải tự tìm và kill tiến trình
+M19. Paperclip tự có runtime, UI giấu adapter OpenClaw
+   Người dùng thấy màn tạo agent không cho chọn OpenClaw. Mã nguồn cho thấy adapter OpenClaw bị gắn 'comingSoon' và ẩn khỏi danh sách, mọi khả năng trên UI (chỉ dẫn, skill, chọn model) đều tắt. Đồng thời Paperclip có runner Rust tự chạy các CLI agent. Hệ quả là ghép Paperclip với AICoworker thực chất là hai runtime, và OpenClaw là lựa chọn được hỗ trợ kém nhất.
+M20. Agent kẹt ở bước xác minh vì lệch phiên bản giao thức 3 và 4
+   Ba agent đứng ở trạng thái 'verifying' và báo lỗi chung, không nói rõ nguyên nhân. Bước kiểm tra cho thấy công cụ yêu cầu giao thức bản 4 trong khi gateway chỉ chấp nhận bản 3. Lịch sử commit của bên công cụ cho thấy nội dung giao thức không đổi giữa hai bản, nên hạ mức tối thiểu từ 4 xuống 3 ở ba chỗ trong bản đã cài, giữ bản 4 làm mức tối đa. Sau khi vá, probe kết nối báo pass và cả ba agent chuyển sang 'ready'. Lần đầu, script lấy token từ tiến trình đang chạy cũng lỗi KeyError vì biến môi trường không có trong shell.
+M21. Kho bài học tăng từ 12 lên 52 qua nhiều lần ghi, lỗi YAML đến từ sed
+   Lần distill đầu ghi 12 bài học. Các lần sau cộng dồn: 17 sau khi chấm lại theo goal mới, 30 sau Paperclip, 38 sau Kaneo, 47 sau Multica, và 52 sau spike Multica + Claude Code. Trong quá trình có ba lỗi YAML do giá trị chứa dấu hai chấm hoặc điểm effort ngoài khoảng 1 đến 3. Mỗi lần sửa bằng sed lại gây lỗi mới ở dòng khác. Ghi lại bằng script có kiểm tra trước khi ghi thì ổn định hơn.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

@@ -1,0 +1,1655 @@
+{
+  "id": "c4caee3c",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "a80efc8267e2088e",
+  "at": "2026-11-05T15:33:57.674Z",
+  "dryRun": {
+    "usd": 0.33,
+    "tokens": 99560,
+    "chunks": 1,
+    "hotspots": 36,
+    "entries": 874
+  },
+  "report": {
+    "sid": "claude:c4caee3c",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.373981,
+    "secs": 224.9,
+    "exitCode": 0,
+    "status": "done",
+    "written": 34,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:c4caee3c L1-L4000: done; 31 chuyện thô, 34 cụm; ghi 34 mới, gộp 0\nđiểm nóng 36 (thiếu 0); lần chạy 1/1; 0.37 USD"
+  },
+  "angleModel": "haiku",
+  "profileModel": "haiku",
+  "ranked": [
+    {
+      "id": "2026-11-02-corpus-tieng-viet-qua-de-baseline",
+      "title": "Corpus tiếng Việt quá dễ: baseline 0,93 không đo được gì",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Obsidian Hybrid Search là công cụ tìm ghi chú Obsidian theo nghĩa và theo từ, và người làm đang muốn gói tiếng Việt của nó tìm tốt gấp đôi baseline. Ban đầu baseline 0,93 có vẻ là mức đã rất cao nên điều kiện gấp đôi tưởng không thể đạt. Hoá ra bộ test tiếng Việt quá dễ: tiêu đề mỗi ghi chú trùng đúng câu tìm, nên 0,93 không đo được gì, và khi bỏ dấu điểm rơi xuống 0,27. Ai làm benchmark tìm kiếm nên kiểm tra xem bộ test có đang tự lộ đáp án không.",
+      "audience": "dev làm công cụ tìm kiếm hoặc benchmark cho tài liệu cá nhân",
+      "spine": {
+        "context": {
+          "text": "Obsidian Hybrid Search là công cụ tìm ghi chú Obsidian theo nghĩa và theo từ; người làm đang đưa gói tiếng Việt vào để cải thiện chất lượng tìm.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Hit@5 đạt tối thiểu 0,85 và gấp tối thiểu 2 lần baseline.",
+          "lines": [
+            "claude:c4caee3c#L315"
+          ]
+        },
+        "obstacle": {
+          "text": "Baseline upstream đã đạt 0,93 trên corpus sinh, nên điều kiện gấp đôi không thể đạt.",
+          "lines": [
+            "claude:c4caee3c#L315"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng 0,93 là mức tìm tốt thật; hoá ra tiêu đề mỗi ghi chú trùng đúng câu tìm, nên bộ test quá dễ và điểm 0,93 không đo được gì.",
+          "lines": [
+            "claude:c4caee3c#L315",
+            "claude:c4caee3c#L1034"
+          ]
+        },
+        "action": {
+          "text": "Chọn làm corpus khó hơn thay vì hạ ngưỡng; đánh số tiêu đề và đo lại với kiểu gõ không dấu.",
+          "lines": [
+            "claude:c4caee3c#L334",
+            "claude:c4caee3c#L1034"
+          ]
+        },
+        "outcome": {
+          "text": "vi-unaccented Hit@5 từ 0,93 xuống 0,27, vi-dd từ 0,87 xuống 0,40; sau khi có gói tiếng Việt, cả hai lên 1,00.",
+          "lines": [
+            "claude:c4caee3c#L1034",
+            "claude:c4caee3c#L1150"
+          ]
+        },
+        "takeaway": {
+          "text": "Benchmark có tiêu đề lộ câu tìm sẽ che mất lỗi tìm; hãy đo với kiểu gõ khác và đúng tokenizer của hệ thống.",
+          "lines": [
+            "claude:c4caee3c#L1034"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Bộ test tiếng Việt cho kết quả Hit@5 0,93 nên trông tìm kiếm đã tốt. Thật ra mỗi câu tìm đều là tiêu đề của chính ghi chú đó, nên hệ thống tìm được nhờ tiêu đề chứ không nhờ bộ tìm kiếm xử lý được dấu. Khi làm corpus khó hơn, điểm giảm còn 0,27 với chữ không dấu và 0,40 với chữ đ. Benchmark có đáp án lộ ra ngoài sẽ che mất lỗi tìm kiếm, nên cần đo lại với nhiều kiểu gõ.",
+      "prevAudience": "dev làm tìm kiếm hoặc đo chất lượng tìm kiếm cho ứng dụng tiếng Việt"
+    },
+    {
+      "id": "2026-11-02-goi-tieng-viet-ndcg-5-0",
+      "title": "Gói tiếng Việt: nDCG@5 0,666 lên 0,932 qua nhiều lớp, và một lớp làm hỏng lớp trước",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một nhóm đang làm bản fork của Obsidian Hybrid Search, công cụ tìm ghi chú Obsidian theo nghĩa, và thêm gói tiếng Việt để tìm đúng cả khi gõ không dấu, gõ sai hay dùng từ đồng nghĩa. Họ tin lớp sửa gõ sai chỉ làm kết quả tốt hơn, nhưng sau khi merge, lớp này đã viết lại các từ trong từ điển đồng nghĩa, kéo vi-synonym từ hạng 4 xuống hạng 7. Ai xếp nhiều lớp xử lý văn bản lên cùng một câu hỏi đều có thể gặp đúng lỗi này, vì lớp sau che mất dạng gốc mà lớp trước cần.",
+      "audience": "dev xây công cụ tìm kiếm hoặc xử lý ngôn ngữ nhiều lớp",
+      "spine": {
+        "context": {
+          "text": "Một nhóm làm bản fork của Obsidian Hybrid Search, công cụ tìm ghi chú Obsidian theo nghĩa, và đang thêm gói tiếng Việt để tìm đúng khi gõ không dấu, gõ sai hay dùng từ đồng nghĩa.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Muốn hoàn tất plan roadmap fork, trong đó gói tiếng Việt phải đạt các mục tiêu G3.",
+          "lines": [
+            "claude:c4caee3c#L11",
+            "claude:c4caee3c#L1150"
+          ]
+        },
+        "obstacle": {
+          "text": "Các lớp xử lý cùng sửa một câu, nên lớp sau có thể che mất dạng gốc mà lớp trước cần.",
+          "lines": [
+            "claude:c4caee3c#L1470"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng lớp sửa gõ sai chỉ làm kết quả tốt hơn; hoá ra nó viết lại các từ trong từ điển đồng nghĩa, kéo vi-synonym từ hạng 4 xuống hạng 7.",
+          "lines": [
+            "claude:c4caee3c#L1458",
+            "claude:c4caee3c#L1470"
+          ]
+        },
+        "action": {
+          "text": "Lexicon đọc cả câu gốc lẫn câu đã sửa; từ người dùng gõ theo dạng đồng nghĩa được coi là từ đã biết; thêm test.",
+          "lines": [
+            "claude:c4caee3c#L1470"
+          ]
+        },
+        "outcome": {
+          "text": "vi-synonym Hit@5 lên 0,80, vi-abbr đạt 1,00, nDCG@5 tổng lên 0,909, không hạng mục nào tụt.",
+          "lines": [
+            "claude:c4caee3c#L1478"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi hai lớp cùng sửa một câu, lớp sau phải thấy dạng gốc của lớp trước; đo lại toàn bộ hạng mục sau mỗi lần merge.",
+          "lines": [
+            "claude:c4caee3c#L1470"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Người làm tin rằng thêm lớp sửa gõ sai sẽ giúp tìm tốt hơn. Nhưng lớp này viết lại truy vấn trước khi lớp từ đồng nghĩa kịp đọc, nên một từ đồng nghĩa người dùng gõ bị đổi thành từ khác trong kho ghi chú, và ghi chú đúng tụt từ hạng 4 xuống hạng 7. Ai xếp nhiều lớp xử lý truy vấn cần kiểm tra lớp sau có thấy dạng gốc mà người dùng gõ hay không.",
+      "prevAudience": "dev làm tìm kiếm cho ghi chú tiếng Việt hoặc xếp nhiều lớp xử lý truy vấn"
+    },
+    {
+      "id": "2026-11-02-cung-model-onnx-cpu-khac-diem",
+      "title": "Cùng model ONNX, CPU khác, điểm khác: cổng chất lượng đỏ vì baseline ghi trên máy khác",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Obsidian Hybrid Search là gói npm tìm ghi chú Obsidian theo nghĩa và từ khoá, và người làm đang đẩy bản phát hành mới qua CI. Họ tin điểm eval đo trên máy nào cũng như nhau, nên so với baseline ghi sẵn để quyết định đỏ hay xanh. Hoá ra cùng một model ONNX lượng tử int8 cho điểm khác nhau theo loại CPU, nên cổng đỏ vì baseline ghi trên máy khác, không phải vì code sai. Ai so benchmark giữa các máy khác nhau đều có thể gặp đúng chuyện này.",
+      "audience": "dev làm công cụ có đo chất lượng bằng benchmark trên CI",
+      "spine": {
+        "context": {
+          "text": "Obsidian Hybrid Search là gói npm tìm ghi chú Obsidian theo nghĩa và từ khoá; người làm đang đẩy bản phát hành mới qua CI.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Muốn CI xanh và phát hành đủ gói cho mọi nền.",
+          "lines": [
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Cổng chất lượng đỏ: điểm eval 0,735 trên một máy, 0,728 trên runner CI, lệch quá ngưỡng 0,005.",
+          "lines": [
+            "claude:c4caee3c#L3312"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng kết quả eval lặp lại được trên mọi máy; hoá ra chỉ lặp lại trong cùng loại CPU, vì cùng model ONNX lượng tử int8 cho số khác nhau theo CPU.",
+          "lines": [
+            "claude:c4caee3c#L3349",
+            "claude:c4caee3c#L3361"
+          ]
+        },
+        "action": {
+          "text": "Đổi cổng chất lượng để so với upstream đo trong cùng lần chạy; baseline ghi sẵn chỉ còn là cảnh báo trôi; kiểm tra gói chỉ tính kết quả trên một loại CPU và thử lại tối đa 3 lần.",
+          "lines": [
+            "claude:c4caee3c#L3349",
+            "claude:c4caee3c#L3370",
+            "claude:c4caee3c#L3388"
+          ]
+        },
+        "outcome": {
+          "text": "CI xanh; release v0.17.2-vantt.3 có đủ 4 gói, run 41410567165 thành công.",
+          "lines": [
+            "claude:c4caee3c#L3415"
+          ]
+        },
+        "takeaway": {
+          "text": "Đừng coi điểm eval đo trên máy khác là chuẩn; đo đối chứng trong cùng một lần chạy.",
+          "lines": [
+            "claude:c4caee3c#L3361"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Cổng chất lượng so điểm eval với baseline ghi trên một máy khác và coi đó là chuẩn chung. Hoá ra cùng một model ONNX lượng tử int8 cho điểm khác nhau theo loại CPU: 0,735 trên máy đã ghi, 0,728 trên runner CI, nên lệch quá ngưỡng 0,005 dù code không đổi. Cách sửa là đo bản upstream ngay trong cùng lần chạy, trên cùng máy, rồi so với nó; baseline ghi sẵn chỉ còn dùng để báo độ trôi.",
+      "prevAudience": "dev dùng model AI cục bộ và viết test đánh giá chất lượng"
+    },
+    {
+      "id": "2026-11-02-eval-vault-that-tong-tang-0",
+      "title": "Eval vault thật: tổng tăng 0,600 lên 0,698 nhưng cổng hạng mục đỏ, người dùng quyết",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một gói npm tìm kiếm ghi chú Obsidian theo nghĩa và từ khoá đang đo chất lượng trên vault thật của người làm. Tổng điểm tăng từ 0,600 lên 0,698, nhưng cổng theo từng hạng mục vẫn đỏ: có hạng mục tụt 0,260 chỉ vì một câu rơi khỏi top 5. Với bộ 2–6 câu mỗi hạng mục, một câu là đủ làm đổi cả điểm, nên cổng hạng mục nhạy hơn mức đáng tin. Ai đo chất lượng tìm kiếm bằng bộ mẫu nhỏ nên để ý điều này.",
+      "audience": "dev làm công cụ tìm kiếm hoặc đo chất lượng bằng bộ câu hỏi nhỏ",
+      "spine": {
+        "context": {
+          "text": "Một gói npm tìm kiếm ghi chú Obsidian theo nghĩa và từ khoá, đang đo chất lượng trên vault thật.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Muốn xác nhận gói tiếng Việt cải thiện tìm kiếm trên vault thật.",
+          "lines": [
+            "claude:c4caee3c#L3653"
+          ]
+        },
+        "obstacle": {
+          "text": "Tổng điểm tăng nhưng cổng theo từng hạng mục vẫn đỏ.",
+          "lines": [
+            "claude:c4caee3c#L3653"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng cổng theo hạng mục là thước đo đáng tin; hoá ra với 2–6 câu mỗi hạng mục, một câu rơi làm điểm hạng mục đổi mạnh.",
+          "lines": [
+            "claude:c4caee3c#L3653",
+            "claude:c4caee3c#L3680"
+          ]
+        },
+        "action": {
+          "text": "Chốt dùng gói vi cho bộ cài; khởi chạy V15b thêm chế độ chi tiết cho cổng.",
+          "lines": [
+            "claude:c4caee3c#L3787",
+            "claude:c4caee3c#L3797"
+          ]
+        },
+        "outcome": {
+          "text": "Tổng nDCG@5 tăng từ 0,600 lên 0,698; cổng theo hạng mục vẫn đỏ, V15b đang chạy.",
+          "lines": [
+            "claude:c4caee3c#L3653",
+            "claude:c4caee3c#L3797"
+          ]
+        },
+        "takeaway": {
+          "text": "Bộ nhỏ theo hạng mục quá nhạy; nên tính theo tổng hoặc không dùng cổng hạng mục cho bộ 2–6 câu.",
+          "lines": [
+            "claude:c4caee3c#L3680"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Cổng chất lượng theo từng hạng mục được thiết kế để bắt hồi quy, nên tưởng là đọc được kết quả từng mục. Trên vault thật, tổng điểm tăng 0,600 lên 0,698 nhưng cổng vẫn đỏ, vì một câu rơi khỏi top 5 kéo hạng mục vi-iy tụt 0,26. Mỗi hạng mục chỉ có 2 đến 6 câu nên một câu có thể quyết định kết quả cả mục. Ai dùng cổng theo hạng mục cho bộ test nhỏ cần biết điều này.",
+      "prevAudience": "dev dùng cổng chất lượng hoặc bộ eval nhỏ cho công cụ tìm kiếm"
+    },
+    {
+      "id": "2026-11-02-goi-tieng-duc-chay-qua-diem",
+      "title": "Gói tiếng Đức chạy qua điểm cắm mà không sửa lõi: nDCG@5 0,57 lên 0,97",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một fork của Obsidian Hybrid Search, công cụ tìm ghi chú Obsidian theo nghĩa và theo từ, đang hoàn tất lộ trình fork.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất các việc trong lộ trình fork và đưa chúng lên master.",
+          "lines": [
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "/tmp đầy hạn mức, làm mọi agent hỏng lệnh shell.",
+          "lines": [
+            "claude:c4caee3c#L1114"
+          ]
+        },
+        "action": {
+          "text": "Chuyển toàn bộ worktree sang thư mục khác ngoài /tmp rồi cho các agent chạy lại.",
+          "lines": [
+            "claude:c4caee3c#L1114"
+          ]
+        },
+        "outcome": {
+          "text": "Đã xong và push 11 trên 25 việc; không mất phần việc nào.",
+          "lines": [
+            "claude:c4caee3c#L1114"
+          ]
+        }
+      },
+      "completeness": 5,
+      "prevAngle": "none",
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-phuc-hoi-dau-bien-mot-tu",
+      "title": "Phục hồi dấu biến một từ không dấu thành từ khác trong câu có dấu một phần",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án Obsidian Hybrid Search là gói npm tìm kiếm trong vault Obsidian, và người làm muốn tiếng Việt tìm đúng hơn, kể cả khi gõ không dấu. Giả thuyết ban đầu là ngưỡng 50% đang sai, vì câu \"Hội An\" chỉ có một nửa âm tiết có dấu nên bị phục hồi dấu thành \"Hội ăn\". Hoá ra ngưỡng đúng theo đặc tả, lỗi nằm ở cách dựng câu gửi model nhúng: từ đã gõ dấu phải giữ nguyên. Ai làm tìm kiếm tiếng Việt nên nhớ rằng đổi ngưỡng cho khớp test là sai hướng.",
+      "audience": "dev làm tìm kiếm hoặc xử lý tiếng Việt",
+      "spine": {
+        "context": {
+          "text": "Dự án Obsidian Hybrid Search là gói npm tìm kiếm trong vault Obsidian theo nghĩa và từ khoá, dùng được cho người dùng Obsidian và AI agent.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn gói tiếng Việt tìm đúng hơn, kể cả khi người dùng gõ không dấu hoặc gõ một phần có dấu.",
+          "lines": [
+            "claude:c4caee3c#L2776"
+          ]
+        },
+        "obstacle": {
+          "text": "Bước phục hồi dấu đổi chữ \"An\" thành \"ăn\" trong câu \"Hội An\", vì câu chỉ có một trên hai âm tiết có dấu nên không vượt ngưỡng.",
+          "lines": [
+            "claude:c4caee3c#L2787"
+          ]
+        },
+        "turn": {
+          "text": "Giả thuyết ban đầu là ngưỡng 50% sai; hoá ra ngưỡng đúng theo đặc tả, lỗi nằm ở cách dựng câu gửi model nhúng.",
+          "lines": [
+            "claude:c4caee3c#L2787",
+            "claude:c4caee3c#L2789"
+          ]
+        },
+        "action": {
+          "text": "Viết test tái hiện lỗi trước khi sửa, rồi sửa cách dựng: từ đã gõ dấu giữ nguyên, từ không dấu chỉ được khôi phục khi vault không bao giờ viết trần và xác suất đủ ngưỡng.",
+          "lines": [
+            "claude:c4caee3c#L2787"
+          ]
+        },
+        "outcome": {
+          "text": "nDCG@5 tổng tăng từ 0,932 lên 0,954, không hạng mục nào tụt, và tuỳ chọn được bật mặc định.",
+          "lines": [
+            "claude:c4caee3c#L2787",
+            "claude:c4caee3c#L2789"
+          ]
+        },
+        "takeaway": {
+          "text": "Ngưỡng đúng theo đặc tả vẫn có thể sai ở chỗ dựng câu. Hãy kiểm bằng test trước khi sửa, và đừng đổi ngưỡng cho khớp kết quả.",
+          "lines": [
+            "claude:c4caee3c#L2787"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Nhóm nghi ngờ ngưỡng 50% âm tiết có dấu là lỗi khiến từ đã gõ dấu bị đổi. Hoá ra ngưỡng đúng theo quy tắc; lỗi nằm ở cách dựng câu gửi đi: \"Hội An\" thành \"hội ăn\", vì chữ \"An\" bị đổi sang \"ăn\" là dạng hay gặp hơn. Đổi đúng theo quy tắc vẫn có thể làm sai nghĩa, nên phải chứng minh bằng test trước khi đổi quy tắc.",
+      "prevAudience": "dev làm tìm kiếm tiếng Việt"
+    },
+    {
+      "id": "2026-11-02-co-restoreforembedding-giai-quyet-vi-snippet",
+      "title": "Cờ restoreForEmbedding giải quyết vi-snippet mà không cần sửa mã",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Obsidian Hybrid Search là npm package tìm ghi chú Obsidian theo nghĩa và từ khoá, chạy local, và người làm đang đưa nhóm truy vấn tiếng Việt vi-snippet lên 15/15 trên cổng chất lượng. Người làm tin phải sửa thuật toán xếp hạng, nhưng khi gộp nhánh master thì một cờ mặc định (restoreForEmbedding) đã đưa đúng ghi chú lên hạng 1, không cần sửa mã. Người dùng tìm kiếm tiếng Việt nên quan tâm vì lỗi này nằm ở bước chọn ứng viên chứ không ở thuật toán. Bài học: kiểm nhánh nào đang thiếu ứng viên trước khi chỉnh thuật toán.",
+      "audience": "dev làm tìm kiếm tiếng Việt cho ghi chú và tài liệu",
+      "spine": {
+        "context": {
+          "text": "Obsidian Hybrid Search là npm package tìm ghi chú Obsidian theo nghĩa và từ khoá, chạy local. Người làm đang đưa nhóm truy vấn tiếng Việt vi-snippet lên đạt 15/15 trên cổng chất lượng.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn cổng vi-snippet đạt 15/15 mà không làm xấu các nhóm khác.",
+          "lines": [
+            "claude:c4caee3c#L2919"
+          ]
+        },
+        "obstacle": {
+          "text": "Truy vấn vi-snippet-08 không đưa được ghi chú đích vào nhánh vector, vì bộ embedding nhận câu không dấu \"quen ngu\".",
+          "lines": [
+            "claude:c4caee3c#L2919"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng phải sửa thuật toán xếp hạng hoặc trọng số; hoá ra một cờ mặc định đã bật khi gộp master là đủ.",
+          "lines": [
+            "claude:c4caee3c#L2919",
+            "claude:c4caee3c#L2927"
+          ]
+        },
+        "action": {
+          "text": "Gộp master vào nhánh, không sửa dòng mã nào.",
+          "lines": [
+            "claude:c4caee3c#L2927",
+            "claude:c4caee3c#L2928"
+          ]
+        },
+        "outcome": {
+          "text": "vi-snippet đạt 15/15, nDCG@5 tổng 0,944; vi-alias giảm 0,016 nhưng còn trong ngưỡng 0,02. Nhánh chưa merge được vì file review đang bị agent khác sửa.",
+          "lines": [
+            "claude:c4caee3c#L2927",
+            "claude:c4caee3c#L2929"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi sửa thuật toán, kiểm nhánh nào đang thiếu ứng viên; một cờ đúng có thể là đủ.",
+          "lines": [
+            "claude:c4caee3c#L2919"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Người làm tưởng một câu tìm tiếng Việt không dấu bị xếp sai vì thuật toán, nên định sửa mã. Hoá ra một cờ mặc định đã bật khi gộp nhánh chính: câu được khôi phục dấu thành \"quen ngủ\", và note đích lên hạng 1 mà không sửa dòng nào. Người dùng AI hằng ngày nên biết: trước khi viết lại logic, hãy kiểm tra xem tuỳ chọn có sẵn đã đủ chưa.",
+      "prevAudience": "dev dùng AI, làm công cụ tìm kiếm ghi chú tiếng Việt"
+    },
+    {
+      "id": "2026-11-02-tach-tu-bat-mac-dinh-vi",
+      "title": "Tách từ bật mặc định: vi-compound đã đạt trước nhưng bộ khó cho thấy tác dụng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Obsidian Hybrid Search là gói npm tìm ghi chú Obsidian theo nghĩa, từ khoá, tiêu đề, thẻ và liên kết; đang làm gói tiếng Việt cho bản phát hành theo plan.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất các mục trong plan lộ trình, trong đó có gói tiếng Việt.",
+          "lines": [
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Một test fast-check thỉnh thoảng hỏng, có từ thời V13 và hỏng cả trên master.",
+          "lines": [
+            "claude:c4caee3c#L1672"
+          ]
+        },
+        "action": {
+          "text": "Thêm tách từ tiếng Việt với view seg, bật mặc định, rồi merge vào master.",
+          "lines": [
+            "claude:c4caee3c#L1640"
+          ]
+        },
+        "outcome": {
+          "text": "nDCG@5 tổng từ 0,909 lên 0,932, không hạng mục nào tụt; vi-compound hơn baseline upstream 0,156.",
+          "lines": [
+            "claude:c4caee3c#L1640"
+          ]
+        }
+      },
+      "completeness": 5,
+      "prevAngle": "Người làm eval tin rằng vi-compound đã đạt 1,00 trước khi tách từ nên tách từ không thể cho thấy thêm gì, và điểm tổng tăng là đủ bằng chứng. Hoá ra bộ đã bão hoà không đo được tác dụng: trên bộ câu từ ghép khó do agent tự dựng, nDCG@5 tăng từ 0,52–0,79 lên 0,86–1,00. Người nghe nên để ý vì một hạng mục đã đạt tối đa có thể che mất hiệu quả thật, nên cần bộ khó riêng.",
+      "prevAudience": "dev xây bộ eval cho tìm kiếm và công cụ AI"
+    },
+    {
+      "id": "2026-11-02-tu-dien-tu-ghep-danh-sach",
+      "title": "Từ điển từ ghép: danh sách MIT có thể mang nguồn GPL, đổi sang thống kê dữ liệu CC BY",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Obsidian Hybrid Search là gói npm tìm ghi chú Obsidian theo nghĩa và từ khoá, và người làm đang đưa phần tiếng Việt lên, trong đó có một từ điển từ ghép để tách từ đúng. Từ điển này lấy từ một repo MIT nên trông an toàn để dùng, nhưng khoảng 95% nội dung trùng với một danh sách GPL, nên giấy phép của bản chép không nói được nguồn gốc. Người làm dựng lại bằng thống kê trên dữ liệu CC BY 4.0, và chất lượng không giảm: vi-compound tăng từ 0,632 lên 0,983. Ai dùng dữ liệu có sẵn nên kiểm nguồn gốc chứ không chỉ đọc giấy phép.",
+      "audience": "dev làm công cụ có dùng dữ liệu bên thứ ba và quan tâm đến giấy phép",
+      "spine": {
+        "context": {
+          "text": "Obsidian Hybrid Search là gói npm tìm ghi chú Obsidian theo nghĩa và từ khoá. Người làm đang đưa phần tiếng Việt lên, trong đó có một từ điển từ ghép để tách từ đúng.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Muốn có từ điển từ ghép có giấy phép rõ ràng để đạt yêu cầu Q9.",
+          "lines": [
+            "claude:c4caee3c#L1672"
+          ]
+        },
+        "obstacle": {
+          "text": "Danh sách lấy từ một repo MIT, nhưng khoảng 95% trùng với một danh sách GPL, nên giấy phép của bản chép không nói được nguồn gốc.",
+          "lines": [
+            "claude:c4caee3c#L1672"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng giấy phép MIT của repo là đủ để dùng; hoá ra nguồn gốc dữ liệu có thể là GPL.",
+          "lines": [
+            "claude:c4caee3c#L1672"
+          ]
+        },
+        "action": {
+          "text": "Dựng lại từ điển bằng thống kê cặp âm tiết trên ba bộ dữ liệu CC BY 4.0. Chỉ dùng danh sách cũ để chọn ngưỡng, không chép mục nào.",
+          "lines": [
+            "claude:c4caee3c#L2155",
+            "claude:c4caee3c#L2862"
+          ]
+        },
+        "outcome": {
+          "text": "Từ điển mới có 20.523 từ. vi-compound tăng từ 0,632 lên 0,983, tốt hơn hoặc bằng danh sách cũ ở mọi hạng mục.",
+          "lines": [
+            "claude:c4caee3c#L2862"
+          ]
+        },
+        "takeaway": {
+          "text": "Kiểm nguồn gốc dữ liệu, không chỉ giấy phép của bản chép: một danh sách MIT có thể mang nguồn GPL.",
+          "lines": [
+            "claude:c4caee3c#L1672"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Ai dùng danh sách từ ghép trong một repo MIT đều nghĩ dữ liệu đó đã sạch giấy phép. Hoá ra khoảng 95% danh sách trùng với bộ Viet74K mang giấy phép GPL, nên giấy phép của bản chép không nói được nguồn gốc thật. Agent đã học lại danh sách từ dữ liệu CC BY, không chép mục nào, và kết quả vẫn tốt hơn: 0,983 so với 0,632 của bản gốc. Với ai làm dữ liệu mở, nên kiểm nguồn gốc chứ không chỉ đọc file giấy phép.",
+      "prevAudience": "dev làm dữ liệu hoặc thư viện mở cho tiếng Việt"
+    },
+    {
+      "id": "2026-11-02-worktree-trong-tmp-lam-day-han",
+      "title": "Worktree trong /tmp làm đầy hạn mức, 11 agent cùng hỏng shell",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang điều phối 11 agent song song để hoàn tất roadmap cho bản fork của Obsidian Hybrid Search, một gói npm tìm ghi chú Obsidian theo nghĩa. Họ tưởng /tmp vẫn còn chỗ cho worktree và scratchpad, rồi mọi lệnh shell của mọi agent đều hỏng vì hạn mức đĩa đã đầy; mỗi worktree tự kéo node_modules riêng. Họ chuyển worktree sang ổ thật mà không mất việc dở, và /tmp còn 26%. Ai chạy nhiều agent song song trên git worktree nên đặt worktree lên ổ thật, không để trên tmpfs có hạn mức.",
+      "audience": "dev chạy nhiều agent song song trên git worktree",
+      "spine": {
+        "context": {
+          "text": "Một dự án gói npm tìm kiếm ghi chú Obsidian theo nghĩa, đang chạy 11 agent song song để hoàn tất roadmap bản fork.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Muốn hoàn tất roadmap bằng nhiều agent chạy song song.",
+          "lines": [
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Ghi scratchpad lỗi EDQUOT vì hạn mức đĩa /tmp đã đầy; mọi lệnh shell hỏng.",
+          "lines": [
+            "claude:c4caee3c#L492",
+            "claude:c4caee3c#L508"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng /tmp còn chỗ cho worktree và scratchpad; hoá ra hạn mức đã đầy vì mỗi worktree có node_modules riêng.",
+          "lines": [
+            "claude:c4caee3c#L492",
+            "claude:c4caee3c#L506"
+          ]
+        },
+        "action": {
+          "text": "Chuyển worktree sang /home/vantt/projects/ohs-wt và sửa brief chung để agent tạo worktree ở đó.",
+          "lines": [
+            "claude:c4caee3c#L621",
+            "claude:c4caee3c#L638"
+          ]
+        },
+        "outcome": {
+          "text": "/tmp giảm còn 26%; các agent được gửi tin nhắn để resume từ chỗ dừng.",
+          "lines": [
+            "claude:c4caee3c#L740"
+          ]
+        },
+        "takeaway": {
+          "text": "Đặt worktree và node_modules trên ổ đĩa thật, không trên tmpfs có hạn mức.",
+          "lines": [
+            "claude:c4caee3c#L506",
+            "claude:c4caee3c#L638"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Tưởng thư mục tạm /tmp đủ chỗ cho 11 bản làm việc song song. Hoá ra /tmp có hạn mức, mỗi bản kéo theo khoảng 1,3 GB thư viện nên đầy nhanh; khi đầy, mọi lệnh shell của cả 11 agent cùng hỏng. Ai chạy nhiều agent song song nên kiểm tra chỗ chứa trước khi bắt đầu.",
+      "prevAudience": "dev chạy nhiều agent AI song song trên máy cá nhân"
+    },
+    {
+      "id": "2026-11-02-ci-doc-fixture-tag-cung-v0",
+      "title": "CI đọc fixture tag cứng v0.10.0 trong khi golden set đã lên v0.11.0",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-do-overhead-1-mb-143-ms",
+      "title": "Đo overhead 1 MB: 143 ms trên máy, 318 ms trên runner, nhân ngưỡng x3 thay vì nới gốc",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-goi-p01-bi-phat-hien-thieu",
+      "title": "Gói P01 bị phát hiện thiếu năm điểm sau khi làm xong, vá thêm không phá gói cũ",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-goi-windows-smoke-xanh-tren-may",
+      "title": "Gói Windows smoke xanh trên máy sạch nhưng chưa đo SmartScreen",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-mac-intel-onnxruntime-1-30-khong",
+      "title": "Mac Intel: onnxruntime 1.30 không còn binding darwin-x64, ghim 1.23.2 và đổi luật chặn",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-npm-12-doi-hinh-dang-dau",
+      "title": "npm 12 đổi hình dạng đầu ra npm pack --json, test đóng gói đỏ trên CI",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-prd-10-3-cau-co-dau",
+      "title": "PRD 10.3: câu có dấu không chạy view norm/fold vì vi-semantic tụt 0,083",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-test-snapshot-flaky-vi-hai-note",
+      "title": "Test snapshot flaky vì hai note có điểm bằng nhau đổi thứ tự theo máy",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-upstream-khong-tu-duoi-nua-chot",
+      "title": "Upstream không tự đuổi nữa: chốt ghim tag thay cho cron 6 giờ",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-agent-dung-giua-chung-nguoi-dung",
+      "title": "Agent dừng giữa chừng, người dùng phải gọi lại; mỗi lượt CI 10 đến 20 phút",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-bat-actions-tren-fork-va-tat",
+      "title": "Bật Actions trên fork và tắt workflow upstream: lỗi im lặng 403",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-chuoi-9-ban-va-phai-ghep",
+      "title": "Chuỗi 9 bản vá phải ghép đúng thứ tự vì hai bản cùng sửa một file",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-hook-kiem-lenh-chan-ca-lenh",
+      "title": "Hook kiểm lệnh chặn cả lệnh vô hại có từ build hay node_modules",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-prd-muc-3-5-agent-sai",
+      "title": "PRD mục 3.5: agent sai về FTS5, người dùng chỉ ra PRD đúng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-privacy-golden-set-cua-vault-rieng",
+      "title": "Privacy: golden set của vault riêng ngoài repo, guard từ chối đường dẫn trong repo",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-push-merge-khi-test-do-roi",
+      "title": "Push merge khi test đỏ rồi mới kiểm",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-release-sinh-tag-rong-bundles-phai",
+      "title": "Release sinh tag rỗng, bundles phải nối tay đến khi catchup gọi bundles",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-lo-commit-ban-nhap-patch-vao",
+      "title": "Lỡ commit bản nháp patch vào commit khác",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-debounce-watcher-5-giay-tieu-chi",
+      "title": "Debounce watcher 5 giây: tiêu chí 1 giây không hạ, đưa thành biến môi trường",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-don-21-gb-thu-muc-tam",
+      "title": "Dọn 21 GB thư mục tạm; /tmp còn 26%",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-git-va-husky-push-bi-chan",
+      "title": "Git và husky: push bị chặn, pull và merge từ chối vì cây làm việc dơ",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-agent-dieu-phoi-chia-25-viec",
+      "title": "Agent điều phối chia 25+ việc thành các agent chạy nền song song (mỗi việc một worktree riêng), rồi ghép từng kết quả vào chuỗi bản vá theo đúng thứ tự phụ thuộc.",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-nguoi-dung-dung-mot-cau-lenh",
+      "title": "Người dùng dùng một câu lệnh ngắn để giao lại toàn bộ tiến trình (\"tiếp tục điều phối plan...\"), và agent tự đọc file trạng thái, kiểm tra CI, ghép việc đã xong rồi khởi chạy việc kế tiếp theo phụ thuộc.",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-02-moi-khi-sinh-them-ket-qua",
+      "title": "Mỗi khi sinh thêm kết quả đo lường, agent ghi quyết định và trạng thái vào một file ngoài kho làm sổ tay cho lead, và sau khi chốt một việc thì chuyển plan con vào thư mục archive.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    }
+  ],
+  "angleRun": {
+    "exitCode": 0,
+    "status": "done",
+    "stories": [
+      {
+        "id": "2026-11-02-corpus-tieng-viet-qua-de-baseline",
+        "status": "angle",
+        "angle": "Obsidian Hybrid Search là công cụ tìm ghi chú Obsidian theo nghĩa và theo từ, và người làm đang muốn gói tiếng Việt của nó tìm tốt gấp đôi baseline. Ban đầu baseline 0,93 có vẻ là mức đã rất cao nên điều kiện gấp đôi tưởng không thể đạt. Hoá ra bộ test tiếng Việt quá dễ: tiêu đề mỗi ghi chú trùng đúng câu tìm, nên 0,93 không đo được gì, và khi bỏ dấu điểm rơi xuống 0,27. Ai làm benchmark tìm kiếm nên kiểm tra xem bộ test có đang tự lộ đáp án không.",
+        "audience": "dev làm công cụ tìm kiếm hoặc benchmark cho tài liệu cá nhân",
+        "evidence": [
+          315,
+          1034,
+          1150
+        ],
+        "spine": {
+          "context": {
+            "text": "Obsidian Hybrid Search là công cụ tìm ghi chú Obsidian theo nghĩa và theo từ; người làm đang đưa gói tiếng Việt vào để cải thiện chất lượng tìm.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Hit@5 đạt tối thiểu 0,85 và gấp tối thiểu 2 lần baseline.",
+            "evidence": [
+              315
+            ]
+          },
+          "obstacle": {
+            "text": "Baseline upstream đã đạt 0,93 trên corpus sinh, nên điều kiện gấp đôi không thể đạt.",
+            "evidence": [
+              315
+            ]
+          },
+          "turn": {
+            "text": "Tưởng 0,93 là mức tìm tốt thật; hoá ra tiêu đề mỗi ghi chú trùng đúng câu tìm, nên bộ test quá dễ và điểm 0,93 không đo được gì.",
+            "evidence": [
+              315,
+              1034
+            ]
+          },
+          "action": {
+            "text": "Chọn làm corpus khó hơn thay vì hạ ngưỡng; đánh số tiêu đề và đo lại với kiểu gõ không dấu.",
+            "evidence": [
+              334,
+              1034
+            ]
+          },
+          "outcome": {
+            "text": "vi-unaccented Hit@5 từ 0,93 xuống 0,27, vi-dd từ 0,87 xuống 0,40; sau khi có gói tiếng Việt, cả hai lên 1,00.",
+            "evidence": [
+              1034,
+              1150
+            ]
+          },
+          "takeaway": {
+            "text": "Benchmark có tiêu đề lộ câu tìm sẽ che mất lỗi tìm; hãy đo với kiểu gõ khác và đúng tokenizer của hệ thống.",
+            "evidence": [
+              1034
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-goi-tieng-viet-ndcg-5-0",
+        "status": "angle",
+        "angle": "Một nhóm đang làm bản fork của Obsidian Hybrid Search, công cụ tìm ghi chú Obsidian theo nghĩa, và thêm gói tiếng Việt để tìm đúng cả khi gõ không dấu, gõ sai hay dùng từ đồng nghĩa. Họ tin lớp sửa gõ sai chỉ làm kết quả tốt hơn, nhưng sau khi merge, lớp này đã viết lại các từ trong từ điển đồng nghĩa, kéo vi-synonym từ hạng 4 xuống hạng 7. Ai xếp nhiều lớp xử lý văn bản lên cùng một câu hỏi đều có thể gặp đúng lỗi này, vì lớp sau che mất dạng gốc mà lớp trước cần.",
+        "audience": "dev xây công cụ tìm kiếm hoặc xử lý ngôn ngữ nhiều lớp",
+        "evidence": [
+          1458,
+          1470
+        ],
+        "spine": {
+          "context": {
+            "text": "Một nhóm làm bản fork của Obsidian Hybrid Search, công cụ tìm ghi chú Obsidian theo nghĩa, và đang thêm gói tiếng Việt để tìm đúng khi gõ không dấu, gõ sai hay dùng từ đồng nghĩa.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Muốn hoàn tất plan roadmap fork, trong đó gói tiếng Việt phải đạt các mục tiêu G3.",
+            "evidence": [
+              11,
+              1150
+            ]
+          },
+          "obstacle": {
+            "text": "Các lớp xử lý cùng sửa một câu, nên lớp sau có thể che mất dạng gốc mà lớp trước cần.",
+            "evidence": [
+              1470
+            ]
+          },
+          "turn": {
+            "text": "Tưởng lớp sửa gõ sai chỉ làm kết quả tốt hơn; hoá ra nó viết lại các từ trong từ điển đồng nghĩa, kéo vi-synonym từ hạng 4 xuống hạng 7.",
+            "evidence": [
+              1458,
+              1470
+            ]
+          },
+          "action": {
+            "text": "Lexicon đọc cả câu gốc lẫn câu đã sửa; từ người dùng gõ theo dạng đồng nghĩa được coi là từ đã biết; thêm test.",
+            "evidence": [
+              1470
+            ]
+          },
+          "outcome": {
+            "text": "vi-synonym Hit@5 lên 0,80, vi-abbr đạt 1,00, nDCG@5 tổng lên 0,909, không hạng mục nào tụt.",
+            "evidence": [
+              1478
+            ]
+          },
+          "takeaway": {
+            "text": "Khi hai lớp cùng sửa một câu, lớp sau phải thấy dạng gốc của lớp trước; đo lại toàn bộ hạng mục sau mỗi lần merge.",
+            "evidence": [
+              1470
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-cung-model-onnx-cpu-khac-diem",
+        "status": "angle",
+        "angle": "Obsidian Hybrid Search là gói npm tìm ghi chú Obsidian theo nghĩa và từ khoá, và người làm đang đẩy bản phát hành mới qua CI. Họ tin điểm eval đo trên máy nào cũng như nhau, nên so với baseline ghi sẵn để quyết định đỏ hay xanh. Hoá ra cùng một model ONNX lượng tử int8 cho điểm khác nhau theo loại CPU, nên cổng đỏ vì baseline ghi trên máy khác, không phải vì code sai. Ai so benchmark giữa các máy khác nhau đều có thể gặp đúng chuyện này.",
+        "audience": "dev làm công cụ có đo chất lượng bằng benchmark trên CI",
+        "evidence": [
+          3312,
+          3349,
+          3361
+        ],
+        "spine": {
+          "context": {
+            "text": "Obsidian Hybrid Search là gói npm tìm ghi chú Obsidian theo nghĩa và từ khoá; người làm đang đẩy bản phát hành mới qua CI.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Muốn CI xanh và phát hành đủ gói cho mọi nền.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Cổng chất lượng đỏ: điểm eval 0,735 trên một máy, 0,728 trên runner CI, lệch quá ngưỡng 0,005.",
+            "evidence": [
+              3312
+            ]
+          },
+          "turn": {
+            "text": "Tưởng kết quả eval lặp lại được trên mọi máy; hoá ra chỉ lặp lại trong cùng loại CPU, vì cùng model ONNX lượng tử int8 cho số khác nhau theo CPU.",
+            "evidence": [
+              3349,
+              3361
+            ]
+          },
+          "action": {
+            "text": "Đổi cổng chất lượng để so với upstream đo trong cùng lần chạy; baseline ghi sẵn chỉ còn là cảnh báo trôi; kiểm tra gói chỉ tính kết quả trên một loại CPU và thử lại tối đa 3 lần.",
+            "evidence": [
+              3349,
+              3370,
+              3388
+            ]
+          },
+          "outcome": {
+            "text": "CI xanh; release v0.17.2-vantt.3 có đủ 4 gói, run 41410567165 thành công.",
+            "evidence": [
+              3415
+            ]
+          },
+          "takeaway": {
+            "text": "Đừng coi điểm eval đo trên máy khác là chuẩn; đo đối chứng trong cùng một lần chạy.",
+            "evidence": [
+              3361
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-eval-vault-that-tong-tang-0",
+        "status": "angle",
+        "angle": "Một gói npm tìm kiếm ghi chú Obsidian theo nghĩa và từ khoá đang đo chất lượng trên vault thật của người làm. Tổng điểm tăng từ 0,600 lên 0,698, nhưng cổng theo từng hạng mục vẫn đỏ: có hạng mục tụt 0,260 chỉ vì một câu rơi khỏi top 5. Với bộ 2–6 câu mỗi hạng mục, một câu là đủ làm đổi cả điểm, nên cổng hạng mục nhạy hơn mức đáng tin. Ai đo chất lượng tìm kiếm bằng bộ mẫu nhỏ nên để ý điều này.",
+        "audience": "dev làm công cụ tìm kiếm hoặc đo chất lượng bằng bộ câu hỏi nhỏ",
+        "evidence": [
+          3653,
+          3680
+        ],
+        "spine": {
+          "context": {
+            "text": "Một gói npm tìm kiếm ghi chú Obsidian theo nghĩa và từ khoá, đang đo chất lượng trên vault thật.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Muốn xác nhận gói tiếng Việt cải thiện tìm kiếm trên vault thật.",
+            "evidence": [
+              3653
+            ]
+          },
+          "obstacle": {
+            "text": "Tổng điểm tăng nhưng cổng theo từng hạng mục vẫn đỏ.",
+            "evidence": [
+              3653
+            ]
+          },
+          "turn": {
+            "text": "Tưởng cổng theo hạng mục là thước đo đáng tin; hoá ra với 2–6 câu mỗi hạng mục, một câu rơi làm điểm hạng mục đổi mạnh.",
+            "evidence": [
+              3653,
+              3680
+            ]
+          },
+          "action": {
+            "text": "Chốt dùng gói vi cho bộ cài; khởi chạy V15b thêm chế độ chi tiết cho cổng.",
+            "evidence": [
+              3787,
+              3797
+            ]
+          },
+          "outcome": {
+            "text": "Tổng nDCG@5 tăng từ 0,600 lên 0,698; cổng theo hạng mục vẫn đỏ, V15b đang chạy.",
+            "evidence": [
+              3653,
+              3797
+            ]
+          },
+          "takeaway": {
+            "text": "Bộ nhỏ theo hạng mục quá nhạy; nên tính theo tổng hoặc không dùng cổng hạng mục cho bộ 2–6 câu.",
+            "evidence": [
+              3680
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-goi-tieng-duc-chay-qua-diem",
+        "status": "none",
+        "none": true,
+        "reason": "Không có ai tin sai điều gì được ghi lại: các mục còn lại là số đo kết quả và một sự cố hạ tầng đã được xử lý, không có chỗ ngoặt về niềm tin.",
+        "spine": {
+          "context": {
+            "text": "Một fork của Obsidian Hybrid Search, công cụ tìm ghi chú Obsidian theo nghĩa và theo từ, đang hoàn tất lộ trình fork.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất các việc trong lộ trình fork và đưa chúng lên master.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "/tmp đầy hạn mức, làm mọi agent hỏng lệnh shell.",
+            "evidence": [
+              1114
+            ]
+          },
+          "action": {
+            "text": "Chuyển toàn bộ worktree sang thư mục khác ngoài /tmp rồi cho các agent chạy lại.",
+            "evidence": [
+              1114
+            ]
+          },
+          "outcome": {
+            "text": "Đã xong và push 11 trên 25 việc; không mất phần việc nào.",
+            "evidence": [
+              1114
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-02-phuc-hoi-dau-bien-mot-tu",
+        "status": "angle",
+        "angle": "Dự án Obsidian Hybrid Search là gói npm tìm kiếm trong vault Obsidian, và người làm muốn tiếng Việt tìm đúng hơn, kể cả khi gõ không dấu. Giả thuyết ban đầu là ngưỡng 50% đang sai, vì câu \"Hội An\" chỉ có một nửa âm tiết có dấu nên bị phục hồi dấu thành \"Hội ăn\". Hoá ra ngưỡng đúng theo đặc tả, lỗi nằm ở cách dựng câu gửi model nhúng: từ đã gõ dấu phải giữ nguyên. Ai làm tìm kiếm tiếng Việt nên nhớ rằng đổi ngưỡng cho khớp test là sai hướng.",
+        "audience": "dev làm tìm kiếm hoặc xử lý tiếng Việt",
+        "evidence": [
+          2787,
+          2789
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án Obsidian Hybrid Search là gói npm tìm kiếm trong vault Obsidian theo nghĩa và từ khoá, dùng được cho người dùng Obsidian và AI agent.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn gói tiếng Việt tìm đúng hơn, kể cả khi người dùng gõ không dấu hoặc gõ một phần có dấu.",
+            "evidence": [
+              2776
+            ]
+          },
+          "obstacle": {
+            "text": "Bước phục hồi dấu đổi chữ \"An\" thành \"ăn\" trong câu \"Hội An\", vì câu chỉ có một trên hai âm tiết có dấu nên không vượt ngưỡng.",
+            "evidence": [
+              2787
+            ]
+          },
+          "turn": {
+            "text": "Giả thuyết ban đầu là ngưỡng 50% sai; hoá ra ngưỡng đúng theo đặc tả, lỗi nằm ở cách dựng câu gửi model nhúng.",
+            "evidence": [
+              2787,
+              2789
+            ]
+          },
+          "action": {
+            "text": "Viết test tái hiện lỗi trước khi sửa, rồi sửa cách dựng: từ đã gõ dấu giữ nguyên, từ không dấu chỉ được khôi phục khi vault không bao giờ viết trần và xác suất đủ ngưỡng.",
+            "evidence": [
+              2787
+            ]
+          },
+          "outcome": {
+            "text": "nDCG@5 tổng tăng từ 0,932 lên 0,954, không hạng mục nào tụt, và tuỳ chọn được bật mặc định.",
+            "evidence": [
+              2787,
+              2789
+            ]
+          },
+          "takeaway": {
+            "text": "Ngưỡng đúng theo đặc tả vẫn có thể sai ở chỗ dựng câu. Hãy kiểm bằng test trước khi sửa, và đừng đổi ngưỡng cho khớp kết quả.",
+            "evidence": [
+              2787
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-co-restoreforembedding-giai-quyet-vi-snippet",
+        "status": "angle",
+        "angle": "Obsidian Hybrid Search là npm package tìm ghi chú Obsidian theo nghĩa và từ khoá, chạy local, và người làm đang đưa nhóm truy vấn tiếng Việt vi-snippet lên 15/15 trên cổng chất lượng. Người làm tin phải sửa thuật toán xếp hạng, nhưng khi gộp nhánh master thì một cờ mặc định (restoreForEmbedding) đã đưa đúng ghi chú lên hạng 1, không cần sửa mã. Người dùng tìm kiếm tiếng Việt nên quan tâm vì lỗi này nằm ở bước chọn ứng viên chứ không ở thuật toán. Bài học: kiểm nhánh nào đang thiếu ứng viên trước khi chỉnh thuật toán.",
+        "audience": "dev làm tìm kiếm tiếng Việt cho ghi chú và tài liệu",
+        "evidence": [
+          2919,
+          2927,
+          2929
+        ],
+        "spine": {
+          "context": {
+            "text": "Obsidian Hybrid Search là npm package tìm ghi chú Obsidian theo nghĩa và từ khoá, chạy local. Người làm đang đưa nhóm truy vấn tiếng Việt vi-snippet lên đạt 15/15 trên cổng chất lượng.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn cổng vi-snippet đạt 15/15 mà không làm xấu các nhóm khác.",
+            "evidence": [
+              2919
+            ]
+          },
+          "obstacle": {
+            "text": "Truy vấn vi-snippet-08 không đưa được ghi chú đích vào nhánh vector, vì bộ embedding nhận câu không dấu \"quen ngu\".",
+            "evidence": [
+              2919
+            ]
+          },
+          "turn": {
+            "text": "Tưởng phải sửa thuật toán xếp hạng hoặc trọng số; hoá ra một cờ mặc định đã bật khi gộp master là đủ.",
+            "evidence": [
+              2919,
+              2927
+            ]
+          },
+          "action": {
+            "text": "Gộp master vào nhánh, không sửa dòng mã nào.",
+            "evidence": [
+              2927,
+              2928
+            ]
+          },
+          "outcome": {
+            "text": "vi-snippet đạt 15/15, nDCG@5 tổng 0,944; vi-alias giảm 0,016 nhưng còn trong ngưỡng 0,02. Nhánh chưa merge được vì file review đang bị agent khác sửa.",
+            "evidence": [
+              2927,
+              2929
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi sửa thuật toán, kiểm nhánh nào đang thiếu ứng viên; một cờ đúng có thể là đủ.",
+            "evidence": [
+              2919
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-tach-tu-bat-mac-dinh-vi",
+        "status": "none",
+        "none": true,
+        "reason": "Các dòng được cung cấp ghi kết quả và các câu hỏi cần chốt, nhưng không có dòng nào cho thấy ai tin sai một điều rồi hoá ra điều khác. Lỗi test hỏng được ghi là lỗi ở hàm đếm token của chính test, đó là một phát hiện chứ không phải niềm tin sai được ghi lại.",
+        "spine": {
+          "context": {
+            "text": "Obsidian Hybrid Search là gói npm tìm ghi chú Obsidian theo nghĩa, từ khoá, tiêu đề, thẻ và liên kết; đang làm gói tiếng Việt cho bản phát hành theo plan.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất các mục trong plan lộ trình, trong đó có gói tiếng Việt.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Một test fast-check thỉnh thoảng hỏng, có từ thời V13 và hỏng cả trên master.",
+            "evidence": [
+              1672
+            ]
+          },
+          "action": {
+            "text": "Thêm tách từ tiếng Việt với view seg, bật mặc định, rồi merge vào master.",
+            "evidence": [
+              1640
+            ]
+          },
+          "outcome": {
+            "text": "nDCG@5 tổng từ 0,909 lên 0,932, không hạng mục nào tụt; vi-compound hơn baseline upstream 0,156.",
+            "evidence": [
+              1640
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-02-tu-dien-tu-ghep-danh-sach",
+        "status": "angle",
+        "angle": "Obsidian Hybrid Search là gói npm tìm ghi chú Obsidian theo nghĩa và từ khoá, và người làm đang đưa phần tiếng Việt lên, trong đó có một từ điển từ ghép để tách từ đúng. Từ điển này lấy từ một repo MIT nên trông an toàn để dùng, nhưng khoảng 95% nội dung trùng với một danh sách GPL, nên giấy phép của bản chép không nói được nguồn gốc. Người làm dựng lại bằng thống kê trên dữ liệu CC BY 4.0, và chất lượng không giảm: vi-compound tăng từ 0,632 lên 0,983. Ai dùng dữ liệu có sẵn nên kiểm nguồn gốc chứ không chỉ đọc giấy phép.",
+        "audience": "dev làm công cụ có dùng dữ liệu bên thứ ba và quan tâm đến giấy phép",
+        "evidence": [
+          1672,
+          2862
+        ],
+        "spine": {
+          "context": {
+            "text": "Obsidian Hybrid Search là gói npm tìm ghi chú Obsidian theo nghĩa và từ khoá. Người làm đang đưa phần tiếng Việt lên, trong đó có một từ điển từ ghép để tách từ đúng.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Muốn có từ điển từ ghép có giấy phép rõ ràng để đạt yêu cầu Q9.",
+            "evidence": [
+              1672
+            ]
+          },
+          "obstacle": {
+            "text": "Danh sách lấy từ một repo MIT, nhưng khoảng 95% trùng với một danh sách GPL, nên giấy phép của bản chép không nói được nguồn gốc.",
+            "evidence": [
+              1672
+            ]
+          },
+          "turn": {
+            "text": "Tưởng giấy phép MIT của repo là đủ để dùng; hoá ra nguồn gốc dữ liệu có thể là GPL.",
+            "evidence": [
+              1672
+            ]
+          },
+          "action": {
+            "text": "Dựng lại từ điển bằng thống kê cặp âm tiết trên ba bộ dữ liệu CC BY 4.0. Chỉ dùng danh sách cũ để chọn ngưỡng, không chép mục nào.",
+            "evidence": [
+              2155,
+              2862
+            ]
+          },
+          "outcome": {
+            "text": "Từ điển mới có 20.523 từ. vi-compound tăng từ 0,632 lên 0,983, tốt hơn hoặc bằng danh sách cũ ở mọi hạng mục.",
+            "evidence": [
+              2862
+            ]
+          },
+          "takeaway": {
+            "text": "Kiểm nguồn gốc dữ liệu, không chỉ giấy phép của bản chép: một danh sách MIT có thể mang nguồn GPL.",
+            "evidence": [
+              1672
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-worktree-trong-tmp-lam-day-han",
+        "status": "angle",
+        "angle": "Người làm đang điều phối 11 agent song song để hoàn tất roadmap cho bản fork của Obsidian Hybrid Search, một gói npm tìm ghi chú Obsidian theo nghĩa. Họ tưởng /tmp vẫn còn chỗ cho worktree và scratchpad, rồi mọi lệnh shell của mọi agent đều hỏng vì hạn mức đĩa đã đầy; mỗi worktree tự kéo node_modules riêng. Họ chuyển worktree sang ổ thật mà không mất việc dở, và /tmp còn 26%. Ai chạy nhiều agent song song trên git worktree nên đặt worktree lên ổ thật, không để trên tmpfs có hạn mức.",
+        "audience": "dev chạy nhiều agent song song trên git worktree",
+        "evidence": [
+          492,
+          506,
+          740
+        ],
+        "spine": {
+          "context": {
+            "text": "Một dự án gói npm tìm kiếm ghi chú Obsidian theo nghĩa, đang chạy 11 agent song song để hoàn tất roadmap bản fork.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Muốn hoàn tất roadmap bằng nhiều agent chạy song song.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Ghi scratchpad lỗi EDQUOT vì hạn mức đĩa /tmp đã đầy; mọi lệnh shell hỏng.",
+            "evidence": [
+              492,
+              508
+            ]
+          },
+          "turn": {
+            "text": "Tưởng /tmp còn chỗ cho worktree và scratchpad; hoá ra hạn mức đã đầy vì mỗi worktree có node_modules riêng.",
+            "evidence": [
+              492,
+              506
+            ]
+          },
+          "action": {
+            "text": "Chuyển worktree sang /home/vantt/projects/ohs-wt và sửa brief chung để agent tạo worktree ở đó.",
+            "evidence": [
+              621,
+              638
+            ]
+          },
+          "outcome": {
+            "text": "/tmp giảm còn 26%; các agent được gửi tin nhắn để resume từ chỗ dừng.",
+            "evidence": [
+              740
+            ]
+          },
+          "takeaway": {
+            "text": "Đặt worktree và node_modules trên ổ đĩa thật, không trên tmpfs có hạn mức.",
+            "evidence": [
+              506,
+              638
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "usd": 0.0326062,
+    "profiles": [
+      {
+        "root": "/home/vantt/projects/obsidian-hybrid-search",
+        "status": "generated",
+        "file": "/home/vantt/projects/momentry/docs/_private/eval/angle-trial/spine/c4caee3c/runs/1/scratch/cache/profiles/obsidian-hybrid-search-5541d3c7f9.md"
+      }
+    ],
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "angle repo: 10 chuyện; góc kể: 8 có, 2 không ra chuyện; 0.03 USD\nhồ sơ dự án: obsidian-hybrid-search tạo mới"
+  },
+  "angleCalls": [
+    {
+      "key": "angle-1",
+      "step": "angle",
+      "usd": 0.0036569999999999997,
+      "secs": 18.842,
+      "tokIn": 14825,
+      "tokOut": 4349,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-10",
+      "step": "angle",
+      "usd": 0.0026037,
+      "secs": 15.187,
+      "tokIn": 9847,
+      "tokOut": 3238,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-2",
+      "step": "angle",
+      "usd": 0.003988,
+      "secs": 18.789,
+      "tokIn": 18365,
+      "tokOut": 4303,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-3",
+      "step": "angle",
+      "usd": 0.0030110000000000002,
+      "secs": 15.235,
+      "tokIn": 13475,
+      "tokOut": 3327,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-4",
+      "step": "angle",
+      "usd": 0.0024066,
+      "secs": 13.319,
+      "tokIn": 8851,
+      "tokOut": 3043,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-5",
+      "step": "angle",
+      "usd": 0.0030659,
+      "secs": 15.96,
+      "tokIn": 13199,
+      "tokOut": 3492,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-6",
+      "step": "angle",
+      "usd": 0.0029512,
+      "secs": 15.273,
+      "tokIn": 11977,
+      "tokOut": 3507,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-7",
+      "step": "angle",
+      "usd": 0.0033254,
+      "secs": 19.443,
+      "tokIn": 11489,
+      "tokOut": 4353,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-8",
+      "step": "angle",
+      "usd": 0.0030918000000000005,
+      "secs": 18.9,
+      "tokIn": 11338,
+      "tokOut": 3916,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-9",
+      "step": "angle",
+      "usd": 0.0032329999999999998,
+      "secs": 15.811,
+      "tokIn": 15305,
+      "tokOut": 3405,
+      "cacheRead": 0
+    },
+    {
+      "key": "profile-1",
+      "step": "profile",
+      "usd": 0.0012726,
+      "secs": 5.959,
+      "tokIn": 7481,
+      "tokOut": 1049,
+      "cacheRead": 0
+    }
+  ],
+  "profiles": [
+    {
+      "root": "/home/vantt/projects/obsidian-hybrid-search",
+      "status": "generated",
+      "file": "/home/vantt/projects/momentry/docs/_private/eval/angle-trial/spine/c4caee3c/runs/1/scratch/cache/profiles/obsidian-hybrid-search-5541d3c7f9.md",
+      "text": "Obsidian Hybrid Search is an npm package that searches your local Obsidian vault by meaning, exact words, titles, aliases, tags, folders, links, and metadata. You can use it from an Obsidian plugin, a command-line tool, or an MCP server that lets AI agents search and read your notes. It is for Obsidian users who want to find and reuse their own notes, and for AI agents that should start from those notes and cite their source files. It runs locally by default with SQLite, and can optionally use an OpenAI-compatible embedding API instead."
+    }
+  ]
+}

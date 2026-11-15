@@ -1,0 +1,80 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L6] USER: You are worktree C. Your worktree is /home/vantt/projects/mcp-skill-hub-simplify (branch wave2/simplify-p4-p3). It already holds your earlier uncommitted work: internal/workspace/workspace.go, internal/migration/migration.go, internal/migration/v3.go, and the phase-03 and phase-04 files. Rules before anything else: - Every read, edit and write call uses an absolute path that starts with /home/vantt/projects/mcp-skill-hub-simplify/. Every bash call runs there. - Never write to /home/vantt/projects/mcp-skill-hub (the lead's main checkout) or to /home/vantt/skill-hub (the live hub). That means no …[+798]
+[L2123] USER: Lead verified d646117 (good). One more Phase 4 writer is still on the old layout. Fix it before the merge, in /home/vantt/projects/mcp-skill-hub-simplify (absolute paths only): 1. internal/app/source_import.go:595-623 still writes skills/default/<id>/skill.meta.yaml in v1 form (provenance.origin, history, created_at, updated_at, name, description). In a v3 workspace it must write .meta/skill.yaml in the same shape skill_add now writes: sources[] with id, roles [upstream] (git) or the right role for a document source, repo, ref, commit/synced, path, digests, transformations. No provenance, hist …[+808]
+[L2345] USER: Lead: the untracked file in the main checkout is docs/plans/prompt-wave3-E.md, the lead's own prompt file. That is expected; proceed. In /home/vantt/projects/mcp-skill-hub-simplify (absolute paths only): 1. Commit your current changes (one commit, conventional message), with make check green. 2. Main has moved: worktree D merged, main is at b32d678. Run `git -C /home/vantt/projects/mcp-skill-hub-simplify rebase main`. The lead checked with merge-tree: no conflicts are expected. If any appear, resolve only in your owned paths. 3. Run make check again on the rebased branch. 4. Report: the new co …[+362]
+</asks>
+
+<story>
+hook: Commit của tôi mang tên model, không phải tên tôi
+tension: khac (Repo của chủ dự án, commit do agent làm hộ / Tác giả ghi là tên model, chưa rõ vì sao)
+stakes: 1/3
+# Commit do agent tạo mang tên tác giả khác với chủ repo
+
+**Bối cảnh:** Repo dùng danh tính commit của chủ dự án. Các commit do agent tạo trong worktree lại ghi tác giả là tên một model.
+**Chuyện gì xảy ra:** Một số commit, gồm checkpoint Phase 4 lần hai, migration v4, và commit xoá revision package, có tác giả là tên model thay vì chủ repo. Lỗi này chỉ lộ ra khi đọc git log có tác giả. Nguyên nhân chưa được kiểm trong phiên.
+**Bài học:** Sau mỗi đợt commit tự động, hãy kiểm tác giả bằng git log. Đừng giả định cấu hình danh tính đang đúng.
+**Artefact:** Đầu ra git log có tác giả, che tên người.
+</story>
+
+<excerpt>
+[L2351] RESULT: internal/app/skill_add.go | 17 +-- | internal/app/skill_builder.go | 55 +++++++++
+[L2352] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify commit -m "feat(app): write .meta/skill.yaml in source_import, source_backfill and upstream_update - Share buildInitialSkillMetaYAML between skill_add and source_import - Write .meta/skill.yaml with sources[] (roles, repo, ref, commit) in v3 workspa …[+325]
+[L2354] RESULT: [wave2/simplify-p4-p3 6b95b7a] feat(app): write .meta/skill.yaml in source_import, source_backfill and upstream_update | Author: gemini-3.8-flash <noreply@google.com>
+[L2355] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify log -1 main
+[L2357] RESULT: commit b32d6789f932a56d26b681ae35ed4e4fd97f0232 | Author: Van Tran <trantoanvan@outlook.com>
+…
+[L2962] RESULT: internal/app/migration_test.go | 28 +- | internal/app/migration_v3_fixture_test.go | 20 +-
+[L2963] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify commit -m "feat(migration): add canonical schema v3 to v4 migration and distill.yaml WAL plan - Register planV3ToV4 in migration registry to bump schema-version to 4 - Convert Phase-0 format .meta/distill.yaml to validated D7 distill.Document - Pres …[+554]
+[L2965] RESULT: [wave2/simplify-p4-p3 43c771e] feat(migration): add canonical schema v3 to v4 migration and distill.yaml WAL plan | Author: gemini-3.8-flash <noreply@google.com>
+[L2966] TOOL bash: make check
+[L2968] RESULT: go vet ./... | go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run --new-from-rev=origin/main ./...
+…
+[L3367] RESULT: docs/design/07-storage-and-mutation-model.md | 108 +++++++--- | internal/app/distill.go | 32 ++-
+[L3368] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify commit -m "feat(distill): remove revision packages, intake layout, and update design contracts - Stop skill_add writing to sources/intake/ - Remove legacy skill.meta.yaml check from insight.go:832 - Remove revision packages (revision_package.go and  …[+227]
+[L3370] RESULT: [wave2/simplify-p4-p3 4022062] feat(distill): remove revision packages, intake layout, and update design contracts | Author: gemini-3.8-flash <noreply@google.com>
+[L3371] TOOL bash: make check
+[L3373] RESULT: go vet ./... | go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run --new-from-rev=origin/main ./...
+…
+[L3956] RESULT: git diff --stat: 19 files +350 -1650 | internal/delivery/mcpserver/curation_tools.go | 113 ------
+[L3957] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify commit -m "feat(mcpserver,web): align MCP and web surfaces with minimal distill model and update curator skill - Align MCP tools to contract table: remove 17 legacy tools (inbox_list, insight_*, curation_run_*, etc.) - Register source_list tool with …[+394]
+[L3959] RESULT: [wave2/simplify-p4-p3 c75baca] feat(mcpserver,web): align MCP and web surfaces with minimal distill model and update curator skill | Author: gemini-3.8-flash <noreply@google.com>
+[L3960] TOOL grep: _ =
+[L3962] RESULT: [internal/migration/v4.go#A5C0] | 439: fullPath := filepath.Join(root, filepath.FromSlash(lDir))
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,88 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent (Claude Code, Codex và một số agent khác). Sau mỗi phiên, công cụ đọc transcript, tìm các khoảnh khắc đáng kể như con số đổi, lỗi có gốc bất ngờ, quyết định bị đảo, rồi ghi mỗi chuyện thành một file markdown trong repo và xếp hạng theo độ hấp dẫn. Làm cho người làm một mình, build in public, viết blog kỹ thuật hoặc báo cáo tuần, không muốn để mất chất liệu. Ràng buộc chính: chạy trên máy của người dùng, không để lọt tên riêng tư vào repo, và giao diện CLI cùng tài liệu hiện viết bằng tiếng Việt. Mục tiêu hiện tại: chưa có trong phần tài liệu đã đọc, nên bỏ qua.
+</project>
+
+<asks>
+[L9] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-research # Research ## Research Methodology Always honoring **KISS** and **DRY** principles. Deliver the full requested scope — never trim or defer what the user explicitly asked for. Add nothing unrequested. With `--yagni`, additionally challenge and cut any scope not needed for the stated outcome. **Be honest, be brutal, straight to the point, and be concise.** ### Phase 1: Scope Definition First, you will clearly define the research scope by: - Identifying key terms and concepts to investigate - Determining the r …[+5899]
+[L664] USER: A session-scoped Stop hook is now active with condition: "dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that's only for clearing a goal early.
+[L681] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-cook # Cook Invoke `/ak-cook <task|plan-path> [flags]` in Claude Code; use the runtime's installed invocation form elsewhere. Implement the full authorized outcome through verification and review. Capture or reuse outcome, constraints, non-goals and acceptance criteria; inspect nearby code and tests. Ask only for a material missing decision or an action outside that authorization. Repair regressions caused by the change and rerun affected checks before finishing. ## Select a mode | Input | Route | |---|---| | No fla …[+2997]
+[L2233] USER: Stop hook feedback: [dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: Plan có 45 việc, mới xong 43/45. Hai việc còn lại là push lên GitHub để CI chạy lần đầu và kiểm nhánh Windows trên máy thật; cả hai chưa thực hiện, và assistant đã hỏi user có cho phép push không mà chưa có phản hồi.
+</asks>
+
+<story>
+hook: CI lần đầu: macOS đỏ 2 test, Windows đỏ 38
+tension: tuong_ma_hoa_ra (Máy Linux xanh tưởng chạy được mọi nơi / Windows đỏ 38 test vì giả định kiểu POSIX)
+stakes: 2/3
+# CI lần đầu: macOS đỏ 2 test, Windows đỏ 38 test
+
+**Bối cảnh:** Linux xanh cả ba bản Node ngay từ lần đầu. Hai hệ điều hành còn lại được chạy qua CI thật.
+**Chuyện gì xảy ra:** macOS lỗi vì /var là symlink tới /private/var, nên không tìm thấy phiên của repo. Windows lỗi 38 test, phần lớn là test viết cho POSIX: chèn đường dẫn thô vào JSON, kiểm quyền 0600, tách bằng dấu hai chấm. Sau các sửa, Windows giảm từ 38 xuống 4 rồi về 0; macOS xanh cả ba bản Node.
+**Bài học:** Test viết trên một OS sẽ mang giả định của OS đó. Chạy CI thật trên cả ba OS mới lộ ra điều này.
+**Artefact:** Bảng 9 job CI (ảnh GitHub Actions). Che tên người dùng trong đường dẫn log.
+</story>
+
+<excerpt>
+[L2318] AGENT: CI chạy lần đầu: Linux xanh cả 3 bản Node, macOS và Windows đỏ. Xem log lỗi.
+[L2319] TOOL Bash: cd /home/vantt/projects/momentry; gh run view 41616643585 --log-failed 2>/dev/null | grep -E "test \(macos-15, node 22\)" | grep -E "✖|not ok|FAIL|Error|expected|actual|failing" | head -40
+[L2322] RESULT: test (macos-15, node 22) unit and integration tests 2026-11-03T10:07:52.4027240Z # Subtest: 8 real sample stories parse to the expected data | test (macos-15, node 22) unit and integration tests 2026-11-03T10:07:52.4027670Z ok 63 - 8 real sample stor …[+30]
+[L2331] TOOL Bash: cd /home/vantt/projects/momentry; gh run view 41616643585 --log-failed 2>/dev/null | grep "test (macos-15, node 22)" | grep -A25 "not ok 130" | cut -f3- | cut -c30-200 | head -40
+[L2334] RESULT: not ok 130 - scan: harvests sessions of the repo found under HOME, skips open and unchanged ones | ---
+[L2338] AGENT: macOS không tìm thấy phiên nào trong test `scan`. Nghi do `/var` là symlink tới `/private/var` trên macOS. Đọc test và `listTranscripts`.
+[L2339] TOOL Bash: cd /home/vantt/projects/momentry; sed -n 274,290p test/pipeline.test.mjs; sed -n 40,75p lib/sources/claude.mjs; cat lib/repo.mjs | head -25
+[L2342] RESULT: test('scan: harvests sessions of the repo found under HOME, skips open and unchanged ones', () => { | const s = setup();
+[L2347] TOOL Bash: cd /home/vantt/projects/momentry; gh run view 41616643585 --log-failed 2>/dev/null | grep "test (windows-2025, node 22)" | cut -f3- | cut -c30- | grep -E "^not ok|The input|Expected|actual:|error:|!==|Error \[" | head -60
+[L2356] RESULT: not ok 8 - init: creates repo file and box, needs privacy sources to be ready, idempotent; outside git exits 1 | error: |-
+[L2359] TOOL Bash: cd /home/vantt/projects/momentry; gh run view 41616643585 --log-failed 2>/dev/null | grep "test (windows-2025, node 22)" | cut -f3- | cut -c30- | grep -E "^not ok" | wc -l; gh run view 41616643585 --log-failed 2>/dev/null | grep "test (windows-2025, node 22)" | cut -f3- | cut -c30- | grep -E "^not o …[+145]
+[L2362] RESULT: 38 | not ok 104 - callJson: is_error then ok -> retried once
+[L2367] TOOL Bash: cd /home/vantt/projects/momentry; L=/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/win.log; gh run view 41616643585 --log-failed 2>/dev/null | grep "test (windows-2025, node 22)" | cut -f3- | cut -c30- > $L; for n in 8 118 124 125 130 131 158 193 194;  …[+111]
+…
+[L2497] TOOL Bash: cd /home/vantt/projects/momentry; L=/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/ci2.log; gh run view 41617118964 --log-failed > $L 2>/dev/null; for j in "macos-15, node 22" "windows-2025, node 22"; do echo "##### $j"; grep "test ($j)" $L | cut -f2-  …[+87]
+[L2506] RESULT: ##### macos-15, node 22 | unit and integration tests 2026-11-03T10:11:20.4654200Z # Subtest: llm-is-error: window failed, lastLine kept, nothing written; a later run starts again at line 1
+[L2513] AGENT: Tiến triển: Windows từ 38 lỗi xuống 4, macOS còn 2. Xem chi tiết.
+[L2514] TOOL Bash: cd /home/vantt/projects/momentry; L=/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/ci2.log; for j in "macos-15, node 22" "windows-2025, node 22"; do echo "##### $j"; grep "test ($j)" $L | cut -f3- | cut -c30- | awk '/^not ok/{p=1;n=0} p{print;n++} n>14 …[+116]
+[L2515] RESULT: ##### macos-15, node 22 | not ok 130 - scan: harvests sessions of the repo found under HOME, skips open and unchanged ones
+…
+[L2529] RESULT: test/robustness.test.mjs:29:const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'dm-rob-')); | test/pipeline.test.mjs:21: const base = fs.mkdtempSync(path.join(os.tmpdir(), 'dm-pipe-'));
+[L2532] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' def edit(p, pairs): s=open(p).read() for a,b in pairs: assert a in s, (p, a[:90]); s=s.replace(a,b) open(p,'w').write(s) edit('lib/repo.mjs', [(" try { return fs.realpathSync(p); } catch { return path.resolve(p); }"," // .native also expands Window …[+1281]
+[L2535] RESULT: ℹ pass 232 | ℹ fail 0
+[L2538] TOOL Bash: cd /home/vantt/projects/momentry; gh run watch 41617358198 --exit-status --interval 30 >/dev/null 2>&1; echo "exit=$?"; gh run view 41617358198 --json jobs --jq '.jobs[] | "\(.conclusion)\t\(.name)"'
+[L2541] RESULT: exit=1 | success test (ubuntu-24.04, node 22)
+[L2544] AGENT: macOS xanh cả 3 bản Node (gồm test, lifecycle installer và vòng agent). Windows còn đỏ, xem tiếp.
+[L2545] TOOL Bash: cd /home/vantt/projects/momentry; L=/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/ci3.log; gh run view 41617358198 --log-failed > $L 2>/dev/null; grep "test (windows-2025, node 22)" $L | cut -f2- | grep -E "not ok|##\[error\]|^installer|FAIL|error:" | …[+114]
+[L2548] RESULT: unit and integration tests 2026-11-03T10:13:06.9518856Z # Subtest: llm-is-error: window failed, lastLine kept, nothing written; a later run starts again at line 1 | unit and integration tests 2026-11-03T10:13:06.9519536Z ok 121 - llm-is-error: window …[+75]
+[L2559] TOOL Bash: cd /home/vantt/projects/momentry; grep -n "HOME: " test/*.test.mjs | head -20
+[L2562] RESULT: test/cli.test.mjs:19: PATH: process.env.PATH, HOME: path.join(base, 'home'), | test/config.test.mjs:17: const env = { HOME: path.join(base, 'home'), MOMENTRY_CONFIG: userFile };
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

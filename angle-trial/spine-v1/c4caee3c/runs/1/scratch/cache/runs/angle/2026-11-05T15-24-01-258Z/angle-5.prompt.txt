@@ -1,0 +1,206 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy.
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Obsidian Hybrid Search is a search tool for Obsidian notes. It combines semantic, full-text, title, tag, and link-based search over a note vault. It is offered as an Obsidian plugin, a CLI, and an MCP server so AI agents can search and read notes. It is for Obsidian users who want to find and reuse their own notes, including when they work with AI. It runs locally by default with SQLite, and can optionally use an OpenAI-compatible embedding API. The document does not state a current goal.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L232] USER: Issues đang tắt trên fork (fork mặc định tắt). PRD dựa vào issue để báo khi catchup hỏng và để ghi báo cáo review. Cần bật lại bằng gh repo edit vantt/obsidian-hybrid-search --enable-issues; nên để agent kia làm. Actions trên fork vẫn tắt, đúng như PRD.
+[L264] USER: action là dùng để tự chạy ci catchup khi upstream thay đổi đúng không. cái này bật luôn nếu đúng
+[L748] USER: Tiếp tục điều phối plan vantt/plans/261102-0349-fork-master-roadmap/plan.md: kiểm tra agent Đ0 (V00, V09, V10), commit/push việc đã xong, khởi chạy đợt kế.
+</asks>
+
+<story>
+hook: Gói tiếng Đức nâng nDCG@5 từ 0,57 lên 0,97 mà không sửa lõi
+tension: it_ma_nhieu (Không sửa một dòng ở lõi / Điểm tìm kiếm tiếng Đức từ 0,57 lên 0,97)
+stakes: 2/3
+# Gói tiếng Đức chạy qua điểm cắm mà không sửa lõi: nDCG@5 0,57 lên 0,97
+
+**Bối cảnh:** Ngôn ngữ thứ hai dùng cùng điểm cắm để kiểm tra hợp đồng có đủ tổng quát không.
+**Chuyện gì xảy ra:** Gói chuẩn hoá, tách từ ghép bằng quy hoạch động trên từ điển gốc và loại từ chức năng, chạy qua P01 mà không sửa lõi. nDCG@5 từ 0,57 lên 0,97, không hạng mục nào tụt.
+**Bài học:** Viết gói ngôn ngữ thứ hai là kiểm tra thật cho hợp đồng plug-in; nếu phải sửa lõi thì hợp đồng chưa đủ tổng quát.
+**Artefact:** Bảng nDCG@5 trước và sau.
+</story>
+
+<excerpt>
+[L764] RESULT: Next wakeup scheduled for 12:31:00 (in 1836s). If you owe the user a status update this tick, write it now as ordinary response text; then end the turn — the harness re-invokes you when the wakeup fires or a task-notification arrives.
+[L768] AGENT: Từ lần kiểm trước chưa có việc nào mới cần ghép. Trên `master` vẫn là V00, V09, V10, V01 và V11, cây làm việc sạch. 11 agent vẫn đang chạy. Tôi sẽ ghép từng việc khi agent báo xong, và đã hẹn lượt kiểm dự phòng lúc 12:31.
+[L780] USER: <task-notification>
+<task-id>ae7e5d89506ff584b</task-id>
+<tool-use-id>toolu_019Z4iWbmkJ7jbaEWwa9vma9</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ae7e5d89506ff584b.output</output-file>
+<status>completed</status>
+<summary>Agent "V21 German pack ohs-lang-de" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+Summary: The German pack `ohs-lang-de` runs through P01 with no core changes. The `wt-v21` worktree stayed clean except for a `node_modules` symlink to the built `wt-v11` tree, which I used instead of a second install. In the eval the pack scores at least as well as no pack in every category.
+
+**Files** (all under `/home/vantt/projects/obsidian-hybrid-search/vantt/`):
+- `packages/ohs-lang-de/`:
+  - `package.json`, tsconfig files, vitest config and `package-lock.json`, copied from `ohs-lang-vi`; the lock file only had the package name changed
+  - `.gitignore`
+  - `README.md` (Vietnamese, includes the eval numbers)
+  - `src/` with `fold.ts`, `lexicon.ts`, `compound.ts`, `project.ts`, `stopwords.ts`, `types.ts`, `index.ts`
+  - `test/` with `fold.test.ts`, `compound.test.ts`, `project.test.ts`
+  - `eval/golden-set.json` and `eval/vault/`
+  - `scripts/run-eval.mjs`
+- `plans/261102-1157-v21-lang-de/plan.md`, written by hand; `ak plan create` was not used.
+
+**How the pack works:**
+- It has one view, `de`, which also feeds the exact-alias branch.
+- The folded token comes first. Spelling variants (`ä` as `ae`) and compound parts follow as U+2060 continuation tokens, which is P01's rule for compound splitting.
+- Compounds are split by dynamic programming over a built-in lexicon of German word stems. The splitter allows the usual linking letters, and an `extraWords` option extends the lexicon.
+- `analyzeQuery` drops German function words when other words remain. It emits every spelling of each query word, both as a whole word and as a compound part. The core joins them with OR.
+
+**Acceptance checks:**
+- **Runs via P01:** `scripts/run-eval.mjs` indexes the German vault through the built OHS in `wt-v21` and searches it. It checks `status`, `--explain` (a `view:de` branch is present) and that the snippet is original text. All checks passed.
+- **Invariance:** P01's own `test/vantt` suite  …[+2034]
+[L789] AGENT: V21 xong, gói tiếng Đức chạy qua P01 mà không phải sửa lõi. Kiểm test của gói rồi commit.
+[L790] TOOL Bash: cd /home/vantt/projects/obsidian-hybrid-search/vantt/packages/ohs-lang-de && (npx vitest run 2>&1 | tail -4); cd /home/vantt/projects/obsidian-hybrid-search && git status --short vantt/packages/ohs-lang-de vantt/plans | head; git check-ignore -q vantt/packages/ohs-lang-de/build && echo build-ignored
+…
+[L805] TOOL Bash: git fetch -q origin && git log --oneline master..origin/master; HUSKY=0 git push -q origin master && git log --oneline -1
+[L810] RESULT: fedc3d0 feat(vantt): add German language pack proving the extension point is generic
+[L816] AGENT: V21 đã commit và push (`fedc3d0`), phase 3 hoàn tất. Gói tiếng Đức chạy qua P01 mà không phải sửa lõi, và trong eval không hạng mục nào tụt: nDCG@5 tăng từ 0,57 lên 0,97. Các agent khác vẫn đang chạy.
+[L828] USER: <task-notification>
+<task-id>a3b93c20393ed3ce6</task-id>
+<tool-use-id>toolu_01StmVCwEuoKPYUUCRf82pRG</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a3b93c20393ed3ce6.output</output-file>
+<status>completed</status>
+<summary>Agent "V05 P09 unicode-inline-tags" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+Summary: P09 `unicode-inline-tags` is done. The inline tag regex now accepts Unicode letters, so `#kếhoạch` and `#đồ_án` parse in full. The patch is committed as `a17ab14` on `vantt/work/unicode-inline-tags` and exported to the shared tree. The probe returns 0 on the fork build and 1 on pristine upstream v0.17.2.
+
+Files:
+- Worktree and branch: `/home/vantt/projects/ohs-wt/wt-unicode-inline-tags`, branch `vantt/work/unicode-inline-tags` (the worktree is kept for the lead to remove; its build output is deleted)
+- Fix: `/home/vantt/projects/ohs-wt/wt-unicode-inline-tags/src/content/note-extractor.ts`
+- Test: `/home/vantt/projects/ohs-wt/wt-unicode-inline-tags/test/vantt/unicode-inline-tags.test.ts` (13 tests)
+- Patch: `/home/vantt/projects/obsidian-hybrid-search/vantt/patches/0009-unicode-inline-tags.patch`
+- Spec: `/home/vantt/projects/obsidian-hybrid-search/vantt/patches/0009-unicode-inline-tags.spec.md`
+- Probe: `/home/vantt/projects/obsidian-hybrid-search/vantt/probes/unicode-inline-tags.mjs`
+- Sub-plan: `/home/vantt/projects/obsidian-hybrid-search/vantt/plans/261102-1207-v05-unicode-inline-tags/plan.md`
+
+series.toml entry (not written to the shared tree, for the lead to merge):
+```toml
+[[patches]]
+id = "unicode-inline-tags"
+name = "fix(content): accept Unicode letters in inline tags"
+patch_file = "0009-unicode-inline-tags.patch"
+metadata_file = "0009-unicode-inline-tags.spec.md"
+consumer = "người dùng tiếng Việt và mọi ngôn ngữ ngoài Latin cơ bản"
+upstream_status = "unsubmitted"
+upstream_ref = ""
+touches = ["src/content/note-extractor.ts"]
+test_command = "npx vitest run test/vantt/unicode-inline-tags.test.ts test/indexer.test.ts test/indexer-edge-cases.test.ts"
+capability_check = "node vantt/probes/unicode-inline-tags.mjs --ohs ."
+probe = "vantt/probes/unicode-inline-tags.mjs"
+phase = "now"
+```
+
+Test results: focused tests pass; full `vitest run` passes (114 files, 2024 t …[+1053]
+[L831] AGENT: P09 xong. Kiểm bản vá áp sạch lên P01 rồi ghép vào chuỗi.
+…
+[L1104] AGENT: Tiến độ đến giờ:
+- Corpus khó hơn đã commit (`dbaf42e`). Tôi đã báo cho V13 và V12 về các tuỳ chọn mới của bộ chạy eval.
+- P02 và P03 (V06, V07) đã vào chuỗi bản vá (`c75d737`). Nhánh ghép P00, P01, P02, P03, P09 xanh: 2049 test qua.
+- P05 và P06 áp sạch sau P09. Test toàn chuỗi đang chạy, xanh thì tôi commit.
+[L1112] USER: báo cáo tiến độ
+[L1114] AGENT: ## Tiến độ lộ trình fork (12:35)
+
+Đã xong và đã push lên `master` 11 trên 25 việc. Hai việc nữa (P05, P06) đã xong, đang chờ test toàn chuỗi xanh rồi mới commit.
+
+| Phase | Đã xong | Đang làm | Chưa bắt đầu |
+|---|---|---|---|
+| 1. Hạ tầng fork | V00, V01 | V02 (CI catchup, bật Issues) | V03 (gói dựng sẵn 4 nền) |
+| 2. Bản vá lõi | V04 (P00), V05 (P09), V06 (P02), V07 (P03) | V08 (P04 stdio); V23 (P05), V24 (P06) chờ test chuỗi | V25 (P07, chờ V08) |
+| 3. Điểm cắm gói ngôn ngữ | V11 (P01), V21 (gói tiếng Đức) | — | — |
+| 4. Gói tiếng Việt | V09 (M1) | V13 (M2/M3, đường găng) | V17–V20 (chờ V13) |
+| 5. Đo lường | V10 (bộ eval, corpus đã làm khó hơn) | V12 (bất biến, cổng chất lượng) | V15 (cần bạn gán nhãn), V22 (chờ V13) |
+| 6. Review upstream | — | — | V14 (chờ V08, V12) |
+
+**Kết quả đáng chú ý:**
+- Nhánh `vantt/v0.17.2` đã dựng bằng catchup và push lên origin. Trên nhánh này 1972 test của upstream đều qua.
+- Chuỗi bản vá P00, P01, P02, P03, P09 ghép tuần tự đã chạy đủ test: 2049 test và lint đều qua.
+- P01 đủ tổng quát: gói tiếng Đức chạy qua nó mà không phải sửa lõi. Với gói này, nDCG@5 trên eval tiếng Đức tăng từ 0,57 lên 0,97.
+- Theo lựa chọn của bạn, corpus tiếng Việt đã làm khó hơn: baseline upstream giờ chỉ đạt Hit@5 0,27 với `vi-unaccented` và 0,40 với `vi-dd`. Nhờ vậy G3 (gấp đôi baseline, tối thiểu 0,85) giờ đạt được.
+- Actions đã bật trên fork. Bốn workflow của upstream đều đang tắt.
+
+**Sự cố đã xử lý:** `/tmp` đầy hạn mức vì các worktree đặt trong đó, làm mọi agent hỏng lệnh shell. Tôi đã chuyển tất cả sang `/home/vantt/projects/ohs-wt/`, không mất phần việc nào, rồi cho các agent chạy lại.
+
+**Đang chạy:** V02, V08, V12, V13 và test toàn chuỗi có P05, P06.
+
+**Việc sắp tới cần bạn:**
+- **Release GitHub đầu tiên (V03):** tôi sẽ hỏi bạn trước khi tạo.
+- **V15:** bạn cần gán nhãn khoảng 60 câu trên vault thật, mất khoảng 2 giờ.
+- **Commit trên repo fixture:** commit agent đẩy lên `vantt/obsidian-test-fixture` có dòng đồng tác giả Claude. Muốn bỏ dòng đó thì …[+271]
+[L1138] USER: <task-notification>
+<task-id>a1a591c6c9016085b</task-id>
+<tool-use-id>toolu_016GjGCivhNak9gSFavFLr4R</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a1a591c6c9016085b.output</output-file>
+<status>completed</status>
+<summary>Agent "V13 vi pack M2 M3" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I've finished V13 — the pack plugs into P01 and meets every G3 target, and no category of the Vietnamese eval regresses.
+
+**Status: DONE_WITH_CONCERNS**
+
+**Summary:** I added the `norm`/`fold` views, `analyzeQuery`, diacritic restoration from the vault vocabulary (k-best Viterbi), `rescore`, and a `createPack` default export. Weights and parameters were tuned with the eval, and the final defaults were measured with the official `run-eval.mjs` on your harder corpus (vi-search@v0.10.0). Package tests pass (8 files, 383 tests), the type check is clean and the package builds.
+
+**Eval with the pack** (linux-x64, compared with `0.17.2.vi-search.json`):
+
+| Category | nDCG@5 baseline → pack | MRR | Hit@5 |
+|---|---|---|---|
+| ALL | 0.666 → 0.813 | 0.643 → 0.795 | 0.761 → 0.886 |
+| vi-accented | 1.000 → 1.000 | 1.000 → 1.000 | 1.00 → 1.00 |
+| vi-partial-accent | 0.872 → 0.933 | 0.830 → 0.911 | 1.00 → 1.00 |
+| **vi-unaccented** | 0.133 → 0.951 | 0.089 → 0.933 | **0.27 → 1.00** |
+| **vi-dd** | 0.263 → 0.888 | 0.240 → 0.850 | **0.40 → 1.00** |
+| **vi-tone-precision** | 0.951 → 1.000 | **0.933 → 1.000** | 1.00 → 1.00 |
+| vi-compound | 0.844 → 1.000 | 0.789 → 1.000 | 1.00 → 1.00 |
+| vi-typo | 0.488 → 0.661 | 0.426 → 0.578 | 0.73 → 0.93 |
+| vi-snippet | 0.463 → 0.743 | 0.437 → 0.719 | 0.60 → 0.87 |
+| vi-alias | 0.535 → 0.814 | 0.478 → 0.752 | 0.73 → 1.00 |
+| vi-names | 0.909 → 0.975 | 0.911 → 0.967 | 0.93 → 1.00 |
+| telex, mixed-en, semantic, synonym, abbr, iy, tone-placement | unchanged | ≥ 0 | unchanged |
+
+- **G3:** vi-unaccented and vi-dd reach Hit@5 1.00 (3.7× and 2.5× baseline), vi-accented doesn't drop, and vi-tone-precision MRR is 1.00.
+- **Upstream English eval (obsidian-help):** nDCG@5 is 0.735 both with and without the pack.
+- **Smoke vault:** ALL nDCG@5 +0.077, no category drops.
+
+**Performance:** `project` on 1 MB takes about 40 ms per view (budget 200 ms). `analyzeQuery` on 12 syllables with a 50,00 …[+3703]
+[L1150] AGENT: V13 xong và đạt mọi mục tiêu G3: `vi-unaccented` từ 0,27 lên 1,00, `vi-dd` từ 0,40 lên 1,00, MRR của `vi-tone-precision` đạt 1,00. Không hạng mục nào tụt, eval tiếng Anh của upstream giữ nguyên. Kiểm test của gói rồi commit.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,47 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Gửi skill lên hub: cơ chế chặn --yes và cờ gợi ý không tồn tại
+   Lệnh --yes bị chặn vì hub chưa được tin cậy ở cấp user, nên token không được gửi. Lệnh chạy qua prefix ! trong Claude Code không phải terminal tương tác, nên chỉ in bản xem trước và không gửi gì. Thông báo lỗi gợi ý cờ --user, nhưng CLI không có cờ đó. CLI trên máy này là 0.8.0 trong khi hub là 0.12.0. Sau khi nâng lên 0.13.0 và kết nối toàn cục, việc gửi mới thành công.
+M2. Viết --help để agent tự cài: tiêu chí 'không đọc README vẫn xong'
+   Agent thêm các rule CMD-13 đến CMD-19: help của init, doctor, update và uninstall phải tự đủ dùng, không hỏi đáp khi thiếu terminal, mỗi kết quả có dòng Next, JSON theo một khuôn chung. Tiêu chí kiểm là một agent mới không đọc README vẫn cài xong. Điểm đầu tiên chạm người dùng cũng được ghi thành một file riêng.
+M3. Reviewer độc lập bắt mâu thuẫn trong chính bộ lệnh skill
+   Reviewer thấy một rule yêu cầu lệnh setup trong khi rule khác nói không có lệnh đó. Installer mẫu in gợi ý sai. Chuỗi lệnh agent chạy không bao giờ đăng ký MCP server, nên tiêu chí agent tự cài chỉ bằng --help bị trượt. Installer mẫu cũng vi phạm chính các rule của skill. Sau khi gộp các rule trùng, số rule giảm từ 230 xuống 212.
+M4. Đặt tên họ skill 'cs-': tránh hiểu nhầm và chọn từ theo phạm vi
+   Agent đề xuất cs-packaging-distribution thay cho tên dài code-standard-... Giữ từ distribution vì skill bao cả update, config và doctor, không chỉ cài đặt. Vì cs dễ bị hiểu là C#, phần mô tả skill mở đầu bằng 'Code standard (cs-*)'. Thư mục và symlink được đổi tên theo.
+M5. Hub báo 'active' trong khi bản mới chờ duyệt, trang web không báo
+   Agent so sánh bản hub đang phục vụ với thư mục local. Nội dung giống hệt, chỉ khác một dòng trống. Có một lần duyệt trước đó đã kích hoạt bản có routing. Agent ban đầu đoán cơ chế duyệt và kích hoạt, và nói là chưa biết chắc ai duyệt vì không xem được lịch sử từ máy khách. Trang skill không hiện gì về bản chờ duyệt, người dùng phải vào mục Waiting for review.
+M6. install.sh mẫu: test giả lập lộ 2 lỗi mà đọc code không thấy
+   Lần test đầu, lệnh uninstall bị chặn bởi kiểm tra 'unstamped version' dù uninstall không cần version, nên agent di chuyển kiểm tra đó. Lần test thứ hai chạy bằng dash để chắc là POSIX thật. Khi không có terminal, /dev/tty vẫn tồn tại nhưng không mở được, và script crash thay vì yêu cầu thêm --yes. Sửa bằng cách thử mở /dev/tty thật, rồi kiểm lại cả hai trường hợp.
+M7. Skill frontend có trên đĩa nhưng phiên chưa nạp: unknown skill
+   Gọi skill báo unknown hai lần, và hub cũng báo not_found. Agent tìm và thấy skill nằm trong thư mục .claude/skills của dự án, nhưng phiên hiện tại chưa nạp nó. Agent đọc thẳng file SKILL.md rồi làm theo, và ghi rõ điều đó trong báo cáo.
+M8. Agent bắt tay vào việc ngay khi có bản nháp, không chờ người dùng duyệt từng bước, nhưng vẫn dừng trước các hành động ảnh hưởng ra ngoài (gửi lên hub, merge lên main)
+   Agent bắt tay vào việc ngay khi có bản nháp, không chờ người dùng duyệt từng bước, nhưng vẫn dừng trước các hành động ảnh hưởng ra ngoài (gửi lên hub, merge lên main) Nhiều người dùng AI hoặc đợi xác nhận từng bước, hoặc để agent chạy hết không giám sát rồi phải dọn lộn xộn
+M9. Thông báo 'chờ duyệt' trên web: 3 chỗ, 229 test, merge thẳng lên main
+   Agent clone repo, đọc AGENTS.md rồi làm ba chỗ: banner ở trang skill, nhãn trong danh sách skill, và nhãn Older trong mục Waiting for review. Các bản gửi được so sánh theo mã có thứ tự thời gian. 229 test web pass, kiểm tra kiểu, lint và build đều sạch, nhưng chưa mở trình duyệt xem thật. User bảo merge và push, và agent gộp thẳng vào main không qua PR, dù AGENTS yêu cầu make check. Make check có 5 lỗi Go không liên quan.
+M10. Agent khẳng định 'hub không có routing' khi máy khách không đọc được
+   Agent nói skill chưa có topic hay routing vì chỉ kiểm tra thư mục local, nơi không có skill.yaml. User hỏi lại vì trước đó vẫn thấy triggers. Trên hub có 9 trigger, 5 example và 5 not_for. Lệnh skill show --verbose bị từ chối từ máy khách, còn skill_get chỉ trả triggers, không trả operations, topics, technologies hay min_scope. Agent phải đọc source để biết các trường đó tồn tại.
+M11. fgos: 'setup' không phải alias của doctor, nên chuẩn hoá từ hiện trạng
+   Lệnh setup thực ra chạy các fix của doctor --fix, rồi làm thêm: ghi dòng source vào rc, tạo file config, cài git hook, cài Claude hook và copy skills. Lệnh fgctl init chạy ba bước nối tiếp. Chính code ghi nhận rằng doctor --fix không làm những việc kia. Thiết kế đích: doctor là máy duy nhất, init bằng doctor --fix cộng thêm quyền tạo mới, setup bỏ đi và chỉ giữ alias ẩn.
+M12. Quy tắc config 'một cửa' từ dự án khác: skill thiếu, thêm thành MUST
+   Quy tắc: mọi cài đặt đổi qua lệnh config, cài đặt riêng dự án dùng cùng lệnh với --project, và giao diện web gọi đúng hàm ghi của CLI. Khoá của máy như budget, private hay paused không được ghi vào file repo, và bị bỏ qua khi đọc từ file đó. Skill chỉ có vài mảnh rời. Agent thêm CMD-22 đến CMD-24, nâng CFG-12 lên MUST và thêm UX-17. Lint qua 215 rule. Vì commit chưa có bản phát hành nên agent ghi là chưa được chứng minh.
+M13. Scanner bảo mật bắt chữ 'curl | sh' trong tài liệu: 11 cảnh báo
+   Scanner chạy 26 rule và báo 11 phát hiện: 7 critical về pipe-to-shell, 1 high về persist.autostart, 3 medium về privesc. Agent đọc lại hai script kiểm tra và xác nhận không có chỗ nào tự tải hay chạy thứ gì. Tất cả phát hiện là chữ trong tài liệu, mẫu installer, hoặc câu khuyên tránh sudo. User cho gửi dù còn cảnh báo. Lần quét sau vẫn ra đúng 11.
+M14. Skill frontend bị chọn nhầm sang skill phát hành
+   Lần đầu hub trả về skill đóng gói và phát hành với độ tin cậy medium, tức là chọn nhầm. Agent từ chối kết quả và hỏi lại, lần này nhận no_skill. Routing của skill đóng gói quá rộng nên việc frontend vẫn bị kéo vào. Hub đã trừ điểm vì not_for nhưng skill vẫn thắng.
+M15. 11.900 → 6.400 từ: rút skill từ 4 repo sau một câu 'dư thừa'
+   Bản đầu có khoảng 11.900 từ trong các file .md. User nhận xét là dư thừa. Agent sao lưu rồi viết lại: mỗi rule còn một dòng, 4 file case study được thay bằng một bảng references trỏ thẳng tới code thật. Các rule trùng nhau bị gộp. Kết quả còn khoảng 6.400 từ, tức giảm 46% dù đã thêm nhóm UX. Lint kiểm ID trùng và tham chiếu, và agent cố ý thêm một ID sai để chắc lint bắt được.
+M16. 5 test Go đỏ chỉ trên máy tôi: test đọc cấu hình agent thật
+   Chạy lại với HOME tạm vẫn lỗi. Nguyên nhân: TestMain đổi HOME nhưng không đổi thư mục làm việc. Lệnh status và doctor đi ngược lên các thư mục cha tìm cấu hình dự án, và tới thư mục nhà thì gặp file cấu hình Codex và Gemini vừa được ghi lúc connect toàn cục. Vì HOME giả, code coi thư mục nhà là một dự án, so đường dẫn binary và báo FAILED. CI không có các file đó nên vẫn xanh. Cả 5 test cùng một gốc.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

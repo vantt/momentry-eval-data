@@ -1,0 +1,29 @@
+Dưới đây là 9 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Đổi khoá bí mật an toàn: tạo PAT mới, cập nhật mọi chỗ chứa bản cũ (tìm bằng grep nội dung khắp home), kiểm PAT mới chạy được rồi mới thu hồi PAT cũ, và xác nhận bản cũ hết hiệu lực.
+   Đổi khoá bí mật an toàn: tạo PAT mới, cập nhật mọi chỗ chứa bản cũ (tìm bằng grep nội dung khắp home), kiểm PAT mới chạy được rồi mới thu hồi PAT cũ, và xác nhận bản cũ hết hiệu lực. Thu hồi key cũ rồi tạo key mới, hoặc quên mất bản sao còn nằm ở file cấu hình khác.
+M2. Hạ tầng 'an toàn cho agent' bằng cơ chế, không bằng lời dặn
+   Bản thiết kế quyền đầu tiên được một agent độc lập phản biện và tìm ra: mã đăng nhập dev 6 ký tự trong .env cho phép đăng nhập thành chủ, daemon đặc quyền chạy dưới user có docker tương đương root, và không có backup. Giai đoạn 0 làm trong phiên: dừng daemon, tách PAT của chủ khỏi user daemon bằng cách tạo member riêng, và thay PAT cũ. Bot không có quyền chỉ đọc trên repo private cá nhân nên phương án (c) bị loại sau khi kiểm tài liệu GitHub; chọn hoãn. Lệnh sudo lần 2 báo lỗi vì file PAT đã bị xoá sau lần chạy thứ nhất.
+M3. Thiết kế tầng công cụ trả phí theo bậc: mặc định miễn phí, bật add-on trả phí (DataForSEO) bằng một dòng trong manifest từng khách; thiếu add-on thì plan không tạo MCP server đó. Kèm chỉ dẫn agent cộng dồn chi phí mỗi lần gọi và hỏi chủ khi vượt $1 mỗi issue.
+   Thiết kế tầng công cụ trả phí theo bậc: mặc định miễn phí, bật add-on trả phí (DataForSEO) bằng một dòng trong manifest từng khách; thiếu add-on thì plan không tạo MCP server đó. Kèm chỉ dẫn agent cộng dồn chi phí mỗi lần gọi và hỏi chủ khi vượt $1 mỗi issue. Hoặc dùng tool miễn phí cho tất cả, hoặc gắn key trả phí chung cho mọi agent và hy vọng không tốn nhiều.
+M4. Đóng gói theo khách: một workspace, nhiều bộ, và sự cố ghi đè team Coding
+   Gói opc-studio ban đầu chứa cả team Coding; deploy nó ghi đè instructions và squad của gói opc-coding do phiên khác đang làm, khiến 3 agent bị gỡ khỏi squad. Lỗi gốc là plan chỉ đọc phần thay đổi của gói mình, bỏ qua dòng thay đổi ngoài Marketing. Sau đó tách thành 3 gói theo bộ (content, seo-analytics, coding) và mỗi khách một file manifest; deploy không bao giờ xoá nên không gỡ được bộ đã cài.
+M5. Kiểm tra bằng chạy thật, không bằng --version
+   Tôi đã kiểm bằng --version và trạng thái online rồi báo xong, nhưng người dùng nhắc 'anh thấy chạy rồi đấy'; khi đối chiếu log thì đúng là Pi OpenAI và Grok đã có 3 lượt chạy lúc 17:40 mà tôi chưa nhìn thấy. Sau đó tạo agent spike-gemini và giao STU-15, hoàn thành trong khoảng 30 giây, không lỗi, đúng model gemini-3.8-flash.
+M6. Mỗi bước hạ tầng làm tay đều được 'dạy lại' vào skill của agent vận hành rồi deploy lại, và có quy tắc rõ việc nào agent tự làm (đảo ngược được), việc nào phải hỏi (xoá, tiêu tiền, nâng cấp), việc nào chỉ soạn sẵn lệnh sudo cho người chạy.
+   Mỗi bước hạ tầng làm tay đều được 'dạy lại' vào skill của agent vận hành rồi deploy lại, và có quy tắc rõ việc nào agent tự làm (đảo ngược được), việc nào phải hỏi (xoá, tiêu tiền, nâng cấp), việc nào chỉ soạn sẵn lệnh sudo cho người chạy. Người vận hành tự làm rồi ghi runbook trong wiki, hiếm khi cập nhật; hoặc agent làm gì cũng hỏi, hoặc làm gì cũng tự làm.
+M7. Runtime theo tài khoản: pi, omp và tên lệnh bọc
+   Runtime OpenAI ban đầu offline vì profile được đổi tên sau khi lệnh bọc được tạo, nên daemon bỏ qua lệnh cũ; chỉ tắt bật lại profile là lên. Model thật (gpt-6.1-sol, grok-4.7) khác model cấu hình (gpt-5.5, grok-4.6), do lúc đăng nhập chọn khác. Lượt chạy đầu tiên với 3 runtime đều hoàn thành: STU-10…14 không lỗi, trong đó Google và DuckDuckGo chặn truy cập từ máy chủ, chỉ Bing trả kết quả.
+M8. Trạm tuần tự: agent SEO chạy được trên MCP GA4 và Search Console thật, nhưng key bị thiếu quyền đọc
+   Lần thử đầu, key service account trả về rỗng vì chưa được cấp quyền vào property, nên khó biết xác thực có chạy không. Sau khi cấp quyền, run_report qua MCP trả về số liệu thật, ví dụ kênh Direct 58 session trong 7 ngày. Search Console ban đầu không có số liệu vì property đang trỏ bản www cũ, trong khi website đã redirect 301 sang bản không www. Lần chạy agent đầu tiên (STU-6) bị blocked vì file key không được chép đúng vào home của user daemon, dù bước cài MCP đã thành công.
+M9. Lỗi nhỏ, sửa xong đã quên: kiểm chéo sau lệnh sudo
+   Hàng loạt lệnh báo exit 1 hoặc 127 do glob zsh không khớp, gcloud chưa cài, dirname thiếu tham số, hoặc file đã đổi tên. Mỗi lần đều được sửa bằng lệnh khác trong cùng lượt và không ảnh hưởng tiến độ.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

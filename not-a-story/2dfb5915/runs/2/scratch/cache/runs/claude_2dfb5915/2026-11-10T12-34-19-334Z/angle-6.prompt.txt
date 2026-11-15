@@ -1,0 +1,83 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian: note nào nối với note nào, đi từ ý này tới ý kia qua đâu, note nào lạc khỏi mạng. Làm cho người làm một mình, freelancer, có tiếng Việt. Dùng dưới dạng một file chạy trên máy, người dùng không phải cài Python; có bộ cài cho Windows, macOS và Linux. Mục tiêu hiện tại: thay bản Python đang dùng bằng lõi viết bằng Rust cho Claude Desktop và chat trong Obsidian.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+</asks>
+
+<story>
+hook: Đổi thứ tự liệt kê file, 593 trên 726 id đổi
+tension: nho_ma_to (Chỉ đổi thứ tự hệ điều hành liệt kê file / 593 trên 726 edges.id đổi, điểm related lệch 1e-5, vượt ngưỡng 1e-6)
+stakes: 2/3
+# Thứ tự liệt kê file của hệ điều hành làm đầu ra Python đổi
+
+**Bối cảnh:** Python liệt kê note theo thứ tự hệ điều hành trả về, thứ tự này khác nhau giữa NTFS và APFS.
+**Chuyện gì xảy ra:** Khi đảo thứ tự liệt kê, 593 trên 726 edges.id đổi, và điểm related lệch khoảng 1e-5, vượt ngưỡng 1e-6 của PRD. Agent ghim thứ tự theo đường dẫn đã sắp và ghi vào nhật ký quyết định. Các phase sau phải giữ thứ tự này.
+**Bài học:** Kết quả phụ thuộc thứ tự hệ điều hành là lỗi ẩn: kiểm tra xem đầu ra có đổi khi chỉ đổi thứ tự đầu vào không.
+**Artefact:** Bảng số edges đổi theo thứ tự (không có dữ liệu riêng tư).
+</story>
+
+<excerpt>
+[L411] TOOL Bash: git checkout --ours Cargo.lock && cargo generate-lockfile -q 2>&1|tail -2; cargo update -w -q; cargo fmt --all --check && cargo clippy --workspace --all-targets -q -- -D warnings && cargo test --workspace --locked -q 2>&1 | grep -E "test result|FAILED" | sort | uniq -c
+[L415] RESULT: Updated 1 path from the index | 4 test result: ok. 0 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+[L423] TOOL Bash: cat >> docs/DECISIONS.md <<'EOF' ## Thứ tự liệt kê file khi so khớp: sắp theo đường dẫn, so chặt - **Ngày:** 2026-11-02 - **Lựa chọn:** phía Python của bộ so khớp liệt kê note theo đường dẫn đã sắp (thứ tự NTFS và APFS trả về). `edges.id` và `related` vẫn so chặt như PRD (điểm lệch tối đa 1e-6). Lõi …[+793]
+[L427] RESULT: pushed
+[L432] TOOL Bash: cd /home/vantt/projects/obsidian-pkm/plans/261102-0535-rust-core-port-master && for f in phase-09-index-adapter-validate.md phase-11-related-and-ohs-module.md; do grep -n "^## Việc cần làm" $f; done; sed -n '/^## Việc cần làm/,/^## /p' phase-09-index-adapter-validate.md | head -5; sed -n '/^## Việc  …[+154]
+…
+[L459] TOOL Bash: gh run watch 41402774100 --exit-status >/dev/null 2>&1; gh run view 41402774100 --json jobs -q '.jobs[]|.name+" "+.conclusion'
+[L463] RESULT: ubuntu-latest success | windows-latest success
+[L474] AGENT: Báo cáo tiến độ: đợt W0 và W1 đã xong phần máy làm được, mọi thứ đã commit và push lên `main`. CI xanh trên Windows, macOS và Linux, kể cả bước so khớp mới.
+
+**Đã xong (5 phase):**
+- **01, khung workspace:** hai crate `pkm-core` và `pkm`, CI chạy ba nền. `pkm --version` in đúng sha đặc tả. Seed của fixture là 11, lấy từ preset của fixture vì test Python không truyền `--seed`.
+- **04, bài thử OHS:** chạy được nhiều câu `search` đồng thời, kết quả trùng với CLI của OHS và không để lại tiến trình node nào.
+- **06, lệnh `follow`:** hiện báo 0 commit chưa chuyển. Tôi đã tự chạy lại để kiểm.
+- **07, module `platform`:** 15 test qua. Trong 19 test Python, 5 test chuyển được; 12 test chỉ dành cho WSL hoặc không cần nên ghi "không áp dụng"; 2 test thuộc `vault` nên đã chuyển sang phase 08.
+- **14, workflow release:** tôi đã chạy thử bằng `workflow_dispatch`. Ra đủ 4 binary, sha256 đều OK, và không tạo Release.
+
+**Xong phần máy, còn thiếu bước của anh/chị (3 phase):**
+- **02, bài thử YAML:** chốt Q3 là `unsafe-libyaml` cộng một lớp tương thích PyYAML. Trên kg-solo, 58 ca biên và 25.000 note sinh ngẫu nhiên đều 0 lệch. Còn thiếu lượt chạy trên bản B.
+- **03, bài thử MCP:** chốt Q4 là JSON-RPC tự viết, vì `rmcp` lệch Python ở 5 chỗ của tầng giao thức, binary to gấp 4 lần và kéo theo `tokio`. Claude Code đã gọi được tool. Còn thiếu lượt thử trên Claude Desktop Windows.
+- **05, bộ so khớp:** Python so với chính nó trên kg-solo ra 0 lệch. Golden đã commit và CI không cần Python. Còn thiếu lượt chạy trên bản B.
+
+**Một quyết định tôi đã tự chốt:** đầu ra của Python phụ thuộc thứ tự hệ điều hành liệt kê file. Đảo thứ tự thì 593 trên 726 `edges.id` đổi theo, và điểm `related` lệch cỡ 1e-5, lớn hơn mức 1e-6 PRD cho phép. Tôi ghim thứ tự theo đường dẫn đã sắp và vẫn so chặt như PRD, đã ghi vào `docs/DECISIONS.md`. Hệ quả là phase 09 và 11 phải giữ đúng thứ tự này. Nếu anh/chị muốn nới luật so thay vào đó thì báo tôi.
+
+**Blocked: chờ user.** Mọi phase còn lại (08 đến 13, 15 đến 17) nằm s …[+1243]
+[L477] USER: Stop hook feedback:
+[bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.]: The goal was to complete the whole plan (all milestones M1 to M4, phases 01 to 17). The transcript shows only phases 01, 04, 06, 07 and 14 done, with 02, 03 and 05 in-progress waiting on user-only steps, and phases 08 to 13 and 15 to 17 still todo behind gate G0. The last assistant message says 'Blocked: chờ user', so the plan is not finished and the condition does not hold.
+[L484] AGENT: The plan requires user gates before phase 08. I'll ask about them directly, so you can answer right away.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

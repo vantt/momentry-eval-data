@@ -1,0 +1,67 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Reviewer độc lập: lỗi nặng nhất là một cặp dấu ngoặc
+   Reviewer báo 4 lỗi nặng, 5 trung bình và 7 nhẹ. Lỗi nặng nhất: lệnh node -p dùng dấu nháy kép lồng trong PowerShell 5.1, Node nhận split(.) và installer luôn báo Node quá cũ. Lỗi thứ hai: lệnh xoá qua cmd không hiểu escape nên không xoá gì nhưng vẫn báo thành công. Lỗi thứ ba: trên Windows cache nằm trong thư mục cài nên uninstall thông thường sẽ xoá dữ liệu người dùng.
+M2. Không có máy Windows: thăm dò hook bằng runner CI
+   Agent tra cộng đồng: Claude Code có thể chạy hook qua Git Bash, Codex qua cmd. Lệnh hook được đổi sang đường dẫn gạch chéo tới momentry.cmd để chạy ở cả hai. Workflow chạy tay trên runner Windows cài thật rồi mở phiên không có khoá API, và đọc hook.log tìm dòng hook.spawned. Lần chạy Claude xanh nhưng chưa đủ để khẳng định hook được gọi; Codex lần đầu thất bại.
+M3. Rào chắn của máy chặn cả lệnh xoá lẫn chữ dist
+   Lệnh rm -rf với biến chưa chắc có giá trị bị chặn, agent chạy lại bằng script Node. Lệnh tạo workflow có chữ dist bị hook chặn, agent chuyển sang tool ghi file. Một lệnh chỉnh test có chuỗi !.git cũng bị chặn. Các chặn này buộc đổi cách làm ở nhiều bước.
+M4. Antigravity: Stop hook chạy sau mỗi lượt, nên không gom chuyện ở đó
+   pi và omp có extension TypeScript với sự kiện kết thúc phiên. agy chỉ có SessionStart và Stop, trong đó Stop chạy sau mỗi lượt và có thể chặn agent đang chạy. Agent đưa hai lựa chọn; user chọn gom khi mở phiên sau và tự tìm mọi profile.
+M5. Một máy có 27 thư mục profile: quét nào cũng phải tìm đủ
+   Thay vì giả định một thư mục mặc định, momentry liệt kê mọi profile: 4 thư mục Codex, 9 của pi, 10 của omp và 4 của agy, tổng 27. Hook và quét đều dùng chung hàm hostRoots.
+M6. Đọc mã Codex để biết cách tin hook, và tìm ra cờ bỏ qua bước duyệt
+   Agent đọc mã nguồn mở của Codex để tìm cơ chế tính hash, rồi tìm thấy cờ bypass_hook_trust. Khi thử trên CI Windows với cờ này, phiên codex không đăng nhập vẫn không gọi hook. Chưa chứng minh được nguyên nhân, vì phiên có thể dừng trước bước hook.
+M7. Thăm dò pi và omp thật: chặn mạng trước khi chạy
+   Chạy omp với khoá giả, output vẫn cho thấy host đã gọi API và báo 401 khoá không hợp lệ. Vì vậy agent chuyển sang chạy trong namespace mạng rỗng bằng unshare để chắc không có yêu cầu nào đi ra ngoài.
+M8. Hook ghi cứng đường dẫn Node: nâng Node là hook chết im lặng
+   Nâng Node qua nvm hoặc fnm, hay chuyển thư mục clone, sẽ làm hook hỏng. Hook chỉ thoát 0 và không ghi gì nên lỗi không lộ ra. Sau khi đổi sang shim momentry cài trong PATH, hook gọi qua tên lệnh ổn định.
+M9. Runner CI chạy quyền Administrator và PowerShell 5.1 làm hỏng JSON
+   Installer từ chối chạy khi đang là Administrator, nên test bật biến cho phép root. PowerShell 5.1 làm hỏng JSON truyền cho chương trình ngoài, nên test Windows dùng momentry config privacy-add thay cho config set kèm JSON. Lần chạy cuối trên Windows: 231 pass, 0 fail.
+M10. Codex bỏ qua hook của momentry suốt từ đầu vì sai tên sự kiện
+   Codex đòi PreCompact, SessionEnd và SessionStart. momentry ghi pre_compact và session_start, nên Codex bỏ qua mà không báo gì. Lỗi nằm ở chỗ không ai nghi: test chỉ kiểm chuỗi nội bộ, không kiểm host thật. Sửa xong thì thêm cả SessionEnd.
+M11. Thả hàng loạt quarantine: chuyện sạch đi vào hộp, chuyện còn lộ vẫn giữ
+   Lệnh kiểm lại từng chuyện trong hàng cách ly trước khi thả. Test có một chuyện sạch được thả và một chuyện còn lộ vẫn bị giữ. Sau khi bảng lệnh đổi, tài liệu tham chiếu được sinh lại và test kiểm tra tài liệu vẫn qua.
+M12. Hook tự cài hay chỉ in? Đảo quyết định đã chốt trong PRD
+   Agent đưa hai phương án: chỉ in kèm doctor kiểm tra, hoặc tự cài. Ước tự cài khoảng 200 đến 300 dòng cộng test. User chọn tự cài. Cách làm an toàn gồm sao lưu trước khi sửa, từ chối nếu file đang hỏng, ghi qua file tạm rồi đổi tên, và chỉ đụng mục có lệnh momentry hook.
+M13. Đọc schema transcript thật mà không in nội dung
+   Script shape chỉ in kiểu và tên khoá, không in giá trị. Lần đầu lỗi vì chạy file .ts bằng Node cũ (evalTypeScript), sau đó dùng find theo kích thước để chọn phiên. Tìm được năm transcript agy thật để kiểm bộ đọc, và một phiên omp dài 400 dòng.
+M14. Đổi mã thoát: lỗi gõ sai thành lỗi có kết quả
+   Bảng cũ: 1 là gõ sai lệnh, 2 là check thấy vi phạm riêng tư. Agent đề xuất giữ bảng cũ vì script pre-commit có thể đợi mã 2 để chặn commit. User chọn chuẩn. Đổi kéo theo sửa nhiều test và mục Breaking trong CHANGELOG. Ai viết script chỉ kiểm mã 2 sẽ bỏ lọt vi phạm nếu không cập nhật.
+M15. Stop hook kéo tôi qua ba vòng chưa xong
+   Vòng 1: plan 43/45, agent đã đánh dấu gần xong nhưng hai việc cần push lên GitHub và máy Windows thật. Vòng 2: plan 45/45 và CI xanh, nhưng v0.1.0 chưa cắt và hook Windows chưa đo. Vòng 3: hook Windows vẫn chưa đo được, chỉ thăm dò qua CI. Mỗi vòng agent phải hỏi quyền trước khi làm tiếp.
+M16. Tag v0.1.0: lần đầu release.yml chạy thật
+   Điều kiện trước khi tag: HEAD trùng origin/main, CI xanh, chưa có tag, VERSION khớp CHANGELOG. Sau khi push tag, workflow tạo bản nháp, cài thử trên ba OS rồi mới công bố. Agent chạy đúng lệnh curl rồi sh trong HOME tạm: cài được 0.1.0, init báo Sẵn sàng.
+M17. Chạy toàn bộ kiểm tra trong HOME tạm (mktemp) với `env -i`, cache và cấu hình riêng, nên thử cài, init, update, uninstall mà không đụng máy thật của user
+   Chạy toàn bộ kiểm tra trong HOME tạm (mktemp) với `env -i`, cache và cấu hình riêng, nên thử cài, init, update, uninstall mà không đụng máy thật của user Dev thường chạy thử installer hoặc CLI thẳng trên máy mình, hoặc dựng Docker/VM; cùng lắm backup dotfiles trước rồi sửa tay nếu hỏng
+M18. zsh không tách biến lệnh: vài lần no such file và glob không khớp
+   Ít nhất bốn lần lệnh có biến KEY=value bị zsh hiểu sai và báo no such file. Một glob không khớp trong zsh báo no matches found và thoát 1. Agent chuyển sang bash -c hoặc script .sh. Các lỗi này không phải lỗi sản phẩm nhưng tốn nhiều lượt chạy.
+M19. Symlink /var và tên ngắn RUNNER~1 làm mất phiên transcript
+   Test scan không thấy phiên trên macOS vì hai dạng đường dẫn không khớp nhau. Trên Windows, tên ngắn RUNNER~1 và chữ hoa của ổ đĩa làm so khớp thất bại. Sửa xong thì so khớp cả đường dẫn thật lẫn dạng đã mở rộng, và không phân biệt hoa thường trên Windows.
+M20. Một bảng lệnh sinh cả parser, --help và tài liệu tham chiếu
+   Một bảng lệnh định nghĩa cờ, mô tả, ví dụ và mã thoát. Parser và help đọc từ bảng đó. Tài liệu docs/cli-reference.md được sinh từ bảng và có test kiểm tra độ lệch, nên quên sinh lại là test đỏ.
+M21. Vòng agent-native hội tụ khi lỗi có lệnh chạy được
+   Ở vòng thử đầu, agent mới vướng vì lỗi nguồn riêng tư chỉ có câu gợi ý chỉnh file cấu hình, không chạy được. Vòng lặp hội tụ sau hai vòng. Sau khi thêm `momentry config privacy-add`, vòng sau hội tụ ngay lần đầu, và test thông báo lỗi được cập nhật.
+M22. Mượn bộ cài PowerShell từ dự án khác và bài học ASCII cho 5.1
+   Agent chép cấu trúc từ installer có sẵn đó. Thông báo trong file chỉ dùng ASCII, vì PowerShell 5.1 đọc sai UTF-8 khi chạy qua irm và iex. Lỗi thực tế chỉ lộ ra trên CI Windows.
+M23. Đóng gói bằng code JS tự viết: đóng lại vẫn ra cùng sha256
+   Agent tự viết đọc và ghi ustar. Đóng gói lặp lại cho cùng phiên bản thì sha256 y hệt. Installer cài, cài lại không đổi gì, update báo mã 10 khi có bản mới và cập nhật vẫn giữ cấu hình.
+M24. Test viết cho POSIX: CI đầu tiên Windows đỏ 38 test, macOS đỏ 2
+   Phần lớn lỗi Windows nằm ở test giả định POSIX: chèn đường dẫn thô vào JSON, kiểm quyền 0600, tách biến bằng dấu hai chấm, và claude giả không chạy được trên Windows. Sau một lượt sửa, Windows còn 4 lỗi và macOS còn 2. Lần chạy cuối trên Windows: 231 pass, 0 fail.
+M25. Audit cho thấy lõi ổn nhưng phân phối gần như bằng 0
+   Audit theo skill cs-packaging-distribution chạy trên bản clone sạch cho 205/205 test qua. Trong bản làm việc, một test quét cả thư mục chưa commit nên báo 202/203. `init --yes` lỗi Unknown option. `init` chỉ tạo file cấu hình, không tạo hộp chuyện, nên `list` và `check` thoát 1 ngay sau quick start.
+M26. Push bị từ chối, rebase, và một commit kéo theo file của phiên khác
+   Push bị từ chối vì GitHub có hai commit tài liệu khác, rebase êm. Nhưng một commit của agent vô tình kéo theo việc đổi tên README.md thành README.vi.md mà phiên kia đã stage. Main thiếu README.md và CI đỏ toàn bộ. User chọn commit README song ngữ, CI xanh lại. Từ đó agent chỉ stage đúng file và kiểm git diff --cached trước khi commit.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

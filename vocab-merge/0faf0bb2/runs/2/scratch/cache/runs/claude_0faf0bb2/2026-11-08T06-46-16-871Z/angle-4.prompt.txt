@@ -1,0 +1,156 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L3306] USER: kaneo nối thật là sao?
+[L3332] USER: cái nào cung cấp schema flexible nhất
+[L3373] USER: multica là không cần runtime của openclaw luôn?
+</asks>
+
+<story>
+hook: Cả spike đi nhầm đường vì một giả định; đổi hướng, 5/5 trong một buổi
+tension: tuong_ma_hoa_ra (Tưởng Multica phải chạy OpenClaw / Hơn 25 CLI được hỗ trợ, Claude Code đạt 5/5 một buổi)
+stakes: 3/3
+# Multica không cần OpenClaw: spike sai hướng vì giả định Multica chạy OpenClaw
+
+**Bối cảnh:** Sau khi spike Multica + AICoworker trượt, người dùng hỏi có cần runtime OpenClaw không.
+**Chuyện gì xảy ra:** Multica là tầng điều phối, daemon tự tìm các CLI có trong PATH. Có hơn 25 CLI được hỗ trợ, gồm Claude Code và Codex. OpenClaw chỉ là một trong số đó. Spike trước đã chọn OpenClaw từ đầu vì một giả định chưa kiểm chứng. Khi chuyển sang Claude Code, spike đạt 5/5 tiêu chí chỉ trong một buổi.
+**Bài học:** Đọc danh sách runtime được hỗ trợ trước khi chọn runtime để thử. Giả định về kiến trúc của nền tảng có thể sai.
+**Artefact:** Sơ đồ daemon gọi các CLI khác nhau.
+</story>
+
+<excerpt>
+[L3363] RESULT: packages/twenty-server/src/database/commands/workspace-export/utils/__tests__/generate-workspace-schema-ddl.util.spec.ts | packages/twenty-server/src/database/commands/workspace-export/utils/generate-workspace-schema-ddl.util.ts
+[L3365] AGENT: "Linh hoạt" có ba mức. Sắp theo mức linh hoạt, kèm bằng chứng từ code:
+
+## Mức 1: thêm field cho task (loại thực thể giữ cố định)
+
+| | Field tuỳ chỉnh | Trạng thái / quy trình | Chỗ ghi dữ liệu tự do |
+|---|---|---|---|
+| **Multica** | **Theo workspace**, 7 kiểu: text, number, date, select, multi_select, url, checkbox. Giá trị nằm trong một cột JSONB đặt khoá theo UUID, nên **đổi tên field không cần migrate dữ liệu**. Tối đa 20 field đang dùng; field bỏ đi chỉ bị lưu trữ, không xoá | **Trạng thái tự thêm, kế thừa nhóm vòng đời** (unstarted, started, done, closed); workflow theo cột cho từng project | **`issue.metadata`**: kho key–value nhỏ, *"agents use to record pipeline state (PR number, pipeline_status, waiting_on…)"* |
+| **Kaneo** | **Theo project**, 5 kiểu: text, number, date, dropdown, boolean, có cờ `required` | Cột tự đặt theo project, có cờ `isFinal` | Không |
+| **Paperclip** | Mình không thấy | 7 trạng thái cố định | Một số cột JSONB nội bộ |
+| gr8r / Circle | Sửa trong code (dữ liệu mẫu) | Sửa trong code | — |
+
+## Mức 2: thêm **loại thực thể mới** lúc đang chạy (ví dụ "Khách hàng", "Đơn hàng")
+
+Không công cụ quản lý dự án nào ở trên làm được. Những nền tảng làm được thì **không phải công cụ quản lý dự án**:
+
+| | Cách làm | License |
+|---|---|---|
+| **Twenty** (CRM, ★60k) | Tạo object và field mới ngay trong UI. Server **tự dựng schema GraphQL cho từng workspace** từ metadata (`workspace-schema-builder`) và sinh DDL. Đây đúng là "schema → API" nhưng chạy lúc runtime | AGPL-3.0 cộng một số file thương mại; riêng **thư viện UI `twenty-ui` và SDK là MIT** |
+| Teable, NocoDB, Baserow | Bảng tuỳ ý kiểu Airtable, có API sinh sẵn | License không chuẩn (chưa kiểm chi tiết) |
+
+## Xếp hạng
+
+**Twenty** > **Multica** > **Kaneo** > **Paperclip**
+
+Linh hoạt nhất là Twenty, nhưng đó là CRM, nặng (NestJS, Postgres, Redis) và dùng AGPL. Trong nhóm công cụ quản lý dự án, **Multica** có schema linh hoạt nhất.
+
+## Ý nghĩa cho fgOPC
+
+Linh hoạt quá thì **mất luật cứng**. Đây là …[+837]
+[L3373] USER: multica là không cần runtime của openclaw luôn?
+[L3379] AGENT: Đúng: **Multica không cần OpenClaw.** OpenClaw chỉ là một trong nhiều runtime mà Multica hỗ trợ. Mình lấy danh sách runtime chính xác từ tài liệu của nó.
+[L3380] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/multica; sed -n 270,300p CLI_AND_DAEMON.md | grep -E "^\|" | head -25
+[L3381] RESULT: | CLI | Command | Description | | |-----|---------|-------------|
+[L3382] AGENT: Đúng vậy: **Multica không cần OpenClaw.** Nó là tầng điều phối, và **runtime là bất kỳ CLI agent nào có trên máy**. Daemon tự tìm các CLI có trong PATH rồi đăng ký mỗi CLI thành một runtime. Danh sách hỗ trợ (theo `CLI_AND_DAEMON.md`) có hơn 25 CLI, trong đó có:
+- Claude Code (`claude`), Codex (`codex`), Cursor Agent, Copilot CLI;
+- Antigravity CLI (`agy`), Kimi, Qwen Code, Grok Build, Devin CLI;
+- OpenCode, Hermes, Pi, Kiro, Qoder, Trae;
+- **OpenClaw**, chỉ là một mục trong danh sách.
+
+Ngoài ra còn runtime trên cloud: cầu nối tới Qoder Cloud Agents và Multica Cloud có tính phí.
+
+## Mô hình của Multica
+
+```
+Multica server (issue, workflow, squad, chat)
+      │  WebSocket + poll
+Multica daemon trên máy bạn
+      ├─ claude  -p --output-format stream-json …   ← mỗi lượt chạy là một tiến trình CLI
+      ├─ codex   app-server …
+      └─ openclaw agent …                            ← tuỳ chọn, không bắt buộc
+```
+
+- Agent của Multica = **tên + `instructions` + skill + model**, gắn vào một runtime (một CLI trên một máy cụ thể).
+- Mỗi task chạy trong **thư mục làm việc riêng**. Ngữ cảnh được tiếp nối bằng cách **resume session của chính CLI đó** theo từng cặp (agent, issue), ví dụ `claude --resume`.
+- **Không có bộ nhớ dài hạn** riêng cho agent. Thứ gần nhất là skill, instructions và metadata trên issue.
+
+## Hệ quả cho fgOPC
+
+Nếu dùng **Multica với Claude Code hoặc Codex**, không cần AICoworker:
+- **Không gặp lỗi tương thích nào ở spike vừa rồi.** Đây là các runtime Multica hỗ trợ tốt nhất, có cả tính năng chỉnh hướng agent đang chạy (steer).
+- Workflow theo cột, squad, review, chat nhiều phiên đều dùng được ngay.
+- Agent làm được cả việc không phải lập trình (viết bài, lập ngân sách), vì các CLI này có công cụ đọc/ghi file, chạy lệnh và tìm kiếm web.
+
+Đổi lại, **bỏ hết những gì AICoworker mang lại**:
+- Bộ nhớ dài hạn và SOUL của từng agent, tức phần tự cải tiến.
+- Kênh **Zalo**/Telegram cá nhân. Multica chỉ có Slack, Telegram, Lark, DingTalk, WeCom.
+- Trình duyệt tích hợp, a …[+1153]
+[L3386] USER: multica chat multi session được không?
+[L3394] AGENT: **Có.** Câu này mình đã trả lời trước đây; dưới đây là tóm tắt, bổ sung thêm theo từng runtime:
+
+**Multica có:**
+- **Nhiều phiên chat với cùng một agent**: mỗi phiên là một dòng `chat_session` riêng, đổi tên, lưu trữ, ghim được, và gắn được vào project.
+- UI có danh sách các phiên, nút tạo chat mới và ô chat nổi.
+- Chat chạy qua cùng hàng đợi việc với issue, nhưng không cần issue.
+- **Chỉnh hướng agent đang chạy (steer)**: gửi thêm tin khi agent đang làm, tin được đưa vào lượt chạy hiện tại.
+- Kênh ngoài: Slack, Telegram, Lark, DingTalk, WeCom. Lệnh `/issue` biến tin nhắn thành việc. **Không có Zalo.**
+
+**Phụ thuộc runtime:**
+
+| Runtime | Chat nhiều phiên | Steer |
+|---|---|---|
+| Claude Code, Codex, Grok, Kiro, Cursor | Có; ngữ cảnh tiếp nối bằng cách resume session của CLI | **Có** |
+| OpenClaw (AICoworker) | Theo lý thuyết có, nhưng **hiện không chạy được** với bản OpenClaw 2026.3.13 (spike trượt) | Không hỗ trợ |
+
+**Chưa kiểm chứng:** mỗi phiên chat có giữ đúng một session CLI riêng qua nhiều tin nhắn không. Code có `PinTaskSession` và resume session cho Claude, nhưng mình chưa chạy thử chat. Nếu chạy spike B' (Multica + Claude Code), mình sẽ thêm việc này vào danh sách tiêu chí.
+[L3398] USER: spike multica với claude code đi
+[L3404] AGENT: Bắt đầu spike **B': Multica + Claude Code**. Lần này kiểm 5 tiêu chí:
+- **(a)** Agent làm đúng vai trò theo `instructions`.
+- **(b)** Agent ghi ngược vào Multica (comment, chuyển trạng thái).
+- **(c)** Lần chạy thứ hai trên cùng issue tiếp nối được session cũ.
+- **(d)** Workflow theo cột tự giao việc giữa hai agent.
+- **(e)** Chat nhiều phiên với một agent, mỗi phiên giữ ngữ cảnh riêng.
+
+Mình cũng ghi nhận xem agent có tự chuyển task sang `done` không.
+
+Trước hết kiểm tra Claude Code trên máy và cách Multica gọi nó, đặc biệt là chế độ quyền mà agent được cấp.
+[L3405] TOOL Bash: command -v claude; claude --version 2>&1 | head -1; ls -la $(command -v claude) | head -1; cd /home/vantt/project/fgOPC/upstreams/multica; git show v0.7.1:server/pkg/agent/claude.go | grep -nE "permission|dangerously|--allowed|bypass|--add-dir|--model" | head -12
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

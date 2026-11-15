@@ -1,0 +1,54 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, không rành lĩnh vực của chuyện dưới đây.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Tìm chỗ ngoặt đó trong chuyện dưới đây, hoặc nói thẳng là không có.
+
+Có chỗ ngoặt thì trả:
+- angle: 1-3 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Theo thứ tự: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng (số trong [Lnnn]) của trích đoạn mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết trong angle phải đọc được trong chuyện hoặc trích đoạn. Trích đoạn không đỡ được thì trả none.
+- evidence chỉ gồm số dòng có trong trích đoạn bên dưới.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Viết angle, audience, reason bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"angle":"Test xanh trên máy, đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<story>
+hook: Vault thật tăng tổng từ 0,600 lên 0,698, nhưng cổng hạng mục vẫn đỏ
+tension: hop_ma_tan (Điểm tổng tăng gần 0,10 / Hai hạng mục tụt, vi-iy mất 0,26 vì một câu rơi khỏi top 5)
+stakes: 3/3
+# Eval vault thật: tổng tăng 0,600 lên 0,698 nhưng cổng hạng mục đỏ, người dùng quyết
+
+**Bối cảnh:** 61 câu trên vault thật. Hạng mục chỉ có 2 đến 6 câu nên một câu rơi làm điểm hạng mục đổi mạnh.
+**Chuyện gì xảy ra:** vi-iy tụt 0,26 vì một câu rơi khỏi top 5, vi-synonym tụt 0,167 vì vault chưa có lexicon. Người dùng chọn dùng gói vi cho bộ cài và yêu cầu thêm chế độ chi tiết V15b để điều tra từng hạng mục.
+**Bài học:** Hạng mục có vài câu quá nhạy; đừng dùng cổng theo hạng mục cho bộ nhỏ, hoặc chỉ tính theo tổng.
+**Artefact:** Bảng hạng mục trước và sau, không có câu hỏi.
+</story>
+
+<excerpt>
+[L3646] RESULT: MERGED | Tests 107 passed (107)
+[L3652] TOOL Bash: git diff HEAD~1 -- vantt/plans/261102-0349-fork-master-roadmap | grep "^[+-]" | grep -v "^+++\|^---" | cut -c1-220
+[L3653] RESULT: -- [ ] V15 eval trên vault thật (chờ user gán nhãn) | +- [x] V15 eval trên vault thật: `vantt/reviews/v0.17.2-vantt.2.private.md` (61 câu; có gói nDCG@5 0,600 lên 0,698; cổng theo hạng mục hỏng, chờ người quyết)
+[L3660] TOOL Bash: HUSKY=0 git push -q origin master && git log --oneline -2 && git push -q origin --delete vantt/v15-private-eval 2>&1 | tail -1; echo "19:20 Merged V15 branch (private eval, NFD fix in quality-gate; 107 script tests). Report vantt/reviews/v0.17.2-vantt.2.private.md: overall +0.098, gate per-category  …[+123]
+[L3665] RESULT: e1caccc merge(vantt): private vault evaluation (V15) | e88c859 docs(vantt): point the dictionary notes at the archived plans
+[L3672] TOOL Bash: HUSKY=0 git push -q origin --delete vantt/v15-private-eval && echo deleted; git ls-remote --heads origin | cut -c42-
+[L3673] RESULT: deleted | refs/heads/master
+[L3680] TOOL AskUserQuestion: {"questions":[{"question":"Trên vault thật (61 câu), gói vi tăng tổng nDCG@5 0,600 → 0,698, nhưng cổng theo hạng mục hỏng: vi-iy −0,260 (1 câu rơi khỏi top 5), vi-accented −0,052 và vi-compound −0,041 (chỉ đổi thứ hạng), vi-synonym −0,167 (vault chưa có lexicon). Mỗi hạng mục chỉ 2–6 câu. Dùng gói v …[+1576]
+[L3682] RESULT: The user answered: "Trên vault thật (61 câu), gói vi tăng tổng nDCG@5 0,600 → 0,698, nhưng cổng theo hạng mục hỏng: vi-iy −0,260 (1 câu rơi khỏi top 5), vi-accented −0,052 và vi-compound −0,041 (chỉ đổi thứ hạng), vi-synonym −0,167 (vault chưa có lex …[+616]
+[L3696] TOOL Bash: cat /tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/bxsm0bvuu.output | tail -6; GH_REPO=vantt/obsidian-hybrid-search gh release list --limit 2
+[L3697] RESULT: failure | catchup: failure; bundles: skipped
+…
+[L3787] TOOL Bash: cd /home/vantt/projects/obsidian-hybrid-search && python3 - <<'EOF' p='vantt/plans/261102-0349-fork-master-roadmap/phase-05-evaluation-quality-gates.md' s=open(p).read() s=s.replace("\n\n## Risk","\n- User chốt sau V15 (2026-11-02): **dùng gói `vi`** cho bộ cài với vault thật (tổng nDCG@5 0,600 → 0, …[+1468]
+[L3792] RESULT: 6009cbe test(vantt): check the packed data without requiring a compiled pack
+[L3797] AGENT: Giờ khởi chạy V15b: thêm chế độ `--private-detail` cho cổng chất lượng.
+[L3798] TOOL Agent: V15b private-detail mode
+[L3799] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: a122d99151e2b27f9 (internal ID - do not mention to user. Use SendMessa …[+86]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

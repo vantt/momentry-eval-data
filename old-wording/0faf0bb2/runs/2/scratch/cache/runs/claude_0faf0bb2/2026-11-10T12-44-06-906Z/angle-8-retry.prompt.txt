@@ -1,0 +1,95 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Bộ dựng công ty một người (One Person Company) vận hành bằng AI agent, nền là Multica. Mỗi khách có một workspace riêng, trong đó các team agent Coding, Content, SEO & Analytics nhận việc qua issue và làm theo workflow có cổng kiểm. Làm cho người điều hành một công ty một người muốn giao việc cho agent nhưng vẫn giữ quyền duyệt ở các bước quan trọng. Ràng buộc chính: tự host Multica và daemon, chạy runtime Claude Code, và thông tin riêng của khách (cấu hình, secret) nằm ngoài repo.
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L657] USER: tại sao không cần cái này `Bridge push chuyển thành agent tự kéo việc; bridge chỉ còn là tuỳ chọn`
+[L712] USER: vậy nếu dùng paperclip là dùng được luôn, không cần làm, chỉ cần setup?
+[L724] USER: A session-scoped Stop hook is now active with condition: "thử paperclip trước, chạy spike trên máy này đi, setup một sample opc company.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that's only for clearing a goal early.
+</asks>
+
+<story>
+hook: Spike chưa chạy mà agent chính đã hỏng vì model mặc định ngừng
+tension: nho_ma_to (Spike chỉ đổi model theo từng session, tưởng không đụng gì / Model mặc định đã ngừng nên agent chính hỏng sẵn từ trước)
+stakes: 1/3
+# Model mặc định của AICoworker đã ngừng, làm hỏng cả agent chính ngay cả khi không chạy spike
+
+**Bối cảnh:** Trong spike Paperclip, agent không chạy được. Gốc nằm ở cấu hình model, không nằm ở Paperclip như mọi người nghĩ.
+**Chuyện gì xảy ra:** Model mặc định gemini-3-pro-low đã không còn khả dụng, nên agent main hỏng ngay cả khi dùng bình thường. Spike chỉ đổi model theo từng session (gemini-3-flash) chứ không sửa openclaw.json, nên lỗi vẫn còn.
+**Bài học:** Một model bị ngừng có thể làm hỏng cả hệ thống agent mà không ai nhận ra, vì mọi người nghi ngờ lớp điều phối trước.
+**Artefact:** Ảnh chụp danh sách model trong cấu hình (che API key).
+</story>
+
+<excerpt>
+[L1074] TOOL Bash: I=9df35c11-70cf-4392-9567-f50b1fe581c8; curl -s http://127.0.0.1:3100/api/issues/$I | python3 -c "import json,sys;i=json.load(sys.stdin);print('status:',i['status'],'| assignee:',(i.get('assigneeAgentId') or '')[:8],'| checkoutRun:',i.get('checkoutRunId'))"; curl -s "http://127.0.0.1:3100/api/issues …[+390]
+[L1075] RESULT: status: in_progress | assignee: b8a772cf | checkoutRun: None | comments: 1
+[L1079] TOOL Bash: python3 - <<'EOF' import json c=json.load(open('/home/vantt/aicoworker/openclaw/openclaw.json')) m=c.get('models',{}) print('models keys:',list(m.keys())[:10]) for prov,v in (m.get('providers') or {}).items(): ids=[x.get('id') for x in (v.get('models') or [])] print(prov, ids[:15]) print('agent defa …[+226]
+[L1080] RESULT: models keys: ['providers'] | local-llm ['gemma-4-e2b', 'gemma-4-e4b', 'gemma-4-12b', 'qwen3.5-9b', 'qwen3.8-27b']
+[L1083] TOOL Bash: G=/opt/AICoworker/resources/app-source/gateway-source/src/gateway; grep -n "Type\.\|model\|thinking" $G/protocol/schema/agent.ts | sed -n 1,60p | grep -iE "AgentParams|model|provider|thinking|agentId|sessionKey" | head -15; ls ~/aicoworker/openclaw/agents/main/agent/ 2>/dev/null; python3 -c " import …[+232]
+[L1084] RESULT: 8: childSessionKey: Type.String(), | 41: agentId: Type.Optional(Type.String()),
+…
+[L1111] RESULT: CHANGELOG.md | LICENSE
+[L1114] TOOL Bash: python3 -c " import json;d=json.load(open('/home/vantt/aicoworker/openclaw/agents/main/sessions/sessions.json')) ks=[k for k in d if 'paperclip' in k]; print(ks); for k in ks: print({x:d[k].get(x) for x in ['modelOverride','providerOverride','model','updatedAt']})"; N=/opt/AICoworker/resources/node/ …[+141]
+[L1115] RESULT: ['agent:main:paperclip:issue:9df35c11-70cf-4392-9567-f50b1fe581c8'] | {'modelOverride': None, 'providerOverride': None, 'model': 'gemini-3-pro-low', 'updatedAt': 1793259211397}
+[L1119] TOOL Bash: GW_PID=$(ss -ltnpH 'sport = :18789' | grep -oP 'pid=\K[0-9]+' | head -1); export OPENCLAW_GATEWAY_TOKEN="$(tr '\0' '\n' < /proc/$GW_PID/environ | sed -n 's/^OPENCLAW_GATEWAY_TOKEN=//p')"; OPENCLAW_STATE_DIR=$HOME/aicoworker/openclaw /opt/AICoworker/resources/node/bin/node /opt/AICoworker/resources/o …[+284]
+[L1120] RESULT: Gateway call failed: Error: gateway url override requires explicit credentials | Fix: pass --token or --password (or gatewayToken in tools).
+…
+[L2401] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; node -e ' const fs=require("fs");import(process.argv[1]).then(yaml=>{const f="docs/distillery/lessons/agent-bridge …[+1538]
+[L2407] RESULT: OK: wrote 51 lessons in 8 domain file(s). | ok
+[L2410] AGENT: Multica + AICoworker làm chung được. Daemon của Multica gọi lệnh `openclaw agent`, và chỉ cần trỏ lệnh đó vào CLI đi kèm AICoworker. CLI này cùng phiên bản với gateway (2026.3.13), nên **không bị lệch giao thức như Paperclip**. Tuy vậy, mỗi chế độ được và mất những thứ khác nhau:
+
+## Hai chế độ của Multica
+
+| | **Chế độ `local` (mặc định)** | **Chế độ `gateway`** |
+|---|---|---|
+| Agent chạy ở đâu | Chạy ngay trong tiến trình CLI do daemon Multica khởi động | Trong **gateway AICoworker đang chạy**; CLI chỉ chuyển yêu cầu sang |
+| SOUL, MEMORY, workspace của AICoworker | **Mất**: Multica đè workspace bằng thư mục riêng của task (đã xác nhận trong code) | **Có thể còn**, vì gateway dùng cấu hình và workspace của chính nó |
+| Skill Multica ghi vào thư mục task | Agent dùng được | **Có thể không thấy**, vì gateway đọc skill trong workspace của agent |
+| Token `MULTICA_TOKEN` để agent ghi ngược | **Có**: agent kế thừa biến môi trường | **Có thể không tới được**, vì biến môi trường nằm ở tiến trình CLI, không ở gateway |
+| Tính năng riêng của AICoworker (bản vá, trình duyệt, tool đi kèm) | Có thể thiếu, vì chạy ngoài app | Có, vì chạy trong app |
+| Kết quả thực tế | Multica + "OpenClaw trần" | Agent AICoworker đầy đủ, nhưng **chưa chắc ghi được vào Multica** |
+
+Tóm lại: chế độ `local` ghi ngược được nhưng mất "con người" của agent; chế độ `gateway` giữ được con người nhưng có thể không ghi ngược được. **Cả hai cột của chế độ `gateway` mới chỉ là suy ra từ code, chưa chạy thử.**
+
+## Nếu chọn chế độ `gateway`, cách xử lý ghi ngược
+
+1. **Cài CLI `multica` trên máy, đặt token cố định cho từng agent** trong môi trường của gateway hoặc trong skill của agent. Chạy được, nhưng mất lợi thế token riêng cho từng task, giống vấn đề key dùng lâu dài trong spike Paperclip.
+2. **Cho agent dùng MCP của Multica.** Multica cho cấu hình MCP theo agent, nhưng ở chế độ gateway MCP của gateway có thể không đọc cấu hình đó. Chưa rõ.
+3. **Sửa daemon** để chèn token vào nội dung tin nhắn gửi agen …[+1462]
+[L2414] USER: đã có runbook của paperclip rồi, dọn dẹp paperclip
+[L2417] AGENT: Mình dọn theo đúng bảng hoàn tác §10 của runbook. Trước khi xoá, mình xem lại từng mục cần dọn.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

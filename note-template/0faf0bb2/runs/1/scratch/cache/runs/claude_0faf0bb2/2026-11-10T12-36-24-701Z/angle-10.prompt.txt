@@ -1,0 +1,172 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+fgOPC là bộ dựng công ty một người vận hành bằng AI agent, chạy trên nền Multica tự host. Làm cho người muốn giao việc cho các team agent (Coding, Content, SEO & Analytics) qua issue, với bước chờ chủ duyệt ở những việc quan trọng. Mỗi khách có một workspace riêng, dựng từ một file cấu hình; thông tin riêng và secret của khách nằm ngoài repo. Hiện chạy với runtime Claude Code.
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+</asks>
+
+<story>
+hook: Mỗi lần sửa lỗi YAML bằng sed lại đẻ thêm lỗi ở dòng khác
+tension: giup_ma_hai (Sửa nhanh bằng sed cho từng lỗi / Mỗi lần sửa lại gây lỗi mới, kho bài học từ 12 lên 52 vẫn phải ghi bằng script kiểm tra)
+stakes: 1/3
+# Kho bài học tăng từ 12 lên 52 qua nhiều lần ghi, lỗi YAML đến từ sed
+
+**Bối cảnh:** Công cụ distill ghi bài học vào các file YAML theo domain, có bước kiểm tra và chấm điểm.
+**Chuyện gì xảy ra:** Lần distill đầu ghi 12 bài học. Các lần sau cộng dồn: 17 sau khi chấm lại theo goal mới, 30 sau Paperclip, 38 sau Kaneo, 47 sau Multica, và 52 sau spike Multica + Claude Code. Trong quá trình có ba lỗi YAML do giá trị chứa dấu hai chấm hoặc điểm effort ngoài khoảng 1 đến 3. Mỗi lần sửa bằng sed lại gây lỗi mới ở dòng khác. Ghi lại bằng script có kiểm tra trước khi ghi thì ổn định hơn.
+**Bài học:** Sửa dữ liệu có cấu trúc bằng sed dễ đẩy lỗi sang chỗ khác. Sinh lại từ nguồn có validator thì an toàn hơn.
+**Artefact:** Biểu đồ số bài học theo lần ghi (dữ liệu trên).
+</story>
+
+<excerpt>
+[L198] RESULT: governance.yaml | handoff.yaml
+[L204] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; sed -i 's/ facts: \[b, d\]/ facts: []/' docs/distillery/lessons/handoff.yaml; node $S/scripts/distill.mjs format 2 …[+185]
+[L207] RESULT: OK: wrote 12 lessons in 5 domain file(s). | Warnings (5):
+[L215] AGENT: Đã seal xong pass; đang dọn mấy warning nhỏ rồi báo cáo kết quả.
+[L216] TOOL Bash: cd /home/vantt/project/fgOPC/docs/distillery/lessons; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3 python3 - <<'EOF' import re p={'handoff.yaml':[('In scope. a: project.md','peripheral: a vo …[+694]
+…
+[L220] TOOL Bash: cd /home/vantt/project/fgOPC; sed -n 105,114p docs/distillery/lessons/handoff.yaml
+[L223] RESULT: score: | relevance: 1
+[L227] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; sed -i -E "s/^( why: )(peripheral: .*)$/\1'\2'/" docs/distillery/lessons/*.yaml; node $S/scripts/distill.mjs forma …[+102]
+[L228] RESULT: ERROR: /home/vantt/project/fgOPC/docs/distillery/lessons/knowledge-base.yaml is not valid YAML | WHY: bad indentation of a mapping entry (54:71)
+[L232] TOOL Bash: cd /home/vantt/project/fgOPC; sed -n 52,56p docs/distillery/lessons/knowledge-base.yaml
+[L233] RESULT: evidence: 1 | effort: 1
+[L242] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; sed -i "s/Already the host's design./Already the host design./" docs/distillery/lessons/knowledge-base.yaml; node  …[+130]
+[L243] RESULT: OK: wrote 12 lessons in 5 domain file(s). | Warnings (2):
+[L248] TOOL mcp__skillstation__skill_feedback: {"schema_version":"1","resolution_id":"res_85da6eaccc77e97611dd3a4c","event_id":"evt-distill-gr8r-1","outcome":"completed","selected_skill":"distill-repo","reason_code":"workflow_completed","utility":"helpful"}
+[L249] RESULT (exit error): {"error":{"code":"invalid_request","message":"The request conflicts with validation rules or the current object state.","retryable":false,"suggested_action":"Inspect the tool schema and current object state, correct the request, and retry."},"schema_version":"1"}
+…
+[L343] RESULT: 22:export function load() { | 34:export const saved = load();
+[L348] TOOL Bash: cd /home/vantt/project/fgOPC/docs/distillery; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/r …[+8750]
+[L349] RESULT: ok | - lesson data-attribute-action-table: score.effort must be an integer 1-3
+[L360] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/fix.mjs <<'EOF' i …[+1248]
+[L361] RESULT: OK: wrote 17 lessons in 7 domain file(s). | Warnings (2):
+[L369] AGENT: Lessons đã được chấm lại theo goal mới. Giờ viết deep-dive về kiến trúc của gr8r.
+[L370] TOOL Write: /home/vantt/project/fgOPC/docs/distillery/deep-dives/gr8r-architecture-real-data.md
+…
+[L611] AGENT: Đã có commit để ghim (`e8b78cce5bb5`). Giờ ghi lessons.
+[L612] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/paperclip.mjs <<' …[+17405]
+[L613] RESULT (exit 1): at node:internal/modules/esm/loader:636:32 | at TracingChannel.tracePromise (node:diagnostics_channel:362:14) | Node.js v24.21.0
+[L620] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; F=/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/paperclip.mjs; sed -i …[+268]
+[L621] RESULT: ok | OK: wrote 30 lessons in 8 domain file(s).
+[L626] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/cov.mjs <<'EOF' i …[+3094]
+[L627] RESULT: OK: wrote 30 lessons in 8 domain file(s). | Warnings (1):
+…
+[L1338] RESULT: server/src/services/budgets.ts:601: return { scopeType, scopeId, scopeName: scope.name, reason: `${title} cannot start work because recorded usage has no reliable price.` }; | server/src/services/budgets.ts:601: return { scopeType, scopeId, scopeName …[+99]
+[L1340] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/spike_lessons.mjs …[+4264]
+[L1341] RESULT: ok | OK: wrote 32 lessons in 8 domain file(s).
+[L1351] AGENT: Lessons đã cập nhật. Giờ viết báo cáo spike vào repo.
+[L1352] TOOL Write: /home/vantt/project/fgOPC/docs/spikes/2026-10-29-paperclip-spike.md
+…
+[L1559] AGENT: Code xác nhận cảm nhận của bạn. Mình ghi phát hiện này vào learning area và báo cáo spike trước khi trả lời.
+[L1560] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/runtime_lesson.mj …[+2218]
+[L1561] RESULT: OK: wrote 33 lessons in 8 domain file(s).
+[L1562] TOOL Edit: /home/vantt/project/fgOPC/docs/spikes/2026-10-29-paperclip-spike.md
+[L1563] RESULT: The file /home/vantt/project/fgOPC/docs/spikes/2026-10-29-paperclip-spike.md has been updated successfully. (file state is current in your context — no need to Read it back)
+…
+[L1779] RESULT: 14:- Keep self-hosting easy. A single instance must work without Redis or another managed service. Support both bundled same-origin and separately hosted API and web deployments. | feat: migrate from SQLite to PostgreSQL (#315)
+[L1783] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/kaneo_lessons.mjs …[+11848]
+[L1789] RESULT: ok | OK: wrote 38 lessons in 8 domain file(s).
+[L1793] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; node $S/scripts/distill.mjs rank --top 14 2>&1 | head -18; node $S/scripts/distill.mjs rank --source kaneo --all 2 …[+14]
+[L1794] RESULT: Lessons by priority (final_score = relevance × impact × evidence / effort; '=' marks a tie): | 1 36 r3 i4 e3 f1 candidate content new client-random-ids-and-keys
+…
+[L1890] AGENT: Trích dẫn đều khớp. Giờ ghi lessons cho Multica, cùng các điểm trùng ý tưởng với ba nguồn trước.
+[L1891] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/multica_lessons.m …[+15474]
+[L1897] RESULT: ok | OK: wrote 47 lessons in 8 domain file(s).
+[L1902] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; sed -i "s/why: In scope. a: decisions made in AICoworker chats/why: 'peripheral: chat itself stays in AICoworker;  …[+339]
+[L1903] RESULT (exit 1): Exit code 1 | sed: -e expression #1, char 1: unknown command: `,'
+[L1905] TOOL Bash: cd /home/vantt/project/fgOPC; grep -n -A4 "key: chat-sessions-beside-issues" docs/distillery/lessons/handoff.yaml | head -3; grep -n "decisions made in AICoworker chats" docs/distillery/lessons/handoff.yaml; sed -n "$(grep -n 'decisions made in AICoworker chats' docs/distillery/lessons/handoff.yaml  …[+63]
+[L1906] RESULT: 262: - key: chat-sessions-beside-issues | 263- domains:
+…
+[L2016] AGENT: Trích dẫn đều khớp. Mình ghi các phát hiện mới thành lessons và thêm §6 vào tài liệu so sánh.
+[L2017] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/workflow_lessons. …[+4228]
+[L2018] RESULT: ok | OK: wrote 49 lessons in 8 domain file(s).
+[L2019] TOOL Edit: /home/vantt/project/fgOPC/docs/comparison-aicoworker-vs-paperclip.md
+[L2020] RESULT: The file /home/vantt/project/fgOPC/docs/comparison-aicoworker-vs-paperclip.md has been updated successfully. (file state is current in your context — no need to Read it back)
+…
+[L2111] AGENT: Có, nhưng ở một tầng khác, và code xác nhận một rủi ro mình đã nêu ở phương án B. Mình ghi phát hiện này vào learning area và tài liệu trước khi trả lời.
+[L2112] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; node -e ' const fs=require("fs");import(process.argv[1]).then(yaml=>{const f="docs/distillery/lessons/agent-bridge …[+1649]
+[L2113] RESULT: OK: wrote 50 lessons in 8 domain file(s).
+[L2114] TOOL Edit: /home/vantt/project/fgOPC/docs/comparison-aicoworker-vs-paperclip.md
+[L2115] RESULT: The file /home/vantt/project/fgOPC/docs/comparison-aicoworker-vs-paperclip.md has been updated successfully. (file state is current in your context — no need to Read it back)
+…
+[L2239] RESULT: distill.ts | engine.conformance.test.ts
+[L2241] TOOL Bash: A=/opt/AICoworker/resources/app-source; sed -n 1,25p $A/gateway-source/src/agents/workflows/distill.ts | grep -vE "^import|^\s*$" | head -14; echo ----; grep -n "^name\|^description" /opt/AICoworker/resources/openclaw/skills/skill-creator/SKILL.md | cut -c1-400; echo ----; grep -o "\"[^\"]*\(learn\| …[+275]
+[L2242] RESULT (exit 1): paperclip-key-mai.json | projects | skills
+[L2245] TOOL Bash: A=/opt/AICoworker/resources/app-source; grep -n "export function\|export async function" $A/gateway-source/src/agents/workflows/distill.ts | head -5; grep -rn "distillWorkflow\|distill" $A/electron/openclaw-bundled/tools/workflow-run.cjs | head -4; head -c 1500 $A/electron/openclaw-bundled/directive …[+115]
+[L2246] RESULT: 55:export function segmentTranscript(messages: unknown[]): DistillPhase[] { | 130:export function distillTranscriptToDraft(args: {
+…
+[L2310] AGENT: Có, và còn đầy đủ hơn mình đã mô tả trước đây. Khi đọc thêm `executionPolicy`, mình thấy **một chỗ cần đính chính**: Paperclip **có** luồng review nhiều bước, giao cho agent khác duyệt. Chỉ là spike chưa bật tính năng này.
+
+## Hệ issue của Paperclip có những gì
+
+| Mảng | Có |
+|---|---|
+| Issue cơ bản | Mã `SEN-1` (bộ đếm theo công ty), tiêu đề, mô tả, 7 trạng thái cố định, 4 mức ưu tiên, nhãn |
+| Cấu trúc | Issue cha/con, quan hệ chặn (`blocks`), gắn với goal và project |
+| Giao việc | Người hoặc agent; checkout có khoá (409); assign hay comment là đánh thức agent; gộp các lần đánh thức |
+| Trao đổi | Comment; interaction (xin xác nhận, checkbox, hỏi người dùng); approvals |
+| Sản phẩm | Tài liệu có revision, comment neo vào đoạn văn, file đính kèm, work product, tab Artifacts |
+| Giao diện | List và kanban, bộ lọc, tìm kiếm, inbox (của tôi, chưa đọc, bị chặn), "What needs me" |
+| Tự động | Routine tạo issue theo lịch hoặc webhook; watchdog cho việc bị dừng |
+| **Execution policy** | Các bước **review** và **approval**, mỗi bước có người tham gia là **agent hoặc người** |
+
+## Đính chính về review
+
+Theo `doc/execution-semantics.md#L142-L163`:
+- Khi issue có bước review giao cho một agent, server lưu "thẻ review" và **đánh thức agent duyệt trong cùng một transaction**.
+- Agent duyệt chỉ được **chấp nhận hoặc từ chối**, không được đổi người được giao hay quan hệ phụ thuộc.
+- **Chấp nhận lần review cuối cùng thì issue mới thành `done`.** Từ chối thì yêu cầu sửa quay về agent đã làm.
+- *"A review run that ends without a decision cannot mark the child Done."*
+
+Như vậy Paperclip **có** luồng "agent làm → agent khác duyệt → (người phê duyệt) → xong", và có **chặn ở server**. Đây chính là phần mình từng nói chỉ có ở Multica.
+
+Lý do SEN-3 vẫn bị agent tự đóng: spike chỉ đặt `reviewPolicy: human_only`, **không đặt `executionPolicy`**. Hai thứ này khác nhau:
+- `reviewPolicy` chỉ áp khi trả lời một lời xin xác nhận.
+- `executionPolicy` mới là cổng review/approval thật.
+
+Câu "age …[+1159]
+[L2311] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; node -e ' const fs=require("fs");import(process.argv[1]).then(yaml=>{const f="docs/distillery/lessons/handoff.yaml …[+2150]
+[L2312] RESULT: OK: wrote 51 lessons in 8 domain file(s).
+[L2313] TOOL Bash: cd /home/vantt/project/fgOPC; python3 - <<'EOF' p='docs/comparison-aicoworker-vs-paperclip.md'; s=open(p).read() old='| **Paperclip** | **Mạnh nhất**: không có đường duyệt thì không được vào `in_review` (422); `reviewPolicy` (anyone, not_creator, human_only); approvals; execution policy có bước revi …[+2256]
+[L2314] RESULT: ok
+…
+[L3123] RESULT: lrwxrwxrwx 1 vantt vantt 31 Oct 29 11:52 /home/vantt/.openclaw -> /home/vantt/aicoworker/openclaw | sen-coffee-5bd2ed094897
+[L3133] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; node -e ' const fs=require("fs");import(process.argv[1]).then(yaml=>{const f="docs/distillery/lessons/agent-bridge …[+1850]
+[L3134] RESULT: OK: wrote 52 lessons in 8 domain file(s).
+[L3135] TOOL Write: /home/vantt/project/fgOPC/docs/spikes/2026-10-29-multica-spike.md
+[L3136] RESULT: File created successfully at: /home/vantt/project/fgOPC/docs/spikes/2026-10-29-multica-spike.md (file state is current in your context — no need to Read it back)
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

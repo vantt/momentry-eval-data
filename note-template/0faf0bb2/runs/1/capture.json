@@ -1,0 +1,1373 @@
+{
+  "id": "0faf0bb2",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "6c65e9b384447dc5",
+  "at": "2026-11-10T12:43:11.580Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.4,
+    "tokens": 112227,
+    "chunks": 1,
+    "hotspots": 30,
+    "entries": 1213,
+    "gitCommits": 4
+  },
+  "report": {
+    "sid": "claude:0faf0bb2",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.3905958,
+    "secs": 406.9,
+    "exitCode": 0,
+    "status": "done",
+    "written": 21,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-29-chi-nguoi-duyet-khong-chan-duoc-c455",
+        "status": "angle",
+        "angle": "Một bộ dựng công ty bằng AI agent đang thử Paperclip để giao việc cho agent qua issue, thay vì tự xây. Người làm đặt reviewPolicy 'human_only' và tin cờ này sẽ chặn agent tự chuyển việc sang done, nhưng agent vẫn đóng việc mà không ai duyệt. Hoá ra cờ đó chỉ áp khi trả lời xác nhận, còn cổng review thật nằm ở executionPolicy. Ai dựa vào tên trường để giữ bước duyệt của người cần biết điều này.",
+        "audience": "dev dùng AI agent và muốn giữ bước duyệt của người",
+        "evidence": [
+          712,
+          1326,
+          2310
+        ],
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người vận hành bằng AI agent, đang thử Paperclip như nền tảng giao việc cho agent qua issue.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn dùng Paperclip luôn, chỉ cần setup, không phải tự xây.",
+            "evidence": [
+              712
+            ]
+          },
+          "obstacle": {
+            "text": "Issue đặt 'human_only' nhưng agent vẫn tự chuyển sang done.",
+            "evidence": [
+              1326
+            ]
+          },
+          "turn": {
+            "text": "Tưởng reviewPolicy 'human_only' chặn được agent tự đóng việc; hoá ra cờ này chỉ áp khi trả lời xác nhận, còn cổng review thật là executionPolicy.",
+            "evidence": [
+              1326,
+              2310
+            ]
+          },
+          "action": {
+            "text": "Đọc mã nguồn và tài liệu, rồi sửa lại kết luận và tài liệu so sánh.",
+            "evidence": [
+              2313,
+              2328
+            ]
+          },
+          "outcome": {
+            "text": "Tài liệu đã sửa; executionPolicy chưa được chạy thử trên server đang chạy.",
+            "evidence": [
+              2328
+            ]
+          },
+          "takeaway": {
+            "text": "Đừng tin tên trường: đọc luật ở server và chạy thử đúng trường đó trước khi kết luận.",
+            "evidence": [
+              2310
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-multica-claude-code-dat-5-5-c455",
+        "status": "none",
+        "none": true,
+        "reason": "Trong trích đoạn không có dòng nào cho thấy ai tin sai điều gì rồi hoá ra khác. Chuỗi trả lại và hỏi chủ là vòng làm việc bình thường. Tình tiết 'agent thường điền đại con số' nằm trong phần mô tả câu chuyện, không có dòng trích nào đỡ, nên ô turn để null.",
+        "spine": {
+          "context": {
+            "text": "fgOPC là bộ dựng công ty một người vận hành bằng AI agent, chạy trên Multica tự host, đang thử nghiệm với runtime Claude Code.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Spike Multica với Claude Code để kiểm năm tiêu chí: đúng vai, ghi ngược, tiếp nối session, workflow theo cột, chat nhiều phiên.",
+            "evidence": [
+              3398
+            ]
+          },
+          "action": {
+            "text": "Tạo agent Mai (Marketing), giao SEN-1 cho Mai kèm yêu cầu viết nội dung và chuyển sang in_review.",
+            "evidence": [
+              3492,
+              3493
+            ]
+          },
+          "outcome": {
+            "text": "Đạt 5/5 tiêu chí; từ lúc chạy tới in_review mất 16 giây; không agent nào tự chuyển done.",
+            "evidence": [
+              3747
+            ]
+          },
+          "takeaway": {
+            "text": "Ràng buộc 'không tự done' hiện chỉ nằm trong chỉ dẫn, server chưa ép.",
+            "evidence": [
+              3747
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-29-chu-doi-huong-bo-server-node-c455",
+        "status": "angle",
+        "angle": "Một người đang dựng phần mềm quản lý công ty một người (OPC) để giao việc cho các team agent AI, và muốn hạ tầng gần 0 đồng trên Cloudflare. Họ tưởng phải viết lại cả giao diện vì mẫu gr8r không có license; hoá ra Paperclip (MIT, khoảng 108k sao) đã khớp khoảng 90% tầm nhìn, nhưng nó là server Node chạy liên tục nên người làm bỏ hướng đó. Phần lõi gồm schema, API và cách agent nhận việc lại chạy được trên D1, phần cần server chỉ là phụ. Ai đang tự host công cụ cho agent nên xem kỹ phần nào thật sự cần server.",
+        "audience": "dev dựng công cụ cho agent AI, muốn host gần 0 đồng",
+        "evidence": [
+          257,
+          483,
+          493,
+          641
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người đang dựng phần mềm quản lý công ty một người (OPC), giao việc cho các team agent AI qua issue, và muốn hạ tầng gần 0 đồng trên Cloudflare.",
+            "evidence": [
+              "profile",
+              257
+            ]
+          },
+          "want": {
+            "text": "Muốn một schema chuẩn sinh ra bảng D1, REST API và MCP cho agent, không cần server Node chạy liên tục.",
+            "evidence": [
+              257,
+              536
+            ]
+          },
+          "obstacle": {
+            "text": "Paperclip gần đủ tính năng nhưng là server Node chạy liên tục, dùng Postgres.",
+            "evidence": [
+              483
+            ]
+          },
+          "turn": {
+            "text": "Tưởng phải viết lại giao diện vì mẫu gr8r không có license; hoá ra Paperclip (MIT, khoảng 108k sao) đã khớp khoảng 90% tầm nhìn, chỉ vướng ở server Node.",
+            "evidence": [
+              483
+            ]
+          },
+          "action": {
+            "text": "Bỏ hướng chạy Node, distill Paperclip để tìm phần lõi chạy được trên Workers + D1.",
+            "evidence": [
+              493,
+              496,
+              535
+            ]
+          },
+          "outcome": {
+            "text": "Báo cáo: schema, API và cách agent nhận việc chạy được trên Workers + D1; Node chỉ cần cho phần phụ. Goal đã cập nhật thành bản nháp.",
+            "evidence": [
+              540,
+              641
+            ]
+          },
+          "takeaway": {
+            "text": "Activity log nên sinh tự động từ schema; nếu để từng route tự gọi, route mới có thể quên ghi.",
+            "evidence": [
+              641
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-nhan-nham-rang-bridge-la-tuy-c455",
+        "status": "angle",
+        "angle": "fgOPC là bộ dựng công ty một người vận hành bằng AI agent, và người làm muốn agent tự kéo việc từ hàng đợi thay vì có bridge đẩy việc tới. Ban đầu tưởng bridge có thể bỏ, vì agent tự kéo được. Hoá ra trên OpenClaw mỗi lần heartbeat là một lượt gọi model, dù không có việc: 5 agent kiểm tra mỗi 5 phút đã là khoảng 1.440 lượt mỗi ngày. Bridge vẫn cần, nhưng chỉ là một script không dùng LLM. Ai thiết kế agent tự chạy nền nên biết vòng kiểm tra việc có tốn token hay không.",
+        "audience": "dev xây hệ agent tự chạy nền",
+        "evidence": [
+          657,
+          707
+        ],
+        "spine": {
+          "context": {
+            "text": "fgOPC là bộ dựng công ty một người vận hành bằng AI agent. Người làm muốn agent tự kéo việc từ hàng đợi trên Cloudflare D1, không cần server Node chạy thường trực.",
+            "evidence": [
+              "profile",
+              493
+            ]
+          },
+          "want": {
+            "text": "Có một schema chuẩn cho các thực thể để sinh API/MCP, để agent kết nối trực tiếp và bỏ bridge đẩy việc.",
+            "evidence": [
+              493
+            ]
+          },
+          "obstacle": {
+            "text": "Gateway OpenClaw chỉ nghe localhost nên Cloudflare không gọi tới được. Mỗi lần heartbeat là một lượt gọi model, dù không có việc.",
+            "evidence": [
+              707
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bridge chỉ còn là tuỳ chọn vì agent tự kéo việc. Hoá ra mỗi heartbeat tốn một lượt LLM, nên vòng kiểm tra inbox qua LLM là lãng phí.",
+            "evidence": [
+              657,
+              707
+            ]
+          },
+          "action": {
+            "text": "Đọc mã heartbeat của OpenClaw: chỉ bỏ qua lượt khi HEARTBEAT.md rỗng. Sửa lại kết luận: bridge vẫn cần, nhưng là script không dùng LLM.",
+            "evidence": [
+              672,
+              707
+            ]
+          },
+          "outcome": {
+            "text": "Đã sửa câu trả lời. Người dùng hỏi tiếp có dùng Paperclip luôn được không; câu trả lời là gần đúng nhưng phải thử tương thích trước.",
+            "evidence": [
+              712,
+              716
+            ]
+          },
+          "takeaway": {
+            "text": "Vòng kiểm tra việc của agent không nên đi qua LLM. Giữ nó ở một tiến trình rẻ, heartbeat chỉ là lưới an toàn.",
+            "evidence": [
+              707
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-de-xuat-viet-lai-ui-roi-c455",
+        "status": "angle",
+        "angle": "Dự án fgOPC là bộ dựng công ty một người vận hành bằng AI agent, và người làm đang cần một giao diện web mà không muốn tốn công viết lại. Người làm ban đầu đề xuất viết lại giao diện gr8r vì repo đó không có license. Hoá ra đã có Kaneo, MIT, 4.100 commit, đã nối API thật và có sẵn tiếng Việt. Dev nào định viết lại UI nên kiểm tra nền có license trước.",
+        "audience": "dev dùng AI agent, đang cân nhắc viết lại giao diện",
+        "evidence": [
+          413,
+          417,
+          3290,
+          3302
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án fgOPC là bộ dựng công ty một người, vận hành bằng AI agent. Người làm đang cần một giao diện web cho dự án này.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn có giao diện mà không phải viết lại từ đầu, vì viết lại tốn công.",
+            "evidence": [
+              413
+            ]
+          },
+          "obstacle": {
+            "text": "gr8r không có license nên không được dùng code, và nó chỉ là bản demo frontend.",
+            "evidence": [
+              417
+            ]
+          },
+          "turn": {
+            "text": "Tưởng phải tự viết lại giao diện vì gr8r không có license; hoá ra đã có Kaneo (MIT) với API thật và tiếng Việt sẵn.",
+            "evidence": [
+              417,
+              3290
+            ]
+          },
+          "action": {
+            "text": "Tìm các repo có license dùng được, distill Paperclip, rồi so Kaneo web với Circle.",
+            "evidence": [
+              432,
+              478,
+              3290
+            ]
+          },
+          "outcome": {
+            "text": "Đề xuất lấy Kaneo web làm nền và mượn màn hình từ Circle. Kaneo có 4.100 commit và 155 người đóng góp. Chưa triển khai.",
+            "evidence": [
+              3302
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi đề xuất viết lại UI, tìm nền có license dùng được và kiểm tra xem nó đã nối API thật chưa. Số sao chưa đủ để chọn.",
+            "evidence": [
+              3302,
+              3329
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-ngan-sach-0-dong-chan-moi-c455",
+        "status": "angle",
+        "angle": "fgOPC là bộ dựng công ty một người vận hành bằng AI agent, và người làm giao việc cho agent qua issue. Người làm đặt ngân sách tháng để kiểm soát chi phí, rồi tin rằng comment trên issue sẽ đánh thức agent khi cần. Hoá ra model chạy qua gói thuê bao không có bảng giá theo token, nên ngân sách không có giá đáng tin và mọi lần đánh thức bị từ chối 409 mà giao diện không báo gì. Ai đặt ngân sách cho agent trên gói thuê bao nên thử một lần đánh thức trước khi tin rằng agent đã sẵn sàng.",
+        "audience": "dev đặt ngân sách cho AI agent trên gói thuê bao",
+        "evidence": [
+          1138,
+          1160,
+          1170
+        ],
+        "spine": {
+          "context": {
+            "text": "fgOPC là bộ dựng công ty một người vận hành bằng AI agent, người làm giao việc cho các agent qua issue.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Đặt ngân sách tháng để kiểm soát chi phí cho các agent.",
+            "evidence": [
+              1174
+            ]
+          },
+          "obstacle": {
+            "text": "Mọi lần đánh thức bị từ chối 409, giao diện không báo gì, và comment của chủ không tạo run nào.",
+            "evidence": [
+              1160,
+              1170
+            ]
+          },
+          "turn": {
+            "text": "Tưởng comment trên issue sẽ đánh thức agent; hoá ra ngân sách không có giá đáng tin nên mọi lần đánh thức đều bị chặn.",
+            "evidence": [
+              1138,
+              1160,
+              1170
+            ]
+          },
+          "action": {
+            "text": "Đặt ngân sách về 0 cho cả ba agent rồi resume agent đang bị pause.",
+            "evidence": [
+              1174,
+              1184
+            ]
+          },
+          "outcome": {
+            "text": "Run mới bắt đầu chạy (status running) sau khi resume; theo chuyện thì hoàn thành trong khoảng 53 giây.",
+            "evidence": [
+              1185
+            ]
+          },
+          "takeaway": {
+            "text": "Kiểm tra cách ngân sách tính giá trước khi bật; thử một lần đánh thức trước khi tin agent đã sẵn sàng.",
+            "evidence": [
+              1170
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-paperclip-tu-co-runtime-ui-giau-c455",
+        "status": "angle",
+        "angle": "fgOPC là bộ dựng công ty một người chạy bằng AI agent, và người làm đang thử Paperclip để dựng một công ty mẫu trên máy mình. Ban đầu người làm tin Paperclip chỉ là lớp điều phối: nó quyết định việc gì, khi nào, còn agent chạy ở AICoworker/OpenClaw. Khi không thấy OpenClaw trong màn tạo agent, mã nguồn cho thấy Paperclip tự có runtime riêng và ẩn adapter OpenClaw, nên ghép hai hệ thống thực chất là hai runtime. Ai đang chọn nền tảng cho agent nên đọc bảng adapter hiển thị trong UI, đừng chỉ đọc mô tả.",
+        "audience": "dev đang chọn nền tảng để chạy nhiều AI agent",
+        "evidence": [
+          1519,
+          1523,
+          1574
+        ],
+        "spine": {
+          "context": {
+            "text": "fgOPC là bộ dựng công ty một người chạy bằng AI agent; người làm đang thử Paperclip để dựng công ty mẫu trên máy.",
+            "evidence": [
+              "profile",
+              724
+            ]
+          },
+          "want": {
+            "text": "Muốn chọn nền tảng agent và dựng một công ty mẫu để thử.",
+            "evidence": [
+              724
+            ]
+          },
+          "obstacle": {
+            "text": "Màn tạo agent của Paperclip không có lựa chọn OpenClaw, chỉ có các adapter khác.",
+            "evidence": [
+              1523
+            ]
+          },
+          "turn": {
+            "text": "Tưởng Paperclip chỉ điều phối đứng trên runtime; hoá ra nó tự có runtime và adapter OpenClaw bị ẩn.",
+            "evidence": [
+              1519,
+              1574
+            ]
+          },
+          "action": {
+            "text": "Đọc mã UI và bảng adapter, ghi phát hiện vào ghi chú spike.",
+            "evidence": [
+              1533,
+              1551,
+              1562
+            ]
+          },
+          "outcome": {
+            "text": "Người làm chưa chọn; agent đang so sánh hai cách tiếp cận theo ba tiêu chí.",
+            "evidence": [
+              1576,
+              1584
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi chọn nền tảng, kiểm tra bảng hiển thị adapter trong UI, không chỉ đọc mô tả.",
+            "evidence": [
+              1574
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-agent-ket-o-buoc-xac-minh-c455",
+        "status": "angle",
+        "angle": "fgOPC là bộ dựng công ty một người chạy bằng AI agent; người làm đang thử Paperclip trên máy để dựng một công ty mẫu, và ba agent kẹt ở bước 'verifying' vì lệch phiên bản giao thức. Người làm tin adapter phải khớp đúng bản 4 với gateway, nhưng lịch sử commit cho thấy nội dung giao thức không đổi giữa bản 3 và 4. Hạ mức tối thiểu xuống 3 thì cả ba agent sang ready, nên ai nối hai hệ thống lệch phiên bản nên đọc commit trước khi vá.",
+        "audience": "dev nối công cụ điều phối agent với runtime sẵn có",
+        "evidence": [
+          724,
+          960,
+          968,
+          1034
+        ],
+        "spine": {
+          "context": {
+            "text": "fgOPC là bộ dựng công ty một người chạy bằng AI agent; người làm đang thử Paperclip trên máy này để dựng một công ty mẫu.",
+            "evidence": [
+              "profile",
+              724
+            ]
+          },
+          "want": {
+            "text": "Chạy thử Paperclip và setup một công ty mẫu để xem có dùng được không.",
+            "evidence": [
+              724
+            ]
+          },
+          "obstacle": {
+            "text": "Ba agent kẹt ở trạng thái 'verifying' vì adapter đòi giao thức bản 4 còn gateway chỉ nhận bản 3.",
+            "evidence": [
+              948,
+              973
+            ]
+          },
+          "turn": {
+            "text": "Tưởng adapter phải khớp đúng bản giao thức 4 với gateway; hoá ra nội dung giao thức không đổi giữa bản 3 và 4.",
+            "evidence": [
+              960,
+              968
+            ]
+          },
+          "action": {
+            "text": "Hạ minProtocol từ 4 xuống 3 ở ba chỗ, giữ maxProtocol 4, lưu bản gốc .orig rồi khởi động lại Paperclip.",
+            "evidence": [
+              987,
+              988
+            ]
+          },
+          "outcome": {
+            "text": "Probe kết nối pass và cả ba agent chuyển sang ready.",
+            "evidence": [
+              1016,
+              1034
+            ]
+          },
+          "takeaway": {
+            "text": "Khi nối hai hệ thống lệch phiên bản giao thức, đọc lịch sử commit bên kia xem thay đổi có chạm đến giao thức không trước khi vá, và giữ bản gốc để hoàn tác.",
+            "evidence": [
+              968,
+              988
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-chuan-dong-goi-cong-ty-mo-c455",
+        "status": "angle",
+        "angle": "fgOPC là bộ dựng công ty một người chạy bằng agent AI trên Multica, và nhóm đang tìm cách đóng gói cả một công ty OPC để deploy lại trên nhiều nền tảng. Lúc đầu có nhận định Multica dựng được workflow theo cột, nhưng đọc mã thì cột chỉ là danh sách trạng thái, không gắn người xử lý hay chỉ dẫn, và Multica chỉ đóng gói được skill. Ai chọn nền tảng cho quy trình nhiều bước nên kiểm tra điều này trước, đừng tin tên cột trên bảng.",
+        "audience": "dev dựng quy trình cho agent AI trên nền tảng có sẵn",
+        "evidence": [
+          3889,
+          3956
+        ],
+        "spine": {
+          "context": {
+            "text": "fgOPC là bộ dựng công ty một người chạy bằng agent AI trên Multica; đang nghiên cứu cách đóng gói một công ty OPC để triển khai lại trên nhiều nền tảng.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn đóng gói cả công ty OPC và deploy lại mà không tạo trùng.",
+            "evidence": [
+              3927
+            ]
+          },
+          "obstacle": {
+            "text": "Chưa có hệ thống nào đóng gói được cả công ty OPC; Multica chỉ đóng gói được skill.",
+            "evidence": [
+              3927
+            ]
+          },
+          "turn": {
+            "text": "Tưởng cột trên bảng Multica là workflow chạy được; hoá ra template chỉ là danh sách cột, không có người xử lý hay chỉ dẫn.",
+            "evidence": [
+              3889,
+              3956
+            ]
+          },
+          "action": {
+            "text": "Đọc scripts/workflow.py và mã template, mô hình bước của Multica để trả lời câu hỏi cột có dựng được workflow không.",
+            "evidence": [
+              3889,
+              3976
+            ]
+          },
+          "outcome": {
+            "text": "Workflow, agent và squad của Multica không export được; CLI không có lệnh workflow.",
+            "evidence": [
+              3889
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi chọn nền tảng cho quy trình nhiều bước, kiểm tra cột có người xử lý và chỉ dẫn, đừng tin tên cột.",
+            "evidence": [
+              3889
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-kho-bai-hoc-tang-tu-12-c455",
+        "status": "angle",
+        "angle": "fgOPC là bộ dựng công ty một người chạy bằng AI agent trên Multica; người làm dùng một skill để rút bài học từ các repo khác rồi ghi vào kho YAML của dự án. Người làm tưởng sửa một lỗi YAML bằng sed là gọn, chỉ đụng đúng dòng đó. Hoá ra có lần sed vừa sửa xong thì một file khác báo lỗi cấu trúc, và việc ghi lại bằng script có bước kiểm tra mới giữ kho ổn định khi lên 52 bài học. Ai nhờ AI sửa dữ liệu có cấu trúc sẽ gặp đúng chuyện này.",
+        "audience": "dev dùng AI agent để sửa file cấu hình hoặc dữ liệu có cấu trúc",
+        "evidence": [
+          5,
+          204,
+          228,
+          361,
+          3134
+        ],
+        "spine": {
+          "context": {
+            "text": "fgOPC là bộ dựng công ty một người chạy bằng AI agent trên Multica; người làm dùng skill để rút bài học từ repo rồi ghi vào kho YAML của dự án.",
+            "evidence": [
+              "profile",
+              5
+            ]
+          },
+          "want": {
+            "text": "Muốn học từ repo gr8r và ghi bài học vào kho dùng được.",
+            "evidence": [
+              5
+            ]
+          },
+          "obstacle": {
+            "text": "Mỗi lần sửa lỗi YAML có thể đẩy lỗi sang dòng hoặc file khác.",
+            "evidence": [
+              228,
+              349
+            ]
+          },
+          "turn": {
+            "text": "Tưởng sed sửa đúng một dòng là đủ; hoá ra sed sửa xong thì file khác báo lỗi cấu trúc.",
+            "evidence": [
+              204,
+              228
+            ]
+          },
+          "action": {
+            "text": "Chuyển sang ghi lại bằng script có kiểm tra trước khi ghi.",
+            "evidence": [
+              360,
+              361
+            ]
+          },
+          "outcome": {
+            "text": "Kho ghi thành công, lên 52 bài học trong 8 file domain.",
+            "evidence": [
+              361,
+              3134
+            ]
+          },
+          "takeaway": {
+            "text": "Sửa dữ liệu có cấu trúc bằng sed dễ đẩy lỗi sang chỗ khác; sinh lại từ nguồn có validator an toàn hơn.",
+            "evidence": [
+              228,
+              361
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:0faf0bb2 L1-L4000: done; 17 chuyện thô, 21 cụm; ghi 21 mới, gộp 0\nđiểm nóng 30 (thiếu 0); 4 commit git; lần chạy 1/1; 0.39 USD\ngóc kể: 9 có, 1 không ra chuyện\nhồ sơ dự án: fgOPC tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-29-chi-nguoi-duyet-khong-chan-duoc-c455",
+      "code": "M-RRPN",
+      "title": "'Chỉ người duyệt' không chặn được agent tự đóng việc; cổng thật là executionPolicy",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một bộ dựng công ty bằng AI agent đang thử Paperclip để giao việc cho agent qua issue, thay vì tự xây. Người làm đặt reviewPolicy 'human_only' và tin cờ này sẽ chặn agent tự chuyển việc sang done, nhưng agent vẫn đóng việc mà không ai duyệt. Hoá ra cờ đó chỉ áp khi trả lời xác nhận, còn cổng review thật nằm ở executionPolicy. Ai dựa vào tên trường để giữ bước duyệt của người cần biết điều này.",
+      "audience": "dev dùng AI agent và muốn giữ bước duyệt của người",
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người vận hành bằng AI agent, đang thử Paperclip như nền tảng giao việc cho agent qua issue.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn dùng Paperclip luôn, chỉ cần setup, không phải tự xây.",
+          "lines": [
+            "claude:0faf0bb2#L712"
+          ]
+        },
+        "obstacle": {
+          "text": "Issue đặt 'human_only' nhưng agent vẫn tự chuyển sang done.",
+          "lines": [
+            "claude:0faf0bb2#L1326"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng reviewPolicy 'human_only' chặn được agent tự đóng việc; hoá ra cờ này chỉ áp khi trả lời xác nhận, còn cổng review thật là executionPolicy.",
+          "lines": [
+            "claude:0faf0bb2#L1326",
+            "claude:0faf0bb2#L2310"
+          ]
+        },
+        "action": {
+          "text": "Đọc mã nguồn và tài liệu, rồi sửa lại kết luận và tài liệu so sánh.",
+          "lines": [
+            "claude:0faf0bb2#L2313",
+            "claude:0faf0bb2#L2328"
+          ]
+        },
+        "outcome": {
+          "text": "Tài liệu đã sửa; executionPolicy chưa được chạy thử trên server đang chạy.",
+          "lines": [
+            "claude:0faf0bb2#L2328"
+          ]
+        },
+        "takeaway": {
+          "text": "Đừng tin tên trường: đọc luật ở server và chạy thử đúng trường đó trước khi kết luận.",
+          "lines": [
+            "claude:0faf0bb2#L2310"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-multica-claude-code-dat-5-5-c455",
+      "code": "M-5C6Q",
+      "title": "Multica + Claude Code đạt 5/5: issue đi qua cột, agent hỏi chủ thay vì bịa số",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "fgOPC là bộ dựng công ty một người vận hành bằng AI agent, chạy trên Multica tự host, đang thử nghiệm với runtime Claude Code.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Spike Multica với Claude Code để kiểm năm tiêu chí: đúng vai, ghi ngược, tiếp nối session, workflow theo cột, chat nhiều phiên.",
+          "lines": [
+            "claude:0faf0bb2#L3398"
+          ]
+        },
+        "action": {
+          "text": "Tạo agent Mai (Marketing), giao SEN-1 cho Mai kèm yêu cầu viết nội dung và chuyển sang in_review.",
+          "lines": [
+            "claude:0faf0bb2#L3492",
+            "claude:0faf0bb2#L3493"
+          ]
+        },
+        "outcome": {
+          "text": "Đạt 5/5 tiêu chí; từ lúc chạy tới in_review mất 16 giây; không agent nào tự chuyển done.",
+          "lines": [
+            "claude:0faf0bb2#L3747"
+          ]
+        },
+        "takeaway": {
+          "text": "Ràng buộc 'không tự done' hiện chỉ nằm trong chỉ dẫn, server chưa ép.",
+          "lines": [
+            "claude:0faf0bb2#L3747"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-29-chu-doi-huong-bo-server-node-c455",
+      "code": "M-WTG9",
+      "title": "Chủ đổi hướng: bỏ server Node, chuyển sang schema sinh API và MCP trên D1",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người đang dựng phần mềm quản lý công ty một người (OPC) để giao việc cho các team agent AI, và muốn hạ tầng gần 0 đồng trên Cloudflare. Họ tưởng phải viết lại cả giao diện vì mẫu gr8r không có license; hoá ra Paperclip (MIT, khoảng 108k sao) đã khớp khoảng 90% tầm nhìn, nhưng nó là server Node chạy liên tục nên người làm bỏ hướng đó. Phần lõi gồm schema, API và cách agent nhận việc lại chạy được trên D1, phần cần server chỉ là phụ. Ai đang tự host công cụ cho agent nên xem kỹ phần nào thật sự cần server.",
+      "audience": "dev dựng công cụ cho agent AI, muốn host gần 0 đồng",
+      "spine": {
+        "context": {
+          "text": "Một người đang dựng phần mềm quản lý công ty một người (OPC), giao việc cho các team agent AI qua issue, và muốn hạ tầng gần 0 đồng trên Cloudflare.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L257"
+          ]
+        },
+        "want": {
+          "text": "Muốn một schema chuẩn sinh ra bảng D1, REST API và MCP cho agent, không cần server Node chạy liên tục.",
+          "lines": [
+            "claude:0faf0bb2#L257",
+            "claude:0faf0bb2#L536"
+          ]
+        },
+        "obstacle": {
+          "text": "Paperclip gần đủ tính năng nhưng là server Node chạy liên tục, dùng Postgres.",
+          "lines": [
+            "claude:0faf0bb2#L483"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng phải viết lại giao diện vì mẫu gr8r không có license; hoá ra Paperclip (MIT, khoảng 108k sao) đã khớp khoảng 90% tầm nhìn, chỉ vướng ở server Node.",
+          "lines": [
+            "claude:0faf0bb2#L483"
+          ]
+        },
+        "action": {
+          "text": "Bỏ hướng chạy Node, distill Paperclip để tìm phần lõi chạy được trên Workers + D1.",
+          "lines": [
+            "claude:0faf0bb2#L493",
+            "claude:0faf0bb2#L496",
+            "claude:0faf0bb2#L535"
+          ]
+        },
+        "outcome": {
+          "text": "Báo cáo: schema, API và cách agent nhận việc chạy được trên Workers + D1; Node chỉ cần cho phần phụ. Goal đã cập nhật thành bản nháp.",
+          "lines": [
+            "claude:0faf0bb2#L540",
+            "claude:0faf0bb2#L641"
+          ]
+        },
+        "takeaway": {
+          "text": "Activity log nên sinh tự động từ schema; nếu để từng route tự gọi, route mới có thể quên ghi.",
+          "lines": [
+            "claude:0faf0bb2#L641"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-nhan-nham-rang-bridge-la-tuy-c455",
+      "code": "M-GZA4",
+      "title": "Nhận nhầm rằng bridge là tuỳ chọn: mỗi heartbeat của agent tốn một lượt LLM",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "fgOPC là bộ dựng công ty một người vận hành bằng AI agent, và người làm muốn agent tự kéo việc từ hàng đợi thay vì có bridge đẩy việc tới. Ban đầu tưởng bridge có thể bỏ, vì agent tự kéo được. Hoá ra trên OpenClaw mỗi lần heartbeat là một lượt gọi model, dù không có việc: 5 agent kiểm tra mỗi 5 phút đã là khoảng 1.440 lượt mỗi ngày. Bridge vẫn cần, nhưng chỉ là một script không dùng LLM. Ai thiết kế agent tự chạy nền nên biết vòng kiểm tra việc có tốn token hay không.",
+      "audience": "dev xây hệ agent tự chạy nền",
+      "spine": {
+        "context": {
+          "text": "fgOPC là bộ dựng công ty một người vận hành bằng AI agent. Người làm muốn agent tự kéo việc từ hàng đợi trên Cloudflare D1, không cần server Node chạy thường trực.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L493"
+          ]
+        },
+        "want": {
+          "text": "Có một schema chuẩn cho các thực thể để sinh API/MCP, để agent kết nối trực tiếp và bỏ bridge đẩy việc.",
+          "lines": [
+            "claude:0faf0bb2#L493"
+          ]
+        },
+        "obstacle": {
+          "text": "Gateway OpenClaw chỉ nghe localhost nên Cloudflare không gọi tới được. Mỗi lần heartbeat là một lượt gọi model, dù không có việc.",
+          "lines": [
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bridge chỉ còn là tuỳ chọn vì agent tự kéo việc. Hoá ra mỗi heartbeat tốn một lượt LLM, nên vòng kiểm tra inbox qua LLM là lãng phí.",
+          "lines": [
+            "claude:0faf0bb2#L657",
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "action": {
+          "text": "Đọc mã heartbeat của OpenClaw: chỉ bỏ qua lượt khi HEARTBEAT.md rỗng. Sửa lại kết luận: bridge vẫn cần, nhưng là script không dùng LLM.",
+          "lines": [
+            "claude:0faf0bb2#L672",
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "outcome": {
+          "text": "Đã sửa câu trả lời. Người dùng hỏi tiếp có dùng Paperclip luôn được không; câu trả lời là gần đúng nhưng phải thử tương thích trước.",
+          "lines": [
+            "claude:0faf0bb2#L712",
+            "claude:0faf0bb2#L716"
+          ]
+        },
+        "takeaway": {
+          "text": "Vòng kiểm tra việc của agent không nên đi qua LLM. Giữ nó ở một tiến trình rẻ, heartbeat chỉ là lưới an toàn.",
+          "lines": [
+            "claude:0faf0bb2#L707"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-de-xuat-viet-lai-ui-roi-c455",
+      "code": "M-VJRT",
+      "title": "Đề xuất viết lại UI rồi tìm được nền có license: gr8r chỉ đáng học thiết kế",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án fgOPC là bộ dựng công ty một người vận hành bằng AI agent, và người làm đang cần một giao diện web mà không muốn tốn công viết lại. Người làm ban đầu đề xuất viết lại giao diện gr8r vì repo đó không có license. Hoá ra đã có Kaneo, MIT, 4.100 commit, đã nối API thật và có sẵn tiếng Việt. Dev nào định viết lại UI nên kiểm tra nền có license trước.",
+      "audience": "dev dùng AI agent, đang cân nhắc viết lại giao diện",
+      "spine": {
+        "context": {
+          "text": "Dự án fgOPC là bộ dựng công ty một người, vận hành bằng AI agent. Người làm đang cần một giao diện web cho dự án này.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn có giao diện mà không phải viết lại từ đầu, vì viết lại tốn công.",
+          "lines": [
+            "claude:0faf0bb2#L413"
+          ]
+        },
+        "obstacle": {
+          "text": "gr8r không có license nên không được dùng code, và nó chỉ là bản demo frontend.",
+          "lines": [
+            "claude:0faf0bb2#L417"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng phải tự viết lại giao diện vì gr8r không có license; hoá ra đã có Kaneo (MIT) với API thật và tiếng Việt sẵn.",
+          "lines": [
+            "claude:0faf0bb2#L417",
+            "claude:0faf0bb2#L3290"
+          ]
+        },
+        "action": {
+          "text": "Tìm các repo có license dùng được, distill Paperclip, rồi so Kaneo web với Circle.",
+          "lines": [
+            "claude:0faf0bb2#L432",
+            "claude:0faf0bb2#L478",
+            "claude:0faf0bb2#L3290"
+          ]
+        },
+        "outcome": {
+          "text": "Đề xuất lấy Kaneo web làm nền và mượn màn hình từ Circle. Kaneo có 4.100 commit và 155 người đóng góp. Chưa triển khai.",
+          "lines": [
+            "claude:0faf0bb2#L3302"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi đề xuất viết lại UI, tìm nền có license dùng được và kiểm tra xem nó đã nối API thật chưa. Số sao chưa đủ để chọn.",
+          "lines": [
+            "claude:0faf0bb2#L3302",
+            "claude:0faf0bb2#L3329"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-ngan-sach-0-dong-chan-moi-c455",
+      "code": "M-S2TB",
+      "title": "Ngân sách 0 đồng chặn mọi lần đánh thức agent, comment của chủ không đánh thức được",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "fgOPC là bộ dựng công ty một người vận hành bằng AI agent, và người làm giao việc cho agent qua issue. Người làm đặt ngân sách tháng để kiểm soát chi phí, rồi tin rằng comment trên issue sẽ đánh thức agent khi cần. Hoá ra model chạy qua gói thuê bao không có bảng giá theo token, nên ngân sách không có giá đáng tin và mọi lần đánh thức bị từ chối 409 mà giao diện không báo gì. Ai đặt ngân sách cho agent trên gói thuê bao nên thử một lần đánh thức trước khi tin rằng agent đã sẵn sàng.",
+      "audience": "dev đặt ngân sách cho AI agent trên gói thuê bao",
+      "spine": {
+        "context": {
+          "text": "fgOPC là bộ dựng công ty một người vận hành bằng AI agent, người làm giao việc cho các agent qua issue.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Đặt ngân sách tháng để kiểm soát chi phí cho các agent.",
+          "lines": [
+            "claude:0faf0bb2#L1174"
+          ]
+        },
+        "obstacle": {
+          "text": "Mọi lần đánh thức bị từ chối 409, giao diện không báo gì, và comment của chủ không tạo run nào.",
+          "lines": [
+            "claude:0faf0bb2#L1160",
+            "claude:0faf0bb2#L1170"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng comment trên issue sẽ đánh thức agent; hoá ra ngân sách không có giá đáng tin nên mọi lần đánh thức đều bị chặn.",
+          "lines": [
+            "claude:0faf0bb2#L1138",
+            "claude:0faf0bb2#L1160",
+            "claude:0faf0bb2#L1170"
+          ]
+        },
+        "action": {
+          "text": "Đặt ngân sách về 0 cho cả ba agent rồi resume agent đang bị pause.",
+          "lines": [
+            "claude:0faf0bb2#L1174",
+            "claude:0faf0bb2#L1184"
+          ]
+        },
+        "outcome": {
+          "text": "Run mới bắt đầu chạy (status running) sau khi resume; theo chuyện thì hoàn thành trong khoảng 53 giây.",
+          "lines": [
+            "claude:0faf0bb2#L1185"
+          ]
+        },
+        "takeaway": {
+          "text": "Kiểm tra cách ngân sách tính giá trước khi bật; thử một lần đánh thức trước khi tin agent đã sẵn sàng.",
+          "lines": [
+            "claude:0faf0bb2#L1170"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-paperclip-tu-co-runtime-ui-giau-c455",
+      "code": "M-1NDF",
+      "title": "Paperclip tự có runtime, UI giấu adapter OpenClaw",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "fgOPC là bộ dựng công ty một người chạy bằng AI agent, và người làm đang thử Paperclip để dựng một công ty mẫu trên máy mình. Ban đầu người làm tin Paperclip chỉ là lớp điều phối: nó quyết định việc gì, khi nào, còn agent chạy ở AICoworker/OpenClaw. Khi không thấy OpenClaw trong màn tạo agent, mã nguồn cho thấy Paperclip tự có runtime riêng và ẩn adapter OpenClaw, nên ghép hai hệ thống thực chất là hai runtime. Ai đang chọn nền tảng cho agent nên đọc bảng adapter hiển thị trong UI, đừng chỉ đọc mô tả.",
+      "audience": "dev đang chọn nền tảng để chạy nhiều AI agent",
+      "spine": {
+        "context": {
+          "text": "fgOPC là bộ dựng công ty một người chạy bằng AI agent; người làm đang thử Paperclip để dựng công ty mẫu trên máy.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "want": {
+          "text": "Muốn chọn nền tảng agent và dựng một công ty mẫu để thử.",
+          "lines": [
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "obstacle": {
+          "text": "Màn tạo agent của Paperclip không có lựa chọn OpenClaw, chỉ có các adapter khác.",
+          "lines": [
+            "claude:0faf0bb2#L1523"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng Paperclip chỉ điều phối đứng trên runtime; hoá ra nó tự có runtime và adapter OpenClaw bị ẩn.",
+          "lines": [
+            "claude:0faf0bb2#L1519",
+            "claude:0faf0bb2#L1574"
+          ]
+        },
+        "action": {
+          "text": "Đọc mã UI và bảng adapter, ghi phát hiện vào ghi chú spike.",
+          "lines": [
+            "claude:0faf0bb2#L1533",
+            "claude:0faf0bb2#L1551",
+            "claude:0faf0bb2#L1562"
+          ]
+        },
+        "outcome": {
+          "text": "Người làm chưa chọn; agent đang so sánh hai cách tiếp cận theo ba tiêu chí.",
+          "lines": [
+            "claude:0faf0bb2#L1576",
+            "claude:0faf0bb2#L1584"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi chọn nền tảng, kiểm tra bảng hiển thị adapter trong UI, không chỉ đọc mô tả.",
+          "lines": [
+            "claude:0faf0bb2#L1574"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-agent-ket-o-buoc-xac-minh-c455",
+      "code": "M-7FWS",
+      "title": "Agent kẹt ở bước xác minh vì lệch phiên bản giao thức 3 và 4",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "fgOPC là bộ dựng công ty một người chạy bằng AI agent; người làm đang thử Paperclip trên máy để dựng một công ty mẫu, và ba agent kẹt ở bước 'verifying' vì lệch phiên bản giao thức. Người làm tin adapter phải khớp đúng bản 4 với gateway, nhưng lịch sử commit cho thấy nội dung giao thức không đổi giữa bản 3 và 4. Hạ mức tối thiểu xuống 3 thì cả ba agent sang ready, nên ai nối hai hệ thống lệch phiên bản nên đọc commit trước khi vá.",
+      "audience": "dev nối công cụ điều phối agent với runtime sẵn có",
+      "spine": {
+        "context": {
+          "text": "fgOPC là bộ dựng công ty một người chạy bằng AI agent; người làm đang thử Paperclip trên máy này để dựng một công ty mẫu.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "want": {
+          "text": "Chạy thử Paperclip và setup một công ty mẫu để xem có dùng được không.",
+          "lines": [
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "obstacle": {
+          "text": "Ba agent kẹt ở trạng thái 'verifying' vì adapter đòi giao thức bản 4 còn gateway chỉ nhận bản 3.",
+          "lines": [
+            "claude:0faf0bb2#L948",
+            "claude:0faf0bb2#L973"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng adapter phải khớp đúng bản giao thức 4 với gateway; hoá ra nội dung giao thức không đổi giữa bản 3 và 4.",
+          "lines": [
+            "claude:0faf0bb2#L960",
+            "claude:0faf0bb2#L968"
+          ]
+        },
+        "action": {
+          "text": "Hạ minProtocol từ 4 xuống 3 ở ba chỗ, giữ maxProtocol 4, lưu bản gốc .orig rồi khởi động lại Paperclip.",
+          "lines": [
+            "claude:0faf0bb2#L987",
+            "claude:0faf0bb2#L988"
+          ]
+        },
+        "outcome": {
+          "text": "Probe kết nối pass và cả ba agent chuyển sang ready.",
+          "lines": [
+            "claude:0faf0bb2#L1016",
+            "claude:0faf0bb2#L1034"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi nối hai hệ thống lệch phiên bản giao thức, đọc lịch sử commit bên kia xem thay đổi có chạm đến giao thức không trước khi vá, và giữ bản gốc để hoàn tác.",
+          "lines": [
+            "claude:0faf0bb2#L968",
+            "claude:0faf0bb2#L988"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-chuan-dong-goi-cong-ty-mo-c455",
+      "code": "M-GCPW",
+      "title": "Chuẩn đóng gói công ty mở: chỉ Paperclip thực hiện được",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "fgOPC là bộ dựng công ty một người chạy bằng agent AI trên Multica, và nhóm đang tìm cách đóng gói cả một công ty OPC để deploy lại trên nhiều nền tảng. Lúc đầu có nhận định Multica dựng được workflow theo cột, nhưng đọc mã thì cột chỉ là danh sách trạng thái, không gắn người xử lý hay chỉ dẫn, và Multica chỉ đóng gói được skill. Ai chọn nền tảng cho quy trình nhiều bước nên kiểm tra điều này trước, đừng tin tên cột trên bảng.",
+      "audience": "dev dựng quy trình cho agent AI trên nền tảng có sẵn",
+      "spine": {
+        "context": {
+          "text": "fgOPC là bộ dựng công ty một người chạy bằng agent AI trên Multica; đang nghiên cứu cách đóng gói một công ty OPC để triển khai lại trên nhiều nền tảng.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn đóng gói cả công ty OPC và deploy lại mà không tạo trùng.",
+          "lines": [
+            "claude:0faf0bb2#L3927"
+          ]
+        },
+        "obstacle": {
+          "text": "Chưa có hệ thống nào đóng gói được cả công ty OPC; Multica chỉ đóng gói được skill.",
+          "lines": [
+            "claude:0faf0bb2#L3927"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng cột trên bảng Multica là workflow chạy được; hoá ra template chỉ là danh sách cột, không có người xử lý hay chỉ dẫn.",
+          "lines": [
+            "claude:0faf0bb2#L3889",
+            "claude:0faf0bb2#L3956"
+          ]
+        },
+        "action": {
+          "text": "Đọc scripts/workflow.py và mã template, mô hình bước của Multica để trả lời câu hỏi cột có dựng được workflow không.",
+          "lines": [
+            "claude:0faf0bb2#L3889",
+            "claude:0faf0bb2#L3976"
+          ]
+        },
+        "outcome": {
+          "text": "Workflow, agent và squad của Multica không export được; CLI không có lệnh workflow.",
+          "lines": [
+            "claude:0faf0bb2#L3889"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi chọn nền tảng cho quy trình nhiều bước, kiểm tra cột có người xử lý và chỉ dẫn, đừng tin tên cột.",
+          "lines": [
+            "claude:0faf0bb2#L3889"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-kho-bai-hoc-tang-tu-12-c455",
+      "code": "M-2DWC",
+      "title": "Kho bài học tăng từ 12 lên 52 qua nhiều lần ghi, lỗi YAML đến từ sed",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "fgOPC là bộ dựng công ty một người chạy bằng AI agent trên Multica; người làm dùng một skill để rút bài học từ các repo khác rồi ghi vào kho YAML của dự án. Người làm tưởng sửa một lỗi YAML bằng sed là gọn, chỉ đụng đúng dòng đó. Hoá ra có lần sed vừa sửa xong thì một file khác báo lỗi cấu trúc, và việc ghi lại bằng script có bước kiểm tra mới giữ kho ổn định khi lên 52 bài học. Ai nhờ AI sửa dữ liệu có cấu trúc sẽ gặp đúng chuyện này.",
+      "audience": "dev dùng AI agent để sửa file cấu hình hoặc dữ liệu có cấu trúc",
+      "spine": {
+        "context": {
+          "text": "fgOPC là bộ dựng công ty một người chạy bằng AI agent trên Multica; người làm dùng skill để rút bài học từ repo rồi ghi vào kho YAML của dự án.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L5"
+          ]
+        },
+        "want": {
+          "text": "Muốn học từ repo gr8r và ghi bài học vào kho dùng được.",
+          "lines": [
+            "claude:0faf0bb2#L5"
+          ]
+        },
+        "obstacle": {
+          "text": "Mỗi lần sửa lỗi YAML có thể đẩy lỗi sang dòng hoặc file khác.",
+          "lines": [
+            "claude:0faf0bb2#L228",
+            "claude:0faf0bb2#L349"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng sed sửa đúng một dòng là đủ; hoá ra sed sửa xong thì file khác báo lỗi cấu trúc.",
+          "lines": [
+            "claude:0faf0bb2#L204",
+            "claude:0faf0bb2#L228"
+          ]
+        },
+        "action": {
+          "text": "Chuyển sang ghi lại bằng script có kiểm tra trước khi ghi.",
+          "lines": [
+            "claude:0faf0bb2#L360",
+            "claude:0faf0bb2#L361"
+          ]
+        },
+        "outcome": {
+          "text": "Kho ghi thành công, lên 52 bài học trong 8 file domain.",
+          "lines": [
+            "claude:0faf0bb2#L361",
+            "claude:0faf0bb2#L3134"
+          ]
+        },
+        "takeaway": {
+          "text": "Sửa dữ liệu có cấu trúc bằng sed dễ đẩy lỗi sang chỗ khác; sinh lại từ nguồn có validator an toàn hơn.",
+          "lines": [
+            "claude:0faf0bb2#L228",
+            "claude:0faf0bb2#L361"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-mo-cong-cu-dieu-phoi-ra-c455",
+      "code": "M-3TA0",
+      "title": "Mở công cụ điều phối ra mạng riêng: đổi sang chế độ có đăng nhập",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-multica-khong-chay-duoc-voi-openclaw-c455",
+      "code": "M-MEZ1",
+      "title": "Multica không chạy được với OpenClaw đóng gói: trượt vì phiên bản tối thiểu",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-dang-nhap-khong-mat-khau-ma-c455",
+      "code": "M-JB40",
+      "title": "Đăng nhập không mật khẩu: mã xác nhận và mã cố định cho bản thử",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-go-cong-cu-xong-van-con-c455",
+      "code": "M-485J",
+      "title": "Gỡ công cụ xong vẫn còn dấu vết trong runtime",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-model-mac-dinh-cua-runtime-da-c455",
+      "code": "M-2XD4",
+      "title": "Model mặc định của runtime đã ngừng, làm hỏng agent chính",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-stop-hook-giu-phien-lai-gan-c455",
+      "code": "M-0N4G",
+      "title": "Stop hook giữ phiên lại gần 20 lần vì điều kiện là trạng thái",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-commit-dung-phan-cua-minh-giu-c455",
+      "code": "M-32SS",
+      "title": "Commit đúng phần của mình, giữ nguyên thay đổi dở của người khác",
+      "tension": "it_ma_nhieu",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-doi-chieu-moi-nhan-dinh-ve-c455",
+      "code": "M-VGTN",
+      "title": "Đối chiếu mọi nhận định về repo khác với mã nguồn, và đính chính công khai khi phát hiện sai",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-dung-han-mot-tien-trinh-nen-c455",
+      "code": "M-D849",
+      "title": "Dừng hẳn một tiến trình nền và tự kiểm tra cổng đã trống trước khi khởi động lại với cấu hình mới",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-tao-va-thu-cac-kich-ban-c455",
+      "code": "M-KH05",
+      "title": "Tạo và thử các kịch bản bằng script nhỏ có sẵn, chép vào repo để người khác chạy lại, và giữ token không lộ qua dòng lệnh",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-theo-doi-tien-trinh-dai-bang-c455",
+      "code": "M-11G2",
+      "title": "Theo dõi tiến trình dài bằng Monitor thay vì để agent ngồi chờ hoặc poll liên tục",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

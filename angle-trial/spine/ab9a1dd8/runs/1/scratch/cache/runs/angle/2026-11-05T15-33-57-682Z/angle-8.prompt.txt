@@ -1,0 +1,83 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent (Claude Code, Codex và một số agent khác). Sau mỗi phiên, công cụ đọc transcript, tìm các khoảnh khắc đáng kể như con số đổi, lỗi có gốc bất ngờ, quyết định bị đảo, rồi ghi mỗi chuyện thành một file markdown trong repo và xếp hạng theo độ hấp dẫn. Làm cho người làm một mình, build in public, viết blog kỹ thuật hoặc báo cáo tuần, không muốn để mất chất liệu. Ràng buộc chính: chạy trên máy của người dùng, không để lọt tên riêng tư vào repo, và giao diện CLI cùng tài liệu hiện viết bằng tiếng Việt. Mục tiêu hiện tại: chưa có trong phần tài liệu đã đọc, nên bỏ qua.
+</project>
+
+<asks>
+[L9] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-research # Research ## Research Methodology Always honoring **KISS** and **DRY** principles. Deliver the full requested scope — never trim or defer what the user explicitly asked for. Add nothing unrequested. With `--yagni`, additionally challenge and cut any scope not needed for the stated outcome. **Be honest, be brutal, straight to the point, and be concise.** ### Phase 1: Scope Definition First, you will clearly define the research scope by: - Identifying key terms and concepts to investigate - Determining the r …[+5899]
+[L664] USER: A session-scoped Stop hook is now active with condition: "dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that's only for clearing a goal early.
+[L681] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-cook # Cook Invoke `/ak-cook <task|plan-path> [flags]` in Claude Code; use the runtime's installed invocation form elsewhere. Implement the full authorized outcome through verification and review. Capture or reuse outcome, constraints, non-goals and acceptance criteria; inspect nearby code and tests. Ask only for a material missing decision or an action outside that authorization. Repair regressions caused by the change and rerun affected checks before finishing. ## Select a mode | Input | Route | |---|---| | No fla …[+2997]
+[L2233] USER: Stop hook feedback: [dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: Plan có 45 việc, mới xong 43/45. Hai việc còn lại là push lên GitHub để CI chạy lần đầu và kiểm nhánh Windows trên máy thật; cả hai chưa thực hiện, và assistant đã hỏi user có cho phép push không mà chưa có phản hồi.
+</asks>
+
+<story>
+hook: Một commit làm main mất README và CI đỏ toàn bộ
+tension: nho_ma_to (Rebase rồi push, một commit bình thường / Kéo theo việc đổi tên của phiên khác, main mất README)
+stakes: 1/3
+# Push bị từ chối, và commit kéo theo việc đổi tên README của phiên khác
+
+**Bối cảnh:** Agent commit nhiều file rồi push lên main. Một phiên làm việc khác dùng chung index và đã stage sẵn việc đổi tên README.md thành README.vi.md.
+**Chuyện gì xảy ra:** Push bị từ chối vì main trên GitHub có 2 commit mới, agent rebase rồi push. Commit của agent kéo theo việc đổi tên đã stage sẵn, nên main mất README.md và CI đỏ toàn bộ. Người dùng chọn commit README song ngữ, sau đó CI xanh lại.
+**Bài học:** Khi nhiều phiên dùng chung index, hãy `git add <file>` đúng file của mình và kiểm `git diff --cached` trước khi commit.
+**Artefact:** Đồ thị git log quanh sự cố. Không có nội dung riêng tư.
+</story>
+
+<excerpt>
+[L2260] TOOL Bash: cd /home/vantt/projects/momentry; set -e git add lib bin prompts test scripts install.sh install.ps1 .gitattributes .gitignore git commit -q -F - <<'EOF' feat: one-command install, doctor/init, hook auto-install, update and uninstall - install.sh / install.ps1: download, verify sha256 by exact name, …[+1899]
+[L2263] RESULT: 5397395 docs: first-contact README, installation, CLI reference and release runbook | 631a538 ci: test and installer lifecycle on Linux, macOS, Windows; gated releases
+[L2266] TOOL Bash: cd /home/vantt/projects/momentry; git push origin main 2>&1 | tail -3; sleep 0; gh run list --limit 3 2>&1 | head
+[L2269] RESULT: hint: the same ref. If you want to integrate the remote changes, use | hint: 'git pull' before pushing again.
+[L2282] AGENT: Push bị từ chối vì `main` trên GitHub có commit mà máy này chưa có. Tôi xem các commit đó trước, không force.
+[L2283] TOOL Bash: cd /home/vantt/projects/momentry; git fetch origin 2>&1 | tail -2; git log --oneline main..origin/main; git diff --stat main...origin/main | tail -15
+[L2284] RESULT: From https://github.com/vantt/momentry | 9b5ccb6..dca4d1f main -> origin/main
+[L2288] AGENT: Trên GitHub có thêm 2 commit tài liệu đặt tên (`docs/naming.md`, một dòng trong `docs/README.md`). Rebase các commit của tôi lên trên đó.
+[L2289] TOOL Bash: cd /home/vantt/projects/momentry; git rebase origin/main 2>&1 | tail -3; git status --short | grep -v "^??" | head; git diff --name-only --diff-filter=U
+[L2290] RESULT: Rebasing (1/3) Rebasing (2/3) Rebasing (3/3) Successfully rebased and updated refs/heads/main.
+[L2300] TOOL Bash: cd /home/vantt/projects/momentry; grep -n "naming\|installation.md" docs/README.md | head; node --test test/*.test.mjs 2>&1 | grep -E "ℹ (pass|fail)"; git push origin main 2>&1 | tail -2
+…
+[L2719] RESULT: 3Z ##[group]Run node scripts/package-release.mjs --dry-run | ^[[36;1mnode scripts/package-release.mjs --dry-run^[[0m
+[L2724] TOOL Bash: cd /home/vantt/projects/momentry; git log --oneline --stat -6 -- README.md README.vi.md | head -30; git fetch -q origin; git log --oneline main..origin/main; git log --oneline origin/main..main
+[L2733] RESULT: e78f3ab test: use config privacy-add in the Windows installer lifecycle | README.md => README.vi.md | 0
+[L2738] TOOL Bash: cd /home/vantt/projects/momentry; head -5 README.md; echo ---; git diff --stat; git diff test/commands.test.mjs | head -30
+[L2741] RESULT: # momentry | **English** · [Tiếng Việt](README.vi.md)
+[L2749] TOOL AskUserQuestion: {"questions":[{"question":"Commit e78f3ab của tôi đã vô tình đẩy lên main việc đổi tên README.md → README.vi.md (do một phiên khác stage sẵn), nhưng README.md tiếng Anh mới thì chưa commit, nên main thiếu README.md và CI đỏ toàn bộ. Xử lý thế nào?","header":"README","multiSelect":false,"options":[{" …[+614]
+[L2750] RESULT: Your questions have been answered: "Commit e78f3ab của tôi đã vô tình đẩy lên main việc đổi tên README.md → README.vi.md (do một phiên khác stage sẵn), nhưng README.md tiếng Anh mới thì chưa commit, nên main thiếu README.md và CI đỏ toàn bộ. Xử lý th …[+104]
+[L2759] TOOL Bash: cd /home/vantt/projects/momentry; git diff --cached --stat; node --test test/*.test.mjs 2>&1 | grep -E "^✖|ℹ (pass|fail)"; grep -o "momentry [a-z-]*" README.md | sort -u | head -30
+[L2762] RESULT: ℹ pass 232 | ℹ fail 0
+[L2765] AGENT: Index đang trống, toàn bộ test qua (gồm cả test kiểm README song ngữ). Chỉ commit đúng 4 file đó.
+[L2766] TOOL Bash: cd /home/vantt/projects/momentry; git add README.md README.vi.md docs/installation.md test/commands.test.mjs && git diff --cached --stat && git commit -q -m "docs: English README with Vietnamese README.vi.md Restores README.md (now English) after the rename to README.vi.md landed without it; the doc …[+138]
+[L2769] RESULT: README.md | 115 +++++++++++++++++++++++++++++++++++++++++++++++++ | README.vi.md | 2 +
+[L2772] TOOL Bash: cd /home/vantt/projects/momentry; sleep 20; id=$(gh run list --limit 1 --json databaseId --jq '.[0].databaseId'); echo $id; gh run watch $id --interval 30 >/dev/null 2>&1; gh run view $id --json jobs --jq '.jobs[] | "\(.conclusion)\t\(.name)"'
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

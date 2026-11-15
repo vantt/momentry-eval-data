@@ -1,0 +1,32 @@
+---
+id: 2026-11-03-ci-lan-dau-macos-do-2
+date: 2026-11-03
+repo: repo
+status: raw
+signals: [số trước sau, nguyên nhân bất ngờ]
+source: "chat Claude, claude:ab9a1dd8"
+sessions: ["claude:ab9a1dd8"]
+captured_by: harvest
+hit_by: [harvest]
+lines: ["claude:ab9a1dd8#L2322", "claude:ab9a1dd8#L2334", "claude:ab9a1dd8#L2347", "claude:ab9a1dd8#L2359", "claude:ab9a1dd8#L2513", "claude:ab9a1dd8#L2535", "claude:ab9a1dd8#L2548"]
+hook: "CI lần đầu: macOS đỏ 2 test, Windows đỏ 38"
+tension: tuong_ma_hoa_ra
+sides: ["Máy Linux xanh tưởng chạy được mọi nơi", "Windows đỏ 38 test vì giả định kiểu POSIX"]
+strength: 2
+stakes: 2
+hits: 1
+runs: 1
+privacy: unchecked
+links: []
+threads: []
+angle: "Linux xanh cả ba bản Node nên tưởng code chạy được mọi nơi. CI thật trên macOS và Windows cho thấy test viết theo giả định của một hệ điều hành: Windows đỏ 38 test, còn macOS không tìm thấy phiên vì /var là đường dẫn tắt tới /private/var. Ai viết test cho công cụ chạy đa nền tảng đều có thể dính lỗi này."
+audience: dev viết test cho công cụ dòng lệnh chạy đa nền tảng
+---
+
+# CI lần đầu: macOS đỏ 2 test, Windows đỏ 38 test
+
+**Góc kể:** Linux xanh cả ba bản Node nên tưởng code chạy được mọi nơi. CI thật trên macOS và Windows cho thấy test viết theo giả định của một hệ điều hành: Windows đỏ 38 test, còn macOS không tìm thấy phiên vì /var là đường dẫn tắt tới /private/var. Ai viết test cho công cụ chạy đa nền tảng đều có thể dính lỗi này.
+**Bối cảnh:** Linux xanh cả ba bản Node ngay từ lần đầu. Hai hệ điều hành còn lại được chạy qua CI thật.
+**Chuyện gì xảy ra:** macOS lỗi vì /var là symlink tới /private/var, nên không tìm thấy phiên của repo. Windows lỗi 38 test, phần lớn là test viết cho POSIX: chèn đường dẫn thô vào JSON, kiểm quyền 0600, tách bằng dấu hai chấm. Sau các sửa, Windows giảm từ 38 xuống 4 rồi về 0; macOS xanh cả ba bản Node.
+**Bài học:** Test viết trên một OS sẽ mang giả định của OS đó. Chạy CI thật trên cả ba OS mới lộ ra điều này.
+**Artefact:** Bảng 9 job CI (ảnh GitHub Actions). Che tên người dùng trong đường dẫn log.

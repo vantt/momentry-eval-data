@@ -1,0 +1,217 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L2206] USER: đã copy lại session, em thử probe lại dàn account
+[L2299] USER: show lại đầy đủ tài khoản và đường dùng
+[L2371] USER: đưa vào sử dụng luôn đi `3. Tài khoản có trên đĩa nhưng fgOS chưa khai`
+</asks>
+
+<story>
+hook: Doctor báo năm check đều PASS, nhưng workspace chạy release cũ chưa ai kiểm
+tension: cam_ma_van_lot (doctor báo năm check tài khoản PASS / khoá mới có thể làm hỏng máy chạy release cũ chưa kiểm)
+stakes: 1/3
+# Ghi config toàn cục có cảnh báo: khoá mới có thể làm hỏng máy chạy release cũ
+
+**Bối cảnh:** Hướng dẫn của một máy khác cảnh báo rằng thêm khoá mới vào config toàn cục từng làm hỏng workspace chạy release cũ.
+**Chuyện gì xảy ra:** Agent sao lưu config, chỉ ghi khoá runner.llmAccounts và giữ nguyên các khoá khác. Doctor báo năm check về tài khoản đều PASS. Việc kiểm các workspace khác chạy release cũ thì chưa làm, và được để lại như việc còn lại.
+**Bài học:** Đọc cảnh báo tương thích của bản cũ trước khi thêm khoá vào config dùng chung, rồi kiểm các máy còn lại.
+</story>
+
+<excerpt>
+[L2358] AGENT: Em liệt kê dưới đây tài khoản, đường dùng và kết quả probe mới nhất. Em chỉ đọc tên thư mục, tên file và ngày sửa, không mở nội dung file đăng nhập, và email đã che. Ngày sửa `auth.json` chỉ là dấu hiệu đăng nhập gần đây, không chứng minh tài khoản còn hạn.
+
+## 1. Kho tài khoản fgOS quản lý (`llmAccounts`, khai ở config toàn cục)
+
+| Pool | Tài khoản | CLI | Thư mục đăng nhập | `auth.json` sửa lần cuối |
+|---|---|---|---|---|
+| `openrouter` | `openrouter` | pi | `~/.pi/accounts/openrouter` | 2026-09-17 |
+| `thehive` | `thehive` | pi | `~/.pi/accounts/thehive` | 2026-10-20 |
+
+Cả hai không bị cách ly (quarantine). Chỉ hai pool này nằm trong kho. Các family còn lại không có tài khoản khai trong fgOS: chúng dùng **phiên đăng nhập mặc định của CLI**, nên fgOS không theo dõi quota của chúng.
+
+## 2. Đường dùng của từng family (invocation) và tài khoản trên đĩa
+
+| Family | Executor, các invocation (cách mở CLI) | Nơi lấy đăng nhập | Kết quả probe 18:3x |
+|---|---|---|---|
+| **claude** | `claude-cli`, `claude-cli-bwrap`, `claude-herdr-bwrap` | `~/.claude/.credentials.json` (sửa 2026-10-21 15:13) | **Chạy được** (dùng `claude-herdr-bwrap`) |
+| **openai** | `codex-cli-bwrap`, `codex-herdr` (codex); `pi-cli-bwrap` (pi) | codex: `~/.codex/auth.json` (**sửa 2026-10-12**); pi: các tài khoản `openai-*` ở mục 3 | **Hỏng** (dùng `codex-herdr`, hiện URL đăng nhập OAuth) |
+| **gemini** | `omp-herdr`, `omp-cli-bwrap` (omp) | Profile omp `gemini-tetcu72` (`agent.db` sửa 2026-10-21 18:07, tức bản vừa copy) | **Lỗi** (`omp-herdr`, màn hình ghi `no-model`) |
+| **xai** | `omp-herdr`, `omp-cli-bwrap` (omp) | Profile omp `xai-vantt`: **không có `agent.db`**, `config.yml` 2026-10-15 | **Lỗi giao lệnh** (`omp-herdr`, Grok 4.6 đã nạp) |
+| **deepseek** | `pi-cli-bwrap`, `pi-herdr` (pi) | Pool `thehive` rồi `openrouter` (mục 1) | **Chạy được** (`pi-herdr`) |
+| **glm (z-ai)** | `pi-cli-bwrap` (pi) | Cùng hai pool trên | **Chạy được** (`pi-cli-bwrap`) |
+| gitnexus | Công cụ, qua MCP | Không cần tài kh …[+2125]
+[L2371] USER: đưa vào sử dụng luôn đi `3. Tài khoản có trên đĩa nhưng fgOS chưa khai`
+[L2375] AGENT: Đây là thay đổi vào config toàn cục `~/.fgos/config.json` của anh, anh đã duyệt rõ, nên em làm. Trước hết em xem cấu trúc khai tài khoản mà `doctor` yêu cầu và có cửa chuẩn để ghi không, để không sửa tay sai dạng.
+[L2376] TOOL Bash: fgos config --help </dev/null 2>&1 | head -14 | cut -c1-220; echo ----; sed -n 1,60p src/setup/model-pool-checks.mjs | cut -c1-190
+[L2381] RESULT: fgos: unknown verb "config". Usage: fgos <command> [args...] | ----
+…
+[L2422] TOOL Bash: cd ~ && S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; B=$S/fgos-global-config.backup-$(date +%y%m%d-%H%M%S).json; cp -p ~/.fgos/config.json "$B" && echo "backup: $B ($(wc -c < "$B") byte)"; chmod 600 "$B"; python3 - <<'EOF' import json,os p=os.path. …[+855]
+[L2431] RESULT: backup: /tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad/fgos-global-config.backup-261021-183758.json (11685 byte) | định dạng gốc khớp indent= 2
+[L2438] TOOL Bash: python3 - <<'EOF' import json,os p=os.path.expanduser('~/.fgos/config.json') c=json.load(open(p,encoding='utf8')) la=c['runner']['llmAccounts'] assert set(la)=={'openrouter','thehive'}, la.keys() la['openai']={ 'openai-tetcu72':{'label':'openai-tetcu72','credentialStore':{'pi':'${HOME}/.pi/accounts/ …[+1119]
+[L2445] RESULT: đã ghi; pool hiện có: ['openrouter', 'thehive', 'openai', 'xai', 'gemini'] | PASS executor-family-unique -> each of 6 agent families has one executor
+[L2459] TOOL Bash: cd ~ && python3 - <<'EOF' import json,os,re for a in ('tetcu72','fgovn','openai-tetcu72','grok-vantt'): d=os.path.expanduser(f'~/.pi/accounts/{a}') print('##',a,'files:',sorted(os.listdir(d))) for f in ('settings.json','models.json'): fp=os.path.join(d,f) if os.path.isfile(fp): try: j=json.load(open …[+694]
+…
+[L2484] TOOL Bash: /tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad/probe-all.sh
+[L2485] RESULT: Command running in background with ID: bxz6waw4l. Output is being written to: /tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/tasks/bxz6waw4l.output. You will be notified when it completes — do not poll that file or …[+164]
+[L2492] AGENT: Em đã khai tài khoản vào config toàn cục, và bộ probe đang chạy nền để kiểm tra lại. Kết quả sẽ có sau vài phút.
+
+## Đã khai trong `~/.fgos/config.json`
+
+`doctor` cho cả năm check về tài khoản đều PASS: `llm-accounts-shape` báo 8 tài khoản trong 5 pool, `model-policy-pools` hết cảnh báo, `tier-fallback` và `executor-family-unique` vẫn đạt.
+
+| Pool | Thứ tự tài khoản (xoay theo thứ tự khai) | Kho đăng nhập (CLI) |
+|---|---|---|
+| **openai** | 1. `openai-tetcu72` → 2. `openai-tetnu` → 3. `openai-fgovn` → 4. `codex-default` | pi (ba tài khoản đầu); codex `~/.codex` (tài khoản cuối) |
+| **gemini** | 1. `gemini-tetcu72` | omp, profile `gemini-tetcu72` |
+| **xai** | 1. `grok-vantt` | pi và omp (profile `xai-vantt`) |
+| openrouter, thehive | Giữ nguyên | pi |
+
+Theo ý anh, **openai ưu tiên `tetcu72` trước rồi mới tới tài khoản khác**, và `codex-default` đứng cuối để đường codex vẫn dùng được khi anh đăng nhập lại.
+
+**Gemini chỉ có một tài khoản.** Anh dặn "tetcu72 trước rồi tới các account khác", nhưng không còn tài khoản gemini nào khác. Hai tài khoản pi `tetcu72` và `fgovn` có `auth.json` rỗng (không có nhà cung cấp nào đăng nhập), nên em không khai chúng. Anh biết tài khoản gemini nào khác thì nói em, em thêm vào sau `gemini-tetcu72`.
+
+## An toàn và quay lại
+
+- Em đã sao lưu bản gốc: `/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad/fgos-global-config.backup-261021-183758.json`. Muốn hoàn lại chỉ cần chép đè lên `~/.fgos/config.json`.
+- Em chỉ ghi khoá `runner.llmAccounts`; mọi khoá khác giữ nguyên, định dạng file không đổi.
+- Không có secret nào được in hay ghi: em chỉ khai đường dẫn thư mục, và chỉ đọc tên khoá trong các file đăng nhập.
+
+## Có một rủi ro em cần theo dõi
+
+Khi pool `openai` được khai, bộ lease lấy tài khoản từ đó thay vì từ `~/.codex` mặc định. Ba tài khoản đầu chỉ có kho `pi`, nên các invocation `codex-*` chỉ chạy được qua `codex-default`. Em chưa biết bộ gán vai sẽ xử lý thứ tự giữa đường pi và đường codex r …[+199]
+[L2504] USER: <task-notification>
+<task-id>bxz6waw4l</task-id>
+<tool-use-id>toolu_019tv8gY8g48dgN9MFdpHeGZ</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/tasks/bxz6waw4l.output</output-file>
+<status>completed</status>
+<summary>Background command "Re-probe all families after declaring the new accounts" completed (exit code 0)</summary>
+</task-notification>
+[L2512] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; cat $S/probe-summary.txt; for p in openai claude gemini xai deepseek glm; do echo "== $p"; python3 - "$S/probe-$p.json" <<'EOF' import sys,json,re raw=open(sys.argv[1],encoding='utf8',errors='replace').r …[+650]
+…
+[L3600] AGENT: Em đã tạo bốn profile omp còn thiếu, nên giờ chỉ còn `omp-claude-01` trỏ vào chỗ trống (mục 2 trong danh sách em đưa, anh chưa chọn).
+
+## Đã làm
+
+Em tạo `~/.omp/profiles/<tên>/agent/config.yml` cho bốn profile: `openai-fgovn`, `gemini-tetnu`, `gemini-mucdong`, `openrouter`. `config.yml` chép từ `xai-vantt` và chỉ chứa cấu hình giao diện (theme, composer, paste), không có đăng nhập. Em không sửa `~/.zshrc`, không xoá alias nào, và không đụng profile đã có. Em đã kiểm: zsh tương tác liệt kê đủ tám profile, và alias omp trỏ vào chỗ trống chỉ còn `omp-claude-01`.
+
+Em hiểu "3" là bốn alias omp đó. Nếu anh có ý khác (ví dụ muốn xoá bớt alias thay vì tạo profile), anh nói để em đổi.
+
+## Chưa đăng nhập, anh cần làm (em không làm thay được)
+
+Bốn profile mới chỉ là khung: chưa có `agent.db` nên chưa đăng nhập. Muốn dùng, mở alias tương ứng rồi gõ `/login`:
+
+| Alias | Dùng cho |
+|---|---|
+| `omp-openai-fgovn` | openai |
+| `omp-gemini-tetnu` | gemini |
+| `omp-gemini-mucdong` | gemini |
+| `omp-openrouter` | openrouter |
+
+Cùng nhóm "có profile nhưng chưa đăng nhập" là `omp-openai-tetnu` (0 đăng nhập từ trước).
+
+Không cái nào trong số này chặn hội đồng: fgOS chỉ dùng omp cho `gemini-tetcu72` và `xai-vantt`, cả hai đã đăng nhập. Hội đồng vẫn đang chạy nền (`wf-run-1792588557887-a8496d01`), em chưa xem được kết quả nên chưa có gì để báo.
+
+Còn ba mục em chưa làm: thêm alias `pi-thehive`, xử lý `pi-claude-01` và `omp-claude-01` (trỏ vào chỗ trống), và khai kho `codex` cho ba tài khoản openai trong fgOS. Anh muốn làm mục nào tiếp?
+[L3609] USER: cài đặt thehive cho pi và omp theo hướng dẫn: 
+
+<pasted_content id="f677">
+1. Chuẩn bị trên máy mới
+
+- Cài pi CLI, cùng bản với máy này nếu được. Máy này đang chạy settings có lastChangelogVersion 1.2.0.
+- Lấy repo bằng git pull, để có .fgos/config.json có sẵn các model thehive/...@thehive.
+- Lấy API key TheHive qua password manager hoặc dashboard TheHive. Không gửi key qua git hoặc chat.
+
+2. Tạo thư mục tài khoản
+
+D=~/.pi/accounts/thehive
+mkdir -p "$D" && chmod 700 "$D"
+
+# models.json: khai báo provider và 2 model
+cat > "$D/models.json" <<'EOF'
+{
+  "providers": {
+    "thehive": {
+      "baseUrl": "https://api.thehive.ai/api/v3",
+      "api": "openai-completions",
+      "models": [
+        { "id": "deepseek-ai/deepseek-v4.1-flash-1017", "reasoning": true },
+        { "id": "zai-org/glm-5.3-flash", "reasoning": true }
+      ]
+    }
+  }
+}
+EOF
+
+# settings.json: provider và model mặc định
+cat > "$D/settings.json" <<'EOF'
+{"theme":"dark","defaultProvider":"thehive","defaultModel":"deepseek-ai/deepseek-v4.1-flash-1017"}
+EOF
+
+echo '{}' > "$D/models-store.json"
+
+3. Đặt API key
+
+Dán key vào chỗ <KEY>, rồi xóa dòng lệnh khỏi history của shell:
+printf '{"thehive":{"type":"api_key","key":"%s"}}' '<KEY>' > "$D/auth.json"
+chmod 600 "$D/auth.json"
+Ngoài ra có thể chạy PI_CODING_AGENT_DIR=$D pi rồi dùng /login để pi tự ghi auth.json. Em chưa thử cách này với TheHive.
+
+4. Alias (không bắt buộc)
+
+Máy này hiện không có alias cho thehive. Nếu muốn, thêm vào ~/.zshrc:
+alias pi-thehive='PI_CODING_AGENT_DIR="$HOME/.pi/accounts/thehive" pi'
+Có thể thêm thehive "$HOME/.pi/accounts/thehive" vào map PI_ACCOUNTS để
+
+5. Khai báo cho fgOS
+
+.fgos/config.json của repo đã có 4 chỗ tham chiếu thehive: ở z-ai standưng ~/.fgos/config.json (global) phải khai báo tài khoản thì fgOS mới tìm thấy thư mục:
+"llmAccounts": {
+  "thehive": {
+    "thehive": {
+      "label": "thehive",
+      "credentialStore": { "pi": "${HOME}/.pi/accounts/thehive" }
+    }
+  }
+}
+Sửa file này bằng cách thêm block trên, hoặc copy ~/.fgos/config.json ti khoản máy mới không có. Thêm một khóa mới vào config global từng làmhỏng các workspace chạy release cũ (ghi nhận ngày 13/10). Vì vậy hãy cập nhật các máy trước, rồi mới đổi config global.
+</pasted_content id="f677">
+[L3620] AGENT: Máy này đã có sẵn tài khoản pi `thehive` (em thấy `auth.json`, `models.json`, `settings.json`, `models-store.json` và fgOS đã khai pool `thehive`), nên phần lớn hướng dẫn là cho máy mới. Em kiểm hiện trạng pi so với hướng dẫn, rồi tìm cách omp khai provider tuỳ chọn như TheHive.
+[L3621] TOOL Bash: cd ~ && D=~/.pi/accounts/thehive; ls -la --time-style='+%m-%d %H:%M' $D | awk 'NR>1 && $8!="." && $8!=".." {printf " %-18s %5s byte %s %s %s\n",$8,$5,$6,$7,$1}'; echo "--- models.json (không bí mật):"; cat $D/models.json | python3 -m json.tool 2>/dev/null | head -30; echo "--- settings.json:"; cat $ …[+383]
+[L3625] RESULT: auth.json 74 byte 10-20 15:22 -rw------- | models-store.json 2 byte 10-20 15:21 -rw-------
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,73 @@
+Dưới đây là 31 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Quy tắc: mọi thao tác tay cho ops phải được dạy lại cho System Operator
+   Agent ghi nguyên tắc vào memory, viết kế hoạch 7 bước cho Giai đoạn 2, và mỗi bước đều có cột việc chủ cần làm. Agent thêm tài liệu về quyền qua cổng riêng (privileged.md) và cập nhật SKILL.md. Kế hoạch được ghi vào repo để chủ duyệt trước khi chạy gì trên máy.
+M2. Hai bộ marketing và Coding trong cùng hệ: bản kế hoạch quyền được ghi vào repo
+   Sau khi khảo sát xong, agent ghi bản thiết kế đầy đủ vào repo thay vì trả lời rời rạc, để chủ có một chỗ duyệt. Chủ duyệt bằng một lượt đọc.
+M3. Cài pi và omp bằng script ghim phiên bản, kiểm checksum, cho System Operator tự nâng cấp
+   Script ghim phiên bản: pi cài từ npm, omp tải từ release và kiểm SHA256 khớp checksum chính thức (18.12.6). Mỗi phiên bản nằm trong thư mục riêng nên quay về bản cũ chỉ mất vài giây. Agent thử nâng omp lên 18.14.2 rồi quay lại 18.12.6, cả hai đều chạy đúng. Không dùng 'pi update' hay 'omp update' vì chúng tự nâng cấp ngoài bản ghim.
+M4. Agent phản biện độc lập tìm lỗ root: mã dev trong .env và PAT của chủ trên máy agent
+   Tài liệu v1 được một agent độc lập (model khác) phản biện. Phản biện chỉ ra: mã đăng nhập dev 6 ký tự trong .env có thể cho phép đăng nhập thành chủ nếu API tới được; agent khách cầm PAT của chủ; System Operator chạy bằng user có docker, tương đương root. Agent chính kiểm lại từng điểm trên máy (APP_ENV, mã dev) trước khi đưa vào tài liệu v2. Output phản biện bị harness gắn cờ vì chứa cụm giống chỉ dẫn, nên phải đối chiếu lại.
+M5. Đặt tên lệnh theo tài khoản, không theo nhà cung cấp
+   Chủ nói tetnu là tài khoản, không phải nhà cung cấp. Agent đổi tên sang dạng công cụ-nhà cung cấp-tài khoản, sửa profile, skill và tài liệu, rồi deploy lại skill. Thư mục đăng nhập giữ nguyên nên không phải login lại.
+M6. Gói tự kiểm bằng đúng user chạy agent, thay vì ghi tay
+   Manifest khai báo user chạy daemon và các file bí mật. MCP tham chiếu file bằng biến thay vì đường dẫn cứng. Lệnh tools chép file, cài MCP, rồi khởi động từng server dưới đúng user daemon để kiểm. Giá trị theo máy nằm trong file env quyền 600 và không commit. Lỗi 'agent không đọc được key' giờ bị bắt ngay khi cài, không lọt tới lúc agent chạy.
+M7. Backup theo giờ bị chủ hỏi: dữ liệu 27 MB, theo ngày là đủ
+   Database chỉ 27 MB, uploads 4 KB, restic thêm vài trăm KB mỗi lần. Agent đề xuất mỗi ngày, cộng backup ngay trước thao tác rủi ro, và mỗi giờ khi có khách trả tiền. Chủ hỏi mục tiêu thật sự là gì; agent nêu ba mục tiêu: để agent tự làm nhiều hơn, chống sự cố máy, và chống agent bị điều khiển phá backup. Chủ tạm delay bước này.
+M8. Daemon offline vì đổi tên profile trước khi có lệnh bọc
+   Profile được tạo tên pi-openai-codex, rồi đổi thành pi-openai-tetnu trước khi lệnh bọc tương ứng có trên máy. Daemon không tìm thấy lệnh nên đánh dấu offline. Daemon chỉ kiểm lại profile khi profile bị sửa. Tắt rồi bật profile thì runtime online ở cả hai workspace.
+M9. Ba runtime chạy thật lần đầu: model khác cấu hình, Google và DuckDuckGo chặn máy chủ
+   Thống kê token cho thấy Pi·OpenAI và Pi·Grok đã chạy 3 lượt mỗi bên qua 5 issue. Model ghi nhận là gpt-6.1-sol và grok-4.7, khác cấu hình gpt-5.5 và grok-4.6. Google trả 429, DuckDuckGo đòi CAPTCHA, chỉ Bing trả kết quả. Agent Gemini (omp) hoàn thành trong 30 giây, comment đúng một lần và chuyển in_review.
+M10. Gói marketing ban đầu chỉ có 3 agent nội dung, không có SEO hay GA4
+   Agent đọc gói và thấy chỉ có 3 agent (lead, viết, review), 1 workflow, 1 việc định kỳ và 1 secret duy nhất là GH_TOKEN. Không agent nào có quyền vào nguồn dữ liệu marketing. Agent đề xuất thêm agent SEO và agent phân tích, kèm secret cho dữ liệu, rồi chờ chủ duyệt.
+M11. Lấy key Google cho agent: gcloud bị chặn scope, project không gắn billing
+   Agent cài gcloud không cần sudo, đối chiếu md5 với metadata trên GCS. Đăng nhập bằng --no-launch-browser để chủ đăng nhập từ laptop. Lệnh ADC xin scope analytics.manage.users bị Google chặn với thông báo 'This app is blocked', nên phần GA4 phải thêm tay. Project được tạo không gắn billing để không phát sinh phí; API chỉ trả lỗi 429 khi vượt hạn mức, không tự tính tiền.
+M12. Ghi tiến độ từng bước vào một file trong repo (có mục trạng thái: đã làm, đang làm, hoãn, còn lại), thay vì chỉ báo trong chat. Cập nhật file này trước mỗi lần commit.
+   Ghi tiến độ từng bước vào một file trong repo (có mục trạng thái: đã làm, đang làm, hoãn, còn lại), thay vì chỉ báo trong chat. Cập nhật file này trước mỗi lần commit. Phần lớn người dùng chỉ để trạng thái trong cuộc trò chuyện với AI, nên khi phiên kết thúc hoặc đổi người, không ai biết đã làm đến đâu.
+M13. Agent SEO bị chặn vì file key không tới được user daemon
+   Hai MCP server khởi động được dưới user daemon và agent gọi được list_sites. Nhưng file key không có ở thư mục của user daemon, vì bước sudo install ở lần triển khai trước đã bị sót. Agent tự tìm ra nguyên nhân, chuyển issue sang blocked và ghi rõ chủ cần làm gì, không bịa số liệu.
+M14. Ngay sau khi tạo credential (service account key), gọi thử API bằng chính key đó để xác nhận xác thực chạy được, dù chưa có quyền truy cập dữ liệu. Kết quả rỗng được coi là đủ để biết bước xác thực đã thông.
+   Ngay sau khi tạo credential (service account key), gọi thử API bằng chính key đó để xác nhận xác thực chạy được, dù chưa có quyền truy cập dữ liệu. Kết quả rỗng được coi là đủ để biết bước xác thực đã thông. Thường người ta chỉ kiểm tra có file key hay chưa, rồi đợi đến khi có quyền mới thử, nên lỗi xác thực chỉ lộ ra lúc cần dùng gấp.
+M15. Bot không push được: chặn bằng quyền, không bằng lời dặn
+   Agent đề xuất phương án (c): cấp quyền chỉ đọc. Khi kiểm tài liệu GitHub thì biết repo private cá nhân không cho quyền chỉ đọc, phương án này không làm được; agent đính chính và xin lỗi. Chủ chọn hoãn. Khi chủ hỏi vì sao không push, lý do là bot có quyền ghi thì ghi được main, hook pre-push vượt được bằng --no-verify. Phương án thay thế: deploy key chỉ đọc, bot commit nhánh riêng, chủ fetch và merge.
+M16. DataForSEO: add-on trả phí, plan tạo nhầm server khi khách chưa mua
+   DataForSEO nạp tối thiểu 50 USD, không hết hạn. Agent ước tính 2 đến 5 USD mỗi khách mỗi tháng, ghi rõ đó là ước tính của mình. Lúc khách chưa mua, plan vẫn tạo server dataforseo; sửa bằng cách lọc add-on khỏi danh sách và kiểm lại bằng plan. Mức miễn phí dùng key PageSpeed, gọi thử được điểm mobile 0,31.
+M17. Số liệu bằng 0 vì property Search Console cũ bản www
+   Sau khi chủ cấp quyền, GA4 trả về số liệu thật: kênh Direct có 58 session trong 7 ngày. Search Console trả về 0 lượt hiển thị từ tháng 7. Website đã chuyển hướng 301 từ bản www sang bản không www, nhưng property được cấp quyền là bản www cũ.
+M18. Viết tài liệu thiết kế có các giai đoạn, rồi dừng chờ chủ duyệt trước khi đụng vào máy. Mỗi giai đoạn ghi rõ việc nào agent làm được, việc nào cần người làm, kèm rủi ro chấp nhận.
+   Viết tài liệu thiết kế có các giai đoạn, rồi dừng chờ chủ duyệt trước khi đụng vào máy. Mỗi giai đoạn ghi rõ việc nào agent làm được, việc nào cần người làm, kèm rủi ro chấp nhận. Nhiều người nói thẳng ý muốn cho AI và để nó làm luôn, hoặc hỏi từng câu lẻ tẻ. Khi có nhiều rủi ro, thường không có tài liệu nào được ghi lại.
+M19. File AGENTS.md chỉ là vỏ, nội dung thật vượt giới hạn 8000 ký tự
+   File AGENTS.md trong kho mẫu chỉ có link tới repo gốc. Bản gốc dài 14.343 và 15.388 ký tự, vượt giới hạn 8000 ký tự cho phần instructions của agent trên Multica. Agent giữ nguyên văn mỗi vai trò thành một skill, ghim commit và kèm file license. AGENTS.md chỉ gắn vai trò vào bối cảnh công ty.
+M20. Chủ hoãn skillstation để làm SEO và GA trước
+   Agent đọc --help của skillstation và mô tả cách làm: hub giữ bộ skill đã chọn lọc, agent dùng proxy có cache, token theo từng user. Đề xuất hub đặt trên một máy luôn bật qua tailnet. Chủ nói để sau, làm SEO và GA trước.
+M21. Lệnh root một lần, sau đó agent cài không cần sudo
+   Lệnh sudo yêu cầu mật khẩu nên agent không tự chạy được. Chủ hỏi có tổ chức để System Operator tự cài được không. Script tools-owner chạy một lần để giao thư mục cài cho chủ sở hữu hợp lý, sau đó lệnh cài chạy dưới user thường. Ba runtime được chuyển sang cách cài mới mà không gián đoạn phiên đăng nhập.
+M22. Chép credential Claude sang user khác: token tự làm mới làm hỏng bản còn lại
+   Mỗi user Linux có phiên riêng trong home. Copy file credentials dùng chung thì lúc đầu chạy được, nhưng khi một bên tự làm mới token, bên kia sẽ lỗi 401 giữa chừng, thường đúng lúc đang chạy việc cho khách. Agent khuyên login lại cùng tài khoản, mất khoảng một phút.
+M23. Thay PAT của chủ bằng user daemon riêng, PAT nằm ở ba chỗ, daemon thử nghiệm không bật lại được
+   Daemon thử nghiệm là transient unit nên không có lệnh bật lại; tắt rồi là hết. Tạo user Multica riêng chỉ là member của hai workspace. Script login lần đầu chạy thành công rồi xoá file PAT, nên lần chạy sau báo lỗi. Grep trong home tìm được PAT ở 3 chỗ trong cấu hình CLI. Agent tạo PAT mới, cập nhật 3 chỗ, kiểm PAT mới chạy rồi mới thu hồi PAT cũ (cũ trả 401). Chuyển 12 agent sang runtime mới, 2 lần đầu bị 405 vì dùng sai method, sửa sang PUT.
+M24. Mô hình một workspace cho mỗi khách, mỗi bộ là một gói
+   Gói opc-studio được đổi tên thành opc-content, bỏ deploy mặc định, bắt buộc có file env của khách. Chủ chốt mô hình: một workspace cho mỗi khách, cài thêm bộ khi khách mua. Agent phát hiện thiếu một lớp: workspace được tạo ngầm, không có danh sách bộ khách đã mua. Viết manifest client.yaml, plan xác nhận 0 thay đổi trên workspace hiện có.
+M25. Chỉ cài công cụ ở phiên bản đã phát hành ít nhất 14 ngày, ghim cố định và kiểm checksum (md5 hoặc sha256) so với metadata chính thức trước khi dùng.
+   Chỉ cài công cụ ở phiên bản đã phát hành ít nhất 14 ngày, ghim cố định và kiểm checksum (md5 hoặc sha256) so với metadata chính thức trước khi dùng. Thường người ta cài bản mới nhất bằng npm install hoặc pip install, không kiểm checksum, và không ghim phiên bản.
+M26. Chủ đổi vai: không để agent làm hộ việc chuyên môn, phải giao qua issue
+   Chủ nói 'agent chỉ cần đầy đủ công cụ để làm là tốt nhất'. Agent nhận ra các bước đó phải do agent SEO làm bằng MCP sẵn có. Agent tạo issue STU-6 không nêu trước lỗi www, để kiểm xem agent có tự phát hiện được không. Agent liệt kê các công cụ còn thiếu cho từng mảng.
+M27. Khi cần khảo sát nhiều công cụ cùng lúc (Ads, Social, Content), chạy đồng thời ba agent con, mỗi agent một mảng, rồi tổng hợp kết quả vào một bản so sánh có bảng chấm điểm (license, sao, ngày commit, phiên bản đã qua 14 ngày).
+   Khi cần khảo sát nhiều công cụ cùng lúc (Ads, Social, Content), chạy đồng thời ba agent con, mỗi agent một mảng, rồi tổng hợp kết quả vào một bản so sánh có bảng chấm điểm (license, sao, ngày commit, phiên bản đã qua 14 ngày). Thường người ta tìm từng công cụ một, đọc README rồi ghi chú bằng tay, và dễ bỏ sót các điểm như license, độ mới, cách xác thực.
+M28. Trước và sau mỗi lần deploy, chạy lệnh plan. Sau deploy, plan lại phải báo 0 thay đổi. Khi plan có thay đổi ngoài yêu cầu thì dừng lại hỏi.
+   Trước và sau mỗi lần deploy, chạy lệnh plan. Sau deploy, plan lại phải báo 0 thay đổi. Khi plan có thay đổi ngoài yêu cầu thì dừng lại hỏi. Thường deploy thẳng rồi kiểm tra bằng mắt, hoặc không có lệnh xem trước nên không biết lần deploy sẽ đụng vào đâu.
+M29. Tạo user opc-ops và hai danh tính Multica: kiểm tra trả exit 1 nhưng vẫn in OK
+   Lệnh kiểm tra cú pháp script trả exit 1 nhưng vẫn in 'syntax ok'. Lệnh liệt kê thành viên workspace thất bại vì sai tham số, phải dùng cú pháp khác. Sau đó agent kiểm lại từng workspace và thấy user daemon có đúng vai trò member. Hai PAT của danh tính mới được lưu tạm trong home của chủ.
+M30. Deploy gói marketing ghi đè team Coding trong cùng workspace
+   Agent đã đọc plan nhưng bỏ qua các dòng ngoài phần marketing. Lần deploy đầu tiên đưa 6 agent Coding về bản cũ, gỡ 3 agent khỏi squad Coding và gắn sai workflow cho một project. Agent khôi phục bằng cách deploy lại từ gói gốc của phiên kia, plan báo 0 thay đổi. Sau đó xoá phần Coding khỏi gói marketing (commit 0c4d9ce). Deploy không xoá thực thể trên server nên agent đang chạy không bị ảnh hưởng.
+M31. Khảo sát công cụ marketing: Zalo OA không có MCP nào
+   Ba agent con chạy song song khảo sát Ads, Social, Content. Google Ads có MCP chính thức chỉ đọc; Meta và TikTok có MCP do nền tảng host, đọc và sửa được. Không có MCP nào cho Zalo OA, nên phải tự viết trên API chính thức. Agent không đề xuất tự động trình duyệt để đăng bài vì rủi ro checkpoint tài khoản cá nhân khách.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

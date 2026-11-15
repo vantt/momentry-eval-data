@@ -1,0 +1,57 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Máy kiểm hạn tuổi chưa từng bắn: so chuỗi ISO với số ra NaN trong 47 đến 55 ngày
+   Check doc-provisional-aged so now với updatedAt, nhưng updatedAt là chuỗi ISO nên phép trừ ra NaN và điều kiện không bao giờ đúng. Có 332 tài liệu đang provisional, đã 47 đến 55 ngày mà không có cảnh báo nào.
+M2. Đổi tên tài khoản theo nhà cung cấp: di chuyển thư mục thay vì xoá, sau khi kiểm tham chiếu
+   Trước khi đổi, em đếm số bảng auth để chắc profile mới tạo chưa có đăng nhập. Profile chưa đăng nhập được chuyển sang scratchpad thay vì xoá. Alias cũ được giữ trong lệnh unalias để source lại không lỗi. Sau khi đổi, bước đăng nhập mới được kiểm và nối vào fgOS.
+M3. Ba lần đoán cấu trúc JSON của CLI: 269 mục mở, còn 1195 khi thêm --all
+   Script lọc lỗi ba lần vì đoán sai cấu trúc JSON (dict với khoá data và work). Lần lọc mặc định chỉ thấy 269 mục đang mở, nên các mục đã done như tsk-1lv không xuất hiện. Thêm --all thì có 1195 mục.
+M4. Mỗi lần sửa cấu hình toàn cục hoặc dự án đều sao lưu có dấu thời gian trước, chỉ thay đúng khoá cần thay, giữ nguyên định dạng và ghi rõ cách hoàn tác (chép đè bản sao lại). Sau khi sửa thì chạy doctor để xác nhận.
+   Mỗi lần sửa cấu hình toàn cục hoặc dự án đều sao lưu có dấu thời gian trước, chỉ thay đúng khoá cần thay, giữ nguyên định dạng và ghi rõ cách hoàn tác (chép đè bản sao lại). Sau khi sửa thì chạy doctor để xác nhận. Sửa tay file JSON hoặc zshrc, không sao lưu, và chỉ biết có lỗi khi chạy thật.
+M5. Khai một kho đăng nhập thiếu file: lỗi nhanh biến thành treo 200 giây
+   Trước đó probe xai lỗi nhanh trong vài giây. Sau khi khai kho omp trống, lượt probe treo khoảng 200 giây, stderr báo refresh-ahead bị bỏ qua vì file thiếu. Em gỡ khai báo để trả về lỗi nhanh, rồi đặt disabled để ghế xai bị loại ngay thay vì treo.
+M6. Mỗi lần chạy lại probe đều chuyển kết quả cũ sang một thư mục prev riêng trước, chạy nền, rồi sau đó kiểm tra không còn pane hay tiến trình nào sót và không có file git nào bị bẩn.
+   Mỗi lần chạy lại probe đều chuyển kết quả cũ sang một thư mục prev riêng trước, chạy nền, rồi sau đó kiểm tra không còn pane hay tiến trình nào sót và không có file git nào bị bẩn. Ghi đè file kết quả cũ, không kiểm dọn tiến trình sau khi chạy, và tin rằng lần chạy đó đã sạch.
+M7. Engine mới hoá ra phần lớn đã có: Knowledge Registry phủ khoảng 15% tài liệu và đang chạy
+   Ba agent quét plans, history và work items song song. Registry có 479 tài liệu, khoảng 15% trong 3146 file .md, và chỉ phủ tài liệu người dùng cuối. Có 332 provisional và 147 active, cùng 365 role khác nhau trên 479 doc. Phần thật sự mới của engine chỉ là sáu thứ chưa có mã. Proposal được sửa thành điểm xuất phát chứ không phải xây mới.
+M8. Bộ gán vai lấy invocation đầu tiên: một đường thừa chiếm lượt của đường khác
+   Đường codex đứng trước pi trong thứ tự nên codex chiếm lượt, và tài khoản đầu tiên chưa bao giờ được dùng. Explain cho thấy openai chỉ có một invocation herdr là codex, và đường pi bị loại vì không có kho codex. Em thêm invocation pi-herdr đặt trước codex-herdr; probe trả OK với exit 0 sau 26 giây.
+M9. Sáu nhà cung cấp, một đường dây: probe từ 1/6 lên 6/6 sau nhiều lần chỉnh
+   Lần probe đầu chỉ claude chạy (1/6); các family khác lỗi đăng nhập hoặc không có tài khoản. Sau khi copy session và khai kho tài khoản, deepseek và glm chạy được. Khi openai chuyển sang đường pi và xai chạy qua profile omp đã đăng nhập, cả sáu đều có lượt chạy thành công với exit 0; riêng gemini bị gắn inconclusive vì agent không trả đúng định dạng có cấu trúc.
+M10. Tài liệu ghi completed mà bằng chứng không khớp: phase 12 trỏ tới spec không tồn tại
+   Plan 260825 ghi phase 12 là completed, nhưng file spec knowledge không tồn tại và tài liệu enduser vẫn giữ quy tắc R4 và R5. Chỉ phần deprecated của lệnh compound là có thật. Con trỏ trong plan 260925 thành con trỏ chết sau khi lưu trữ.
+M11. Hội đồng kiến trúc đầu tiên sập ở ghế shaping sau framing pass
+   Framing đã pass, nhưng unit shape-proposals kết thúc với execution-failure. Nguyên nhân chưa xác định. Cổng người chưa tới nên chưa có bản tổng hợp nào.
+M12. Không có tài liệu: đọc chuỗi trong binary để tìm khoá cấu hình omp, rồi kiểm bằng lệnh gọi thật
+   Em dùng strings trên binary để tìm tên file models.yml và khoá apiKey. Một lệnh bị chặn bởi quy tắc ckignore nên phải chạy lại bằng cách khác. Khoá được đặt là lệnh jq đọc từ auth của pi, và một lượt gọi thử trả OK.
+M13. Lệnh ghi baseline nuốt vi phạm mới: 374 vi phạm không ai thấy vì máy kiểm không chạy
+   Hai script ghi baseline ghi đè vô điều kiện, nên chạy lại là mọi vi phạm mới thành đã biết. check-decision-codes báo 374 vi phạm nhưng không được nối vào đâu ngoài test của chính nó, nên như không có. Kế hoạch đề xuất chặn ghi đè và chỉ cho tăng baseline khi có cờ allow-growth tường minh.
+M14. Xử lý khoá API và thông tin đăng nhập: nhập khoá bằng ô nhập ẩn, không để khoá nằm trong câu lệnh hay lịch sử shell. Khi in ra chỉ hiện số khoá, loại khoá và quyền file, còn giá trị được che. Trước khi ghi đè file đăng nhập luôn sao lưu và đếm số trường, không in nội dung.
+   Xử lý khoá API và thông tin đăng nhập: nhập khoá bằng ô nhập ẩn, không để khoá nằm trong câu lệnh hay lịch sử shell. Khi in ra chỉ hiện số khoá, loại khoá và quyền file, còn giá trị được che. Trước khi ghi đè file đăng nhập luôn sao lưu và đếm số trường, không in nội dung. Dán khoá thẳng vào câu lệnh, mở file cấu hình bằng cat để xem, hoặc gửi cả file vào chat để hỏi.
+M15. Chuỗi thay thế quyết định: 7 cặp có quan hệ, 5 cặp chỉ thay một phần, ít nhất 4 quyết định chỉ nêu trong câu chữ
+   Em đếm trực tiếp trong log sự kiện: 36 quyết định D-ADR và 18 sự kiện supersedes. Bảy cặp nền có khoá khớp đúng bản ghi, nhưng 5 trong 7 quan hệ chỉ thay một phần. Ít nhất 4 quyết định thay một điều khoản chỉ nêu trong câu chữ, không có quan hệ ghi lại.
+M16. Nhập khoá ghi đè không sao lưu: 401, rồi một ký tự thừa lúc dán
+   Lệnh nhập ghi đè khoá cũ mà không sao lưu. Khoá mới dài 25 ký tự, khoá cũ dài 24 và vẫn chạy được. API trả 401 cho cả bốn lượt kiểm. Nguyên nhân gần là một ký tự thừa lúc dán. Sau khi cắt khoảng trắng và sao lưu, API trả 200 và bốn lượt pi/omp đều trả OK.
+M17. Regex ranh giới từ không khớp chữ đ tiếng Việt: chú thích trong code ghi kết quả test trực tiếp
+   Chú thích trong retrospective-doors nói rằng ranh giới từ không khớp trước một ký tự có dấu như đ của chữ để, vì cả hai phía đều bị đọc là không phải chữ. Chú thích ghi đã xác nhận bằng test trực tiếp, không phải suy đoán. Agent chỉ đọc chú thích này trong lúc tìm code.
+M18. Chạy 3 agent nghiên cứu song song, mỗi agent quét một mảng và ghi báo cáo riêng. Trước khi giao, chạy một lệnh kiểm để chọn cách chạy. Khi cả ba xong, agent chính tự kiểm lại các con số then chốt bằng grep hoặc đọc file gốc, rồi mới gộp thành một bản tổng hợp và nêu rõ phần nào đã kiểm, phần nào chỉ là suy luận.
+   Chạy 3 agent nghiên cứu song song, mỗi agent quét một mảng và ghi báo cáo riêng. Trước khi giao, chạy một lệnh kiểm để chọn cách chạy. Khi cả ba xong, agent chính tự kiểm lại các con số then chốt bằng grep hoặc đọc file gốc, rồi mới gộp thành một bản tổng hợp và nêu rõ phần nào đã kiểm, phần nào chỉ là suy luận. Giao một câu hỏi cho một AI, đọc câu trả lời và tin luôn. Nếu có nhiều agent thì chúng thường ghi chung một chỗ, và không ai kiểm lại số liệu trước khi chuyển tiếp.
+M19. Git giữa lúc làm: remote sửa board, lưu patch trước khi restore, digest sinh lại gây xung đột
+   Trước khi pull, remote đã đổi file board và file digest mutation-census. Agent lưu patch board trước khi restore, đưa thay đổi của owner vào stash và chọn bản remote cho file digest sinh tự động. Lần commit đầu lỗi pathspec vì thư mục plan chưa được track; em làm lại sau khi kiểm đường dẫn. Sau đó ba commit sạch được push.
+M20. Mô phỏng hội đồng sai vì không có herdr: bảng 11 ghế của em hoá ra không đáng tin
+   Bộ mô phỏng gán vai chạy không có môi trường herdr nên gán openai qua codex-cli-bwrap, trong khi phiên thật có herdr thì đường khác. Em đã nói trần maxTier=flagship chặn hội đồng; lệnh explain cho thấy các capability critical lên tầng frontier, nên bảng model sai ở các ghế critical. Em đính chính: bảng ghế trước đó không còn đáng tin, chỉ explain trên phiên có herdrPresent=true mới đúng.
+M21. Duyệt bằng một chữ: bảng câu hỏi có khuyến nghị, người trả đồng ý hoặc số
+   Agent gom các quyết định vào bảng có khuyến nghị và yêu cầu người trả lời bằng đồng ý hoặc số câu muốn đổi. Suốt phiên, người duyệt trả bằng một từ hoặc một số như đồng ý, 3, hay probe đi. Mỗi lượt duyệt ngắn, nhưng phiên có nhiều vòng như vậy.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

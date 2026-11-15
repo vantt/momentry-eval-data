@@ -1,0 +1,80 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Chào bạn, sáng nay mình viết số 48 của Thư Chủ Nhật. Chủ đề: "Quỹ khẩn cấp: bao nhiêu là đủ?". Bản nháp ở drafts/48-quy-khan-cap.md, sổ tay giọng văn ở style.md. Đọc giúp mình cả hai trước nhé.
+[L9] USER: Có, stats/mailerlite-export.csv, mình xuất hôm qua. Có cả file subscribers.csv nữa nhưng chắc không cần.
+[L15] USER: Ơ… à đúng rồi, giữa tháng 9 mình có nhập danh sách người ký tên ở workshop "Tiền Không Ngủ". Khoảng 800 mấy người. Nhưng họ đăng ký tham gia workshop mà, chắc cũng quan tâm chứ.
+[L21] USER: Trời. Vậy là cả tuần mình tự trách cách đặt tiêu đề vô ích. Thế giờ làm gì với 840 người đó? Xoá thì tiếc, giữ thì kéo số xuống và còn có nguy cơ bị đánh dấu spam nữa đúng không?
+</asks>
+
+<story>
+hook: Bản thảo xong rồi, agent vẫn hẹn đo lại sau hai tuần
+tension: khac (Phiên thường kết thúc khi bài viết xong / Agent đề nghị đo lại để kiểm chứng giả thuyết)
+stakes: 1/3
+# Cuối phiên, agent không dừng ở bản thảo đã xong. Nó đề nghị đo lại tỉ lệ mở theo từng nhóm sau hai tuần, khi có kết quả thư xác nhận, để kiểm chứng giả thuyết đã nêu.
+
+**Chuyện gì xảy ra:** Cuối phiên, agent không dừng ở bản thảo đã xong. Nó đề nghị đo lại tỉ lệ mở theo từng nhóm sau hai tuần, khi có kết quả thư xác nhận, để kiểm chứng giả thuyết đã nêu.
+**Góc người ngoài:** cách làm phổ biến là Phiên thường kết thúc khi bài viết xong, và việc đo lường sau đó bị bỏ quên, hoặc chỉ nhắc chung chung; ở đây khác ở Agent đặt sẵn một mốc kiểm tra cụ thể, có dữ liệu cần để đối chiếu. Người đọc sẽ muốn biết cách chốt một bước theo dõi như vậy để tránh kết luận vội.
+</story>
+
+<excerpt>
+[L19] RESULT: source recipients opens open_rate | form 2346 1243 53.0%
+[L20] AGENT: Đây rồi. Tách theo nguồn đăng ký thì:
+
+- Người đọc đăng ký qua form (người đọc cũ): trung bình 53,0% ở các số 44–47, thậm chí cao hơn trước.
+- 840 địa chỉ nhập từ workshop ngày 14/9: chỉ 8,8%.
+
+Nghĩa là tiêu đề không làm tỉ lệ mở tụt. Người đọc cũ vẫn mở như cũ. Con số chung 31% tụt vì mẫu số phình thêm 840 người hầu như không mở thư. Nhiều người ký tên ở workshop để nhận tài liệu buổi đó, không hẳn để nhận bản tin hằng tuần, và một số địa chỉ có thể viết tay sai.
+
+Nếu mình viết lại 10 tiêu đề ngắn bây giờ, số tiếp theo vẫn sẽ ra khoảng 31% và bạn sẽ nghĩ tiêu đề mới cũng hỏng.
+[L21] USER: Trời. Vậy là cả tuần mình tự trách cách đặt tiêu đề vô ích. Thế giờ làm gì với 840 người đó? Xoá thì tiếc, giữ thì kéo số xuống và còn có nguy cơ bị đánh dấu spam nữa đúng không?
+[L22] AGENT: Đúng, giữ nhiều địa chỉ không mở lâu dài làm nhà cung cấp email đánh giá thấp, thư dễ vào mục quảng cáo hoặc spam, và lúc đó người đọc cũ cũng bị ảnh hưởng. Mình đề xuất:
+
+1. Gửi riêng cho nhóm workshop một thư xác nhận lại: "Bạn có muốn tiếp tục nhận Thư Chủ Nhật không?" kèm nút đồng ý.
+2. Ai bấm đồng ý thì chuyển sang nhóm chính. Sau 14 ngày ai không phản hồi thì ngừng gửi (không xoá dữ liệu, chỉ chuyển sang trạng thái không nhận).
+3. Từ nay báo cáo tỉ lệ mở tách riêng hai nhóm cho đến khi làm sạch xong.
+
+Tiêu đề số 48 bạn cứ đặt như bình thường.
+[L23] USER: Ok làm theo vậy. Bạn soạn giúp thư xác nhận lại, giọng Thư Chủ Nhật, ngắn thôi. Lưu vào drafts/xac-nhan-workshop.md.
+[L24] TOOL Write: /Users/linh/Documents/thu-chu-nhat/drafts/xac-nhan-workshop.md
+…
+[L75] RESULT: 1268 /Users/linh/Documents/thu-chu-nhat/drafts/48-quy-khan-cap.md
+[L76] AGENT: Bài dài 1.268 chữ, đọc khoảng 5 phút. Đầu thư có thể ghi "Đọc trong 5 phút". Mọi đoạn giờ đều dưới 5 câu trừ hai đoạn bạn nói sẽ tự tách. Số liệu lãi suất đã có nguồn và ngày.
+[L77] USER: Tuyệt. Mình lên lịch gửi 7h sáng chủ nhật. Còn thư xác nhận cho nhóm workshop mình gửi chiều nay. Cảm ơn nha.
+[L78] AGENT: Chúc số 48 gửi suôn sẻ. Hai tuần nữa, khi có kết quả thư xác nhận, bạn gửi mình file thống kê mới, mình tính lại tỉ lệ mở cho từng nhóm để xem con số thật của người đọc cũ.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

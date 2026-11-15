@@ -1,0 +1,156 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L319] USER: nhưng mà cách chúng ta collect database vậy có quá chi tiết không, dẫn đến lượng text quá nhiều. anh cảm thấy hơi dư thừa
+</asks>
+
+<story>
+hook: Mất người dùng ở bước nào cũng là mất hẳn, nên UX lên đầu
+tension: chon_mot_mat_mot (UX đứng trên an toàn, đúng đắn, nhanh gọn / Rule tầng dưới chỉ được vượt khi sắp phạm MUST của nó)
+stakes: 3/3
+# Người dùng đặt lại thứ tự ưu tiên: UX trước, rồi an toàn, đúng đắn, nhanh gọn
+
+**Bối cảnh:** Ban đầu skill coi mọi phần như nhau. Người dùng nói điểm quyết định là chặng đầu: giới thiệu, cài đặt và quick start.
+**Chuyện gì xảy ra:** Agent mô tả hành trình người dùng mới gồm đọc giới thiệu, cài, quick start, rồi thấy chạy được; mất người dùng ở bất kỳ bước nào cũng là mất hẳn. Skill có thêm file 03-first-contact với 16 rule, gồm tagline, GIF dưới 40 giây, quick start chạy trong CI và tối đa 3 lệnh sau khi cài. Thứ tự 4 tầng được ghi ở đầu SKILL.md: UX, an toàn, đúng đắn, nhanh gọn. Một rule tầng dưới chỉ được vượt UX khi sắp vi phạm MUST của chính nó.
+**Bài học:** Lấy câu hỏi 'người mới mất ở bước nào' làm tiêu chí ưu tiên đầu tiên cho tài liệu hướng dẫn cho agent.
+**Artefact:** Sơ đồ 4 bước hành trình người dùng mới và sơ đồ 4 tầng ưu tiên.
+</story>
+
+<excerpt>
+[L307] RESULT: lrwxrwxrwx 1 vantt vantt 63 Nov 2 14:18 packaging-distribution-guide -> /home/vantt/projects/devops/skills/packaging-distribution-guide | ./case-studies/forgent.md
+[L317] AGENT: Tôi đã tạo xong skill. Nó đã chạy được ngay vì tôi link nó vào `~/.claude/skills/`. Script kiểm tra cấu trúc chạy qua: 183 rule, ID không trùng. File `templates/install.sh` tôi đã chạy thử với một bản release giả lập: cài đặt, cài lại lần hai, gỡ cài đặt, từ chối khi gặp binary lạ và báo lỗi khi checksum sai đều cho kết quả đúng.
+
+**Vị trí:** `/home/vantt/projects/devops/skills/packaging-distribution-guide` (symlink từ `~/.claude/skills/packaging-distribution-guide`)
+
+## Cấu trúc
+
+```
+SKILL.md                 chỉ chứa quy trình cho agent, không chứa rule
+common/NN-<topic>.md     rule dùng chung cho mọi ngôn ngữ (13 chủ đề)
+  00 principles · 10 versioning · 20 build-release · 25 supply-chain · 30 install
+  40 self-update · 50 config-state · 60 doctor · 70 uninstall · 80 agent-integration
+  85 service-daemon · 90 testing · 95 docs-ux
+languages/               rust · go · node · polyglot · _template
+channels/                agent-host-plugin · _template   (brew/scoop/docker… thêm sau)
+case-studies/            mdview · skillstation · herdr-go · forgent (cái hay + lỗi cần tránh)
+templates/               project-checklist.md (mẫu kết quả) · install.sh (khung POSIX đã test)
+CONTRIBUTING.md          quy tắc mở rộng
+scripts/lint-guides.sh   kiểm tra frontmatter, định dạng rule, ID không trùng
+```
+
+**Mỗi rule có dạng:** `### INS-06 · MUST · <việc cần làm>  [rule chung liên quan]`, kèm lý do và dự án nào đã làm. Rule trong `languages/` chỉ bổ sung chi tiết cụ thể và trỏ lại ID của rule chung (ví dụ `RS-09 [UPD-*]`), không viết lại.
+
+**Dễ mở rộng:** `SKILL.md` không giữ danh sách file cố định. Agent tự liệt kê thư mục rồi đọc frontmatter (`applies_when`, `detect: Cargo.toml`…) để chọn file phù hợp. Vì vậy:
+- Thêm ngôn ngữ mới (Python…): copy `languages/_template.md`.
+- Thêm kênh phân phối (Homebrew, Docker…): copy `channels/_template.md`.
+- Thêm chủ đề mới: tạo `common/NN-x.md`.
+- Thêm dự án đã học: thêm vào `case-studies/`.
+
+Không cần sửa `SKILL.md`. ID rule không bao giờ đánh  …[+2226]
+[L319] USER: nhưng mà cách chúng ta collect database vậy có quá chi tiết không, dẫn đến lượng text quá nhiều. anh cảm thấy hơi dư thừa
+[L328] TOOL Bash: cd /home/vantt/projects/devops/skills/packaging-distribution-guide; for d in common languages channels case-studies templates; do printf "%-14s %5s words\n" $d $(cat $d/* | wc -w); done; wc -w SKILL.md CONTRIBUTING.md; grep -c '^### ' common/*.md languages/*.md channels/*.md | awk -F: '{s+=$2} END{p …[+118]
+[L329] RESULT: common 5507 words | languages 1682 words
+…
+[L566] RESULT: 11:| Command surface (verbs from CMD, any omitted + why) | | | | OK: 202 rules, structure valid
+[L570] AGENT: Trước đây các lệnh đã có nhưng nằm rải rác ở từng file, và nhiều bài học về cú pháp chưa được ghi. Giờ đã gom về một file: `common/07-command-surface.md`, thuộc tầng UX, và agent luôn đọc file này cùng với principles và UX. Script kiểm tra cấu trúc chạy qua với 202 rule.
+
+**Bộ lệnh chuẩn mà mọi dự án nên có:**
+```
+<app> --version | version [--json]
+<app> init [--yes] [--dry-run]                       chạy lần đầu, chỉ tạo cái còn thiếu, chạy lại an toàn
+<app> status [--json]                                tóm tắt nhanh + 1 lệnh nên chạy tiếp
+<app> doctor [--fix [--dry-run]] [--strict] [--json]
+<app> update [--check] [--version vX] [--force]      alias: upgrade
+<app> config path|show|get|set|unset|edit|explain|check|default
+<app> paths [--json]
+<app> uninstall [--purge] [--dry-run] [--yes]        alias: remove
+<app> completions <shell>
+<app> service …    (chỉ khi có daemon)
+<app> connect …    (chỉ khi tích hợp agent)
+```
+
+**Các bài học đã ghi thành rule (CMD-01 → CMD-12):**
+- **Update trực tiếp từ binary:** `<app> update`, gõ `upgrade` cũng được. Người dùng không bao giờ phải chạy lại installer hay tự tải về. Nếu cài qua brew hay npm thì lệnh sẽ in ra đúng câu lệnh của trình quản lý gói đó.
+- **Cả `--version` lẫn `version` đều chạy được.** Bài học từ `fgctl` của forgent, vốn không có `--version`.
+- **Chạy không tham số thì hiện help ngắn theo từng bước** ("Get started: 1. 2. 3."). Mỗi subcommand đều có `--help` kèm ví dụ. `fgctl` không có help riêng cho subcommand.
+- **`init` là lệnh khởi đầu duy nhất,** còn sửa lỗi thì dùng `doctor --fix`. Không có lệnh `setup` riêng, vì forgent đã bỏ `setup` sau khi tách như vậy.
+- **`doctor` mặc định chỉ đọc.** `--fix` sửa xong thì kiểm tra lại, `--strict` coi cảnh báo là lỗi.
+- **Cờ chung có cùng nghĩa ở mọi lệnh:** `--json`, `-y`, `--dry-run`, `-q`, `-v`, `--no-color`/`NO_COLOR`, `-c`. Không có lệnh nào hỏi người dùng khi không có terminal.
+- **Exit code chung:** `0` ok, `1` có vấn đề, `2` sai cú pháp, `10` `update --check` có b …[+669]
+[L578] USER: em hiểu ý đúng không. để bán được phần mềm hoặc promote phần mềm tốt. điểm chạm và friction đầu tiên là chổ cài đặt và đoạn giới thiệu cũng như quick start.
+[L586] AGENT: Đúng ý anh. Điểm chạm đầu tiên quyết định người ta có dùng tiếp hay không. Hành trình của người dùng mới là: **đọc giới thiệu** (cái này là gì, dành cho ai, có đáng thử không) → **cài** → **quick start** → **lần đầu thấy nó chạy được**. Mỗi bước có trục trặc là mất người dùng. Vì vậy cài đặt, phần giới thiệu và quick start không chỉ là "docs" mà là **cửa hàng** của phần mềm.
+
+Skill hiện mới có một phần: one-liner (UX-01) và cấu trúc README (UX-21). Còn thiếu hẳn:
+- câu giới thiệu;
+- thời gian đến lúc thấy kết quả đầu tiên;
+- quick start được test trong CI;
+- demo bằng hình ảnh hoặc video;
+- khoảnh khắc "chạy được rồi" ngay lần đầu.
+
+Tôi sẽ thêm một file riêng cho phần này và đưa nó lên đầu tầng 1.
+[L587] TOOL Bash: cd /home/vantt/projects/devops/skills/packaging-distribution-guide; grep -rn 'PRN-[0-9]' --include=*.md . | grep -v '^./common/00-principles.md' ; ls /home/vantt/projects/mdview/video /home/vantt/projects/mdview/README.md 2>&1 | head; R=/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956 …[+108]
+[L588] RESULT: (eval):1: no matches found: --include=*.md | /home/vantt/projects/mdview/README.md
+…
+[L625] TOOL Bash: cd /home/vantt/projects/devops/skills/packaging-distribution-guide python3 - <<'EOF' def sub(p,a,b): s=open(p).read(); assert a in s,(p,a); open(p,'w').write(s.replace(a,b,1)) sub('SKILL.md','Details: `common/00-principles.md`','''**Proven ways first.** If `references.md` lists a proven implementati …[+1812]
+[L626] RESULT: OK: 221 rules, structure valid | words: 7851
+[L633] AGENT: Anh hiểu đúng, và tôi đã đưa cả ba ý vào skill. Script kiểm tra cấu trúc chạy qua với 221 rule.
+
+**1. Điểm chạm đầu tiên là "cửa hàng"**, nằm trong file mới `common/03-first-contact.md` (16 rule):
+- **Màn hình đầu README:** tên, tagline 1 câu nói về **nỗi đau hoặc lợi ích của người dùng** (không nói về công nghệ), 2–3 câu "là gì, cho ai, vì sao", một GIF ≤40 giây, và vài badge niềm tin.
+- **Quick start mở bằng một lời hứa:** "From nothing to X in about N minutes. You need Y." Nếu không cần gì thì ghi "no dependencies" như một điểm bán hàng.
+- **Thời gian đến kết quả đầu tiên:** tối đa 3 lệnh sau khi cài, khoảng 2 phút. Nếu lâu hơn thì sửa sản phẩm (giá trị mặc định, `init`, chế độ demo), không sửa docs.
+- **Quick start được chạy thật trong CI** để chắc nó luôn đúng như README.
+- **`init` kết thúc bằng "✓ Ready"** và đúng một việc để thử. Với công cụ cho agent, ghi luôn câu nói mẫu cho agent.
+- **Ba nơi hiển thị cùng các bước:** dòng "Next:" của installer, kết quả `init` và quick start trong README.
+- **Mẫu tham chiếu:** README của skillstation và mdview.
+
+**2. Cú pháp và UX của packaging/distribution là tối quan trọng.**
+- **Đầu SKILL.md:** tầng 1 giờ ghi rõ hai trụ là *first contact* và *packaging/distribution syntax*, trước cả "cài nhanh, ít phụ thuộc, config dễ".
+- **Principles:** PRN-01 và PRN-02 là hai rule mở đầu.
+- **Agent luôn đọc 4 file:** `00-principles`, `03-first-contact`, `05-user-experience`, `07-command-surface`.
+
+**3. Đã có cách tốt thì theo đó mà làm.**
+- **Đầu SKILL.md có mục "Proven ways first".** Rule nào có code mẫu trong `references.md` thì agent phải lấy code đó ra chỉnh lại cho dự án mới, không tự thiết kế lại. Làm khác thì phải ghi lý do.
+- **Principles có thêm PRN-17** với cùng nội dung.
+- **Lúc triển khai:** bước 7 của quy trình bắt agent mở `references.md` trước khi viết code.
+- **Checklist:** có cột ghi "đã dùng lại code mẫu nào, hoặc lý do làm khác".
+- **CONTRIBUTING có mục "Record what works":** cách mới đã chạy tốt thì ghi vào `refere …[+201]
+[L636] USER: à đúng, cái ý của em là agent native cũng rất hay nha. ví dụ file init --help và doctor --help cần có để chỉ cần kêu agent cài đặt, agent vào xem init doctor help là ra
+[L639] AGENT: Vâng, ý đó rất đáng giữ. Gọi là **agent-native**: người dùng chỉ cần nói "cài X giúp tôi", agent đọc `x --help`, `x init --help` và `x doctor --help` là tự làm được hết, không cần người hướng dẫn. Trong skill hiện chỉ có một mẩu nhỏ (CMD-03 nói "subcommand có `--help`"). Chưa có yêu cầu help phải **đủ để agent tự làm từ đầu đến cuối**. Tôi sẽ bổ sung.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

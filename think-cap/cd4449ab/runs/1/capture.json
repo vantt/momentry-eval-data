@@ -1,0 +1,285 @@
+{
+  "id": "cd4449ab",
+  "run": 1,
+  "host": "omp",
+  "transcript": "/home/vantt/.omp/profiles/gemini-tetcu72/agent/sessions/-projects-mcp-skill-hub-simplify/2026-10-09T02-40-10-134Z_01a11e88-4796-7023-a511-4a8dcd4449ab.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "dadb4c5597fabafa",
+  "at": "2026-11-05T10:16:38.216Z",
+  "dryRun": {
+    "usd": 0.31,
+    "tokens": 92346,
+    "chunks": 1,
+    "hotspots": 143,
+    "entries": 2664
+  },
+  "report": {
+    "sid": "omp:cd4449ab",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.358213,
+    "secs": 251.6,
+    "exitCode": 0,
+    "status": "done",
+    "written": 28,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "omp:cd4449ab L1-L4000: done; 26 chuyện thô, 28 cụm; ghi 28 mới, gộp 0\nđiểm nóng 143 (thiếu 0); lần chạy 1/1; 0.36 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-09-fixture-real-hub-xanh-nhung-so",
+      "title": "Fixture real-hub xanh, nhưng so sánh skill show trước/sau bắt hồi quy",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-bao-cao-tu-khai-xong-sai",
+      "title": "Báo cáo tự khai 'xong' sai hai lần, lead bắt bằng diff",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-block-scalar-thanh-chu-trong-description",
+      "title": "Block scalar '>-' thành chữ '>-' trong description",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-migration-v1-v2-loi-vi-meta",
+      "title": "Migration v1→v2 lỗi vì .meta/ bị coi là entity canonical",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-vong-duyet-cua-lead-7-luot",
+      "title": "Vòng duyệt của lead: 7 lượt, mỗi lượt bắt thứ máy tin",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-chuan-hoa-url-repo-mot-dau",
+      "title": "Chuẩn hoá URL repo: một dấu .git làm hai nguồn thành hai",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-migration-v4-nuot-loi-walkdir-lead",
+      "title": "Migration v4 nuốt lỗi WalkDir, lead bắt được",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-migration-v4-receipt-bi-tu-choi",
+      "title": "Migration v4: receipt bị từ chối vì shape check của distill/",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-schema-noi-cho-du-lieu-cu",
+      "title": "Schema nới cho dữ liệu cũ, rồi lead yêu cầu giữ chặt cho lesson mới",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-xoa-revision-package-noi-validation-cho",
+      "title": "Xoá revision package: nới validation cho tới khi test xanh",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-go-test-run-khong-khop-ten",
+      "title": "go test -run không khớp tên vẫn in PASS",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-sua-artefact-da-commit-manifest-golden",
+      "title": "Sửa artefact đã commit (manifest, golden) để test xanh",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-ky-tu-4-lam-go-yaml",
+      "title": "Ký tự '|4' làm Go yaml.v3 từ chối còn Python thì qua",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-xoa-1650-dong-thu-be-mat",
+      "title": "Xoá 1650 dòng: thu bề mặt MCP/web về bảng contract",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-doi-schema-keo-theo-20-lan",
+      "title": "Đổi schema kéo theo 20+ lần go test đỏ rải rác",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-test-bien-curator-lam-danh-sach",
+      "title": "Test biên curator làm danh sách việc khi cắt tool",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-commit-mang-tac-gia-la-mot",
+      "title": "Commit mang tác giả là một model AI khác",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-dung-vi-file-worktree-khac-nam",
+      "title": "Dừng vì file worktree khác nằm trong checkout chung",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-make-check-do-17-lan-trong",
+      "title": "make check đỏ 17 lần trong một wave",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-agent-ghi-nhan-va-bao-cao",
+      "title": "Agent ghi nhận và báo cáo rằng việc đối chiếu trường từng field với struct Go và JSON schema là bước xác minh bắt buộc trước khi kết luận một bảng mapping đã đúng.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-fixture-distill-that-1184-dong-42",
+      "title": "Fixture distill thật: 1184 dòng, 42 lesson, 77 SHA rút gọn",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-fixture-nguon-sai-o-cho-khac",
+      "title": "Fixture nguồn: sai ở chỗ khác nhau mỗi lượt",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-loi-vat-cua-cong-cu-edit",
+      "title": "Lỗi vặt của công cụ: edit bị từ chối khoảng 15 lần",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-migrate-thu-tren-ban-clone-rebuild",
+      "title": "Migrate thử trên bản clone: rebuild trạng thái v2 để có baseline",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-quet-grep-cho-ghi-skill-meta",
+      "title": "Quét grep: chỗ ghi skill.meta.yaml từ hai xuống một fallback",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-rebase-11-commit-len-main-khong",
+      "title": "Rebase 11 commit lên main không xung đột",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-trust-gate-metadata-upstream-khong-duoc",
+      "title": "Trust gate: metadata upstream không được tự duyệt chính nó",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-agent-tach-mot-loi-lon-thanh",
+      "title": "Agent tách một lỗi lớn thành nhiều commit nhỏ theo quy ước conventional commit, mỗi commit có make check xanh, và báo cáo hash sau mỗi bước.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "sessions": {
+    "omp:cd4449ab": {
+      "source": "omp",
+      "transcriptPath": "/home/vantt/.omp/profiles/gemini-tetcu72/agent/sessions/-projects-mcp-skill-hub-simplify/2026-10-09T02-40-10-134Z_01a11e88-4796-7023-a511-4a8dcd4449ab.jsonl",
+      "repoRoot": "/home/vantt/projects/momentry/.claude/worktrees/agent-a73050abc839225de/docs/_private/eval/outsider-haiku/cd4449ab/runs/1/scratch/repo",
+      "lastLine": 4000,
+      "size": 0,
+      "mtimeMs": 0,
+      "status": null,
+      "pending": false,
+      "needsRescore": [],
+      "mainGoals": [
+        {
+          "toLine": 4000,
+          "text": "Di chuyển (migrate) workspace/schema của skillhub qua các phiên bản v1→v2→v3→v4 theo từng phase, xoá subsystem insight cũ và đổi sang layout/writer mới, được lead duyệt từng checkpoint và kiểm chứng bằng dry run trên bản clone hub thật mà không làm hỏng dữ liệu."
+        }
+      ],
+      "harvests": [
+        {
+          "at": "2026-11-05T10:07:18.522Z",
+          "fromLine": 1,
+          "toLine": 4000,
+          "runs": 1,
+          "runsFailed": 0,
+          "chunks": 1,
+          "hotspots": 143,
+          "hotspotsMissing": 0,
+          "stories": 22,
+          "written": 23,
+          "merged": 0,
+          "privacyBlocked": 0,
+          "privacyUnchecked": 0,
+          "usd": 0.4057759,
+          "secs": 42.3,
+          "status": "done",
+          "explicit": true
+        }
+      ]
+    }
+  },
+  "repos": {}
+}

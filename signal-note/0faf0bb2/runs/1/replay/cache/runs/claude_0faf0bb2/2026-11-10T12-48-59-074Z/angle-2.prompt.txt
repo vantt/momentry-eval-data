@@ -1,0 +1,135 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Bộ dựng công ty một người vận hành bằng đội agent AI, chạy trên nền Multica tự host. Làm cho người chủ một công ty một người, và mỗi khách có một workspace riêng. Các team agent (Coding, Content, SEO & Analytics) nhận việc qua issue, làm theo workflow có cổng kiểm, và chờ chủ duyệt ở các bước quan trọng. Thông tin riêng của khách như client.yaml và secret nằm ngoài repo.
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L657] USER: tại sao không cần cái này `Bridge push chuyển thành agent tự kéo việc; bridge chỉ còn là tuỳ chọn`
+[L712] USER: vậy nếu dùng paperclip là dùng được luôn, không cần làm, chỉ cần setup?
+[L724] USER: A session-scoped Stop hook is now active with condition: "thử paperclip trước, chạy spike trên máy này đi, setup một sample opc company.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that's only for clearing a goal early.
+</asks>
+
+<story>
+hook: Agent xong việc trong 26 giây, nhưng cũng tự đóng việc cấm đóng
+tension: cam_ma_van_lot (Task đặt human_only, chỉ người mới đóng / Chính agent chuyển nó sang done)
+stakes: 3/3
+# Paperclip spike: SEN-1 xong sau 53 giây, SEN-3 sau 26 giây, nhưng agent tự đóng việc
+
+**Bối cảnh:** Dựng một công ty mẫu trên Paperclip, nối vào agent OpenClaw của AICoworker trên cùng máy, để thử vòng giao việc từ đầu đến cuối.
+**Chuyện gì xảy ra:** Ba agent được tạo qua API và hai task đi hết vòng: SEN-1 mất 53 giây để viết 3 bài và xin duyệt, SEN-3 mất 26 giây để lập ngân sách. SEN-3 đặt reviewPolicy human_only nhưng chính agent chuyển nó sang done, và đây là điểm yếu được xác nhận đầu tiên của spike.
+**Bài học:** Một cuộc thử nghiệm đầu-cuối nên kiểm cả trường hợp agent đi qua cổng duyệt, không chỉ trường hợp chạy thành công.
+**Artefact:** Bảng hai task (thời gian, kết quả). Không cần chụp màn hình giao diện.
+</story>
+
+<excerpt>
+[L872] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/paperclip; grep -n "claimedApiKeyPath\|readFile\|token" server/src/routes/access.ts | grep -iE "claim|save|json" | head -12; sed -n 1960,1995p server/src/routes/access.ts
+[L873] RESULT: 940: "Use the full gateway auth token from ~/.openclaw/openclaw.json (typically long random string)." | 1776: "Join as an external Paperclip agent, save your one-time claim secret, wait for board approval, then claim your Paperclip API key through th …[+934]
+[L877] TOOL Bash: paperclipai company create --json --payload-json '{"name":"Sen Coffee","description":"OPC mẫu: cửa hàng cà phê đặc sản bán online, một chủ (board) điều hành ba agent phòng ban Marketing, Sales, Finance. Spike fgOPC 2026-10-29."}' 2>&1 | tail -30
+[L878] RESULT: { | "id": "44a30586-28dc-45b7-b243-3a920c398032",
+[L886] AGENT: Company đã tạo xong, key prefix là `SEN`. Giờ tạo 3 agent. Token gateway được script Python đọc thẳng từ `/proc` và đưa vào cấu hình adapter, không in ra màn hình.
+…
+[L1212] USER: <task-notification>
+<task-id>bzm5c2i0r</task-id>
+<summary>Monitor event: "SEN-1 run and issue status (Paperclip spike)"</summary>
+<event>issue=in_progress comments=3 run=running</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L1213] TOOL Bash: curl -s http://127.0.0.1:3100/api/issues/9df35c11-70cf-4392-9567-f50b1fe581c8/comments | python3 -c " import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) else d.get('comments',[]) c=sorted(d,key=lambda c:c['createdAt'])[-1];print(c.get('authorType'),c.get('createdAt'));print(c.get('body …[+14]
+[L1214] RESULT: agent 2026-10-29T07:46:04.152Z | Dạ em đã hoàn thành 3 bài đăng Facebook giới thiệu hộp quà Tết theo đúng yêu cầu (mỗi bài từ 80-120 chữ, giọng ấm áp, có lời kêu gọi đặt trước):
+[L1222] AGENT: Agent Mai đã viết xong 3 bài và đăng thành comment trên SEN-1. Đang chờ agent chuyển task sang `in_review` và run kết thúc.
+[L1228] USER: <task-notification>
+<task-id>bzm5c2i0r</task-id>
+<tool-use-id>toolu_01Q8TC3bDn6CN55iVsekrHxP</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/bzm5c2i0r.output</output-file>
+<status>completed</status>
+<summary>Monitor "SEN-1 run and issue status (Paperclip spike)" stream ended</summary>
+<event>issue=in_progress comments=3 run=cancelled
+RUN_DONE cancelled</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+…
+[L1313] AGENT: Đang chờ Hà làm SEN-3. Trong lúc đó, mình chuẩn bị báo cáo spike.
+[L1315] USER: <task-notification>
+<task-id>bn37e7cwx</task-id>
+<summary>Monitor event: "SEN-3 Finance run status (Paperclip spike)"</summary>
+<event>issue=in_progress 96cb65c5 run=running</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L1318] AGENT: Hà đã checkout SEN-3: task có `executionRunId`, tức agent đã nhận việc theo đúng quy trình trong skill. Mình tiếp tục chờ kết quả.
+[L1324] USER: <task-notification>
+<task-id>bn37e7cwx</task-id>
+<tool-use-id>toolu_01Tit7kf1uKTaYx3mFBwoaHr</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/bn37e7cwx.output</output-file>
+<status>completed</status>
+<summary>Monitor "SEN-3 Finance run status (Paperclip spike)" stream ended</summary>
+<event>issue=done - run=succeeded
+END issue=done - run=succeeded</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L1326] AGENT: SEN-3 kết thúc ở trạng thái **`done`**, và chính agent đã chuyển nó sang `done`, mặc dù task đặt `reviewPolicy: human_only`. Đây có thể là lỗ hổng mình đã ghi trong lesson (`assertTransition` cho phép đi từ bất kỳ trạng thái nào sang bất kỳ trạng thái nào). Mình kiểm tra activity log để xác nhận.
+[L1327] TOOL Bash: I=0529c18d-c7a9-4162-90a7-873c63c595fc; curl -s "http://127.0.0.1:3100/api/companies/44a30586-28dc-45b7-b243-3a920c398032/activity?entityId=$I" | python3 -c " import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) else d.get('items',[]) for a in sorted(d,key=lambda a:a['createdAt']): print …[+552]
+[L1328] RESULT: 07:33:23 user issue.created "" | 07:47:53 user issue.updated {"to": "todo", "from": "backlog"}
+…
+[L1357] TOOL Bash: CO=44a30586-28dc-45b7-b243-3a920c398032; curl -s http://127.0.0.1:3100/api/health | python3 -c "import json,sys;print('server',json.load(sys.stdin)['status'])"; curl -s http://127.0.0.1:3100/api/companies/$CO/agents | python3 -c " import json,sys;d=json.load(sys.stdin) for a in d: print(' agent',a[' …[+336]
+[L1358] RESULT: server ok | agent Long (Sales) idle ready
+[L1365] AGENT: Spike đã chạy được trên máy này: Paperclip điều phối được agent của AICoworker. Công ty mẫu **Sen Coffee** có hai task đã đi hết vòng giao việc → agent làm → kết quả nằm trong task → đóng.
+
+Mở **http://127.0.0.1:3100** để xem: công ty Sen Coffee (`SEN`), goal "Bán 200 hộp quà Tết", project `2026-tet-gift-box`, area Finance, và ba agent Mai (Marketing), Long (Sales), Hà (Finance). Cả ba đều nối vào agent `main` của AICoworker, mỗi task một session riêng.
+
+| Task | Kết quả |
+|---|---|
+| SEN-1 (Mai) | Mất 53 giây. Agent viết 3 bài Facebook, rồi gửi xin duyệt. Mình đóng thay bạn bằng câu "Duyệt. Dùng 3 bài này cho tuần đầu chiến dịch." |
+| SEN-3 (Hà) | Mất 26 giây. Agent lập ngân sách FB/Google/Zalo, tổng 15 triệu, rồi **tự đóng task** |
+| SEN-2, SEN-4 | Vẫn ở backlog, để bạn tự giao thử |
+
+**Phải xử lý 3 chỗ mới chạy được:**
+1. **Lệch phiên bản giao thức.** Paperclip đòi phiên bản 4, gateway của AICoworker chỉ có phiên bản 3. Commit của chính Paperclip ghi là nội dung giao thức không đổi, nên mình sửa một dòng trong bản Paperclip đã cài cho chấp nhận cả 3 lẫn 4. Bản sửa sẽ mất khi nâng cấp Paperclip. Bản gốc lưu ở các file `*.orig`.
+2. **Model mặc định của AICoworker đã bị ngừng** (`gemini-3-pro-low`). Lỗi này **làm hỏng cả agent `main` khi bạn dùng bình thường**, không chỉ trong spike. Mình chỉ đổi model sang `gemini-3-flash` cho các session của Paperclip, không sửa `openclaw.json`. **Bạn nên đổi model mặc định trong AICoworker.**
+3. **Budget chặn agent mà không báo.** Model gói thuê bao không có giá, nên khi đặt ngân sách thì Paperclip từ chối mọi lần đánh thức tiếp theo. Đó là lý do lúc đầu comment của bạn không đánh thức được agent. Mình đã đặt budget về 0 cho cả ba agent.
+
+**Hai điểm yếu của Paperclip mà spike xác nhận:**
+- Đặt "chỉ người duyệt" (`human_only`) **không chặn được** agent tự đóng task. SEN-3 là ví dụ.
+- Agent lưu file ngân sách vào thư mục riêng của nó trong AICoworker, không đưa vào Paperclip. Cần thêm quy tắc "nộp sản phẩm bằng tài liệu đính vào ta …[+1115]
+[L1370] USER: <task-notification>
+<summary>Goal check-in: background work still running</summary>
+</task-notification>
+<system-reminder>
+Goal check-in: «thử paperclip trước, chạy spike trên máy này đi, setup một sample opc company.» is still active, and evaluation has been deferred for 30 min because background work is still running:
+- b6nmmmf9k · shell · cd ~ &amp;&amp; PAPERCLIP_TELEMETRY_DISABLED=1 DO_NOT_TRACK=1 paperclipai run 2&gt;&amp;1
+Check on their progress (e.g. read their output). If they are progressing, say so briefly and keep waiting; if they are stuck or no longer needed, fix or stop them and continue toward the goal.
+</system-reminder>
+[L1375] TOOL Bash: curl -s http://127.0.0.1:3100/api/health | python3 -c "import json,sys;print(json.load(sys.stdin)['status'])"; sed 's/\x1b\[[0-9;]*m//g' /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/b6nmmmf9k.output | grep -E "ERROR|FATAL" | tail -3 | cut -c1-200
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

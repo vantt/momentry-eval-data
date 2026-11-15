@@ -1,0 +1,142 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L6] USER: You are worktree C. Your worktree is /home/vantt/projects/mcp-skill-hub-simplify (branch wave2/simplify-p4-p3). It already holds your earlier uncommitted work: internal/workspace/workspace.go, internal/migration/migration.go, internal/migration/v3.go, and the phase-03 and phase-04 files. Rules before anything else: - Every read, edit and write call uses an absolute path that starts with /home/vantt/projects/mcp-skill-hub-simplify/. Every bash call runs there. - Never write to /home/vantt/projects/mcp-skill-hub (the lead's main checkout) or to /home/vantt/skill-hub (the live hub). That means no …[+798]
+[L1462] USER: Review of your Phase 4 by the lead: NOT mergeable yet. A dry run on a clone of the real hub fails. Fix these, test-first, in your worktree: 1. Real-hub migration fails at v1→v2 (the step is already on main, and you own internal/migration this wave): "skills/default/test-audit/.meta/skill.yaml: canonical entity is missing an ID". In a v1/v2 workspace, .meta/** is hub-meta (IsHubMeta). Never validate it as a canonical entity. planV2ToV3 reads it only as Phase 0 input. 2. The Phase 0 .meta/skill.yaml format is real data and must migrate: - fields: id (may be absent; take it from the directory), s …[+1942]
+[L1713] USER: Lead's second review: the real-hub migration now runs (schema 3, validate passes, trust unchanged). A before/after diff of `skill show --json` shows agent-visible regressions that your fixture test missed. Fix them test-first: 1. Description broken: herdr-cook-plan's SKILL.md frontmatter uses a YAML block scalar (`description: >-` followed by an indented paragraph). After migration its description is literally ">-". Parse the frontmatter with a real YAML parser (reuse the existing frontmatter parser in the codebase if there is one), never line by line. The resolver uses description, so this is …[+1536]
+</asks>
+
+<story>
+hook: Test xanh hết, nhưng mô tả của skill thành đúng chuỗi '>-'
+tension: tuong_ma_hoa_ra (Toàn bộ test xanh / Description thành '>-' làm hỏng việc định tuyến)
+stakes: 2/3
+# Test xanh nhưng description thành '>-' và thứ tự tên bị đảo
+
+**Bối cảnh:** Fixture test thật đã pass, nhưng so sánh skill show --json trước và sau migration cho thấy hai regression mà test không bắt được.
+**Chuyện gì xảy ra:** Một skill dùng block scalar YAML trong frontmatter, parser đọc từng dòng nên description thành đúng chuỗi '>-'. Resolver dùng description để định tuyến, nên đây là regression thật. Thứ tự tên cũng sai vì H1 đè lên name trong meta. Sau khi dùng parser YAML thật và đặt lại thứ tự ưu tiên, diff trước sau của name khớp nhau.
+**Bài học:** Test chỉ so với giá trị kỳ vọng sẽ bỏ lọt lỗi. So sánh trước và sau trên đầu ra thật của lệnh là cách bắt regression giống người dùng.
+**Artefact:** Diff JSON trước và sau của lệnh show, che tên skill và đường dẫn.
+**Góc người ngoài:** cách làm phổ biến là Đa số dev chỉ chạy test rồi tin kết quả; ít ai đối chiếu đầu ra thật của hai phiên bản trên dữ liệu thật; ở đây khác ở Test có thể xanh nhưng hiển thị sai. Đối chiếu đầu ra trực tiếp là cách bắt được lỗi như description thành '>-' mà test không thấy.
+</story>
+
+<excerpt>
+[L1711] RESULT: M internal/app/resolver.go | M internal/delivery/cli/telemetry_funnel.go
+[L1712] AGENT: ### Phase 4 Review Fixes & Real-Hub Verification Report
+
+All 6 items from the lead's review have been addressed, verified, and committed with `make check` green.
+
+---
+
+### 1. Fixes Implemented
+
+1. **Exclusion of `.meta/**` in v1/v2 Workspaces:**
+   - In `internal/canonical/canonical.go` and `internal/canonical/skill.go`: schema version is detected from `.skillhub/schema-version`. When schema version < 3, `.meta/**` is strictly treated as hub metadata (`IsHubMeta`) and is **never** validated as a canonical entity or resource.
+   - In `internal/catalog/input.go`: `isCanonicalEntityPathForVersion` ignores `.meta/skill.yaml` when workspace schema version < 3.
+   - This eliminates the `"canonical entity is missing an ID"` failure when migrating v1 workspaces.
+
+2. **Phase 0 `.meta/skill.yaml` Format & Sources Schema Support:**
+   - In `schemas/skill-metadata.schema.json` and `internal/canonical/skill.go`: `repo` and `learn_paths` are now accepted in the `skillSource` schema alongside `repository`.
+   - In `internal/migration/v3.go` (`transformSkillMetaToV3`): if `id` is omitted in Phase 0 `.meta/skill.yaml`, it is automatically taken from the skill directory name.
+   - In `internal/app/upstream.go` (`loadTrackedSkills`), `skill_review.go`, and `upstream_update.go`: `repo` is supported as a fallback for `repository`.
+
+3. **Normalized Repository URL Merging:**
+   - `normalizeRepoURL`: trims whitespace, trailing slashes, and trailing `.git`, and lowercases the host.
+   - `mergeSources`: matches `origin.repository` (e.g. `https://github.com/openclaw/openclaw.git`) with Phase 0 source `repo` (e.g. `https://github.com/openclaw/openclaw`).
+   - Merges matching sources into a single source with `roles: [upstream, learning]`, preserving both `synced`/`commit` (`90563ee83bd60ece1d2819bc09015c01c81063c4`) and all `learn_paths`, without creating duplicate source entries.
+
+4. **Real-Hub Fixture Test (`v1 → v2 → v3`):**
+   - Added `TestRealHubFixtureMigrationV1ToV2ToV3` in `internal/ap …[+4223]
+[L1713] USER: Lead's second review: the real-hub migration now runs (schema 3, validate
+passes, trust unchanged). A before/after diff of `skill show --json` shows
+agent-visible regressions that your fixture test missed. Fix them test-first:
+
+1. Description broken: herdr-cook-plan's SKILL.md frontmatter uses a YAML
+   block scalar (`description: >-` followed by an indented paragraph). After
+   migration its description is literally ">-". Parse the frontmatter with a
+   real YAML parser (reuse the existing frontmatter parser in the codebase if
+   there is one), never line by line. The resolver uses description, so this is
+   a routing regression.
+2. Name order is wrong: test-audit became "Test Audit" and herdr-cook-plan
+   became "Herdr Cook Plan". The order must be:
+   a) an explicit meta `name` (kept by the migration only when it differs from
+      the SKILL.md frontmatter name)
+   b) the SKILL.md frontmatter `name`
+   c) the first H1
+   d) the id
+   With that order, markdown-to-epub stays "Markdown to Epub", and the other
+   two keep "test-audit" and "herdr-cook-plan".
+3. Sources write BOTH `repo` and `repository` with the same value. Write
+   exactly one key, `repo` (D2), and still read `repository` for older files.
+4. The migration drops provenance.origin.content_digest, while skill_add still
+   writes content_digest on new sources. Either keep it in the upstream source,
+   or stop writing it in skill_add too. Be consistent and say which.
+5. Extend TestRealHubFixtureMigrationV1ToV2ToV3: for all three skills, assert
+   that `name`, `description`, `status`, routing fields, and the resource list
+   minus `.meta/*` are identical before and after migration. Trust alone is not
+   enough.
+6. `validate` on the migrated copy warns `missing_examples` for test-audit.
+   Confirm with the main binary that this warning existed before the migration
+   (pre-existing), and say so in the report. Do not add examples to make it go
+   away.
+
+Verify again on a fresh clone of /home/vantt/skill-hub in your own scratch
+directory, never on /home/vantt/skill-hub itself, by diffing `skill show
+<id> --json` before (main binary) and after (your binary). Commit with
+`make check` green. Then start Phase 3 code.
+[L1714] TOOL grep: func.*Frontmatter
+[L1716] RESULT: # internal/ | ## app/
+…
+[L1776] RESULT: [internal/app/migration_v3_fixture_test.go#B92A] | Successfully wrote 12952 bytes to internal/app/migration_v3_fixture_test.go
+[L1777] TOOL bash: go test -v ./internal/app -run TestRealHubFixtureMigrationV1ToV2ToV3
+[L1779] RESULT (exit 1): [raw output: artifact://159] | Wall time: 1.61 seconds | Command exited with code 1
+[L1780] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/migration/v3.go:230-310
+[L1782] RESULT: [internal/migration/v3.go#E831] | 223:func mergeRouting(oldMap, existingMap map[string]any) map[string]any {
+…
+[L1869] RESULT: (no output) | Wall time: 0.03 seconds
+[L1870] TOOL bash: go build -o /tmp/skillhub-c ./cmd/skillhub && go -C /home/vantt/projects/mcp-skill-hub build -o /tmp/skillhub-main ./cmd/skillhub && rm -rf /tmp/scratch-hubcopy && git clone /home/vantt/skill-hub /tmp/scratch-hubcopy && /tmp/skillhub-main skill show test-audit --workspace /tmp/scratch-hubcopy --json …[+705]
+[L1872] RESULT (exit 2): done. | Wall time: 0.66 seconds | Command exited with code 2
+[L1873] TOOL bash: /tmp/skillhub-main skill show test-audit --workspace /tmp/scratch-hubcopy
+[L1875] RESULT (exit 2): FIX: Resolve or read the skill again from the active catalog snapshot. | Wall time: 0.03 seconds | Command exited with code 2
+…
+[L1885] TOOL bash: git clone /home/vantt/skill-hub /tmp/hub-after && /tmp/skillhub-c migrate --to 3 --yes --workspace /tmp/hub-after && /tmp/skillhub-c skill show test-audit --workspace /tmp/hub-after --json > /tmp/after-test-audit.json && /tmp/skillhub-c skill show markdown-to-epub --workspace /tmp/hub-after --json > …[+186]
+[L1887] RESULT: Cloning into '/tmp/hub-after'... | done.
+[L1888] TOOL bash: python3 -c ' import json, sys for name in ["test-audit", "markdown-to-epub", "herdr-cook-plan"]: with open(f"/tmp/before-{name}.json") as f: b = json.load(f) with open(f"/tmp/after-{name}.json") as f: a = json.load(f) print(f"=== {name} ===") print("Name before:", repr(b["manifest"]["name"]), "after …[+615]
+[L1890] RESULT: === test-audit === | Name before: 'test-audit' after: 'test-audit'
+[L1891] TOOL bash: rm -rf /tmp/hub-before /tmp/hub-after /tmp/before-*.json /tmp/after-*.json /tmp/skillhub-main /tmp/test-audit-meta-backup /tmp/skillhub-c
+[L1893] RESULT: (no output) | Wall time: 0.01 seconds
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

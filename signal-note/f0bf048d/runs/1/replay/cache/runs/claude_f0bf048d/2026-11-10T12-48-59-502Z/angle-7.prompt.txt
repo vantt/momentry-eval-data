@@ -1,0 +1,115 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L2862] USER: pi-openai-tetnu không nên là pi-openai-codex (tetnu là account, sau này có thể thêm account)
+[L2890] USER: rồi cả 3 runtime đều đã login. liệt kê 3 runtime mới
+[L2955] USER: cho system-operator thêm khả năng cài pi/omp và update pi/omp
+</asks>
+
+<story>
+hook: Nâng omp lên 18.14.2 rồi quay về 18.12.6 chỉ mất vài giây
+tension: it_ma_nhieu (ghim phiên bản, mỗi bản một thư mục / nâng cấp hay lùi đều trong vài giây)
+stakes: 2/3
+# Cài pi và omp bằng script ghim phiên bản, kiểm checksum, cho System Operator tự nâng cấp
+
+**Bối cảnh:** Runtime cần pi và omp cài dưới user daemon, agent không có sudo.
+**Chuyện gì xảy ra:** Script ghim phiên bản: pi cài từ npm, omp tải từ release và kiểm SHA256 khớp checksum chính thức (18.12.6). Mỗi phiên bản nằm trong thư mục riêng nên quay về bản cũ chỉ mất vài giây. Agent thử nâng omp lên 18.14.2 rồi quay lại 18.12.6, cả hai đều chạy đúng. Không dùng 'pi update' hay 'omp update' vì chúng tự nâng cấp ngoài bản ghim.
+**Bài học:** Đừng dùng cơ chế update tích hợp của công cụ khi bạn cần kiểm soát phiên bản. Ghim phiên bản và tự cài, có đường quay lại.
+**Artefact:** Kết quả lệnh status (không có secret).
+</story>
+
+<excerpt>
+[L2957] TOOL Bash: ~/.local/bin/omp --help 2>&1 | grep -i -E "update|upgrade|version" | head; ~/.local/bin/pi --help 2>&1 | grep -i -E "update|upgrade" | head; ls ~/.omp/natives 2>/dev/null | head -3; strings -n 12 ~/.local/bin/omp 2>/dev/null | grep -m3 -E "github.com/[^/]+/oh-my-pi|releases/download"
+[L2960] RESULT: commit Generate a commit message and update changelogs | update Check for and install updates
+[L2965] TOOL Bash: ~/.local/bin/omp update --help 2>&1 | head -20; gh release list -R can1357/oh-my-pi -L 3 2>&1; gh release view -R can1357/oh-my-pi --json tagName,assets -q '.tagName, (.assets[].name)' 2>&1 | head -15; npm view @earendil-works/pi-coding-agent version time.modified 2>&1 | head -3
+[L2968] RESULT: Check for and install updates | USAGE
+[L2970] TOOL Bash: cat ~/project/fgOPC/multica/stack/tools-owner.sh; ls -la /opt/opc-agent/lib /opt/opc-agent/bin | head -30
+[L2973] RESULT: #!/usr/bin/env bash | # Run once, as root: lets the owner's user (and so the System Operator, which
+…
+[L3001] TOOL Bash: cd ~/project/fgOPC/multica/stack && sed -i 's|^BIN=/opt/opc-agent/bin$|PREFIX=${OPC_PREFIX:-/opt/opc-agent}\nBIN=$PREFIX/bin|; s|^LIB=/opt/opc-agent/lib$|LIB=$PREFIX/lib|' pi-runtime.sh && bash -n pi-runtime.sh && grep -n "^PREFIX\|^BIN\|^LIB" pi-runtime.sh; S=/tmp/claude-1000/-opt-AICoworker/f0bf04 …[+414]
+[L3002] RESULT: 23:PREFIX=${OPC_PREFIX:-/opt/opc-agent} | 24:BIN=$PREFIX/bin
+[L3007] AGENT: Bản ghim hiện tại chạy tốt trong thư mục nháp. Tôi thử luôn đường nâng cấp: `omp` lên 18.14.2 rồi quay về bản cũ.
+[L3008] TOOL Bash: S=/tmp/claude-1000/-opt-AICoworker/f0bf048d-0996-462f-94f4-0d8f367f342c/scratchpad; sed 's/^OMP_VERSION=18.12.6/OMP_VERSION=18.14.2/' ~/project/fgOPC/multica/stack/pi-runtime.sh > $S/pi-up.sh; OPC_PREFIX=$S/prefix bash $S/pi-up.sh tools 2>&1 | grep -v deprecated | tail -2; ls $S/prefix/lib/omp; OPC_ …[+187]
+[L3011] RESULT: pi-xai-vantt -> pi 1.4.0, account xai-vantt | omp-gemini-tetcu72 -> omp 18.14.2, account gemini-tetcu72
+[L3013] AGENT: Đường nâng cấp và quay lại đều chạy đúng. Giờ tôi cập nhật quy trình trong skill của System Operator.
+[L3014] TOOL Bash: cd ~/project/fgOPC/multica/packages/system-ops/skills/multica-ops/references && awk '/^## Runtime khác Claude/,/^## Dọn đĩa/' daemon-runtime.md
+…
+[L3027] TOOL Bash: cd ~/project/fgOPC/multica && grep -n "Nâng cấp \`pi\`" packages/system-ops/skills/multica-ops/SKILL.md; node tools/opc.mjs deploy packages/system-ops 2>&1 | grep "^deploy"; node tools/opc.mjs plan packages/system-ops 2>&1 | grep "^plan"; git add stack/pi-runtime.sh packages/system-ops && git commit …[+567]
+[L3030] RESULT: 61:- **Nâng cấp `pi` hoặc `omp`** (đổi `PI_VERSION`/`OMP_VERSION`), theo `daemon-runtime.md`. | deploy: 1 change(s) in workspace system
+[L3031] AGENT: Xong phần quy trình: System Operator giờ tự cài, nâng cấp và quay lại bản cũ của `pi`/`omp` được mà không cần sudo. Còn một lệnh sudo anh chạy một lần thì nó mới làm được trên máy thật.
+
+**Lệnh `stack/pi-runtime.sh` có thêm ba việc:**
+- `status`: so bản đang ghim, bản đã cài và bản mới nhất. Hiện `pi` 1.4.0 đã là mới nhất; `omp` đang ghim 18.12.6, đã có 18.14.2.
+- `tools`: cài đúng bản ghim, không cần sudo. Mỗi phiên bản nằm trong một thư mục riêng và bản cũ được giữ lại, nên quay về bản cũ chỉ mất vài giây.
+  - `pi` cài từ npm. `omp` tải từ release chính thức và kiểm checksum; bản 18.12.6 anh đang dùng khớp checksum chính thức.
+  - Lệnh bọc được thay mà không làm gián đoạn lượt chạy đang dở.
+- `accounts`: tạo thư mục cho tài khoản mới, cần root.
+
+Tôi đã thử trong thư mục nháp: cài bản ghim, nâng `omp` lên 18.14.2 rồi quay lại 18.12.6, đều chạy đúng.
+
+**Skill của System Operator** (đã deploy, chạy plan lại ra 0 thay đổi):
+- **Tự làm:** xem phiên bản; cài lại bản ghim khi lệnh bọc hỏng; tạo runtime profile cho tài khoản anh đã đăng nhập.
+- **Hỏi anh trước:** nâng cấp. Nó gửi bản cũ và bản mới, tóm tắt changelog và cách quay lại. Anh "ok" thì nó sửa phiên bản trong script, chạy `tools`, commit, rồi kiểm (`--version`, runtime online, giao một issue nhỏ). Lỗi thì nó quay về bản cũ và `git revert`.
+- **Không dùng `pi update` hay `omp update`**, vì hai lệnh này tự nâng cấp ngoài bản ghim.
+- **Thêm tài khoản:** nó sửa `LAUNCHERS` rồi chạy `tools`; anh chạy `accounts` và `/login`; sau đó nó tạo profile và chia sẻ runtime cho anh.
+
+Commit `70db297`.
+
+**Còn phải làm để dùng thật:**
+1. Anh chạy một lần lệnh dưới đây, để từ đó System Operator (và tôi) ghi được vào `/opt/opc-agent/bin` và `lib` mà không cần sudo:
+   ```
+   ! sudo bash ~/project/fgOPC/multica/stack/tools-owner.sh
+   ```
+2. Sau đó tôi chạy `pi-runtime.sh tools` để chuyển ba runtime hiện tại sang cách cài mới. Phiên đăng nhập của anh vẫn giữ nguyên, vì thư mục tài khoản không đổi. Bản cài cũ vẫn còn trên máy; muốn  …[+124]
+[L3040] USER: đã chạy
+[L3043] TOOL Bash: ls -ld /opt/opc-agent/bin /opt/opc-agent/lib /opt/opc-agent/lib/pi /opt/opc-agent/lib/omp; cd ~/project/fgOPC/multica && bash stack/pi-runtime.sh tools 2>&1 | grep -v deprecated; bash stack/pi-runtime.sh status; for l in pi-openai-tetnu pi-xai-vantt omp-gemini-tetcu72; do echo "$l: $(/opt/opc-agent/ …[+39]
+…
+[L3049] TOOL Bash: cd ~/multica-spike && P=$(cat .pat); for ws in 011422fd-27a5-4ced-8ad7-f533cf7e1718 b65ce663-f822-4985-b799-0359ab226333; do curl -fsS -H "Authorization: Bearer $P" -H "X-Workspace-ID: $ws" http://127.0.0.1:8310/api/runtimes | python3 -c 'import sys,json d=json.load(sys.stdin); d=d.get("runtimes",d) …[+175]
+[L3052] RESULT: Claude (fg-server-opc) online fg-server-opc · 2.1.314 (Claude Code) | Pi · OpenAI (tetnu) (fg-server-opc) online fg-server-opc · 1.4.0
+[L3053] AGENT: Đã chuyển xong, không cần sudo: `tools-owner.sh` đã cấp quyền đúng, nên tôi chạy `pi-runtime.sh tools` bằng user `vantt`.
+
+- **Ba lệnh bọc** giờ trỏ vào thư mục theo phiên bản: `lib/pi/1.4.0` và `lib/omp/18.12.6`. Chạy `--version` cả ba đều ra đúng bản.
+- **Sáu runtime vẫn online** (3 ở opc-studio, 3 ở sen-coffee) và hiện đúng phiên bản. Thư mục tài khoản không đổi, nên phiên đăng nhập của anh vẫn giữ.
+- **Còn bản cài cũ** (không theo phiên bản) nằm trong `lib/pi/node_modules` và `lib/omp/omp`. Không lệnh nào trỏ tới chúng nữa. Muốn xoá thì anh chỉ cần nói, vì xoá là việc tôi phải hỏi trước.
+- **Có bản mới:** `omp` 18.14.2 đã ra, máy đang ghim 18.12.6. Muốn nâng cấp thì cứ bảo; tôi đọc changelog, tóm tắt cho anh rồi mới nâng.
+
+Phần chạy thật của ba runtime này mới chỉ kiểm qua `--version` và trạng thái online. Chưa runtime nào chạy một lượt thật. Anh muốn tôi chạy thử mỗi runtime một issue nhỏ không?
+[L3079] USER: kiểm tra xem, anh thấy chạy rồi đấy
+[L3099] TOOL Bash: journalctl -u opc-multica-daemon --since "-3h" --no-pager 2>&1 | grep -iE "pi|omp|task|error|fail" | tail -60
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

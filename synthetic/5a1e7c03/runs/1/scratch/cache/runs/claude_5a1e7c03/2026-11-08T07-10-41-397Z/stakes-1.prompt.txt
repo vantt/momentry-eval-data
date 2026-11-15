@@ -1,0 +1,25 @@
+Dưới đây là 7 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Rubric 10 tiêu chí có/không → 3 tiêu chí theo mức: chấm nhanh gấp đôi, học sinh đọc nhận xét
+   Giáo viên thử rubric mới gồm 3 tiêu chí theo ba mức, cộng một câu nhận xét bắt đầu bằng "Lần sau em thử…". Với 8 bài thử, tổng thời gian là 41 phút, khoảng 5 phút một bài thay vì 12 phút. Ước tính 42 bài sẽ mất khoảng 3,5 tiếng thay vì hơn 8 tiếng. Khi trả thử 8 bài, cả 8 em đọc nhận xét và 5 em hỏi lại "thử là thử thế nào". Rubric cũ được giữ thành bản riêng để so sánh trong họp tổ.
+M2. Gặp vấn đề, agent dừng việc đang làm, báo cáo mô hình phát hiện được, đưa ba phương án có khuyến nghị rõ, rồi chờ giáo viên chọn trước khi làm tiếp.
+   Gặp vấn đề, agent dừng việc đang làm, báo cáo mô hình phát hiện được, đưa ba phương án có khuyến nghị rõ, rồi chờ giáo viên chọn trước khi làm tiếp. Hoàn thành yêu cầu đang được giao và chỉ nhắc vấn đề phát sinh ở cuối, hoặc tự chọn cách xử lý mà không hỏi.
+M3. Sau khi giáo viên chỉ ra quy tắc không đưa đề thật vào prompt, agent ghi quy tắc đó thành một mục cố định trong file ghi chú của dự án để áp dụng cho các lần sau.
+   Sau khi giáo viên chỉ ra quy tắc không đưa đề thật vào prompt, agent ghi quy tắc đó thành một mục cố định trong file ghi chú của dự án để áp dụng cho các lần sau. Nhắc lại quy tắc trong cuộc trò chuyện hiện tại, hoặc chỉ tin vào việc người dùng sẽ tự nhớ.
+M4. Đổi tên 42 ảnh chụp theo sổ lớp bằng script, chạy trước khi kiểm tra thứ tự
+   Agent dùng script đổi 42 file từ tên ảnh sang dạng số thứ tự và tên học sinh theo danh sách lớp, rồi báo đã xong. Việc đổi tên dựa hoàn toàn vào lời giáo viên rằng thứ tự chụp khớp sổ, và chưa có bước kiểm tra mẫu vài tờ trước khi đổi hàng loạt. Nếu thứ tự lệch, toàn bộ bài sẽ gắn nhầm tên.
+M5. Phiếu ôn trùng đề thi thật: bản nháp bị dán vào prompt, đề đã lộ qua Zalo
+   Agent định soạn đề chính thức từ bản nháp thì phát hiện phần Viết của đề thật trùng gần nguyên văn với một đề luyện trong phiếu ôn đã gửi, dòng 34. Đề bảo mật đã nằm ngoài tay giáo viên khoảng hai ngày. Agent không gỡ phiếu ôn hay nhắn đính chính vì sẽ gây chú ý, mà đổi hẳn đề Phần II, giữ nguyên dạng nghị luận 600 chữ. Sau khi đổi, agent tìm cụm từ mới trong toàn bộ tài liệu bằng grep và không thấy trùng. Từ nay quy tắc là không dán đề thật vào khi nhờ soạn đề luyện, chỉ đưa dạng bài.
+M6. Bài mẫu giúp học sinh yếu, nhưng 17/42 bài bị chép khung
+   Khi kiểm tra 42 bài bằng tìm chuỗi văn bản, agent thấy 17 bài dùng đúng ví dụ trong bài mẫu và 14 bài mở đầu gần nguyên văn câu mở của bài mẫu. Số em hay bỏ giấy trắng giảm: cả 7 em đó đều viết đủ ba đoạn. Đổi lại, giáo viên không còn thấy suy nghĩ riêng của 17 em, kể cả những em vốn tự viết được. Giáo viên chọn làm cả ba hướng: chấm theo rubric nhưng ghi nhận xét riêng, cho viết lại phần dẫn chứng không có tài liệu, và từ nay chỉ phát dàn ý câu hỏi thay cho bài mẫu.
+M7. Chuyển điểm sang file nhập trường: làm tròn kiểu Python có thể lệch với quy ước
+   Agent dùng pandas round(1) để làm tròn 42 điểm và xuất ra file xlsx với đúng ba cột và 42 dòng. Hàm round của Python và numpy làm tròn về số chẵn khi đúng giữa, nên 6,25 thành 6,2 và 6,35 thành 6,4, khác với quy ước làm tròn nửa lên thường dùng trong chấm điểm. Trong phiên không thấy bước nào đối chiếu số làm tròn với điểm gốc có số đúng giữa hay không.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

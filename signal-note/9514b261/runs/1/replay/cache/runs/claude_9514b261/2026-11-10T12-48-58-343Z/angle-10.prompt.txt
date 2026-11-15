@@ -1,0 +1,74 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) là tầng nền tảng để xây và chạy các ứng dụng agent, gồm hạ tầng, skill và tự động hoá nằm dưới mọi ứng dụng agent. Làm cho nhà phát triển, để họ tạo agent mới mà không phải xây mọi thứ từ đầu. Cài bằng một binary `fgctl` trên Linux (x86_64) và Windows 10 trở lên (x86_64), không cần clone repo, npm hay Rust; macOS và Windows ARM chưa được hỗ trợ trong bản alpha. Đang ở bản alpha v0.2.0-rc.2.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L1253] USER: như vậy cần thêm note về canonical-decision-projection vào chổ tài liệu của Effective Decision Reducer để biết và nhớ rằng chúng ta đã có một phần liên quan. nhắc nhở thêm về việc cập nhật component authority/boundary
+[L1325] USER: cũng cần bật agents để dò vì có thể có sự trùng lắp giữa `Knowledge and Documentation Engine` và Knowledge Registry. Đâu đó chúng ta đã từng xây dựng phần quản lý document một cách sơ khai rồi. cấn scan plans, reports và work items, history
+[L1582] USER: em update proposal đi nhé
+</asks>
+
+<story>
+hook: Pull về thì nhật ký bị sửa song song: agent phải dựng lại từng mục
+tension: gap_ma_phai_chon (Remote và máy local cùng sửa một file nhật ký / Agent phải ghi lại mục theo đúng giờ mà không đụng việc dở của owner)
+stakes: 0/3
+# Kéo remote, file nhật ký bảng chương trình bị sửa song song: agent phải dựng lại bản ghi
+
+**Bối cảnh:** Agent đã sửa log.md và plan.md của bảng chương trình, rồi phải pull và rebase vì remote đã đổi cùng hai file.
+**Chuyện gì xảy ra:** Agent lưu patch của phần sửa, khôi phục file, pull với autostash, rồi ghi lại các mục nhật ký lên đầu file theo đúng thứ tự giờ và chuyển hàng RULE sang running. Commit được tách theo đúng file của agent, không đụng thay đổi dở của owner.
+**Bài học:** Với file dùng chung, lưu patch trước khi pull và ghi lại bằng script theo thứ tự thời gian, đừng sửa tay lại.
+**Artefact:** Thứ tự ba commit đã push (docs(platform), docs(plans), docs(board)). Không cần che.
+</story>
+
+<excerpt>
+[L1657] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; mkdir -p $S; /usr/bin/git diff -- plans/261017-1313-fgos-platform-program-board/log.md plans/261017-1313-fgos-platform-program-board/plan.md > $S/board-edits.patch; wc -l $S/board-edits.patch; echo "--re …[+397]
+[L1662] RESULT: 30 /tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad/board-edits.patch | --remote đổi file nào trong số file dirty của owner:
+[L1675] TOOL Bash: /usr/bin/git restore -- plans/261017-1313-fgos-platform-program-board/log.md plans/261017-1313-fgos-platform-program-board/plan.md && /usr/bin/git commit -q -m "docs(platform): note that the documentation engine starts from the running knowledge registry and the decision projection" -- docs/platform …[+861]
+[L1680] RESULT: a3ba8cd5e docs(platform): note that the documentation engine starts from the running knowledge registry and the decision projection | error: pathspec 'plans/261021-1513-rule-management-group-1a' did not match any file(s) known to git
+[L1687] TOOL Bash: P="plans/261021-1513-rule-management-group-1a plans/reports/research-261021-1643-canonical-decision-projection-component.md plans/reports/research-261021-1707-doc-plan-dedup-components.md plans/reports/research-261021-1752-knowledge-registry-overlap-plans-reports.md plans/reports/research-261021-175 …[+600]
+[L1697] RESULT: 87545f897 docs(plans): plan the rule-management group 1A fixes and record the decision-projection and knowledge-registry research | a3ba8cd5e docs(platform): note that the documentation engine starts from the running knowledge registry and the decisi …[+13]
+[L1703] AGENT: Hai commit đã vào, chỉ chứa file của em. Giờ em pull và rebase lên remote (autostash giữ thay đổi của anh), rồi ghi board lên đầu log mới.
+[L1704] TOOL Bash: /usr/bin/git pull --rebase --autostash origin main 2>&1 | tail -6; echo "--status:"; /usr/bin/git status -sb | head -6; /usr/bin/git stash list | cat; echo "--AGENTS.md owner block còn:"; grep -c "AGENTKIT-OMP" AGENTS.md; echo "--RULE row hiện tại:"; grep -n "^| RULE" plans/261017-1313-fgos-platform …[+135]
+[L1705] RESULT: From https://github.com/vantt/forgent | * branch main -> FETCH_HEAD
+[L1715] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; python3 - "$S/board-edits.patch" <<'EOF' import sys,re patch=open(sys.argv[1],encoding='utf8').read() # tách theo file parts=re.split(r'^diff --git ',patch,flags=re.M) log_added=[];plan_new=None for p in …[+1191]
+[L1716] RESULT: mục log lấy từ patch: 3 | RULE row còn ready: True
+[L1731] TOOL Bash: awk 'NR>=7 && NR<=16 {printf "%d: [%s]\n", NR, substr($0,1,50)}' plans/261017-1313-fgos-platform-program-board/log.md
+[L1736] RESULT: 7: [] | 8: [Ghi **dòng mới lên đầu**, ngay dưới đâ]
+[L1743] TOOL Bash: python3 - <<'EOF' import re p='plans/261017-1313-fgos-platform-program-board/log.md' L=open(p,encoding='utf8').read().split('\n') i=next(k for k,l in enumerate(L) if l.startswith('- 2026-10-21 16:50 (phiên thực hiện luồng RULE')) entry=L[i] del L[i:i+2] # dòng và dòng trống kèm theo # chèn trước mục …[+347]
+[L1748] RESULT: 10:- 2026-10-21 18:05 (phiên thực hiện lu� | 12:- 2026-10-21 17:55 (phiên thực hiện lu�
+[L1760] TOOL Bash: grep -c "^- 2026-10-21 16:50 (phiên thực hiện luồng RULE" plans/261017-1313-fgos-platform-program-board/log.md; /usr/bin/git diff --stat -- plans | cat; /usr/bin/git commit -q -m "docs(board): claim the rule-management lane and record the decision-projection and knowledge-registry findings" -- plans …[+188]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

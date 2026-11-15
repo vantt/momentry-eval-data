@@ -1,0 +1,703 @@
+{
+  "id": "5a1e7c02",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/projects/momentry/.claude/worktrees/agent-a16218d210d5a04c4/scripts/eval/synthetic/5a1e7c02-8c4f-4d21-a6b3-7e9f0a1b2c22.jsonl",
+  "fromLine": 1,
+  "toLine": 67,
+  "windowSha": "d5f52a899c219220",
+  "at": "2026-11-10T12:45:35.786Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.047758,
+  "dryRun": {
+    "usd": 0.11,
+    "tokens": 3952,
+    "chunks": 1,
+    "hotspots": 2,
+    "entries": 67,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:5a1e7c02",
+    "fromLine": 1,
+    "toLine": 67,
+    "usd": 0.08970380000000001,
+    "secs": 19,
+    "exitCode": 0,
+    "status": "done",
+    "written": 10,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-14-hai-lanh-dao-cung-noi-gia-8a83",
+        "status": "angle",
+        "angle": "Một nhóm nghiên cứu đang khảo sát vì sao bệnh nhân nha khoa không quay lại: tỷ lệ churn tăng từ 22% lên 31%, và cần đề xuất 3 hành động trước cuối Q4. Trong buổi kickoff, lãnh đạo sales và vận hành đều nói 'giá', và bản tóm tắt ghi đó là điểm cả ban lãnh đạo đồng ý. Nhưng ghi chú thô cho thấy một người lo đối thủ bán rẻ hơn, còn người kia lo phí đồng chi trả đổi từ tháng 5 khiến bệnh nhân bất ngờ khi thanh toán, nên hai vấn đề cần hai hướng xử lý khác nhau. Ai dùng AI để tóm tắt biên bản họp nên đối chiếu ghi chú thô trước khi báo đồng thuận.",
+        "audience": "dev hoặc người làm nghiên cứu dùng AI để tóm tắt biên bản họp",
+        "evidence": [
+          14,
+          41
+        ],
+        "spine": {
+          "context": {
+            "text": "Một nhóm nghiên cứu đang khảo sát vì sao bệnh nhân nha khoa không quay lại, cho một chuỗi phòng khám.",
+            "evidence": [
+              1,
+              13
+            ]
+          },
+          "want": {
+            "text": "Muốn có 3 hành động rõ ràng trước cuối Q4 để giảm churn, vốn đã tăng từ 22% lên 31%.",
+            "evidence": [
+              14
+            ]
+          },
+          "obstacle": {
+            "text": "Bản tóm tắt gom 'giá' thành một điểm đồng thuận, trong khi hai lãnh đạo đang nói về hai vấn đề khác nhau.",
+            "evidence": [
+              14,
+              41
+            ]
+          },
+          "turn": {
+            "text": "Tưởng sales và vận hành đã đồng ý về giá; hoá ra một người lo đối thủ bán rẻ hơn, người kia lo bệnh nhân bất ngờ khi thanh toán.",
+            "evidence": [
+              14,
+              41
+            ]
+          },
+          "action": {
+            "text": "Tách slide giá thành 'Price A: competitor promo' và 'Price B: checkout surprise', và ghi chú nhắc brief người phụ trách vận hành trước buổi họp.",
+            "evidence": [
+              43,
+              45
+            ]
+          },
+          "outcome": {
+            "text": "Bản nghiên cứu đã có hai mục giá riêng biệt; chưa có kết quả nào từ buổi readout trong đoạn này.",
+            "evidence": [
+              45
+            ]
+          },
+          "takeaway": {
+            "text": "Cùng một từ không có nghĩa là cùng một vấn đề; hãy đối chiếu ghi chú thô với bản tóm tắt trước khi báo đồng thuận.",
+            "evidence": [
+              41,
+              42
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-14-khao-sat-va-phong-van-xep-8a83",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-2: spine.obstacle: evidence ngoài các dòng đã đưa: 34; spine.turn: evidence ngoài các dòng đã đưa: 29; spine.action: evidence ngoài các dòng đã đưa: 27, 31; spine.outcome: evidence ngoài các dòng đã đưa: 29, 33; spine.takeaway: evidence ngoài các dòng đã đưa: 29, 33 (+1) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c02/runs/3/llm/angle-2-retry.json"
+      },
+      {
+        "id": "2026-10-14-luat-chon-3-trong-9-va-8a83",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-3: spine.obstacle: evidence ngoài các dòng đã đưa: 9, 32; spine.turn: evidence ngoài các dòng đã đưa: 9, 10, 32, 33; spine.action: evidence ngoài các dòng đã đưa: 35; spine.outcome: evidence ngoài các dòng đã đưa: 35; spine.takeaway: evidence ngoài các dòng đã đưa: 9, 32 (+1) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c02/runs/3/llm/angle-3-retry.json"
+      },
+      {
+        "id": "2026-10-14-mot-cau-lo-loi-ve-le-8a83",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-4: spine.obstacle: evidence ngoài các dòng đã đưa: 49; spine.turn: evidence ngoài các dòng đã đưa: 49; spine.action: evidence ngoài các dòng đã đưa: 47, 48, 49; spine.outcome: evidence ngoài các dòng đã đưa: 51; spine.takeaway: evidence ngoài các dòng đã đưa: 49 (+1) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c02/runs/3/llm/angle-4-retry.json"
+      },
+      {
+        "id": "2026-10-14-tro-ly-bao-con-so-ma-8a83",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-5: spine.want: evidence ngoài các dòng đã đưa: 52; spine.obstacle: evidence ngoài các dòng đã đưa: 52; spine.turn: evidence ngoài các dòng đã đưa: 43; spine.action: evidence ngoài các dòng đã đưa: 43; spine.takeaway: evidence ngoài các dòng đã đưa: 43 (+1) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c02/runs/3/llm/angle-5-retry.json"
+      },
+      {
+        "id": "2026-10-14-ten-file-sai-ngay-doc-header-8a83",
+        "status": "angle",
+        "angle": "Một nghiên cứu về việc khách rời đi (churn) ở một khách hàng nha khoa, đang tổng hợp 14 buổi phỏng vấn bệnh nhân cho buổi trình bày lãnh đạo thứ Năm. Agent đề xuất đổi tên hai file lệch mẫu theo ngày trong tên, nhưng người làm nghĩ mình ghi âm một buổi vào ngày 25 chứ không phải 24. Mở dòng đầu file ra thì đúng là 25/09, nên tên file đã sai. Ai làm phỏng vấn định tính nên đọc metadata trong file trước khi tin tên file.",
+        "audience": "người làm phỏng vấn và phân tích định tính, hay đặt tên file theo ngày",
+        "evidence": [
+          4,
+          5,
+          7
+        ],
+        "spine": {
+          "context": {
+            "text": "Nghiên cứu churn (khách rời đi) cho một khách hàng nha khoa: 14 buổi phỏng vấn bệnh nhân, cần bản tổng hợp cho buổi trình bày lãnh đạo thứ Năm.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Có bản tổng hợp và dàn ý cho buổi trình bày, sau khi dọn tên file phỏng vấn cho gọn.",
+            "evidence": [
+              1,
+              4
+            ]
+          },
+          "obstacle": {
+            "text": "Hai file lệch mẫu tên, và tên file có vẻ ghi sai ngày.",
+            "evidence": [
+              4,
+              5
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tên file ghi đúng ngày ghi âm; hoá ra dòng đầu bên trong file ghi 25/09, lệch một ngày so với tên.",
+            "evidence": [
+              4,
+              7
+            ]
+          },
+          "action": {
+            "text": "Mở dòng đầu của P06 trước khi đổi tên, rồi đổi tên P03 và P06 theo ngày trong file.",
+            "evidence": [
+              5,
+              6,
+              8
+            ]
+          },
+          "outcome": {
+            "text": "P06 thành P06_2026-09-25; agent báo cả 14 file theo cùng một mẫu (theo lời agent).",
+            "evidence": [
+              10
+            ]
+          },
+          "takeaway": {
+            "text": "Đừng coi tên file là nguồn sự thật về ngày; đọc metadata trong file trước khi đổi tên.",
+            "evidence": [
+              5,
+              7
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-14-tu-ghi-chu-tho-toi-bang-8a83",
+        "status": "none",
+        "none": true,
+        "reason": "Không ai tin sai điều gì. Đây là việc đổi định dạng ghi chú và xuất docx theo yêu cầu, không có chỗ ngoặt. Bài học và ảnh artefact trong phần story không có trong trích đoạn nên không dùng được.",
+        "spine": {
+          "context": {
+            "text": "Một nhóm đang làm nghiên cứu churn cho một phòng nha khoa, chuẩn bị bản tổng hợp và outline cho buổi báo cáo điều hành.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn chọn ba phát hiện cho buổi báo cáo 20 phút thứ Năm.",
+            "evidence": [
+              52
+            ]
+          },
+          "obstacle": {
+            "text": "Có chín phát hiện nhưng chỉ đủ chỗ cho ba.",
+            "evidence": [
+              52
+            ]
+          },
+          "action": {
+            "text": "Chuyển ghi chú markdown thành bảng trích dẫn bốn cột và xuất outline sang docx bằng pandoc.",
+            "evidence": [
+              61,
+              63
+            ]
+          },
+          "outcome": {
+            "text": "Bảng trích dẫn có 29 câu trích; outline.docx đã được tạo.",
+            "evidence": [
+              65
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-14-agent-ghi-ngay-vao-danh-sach-8a83",
+        "status": "angle",
+        "angle": "Đây là nghiên cứu về lý do bệnh nhân rời phòng khám nha khoa, và người làm cần bản tổng hợp cho buổi trình bày lãnh đạo thứ Năm. Người làm tưởng hai người trong buổi kickoff đã đồng ý về giá nên định làm một slide giá chung. Khi đọc lại ghi chú, họ thấy một người muốn khuyến mãi đối thủ, còn người kia nói phí đồng chi trả khiến khách bất ngờ lúc thanh toán. Đây là hai vấn đề khác nhau; nếu gộp chung, buổi họp có thể duyệt khuyến mãi rồi tưởng giá đã được giải quyết.",
+        "audience": "người làm nghiên cứu người dùng cần trình bày kết quả cho lãnh đạo",
+        "evidence": [
+          1,
+          37,
+          39,
+          41,
+          42
+        ],
+        "spine": {
+          "context": {
+            "text": "Nghiên cứu về lý do bệnh nhân rời phòng khám nha khoa, gồm 14 cuộc phỏng vấn và một khảo sát; người làm đang chuẩn bị bản tổng hợp và dàn ý cho buổi trình bày điều hành thứ Năm.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn có bản tổng hợp và dàn ý cho buổi trình bày điều hành thứ Năm.",
+            "evidence": [
+              1
+            ]
+          },
+          "obstacle": {
+            "text": "Hai người trong buổi kickoff đều nói về giá, nên buổi họp sẽ kỳ vọng một slide giá chung.",
+            "evidence": [
+              37,
+              41
+            ]
+          },
+          "turn": {
+            "text": "Tưởng hai người cùng nghĩ về một vấn đề giá; hoá ra một bên muốn khuyến mãi đối thủ, bên kia nói phí đồng chi trả khiến khách bất ngờ lúc thanh toán.",
+            "evidence": [
+              39,
+              41,
+              42
+            ]
+          },
+          "action": {
+            "text": "Tách mục giá trong bản tổng hợp thành 'Price A: khuyến mãi đối thủ' và 'Price B: bất ngờ lúc thanh toán', kèm ghi chú tự brief một người trước buổi họp.",
+            "evidence": [
+              43,
+              44
+            ]
+          },
+          "outcome": {
+            "text": "Tệp bản tổng hợp đã được cập nhật thành công.",
+            "evidence": [
+              45
+            ]
+          },
+          "takeaway": {
+            "text": "Khi hai người cùng nói một từ như 'giá', nên hỏi họ có đang nói về cùng một vấn đề không trước khi làm slide chung.",
+            "evidence": [
+              41,
+              42
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-14-agent-bat-dau-ghi-ban-nhap-8a83",
+        "status": "none",
+        "none": true,
+        "reason": "Chưa có ai tin sai điều gì rồi hoá ra khác; đây là việc ghi nháp sớm và báo số đếm. Trích đoạn chỉ có lệnh Read cho P01, trong khi số đếm nêu cả 14 bản phỏng vấn, nên chưa đủ căn cứ để kết luận có chỗ ngoặt. Câu hỏi của người dùng về P09 vẫn chưa có kết quả.",
+        "spine": {
+          "context": {
+            "text": "Một người làm nghiên cứu lý do khách rời bỏ (churn) cho một chuỗi nha khoa khách hàng, đang chuẩn bị bản nháp tổng hợp và dàn ý báo cáo cho lãnh đạo.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Có bản nháp tổng hợp và dàn ý cho buổi báo cáo thứ Năm.",
+            "evidence": [
+              1
+            ]
+          },
+          "action": {
+            "text": "Agent ghi bản nháp pass1.md ngay khi đang đọc phỏng vấn, rồi báo số đếm các lý do rời đi.",
+            "evidence": [
+              21,
+              23
+            ]
+          }
+        },
+        "completeness": 3
+      },
+      {
+        "id": "2026-10-14-truoc-khi-doc-agent-dem-so-8a83",
+        "status": "none",
+        "none": true,
+        "reason": "Agent ước lượng thời gian rồi làm đúng như đã báo. Không ai tin sai điều gì, nên không có chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Nghiên cứu lý do khách rời bỏ phòng khám nha khoa, đang chuẩn bị bản tổng hợp cho buổi báo cáo điều hành.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Có bản tổng hợp nháp và dàn ý trình bày vào thứ Năm.",
+            "evidence": [
+              1
+            ]
+          },
+          "action": {
+            "text": "Đếm số từ của 14 bản phỏng vấn, rồi báo trước với người dùng rằng sẽ mất vài phút trước khi đọc.",
+            "evidence": [
+              16,
+              17,
+              20
+            ]
+          }
+        },
+        "completeness": 3
+      }
+    ],
+    "message": "claude:5a1e7c02 L1-L67: done; 7 chuyện thô, 10 cụm; ghi 10 mới, gộp 0\nđiểm nóng 2 (thiếu 0); lần chạy 1/1; 0.09 USD\ngóc kể: 3 có, 3 không ra chuyện, 4 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: repo không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-14-hai-lanh-dao-cung-noi-gia-8a83",
+      "code": "M-Z4EB",
+      "title": "Hai lãnh đạo cùng nói 'giá', nhưng thật ra là hai vấn đề khác nhau",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một nhóm nghiên cứu đang khảo sát vì sao bệnh nhân nha khoa không quay lại: tỷ lệ churn tăng từ 22% lên 31%, và cần đề xuất 3 hành động trước cuối Q4. Trong buổi kickoff, lãnh đạo sales và vận hành đều nói 'giá', và bản tóm tắt ghi đó là điểm cả ban lãnh đạo đồng ý. Nhưng ghi chú thô cho thấy một người lo đối thủ bán rẻ hơn, còn người kia lo phí đồng chi trả đổi từ tháng 5 khiến bệnh nhân bất ngờ khi thanh toán, nên hai vấn đề cần hai hướng xử lý khác nhau. Ai dùng AI để tóm tắt biên bản họp nên đối chiếu ghi chú thô trước khi báo đồng thuận.",
+      "audience": "dev hoặc người làm nghiên cứu dùng AI để tóm tắt biên bản họp",
+      "spine": {
+        "context": {
+          "text": "Một nhóm nghiên cứu đang khảo sát vì sao bệnh nhân nha khoa không quay lại, cho một chuỗi phòng khám.",
+          "lines": [
+            "claude:5a1e7c02#L1",
+            "claude:5a1e7c02#L13"
+          ]
+        },
+        "want": {
+          "text": "Muốn có 3 hành động rõ ràng trước cuối Q4 để giảm churn, vốn đã tăng từ 22% lên 31%.",
+          "lines": [
+            "claude:5a1e7c02#L14"
+          ]
+        },
+        "obstacle": {
+          "text": "Bản tóm tắt gom 'giá' thành một điểm đồng thuận, trong khi hai lãnh đạo đang nói về hai vấn đề khác nhau.",
+          "lines": [
+            "claude:5a1e7c02#L14",
+            "claude:5a1e7c02#L41"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng sales và vận hành đã đồng ý về giá; hoá ra một người lo đối thủ bán rẻ hơn, người kia lo bệnh nhân bất ngờ khi thanh toán.",
+          "lines": [
+            "claude:5a1e7c02#L14",
+            "claude:5a1e7c02#L41"
+          ]
+        },
+        "action": {
+          "text": "Tách slide giá thành 'Price A: competitor promo' và 'Price B: checkout surprise', và ghi chú nhắc brief người phụ trách vận hành trước buổi họp.",
+          "lines": [
+            "claude:5a1e7c02#L43",
+            "claude:5a1e7c02#L45"
+          ]
+        },
+        "outcome": {
+          "text": "Bản nghiên cứu đã có hai mục giá riêng biệt; chưa có kết quả nào từ buổi readout trong đoạn này.",
+          "lines": [
+            "claude:5a1e7c02#L45"
+          ]
+        },
+        "takeaway": {
+          "text": "Cùng một từ không có nghĩa là cùng một vấn đề; hãy đối chiếu ghi chú thô với bản tóm tắt trước khi báo đồng thuận.",
+          "lines": [
+            "claude:5a1e7c02#L41",
+            "claude:5a1e7c02#L42"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-14-khao-sat-va-phong-van-xep-8a83",
+      "code": "M-YVVN",
+      "title": "Khảo sát và phỏng vấn xếp hạng lý do rời đi khác nhau",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-14-luat-chon-3-trong-9-va-8a83",
+      "code": "M-06RY",
+      "title": "Luật 'chọn 3 trong 9' và câu hỏi của người bảo trợ đi vào phụ lục",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-14-mot-cau-lo-loi-ve-le-8a83",
+      "code": "M-756T",
+      "title": "Một câu lỡ lời về lễ tân hoá ra là tín hiệu churn lớn nhất",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-14-tro-ly-bao-con-so-ma-8a83",
+      "code": "M-MGR0",
+      "title": "Trợ lý báo con số mà output công cụ không hiện: kiểm chứng trước khi đưa vào slide",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-14-ten-file-sai-ngay-doc-header-8a83",
+      "code": "M-Y18J",
+      "title": "Tên file sai ngày: đọc header trước khi đổi tên",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Một nghiên cứu về việc khách rời đi (churn) ở một khách hàng nha khoa, đang tổng hợp 14 buổi phỏng vấn bệnh nhân cho buổi trình bày lãnh đạo thứ Năm. Agent đề xuất đổi tên hai file lệch mẫu theo ngày trong tên, nhưng người làm nghĩ mình ghi âm một buổi vào ngày 25 chứ không phải 24. Mở dòng đầu file ra thì đúng là 25/09, nên tên file đã sai. Ai làm phỏng vấn định tính nên đọc metadata trong file trước khi tin tên file.",
+      "audience": "người làm phỏng vấn và phân tích định tính, hay đặt tên file theo ngày",
+      "spine": {
+        "context": {
+          "text": "Nghiên cứu churn (khách rời đi) cho một khách hàng nha khoa: 14 buổi phỏng vấn bệnh nhân, cần bản tổng hợp cho buổi trình bày lãnh đạo thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Có bản tổng hợp và dàn ý cho buổi trình bày, sau khi dọn tên file phỏng vấn cho gọn.",
+          "lines": [
+            "claude:5a1e7c02#L1",
+            "claude:5a1e7c02#L4"
+          ]
+        },
+        "obstacle": {
+          "text": "Hai file lệch mẫu tên, và tên file có vẻ ghi sai ngày.",
+          "lines": [
+            "claude:5a1e7c02#L4",
+            "claude:5a1e7c02#L5"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tên file ghi đúng ngày ghi âm; hoá ra dòng đầu bên trong file ghi 25/09, lệch một ngày so với tên.",
+          "lines": [
+            "claude:5a1e7c02#L4",
+            "claude:5a1e7c02#L7"
+          ]
+        },
+        "action": {
+          "text": "Mở dòng đầu của P06 trước khi đổi tên, rồi đổi tên P03 và P06 theo ngày trong file.",
+          "lines": [
+            "claude:5a1e7c02#L5",
+            "claude:5a1e7c02#L6",
+            "claude:5a1e7c02#L8"
+          ]
+        },
+        "outcome": {
+          "text": "P06 thành P06_2026-09-25; agent báo cả 14 file theo cùng một mẫu (theo lời agent).",
+          "lines": [
+            "claude:5a1e7c02#L10"
+          ]
+        },
+        "takeaway": {
+          "text": "Đừng coi tên file là nguồn sự thật về ngày; đọc metadata trong file trước khi đổi tên.",
+          "lines": [
+            "claude:5a1e7c02#L5",
+            "claude:5a1e7c02#L7"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-14-tu-ghi-chu-tho-toi-bang-8a83",
+      "code": "M-XN6V",
+      "title": "Từ ghi chú thô tới bảng trích dẫn và docx cho khách dùng Word",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một nhóm đang làm nghiên cứu churn cho một phòng nha khoa, chuẩn bị bản tổng hợp và outline cho buổi báo cáo điều hành.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn chọn ba phát hiện cho buổi báo cáo 20 phút thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L52"
+          ]
+        },
+        "obstacle": {
+          "text": "Có chín phát hiện nhưng chỉ đủ chỗ cho ba.",
+          "lines": [
+            "claude:5a1e7c02#L52"
+          ]
+        },
+        "action": {
+          "text": "Chuyển ghi chú markdown thành bảng trích dẫn bốn cột và xuất outline sang docx bằng pandoc.",
+          "lines": [
+            "claude:5a1e7c02#L61",
+            "claude:5a1e7c02#L63"
+          ]
+        },
+        "outcome": {
+          "text": "Bảng trích dẫn có 29 câu trích; outline.docx đã được tạo.",
+          "lines": [
+            "claude:5a1e7c02#L65"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-14-agent-ghi-ngay-vao-danh-sach-8a83",
+      "code": "M-BC44",
+      "title": "Agent ghi ngay vào danh sách việc cần làm của dự án những cam kết người dùng chỉ nói miệng: gọi điện cho người bảo trợ trước buổi họp, và chuẩn bị trước cho một trưởng bộ phận.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": "Đây là nghiên cứu về lý do bệnh nhân rời phòng khám nha khoa, và người làm cần bản tổng hợp cho buổi trình bày lãnh đạo thứ Năm. Người làm tưởng hai người trong buổi kickoff đã đồng ý về giá nên định làm một slide giá chung. Khi đọc lại ghi chú, họ thấy một người muốn khuyến mãi đối thủ, còn người kia nói phí đồng chi trả khiến khách bất ngờ lúc thanh toán. Đây là hai vấn đề khác nhau; nếu gộp chung, buổi họp có thể duyệt khuyến mãi rồi tưởng giá đã được giải quyết.",
+      "audience": "người làm nghiên cứu người dùng cần trình bày kết quả cho lãnh đạo",
+      "spine": {
+        "context": {
+          "text": "Nghiên cứu về lý do bệnh nhân rời phòng khám nha khoa, gồm 14 cuộc phỏng vấn và một khảo sát; người làm đang chuẩn bị bản tổng hợp và dàn ý cho buổi trình bày điều hành thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn có bản tổng hợp và dàn ý cho buổi trình bày điều hành thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "obstacle": {
+          "text": "Hai người trong buổi kickoff đều nói về giá, nên buổi họp sẽ kỳ vọng một slide giá chung.",
+          "lines": [
+            "claude:5a1e7c02#L37",
+            "claude:5a1e7c02#L41"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng hai người cùng nghĩ về một vấn đề giá; hoá ra một bên muốn khuyến mãi đối thủ, bên kia nói phí đồng chi trả khiến khách bất ngờ lúc thanh toán.",
+          "lines": [
+            "claude:5a1e7c02#L39",
+            "claude:5a1e7c02#L41",
+            "claude:5a1e7c02#L42"
+          ]
+        },
+        "action": {
+          "text": "Tách mục giá trong bản tổng hợp thành 'Price A: khuyến mãi đối thủ' và 'Price B: bất ngờ lúc thanh toán', kèm ghi chú tự brief một người trước buổi họp.",
+          "lines": [
+            "claude:5a1e7c02#L43",
+            "claude:5a1e7c02#L44"
+          ]
+        },
+        "outcome": {
+          "text": "Tệp bản tổng hợp đã được cập nhật thành công.",
+          "lines": [
+            "claude:5a1e7c02#L45"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi hai người cùng nói một từ như 'giá', nên hỏi họ có đang nói về cùng một vấn đề không trước khi làm slide chung.",
+          "lines": [
+            "claude:5a1e7c02#L41",
+            "claude:5a1e7c02#L42"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-14-agent-bat-dau-ghi-ban-nhap-8a83",
+      "code": "M-XD0P",
+      "title": "Agent bắt đầu ghi bản nháp tổng hợp ra file ngay khi đang đọc 14 bản phỏng vấn, rồi ghi tiếp dần, thay vì đọc hết rồi mới viết.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một người làm nghiên cứu lý do khách rời bỏ (churn) cho một chuỗi nha khoa khách hàng, đang chuẩn bị bản nháp tổng hợp và dàn ý báo cáo cho lãnh đạo.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Có bản nháp tổng hợp và dàn ý cho buổi báo cáo thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "action": {
+          "text": "Agent ghi bản nháp pass1.md ngay khi đang đọc phỏng vấn, rồi báo số đếm các lý do rời đi.",
+          "lines": [
+            "claude:5a1e7c02#L21",
+            "claude:5a1e7c02#L23"
+          ]
+        }
+      },
+      "completeness": 3
+    },
+    {
+      "id": "2026-10-14-truoc-khi-doc-agent-dem-so-8a83",
+      "code": "M-S59E",
+      "title": "Trước khi đọc, agent đếm số từ của toàn bộ tài liệu rồi báo trước với người dùng rằng sẽ mất vài phút.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Nghiên cứu lý do khách rời bỏ phòng khám nha khoa, đang chuẩn bị bản tổng hợp cho buổi báo cáo điều hành.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Có bản tổng hợp nháp và dàn ý trình bày vào thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "action": {
+          "text": "Đếm số từ của 14 bản phỏng vấn, rồi báo trước với người dùng rằng sẽ mất vài phút trước khi đọc.",
+          "lines": [
+            "claude:5a1e7c02#L16",
+            "claude:5a1e7c02#L17",
+            "claude:5a1e7c02#L20"
+          ]
+        }
+      },
+      "completeness": 3
+    }
+  ]
+}

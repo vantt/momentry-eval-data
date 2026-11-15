@@ -1,0 +1,312 @@
+{
+  "id": "ab9a1dd8",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "cfdbe39157750974",
+  "at": "2026-11-05T10:14:30.761Z",
+  "dryRun": {
+    "usd": 0.1,
+    "tokens": 56460,
+    "chunks": 1,
+    "hotspots": 9,
+    "entries": 857
+  },
+  "report": {
+    "sid": "claude:ab9a1dd8",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.1157151,
+    "secs": 167,
+    "exitCode": 0,
+    "status": "done",
+    "written": 31,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:ab9a1dd8 L1-L4000: done; 30 chuyện thô, 31 cụm; ghi 31 mới, gộp 0\nđiểm nóng 9 (thiếu 0); lần chạy 1/1; 0.12 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-03-codex-khong-chay-hook-momentry-tu",
+      "title": "Codex không chạy hook momentry từ đầu: tên sự kiện viết sai kiểu bị bỏ qua",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-du-lieu-nam-trong-thu-muc",
+      "title": "Dữ liệu nằm trong thư mục cài trên Windows: uninstall sẽ xoá cache",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-hai-duong-gom-may-quet-rong",
+      "title": "Hai đường gom: máy quét rộng, người đánh dấu khoảnh khắc bằng /bip",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-hook-bi-bo-qua-im-lang",
+      "title": "Hook bị bỏ qua im lặng: lệnh hook luôn thoát 0 nên lỗi không ai thấy",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-powershell-5-1-va-cmd-exe",
+      "title": "PowerShell 5.1 và cmd.exe: escape nháy làm uninstall không xoá gì nhưng vẫn báo thành công",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-reviewer-doc-lap-tim-16-loi",
+      "title": "Reviewer độc lập tìm 16 lỗi sau khi bộ test đã xanh",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-ci-chin-to-hop-lan-dau",
+      "title": "CI chín tổ hợp lần đầu: Linux xanh, macOS và Windows đỏ hàng loạt",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-doi-ma-thoat-ma-1-va",
+      "title": "Đổi mã thoát: mã 1 và 2 đảo nghĩa, thành thay đổi hợp đồng công khai",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-repo-sau-symlink-tren-macos-so",
+      "title": "Repo sau symlink trên macOS: so khớp đường dẫn làm mất transcript",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-vong-agent-native-hoi-tu-tu",
+      "title": "Vòng agent-native hội tụ từ hai vòng xuống một: thêm lệnh thật thay cho câu hướng dẫn",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-dao-quyet-dinh-prd-init-tu",
+      "title": "Đảo quyết định PRD: init tự cài hook thay vì chỉ in đoạn cấu hình",
+      "tension": "khac",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-stop-hook-giu-phien-lai-plan",
+      "title": "Stop hook giữ phiên lại: plan 45 trên 45 nhưng chưa xong vì release chưa cắt",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-commit-keo-nham-doi-ten-readme",
+      "title": "Commit kéo nhầm đổi tên README, main thiếu file và CI đỏ",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-do-hook-that-bang-phien-khong",
+      "title": "Đo hook thật bằng phiên không đăng nhập: workflow xanh nhưng chưa chứng minh được",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-doc-ma-nguon-codex-de-hieu",
+      "title": "Đọc mã nguồn Codex để hiểu cơ chế duyệt tin cậy hook",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-installer-muon-tu-du-an-khac",
+      "title": "Installer mượn từ dự án khác đã chạy thật",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-lenh-hook-windows-dung-duong-dan",
+      "title": "Lệnh hook Windows: dùng đường dẫn gạch chéo và file .cmd để chạy được ở cả cmd lẫn Git Bash",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-test-xanh-tren-clone-sach-do",
+      "title": "Test xanh trên clone sạch, đỏ trong bản làm việc: test quét cả thư mục chưa git",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-tha-hang-loat-quarantine-kiem-lai",
+      "title": "Thả hàng loạt quarantine: kiểm lại từng mục, giữ mục còn lộ thông tin",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-thu-host-that-trong-mang-bi",
+      "title": "Thử host thật trong mạng bị ngắt: unshare chặn mọi request ra ngoài",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-agent-mo-mot-bai-nghien-cuu",
+      "title": "Agent mở một bài nghiên cứu về ba công cụ chưa biết, chạy song song với việc viết code, rồi chuyển các câu hỏi sản phẩm thành lựa chọn để user chọn trước khi lập plan.",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-hook-ckignore-chan-lenh-bash-co",
+      "title": "Hook .ckignore chặn lệnh bash có chuỗi dist và .git",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-lenh-xoa-co-bien-shell-bi",
+      "title": "Lệnh xoá có biến shell bị Claude Code chặn, agent viết lại đường dẫn đầy đủ",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-zsh-cua-agent-khong-tach-bien",
+      "title": "zsh của agent không tách biến và báo no matches khi glob rỗng, khiến lệnh kiểm chết trước khi chạy",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-release-v0-1-0-lenh-cai",
+      "title": "Release v0.1.0: lệnh cài một dòng chạy được từ GitHub thật",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-agy-khong-co-su-kien-ket",
+      "title": "Agy không có sự kiện kết thúc phiên: gom khi mở phiên sau",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-ba-host-moi-ba-cach-luu",
+      "title": "Ba host mới, ba cách lưu transcript: 27 thư mục profile phải tìm tự động",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-do-cau-truc-transcript-chi-in",
+      "title": "Dò cấu trúc transcript chỉ in khoá và kiểu, không in giá trị",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-dong-goi-tai-tao-duoc-hai",
+      "title": "Đóng gói tái tạo được: hai lần cho cùng sha256",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-plan-tao-bang-cli-validate-va",
+      "title": "Plan tạo bằng CLI: validate và checkbox tự chuyển từ danh sách số",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-push-bi-tu-choi-vi-remote",
+      "title": "Push bị từ chối vì remote có commit mới, rebase không xung đột",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    }
+  ]
+}

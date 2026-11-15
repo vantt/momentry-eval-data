@@ -1,0 +1,595 @@
+{
+  "id": "c4caee3c",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "a80efc8267e2088e",
+  "at": "2026-11-05T12:11:31.994Z",
+  "dryRun": {
+    "usd": 0.33,
+    "tokens": 99560,
+    "chunks": 1,
+    "hotspots": 36,
+    "entries": 874
+  },
+  "report": {
+    "sid": "claude:c4caee3c",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.373981,
+    "secs": 224.9,
+    "exitCode": 0,
+    "status": "done",
+    "written": 34,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:c4caee3c L1-L4000: done; 31 chuyện thô, 34 cụm; ghi 34 mới, gộp 0\nđiểm nóng 36 (thiếu 0); lần chạy 1/1; 0.37 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-corpus-tieng-viet-qua-de-baseline",
+      "title": "Corpus tiếng Việt quá dễ: baseline 0,93 không đo được gì",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Điểm tìm kiếm 0,93 trông như hệ thống đã tìm tốt tiếng Việt không dấu. Thật ra tiêu đề note trùng đúng câu hỏi nên tìm theo tiêu đề và vector đã đủ, còn chỗ bỏ dấu của công cụ tìm gần như không được thử. Làm bộ test khó hơn thì điểm tụt còn 0,27 (không dấu) và 0,40 (chữ đ). Ai đang tin một con số benchmark đẹp nên kiểm tra xem bộ test có để lộ đáp án không.",
+      "audience": "dev tự xây hoặc đánh giá công cụ tìm kiếm, đặc biệt cho tiếng không phải tiếng Anh"
+    },
+    {
+      "id": "2026-11-02-goi-tieng-viet-ndcg-5-0",
+      "title": "Gói tiếng Việt: nDCG@5 0,666 lên 0,932 qua nhiều lớp, và một lớp làm hỏng lớp trước",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Thêm lớp sửa gõ sai để tìm tốt hơn, tưởng chỉ có lợi. Hoá ra nó âm thầm viết lại những từ đã nằm trong từ điển đồng nghĩa (ví dụ \"phone\" bị đổi thành một từ gần giống trong vault), nên từ đồng nghĩa không còn khớp và một kết quả tụt từ hạng 4 xuống 7, Hit@5 của vi-synonym rơi xuống 0,73. Ai xếp nhiều lớp xử lý lên cùng một câu tìm kiếm đều có thể dính: lớp sau phải thấy được dạng người dùng gõ gốc.",
+      "audience": "dev xây tìm kiếm hoặc pipeline nhiều lớp xử lý văn bản"
+    },
+    {
+      "id": "2026-11-02-cung-model-onnx-cpu-khac-diem",
+      "title": "Cùng model ONNX, CPU khác, điểm khác: cổng chất lượng đỏ vì baseline ghi trên máy khác",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Cổng chất lượng đỏ vì điểm eval 0,735 ghi trên máy agent lệch 0,728 đo trên runner CI, vượt ngưỡng 0,005. Cứ tưởng cùng model thì cùng điểm, nhưng model lượng tử ONNX cho số khác nhau theo loại CPU. Số lặp lại y hệt trên cùng loại CPU, nên chỉ so điểm trong cùng một lần chạy mới đáng tin. Ai dùng eval làm cổng CI đều có thể dính.",
+      "audience": "dev đặt cổng chất lượng/eval trong CI cho tính năng dùng model ONNX hoặc AI"
+    },
+    {
+      "id": "2026-11-02-eval-vault-that-tong-tang-0",
+      "title": "Eval vault thật: tổng tăng 0,600 lên 0,698 nhưng cổng hạng mục đỏ, người dùng quyết",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Gói tiếng Việt làm điểm tìm kiếm chung tăng từ 0,600 lên 0,698, nên tưởng là tốt hơn hẳn. Nhưng cổng kiểm tra theo từng hạng mục vẫn đỏ: mỗi hạng mục chỉ có 2–6 câu, nên một câu rơi khỏi top 5 đã kéo vi-iy tụt 0,26. Với bộ test nhỏ, điểm theo hạng mục có thể báo hỏng dù bản thân gói không tệ đi.",
+      "audience": "dev tự làm eval cho tìm kiếm hoặc RAG trên bộ dữ liệu nhỏ"
+    },
+    {
+      "id": "2026-11-02-goi-tieng-duc-chay-qua-diem",
+      "title": "Gói tiếng Đức chạy qua điểm cắm mà không sửa lõi: nDCG@5 0,57 lên 0,97",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Người ta hay nghĩ thêm một ngôn ngữ mới thì phải đục vào lõi hệ thống tìm kiếm. Gói tiếng Đức chạy qua điểm cắm P01 mà không sửa lõi, và điểm nDCG@5 trên bộ eval tiếng Đức tăng từ 0,57 lên 0,97, không hạng mục nào tụt. Ai định làm công cụ có plug-in đáng để biết: viết gói ngôn ngữ thứ hai là cách thử thật xem hợp đồng plug-in đã đủ tổng quát chưa.",
+      "audience": "dev xây công cụ có hệ plug-in hoặc gói ngôn ngữ"
+    },
+    {
+      "id": "2026-11-02-phuc-hoi-dau-bien-mot-tu",
+      "title": "Phục hồi dấu biến một từ không dấu thành từ khác trong câu có dấu một phần",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Ngưỡng 50% đúng theo spec nên ai cũng tưởng lỗi nằm ở ngưỡng. Hoá ra ngưỡng không sai: câu \"Hội An\" chỉ có một nửa âm tiết có dấu nên đi vào nhánh phục hồi, và chữ \"An\" bị đổi thành \"ăn\" vì từ này phổ biến hơn trong vault. Lỗi nằm ở cách dựng câu gửi cho model nhúng, và sau khi sửa, nDCG@5 tổng tăng từ 0,932 lên 0,954. Ai làm tìm kiếm có tự động sửa dấu nên cẩn thận với tên riêng.",
+      "audience": "dev làm tìm kiếm hoặc nhúng văn bản cho tiếng có dấu"
+    },
+    {
+      "id": "2026-11-02-co-restoreforembedding-giai-quyet-vi-snippet",
+      "title": "Cờ restoreForEmbedding giải quyết vi-snippet mà không cần sửa mã",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Câu tìm kiếm tiếng Việt không dấu làm note đích mất khỏi nhánh tìm theo nghĩa, nên tưởng thuật toán xếp hạng có lỗi. Hoá ra không: bộ khôi phục dấu đã đúng, chỉ là bộ nhúng nhận câu không dấu. Một cờ bật mặc định đưa note đích lên hạng 1, không sửa dòng mã nào. Ai tìm kiếm đa ngôn ngữ nên kiểm xem nhánh nào thiếu ứng viên trước khi sửa thuật toán.",
+      "audience": "dev làm tìm kiếm lai (từ khoá + vector) hoặc xử lý văn bản tiếng Việt"
+    },
+    {
+      "id": "2026-11-02-tach-tu-bat-mac-dinh-vi",
+      "title": "Tách từ bật mặc định: vi-compound đã đạt trước nhưng bộ khó cho thấy tác dụng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Tổng điểm tìm kiếm tiếng Việt đã đạt 1,00 ở hạng mục từ ghép nên tưởng thêm tách từ cũng chẳng thấy gì. Hoá ra bộ câu từ ghép khó hơn mới lộ tác dụng: điểm tăng từ 0,52–0,79 lên 0,86–1,00, không hạng mục nào tụt. Bộ khó này do agent tự dựng, nên ai đo chất lượng bằng bộ test đã bão hoà nên dựng thêm bộ khó và ghi rõ nguồn gốc của nó.",
+      "audience": "dev đo chất lượng tìm kiếm hoặc eval cho tính năng AI"
+    },
+    {
+      "id": "2026-11-02-tu-dien-tu-ghep-danh-sach",
+      "title": "Từ điển từ ghép: danh sách MIT có thể mang nguồn GPL, đổi sang thống kê dữ liệu CC BY",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Danh sách từ ghép có giấy phép MIT trông an toàn để dùng. Nhưng repo đó không nói danh sách lấy từ đâu, và 95% trùng với một danh sách GPL, nên giấy phép của bản chép không nói lên nguồn gốc. Agent học lại từ ba bộ dữ liệu CC BY 4.0, không chép mục nào từ danh sách cũ, và kết quả còn tốt hơn: vi-compound trên bộ câu khó tăng từ 0,632 lên 0,983.",
+      "audience": "dev dùng dữ liệu hoặc danh sách bên thứ ba trong sản phẩm và lo về giấy phép"
+    },
+    {
+      "id": "2026-11-02-worktree-trong-tmp-lam-day-han",
+      "title": "Worktree trong /tmp làm đầy hạn mức, 11 agent cùng hỏng shell",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Cả 11 agent đang chạy song song thì mọi lệnh shell đều hỏng cùng lúc, nhìn như hỏng cả hệ thống. Thật ra chỉ là /tmp có hạn mức nhỏ, mà mỗi worktree kéo theo khoảng 1,3 GB thư viện nên đầy. Dừng agent, chuyển worktree sang ổ /home rồi cho chạy lại thì việc dở vẫn còn. Ai chạy nhiều agent song song nên đặt worktree trên ổ thật ngay từ đầu.",
+      "audience": "dev chạy nhiều agent AI song song, mỗi agent một worktree"
+    },
+    {
+      "id": "2026-11-02-ci-doc-fixture-tag-cung-v0",
+      "title": "CI đọc fixture tag cứng v0.10.0 trong khi golden set đã lên v0.11.0",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-do-overhead-1-mb-143-ms",
+      "title": "Đo overhead 1 MB: 143 ms trên máy, 318 ms trên runner, nhân ngưỡng x3 thay vì nới gốc",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-goi-p01-bi-phat-hien-thieu",
+      "title": "Gói P01 bị phát hiện thiếu năm điểm sau khi làm xong, vá thêm không phá gói cũ",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-goi-windows-smoke-xanh-tren-may",
+      "title": "Gói Windows smoke xanh trên máy sạch nhưng chưa đo SmartScreen",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-mac-intel-onnxruntime-1-30-khong",
+      "title": "Mac Intel: onnxruntime 1.30 không còn binding darwin-x64, ghim 1.23.2 và đổi luật chặn",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-npm-12-doi-hinh-dang-dau",
+      "title": "npm 12 đổi hình dạng đầu ra npm pack --json, test đóng gói đỏ trên CI",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-prd-10-3-cau-co-dau",
+      "title": "PRD 10.3: câu có dấu không chạy view norm/fold vì vi-semantic tụt 0,083",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-test-snapshot-flaky-vi-hai-note",
+      "title": "Test snapshot flaky vì hai note có điểm bằng nhau đổi thứ tự theo máy",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-upstream-khong-tu-duoi-nua-chot",
+      "title": "Upstream không tự đuổi nữa: chốt ghim tag thay cho cron 6 giờ",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-agent-dung-giua-chung-nguoi-dung",
+      "title": "Agent dừng giữa chừng, người dùng phải gọi lại; mỗi lượt CI 10 đến 20 phút",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-bat-actions-tren-fork-va-tat",
+      "title": "Bật Actions trên fork và tắt workflow upstream: lỗi im lặng 403",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-chuoi-9-ban-va-phai-ghep",
+      "title": "Chuỗi 9 bản vá phải ghép đúng thứ tự vì hai bản cùng sửa một file",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-hook-kiem-lenh-chan-ca-lenh",
+      "title": "Hook kiểm lệnh chặn cả lệnh vô hại có từ build hay node_modules",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-prd-muc-3-5-agent-sai",
+      "title": "PRD mục 3.5: agent sai về FTS5, người dùng chỉ ra PRD đúng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-privacy-golden-set-cua-vault-rieng",
+      "title": "Privacy: golden set của vault riêng ngoài repo, guard từ chối đường dẫn trong repo",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-push-merge-khi-test-do-roi",
+      "title": "Push merge khi test đỏ rồi mới kiểm",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-release-sinh-tag-rong-bundles-phai",
+      "title": "Release sinh tag rỗng, bundles phải nối tay đến khi catchup gọi bundles",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-lo-commit-ban-nhap-patch-vao",
+      "title": "Lỡ commit bản nháp patch vào commit khác",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-debounce-watcher-5-giay-tieu-chi",
+      "title": "Debounce watcher 5 giây: tiêu chí 1 giây không hạ, đưa thành biến môi trường",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-don-21-gb-thu-muc-tam",
+      "title": "Dọn 21 GB thư mục tạm; /tmp còn 26%",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-git-va-husky-push-bi-chan",
+      "title": "Git và husky: push bị chặn, pull và merge từ chối vì cây làm việc dơ",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-agent-dieu-phoi-chia-25-viec",
+      "title": "Agent điều phối chia 25+ việc thành các agent chạy nền song song (mỗi việc một worktree riêng), rồi ghép từng kết quả vào chuỗi bản vá theo đúng thứ tự phụ thuộc.",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-nguoi-dung-dung-mot-cau-lenh",
+      "title": "Người dùng dùng một câu lệnh ngắn để giao lại toàn bộ tiến trình (\"tiếp tục điều phối plan...\"), và agent tự đọc file trạng thái, kiểm tra CI, ghép việc đã xong rồi khởi chạy việc kế tiếp theo phụ thuộc.",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-02-moi-khi-sinh-them-ket-qua",
+      "title": "Mỗi khi sinh thêm kết quả đo lường, agent ghi quyết định và trạng thái vào một file ngoài kho làm sổ tay cho lead, và sau khi chốt một việc thì chuyển plan con vào thư mục archive.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null
+    }
+  ],
+  "angleModel": "sonnet",
+  "angleRun": {
+    "message": "angle repo: 10 chuyện; góc kể: 10 có, 0 không ra chuyện; 0.23 USD",
+    "exitCode": 0,
+    "status": "done",
+    "stories": [
+      {
+        "id": "2026-11-02-corpus-tieng-viet-qua-de-baseline",
+        "status": "angle",
+        "angle": "Điểm tìm kiếm 0,93 trông như hệ thống đã tìm tốt tiếng Việt không dấu. Thật ra tiêu đề note trùng đúng câu hỏi nên tìm theo tiêu đề và vector đã đủ, còn chỗ bỏ dấu của công cụ tìm gần như không được thử. Làm bộ test khó hơn thì điểm tụt còn 0,27 (không dấu) và 0,40 (chữ đ). Ai đang tin một con số benchmark đẹp nên kiểm tra xem bộ test có để lộ đáp án không.",
+        "audience": "dev tự xây hoặc đánh giá công cụ tìm kiếm, đặc biệt cho tiếng không phải tiếng Anh",
+        "evidence": [
+          315,
+          1044,
+          1114
+        ]
+      },
+      {
+        "id": "2026-11-02-goi-tieng-viet-ndcg-5-0",
+        "status": "angle",
+        "angle": "Thêm lớp sửa gõ sai để tìm tốt hơn, tưởng chỉ có lợi. Hoá ra nó âm thầm viết lại những từ đã nằm trong từ điển đồng nghĩa (ví dụ \"phone\" bị đổi thành một từ gần giống trong vault), nên từ đồng nghĩa không còn khớp và một kết quả tụt từ hạng 4 xuống 7, Hit@5 của vi-synonym rơi xuống 0,73. Ai xếp nhiều lớp xử lý lên cùng một câu tìm kiếm đều có thể dính: lớp sau phải thấy được dạng người dùng gõ gốc.",
+        "audience": "dev xây tìm kiếm hoặc pipeline nhiều lớp xử lý văn bản",
+        "evidence": [
+          1470
+        ]
+      },
+      {
+        "id": "2026-11-02-cung-model-onnx-cpu-khac-diem",
+        "status": "angle",
+        "angle": "Cổng chất lượng đỏ vì điểm eval 0,735 ghi trên máy agent lệch 0,728 đo trên runner CI, vượt ngưỡng 0,005. Cứ tưởng cùng model thì cùng điểm, nhưng model lượng tử ONNX cho số khác nhau theo loại CPU. Số lặp lại y hệt trên cùng loại CPU, nên chỉ so điểm trong cùng một lần chạy mới đáng tin. Ai dùng eval làm cổng CI đều có thể dính.",
+        "audience": "dev đặt cổng chất lượng/eval trong CI cho tính năng dùng model ONNX hoặc AI",
+        "evidence": [
+          3312,
+          3370,
+          3415
+        ]
+      },
+      {
+        "id": "2026-11-02-eval-vault-that-tong-tang-0",
+        "status": "angle",
+        "angle": "Gói tiếng Việt làm điểm tìm kiếm chung tăng từ 0,600 lên 0,698, nên tưởng là tốt hơn hẳn. Nhưng cổng kiểm tra theo từng hạng mục vẫn đỏ: mỗi hạng mục chỉ có 2–6 câu, nên một câu rơi khỏi top 5 đã kéo vi-iy tụt 0,26. Với bộ test nhỏ, điểm theo hạng mục có thể báo hỏng dù bản thân gói không tệ đi.",
+        "audience": "dev tự làm eval cho tìm kiếm hoặc RAG trên bộ dữ liệu nhỏ",
+        "evidence": [
+          3653,
+          3680,
+          3682
+        ]
+      },
+      {
+        "id": "2026-11-02-goi-tieng-duc-chay-qua-diem",
+        "status": "angle",
+        "angle": "Người ta hay nghĩ thêm một ngôn ngữ mới thì phải đục vào lõi hệ thống tìm kiếm. Gói tiếng Đức chạy qua điểm cắm P01 mà không sửa lõi, và điểm nDCG@5 trên bộ eval tiếng Đức tăng từ 0,57 lên 0,97, không hạng mục nào tụt. Ai định làm công cụ có plug-in đáng để biết: viết gói ngôn ngữ thứ hai là cách thử thật xem hợp đồng plug-in đã đủ tổng quát chưa.",
+        "audience": "dev xây công cụ có hệ plug-in hoặc gói ngôn ngữ",
+        "evidence": [
+          789,
+          816,
+          1114
+        ]
+      },
+      {
+        "id": "2026-11-02-phuc-hoi-dau-bien-mot-tu",
+        "status": "angle",
+        "angle": "Ngưỡng 50% đúng theo spec nên ai cũng tưởng lỗi nằm ở ngưỡng. Hoá ra ngưỡng không sai: câu \"Hội An\" chỉ có một nửa âm tiết có dấu nên đi vào nhánh phục hồi, và chữ \"An\" bị đổi thành \"ăn\" vì từ này phổ biến hơn trong vault. Lỗi nằm ở cách dựng câu gửi cho model nhúng, và sau khi sửa, nDCG@5 tổng tăng từ 0,932 lên 0,954. Ai làm tìm kiếm có tự động sửa dấu nên cẩn thận với tên riêng.",
+        "audience": "dev làm tìm kiếm hoặc nhúng văn bản cho tiếng có dấu",
+        "evidence": [
+          2776,
+          2789
+        ]
+      },
+      {
+        "id": "2026-11-02-co-restoreforembedding-giai-quyet-vi-snippet",
+        "status": "angle",
+        "angle": "Câu tìm kiếm tiếng Việt không dấu làm note đích mất khỏi nhánh tìm theo nghĩa, nên tưởng thuật toán xếp hạng có lỗi. Hoá ra không: bộ khôi phục dấu đã đúng, chỉ là bộ nhúng nhận câu không dấu. Một cờ bật mặc định đưa note đích lên hạng 1, không sửa dòng mã nào. Ai tìm kiếm đa ngôn ngữ nên kiểm xem nhánh nào thiếu ứng viên trước khi sửa thuật toán.",
+        "audience": "dev làm tìm kiếm lai (từ khoá + vector) hoặc xử lý văn bản tiếng Việt",
+        "evidence": [
+          2900,
+          2927
+        ]
+      },
+      {
+        "id": "2026-11-02-tach-tu-bat-mac-dinh-vi",
+        "status": "angle",
+        "angle": "Tổng điểm tìm kiếm tiếng Việt đã đạt 1,00 ở hạng mục từ ghép nên tưởng thêm tách từ cũng chẳng thấy gì. Hoá ra bộ câu từ ghép khó hơn mới lộ tác dụng: điểm tăng từ 0,52–0,79 lên 0,86–1,00, không hạng mục nào tụt. Bộ khó này do agent tự dựng, nên ai đo chất lượng bằng bộ test đã bão hoà nên dựng thêm bộ khó và ghi rõ nguồn gốc của nó.",
+        "audience": "dev đo chất lượng tìm kiếm hoặc eval cho tính năng AI",
+        "evidence": [
+          1672
+        ]
+      },
+      {
+        "id": "2026-11-02-tu-dien-tu-ghep-danh-sach",
+        "status": "angle",
+        "angle": "Danh sách từ ghép có giấy phép MIT trông an toàn để dùng. Nhưng repo đó không nói danh sách lấy từ đâu, và 95% trùng với một danh sách GPL, nên giấy phép của bản chép không nói lên nguồn gốc. Agent học lại từ ba bộ dữ liệu CC BY 4.0, không chép mục nào từ danh sách cũ, và kết quả còn tốt hơn: vi-compound trên bộ câu khó tăng từ 0,632 lên 0,983.",
+        "audience": "dev dùng dữ liệu hoặc danh sách bên thứ ba trong sản phẩm và lo về giấy phép",
+        "evidence": [
+          1672,
+          2862,
+          2875
+        ]
+      },
+      {
+        "id": "2026-11-02-worktree-trong-tmp-lam-day-han",
+        "status": "angle",
+        "angle": "Cả 11 agent đang chạy song song thì mọi lệnh shell đều hỏng cùng lúc, nhìn như hỏng cả hệ thống. Thật ra chỉ là /tmp có hạn mức nhỏ, mà mỗi worktree kéo theo khoảng 1,3 GB thư viện nên đầy. Dừng agent, chuyển worktree sang ổ /home rồi cho chạy lại thì việc dở vẫn còn. Ai chạy nhiều agent song song nên đặt worktree trên ổ thật ngay từ đầu.",
+        "audience": "dev chạy nhiều agent AI song song, mỗi agent một worktree",
+        "evidence": [
+          487,
+          492,
+          506,
+          740
+        ]
+      }
+    ],
+    "usd": 0.23112399999999997,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0
+  },
+  "angleCalls": [
+    {
+      "key": "angle-1",
+      "usd": 0.027232,
+      "secs": 3.522,
+      "tokIn": 12191,
+      "tokOut": 285
+    },
+    {
+      "key": "angle-10",
+      "usd": 0.016956,
+      "secs": 2.827,
+      "tokIn": 7213,
+      "tokOut": 253
+    },
+    {
+      "key": "angle-2",
+      "usd": 0.034466,
+      "secs": 3.087,
+      "tokIn": 15753,
+      "tokOut": 296
+    },
+    {
+      "key": "angle-3",
+      "usd": 0.024466,
+      "secs": 3.171,
+      "tokIn": 10938,
+      "tokOut": 259
+    },
+    {
+      "key": "angle-4",
+      "usd": 0.014794000000000002,
+      "secs": 2.952,
+      "tokIn": 6087,
+      "tokOut": 262
+    },
+    {
+      "key": "angle-5",
+      "usd": 0.0236,
+      "secs": 3.158,
+      "tokIn": 10470,
+      "tokOut": 266
+    },
+    {
+      "key": "angle-6",
+      "usd": 0.021886,
+      "secs": 3.133,
+      "tokIn": 9418,
+      "tokOut": 305
+    },
+    {
+      "key": "angle-7",
+      "usd": 0.020640000000000002,
+      "secs": 3.88,
+      "tokIn": 8930,
+      "tokOut": 278
+    },
+    {
+      "key": "angle-8",
+      "usd": 0.01961,
+      "secs": 4.209,
+      "tokIn": 8475,
+      "tokOut": 266
+    },
+    {
+      "key": "angle-9",
+      "usd": 0.027474,
+      "secs": 2.72,
+      "tokIn": 12442,
+      "tokOut": 259
+    }
+  ]
+}

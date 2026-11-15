@@ -1,0 +1,129 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L6] USER: You are worktree C. Your worktree is /home/vantt/projects/mcp-skill-hub-simplify (branch wave2/simplify-p4-p3). It already holds your earlier uncommitted work: internal/workspace/workspace.go, internal/migration/migration.go, internal/migration/v3.go, and the phase-03 and phase-04 files. Rules before anything else: - Every read, edit and write call uses an absolute path that starts with /home/vantt/projects/mcp-skill-hub-simplify/. Every bash call runs there. - Never write to /home/vantt/projects/mcp-skill-hub (the lead's main checkout) or to /home/vantt/skill-hub (the live hub). That means no …[+798]
+</asks>
+
+<story>
+hook: Quy tắc an toàn chặn commit vì file dở của worktree khác
+tension: giup_ma_hai (Quy tắc pre-commit để tránh commit nhầm / Nó chặn cả việc commit vì file của người khác, lead phải nới)
+stakes: 0/3
+# Quy tắc pre-commit chặn commit khi worktree khác để file dở trên main
+
+**Bối cảnh:** Hai agent làm song song: worktree C làm Phase 4, worktree D sửa thẳng trên main checkout. Quy tắc ban đầu cấm commit nếu main checkout có bất kỳ file lạ nào.
+**Chuyện gì xảy ra:** Lần kiểm tra đầu, git status trên main hiện file telemetry đã sửa, nên agent dừng và chưa commit. Lead nới quy tắc: chỉ dừng khi file mình sở hữu xuất hiện trong danh sách, còn file của D thì bỏ qua. Sau đó main còn hai file của D, nhưng commit vẫn tiếp tục được.
+**Bài học:** Quy tắc kiểm tra sạch cho worktree song song phải định nghĩa theo file mình sở hữu, không theo cả thư mục.
+**Artefact:** Đầu ra git status -s trên main, che tên file nếu cần.
+**Góc người ngoài:** cách làm phổ biến là Nhiều agent sẽ bỏ qua bước kiểm tra hoặc tự sửa điều kiện để chạy tiếp; ở đây khác ở Agent giữ đúng ranh giới, và khi quy tắc đổi thì nó áp dụng quy tắc mới đúng phạm vi người dùng nêu, không mở rộng thêm.
+</story>
+
+<excerpt>
+[L1339] TOOL bash: make check
+[L1341] RESULT: go vet ./... | go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run --new-from-rev=origin/main ./...
+[L1342] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub status -s
+[L1344] RESULT: M internal/delivery/cli/telemetry_funnel.go | Wall time: 0.03 seconds
+[L1345] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub diff internal/delivery/cli/telemetry_funnel.go
+[L1347] RESULT: internal/delivery/cli/telemetry_funnel.go | 4 ++++ | 1 file changed, 4 insertions(+), 0 deletions(-)
+…
+[L1353] RESULT: commit 60628ac01c94a5787f7d2132cde8b17aa6420132 | Author: Van Tran <trantoanvan@outlook.com>
+[L1354] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify status -sb
+[L1356] RESULT: branch wave2/simplify-p4-p3 | staged 0, unstaged 49, untracked 4
+[L1357] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify status -uall
+[L1359] RESULT: branch wave2/simplify-p4-p3 | staged 0, unstaged 49, untracked 5
+…
+[L1362] RESULT: modified: internal/delivery/mcpserver/upstream_tools_test.go | modified: internal/delivery/web/fixtures_test.go
+[L1363] AGENT: Stopping to report per the rule:
+
+> **Rule:** *Before each commit, run `git -C /home/vantt/projects/mcp-skill-hub status -s`. It must show nothing except plans/261008-1433-simplify-hub-model/prompt-wave2-C.md. If it shows anything else, stop and report.*
+
+---
+
+### Main Checkout Status Report
+
+Executing `git -C /home/vantt/projects/mcp-skill-hub status -s` reports:
+```text
+ M internal/delivery/cli/telemetry_funnel.go
+```
+
+1. **Root cause:**
+   - Commit `60628ac0` (`docs(plans): add wave 2 prompts for worktrees C and D`) already committed `prompt-wave2-C.md` to `main`.
+   - Another process/agent (Worktree D working on observer telemetry funnel in parallel or the lead) modified `internal/delivery/cli/telemetry_funnel.go` in `/home/vantt/projects/mcp-skill-hub`.
+2. **Worktree C isolation:** Zero writes, edits, git additions, or commits were made to `/home/vantt/projects/mcp-skill-hub` or `/home/vantt/skill-hub`. All operations were strictly confined to `/home/vantt/projects/mcp-skill-hub-simplify` on branch `wave2/simplify-p4-p3`.
+3. In accordance with the instruction, execution has stopped prior to creating any git commit.
+
+---
+
+### Phase 4 Implementation Status (Worktree C)
+
+Phase 4 implementation is **complete and fully verified** in `/home/vantt/projects/mcp-skill-hub-simplify`:
+
+#### 1. `phase-04-skill-yaml.md` Field Destination Table
+All 19 fields from `schemas/skill-metadata.schema.json` and internal structs were audited:
+
+| Field in v1 (`skill.meta.yaml`) | Destination in v3 (`.meta/skill.yaml`) | Status | Evidence & Verified Behavior |
+|---|---|---|---|
+| `schema_version` | `schema_version` | Kept | Kept as `1` in document; workspace schema in `.skillhub/schema-version` bumped to 3. |
+| `id` | `id` | Kept | Kebab-case identifier matching skill directory. |
+| `status` | `status` | Kept | Lifecycle state (`draft`, `active`, `deprecated`, `archived`). |
+| `name` | (Derived) | Derived | Extracted from `SKILL.md` H1 `# Heading` or frontmatter; populated by `internal …[+5280]
+[L1364] USER: The changes in the main checkout (internal/app/resolver.go,
+internal/delivery/cli/telemetry_funnel.go, and others) belong to worktree D,
+which the lead allowed to work directly in the main checkout. They are not yours
+and not a blocker.
+
+New pre-commit rule: run `git -C /home/vantt/projects/mcp-skill-hub status -s`
+and check that NONE of the listed files is a file you edited in your worktree.
+D's telemetry/resolver/cli-telemetry files are expected. Do not touch them, do
+not stash, reset or commit them. Stop only if a file you own shows up there.
+
+Phase 4 report accepted. Proceed:
+1. Commit Phase 4 in small focused conventional commits, with `make check` green
+   before each, for example:
+   - the schema + canonical/catalog read of .meta/skill.yaml
+   - migration planV2ToV3 + its tests
+   - the writers (skill_add, upstream_update, lifecycle) + the review-history walk
+   Each schema change goes in the same commit as its code.
+2. In internal/delivery/mcpserver you changed only test fixtures, including
+   activation_telemetry_test.go, which D may also edit. Keep those fixture edits
+   minimal, and note them in your final report as likely rebase conflicts.
+3. Then start Phase 3: fix phase-03-minimal-distill.md first, as the prompt says.
+   Do not push or merge.
+[L1365] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub status -s
+[L1367] RESULT: M internal/app/resolver.go | M internal/delivery/cli/telemetry_funnel.go
+[L1368] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify status -s
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

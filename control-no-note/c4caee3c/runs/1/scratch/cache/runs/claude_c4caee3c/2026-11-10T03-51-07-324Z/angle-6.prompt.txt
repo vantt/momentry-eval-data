@@ -1,0 +1,197 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Obsidian Hybrid Search is a search engine for your local Obsidian vault, offered as a native Obsidian plugin, an MCP server for AI agents, and a command-line tool. It is for people who keep their notes in Obsidian and want to find them by idea, phrase, title, link, or metadata, and for AI agents that need to start from those notes. It runs locally by default on SQLite, and can optionally use OpenAI-compatible embedding APIs.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L1112] USER: báo cáo tiến độ
+[L1504] USER: Goal check-in: «bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng &gt;=50%.» is still active, and evaluation has been deferred for 30 min because background work is still running: - a6ab6bed080f63d2b · subagent · V02 CI catchup and pr-check - a484f8e19b0d45969 · subagent · V12 invariance and quality gate - ab4083b0629bd363b · subagent · V20 Vietnamese word segmentation - ab37a12c9eca42ac2 · subagent · V22 semantic branch eval - a11e4af …[+936]
+[L1526] USER: Tiếp tục điều phối plan vantt/plans/261102-0349-fork-master-roadmap/plan.md: đọc /home/vantt/projects/ohs-wt/lead-state.txt, ghép việc đã xong (commit/push), khởi chạy việc kế theo phụ thuộc.
+</asks>
+
+<story>
+hook: Agent xin hạ tiêu chí 1 giây, lead bắt đổi debounce
+tension: nguoi_dung_may_sai (Agent đề nghị nới tiêu chí vì chưa đạt / Lead giữ tiêu chí, đổi debounce từ 5000 xuống 250 ms)
+stakes: 2/3
+# Tiêu chí client nhận sự kiện trong 1 giây không được hạ, phải đổi debounce
+
+**Bối cảnh:** Watcher của upstream chờ 5 giây sau khi file đổi mới index, nên sự kiện index chậm hơn tiêu chí 1 giây.
+**Chuyện gì xảy ra:** Agent báo chưa đạt và đề nghị nới tiêu chí. Lead từ chối hạ tiêu chí và giao đổi debounce thành biến môi trường, mặc định vẫn 5000 ms. Với 250 ms, test thấy sự kiện đến trong dưới 1 giây. Probe cho 1 trên upstream và 0 trên fork.
+**Bài học:** Khi một tiêu chí không đạt vì mặc định của upstream, thêm tuỳ chọn có mặc định giữ hành vi cũ. Đừng nới tiêu chí.
+</story>
+
+<excerpt>
+[L1585] AGENT: P04, P05 và P06 (V08, V23, V24) đã vào chuỗi bản vá và đã push (`f147fea`). Chuỗi giờ có 8 bản vá theo đúng thứ tự, gồm P00, P01, P02, P03, P04, P09, P05 và P06. Trên nhánh ghép, cả 2083 test cùng build, lint, knip, `tsc` và kiểm định dạng đều xanh. Phase 2 chỉ còn V25 (P07).
+
+Tôi vừa mở thêm V11b để vá P01 cho đủ những gì các gói ngôn ngữ cần, trước khi phát hành bản đầu. P01 sẽ có thêm:
+- khớp chính xác và khớp cụm, không chỉ khớp tiền tố;
+- trọng số view theo từng câu tìm;
+- `matchedTerms` cho `rescore`;
+- ngữ cảnh truyền vào `signature()` và `queryCacheKey()`.
+
+Mọi thay đổi chỉ là phần thêm vào, nên các gói hiện có vẫn chạy như cũ. Agent này dựng lại toàn chuỗi sau P01 rồi xuất lại các bản vá.
+
+Đang chạy: V02, V12, V20, V22, V25, V11b.
+[L1604] USER: <task-notification>
+<task-id>a11e4afbeef7dec2f</task-id>
+<tool-use-id>toolu_01S5d6XhSo2Yn42KhSutSruz</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a11e4afbeef7dec2f.output</output-file>
+<status>completed</status>
+<summary>Agent "V25 P07 index-events" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS
+
+Summary: `serve --stdio` now pushes `indexed` and `removed` events, but only when `OHS_STDIO_EVENTS=1` is set. Gates are green, and the probe returns 1 on a base build and 0 on the fork. The "within 1 second" criterion is not met, because the watcher debounces each edited file for 5 s.
+
+**Files**
+- Shared tree: `vantt/patches/0007-index-events.patch`, `vantt/patches/0007-index-events.spec.md`, `vantt/probes/index-events.mjs`, `vantt/plans/261102-0537-v25-index-events/plan.md`.
+- Worktree: `/home/vantt/projects/ohs-wt/wt-index-events`, branch `vantt/work/index-events`, one commit on top of `vantt/work/stdio-parity`.
+- Patch touch points (3 files): `src/indexing/indexer.ts`, `src/transports/cli.ts`, and the new `test/vantt/index-events.test.ts`.
+- Event shape: `{"event":"indexed"|"removed","paths":[…],"db_version":n}`, no `id`, written through P04's `writeLine`.
+
+**Behaviour**
+- Writes within 25 ms are coalesced into one event per kind.
+- Events are emitted from `indexFile` (indexed, and note gone), `cleanupStaleNotes` (removed) and the watcher unlink handler (removed).
+- Without the env var nothing is registered and no extra lines are written.
+
+**series.toml entry**
+```toml
+[[patches]]
+id = "index-events"
+name = "feat(stdio): emit indexed and removed events after index writes"
+patch_file = "0007-index-events.patch"
+metadata_file = "0007-index-events.spec.md"
+consumer = "pkm (event-driven graph update); stdio IPC clients"
+upstream_status = "unsubmitted"
+upstream_ref = ""
+touches = ["src/indexing/indexer.ts", "src/transports/cli.ts"]
+test_command = "npx vitest run test/vantt/index-events.test.ts"
+capability_check = "node vantt/probes/index-events.mjs --ohs ."
+probe = "vantt/probes/index-events.mjs"
+phase = "now"
+```
+
+**Test results**
+- Full `vitest run` was 2049/2049 before two small refactors. After them I re-ran the indexer, serve-stdio, stdio-parity and index-events  …[+1555]
+[L1614] AGENT: V25 đã xong, nhưng chưa đạt điều kiện "client nhận sự kiện trong 1 giây". Watcher của upstream chờ cố định 5 giây (debounce) sau khi file đổi rồi mới index. Tôi không hạ điều kiện. Thay vào đó, tôi giao lại cho V25 hai việc. Thứ nhất, cho đặt thời gian chờ qua biến môi trường; mặc định vẫn 5 giây như upstream, nên bất biến G2 vẫn giữ. Thứ hai, dựng lại bản vá trên chuỗi đầy đủ, vì P07 đứng cuối chuỗi.
+[L1615] TOOL SendMessage: {"to":"a11e4afbeef7dec2f","summary":"V25: configurable debounce, rebase on series","message":"Thanks. Lead decision on your concerns: the 1-second criterion stays (rule: never lower thresholds). Please (1) make the watcher debounce configurable through an env var (e.g. `OBSIDIAN_WATCH_DEBOUNCE_MS`;  …[+1442]
+[L1616] RESULT: {"success":true,"message":"Resuming agent a11e4af","resumedAgentId":"a11e4afbeef7dec2f","pin":{"id":"a11e4afbeef7dec2f","name":"a11e4afbeef7dec2f","ref":"d10093"}}
+[L1622] AGENT: Tôi đã giao lại V25. Agent sẽ cho đặt thời gian chờ của watcher qua biến môi trường, mặc định vẫn 5 giây như upstream. Nó cũng thêm test chứng minh client nhận sự kiện trong 1 giây khi đặt thời gian chờ thấp. Bản vá sẽ được dựng lại ở cuối chuỗi P00 → P06, chạy đủ cổng, và probe được kiểm trên bản upstream nguyên gốc.
+[L1637] USER: <task-notification>
+<task-id>ab4083b0629bd363b</task-id>
+<tool-use-id>toolu_01Qp5r8H4F2M1vafagNfZJWn</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ab4083b0629bd363b.output</output-file>
+<status>completed</status>
+<summary>Agent "V20 Vietnamese word segmentation" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS
+
+Summary: V20 is finished. The pack now has word segmentation (`src/segment.ts`) and a third view, `seg`, which joins the syllables of a compound with `_` (`khách_hàng`). I turned `segment` on by default because the eval rule allows it. Compared with your merged V17+V18+V19 run (`tmp/v18/v18-m2.json`), the overall nDCG@5 goes from 0.909 to 0.932 and no category drops.
+
+**Branch and commits** (`vantt/work/v20`, worktree `/home/vantt/projects/ohs-wt/m-v20`, already contains the newest master `f147fea`):
+- `09a0678` adds segmentation, the `seg` view and the dictionary.
+- `9133625` merges master. I kept every feature and used V18's `LexiconStore.load().compounds` instead of writing a second parser. The compound hash now goes into `signature()` only when `segment` is on.
+- `9620155` adds a test that lexicon compounds reach the `seg` view.
+- `2544a44` turns `segment` on by default and adds the docs and plan.
+- `09e4e63` merges master again.
+
+**Dictionary (Q9):**
+- **Source:** the word list in `trungtv/pyvi` at commit `e2ac2ec`. I read its LICENSE: MIT. A copy ships as `data/LICENSE-pyvi.txt`, and source, license and filtering are recorded in `vantt/packages/ohs-lang-vi/data/README.md`.
+- **Filtering:** I kept only words of exactly two valid syllables, which gives 22,574 words.
+- **Size:** 266 KB raw, 86 KB gzipped.
+- **Why no longer words:** three-syllable entries steal the first syllable of the next word (`an toàn khu` + `vực` instead of `an toàn` + `khu vực`). Compounds the user writes in the lexicon's `## Từ ghép` section can be any length.
+- **Rejected sources:** `undertheseanlp/dictionary` and `duyet/vietnamese-wordlist` (GPL); the dictionaries inside underthesea (Apache-2.0, but built from GPL and CC-BY-SA sources); Wiktionary (CC-BY-SA); Wikidata lexemes (CC0, but only 91 Vietnamese entries).
+
+**Eval** (nDCG@5, chk-series `4c69fbf`, default options):
+
+| C …[+3722]
+[L1640] AGENT: V20 xong: tách từ bằng view `seg`, nDCG@5 tổng từ 0,909 lên 0,932, không hạng mục nào tụt, `vi-compound` hơn baseline upstream 0,156 (yêu cầu tối thiểu 0,1). Merge vào `master`.
+…
+[L1904] USER: <task-notification>
+<task-id>ae17aea56d49525c5</task-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ae17aea56d49525c5.output</output-file>
+<status>completed</status>
+<summary>Agent "V14 upstream review script" is waiting on its own background work</summary>
+<note>This agent stopped with background work of its own still running. It may resume on its own when that work completes or reports, and the same task-id notifies again if it does; the result below may be interim.</note>
+<result>The review run hasn't finished, so I have no report yet. I'm waiting for the monitor to say it's done.
+
+Status: NEEDS_CONTEXT
+
+Nothing has changed since my last update. The script, tests, skill and plan are written, and the 22 tests pass. The `v0.17.1` → `v0.17.2` run is still going: probes and the obsidian-help eval are finished, and the Vietnamese eval is in progress. I still need to read the data file, judge the blind pairs and write `vantt/reviews/v0.17.2.md`.</result>
+<usage><subagent_tokens>147388</subagent_tokens><tool_uses>39</tool_uses><duration_ms>374921</duration_ms></usage>
+</task-notification>
+[L1910] AGENT: V14 vẫn đang chạy eval tiếng Việt, chưa có gì mới. Tôi tiếp tục chờ.
+[L1923] USER: <task-notification>
+<task-id>a11e4afbeef7dec2f</task-id>
+<tool-use-id>toolu_013e1RyqatjErX7bvM2HWKJL</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a11e4afbeef7dec2f.output</output-file>
+<status>completed</status>
+<summary>Agent "V25 P07 index-events" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+Summary: P07 is rebased onto `vantt/work/series-p01b` with no conflicts. The watcher debounce is now configurable and a test shows `indexed` arrives within 1 s of a file write. The probe returns 1 on pristine v0.17.2 and 0 on the fork.
+
+**Debounce**
+- `OBSIDIAN_WATCH_DEBOUNCE_MS` sets `config.debounce` in `src/runtime/config.ts`. It must be a non-negative integer, and a bad value throws at config load. Unset stays 5000 ms, as upstream.
+- The spec recommends `OBSIDIAN_WATCH_DEBOUNCE_MS=250` for event clients.
+- A new test starts `serve --stdio` with a 250 ms debounce, writes a file, and asserts the `indexed` event arrives in under 1000 ms from the write. The probe also sets 250 ms.
+
+**Files**
+- Worktree: `/home/vantt/projects/ohs-wt/wt-index-events`, branch `vantt/work/index-events`, one commit (`a5c5210`) on top of `632209f`.
+- Overwritten in the shared tree, left uncommitted: `vantt/patches/0007-index-events.patch` and `vantt/patches/0007-index-events.spec.md` (touch points now include `src/runtime/config.ts`), plus `vantt/probes/index-events.mjs` and the plan (marked completed).
+
+**Tests**
+- Full gates on the new base are green: tsc, eslint with `--max-warnings 0`, knip, prettier `--check`, and 2091/2091 tests.
+- The probe returned 1 on a pristine v0.17.2 build (built under `/home/vantt/projects/ohs-wt/`, then removed) and 0 on the fork.
+
+**series.toml entry**
+```toml
+[[patches]]
+id = "index-events"
+name = "feat(stdio): emit indexed and removed events after index writes"
+patch_file = "0007-index-events.patch"
+metadata_file = "0007-index-events.spec.md"
+consumer = "pkm (event-driven graph update); stdio IPC clients"
+upstream_status = "unsubmitted"
+upstream_ref = ""
+touches = ["src/indexing/indexer.ts", "src/runtime/config.ts", "src/transports/cli.ts"]
+test_command = "npx vitest run test/vantt/index-events.test.ts"
+capability_check = "node vantt/probes/index-events.mjs --ohs ."
+pr …[+489]
+[L1926] AGENT: V25 (P07) xong: thời gian chờ của watcher giờ đặt được, client nhận sự kiện trong dưới 1 giây, và toàn bộ 2091 test đều xanh. Ghép P07 vào cuối chuỗi, đánh dấu phase 2 xong.
+[L1927] TOOL Bash: cat >> vantt/patches/series.toml <<'EOF' [[patches]] id = "index-events" name = "feat(stdio): emit indexed and removed events after index writes" patch_file = "0007-index-events.patch" metadata_file = "0007-index-events.spec.md" consumer = "pkm (event-driven graph update); stdio IPC clients" upstrea …[+1708]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

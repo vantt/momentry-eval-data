@@ -1,0 +1,83 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Chào bạn, sáng nay mình viết số 48 của Thư Chủ Nhật. Chủ đề: "Quỹ khẩn cấp: bao nhiêu là đủ?". Bản nháp ở drafts/48-quy-khan-cap.md, sổ tay giọng văn ở style.md. Đọc giúp mình cả hai trước nhé.
+[L42] USER: Không, 4,7% là đúng. Sáng nay mình vừa mở bảng lãi suất Vietcombank, gửi online 12 tháng là 4,7%. Mấy ngân hàng lớn khác cũng quanh 4,7 đến 5%. Con số 6,5–7% là hồi cuối 2023 rồi bạn ơi.
+[L44] USER: Ừ thêm nguồn đi. Và thêm vào style.md một dòng: AI không tự điền hay sửa số liệu lãi suất, giá cả, tỉ giá; chỉ đánh dấu để mình tự kiểm tra. Mình không muốn chuyện này lặp lại vào lúc mình mệt mà không để ý.
+[L50] USER: Phần cuối mình có 3 chú thích kiểu [1] [2] [3] ở cuối bài. MailerLite hiển thị xấu lắm. Đổi thành link Markdown nằm ngay trong câu giúp mình.
+</asks>
+
+<story>
+hook: Một dấu hai chấm thiếu suýt đưa link hỏng vào bản gửi
+tension: nho_ma_to (Đổi định dạng chú thích chỉ mất hai lượt sửa / Link thứ ba thiếu dấu ':' sau https, suýt gửi đi hỏng)
+stakes: 0/3
+# Link chú thích: lỗi thiếu dấu hai chấm được bắt khi đổi định dạng
+
+**Bối cảnh:** Chủ bản tin muốn bỏ ba chú thích kiểu [1] [2] [3] vì MailerLite hiển thị xấu, và chuyển thành link đặt ngay trong câu.
+**Chuyện gì xảy ra:** Khi đọc lại phần chú thích, agent thấy link thứ ba thiếu dấu hai chấm sau https và sửa ngay khi chuyển. Ba link được gắn vào ba cụm từ trong câu, rồi phần chú thích cuối bài được xoá trong hai lệnh sửa. Việc đổi định dạng chỉ mất hai lượt sửa nhưng suýt đưa một link hỏng vào bản gửi.
+**Bài học:** Khi đổi định dạng link, đọc lại từng URL trước khi chuyển; một lỗi nhỏ như thiếu dấu hai chấm sẽ làm link không mở được.
+**Artefact:** Danh sách ba link trước và sau khi chuyển, che nếu có thông tin cá nhân trong URL.
+</story>
+
+<excerpt>
+[L48] RESULT: The file /Users/linh/Documents/thu-chu-nhat/style.md has been updated successfully.
+[L49] AGENT: Đã thêm nguồn vào bài và thêm quy tắc vào style.md. Từ giờ khi thấy một con số như vậy mình sẽ chỉ đánh dấu [KIỂM TRA], không đề xuất con số thay thế.
+[L50] USER: Phần cuối mình có 3 chú thích kiểu [1] [2] [3] ở cuối bài. MailerLite hiển thị xấu lắm. Đổi thành link Markdown nằm ngay trong câu giúp mình.
+[L51] TOOL Read: /Users/linh/Documents/thu-chu-nhat/drafts/48-quy-khan-cap.md
+[L52] RESULT: 60 [1] https://www.vietcombank.com.vn/vi-VN/KHCN/Cong-cu-Tien-ich/KHCN---Lai-suat | 61 [2] https://thuchunhat.vn/so-31-ngan-sach-50-30-20
+[L53] AGENT: Link [3] thiếu dấu hai chấm sau "https", mình sửa luôn khi chuyển. Mình sẽ gắn [1] vào cụm "bảng lãi suất online Vietcombank", [2] vào "số 31 về ngân sách 50/30/20", [3] vào "số 39 về thẻ tín dụng", rồi xoá phần chú thích cuối bài.
+[L54] USER: Ok.
+[L55] TOOL MultiEdit: /Users/linh/Documents/thu-chu-nhat/drafts/48-quy-khan-cap.md
+[L56] RESULT: Applied 3 edits to /Users/linh/Documents/thu-chu-nhat/drafts/48-quy-khan-cap.md
+[L57] TOOL Edit: /Users/linh/Documents/thu-chu-nhat/drafts/48-quy-khan-cap.md
+[L58] RESULT: The file /Users/linh/Documents/thu-chu-nhat/drafts/48-quy-khan-cap.md has been updated successfully.
+[L59] AGENT: Xong: ba link đã nằm trong câu, link số 39 đã sửa lỗi thiếu dấu hai chấm, phần chú thích cuối bài đã xoá.
+[L60] USER: Cảm ơn. Giờ 10 tiêu đề như mình nói lúc đầu đi, cứ viết, ngắn dài lẫn lộn cũng được, giờ mình biết không phải tại tiêu đề rồi haha.
+[L61] AGENT: Mười gợi ý cho số 48:
+
+1. Quỹ khẩn cấp: bao nhiêu là đủ?
+2. 20 triệu đã đủ chưa?
+3. Ba tháng hay sáu tháng?
+4. Cái quỹ bạn mong không bao giờ phải dùng
+5. Khi mất việc vào tháng thứ hai
+6. Quỹ khẩn cấp không phải để đầu tư
+7. Để tiền ở đâu khi cần rút ngay?
+8. Đủ là bao nhiêu, với riêng bạn
+9. Câu hỏi của một bạn đọc 26 tuổi
+10. Tấm đệm, không phải con heo đất
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,1489 @@
+{
+  "id": "2dfb5915",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-pkm/2dfb5915-3011-441f-a6fb-2c7cb5abd60b.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "eef608eecc0bbb60",
+  "at": "2026-11-10T03:57:29.146Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.35,
+    "tokens": 91391,
+    "chunks": 1,
+    "hotspots": 7,
+    "entries": 772,
+    "gitCommits": 30
+  },
+  "report": {
+    "sid": "claude:2dfb5915",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.34435240000000006,
+    "secs": 381.9,
+    "exitCode": 0,
+    "status": "done",
+    "written": 33,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-11-02-thu-5-thu-vien-yaml-0-3c6e",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh hỏi Claude Desktop về graph vault Obsidian đang thay phần lõi Python bằng Rust, và phải chọn thư viện đọc YAML frontmatter khớp với PyYAML. Trên 746 note thật, cả năm thư viện đều cho 0 lệch nên trông như chọn cái nào cũng được. Khi thêm 58 ca biên và 25.000 note sinh ngẫu nhiên, libyaml-safer panic 242 lần, saphyr-parser lệch 6.510 chỗ, còn unsafe-libyaml không lệch. Ai chọn thư viện chỉ bằng bộ mẫu thật có thể chọn sai mà không biết.",
+        "audience": "dev viết test hoặc port code cần khớp với bản cũ",
+        "evidence": [
+          335,
+          352
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh hỏi Claude Desktop về graph của vault Obsidian, đang thay phần lõi Python bằng Rust. Mục tiêu hiện tại là hoàn tất plan port lõi sang Rust.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Chọn thư viện đọc YAML frontmatter sao cho kết quả khớp PyYAML trên toàn bộ index.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Bộ mẫu thật 746 note không phân biệt được các thư viện, vì chỉ có chuỗi, số nguyên và list.",
+            "evidence": [
+              335
+            ]
+          },
+          "turn": {
+            "text": "Tưởng năm thư viện ngang nhau vì cả năm cho 0 lệch trên 746 note thật; hoá ra chỉ bộ ca biên và 25.000 note sinh ngẫu nhiên mới lộ khác biệt.",
+            "evidence": [
+              335
+            ]
+          },
+          "action": {
+            "text": "Thử năm thư viện trên ba nhóm mẫu: 746 note thật, 58 ca biên và 25.000 note ngẫu nhiên.",
+            "evidence": [
+              335,
+              352
+            ]
+          },
+          "outcome": {
+            "text": "Chọn unsafe-libyaml 0.2.11 kèm lớp tương thích PyYAML cho Q3; đã merge và push.",
+            "evidence": [
+              352
+            ]
+          },
+          "takeaway": {
+            "text": "Mẫu thật có thể cho 0 lệch mà vẫn không chứng minh hai bên giống nhau; cần thêm ca biên và dữ liệu sinh ngẫu nhiên.",
+            "evidence": [
+              335
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-mot-note-338-byte-lam-ram-3c6e",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh hỏi Claude Desktop về graph của vault Obsidian đang thay lõi Python bằng Rust để chạy như một file cài sẵn. Người làm tưởng khớp kết quả với bản Python là đủ an toàn. Review cho thấy một note 338 byte với alias YAML lồng nhau có thể bung ra 11,1 triệu props và chiếm 1,45 GB RAM, và Python cũng nổ y như vậy. Ai xử lý file không tin cậy nên đặt giới hạn bộ nhớ ngay từ đầu.",
+        "audience": "dev xử lý file YAML không tin cậy hoặc viết parser",
+        "evidence": [
+          571,
+          811
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh hỏi Claude Desktop về graph của vault Obsidian, đang thay lõi Python bằng lõi Rust để chạy như một file cài sẵn.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn bản Rust cài được thành một bản dùng thực tế.",
+            "evidence": [
+              571
+            ]
+          },
+          "obstacle": {
+            "text": "Review phát hiện YAML có alias lồng nhau: một note 338 byte bung ra 11,1 triệu props và chiếm 1,45 GB RAM.",
+            "evidence": [
+              811
+            ]
+          },
+          "turn": {
+            "text": "Tưởng khớp kết quả với bản Python là đủ an toàn; hoá ra Python cũng nổ bộ nhớ y như vậy, nên khớp Python không có nghĩa là an toàn.",
+            "evidence": [
+              811
+            ]
+          },
+          "action": {
+            "text": "Thêm ngân sách mỗi note: tối đa 1 triệu props và 64 MiB. Vượt ngân sách thì báo MemoryError và ghi đây là lệch có chủ ý so với Python.",
+            "evidence": [
+              833
+            ]
+          },
+          "outcome": {
+            "text": "Đã sửa 6 lỗi từ review. kg-solo khớp 17 bảng với 0 khác biệt không tên, và fuzz 25.000 note YAML vẫn 0 khác biệt.",
+            "evidence": [
+              833
+            ]
+          },
+          "takeaway": {
+            "text": "Với đầu vào không tin cậy, một đoạn văn bản nhỏ có thể nhân thành dữ liệu rất lớn. Đặt giới hạn ngân sách từ đầu, đừng chỉ dựa vào việc khớp bản cũ.",
+            "evidence": [
+              811
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-ohs-dung-han-khi-stderr-gap-3c6e",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh hỏi Claude Desktop về graph vault Obsidian, đang thay bản Python bằng lõi Rust. Code đọc stderr của tiến trình Node bằng lines(), coi như dòng nào cũng đọc được. Hoá ra một byte không hợp lệ trên máy có code page tiếng Việt làm reader dừng, pipe đầy, và mọi search timeout sau 60 giây mà không có tín hiệu thoát nào. Ai làm tiến trình con qua pipe nên nghe, vì lỗi mã hoá ở luồng phụ có thể đứng cả tiến trình.",
+        "audience": "dev Rust làm tiến trình con và pipe",
+        "evidence": [
+          607,
+          631
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian, đang thay bản Python bằng lõi Rust.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất plan lõi Rust và có một bản installable.",
+            "evidence": [
+              11,
+              571
+            ]
+          },
+          "obstacle": {
+            "text": "Module OHS giữ một tiến trình Node chạy lâu; khi stderr gặp byte UTF-8 không hợp lệ, reader thoát, pipe đầy và OHS đứng mà không có tín hiệu thoát.",
+            "evidence": [
+              607
+            ]
+          },
+          "turn": {
+            "text": "Code đọc stderr bằng lines(), coi như dòng nào cũng đọc được; hoá ra một byte lỗi làm reader dừng và kéo theo cả tiến trình đứng.",
+            "evidence": [
+              607
+            ]
+          },
+          "action": {
+            "text": "Sửa để reader đọc tới EOF với UTF-8 lossy, đưa stdin sang luồng ghi riêng, rồi merge và push lên main.",
+            "evidence": [
+              631,
+              639
+            ]
+          },
+          "outcome": {
+            "text": "Đã push lên main, nhưng test mới chỉ chạy trên Linux; CI sẽ là lần chạy đầu trên Windows và macOS.",
+            "evidence": [
+              631,
+              640
+            ]
+          },
+          "takeaway": {
+            "text": "Đọc luồng phụ phải luôn tới EOF, và lỗi mã hoá nên được thay bằng ký tự thay thế thay vì dừng reader.",
+            "evidence": [
+              607
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-reviewer-agent-tim-lenh-duong-di-3c6e",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh hỏi Claude Desktop về graph của vault Obsidian đang được viết lại bằng Rust để thay bản Python. Người làm tưởng tham số max_len của lệnh tìm đường đi là vô hại, nhưng trên vault dày liên kết, max_len 8 đến 10 đẩy CPU lên 100% và làm treo cả server, kể cả ping. Đáng nghe vì lỗi này lọt qua agent viết code và chỉ lộ ra khi một agent review độc lập đọc lại code.",
+        "audience": "dev dùng agent AI để viết code",
+        "evidence": [
+          1777,
+          1950
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian, đang được viết lại bằng Rust để thay bản Python.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất lõi Rust để thay bản Python.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Lệnh tìm đường đi nhận max_len từ model mà không có trần, nên một lệnh có thể làm treo cả server MCP.",
+            "evidence": [
+              1777
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tham số max_len không có trần là vô hại; hoá ra trên vault dày liên kết, max_len 8 đến 10 làm CPU 100%, RAM tăng tới khi bị OS giết, và mọi request sau đó kể cả ping đều treo.",
+            "evidence": [
+              1777
+            ]
+          },
+          "action": {
+            "text": "Agent review độc lập đọc code và báo lỗi; người làm giao phần sửa cho agent khác, yêu cầu giới hạn max_len và thời gian chạy.",
+            "evidence": [
+              1780
+            ]
+          },
+          "outcome": {
+            "text": "Trần max_len là 12, timeout 10 giây; fmt, clippy và test đều qua; đã merge vào nhánh, chưa push.",
+            "evidence": [
+              1950,
+              1958
+            ]
+          },
+          "takeaway": {
+            "text": "Mọi truy vấn đệ quy có đầu vào từ model cần trần độ sâu và trần thời gian chạy.",
+            "evidence": [
+              1777
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-ci-do-tren-ca-ba-os-3c6e",
+        "status": "angle",
+        "angle": "Dự án là công cụ dòng lệnh viết lại bằng Rust để hỏi Claude Desktop về graph vault Obsidian, và người làm đang cố hoàn tất bản port lõi. CI đỏ trên Linux và macOS khi bước so sánh thoát mã 2, còn máy cục bộ vẫn xanh. Nguyên nhân là cache CI không chỉ tăng tốc build: nó xoá file ngoài thư mục build, để lại thư mục dump rỗng khiến bước kiểm tra từ chối ghi. Ai dùng cache để chứa dữ liệu kiểm thử đều có thể gặp đúng lỗi này.",
+        "audience": "dev dùng CI cache khi test công cụ dòng lệnh",
+        "evidence": [
+          1265,
+          1272,
+          1364
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh để hỏi Claude Desktop về graph vault Obsidian, đang được viết lại bằng Rust; người làm đang hoàn tất bản port lõi.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn hoàn tất plan rust-core-port và giữ CI xanh trên main.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "CI đỏ trên Linux và macOS ở bước so bản Rust với golden, thoát mã 2.",
+            "evidence": [
+              1265,
+              1272
+            ]
+          },
+          "turn": {
+            "text": "Tưởng cache CI chỉ tăng tốc build; hoá ra rust-cache xoá mọi file ngoài thư mục build cargo, để lại thư mục dump rỗng, nên bước kiểm tra từ chối ghi và thoát mã 2.",
+            "evidence": [
+              1364
+            ]
+          },
+          "action": {
+            "text": "Ghi dump ra thư mục tạm ngoài cache trong ci.yml; thêm --no-fail-fast cho bước test.",
+            "evidence": [
+              1364,
+              1372
+            ]
+          },
+          "outcome": {
+            "text": "Ba lỗi đã sửa thành commit trên main nhưng chưa push; bản sửa cho Windows chưa chạy trên máy Windows.",
+            "evidence": [
+              1364
+            ]
+          },
+          "takeaway": {
+            "text": "Đừng dùng thư mục cache để chứa dữ liệu kiểm thử; cache có thể đổi nội dung theo cách không ngờ.",
+            "evidence": [
+              1364
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-hai-agent-thiet-ke-mcp-doc-3c6e",
+        "status": "angle",
+        "angle": "Dự án là một công cụ dòng lệnh để Claude Desktop hỏi về graph của vault Obsidian, và người làm đang chốt bộ tool MCP cho bản Rust. Hai agent thiết kế độc lập gần như trùng nhau: giữ tool rời, không làm code mode, để pkm tự đọc file. Khi phản biện chéo, một bên chỉ ra bên kia ước lượng danh sách tool khoảng 1,9 nghìn token, trong khi file thật 13.381 ký tự tương đương khoảng 3,3 đến 3,8 nghìn. Ước lượng theo số ký tự có thể lệch gần gấp đôi, nên đo file thật trước khi đặt ngưỡng.",
+        "audience": "dev viết MCP server và đặt ngưỡng token",
+        "evidence": [
+          3051,
+          3098
+        ],
+        "spine": {
+          "context": {
+            "text": "Công cụ dòng lệnh để Claude Desktop hỏi về graph vault Obsidian; đang port lõi sang Rust và chốt bộ tool MCP.",
+            "evidence": [
+              "profile",
+              11,
+              3027
+            ]
+          },
+          "want": {
+            "text": "Chốt interface MCP một cửa gồm search, read và related cho phase 17.",
+            "evidence": [
+              3027,
+              3060
+            ]
+          },
+          "obstacle": {
+            "text": "Số token mới chỉ ước lượng theo số ký tự, chưa đo bằng tokenizer.",
+            "evidence": [
+              3051
+            ]
+          },
+          "turn": {
+            "text": "Tưởng danh sách tool khoảng 7 KB, tức khoảng 1,9 nghìn token; hoá ra file thật 13.381 ký tự, khoảng 3,3 đến 3,8 nghìn token.",
+            "evidence": [
+              3098
+            ]
+          },
+          "action": {
+            "text": "Hai agent thiết kế độc lập, rồi mỗi bên phản biện bản của bên kia.",
+            "evidence": [
+              3073,
+              3077
+            ]
+          },
+          "outcome": {
+            "text": "Thống nhất bộ 13 tool; ngưỡng test kích thước đổi từ khoảng 11 KB lên khoảng 17 KB; token nạp mỗi phiên ước 3,8 đến 4,4 nghìn, thay vì khoảng 6,0 nghìn.",
+            "evidence": [
+              3098,
+              3110
+            ]
+          },
+          "takeaway": {
+            "text": "Ước lượng token theo số ký tự có thể lệch gần gấp đôi; đo file thật trước khi đặt ngưỡng.",
+            "evidence": [
+              3051,
+              3098
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-khoa-ohs-not-ready-bi-compact-3c6e",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh hỏi Claude Desktop về graph vault Obsidian đang thay lõi Python bằng Rust, và người làm đang chốt interface MCP cho nó. Hợp đồng lỗi ohs_not_ready phải trả đủ 5 khoá, và test cũ đã kiểm 5 khoá trước bước nén. Nhưng bước nén bỏ khoá null nên agent chỉ nhận 3 khoá khi OHS đang khởi động hoặc lỗi. Ai viết test cho API có bước lọc dữ liệu cuối cùng nên kiểm kết quả ở tầng người dùng thấy.",
+        "audience": "dev viết test cho API có bước lọc dữ liệu",
+        "evidence": [
+          3100,
+          3110
+        ],
+        "spine": {
+          "context": {
+            "text": "Công cụ dòng lệnh hỏi Claude Desktop về graph vault Obsidian, đang thay lõi Python bằng Rust.",
+            "evidence": [
+              "profile",
+              3027
+            ]
+          },
+          "want": {
+            "text": "Muốn chốt interface MCP cho tool hỏi graph, ít lượt gọi và ít token.",
+            "evidence": [
+              3027,
+              3039
+            ]
+          },
+          "obstacle": {
+            "text": "Khi OHS đang starting, model_missing hay broken, kết quả tool thiếu khoá.",
+            "evidence": [
+              3110
+            ]
+          },
+          "turn": {
+            "text": "Tưởng test 5 khoá đảm bảo agent nhận đủ 5 khoá; hoá ra compact() xoá khoá null sau test, agent chỉ nhận 3.",
+            "evidence": [
+              3100,
+              3110
+            ]
+          },
+          "action": {
+            "text": "Hai agent đọc code, xác nhận compact() gây lỗi; đề xuất miễn ngoại lệ cho ohs_not_ready và thêm test ở tầng MCP.",
+            "evidence": [
+              3060,
+              3110
+            ]
+          },
+          "takeaway": {
+            "text": "Test ở tầng người dùng nhận được, không chỉ ở tầng trước khi dữ liệu bị biến đổi.",
+            "evidence": [
+              3110
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-11-02-may-windows-thu-ra-ba-loi-3c6e",
+        "status": "none",
+        "none": true,
+        "reason": "Không có ai tin sai điều gì. Đây là các lỗi thường được báo cáo và sửa; trích đoạn không cho thấy niềm tin sai nào làm chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian, đang thay lõi bằng Rust để chuẩn bị bản rc.2.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Đưa bản rc.2 cho người dùng Windows cài thử.",
+            "evidence": [
+              3219
+            ]
+          },
+          "obstacle": {
+            "text": "Máy Windows thử lộ ba lỗi: che đường dẫn JSON, in tiếng Việt qua pipe sập, và probe không thấy PyYAML cài bằng --user.",
+            "evidence": [
+              3242
+            ]
+          },
+          "action": {
+            "text": "Sửa ba lỗi, cập nhật bản bàn giao và đưa báo cáo Windows vào main.",
+            "evidence": [
+              3242
+            ]
+          },
+          "outcome": {
+            "text": "CI trên main xanh trên Linux, macOS và Windows sau khi job macOS ARM chờ runner được chạy lại.",
+            "evidence": [
+              3277
+            ]
+          },
+          "takeaway": {
+            "text": "Phase 10 vẫn cần chạy lại bộ so khớp riêng trên Windows để xác nhận.",
+            "evidence": [
+              3242
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-11-02-python-them-goi-tieng-viet-thieu-3c6e",
+        "status": "none",
+        "none": true,
+        "reason": "Không có ai tin sai điều gì rõ ràng trong tài liệu: phần việc là port một commit và chờ cổng người làm mở. Tài liệu chỉ ghi bundle không đặt biến môi trường, không ghi đó là một niềm tin sai.",
+        "spine": {
+          "context": {
+            "text": "Dự án công cụ dòng lệnh hỏi Claude Desktop về graph của vault Obsidian, đang thay bản Python bằng lõi Rust.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất plan chuyển lõi Rust theo yêu cầu của chủ phiên.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Các bước còn lại (phase 15 đến 17) đều nằm sau cổng mà chỉ người làm mở được.",
+            "evidence": [
+              2168
+            ]
+          },
+          "action": {
+            "text": "Chuyển commit Python 223c9c3 sang Rust, nâng ghim spec và dựng lại golden.",
+            "evidence": [
+              2196,
+              2247
+            ]
+          },
+          "outcome": {
+            "text": "Mọi cổng kiểm đạt, parity sạch: 64 mục, 0 lệch chưa có tên, 0 mục chưa có.",
+            "evidence": [
+              2247,
+              2254
+            ]
+          },
+          "takeaway": {
+            "text": "Hai tiến trình dùng chung một index phải cùng cấu hình gói ngôn ngữ, nếu không sẽ dựng lại view mãi.",
+            "evidence": [
+              2247
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-11-02-read-pkm-tu-doc-file-thay-3c6e",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh giúp Claude Desktop hỏi về graph vault Obsidian đang chuyển lõi sang Rust, và người làm muốn tool đọc thân note luôn dùng được. Plan ban đầu giao việc đọc này cho OHS, nhưng OHS chỉ đọc được note đã index, nên trong lúc index (có thể khoảng 10 phút) agent không đọc được note nào. Hai agent phản đối, người dùng đồng ý để pkm tự đọc file trong vault, và plan lệch khỏi thiết kế ban đầu. Ai dựng tool cho agent nên nhớ: tool không cần index thì đừng để nó phụ thuộc vào index.",
+        "audience": "dev xây tool cho agent và người làm công cụ MCP",
+        "evidence": [
+          3144,
+          3160,
+          3170
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh giúp Claude Desktop hỏi về graph của vault Obsidian, đang chuyển lõi sang Rust.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn tool đọc thân note luôn dùng được cho agent.",
+            "evidence": [
+              3144
+            ]
+          },
+          "obstacle": {
+            "text": "OHS chỉ đọc được note đã index, nên lúc khởi động hoặc index (có thể khoảng 10 phút) agent không đọc được note nào.",
+            "evidence": [
+              3144,
+              3160
+            ]
+          },
+          "turn": {
+            "text": "Tưởng việc đọc note chuyển sang OHS là ổn theo plan; hoá ra OHS không đọc được trong lúc index, và note vừa sửa có thể trả bản cũ.",
+            "evidence": [
+              3144,
+              3160
+            ]
+          },
+          "action": {
+            "text": "Hai agent đề xuất pkm tự đọc file trong vault, người dùng đồng ý và giao agent làm tiếp bộ tool.",
+            "evidence": [
+              3170,
+              3175
+            ]
+          },
+          "outcome": {
+            "text": "Việc đọc note lệch khỏi plan phase 17; agent tiếp tục làm trên nhánh phase 17.",
+            "evidence": [
+              3170,
+              3180
+            ]
+          },
+          "takeaway": {
+            "text": "Tool không cần index thì đừng để nó phụ thuộc vào index.",
+            "evidence": [
+              3160
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:2dfb5915 L1-L4000: done; 32 chuyện thô, 33 cụm; ghi 33 mới, gộp 0\nđiểm nóng 7 (thiếu 0); 30 commit git; lần chạy 1/1; 0.34 USD\ngóc kể: 8 có, 2 không ra chuyện\nhồ sơ dự án: obsidian-pkm tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-thu-5-thu-vien-yaml-0-3c6e",
+      "code": "M-BA44",
+      "title": "Thử 5 thư viện YAML: 0 lệch trên 746 note, nhưng 25.000 note sinh ngẫu nhiên lộ panic",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh hỏi Claude Desktop về graph vault Obsidian đang thay phần lõi Python bằng Rust, và phải chọn thư viện đọc YAML frontmatter khớp với PyYAML. Trên 746 note thật, cả năm thư viện đều cho 0 lệch nên trông như chọn cái nào cũng được. Khi thêm 58 ca biên và 25.000 note sinh ngẫu nhiên, libyaml-safer panic 242 lần, saphyr-parser lệch 6.510 chỗ, còn unsafe-libyaml không lệch. Ai chọn thư viện chỉ bằng bộ mẫu thật có thể chọn sai mà không biết.",
+      "audience": "dev viết test hoặc port code cần khớp với bản cũ",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh hỏi Claude Desktop về graph của vault Obsidian, đang thay phần lõi Python bằng Rust. Mục tiêu hiện tại là hoàn tất plan port lõi sang Rust.",
+          "lines": [
+            "profile",
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "want": {
+          "text": "Chọn thư viện đọc YAML frontmatter sao cho kết quả khớp PyYAML trên toàn bộ index.",
+          "lines": [
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Bộ mẫu thật 746 note không phân biệt được các thư viện, vì chỉ có chuỗi, số nguyên và list.",
+          "lines": [
+            "claude:2dfb5915#L335"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng năm thư viện ngang nhau vì cả năm cho 0 lệch trên 746 note thật; hoá ra chỉ bộ ca biên và 25.000 note sinh ngẫu nhiên mới lộ khác biệt.",
+          "lines": [
+            "claude:2dfb5915#L335"
+          ]
+        },
+        "action": {
+          "text": "Thử năm thư viện trên ba nhóm mẫu: 746 note thật, 58 ca biên và 25.000 note ngẫu nhiên.",
+          "lines": [
+            "claude:2dfb5915#L335",
+            "claude:2dfb5915#L352"
+          ]
+        },
+        "outcome": {
+          "text": "Chọn unsafe-libyaml 0.2.11 kèm lớp tương thích PyYAML cho Q3; đã merge và push.",
+          "lines": [
+            "claude:2dfb5915#L352"
+          ]
+        },
+        "takeaway": {
+          "text": "Mẫu thật có thể cho 0 lệch mà vẫn không chứng minh hai bên giống nhau; cần thêm ca biên và dữ liệu sinh ngẫu nhiên.",
+          "lines": [
+            "claude:2dfb5915#L335"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-mot-note-338-byte-lam-ram-3c6e",
+      "code": "M-JR7N",
+      "title": "Một note 338 byte làm RAM lên 1,45 GB: bom alias YAML",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh hỏi Claude Desktop về graph của vault Obsidian đang thay lõi Python bằng Rust để chạy như một file cài sẵn. Người làm tưởng khớp kết quả với bản Python là đủ an toàn. Review cho thấy một note 338 byte với alias YAML lồng nhau có thể bung ra 11,1 triệu props và chiếm 1,45 GB RAM, và Python cũng nổ y như vậy. Ai xử lý file không tin cậy nên đặt giới hạn bộ nhớ ngay từ đầu.",
+      "audience": "dev xử lý file YAML không tin cậy hoặc viết parser",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh hỏi Claude Desktop về graph của vault Obsidian, đang thay lõi Python bằng lõi Rust để chạy như một file cài sẵn.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn bản Rust cài được thành một bản dùng thực tế.",
+          "lines": [
+            "claude:2dfb5915#L571"
+          ]
+        },
+        "obstacle": {
+          "text": "Review phát hiện YAML có alias lồng nhau: một note 338 byte bung ra 11,1 triệu props và chiếm 1,45 GB RAM.",
+          "lines": [
+            "claude:2dfb5915#L811"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng khớp kết quả với bản Python là đủ an toàn; hoá ra Python cũng nổ bộ nhớ y như vậy, nên khớp Python không có nghĩa là an toàn.",
+          "lines": [
+            "claude:2dfb5915#L811"
+          ]
+        },
+        "action": {
+          "text": "Thêm ngân sách mỗi note: tối đa 1 triệu props và 64 MiB. Vượt ngân sách thì báo MemoryError và ghi đây là lệch có chủ ý so với Python.",
+          "lines": [
+            "claude:2dfb5915#L833"
+          ]
+        },
+        "outcome": {
+          "text": "Đã sửa 6 lỗi từ review. kg-solo khớp 17 bảng với 0 khác biệt không tên, và fuzz 25.000 note YAML vẫn 0 khác biệt.",
+          "lines": [
+            "claude:2dfb5915#L833"
+          ]
+        },
+        "takeaway": {
+          "text": "Với đầu vào không tin cậy, một đoạn văn bản nhỏ có thể nhân thành dữ liệu rất lớn. Đặt giới hạn ngân sách từ đầu, đừng chỉ dựa vào việc khớp bản cũ.",
+          "lines": [
+            "claude:2dfb5915#L811"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-ohs-dung-han-khi-stderr-gap-3c6e",
+      "code": "M-F4HK",
+      "title": "OHS đứng hẳn khi stderr gặp byte UTF-8 lỗi, trên máy có code page Việt",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh hỏi Claude Desktop về graph vault Obsidian, đang thay bản Python bằng lõi Rust. Code đọc stderr của tiến trình Node bằng lines(), coi như dòng nào cũng đọc được. Hoá ra một byte không hợp lệ trên máy có code page tiếng Việt làm reader dừng, pipe đầy, và mọi search timeout sau 60 giây mà không có tín hiệu thoát nào. Ai làm tiến trình con qua pipe nên nghe, vì lỗi mã hoá ở luồng phụ có thể đứng cả tiến trình.",
+      "audience": "dev Rust làm tiến trình con và pipe",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian, đang thay bản Python bằng lõi Rust.",
+          "lines": [
+            "profile",
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất plan lõi Rust và có một bản installable.",
+          "lines": [
+            "claude:2dfb5915#L11",
+            "claude:2dfb5915#L571"
+          ]
+        },
+        "obstacle": {
+          "text": "Module OHS giữ một tiến trình Node chạy lâu; khi stderr gặp byte UTF-8 không hợp lệ, reader thoát, pipe đầy và OHS đứng mà không có tín hiệu thoát.",
+          "lines": [
+            "claude:2dfb5915#L607"
+          ]
+        },
+        "turn": {
+          "text": "Code đọc stderr bằng lines(), coi như dòng nào cũng đọc được; hoá ra một byte lỗi làm reader dừng và kéo theo cả tiến trình đứng.",
+          "lines": [
+            "claude:2dfb5915#L607"
+          ]
+        },
+        "action": {
+          "text": "Sửa để reader đọc tới EOF với UTF-8 lossy, đưa stdin sang luồng ghi riêng, rồi merge và push lên main.",
+          "lines": [
+            "claude:2dfb5915#L631",
+            "claude:2dfb5915#L639"
+          ]
+        },
+        "outcome": {
+          "text": "Đã push lên main, nhưng test mới chỉ chạy trên Linux; CI sẽ là lần chạy đầu trên Windows và macOS.",
+          "lines": [
+            "claude:2dfb5915#L631",
+            "claude:2dfb5915#L640"
+          ]
+        },
+        "takeaway": {
+          "text": "Đọc luồng phụ phải luôn tới EOF, và lỗi mã hoá nên được thay bằng ký tự thay thế thay vì dừng reader.",
+          "lines": [
+            "claude:2dfb5915#L607"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-reviewer-agent-tim-lenh-duong-di-3c6e",
+      "code": "M-S1VW",
+      "title": "Reviewer agent tìm lệnh đường đi có thể làm treo server MCP",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh hỏi Claude Desktop về graph của vault Obsidian đang được viết lại bằng Rust để thay bản Python. Người làm tưởng tham số max_len của lệnh tìm đường đi là vô hại, nhưng trên vault dày liên kết, max_len 8 đến 10 đẩy CPU lên 100% và làm treo cả server, kể cả ping. Đáng nghe vì lỗi này lọt qua agent viết code và chỉ lộ ra khi một agent review độc lập đọc lại code.",
+      "audience": "dev dùng agent AI để viết code",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian, đang được viết lại bằng Rust để thay bản Python.",
+          "lines": [
+            "profile",
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất lõi Rust để thay bản Python.",
+          "lines": [
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Lệnh tìm đường đi nhận max_len từ model mà không có trần, nên một lệnh có thể làm treo cả server MCP.",
+          "lines": [
+            "claude:2dfb5915#L1777"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tham số max_len không có trần là vô hại; hoá ra trên vault dày liên kết, max_len 8 đến 10 làm CPU 100%, RAM tăng tới khi bị OS giết, và mọi request sau đó kể cả ping đều treo.",
+          "lines": [
+            "claude:2dfb5915#L1777"
+          ]
+        },
+        "action": {
+          "text": "Agent review độc lập đọc code và báo lỗi; người làm giao phần sửa cho agent khác, yêu cầu giới hạn max_len và thời gian chạy.",
+          "lines": [
+            "claude:2dfb5915#L1780"
+          ]
+        },
+        "outcome": {
+          "text": "Trần max_len là 12, timeout 10 giây; fmt, clippy và test đều qua; đã merge vào nhánh, chưa push.",
+          "lines": [
+            "claude:2dfb5915#L1950",
+            "claude:2dfb5915#L1958"
+          ]
+        },
+        "takeaway": {
+          "text": "Mọi truy vấn đệ quy có đầu vào từ model cần trần độ sâu và trần thời gian chạy.",
+          "lines": [
+            "claude:2dfb5915#L1777"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-ci-do-tren-ca-ba-os-3c6e",
+      "code": "M-5Q91",
+      "title": "CI đỏ trên cả ba OS vì cache xoá file dump, và tên vault trên Windows bị sai",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là công cụ dòng lệnh viết lại bằng Rust để hỏi Claude Desktop về graph vault Obsidian, và người làm đang cố hoàn tất bản port lõi. CI đỏ trên Linux và macOS khi bước so sánh thoát mã 2, còn máy cục bộ vẫn xanh. Nguyên nhân là cache CI không chỉ tăng tốc build: nó xoá file ngoài thư mục build, để lại thư mục dump rỗng khiến bước kiểm tra từ chối ghi. Ai dùng cache để chứa dữ liệu kiểm thử đều có thể gặp đúng lỗi này.",
+      "audience": "dev dùng CI cache khi test công cụ dòng lệnh",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh để hỏi Claude Desktop về graph vault Obsidian, đang được viết lại bằng Rust; người làm đang hoàn tất bản port lõi.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn hoàn tất plan rust-core-port và giữ CI xanh trên main.",
+          "lines": [
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "CI đỏ trên Linux và macOS ở bước so bản Rust với golden, thoát mã 2.",
+          "lines": [
+            "claude:2dfb5915#L1265",
+            "claude:2dfb5915#L1272"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng cache CI chỉ tăng tốc build; hoá ra rust-cache xoá mọi file ngoài thư mục build cargo, để lại thư mục dump rỗng, nên bước kiểm tra từ chối ghi và thoát mã 2.",
+          "lines": [
+            "claude:2dfb5915#L1364"
+          ]
+        },
+        "action": {
+          "text": "Ghi dump ra thư mục tạm ngoài cache trong ci.yml; thêm --no-fail-fast cho bước test.",
+          "lines": [
+            "claude:2dfb5915#L1364",
+            "claude:2dfb5915#L1372"
+          ]
+        },
+        "outcome": {
+          "text": "Ba lỗi đã sửa thành commit trên main nhưng chưa push; bản sửa cho Windows chưa chạy trên máy Windows.",
+          "lines": [
+            "claude:2dfb5915#L1364"
+          ]
+        },
+        "takeaway": {
+          "text": "Đừng dùng thư mục cache để chứa dữ liệu kiểm thử; cache có thể đổi nội dung theo cách không ngờ.",
+          "lines": [
+            "claude:2dfb5915#L1364"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-hai-agent-thiet-ke-mcp-doc-3c6e",
+      "code": "M-SCGG",
+      "title": "Hai agent thiết kế MCP độc lập, phản biện chéo và sửa con số token",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là một công cụ dòng lệnh để Claude Desktop hỏi về graph của vault Obsidian, và người làm đang chốt bộ tool MCP cho bản Rust. Hai agent thiết kế độc lập gần như trùng nhau: giữ tool rời, không làm code mode, để pkm tự đọc file. Khi phản biện chéo, một bên chỉ ra bên kia ước lượng danh sách tool khoảng 1,9 nghìn token, trong khi file thật 13.381 ký tự tương đương khoảng 3,3 đến 3,8 nghìn. Ước lượng theo số ký tự có thể lệch gần gấp đôi, nên đo file thật trước khi đặt ngưỡng.",
+      "audience": "dev viết MCP server và đặt ngưỡng token",
+      "spine": {
+        "context": {
+          "text": "Công cụ dòng lệnh để Claude Desktop hỏi về graph vault Obsidian; đang port lõi sang Rust và chốt bộ tool MCP.",
+          "lines": [
+            "profile",
+            "claude:2dfb5915#L11",
+            "claude:2dfb5915#L3027"
+          ]
+        },
+        "want": {
+          "text": "Chốt interface MCP một cửa gồm search, read và related cho phase 17.",
+          "lines": [
+            "claude:2dfb5915#L3027",
+            "claude:2dfb5915#L3060"
+          ]
+        },
+        "obstacle": {
+          "text": "Số token mới chỉ ước lượng theo số ký tự, chưa đo bằng tokenizer.",
+          "lines": [
+            "claude:2dfb5915#L3051"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng danh sách tool khoảng 7 KB, tức khoảng 1,9 nghìn token; hoá ra file thật 13.381 ký tự, khoảng 3,3 đến 3,8 nghìn token.",
+          "lines": [
+            "claude:2dfb5915#L3098"
+          ]
+        },
+        "action": {
+          "text": "Hai agent thiết kế độc lập, rồi mỗi bên phản biện bản của bên kia.",
+          "lines": [
+            "claude:2dfb5915#L3073",
+            "claude:2dfb5915#L3077"
+          ]
+        },
+        "outcome": {
+          "text": "Thống nhất bộ 13 tool; ngưỡng test kích thước đổi từ khoảng 11 KB lên khoảng 17 KB; token nạp mỗi phiên ước 3,8 đến 4,4 nghìn, thay vì khoảng 6,0 nghìn.",
+          "lines": [
+            "claude:2dfb5915#L3098",
+            "claude:2dfb5915#L3110"
+          ]
+        },
+        "takeaway": {
+          "text": "Ước lượng token theo số ký tự có thể lệch gần gấp đôi; đo file thật trước khi đặt ngưỡng.",
+          "lines": [
+            "claude:2dfb5915#L3051",
+            "claude:2dfb5915#L3098"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-khoa-ohs-not-ready-bi-compact-3c6e",
+      "code": "M-47VW",
+      "title": "Khoá ohs_not_ready bị compact() xoá, test không bắt được",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh hỏi Claude Desktop về graph vault Obsidian đang thay lõi Python bằng Rust, và người làm đang chốt interface MCP cho nó. Hợp đồng lỗi ohs_not_ready phải trả đủ 5 khoá, và test cũ đã kiểm 5 khoá trước bước nén. Nhưng bước nén bỏ khoá null nên agent chỉ nhận 3 khoá khi OHS đang khởi động hoặc lỗi. Ai viết test cho API có bước lọc dữ liệu cuối cùng nên kiểm kết quả ở tầng người dùng thấy.",
+      "audience": "dev viết test cho API có bước lọc dữ liệu",
+      "spine": {
+        "context": {
+          "text": "Công cụ dòng lệnh hỏi Claude Desktop về graph vault Obsidian, đang thay lõi Python bằng Rust.",
+          "lines": [
+            "profile",
+            "claude:2dfb5915#L3027"
+          ]
+        },
+        "want": {
+          "text": "Muốn chốt interface MCP cho tool hỏi graph, ít lượt gọi và ít token.",
+          "lines": [
+            "claude:2dfb5915#L3027",
+            "claude:2dfb5915#L3039"
+          ]
+        },
+        "obstacle": {
+          "text": "Khi OHS đang starting, model_missing hay broken, kết quả tool thiếu khoá.",
+          "lines": [
+            "claude:2dfb5915#L3110"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng test 5 khoá đảm bảo agent nhận đủ 5 khoá; hoá ra compact() xoá khoá null sau test, agent chỉ nhận 3.",
+          "lines": [
+            "claude:2dfb5915#L3100",
+            "claude:2dfb5915#L3110"
+          ]
+        },
+        "action": {
+          "text": "Hai agent đọc code, xác nhận compact() gây lỗi; đề xuất miễn ngoại lệ cho ohs_not_ready và thêm test ở tầng MCP.",
+          "lines": [
+            "claude:2dfb5915#L3060",
+            "claude:2dfb5915#L3110"
+          ]
+        },
+        "takeaway": {
+          "text": "Test ở tầng người dùng nhận được, không chỉ ở tầng trước khi dữ liệu bị biến đổi.",
+          "lines": [
+            "claude:2dfb5915#L3110"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-11-02-may-windows-thu-ra-ba-loi-3c6e",
+      "code": "M-48ZD",
+      "title": "Máy Windows thử ra ba lỗi harness: đường dẫn JSON, UTF-8 khi pipe, và -I ẩn user site",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian, đang thay lõi bằng Rust để chuẩn bị bản rc.2.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Đưa bản rc.2 cho người dùng Windows cài thử.",
+          "lines": [
+            "claude:2dfb5915#L3219"
+          ]
+        },
+        "obstacle": {
+          "text": "Máy Windows thử lộ ba lỗi: che đường dẫn JSON, in tiếng Việt qua pipe sập, và probe không thấy PyYAML cài bằng --user.",
+          "lines": [
+            "claude:2dfb5915#L3242"
+          ]
+        },
+        "action": {
+          "text": "Sửa ba lỗi, cập nhật bản bàn giao và đưa báo cáo Windows vào main.",
+          "lines": [
+            "claude:2dfb5915#L3242"
+          ]
+        },
+        "outcome": {
+          "text": "CI trên main xanh trên Linux, macOS và Windows sau khi job macOS ARM chờ runner được chạy lại.",
+          "lines": [
+            "claude:2dfb5915#L3277"
+          ]
+        },
+        "takeaway": {
+          "text": "Phase 10 vẫn cần chạy lại bộ so khớp riêng trên Windows để xác nhận.",
+          "lines": [
+            "claude:2dfb5915#L3242"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-11-02-python-them-goi-tieng-viet-thieu-3c6e",
+      "code": "M-6W47",
+      "title": "Python thêm gói tiếng Việt: thiếu biến môi trường thì index dựng lại mãi",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Dự án công cụ dòng lệnh hỏi Claude Desktop về graph của vault Obsidian, đang thay bản Python bằng lõi Rust.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất plan chuyển lõi Rust theo yêu cầu của chủ phiên.",
+          "lines": [
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Các bước còn lại (phase 15 đến 17) đều nằm sau cổng mà chỉ người làm mở được.",
+          "lines": [
+            "claude:2dfb5915#L2168"
+          ]
+        },
+        "action": {
+          "text": "Chuyển commit Python 223c9c3 sang Rust, nâng ghim spec và dựng lại golden.",
+          "lines": [
+            "claude:2dfb5915#L2196",
+            "claude:2dfb5915#L2247"
+          ]
+        },
+        "outcome": {
+          "text": "Mọi cổng kiểm đạt, parity sạch: 64 mục, 0 lệch chưa có tên, 0 mục chưa có.",
+          "lines": [
+            "claude:2dfb5915#L2247",
+            "claude:2dfb5915#L2254"
+          ]
+        },
+        "takeaway": {
+          "text": "Hai tiến trình dùng chung một index phải cùng cấu hình gói ngôn ngữ, nếu không sẽ dựng lại view mãi.",
+          "lines": [
+            "claude:2dfb5915#L2247"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-11-02-read-pkm-tu-doc-file-thay-3c6e",
+      "code": "M-GYCY",
+      "title": "read: pkm tự đọc file thay vì chuyển qua OHS",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh giúp Claude Desktop hỏi về graph vault Obsidian đang chuyển lõi sang Rust, và người làm muốn tool đọc thân note luôn dùng được. Plan ban đầu giao việc đọc này cho OHS, nhưng OHS chỉ đọc được note đã index, nên trong lúc index (có thể khoảng 10 phút) agent không đọc được note nào. Hai agent phản đối, người dùng đồng ý để pkm tự đọc file trong vault, và plan lệch khỏi thiết kế ban đầu. Ai dựng tool cho agent nên nhớ: tool không cần index thì đừng để nó phụ thuộc vào index.",
+      "audience": "dev xây tool cho agent và người làm công cụ MCP",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh giúp Claude Desktop hỏi về graph của vault Obsidian, đang chuyển lõi sang Rust.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn tool đọc thân note luôn dùng được cho agent.",
+          "lines": [
+            "claude:2dfb5915#L3144"
+          ]
+        },
+        "obstacle": {
+          "text": "OHS chỉ đọc được note đã index, nên lúc khởi động hoặc index (có thể khoảng 10 phút) agent không đọc được note nào.",
+          "lines": [
+            "claude:2dfb5915#L3144",
+            "claude:2dfb5915#L3160"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng việc đọc note chuyển sang OHS là ổn theo plan; hoá ra OHS không đọc được trong lúc index, và note vừa sửa có thể trả bản cũ.",
+          "lines": [
+            "claude:2dfb5915#L3144",
+            "claude:2dfb5915#L3160"
+          ]
+        },
+        "action": {
+          "text": "Hai agent đề xuất pkm tự đọc file trong vault, người dùng đồng ý và giao agent làm tiếp bộ tool.",
+          "lines": [
+            "claude:2dfb5915#L3170",
+            "claude:2dfb5915#L3175"
+          ]
+        },
+        "outcome": {
+          "text": "Việc đọc note lệch khỏi plan phase 17; agent tiếp tục làm trên nhánh phase 17.",
+          "lines": [
+            "claude:2dfb5915#L3170",
+            "claude:2dfb5915#L3180"
+          ]
+        },
+        "takeaway": {
+          "text": "Tool không cần index thì đừng để nó phụ thuộc vào index.",
+          "lines": [
+            "claude:2dfb5915#L3160"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-rust-rename-ghi-de-file-tren-3c6e",
+      "code": "M-BHTW",
+      "title": "Rust rename ghi đè file trên Windows, Python thì không",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-thu-tu-liet-ke-file-cua-3c6e",
+      "code": "M-8MXR",
+      "title": "Thứ tự liệt kê file của hệ điều hành làm đầu ra Python đổi",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-thu-vien-mcp-chinh-thuc-lon-3c6e",
+      "code": "M-999M",
+      "title": "Thư viện MCP chính thức lớn gấp 4 lần, nên tự viết JSON-RPC",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-actions-bi-khoa-vi-thanh-toan-3c6e",
+      "code": "M-AP6R",
+      "title": "Actions bị khoá vì thanh toán lỗi, mọi job không chạy kể cả dựng binary",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-phat-hanh-rc-3-tu-nhanh-3c6e",
+      "code": "M-TJEG",
+      "title": "Phát hành rc.3 từ nhánh chưa merge, theo ý người duyệt",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-audit-dong-goi-noi-chua-kiem-3c6e",
+      "code": "M-8NYX",
+      "title": "Audit đóng gói nói chưa kiểm được, hoá ra đã chạy thử được bằng workflow",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-code-mode-bi-loai-vi-claude-3c6e",
+      "code": "M-XMXW",
+      "title": "Code mode bị loại vì Claude Desktop không có shell",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-kiem-downgrade-khac-phien-ban-suyt-3c6e",
+      "code": "M-TF32",
+      "title": "Kiểm downgrade: «khác phiên bản» suýt hạ cấp gói OHS đang mới hơn",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-loi-nam-ca-o-spec-python-3c6e",
+      "code": "M-1PRG",
+      "title": "Lỗi nằm cả ở spec Python: build lỗi giữa chừng khiến index sai mãi",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-powershell-5-1-lam-hong-dau-3c6e",
+      "code": "M-A5WY",
+      "title": "PowerShell 5.1 làm hỏng dấu tiếng Việt khi đọc script qua irm",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-repo-private-artifact-cua-actions-bat-3c6e",
+      "code": "M-3JCR",
+      "title": "Repo private: artifact của Actions bắt đăng nhập, đến rc.3 đổi sang public",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-ra-lich-su-git-tim-khoa-3c6e",
+      "code": "M-6X2B",
+      "title": "Rà lịch sử git tìm khoá trước khi đổi repo sang public",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-co-force-bi-tach-thanh-hai-3c6e",
+      "code": "M-BPEB",
+      "title": "Cờ --force bị tách thành hai cờ riêng",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-gop-7-nhanh-song-song-vao-3c6e",
+      "code": "M-XA5V",
+      "title": "Gộp 7 nhánh song song vào main, PORTING.md bị lặp hai lần",
+      "tension": "hop_ma_tan",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-stop-hook-giu-agent-lai-suot-3c6e",
+      "code": "M-NVFX",
+      "title": "Stop hook giữ agent lại suốt nhiều lượt vì điều kiện 'xong cả plan' không đạt được",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-hook-chan-thu-muc-build-va-3c6e",
+      "code": "M-VZN1",
+      "title": "Hook chặn thư mục build và lệnh sleep dài",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-release-rc-job-macos-bi-huy-3c6e",
+      "code": "M-G4Z7",
+      "title": "Release rc: job macOS bị huỷ vì chờ runner 15 phút, rerun gặp HTTP 500",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-port-ca-he-thong-python-sang-3c6e",
+      "code": "M-2AKR",
+      "title": "Port cả hệ thống Python sang Rust bằng 14 phase, chạy nhiều agent song song",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-parity-harness-so-muc-chua-co-3c6e",
+      "code": "M-YBD6",
+      "title": "Parity harness: số mục «chưa có» từ 47 giảm về 0 qua từng merge",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-chay-claude-code-headless-voi-config-3c6e",
+      "code": "M-QDT4",
+      "title": "Chạy Claude Code headless với config MCP tạm, không đụng config thật",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-gom-cac-cau-hoi-cong-thanh-3c6e",
+      "code": "M-45ZT",
+      "title": "Gom các câu hỏi cổng thành một lần hỏi người dùng",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-ohs-tat-khi-stdin-dong-probe-3c6e",
+      "code": "M-70WC",
+      "title": "OHS tắt khi stdin đóng, probe 6 truy vấn đồng thời khớp 6 trên 6 với CLI",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-thu-hep-pham-vi-phat-hanh-3c6e",
+      "code": "M-9GW5",
+      "title": "Thu hẹp phạm vi phát hành sang bản dùng được trước rồi phát hành pre-release nhiều đợt (rc.1, rc.2, rc.3) có checksum được kiểm từng file",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

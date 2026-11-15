@@ -1,0 +1,204 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) là tầng nền tảng để xây và chạy các ứng dụng agent, gồm hạ tầng, skill và tự động hoá nằm dưới mọi ứng dụng agent. Làm cho nhà phát triển, để họ tạo agent mới mà không phải xây mọi thứ từ đầu. Cài bằng một binary `fgctl` trên Linux (x86_64) và Windows 10 trở lên (x86_64), không cần clone repo, npm hay Rust; macOS và Windows ARM chưa được hỗ trợ trong bản alpha. Đang ở bản alpha v0.2.0-rc.2.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L3271] USER: openai-fgovn, openai-tetcu72
+[L3300] USER: probe đi em
+[L3527] USER: liệt kê lại cho anh toàn bộ zsh alias của llm acounts trên máy này
+</asks>
+
+<story>
+hook: Tám alias omp, bốn cái trỏ vào thư mục chưa từng tồn tại
+tension: nho_ma_to (Alias tồn tại, trông như tài khoản dùng được / Bốn alias trỏ vào thư mục không có)
+stakes: 1/3
+# Alias zsh cho 'tài khoản LLM' có tám profile omp, bốn cái trỏ vào thư mục chưa tồn tại
+
+**Bối cảnh:** Owner hỏi liệt kê toàn bộ alias tài khoản LLM trên máy, rồi chọn tạo profile cho các alias còn thiếu.
+**Chuyện gì xảy ra:** Agent liệt kê alias codex, pi, omp, agy từ zsh -i, che giá trị bí mật. Có bốn alias omp trỏ vào profile chưa có thư mục, nên agent tạo khung config.yml cho chúng, không tạo đăng nhập. Chỉ còn một alias omp trỏ vào chỗ trống.
+**Bài học:** Lấy danh sách alias từ shell tương tác thay vì đọc file rc, vì file có thể khai báo mà không có hiệu lực.
+**Artefact:** Bảng ba cột: alias, thư mục/profile, đã đăng nhập hay chưa. Che mọi giá trị khoá.
+</story>
+
+<excerpt>
+[L3531] TOOL Bash: cd ~ && mask(){ sed -E 's/((KEY|TOKEN|SECRET|PASSWORD|AUTH)[A-Z_]*=)[^ \\]+/\1<masked>/Ig; s/(sk-|ghp_|xai-|AIza)[A-Za-z0-9_-]{8,}/<masked>/g'; }; echo "=== alias thật sự có hiệu lực trong zsh tương tác (liên quan tài khoản LLM) ==="; timeout 60 zsh -i -c 'alias' </dev/null 2>/dev/null | grep -E "^( …[+325]
+[L3535] RESULT: === alias thật sự có hiệu lực trong zsh tương tác (liên quan tài khoản LLM) === | agy-mucdong='AGY_HOME="$AGY_HOST_HOME/.agy-homes/mucdong" agy'
+[L3546] TOOL Bash: cd ~ && python3 - <<'EOF' import os,re,json,subprocess H=os.path.expanduser('~') al=subprocess.run(['zsh','-i','-c','alias'],capture_output=True,text=True,stdin=subprocess.DEVNULL,timeout=60).stdout.splitlines() rows=[] for l in al: m=re.match(r"^((?:codex|agy|pi|omp)-[a-z0-9-]+)=(.*)$",l) if not m: …[+1796]
+[L3550] RESULT: agy agy-mucdong ~/.agy-homes/mucdong thư mục có | agy agy-tetcu72 ~/.agy-homes/tetcu72 thư mục có
+[L3556] TOOL Bash: cd ~ && awk '/^glm[23]\(\)/{f=1} f{print} f&&/^}/{f=0}' ~/.zshrc | sed -E 's/((TOKEN|KEY|SECRET)[A-Z_]*=)[^ \\]+/\1<masked>/Ig; s/(sk-|ghp_|xai-|AIza)[A-Za-z0-9_-]{8,}/<masked>/g' | cut -c1-170
+[L3565] RESULT: glm2() { | ANTHROPIC_AUTH_TOKEN=<masked> \
+[L3570] AGENT: Đây là toàn bộ alias, hàm và công tắc tài khoản LLM trên máy này, lấy từ shell zsh tương tác nên là bản có hiệu lực thật. Tên là biến đã che, em không in giá trị khoá nào.
+
+## Alias theo từng CLI
+
+**codex** (mỗi tài khoản một `CODEX_HOME`)
+
+| Alias | Thư mục | Đăng nhập |
+|---|---|---|
+| `codex-tetnu` | `~/.codex-tetnu` | Có |
+| `codex-fgovn` | `~/.codex-fgovn` | Có |
+| `codex-tetcu72` | `~/.codex-tetcu72` | Có |
+
+**pi** (mỗi tài khoản một `PI_CODING_AGENT_DIR`)
+
+| Alias | Thư mục | Đăng nhập |
+|---|---|---|
+| `pi-openai-tetnu` | `~/.pi/accounts/openai-tetnu` | Có (`openai-codex`) |
+| `pi-openai-fgovn` | `~/.pi/accounts/openai-fgovn` | Có (`openai-codex`) |
+| `pi-openai-tetcu72` | `~/.pi/accounts/openai-tetcu72` | Có (`openai-codex`) |
+| `pi-xai-vantt` | `~/.pi/accounts/xai-vantt` | Có (`xai`) |
+| `pi-openrouter` | `~/.pi/accounts/openrouter` | Có (`openrouter`) |
+| `pi-claude-01` | `~/.pi/accounts/claude-01` | **Thư mục chưa có** |
+
+**omp** (mỗi tài khoản một `OMP_PROFILE`)
+
+| Alias | Profile | Đăng nhập |
+|---|---|---|
+| `omp-xai-vantt` | `xai-vantt` | Có |
+| `omp-gemini-tetcu72` | `gemini-tetcu72` | Có |
+| `omp-openai-tetcu72` | `openai-tetcu72` | Có |
+| `omp-openai-tetnu` | `openai-tetnu` | Có `agent.db` nhưng 0 đăng nhập (em kiểm lần trước) |
+| `omp-openai-fgovn` | `openai-fgovn` | **Profile chưa tạo** |
+| `omp-gemini-tetnu` | `gemini-tetnu` | **Profile chưa tạo** |
+| `omp-gemini-mucdong` | `gemini-mucdong` | **Profile chưa tạo** |
+| `omp-claude-01` | `claude-01` | **Profile chưa tạo** |
+| `omp-openrouter` | `openrouter` | **Profile chưa tạo** |
+
+**agy** (mỗi tài khoản một `AGY_HOME`)
+
+| Alias | Thư mục | Ghi chú |
+|---|---|---|
+| `agy-tetnu`, `agy-mucdong`, `agy-tetcu72` | `~/.agy-homes/<tên>` | Thư mục có; em không kiểm đăng nhập vì chưa biết agy lưu ở file nào |
+
+**Khác**
+- `claude='command claude --dangerously-skip-permissions'`.
+- Hàm `glm2` và `glm3`: chạy `claude` qua OpenRouter với `z-ai/glm-5.2` và `z-ai/glm-5.3-flash` (có biến token, em đã che).
+
+## C …[+1561]
+[L3579] USER: 3
+[L3590] AGENT: Em hiểu "3" là mục 3 trong danh sách em đưa: bốn alias omp chưa có profile (`openai-fgovn`, `gemini-tetnu`, `gemini-mucdong`, `openrouter`). Cách xử lý ít rủi ro nhất là tạo thư mục profile cho chúng, theo đúng khuôn các profile đang có, để alias và `omp-switch` dùng được ngay, không xoá alias nào của anh.
+[L3591] TOOL Bash: cd ~ && for n in openai-fgovn gemini-tetnu gemini-mucdong openrouter; do d=$HOME/.omp/profiles/$n/agent; if [ -e "$d/config.yml" ]; then echo "$n: đã có, giữ nguyên"; else mkdir -p "$d" && cp ~/.omp/profiles/xai-vantt/agent/config.yml "$d/config.yml" && echo "$n: đã tạo ~/.omp/profiles/$n/agent/conf …[+365]
+[L3595] RESULT: openai-fgovn: đã tạo ~/.omp/profiles/openai-fgovn/agent/config.yml | gemini-tetnu: đã tạo ~/.omp/profiles/gemini-tetnu/agent/config.yml
+[L3600] AGENT: Em đã tạo bốn profile omp còn thiếu, nên giờ chỉ còn `omp-claude-01` trỏ vào chỗ trống (mục 2 trong danh sách em đưa, anh chưa chọn).
+
+## Đã làm
+
+Em tạo `~/.omp/profiles/<tên>/agent/config.yml` cho bốn profile: `openai-fgovn`, `gemini-tetnu`, `gemini-mucdong`, `openrouter`. `config.yml` chép từ `xai-vantt` và chỉ chứa cấu hình giao diện (theme, composer, paste), không có đăng nhập. Em không sửa `~/.zshrc`, không xoá alias nào, và không đụng profile đã có. Em đã kiểm: zsh tương tác liệt kê đủ tám profile, và alias omp trỏ vào chỗ trống chỉ còn `omp-claude-01`.
+
+Em hiểu "3" là bốn alias omp đó. Nếu anh có ý khác (ví dụ muốn xoá bớt alias thay vì tạo profile), anh nói để em đổi.
+
+## Chưa đăng nhập, anh cần làm (em không làm thay được)
+
+Bốn profile mới chỉ là khung: chưa có `agent.db` nên chưa đăng nhập. Muốn dùng, mở alias tương ứng rồi gõ `/login`:
+
+| Alias | Dùng cho |
+|---|---|
+| `omp-openai-fgovn` | openai |
+| `omp-gemini-tetnu` | gemini |
+| `omp-gemini-mucdong` | gemini |
+| `omp-openrouter` | openrouter |
+
+Cùng nhóm "có profile nhưng chưa đăng nhập" là `omp-openai-tetnu` (0 đăng nhập từ trước).
+
+Không cái nào trong số này chặn hội đồng: fgOS chỉ dùng omp cho `gemini-tetcu72` và `xai-vantt`, cả hai đã đăng nhập. Hội đồng vẫn đang chạy nền (`wf-run-1792588557887-a8496d01`), em chưa xem được kết quả nên chưa có gì để báo.
+
+Còn ba mục em chưa làm: thêm alias `pi-thehive`, xử lý `pi-claude-01` và `omp-claude-01` (trỏ vào chỗ trống), và khai kho `codex` cho ba tài khoản openai trong fgOS. Anh muốn làm mục nào tiếp?
+[L3609] USER: cài đặt thehive cho pi và omp theo hướng dẫn: 
+
+<pasted_content id="f677">
+1. Chuẩn bị trên máy mới
+
+- Cài pi CLI, cùng bản với máy này nếu được. Máy này đang chạy settings có lastChangelogVersion 1.2.0.
+- Lấy repo bằng git pull, để có .fgos/config.json có sẵn các model thehive/...@thehive.
+- Lấy API key TheHive qua password manager hoặc dashboard TheHive. Không gửi key qua git hoặc chat.
+
+2. Tạo thư mục tài khoản
+
+D=~/.pi/accounts/thehive
+mkdir -p "$D" && chmod 700 "$D"
+
+# models.json: khai báo provider và 2 model
+cat > "$D/models.json" <<'EOF'
+{
+  "providers": {
+    "thehive": {
+      "baseUrl": "https://api.thehive.ai/api/v3",
+      "api": "openai-completions",
+      "models": [
+        { "id": "deepseek-ai/deepseek-v4.1-flash-1017", "reasoning": true },
+        { "id": "zai-org/glm-5.3-flash", "reasoning": true }
+      ]
+    }
+  }
+}
+EOF
+
+# settings.json: provider và model mặc định
+cat > "$D/settings.json" <<'EOF'
+{"theme":"dark","defaultProvider":"thehive","defaultModel":"deepseek-ai/deepseek-v4.1-flash-1017"}
+EOF
+
+echo '{}' > "$D/models-store.json"
+
+3. Đặt API key
+
+Dán key vào chỗ <KEY>, rồi xóa dòng lệnh khỏi history của shell:
+printf '{"thehive":{"type":"api_key","key":"%s"}}' '<KEY>' > "$D/auth.json"
+chmod 600 "$D/auth.json"
+Ngoài ra có thể chạy PI_CODING_AGENT_DIR=$D pi rồi dùng /login để pi tự ghi auth.json. Em chưa thử cách này với TheHive.
+
+4. Alias (không bắt buộc)
+
+Máy này hiện không có alias cho thehive. Nếu muốn, thêm vào ~/.zshrc:
+alias pi-thehive='PI_CODING_AGENT_DIR="$HOME/.pi/accounts/thehive" pi'
+Có thể thêm thehive "$HOME/.pi/accounts/thehive" vào map PI_ACCOUNTS để
+
+5. Khai báo cho fgOS
+
+.fgos/config.json của repo đã có 4 chỗ tham chiếu thehive: ở z-ai standưng ~/.fgos/config.json (global) phải khai báo tài khoản thì fgOS mới tìm thấy thư mục:
+"llmAccounts": {
+  "thehive": {
+    "thehive": {
+      "label": "thehive",
+      "credentialStore": { "pi": "${HOME}/.pi/accounts/thehive" }
+    }
+  }
+}
+Sửa file này bằng cách thêm block trên, hoặc copy ~/.fgos/config.json ti khoản máy mới không có. Thêm một khóa mới vào config global từng làmhỏng các workspace chạy release cũ (ghi nhận ngày 13/10). Vì vậy hãy cập nhật các máy trước, rồi mới đổi config global.
+</pasted_content id="f677">
+[L3620] AGENT: Máy này đã có sẵn tài khoản pi `thehive` (em thấy `auth.json`, `models.json`, `settings.json`, `models-store.json` và fgOS đã khai pool `thehive`), nên phần lớn hướng dẫn là cho máy mới. Em kiểm hiện trạng pi so với hướng dẫn, rồi tìm cách omp khai provider tuỳ chọn như TheHive.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

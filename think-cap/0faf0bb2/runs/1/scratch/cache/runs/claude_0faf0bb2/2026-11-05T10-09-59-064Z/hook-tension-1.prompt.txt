@@ -1,0 +1,57 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Multica bỏ SOUL và MEMORY của agent OpenClaw khi chạy local
+   Trước mỗi lượt, daemon đặt workspace của agent OpenClaw thành thư mục riêng của task. Comment trong code ghi rõ SOUL.md và MEMORY.md của workspace gốc bị loại trừ. Chế độ gateway có thể giữ được danh tính, nhưng token ghi ngược có thể không tới được agent. Đây là chỗ hai hệ thống xung đột về nơi đặt bộ nhớ.
+M2. Hai dự án độc lập cùng chọn UPDATE ... RETURNING để cấp mã task
+   Paperclip tăng issueCounter của công ty bằng một câu UPDATE ... RETURNING. Kaneo làm tương tự với last_task_number của project. Hai codebase không liên quan cùng giải bài toán trùng mã khi nhiều người ghi, nên bằng chứng cho bài học này được nâng lên mức mạnh nhất trong bảng xếp hạng.
+M3. Multica v0.7.1 đòi OpenClaw ≥ 2026.5.5, bản AICoworker đóng gói là 2026.3.13: spike trượt
+   Lượt chạy đầu bị từ chối 'below the minimum supported version'. Thử khai man phiên bản bằng wrapper: CLI chạy được nhưng báo 'Include path escapes config directory' vì thiếu biến OPENCLAW_INCLUDE_ROOTS, gateway thất bại, và tiến trình thoát mà không có output. Kết quả: 0/4 tiêu chí đạt, dừng và liệt kê 3 đường đi tiếp.
+M4. Mỗi lần đánh giá một công cụ, agent dựng thử trên máy thật và ghi kết quả đạt/trượt theo tiêu chí đã đặt trước, rồi dọn sạch khi user yêu cầu, kèm runbook để dựng lại
+   Mỗi lần đánh giá một công cụ, agent dựng thử trên máy thật và ghi kết quả đạt/trượt theo tiêu chí đã đặt trước, rồi dọn sạch khi user yêu cầu, kèm runbook để dựng lại Phần lớn người ta đọc README rồi kết luận, hoặc cài thử một lần rồi để nguyên môi trường rác trên máy
+M5. Model mặc định của runtime đã ngừng, làm hỏng cả agent chính
+   Session của agent báo 'model no longer available' vì model mặc định đã bị ngừng. Thay vì sửa cấu hình chung, spike đổi model riêng cho từng session qua lệnh sessions.patch (trả ok: true). Cách này không làm đổi openclaw.json, và các session khác không bị ảnh hưởng.
+M6. Ba agent đọc song song, agent chính kiểm trích dẫn trước khi ghi lesson
+   Ba agent con đọc song song các mảng schema, runtime và giao diện. Agent chính không tin kết quả ngay: nó mở lại từng đường dẫn và số dòng được trích, so khớp, rồi mới ghi lesson. Các trích dẫn chính đều khớp, và các lesson được gắn bằng chứng với số commit đã ghim.
+M7. Spike Multica + Claude Code đạt 5/5: agent hỏi chủ thay vì bịa số
+   Issue không chỉ định người được tự giao theo cột đầu, và agent ghi comment, chuyển cột trong khoảng 16 giây. Sales agent trả lại bài 2 lần vì thiếu giá. Marketing agent không bịa giá và hạn chót, dừng lại hỏi chủ; sau khi chủ comment, bài được hoàn thiện, sales duyệt, issue sang in_review giao cho chủ. Chat hai phiên với cùng agent giữ đúng hai mã khách riêng, không lẫn.
+M8. /goal không tắt được: stop hook lặp khoảng 20 lần sau khi người dùng bảo bỏ
+   Điều kiện được hook đánh giá như trạng thái phải còn đúng khi kết thúc. Sau khi người dùng trả lời 'bỏ goal, dọn hết paperclip', agent đã gỡ mọi thứ, nhưng hook vẫn chặn khoảng 20 lần vì agent không có công cụ để xoá goal; chỉ người dùng gõ /goal clear. Agent cũng gửi feedback về lỗi này qua công cụ của skill.
+M9. Ngân sách 0 đồng âm thầm chặn agent: comment của chủ không đánh thức được ai
+   Sau khi đặt budget, lượt đánh thức trả 409 'recorded usage has no reliable price'. Comment của chủ trên issue không tạo run mới, và agent vẫn in_progress sau hơn 10 phút. Lỗi không hiện rõ trên giao diện. Đặt budget về 0 cho 3 agent, resume agent bị paused (lý do budget), và run mới bắt đầu trong vài giây.
+M10. Sửa distill.yaml bằng chuỗi thay thế: khớp nhầm core_domains và công cụ lỗi nhiều lần
+   Lần thay goal bằng python tìm chuỗi 'domains:' và khớp nhầm vào 'core_domains:' của goal cũ, làm YAML hỏng với lỗi indentation. Lần sửa tiếp theo dùng sed với biểu thức sai và báo 'unknown command'. Script ghi lesson qua node báo lỗi ESM loader. Lệnh gửi feedback lên skillstation cũng bị từ chối với invalid_request. Trong một pass có ít nhất 5 lỗi công cụ.
+M11. Chuyển server sang Tailscale: loopback tắt, nhưng agent vẫn trỏ địa chỉ cũ
+   Health check trên 127.0.0.1 trả exit 7, đúng như dự kiến vì server không còn nghe loopback. Nhưng cấu hình paperclipApiUrl của 3 agent vẫn trỏ địa chỉ loopback, nên agent không làm việc được cho tới khi chủ đăng nhập. Link xác thực CLI hết hạn sau vài phút, phải tạo lại. Lỗi nằm ở chỗ đổi địa chỉ server mà không quét các client đang trỏ địa chỉ cũ.
+M12. Lấy token gateway từ /proc của tiến trình đang chạy, không in ra màn hình
+   Lần chạy đầu lỗi KeyError vì biến môi trường chưa được export. Sau đó script đọc token từ environ của tiến trình đang lắng nghe cổng gateway, đưa thẳng vào cấu hình adapter. Token không hiện trên dòng lệnh và không nằm trong file, nên script có thể commit mà không lộ bí mật.
+M13. Paperclip có runtime riêng, không chỉ là UI điều phối
+   Trong code, OpenClaw có comingSoon và hideFromVisualSelection, và mọi khả năng bị đặt ALL_FALSE. Paperclip cũng đi kèm một native runner viết bằng Rust, chạy trực tiếp các CLI agent như Claude Code và Codex. Nhận định trước đó 'Paperclip chỉ điều phối' bị sửa lại: hướng mặc định của nó là tự làm runtime, còn OpenClaw là nhân viên thuê ngoài.
+M14. Kaneo nối thật: mọi thao tác đi qua API, hc<AppType> bắt lỗi kiểu lúc build
+   Khi sửa một comment, Kaneo đi qua hook, fetcher, Hono RPC client rồi tới server ghi Postgres và phát realtime qua WebSocket. gr8r sửa thẳng mảng trong bộ nhớ và ghi cả khối JSON vào localStorage, còn Circle chỉ có dữ liệu mẫu. Kiểu của route được lấy từ code server, nên đổi tên field là TypeScript báo lỗi ngay ở UI.
+M15. Khoá đăng nhập không có mật khẩu: mã xác nhận chỉ nằm trong log và cờ test bị bỏ qua khi production
+   Hệ thống chỉ có đăng nhập bằng mã email và Google, không có mật khẩu. Vì không có email backend, mã xác nhận được in ra log server. Đặt biến MULTICA_DEV_VERIFICATION_CODE để cố định mã, nhưng biến này bị bỏ qua và cảnh báo khi APP_ENV là production. Chỉ dùng cho môi trường test trong tailnet.
+M16. Lời hứa 'Paperclip không có cổng review' bị đính chính: reviewPolicy khác executionPolicy
+   Task SEN-3 vẫn do agent chuyển sang done trong 26 giây, dù đã đặt human_only. Báo cáo ban đầu kết luận Paperclip thiếu cổng duyệt. Đọc lại execution-semantics cho thấy reviewPolicy chỉ áp khi trả lời một lời xin xác nhận, còn executionPolicy mới là cổng review/approval thật. Đã đính chính trong lesson, tài liệu so sánh và báo cáo spike.
+M17. zsh biến ký tự ? và = thành glob, làm hỏng gh api và grep --include
+   Các lệnh như grep --include=*.tsx và gh api repos/.../commits?per_page=2 báo 'no matches found' hoặc '= not found' ngay từ shell, không tới được công cụ. Lỗi lặp lại ở ít nhất 6 lệnh trong phiên. Mỗi lần chỉ cần đặt tham số trong dấu ngoặc kép là chạy được.
+M18. Heartbeat tốn một lượt LLM mỗi lần, trừ khi HEARTBEAT.md rỗng: bridge từ 'tuỳ chọn' thành bắt buộc
+   Đọc heartbeat-runner cho thấy OpenClaw chỉ bỏ qua lượt heartbeat khi HEARTBEAT.md rỗng. Nếu agent phải kiểm tra inbox định kỳ, mỗi lần heartbeat là một lượt gọi model. Ước tính 5 agent, mỗi 5 phút, khoảng 1.440 lượt mỗi ngày gần như chỉ để trả lời 'không có việc'. Vì vậy phát biểu 'bridge chỉ còn là tuỳ chọn' bị sửa thành bridge là bắt buộc nhưng rất đơn giản.
+M19. Gỡ Paperclip xong vẫn còn dấu vết trong 4 chỗ của agent, phải quét 3 lần mới sạch
+   Lần quét đầu chỉ thấy CLI và thư mục dữ liệu. Sau đó phát hiện 2 transcript phiên đã xoá còn trong thư mục sessions, 2 mục trong index sessions.deleted.json, 2 mục trong system-prompt-reports.json, 3 mục trong advisor-sessions.json, và 6 file cache. Sau khi dọn từng chỗ, grep -ri trên thư mục state của agent không còn kết quả.
+M20. Paperclip kẹt ở 'verifying' vì lệch giao thức v3/v4, phải vá 3 dòng trong bản đã cài
+   Cả 3 agent dừng ở trạng thái verifying với lỗi 'The lifecycle step failed'. Commit upstream nâng PROTOCOL_VERSION từ 3 lên 4 để khớp gateway, nhưng gateway đóng gói sẵn chỉ nói v3, và handler từ chối khi minProtocol lớn hơn phiên bản của client. Sửa minProtocol xuống 3 ở 3 chỗ trong bản đã cài (có file .orig để hoàn tác), khởi động lại, probe thành công, và 3 agent về trạng thái ready.
+M21. Commit chỉ file của mình khi repo có staged của người khác: dùng index file tạm
+   Tạo nhánh mới, dùng biến GIT_INDEX_FILE trỏ tới một index tạm để stage đúng các file của mình, rồi commit. Staging gốc của repo giữ nguyên. Cách này được dùng lại lần thứ hai cho 20 file, và kết quả được kiểm bằng git show --stat.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

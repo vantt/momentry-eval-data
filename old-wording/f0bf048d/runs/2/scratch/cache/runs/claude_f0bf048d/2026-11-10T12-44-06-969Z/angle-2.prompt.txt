@@ -1,0 +1,88 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L2890] USER: rồi cả 3 runtime đều đã login. liệt kê 3 runtime mới
+[L2955] USER: cho system-operator thêm khả năng cài pi/omp và update pi/omp
+[L3079] USER: kiểm tra xem, anh thấy chạy rồi đấy
+</asks>
+
+<story>
+hook: Cấu hình ghi gpt-5.5 nhưng thống kê token ghi gpt-6.1-sol
+tension: tuong_ma_hoa_ra (cấu hình nói chạy gpt-5.5 và grok-4.6 / thống kê token ghi gpt-6.1-sol và grok-4.7)
+stakes: 2/3
+# Ba runtime chạy thật lần đầu: model khác cấu hình, Google và DuckDuckGo chặn máy chủ
+
+**Bối cảnh:** Người vận hành yêu cầu kiểm chạy thật. Agent tạo hai agent thử và giao năm issue nhỏ.
+**Chuyện gì xảy ra:** Năm issue chạy xong, không lỗi. Model thực tế khác cấu hình: thống kê token ghi gpt-6.1-sol và grok-4.7, trong khi cấu hình là gpt-5.5 và grok-4.6. Google chặn máy chủ với lỗi 429, DuckDuckGo đòi CAPTCHA, chỉ Bing còn dùng được. Agent SEO nên đi qua API thay vì cào trang tìm kiếm.
+**Bài học:** Đừng tin model trong cấu hình. Hãy đọc model thật từ thống kê sử dụng, và đo công cụ tìm kiếm trên máy chủ trước khi trông cậy vào nó.
+**Artefact:** Bảng năm issue với kết quả và trạng thái.
+</story>
+
+<excerpt>
+[L3129] TOOL Bash: cd ~/multica-spike; M=./bin/multica; ws=011422fd-27a5-4ced-8ad7-f533cf7e1718 for r in 7f4b9108-ea19-47c3-b750-6e3463aba450 0e156cc4-cef5-43e3-b44a-06f9a735af83 6a36fcf7-d3a3-40bc-a816-ddbb8a6a9d7d; do echo "-- $r"; $M --profile ops --workspace-id $ws runtime usage $r 2>&1 | tail -6; $M --profile ops …[+473]
+[L3133] RESULT: -- 7f4b9108-ea19-47c3-b750-6e3463aba450 | DATE PROVIDER MODEL INPUT_TOKENS OUTPUT_TOKENS CACHE_READ CACHE_WRITE
+[L3139] AGENT: Có chạy thật rồi: Pi·OpenAI và Pi·Grok mỗi bên 3 lượt lúc ~17:40 (giờ VN) qua các issue STU-10…14. Em đang đọc kết quả từng issue.
+[L3140] TOOL Bash: cd ~/multica-spike; M=./bin/multica; ws=011422fd-27a5-4ced-8ad7-f533cf7e1718 $M --profile ops issue --help 2>&1 | sed -n '/COMMANDS/,/FLAGS/p' for i in STU-10 STU-11 STU-12 STU-13 STU-14; do echo "=== $i"; $M --profile ops --workspace-id $ws issue get $i --output json 2>&1 | python3 -c ' import sys, …[+100]
+[L3141] RESULT: COMMANDS | assign: Assign an issue to a member, agent, or squad
+[L3146] TOOL Bash: cd ~/multica-spike; M=./bin/multica; ws=011422fd-27a5-4ced-8ad7-f533cf7e1718 for i in STU-10 STU-11 STU-12 STU-13 STU-14; do echo "=== $i runs"; $M --profile ops --workspace-id $ws issue runs $i 2>&1 | head -8; echo "--- comments"; $M --profile ops --workspace-id $ws issue comment list $i --output j …[+268]
+[L3149] RESULT: === STU-10 runs | ID AGENT STATUS STARTED COMPLETED ERROR
+[L3151] TOOL Bash: cd ~/multica-spike; M=./bin/multica; ws=011422fd-27a5-4ced-8ad7-f533cf7e1718 for a in 6eb9e601-7bbd-48de-8e2b-15562965e67b dc7000b8-03b3-482c-ace8-cb8f340b1d6e; do $M --profile ops --workspace-id $ws agent get $a --output json 2>&1 | python3 -c ' import sys,json; a=json.load(sys.stdin); print(a.get( …[+473]
+[L3154] RESULT: spike-pi-web rt=7f4b9108 model= vis=private owner=bd181249 mcp=['playwright'] | spike-grok-web rt=0e156cc4 model= vis=private owner=bd181249 mcp=['playwright']
+[L3156] TOOL Bash: cd ~/multica-spike; M=./bin/multica; ws=011422fd-27a5-4ced-8ad7-f533cf7e1718 for i in STU-10 STU-11; do echo "=== $i"; $M --profile ops --workspace-id $ws issue comment list $i --output json | python3 -c ' import sys,json d=json.load(sys.stdin); d=d.get("comments",d) if isinstance(d,dict) else d pri …[+33]
+[L3159] RESULT: === STU-10 | -vung-9105) |
+[L3165] AGENT: Anh nói đúng: Pi·OpenAI và Pi·Grok đã chạy thật, và cả hai đều chạy tốt. Riêng Gemini (omp) chưa có lượt chạy nào.
+
+Anh tạo 2 agent thử là `spike-pi-web` (runtime Pi·OpenAI tetnu) và `spike-grok-web` (runtime Pi·xAI vantt), cả hai có Playwright MCP. Cả 5 issue đều chạy xong, không lỗi:
+
+| Issue | Agent | Kết quả |
+|---|---|---|
+| STU-10 đọc web | spike-pi-web | Lấy đúng 5 tin mới của MoMo, có link và ngày. DuckDuckGo đòi CAPTCHA, nên agent báo không làm được và tự chuyển issue sang `blocked`. |
+| STU-11 đọc web | spike-grok-web | Bing ra 3 kết quả đầu. Google chặn (lỗi 429, chuyển sang trang `sorry`). Lấy đúng 2 model loa trên ipos.vn kèm bảng giá. Chuyển sang `in_review`. |
+| STU-13, STU-14 | spike-grok-web | Comment "xong a" / "xong b", rồi chuyển sang `done` đúng như yêu cầu. |
+| STU-12 gom kết quả issue con | spike-pi-web | Chạy 2 lần. Lần 1 thấy 2 issue con còn `todo`, lần 2 thấy cả hai đã `done`. Issue cha giữ nguyên trạng thái, đúng như yêu cầu. |
+
+Những điều em rút ra:
+- **Phân quyền đúng như thiết kế.** Hai agent của anh chạy được trên runtime của `agents-opc` nhờ runtime đã chia sẻ cho anh. Agent nào cũng dùng được lệnh `multica` (đổi trạng thái, đọc issue con) lẫn Playwright.
+- **Model thực tế khác model em ghi trong cấu hình.** Thống kê token ghi nhận `gpt-6.1-sol` và `grok-4.7`, còn em ghi mặc định là `gpt-5.5` và `grok-4.6`. Có thể lúc `/login` anh đã chọn model khác, hoặc agent tự chọn. Cái nào thì cũng chạy được, nhưng nếu anh muốn cố định model thì em sẽ đặt ở agent.
+- **Công cụ tìm kiếm chặn máy chủ.** Google và DuckDuckGo chặn truy cập từ fg-server, chỉ Bing còn dùng được. Agent SEO muốn tìm kiếm thì nên đi qua API (DataForSEO hoặc tương tự), không nên cào trang Google.
+
+Còn lại: muốn kiểm Gemini thì anh gán một issue nhỏ cho agent chạy trên runtime `Oh-My-Pi · Gemini (tetcu72)`, hoặc để em tạo issue thử. Hai agent `spike-*` và các issue STU-10…14 là đồ thử nghiệm; khi nào anh muốn dọn thì nói, em sẽ hỏi lại trước khi xoá.
+[L3170] USER: em tự tạo thử đi
+[L3172] TOOL Bash: cd ~/multica-spike; M=./bin/multica; ws=011422fd-27a5-4ced-8ad7-f533cf7e1718 $M --profile ops agent create --help 2>&1 | sed -n '/FLAGS/,/INHERITED/p' $M --profile ops --workspace-id $ws agent get dc7000b8-03b3-482c-ace8-cb8f340b1d6e --output json | python3 -c ' import sys,json; a=json.load(sys.stdi …[+151]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,69 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+momentry nhặt những chuyện đáng kể từ phiên làm việc với coding agent, như một con số đổi, một lỗi có gốc bất ngờ hay một quyết định bị đảo. Mỗi chuyện được ghi thành một file markdown trong repo và xếp hạng theo độ hấp dẫn, độ căng thẳng và mức ảnh hưởng. Làm cho người làm một mình, thường build in public, viết blog kỹ thuật hoặc báo cáo tuần và không muốn để mất chất liệu. Chạy trên máy của người dùng, đọc transcript của Claude Code, Codex và vài agent khác trên máy đó, cần Node từ 20 trở lên và claude CLI đã đăng nhập. Bộ kiểm riêng tư chặn các tên người dùng khai báo trước khi ghi, để không lọt vào repo. Phiên bản v2 dừng ở việc nhặt và xếp chuyện, còn biên tập và đăng bài để sau.
+</project>
+
+<asks>
+[L9] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-research # Research ## Research Methodology Always honoring **KISS** and **DRY** principles. Deliver the full requested scope — never trim or defer what the user explicitly asked for. Add nothing unrequested. With `--yagni`, additionally challenge and cut any scope not needed for the stated outcome. **Be honest, be brutal, straight to the point, and be concise.** ### Phase 1: Scope Definition First, you will clearly define the research scope by: - Identifying key terms and concepts to investigate - Determining the r …[+5899]
+[L664] USER: A session-scoped Stop hook is now active with condition: "dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that's only for clearing a goal early.
+[L681] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-cook # Cook Invoke `/ak-cook <task|plan-path> [flags]` in Claude Code; use the runtime's installed invocation form elsewhere. Implement the full authorized outcome through verification and review. Capture or reuse outcome, constraints, non-goals and acceptance criteria; inspect nearby code and tests. Ask only for a material missing decision or an action outside that authorization. Repair regressions caused by the change and rerun affected checks before finishing. ## Select a mode | Input | Route | |---|---| | No fla …[+2997]
+</asks>
+
+<story>
+hook: Gợi ý sửa lỗi là một câu văn: agent mới vướng, thêm lệnh chạy được thì hội tụ ngay vòng đầu
+tension: giup_ma_hai (Lỗi đã báo rõ cách sửa bằng lời / Agent không chạy được câu văn, mất 2 vòng; có lệnh thì xong vòng đầu)
+stakes: 2/3
+# Agent mới vướng vì gợi ý sửa lỗi là một câu văn, không phải lệnh chạy được
+
+**Bối cảnh:** Vòng test agent-native: một agent mới chỉ đọc --help và --json, phải tự cài và đưa doctor về ok.
+**Chuyện gì xảy ra:** Ở vòng đầu, lỗi privacy báo cách sửa bằng một câu tiếng Việt, không có lệnh để chạy. Vòng hội tụ trước đó mất 2 vòng. Agent thêm 'config privacy-add' với đối số là tên cần chặn. Sau đó vòng test hội tụ ngay ở vòng đầu.
+**Bài học:** Mỗi thông báo lỗi nên kèm đúng một lệnh chạy được. Test bằng một agent mới là cách thấy câu gợi ý nào vô dụng.
+**Artefact:** Đầu ra lỗi privacy trước và sau khi sửa. Che tên trong ví dụ.
+</story>
+
+<excerpt>
+[L1545] RESULT: File created successfully at: /home/vantt/projects/momentry/scripts/test-agent-native.sh (file state is current in your context — no need to Read it back)
+[L1549] TOOL Bash: cd /home/vantt/projects/momentry; sh scripts/test-agent-native.sh; echo "exit=$?"
+[L1550] RESULT: agent runs: momentry config set privacy.sources '[{"type":"lines","path":"~/.config/momentry/names.txt"}]' | == round 1
+[L1557] AGENT: Vòng agent-native hội tụ sau 2 vòng. Tiếp theo viết bản PowerShell của test vòng đời cho runner Windows.
+[L1558] TOOL Write: /home/vantt/projects/momentry/scripts/test-installer.ps1
+…
+[L1942] RESULT: 15:const PRIVACY_FIX = 'momentry config privacy-add "<tên người hoặc từ riêng tư cần chặn>"'; | 77: ? { status: 'warn', detail: 'chưa có nguồn chặn; allowUnchecked=true nên chuyện vào hộp mà không kiểm', fix: PRIVACY_FIX }
+[L1953] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' p='lib/cli.mjs'; s=open(p).read() a=""" write.out(envelope({ ok: code === EXIT.OK, data, error: code === EXIT.OK ? null : { code: `exit-${code}`, why: buffered.join('\\n') || `thoát ${code}`, fix: res?.next?.[0] ?? null }, next: res?.next ?? [] })) …[+3603]
+[L1960] RESULT: agent runs: momentry config privacy-add "Tên Riêng Cần Chặn" | OK: agent-native loop converged in 1 round(s)
+[L1968] AGENT: Vòng agent giờ hội tụ ngay vòng đầu. Cập nhật README, tài liệu cài đặt và test cho `privacy-add`.
+[L1969] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' p='README.md'; s=open(p).read() a="""Mặc định đủ dùng; thứ duy nhất phải khai báo là nguồn chặn riêng tư: ```sh momentry config set privacy.sources '[{"type":"lines","path":"~/.config/momentry/names.txt"}]' momentry config show # giá trị hiệu lực v …[+2333]
+[L1970] RESULT: đã ghi docs/cli-reference.md | ✖ init: creates repo file and box, needs privacy sources to be ready, idempotent; outside git exits 1 (101.136424ms)
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

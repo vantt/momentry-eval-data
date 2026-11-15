@@ -1,0 +1,25 @@
+Dưới đây là 7 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Skill phải tự chứng minh bằng agent mới: test 'cài X giúp tôi' chỉ bằng --help
+   Ban đầu agent đề xuất ~25–30 check bằng script. Người dùng hỏi 'không có script thì agent vẫn làm được?', và câu trả lời là có. Quyết định cuối: không viết script, thay bằng 12 bước verify trong SKILL.md, trong đó bước quan trọng nhất là bật một agent mới không cho đọc README.
+M2. Phát hiện một chỗ UX tệ trên sản phẩm (trang web không báo có bản chờ duyệt) và sửa tại chỗ thay vì chỉ ghi nhận
+   Phát hiện một chỗ UX tệ trên sản phẩm (trang web không báo có bản chờ duyệt) và sửa tại chỗ thay vì chỉ ghi nhận Hầu hết người ta ghi thành issue rồi chờ, hoặc chỉ nhắc với người phụ trách
+M3. Hỏi lại người dùng để xác nhận trước những hành động có thể bị hoàn tác khó, ví dụ gửi lên hub hay đẩy code lên GitHub
+   Hỏi lại người dùng để xác nhận trước những hành động có thể bị hoàn tác khó, ví dụ gửi lên hub hay đẩy code lên GitHub Nhiều dev hoặc công cụ hoặc chạy thẳng, hoặc phải hỏi lại cả chục lần cho mọi bước nhỏ
+M4. Năm test Go đỏ chỉ trên máy dev: lỗi vì cấu hình agent thật bị đọc vào test
+   TestMain đổi HOME sang thư mục tạm nhưng không đổi thư mục làm việc. Lệnh status/doctor đi ngược lên /home/vantt, gặp ~/.codex/config.toml và ~/.gemini/settings.json vừa được ghi lúc 14:46 do connect --global, nên báo 'Connection files FAILED'. Đây không phải lỗi do commit web. CI sạch vì máy CI không có các file đó.
+M5. Skillstation chặn gửi lên hub, rồi hub tự kích hoạt skill mà chưa ai duyệt
+   `skill commit --yes` bị chặn vì hub chưa được tin cậy ở cấp user. Lệnh `connect --user` gợi ý trong thông báo lỗi không tồn tại (bug của skillstation 0.8.0). Sau khi nâng lên 0.13.0 và connect global, gửi thành công SUB-…. Nhưng người dùng phát hiện bản trên hub đã active dù chưa bấm duyệt; trang skill không báo có bản chờ duyệt, nên người xem phải tự vào mục Waiting for review.
+M6. Một skill packaging cho cả họ dự án: từ 46% dư thừa đến bộ lệnh init/doctor chung
+   Lần đầu skill có khoảng 11.900 từ, sau khi người dùng chê dư thừa, rút xuống khoảng 6.400 từ (−46%). Một agent review độc lập chỉ ra 2 lệnh mâu thuẫn (INS-13 dùng `setup`, CMD-04 cấm `setup`) và install.sh mẫu in ra `Next: doctor --fix` thay vì `init`. Sau khi sửa, số rule từ 183 lên 212 và mô hình init/doctor được chốt: doctor là bộ máy duy nhất, init = doctor --fix + được phép tạo mới, setup bỏ đi.
+M7. Quy tắc 'một cửa config' từ momentry được chép thành quy chuẩn chung
+   Đối chiếu cho thấy skill chỉ có mảnh rời (CFG-04, UX-12, UX-14), thiếu quy tắc cấm cờ lẻ. Thêm ba rule CMD-22..24 và nâng CFG-12 lên MUST, đưa commit momentry vào references.md. Lưu ý: commit này chưa có bản phát hành nào, nên chỉ được coi là đã có test chứ chưa là đã chứng minh với người dùng.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

@@ -1,0 +1,119 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L1794] USER: hãy suy nghĩa thạt kỹ (có thể nhờ opus/fable) viết một tài liệu sâu về việc sẽ cấp quyền như thế nào cho agent và user trên máy để nó có thể tự động làm nhiều nhất, mà không gây các hậu quả nghiêm trọng và không làm mất dữ liệu. user chỉ đưa ý muốn. sau khi nhìn rõ rồi thì mới làm.
+[L1917] USER: đang làm tren repo nào
+[L1957] USER: làm giai đoạn 0 đi
+</asks>
+
+<story>
+hook: Tìm thấy PAT của chủ ở 3 chỗ trong home, thu hồi rồi chuyển 12 agent
+tension: nho_ma_to (Chỉ là một token, vậy mà nằm rải ở 3 chỗ trong home / Phải tạo token mới, kiểm dùng được, thu hồi cũ rồi chuyển 12 agent sang danh tính mới)
+stakes: 3/3
+# Đổi danh tính daemon sang agents-opc: thu hồi PAT chủ, chuyển 12 agent
+
+**Bối cảnh:** Daemon chạy agent khách đăng nhập bằng PAT chủ. Cần đổi sang user Multica riêng mà không làm gián đoạn agent.
+**Chuyện gì xảy ra:** Lệnh sudo lần hai báo lỗi vì file PAT đã bị lệnh lần đầu xoá sau khi dùng. Agent tạo user agents-opc, chia sẻ runtime mới cho chủ, chuyển 12 agent và hai agent của workspace khác sang runtime mới. Tìm thấy PAT chủ ở 3 chỗ trong home, tạo PAT mới, kiểm PAT mới dùng được, rồi thu hồi PAT cũ (trả về 204). Daemon spike là unit tạm nên không có lệnh bật lại.
+**Bài học:** Tạo token mới và kiểm nó dùng được trước khi thu hồi token cũ. Ghi lại mọi chỗ token được lưu.
+**Artefact:** Bảng số agent và runtime trước và sau chuyển, đã che id.
+</story>
+
+<excerpt>
+[L1980] TOOL Bash: for u in multica-spike-daemon multica-ops-daemon; do echo "== $u"; pid=$(systemctl --user show -p MainPID --value $u); ps --ppid $pid -o pid,etime,args --no-headers | cut -c1-150; pstree -p $pid | head -5; done
+[L1981] RESULT: == multica-spike-daemon | multica(1184157)-+-{multica}(1184162)
+[L1983] AGENT: Cả hai daemon đang rảnh, không có task nào chạy. Tôi dừng chúng và tắt tự khởi động (bật lại được bằng `enable --now`).
+[L1984] TOOL Bash: systemctl --user disable --now multica-spike-daemon multica-ops-daemon 2>&1; systemctl --user is-active multica-spike-daemon multica-ops-daemon; systemctl --user is-enabled multica-spike-daemon multica-ops-daemon
+[L1987] RESULT (exit 1): inactive | not-found | disabled
+[L1989] TOOL Bash: ps -u vantt -o pid,args | grep -i "multica daemon\|multica.*daemon" | grep -v grep; systemctl --user list-unit-files | grep -i multica; ls ~/.config/systemd/user/ | grep -i multica
+[L1996] RESULT: multica-ops-daemon.service disabled enabled | multica-ops-daemon.service
+…
+[L2393] RESULT: 1 | Shell cwd was reset to /opt/AICoworker
+[L2394] AGENT: Đã ghi xong vào tài liệu `plans/2026-10-31-agent-permissions.md`. Trên GitHub không đổi gì.
+
+- **Mục 10, Giai đoạn 0:** bước 5 (bảo vệ `main`) ghi là *hoãn, theo lựa chọn của bạn*. Tôi thêm phần "Hoãn: (c′)" gồm:
+  - **Vì sao (c) gốc không làm được:** repo private của tài khoản cá nhân không cấp được quyền chỉ đọc. Hiện bot đang có quyền ghi trên `opc-studio-app`.
+  - **5 bước khi làm (c′):** tạo organization miễn phí và chuyển repo sang đó, cho bot quyền Read, bật fork và CI cho PR từ fork, sửa skill `git-workflow`, chạy thử trọn một vòng.
+  - **Điểm chưa chắc:** chưa rõ gói Free của organization có hai cài đặt fork đó không, phải thử bằng một PR từ fork trước.
+  - **Đường thay thế:** GitHub Pro.
+  - **Khi nào làm:** khi có repo thứ hai bot được ghi, khi repo chứa mã của khách, hoặc lần đầu bot đẩy nhầm lên `main`.
+- **Mục 10, phần "Trạng thái 2026-10-31":** ghi những gì đã làm và đang làm ở bước 1–4.
+- **Mục 12 (rủi ro chấp nhận):** thêm hai dòng.
+  - Rủi ro H10: bot vẫn ghi đè được `main`. Gỡ được nhờ lịch sử còn trong các bản clone, và Giai đoạn 1 nên backup thêm `git bundle` của repo này.
+  - Mã đăng nhập qua email có thể bị dò ra trong vài tháng.
+
+Giai đoạn 0 chỉ còn bước 4, và đang chờ bạn chạy:
+```
+! sudo bash ~/project/fgOPC/multica/stack/agent-user.sh login
+```
+Chạy xong tôi chuyển agent sang runtime mới, chạy thử, rồi commit tài liệu cùng `agent-user.sh`.
+[L2400] USER: sudo bash ~/project/fgOPC/multica/stack/agent-user.sh login
+[sudo: authenticate] Password:
+no /home/vantt/multica-spike/.agents-opc.pat: the owner mints it for agents-opc first
+[L2409] TOOL Bash: ls -la ~/multica-spike/.agents-opc.pat ~/multica-spike/.pat 2>&1; ls -la ~/multica-spike | head -5; findmnt -T /home/vantt -o TARGET,FSTYPE,OPTIONS
+[L2412] RESULT: ls: cannot access '/home/vantt/multica-spike/.agents-opc.pat': No such file or directory | -rw------- 1 vantt vantt 44 Oct 29 18:58 /home/vantt/multica-spike/.pat
+[L2414] TOOL Bash: cd ~/multica-spike && P=$(cat .pat); curl -fsS -H "Authorization: Bearer $P" -H "X-Workspace-ID: 011422fd-27a5-4ced-8ad7-f533cf7e1718" http://127.0.0.1:8310/api/runtimes | python3 -c 'import sys,json d=json.load(sys.stdin); d=d.get("runtimes",d) if isinstance(d,dict) else d for r in d: print(r["id"] …[+196]
+…
+[L2432] TOOL Bash: python3 -I /tmp/claude-1000/-opt-AICoworker/f0bf048d-0996-462f-94f4-0d8f367f342c/scratchpad/share_runtime.py
+[L2433] RESULT: send-code 200 | sen-coffee 33795a97-0da5-4ab0-88a6-e8c0a73a96cb Claude (fg-server-opc) online share -> 200 ['bd181249-1e51-4a95-9d6d-5bad59578a99']
+[L2435] AGENT: Đã chia sẻ cả hai runtime mới (opc-studio và sen-coffee) riêng cho bạn. Giờ chuyển 12 agent opc-studio sang runtime mới.
+[L2436] TOOL Bash: cd ~/multica-spike && P=$(cat .pat) python3 -I - <<'EOF' import json, os, urllib.request, urllib.error P=os.environ["P"]; A="http://127.0.0.1:8310"; WS="011422fd-27a5-4ced-8ad7-f533cf7e1718" NEW="fe4ca92c-f311-4693-9115-59027a7bbc16" def call(m,p,b=None): r=urllib.request.Request(A+p,method=m,data=j …[+704]
+[L2439] RESULT: Hà (Content Reviewer) 405 | Khoa (Tech Lead) 405
+[L2440] TOOL Bash: cd ~/project/fgOPC/upstreams/multica/server && grep -n 'r.Route("/api/agents"' -A15 cmd/server/router.go | grep -i "put\|patch\|post" | head; grep -n "api/agents/" ~/project/fgOPC/multica/tools/opc.mjs | head -5
+…
+[L2453] AGENT: Đây là cập nhật từng phần qua `PUT`. Tôi chạy lại.
+[L2454] TOOL Bash: cd ~/multica-spike && P=$(cat .pat) python3 -I - <<'EOF' import json, os, urllib.request, urllib.error P=os.environ["P"]; A="http://127.0.0.1:8310"; WS="011422fd-27a5-4ced-8ad7-f533cf7e1718" NEW="fe4ca92c-f311-4693-9115-59027a7bbc16" def call(m,p,b=None): r=urllib.request.Request(A+p,method=m,data=j …[+702]
+[L2457] RESULT: Hà (Content Reviewer) 200 fe4ca92c | Khoa (Tech Lead) 200 fe4ca92c
+[L2459] TOOL Bash: cd ~/project/fgOPC/multica && node tools/opc.mjs client plan ~/opc-clients/opc-studio 2>&1 | tail -25
+[L2462] RESULT: = agent bao | = agent khoa
+…
+[L2533] RESULT: spike-cli mul_9b7aaf52 last_used 2026-10-31T17:29:17Z expires 2027-01-27T11:58:31Z | Shell cwd was reset to /opt/AICoworker
+[L2536] TOOL Bash: cd ~ && grep -rlF --exclude-dir=node_modules --exclude-dir=.cache --exclude-dir=.npm --exclude-dir=multica_workspaces_spike --exclude-dir=multica_workspaces_ops --exclude-dir=projects -f ~/multica-spike/.pat ~ 2>/dev/null | grep -v "\.jsonl$" | head -20; echo ---; grep -rlF -f ~/multica-spike/.pat ~ …[+69]
+[L2543] RESULT: /home/vantt/.multica/profiles/ops/config.json | /home/vantt/.multica/profiles/spike/config.json
+[L2548] AGENT: Chỉ có 3 chỗ, đều nằm trong home của `vantt`. Tôi tạo PAT mới, cập nhật cả 3 chỗ, kiểm PAT mới dùng được rồi mới thu hồi PAT cũ.
+[L2549] TOOL Bash: cd ~/multica-spike && python3 -I - <<'EOF' import json, os, urllib.request, urllib.error A="http://127.0.0.1:8310"; H=os.path.expanduser("~") old=open(f"{H}/multica-spike/.pat").read().strip() def call(m,p,tok,b=None): r=urllib.request.Request(A+p,method=m,data=json.dumps(b).encode() if b is not Non …[+1309]
+[L2550] RESULT: revoke old: 204 | old still works: False | new works: True | expires 2027-01-29T17:30:04Z | Shell cwd was reset to /opt/AICoworker
+[L2555] TOOL Bash: cd ~/project/fgOPC/multica && node tools/opc.mjs client plan ~/opc-clients/opc-studio 2>&1 | grep -E "^plan|rror"; ~/multica-spike/bin/multica --profile ops workspace list 2>&1 | head -4
+[L2556] RESULT: plan: 0 change(s) in workspace opc-studio | plan: 0 change(s) in workspace opc-studio
+…
+[L2562] TOOL Bash: cd ~/project/fgOPC/multica && python3 - <<'EOF' p="plans/2026-10-31-agent-permissions.md" s=open(p).read() a=s.index("- Bước 4: đang làm.") b=s.index("### Hoãn: (c′)") new="""- Bước 4: xong (2026-11-01). - User `agents-opc@opc.local` là member của `sen-coffee` và `opc-studio`, không có trong `system …[+2208]
+[L2563] RESULT: dea3300 multica: agent permissions plan; opc-agent daemon logs in as member agents-opc | Shell cwd was reset to /opt/AICoworker
+[L2569] TOOL Write: /home/vantt/.claude/projects/-opt-AICoworker/memory/multica-two-daemons.md
+[L2573] RESULT: The file /home/vantt/.claude/projects/-opt-AICoworker/memory/multica-two-daemons.md has been updated successfully.
+[L2574] TOOL Bash: cd ~/.claude/projects/-opt-AICoworker/memory && sed -i 's/^- \[Multica two daemons\](multica-two-daemons.md) — .*/- [Multica daemons](multica-two-daemons.md) — opc-agent daemon logs in as member agents-opc; ops\/spike stopped; daemon.id and runtime-owner pitfalls/' MEMORY.md && cat MEMORY.md
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

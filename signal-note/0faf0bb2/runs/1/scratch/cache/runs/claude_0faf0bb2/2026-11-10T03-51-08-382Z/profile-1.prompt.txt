@@ -1,0 +1,133 @@
+Bạn đọc tài liệu của một dự án phần mềm và viết hồ sơ ngắn cho người ngoài chưa từng nghe về nó. Hồ sơ này sẽ đứng đầu mọi câu chuyện kể về dự án, để người nghe biết đang nói về cái gì.
+
+Trả:
+- profile: 3-5 câu, chữ thường ngày. Theo thứ tự: dự án là gì; làm cho ai; ràng buộc chính (ví dụ chạy trên máy, giữ riêng tư, ngôn ngữ người dùng, nền tảng); mục tiêu hiện tại, chỉ khi tài liệu có nói. Tài liệu không nói mục tiêu thì kết thúc ở ràng buộc, không thêm câu "Mục tiêu hiện tại: chưa có".
+
+Luật cứng:
+- Chỉ dùng điều tài liệu nói. Không đoán, không thêm con số, khách hàng, kế hoạch hay động cơ tài liệu không ghi. Ý nào tài liệu không nói thì bỏ hẳn ý đó, không viết câu nói về tài liệu (như "tài liệu không nói mục tiêu").
+- Không đoán người làm là một nhóm hay một người khi tài liệu không nói.
+- Không chép lệnh, đường dẫn, khoá, địa chỉ hay tên người.
+- Tài liệu không cho biết dự án làm gì (chỉ có quy tắc cho agent, mẫu trống, danh sách lệnh) thì trả none kèm lý do ngắn.
+- Viết cùng ngôn ngữ với phần lớn tài liệu.
+
+Ví dụ:
+{"profile":"Một công cụ dòng lệnh sao lưu ảnh từ điện thoại vào ổ cứng trong nhà. Làm cho người không rành kỹ thuật, nên chỉ có một lệnh và không phải cấu hình gì. Ảnh không bao giờ rời mạng nhà. Mục tiêu hiện tại: chạy được trên Windows."}
+
+Ví dụ không có:
+{"none":true,"reason":"chỉ có quy tắc viết code cho agent, không nói dự án làm gì"}
+
+<sources>
+### README.md
+# fgOPC
+
+Bộ dựng **công ty một người (One Person Company) vận hành bằng AI agent** trên nền [Multica](https://github.com/multica-ai/multica). Mỗi khách có một workspace Multica. Trong workspace là các team agent (Coding, Content, SEO & Analytics) nhận việc qua issue, làm theo workflow có cổng kiểm, và chờ chủ duyệt ở những bước quan trọng.
+
+Phần đang làm thật nằm trong [`multica/`](multica/README.md): các gói agent cài được vào workspace, công cụ deploy `opc`, script dựng hạ tầng và playbook. Phần còn lại là nghiên cứu dẫn tới lựa chọn đó.
+
+## Cách dùng
+
+1. Dựng Multica và daemon: [`multica/playbook/setup.md`](multica/playbook/setup.md).
+2. Thêm khách: tạo `~/opc-clients/<khách>/client.yaml`, gồm workspace, runtime, biến, secret và các gói đã mua (`sets`). Hướng dẫn ở [`multica/playbook/new-client.md`](multica/playbook/new-client.md), mẫu ở [`client.example.yaml`](multica/playbook/client.example.yaml).
+3. Deploy: `node multica/tools/opc.mjs client deploy ~/opc-clients/<khách>`.
+4. Team Coding cần thêm user `opc-agent`, tài khoản bot GitHub và repo sản phẩm: [`multica/playbook/coding-infra.md`](multica/playbook/coding-infra.md).
+
+Thông tin riêng của khách (`client.yaml`, secret) nằm ngoài repo.
+
+## Nội dung
+
+| Thư mục | Nội dung |
+|---|---|
+| [`multica/`](multica/README.md) | **Phần chính.** Công cụ `tools/opc.mjs` (lint, plan, deploy), các gói `packages/` (opc-coding, opc-content, opc-seo-analytics, system-ops), hạ tầng `stack/`, playbook, đặc tả định dạng gói, spike |
+| [`docs/research/coding-team.md`](docs/research/coding-team.md) | Thiết kế team Coding: chia vai 6 agent, nguồn skill, workflow có cổng kiểm, làm việc với repo GitHub thật |
+| [`docs/research/opc-packaging-deployment.md`](docs/research/opc-packaging-deployment.md) | Đóng gói và triển khai agent, workflow (Agent Companies, `.agent`, Multica), đề xuất định dạng gói OPC |
+| [`docs/comparison-paperclip-multica-openmausbot.md`](docs/comparison-paperclip-multica-openmausbot.md) | So sánh Paperclip, Multica, OpenMausBot theo 5 nhóm: runtime, tổ chức tài nguyên, workflow chéo team, artifact, tiến hoá agent |
+| [`docs/comparison-aicoworker-vs-paperclip.md`](docs/comparison-aicoworker-vs-paperclip.md) | So sánh AICoworker, Paperclip, Multica, Kaneo: lý do chọn Multica |
+| [`docs/vision.md`](docs/vision.md) | Vision ban đầu: phần mềm vận hành OPC trên Cloudflare, điều phối agent OpenClaw |
+| [`docs/aicoworker-architecture.md`](docs/aicoworker-architecture.md), [`docs/research/aicoworker-browser-relay/`](docs/research/aicoworker-browser-relay/) | Research AICoworker (OpenClaw): agent, skill, workflow, session, cron, Browser Relay |
+| [`docs/spikes/`](docs/spikes/) | Spike Paperclip + AICoworker (công ty mẫu Sen Coffee) |
+| [`docs/distillery/`](docs/distillery/) | Bài học có trích dẫn rút từ mã gr8r-studio, Paperclip, Kaneo, Multica, OpenMausBot |
+| [`company/`](company/README.md) | Khung kho tài liệu công ty theo PARA (phòng ban, area, project, inbox). Ý tưởng từ giai đoạn đầu, chưa gắn với agent |
+| `upstreams/` | Mã nguồn tham khảo: multica, paperclip, kaneo, gr8r-studio, openmausbot. Chỉ đọc |
+
+## Liên quan ngoài repo
+
+- [`vantt/opc-studio-app`](https://github.com/vantt/opc-studio-app): repo sản phẩm mẫu, đồng thời là template cho repo của khách. Team Coding làm việc trên repo này để kiểm gói chạy đúng.
+- Bản cài AICoworker dùng để research: `/opt/AICoworker` (chỉ đọc).
+
+## Trạng thái
+
+- Multica self-host v0.7.1, runtime Claude Code, đang chạy workspace `opc-studio`.
+- Team Coding đã chạy trọn đường S, M và M có nhãn `arch` (STU-4, STU-5, STU-7). Đường L (chia issue) chưa chạy thật.
+- Chưa thử deploy vào một workspace mới tinh để chứng minh dựng lại được từ đầu.
+
+### docs/vision.md
+---
+title: Vision — fgOPC, phần mềm vận hành One Person Company
+status: draft
+updated: 2026-10-29
+---
+
+# Vision: fgOPC
+
+## 1. Một câu
+
+**Một người chủ điều hành cả công ty bằng một đội AI agent, thông qua một workspace dự án/task/comment, với chi phí hạ tầng gần như bằng 0.**
+
+## 2. Trạng thái và các hướng đang cân nhắc (2026-10-29)
+
+**Chưa chọn hướng.** Bằng chứng nằm ở:
+- [So sánh AICoworker, Paperclip, Multica, Kaneo](comparison-aicoworker-vs-paperclip.md)
+- [Spike Paperclip + AICoworker](spikes/2026-10-29-paperclip-spike.md)
+- [Learning area](distillery/): 4 nguồn, 47 lessons có trích dẫn
+
+| Hướng | Mô tả | Trạng thái |
+|---|---|---|
+| **A. Paperclip + AICoworker** | Paperclip điều phối, OpenClaw (AICoworker) làm việc | Đã chạy được trong spike; OpenClaw chỉ là "nhân viên ngoài", phải vá giao thức |
+| **B. Multica + AICoworker** | Multica điều phối, daemon gọi CLI `openclaw agent` | **Spike trượt** ([báo cáo](../multica/spikes/2026-10-29-aicoworker.md)): Multica v0.7.1 cần OpenClaw ≥ 2026.5.5, trong khi AICoworker đóng gói 2026.3.13 (kiểm tra phiên bản, `$include`, định dạng output). Chỉ khả thi khi AICoworker nâng OpenClaw, hoặc khi vá daemon. Ngoài ra, ở chế độ local Multica bỏ SOUL, MEMORY và skill của agent. License chỉ cho dùng nội bộ |
+| **B'. Multica + Claude Code** | Multica điều phối, runtime là Claude Code (không dùng AICoworker) | **Spike đạt 5/5** ([runbook](../multica/spikes/2026-10-29-claude-code/runbook.md)): workflow theo cột tự giao việc giữa hai agent, có vòng trả lại; resume session; chat nhiều phiên. Mất bộ nhớ, SOUL và Zalo của AICoworker; agent chạy với `bypassPermissions`; license chỉ cho dùng nội bộ |
+| **C. Tự xây trên Cloudflare** | Control plane mỏng do mình làm, nền UI/route lấy từ Kaneo (MIT), AICoworker là runtime duy nhất | Thiết kế ở §4–§6 dưới đây |
+
+AICoworker giữ vai trò runtime trong cả ba hướng: chat, kênh Zalo/Telegram, skill, bộ nhớ của agent.
+
+## 3. Vấn đề
+
+Một **One Person Company (OPC)** có một người thật, còn các "nhân viên" là AI agent trên AICoworker/OpenClaw (marketing, sales, finance…). Hiện nay:
+
+- **AICoworker không có tầng công việc.** Không có task, project hay board. Artifact gắn với cuộc chat, không gắn với công việc.
+- Giao việc diễn ra qua chat. Sau vài ngày không còn biết việc nào đã giao, ai đang làm, việc nào xong.
+- Agent trao đổi bằng `sessions_send`: tin nhắn sống, mất là mất.
+- Sản phẩm của agent lọt vào workspace riêng (spike: file ngân sách của SEN-3).
+- Quy ước PARA trong `company/` chỉ là văn bản, không có gì kiểm tra.
+
+## 4. Giải pháp (hướng C)
+
+Một workspace quản lý công việc phong cách "calm", trong đó **agent là thành viên ngang hàng với người**:
+
+1. **Một schema entity duy nhất** sinh ra bảng D1, REST API (route Hono + zod-openapi), **tool MCP** và kiểu dữ liệu cho UI. Tool MCP chỉ là lớp gọi lại API, nên quyền và activity được kiểm tra ở một chỗ.
+2. **Giao việc = assign task; trao đổi = comment.** Workflow của project có thể chỉ định người xử lý cho từng cột: kéo task sang "Review" là giao cho người duyệt.
+3. **Agent ghi ngược vào task:** comment, đổi trạng thái, nộp tài liệu hoặc file vào task, tạo task con.
+4. **Chủ duyệt:** agent chỉ đi tới `in_review`, và chỉ khi đã có đường duyệt. Chỉ người mới được chuyển sang `done`. Server kiểm tra cả hai luật này, không chỉ ghi trong prompt.
+5. **Chạy trên Cloudflare:** Workers + D1 + R2, thêm Durable Object khi cần giữ kết nối. Không có server Node.
+
+## 5. Kiến trúc (hướng C)
+
+```mermaid
+flowchart LR
+  subgraph CF["Cloudflare"]
+    UI["Workers Static Assets<br/>UI (nền Kaneo)"]
+    API["Worker: Hono routes<br/>REST + MCP (sinh từ schema)"]
+    D1[("D1<br/>nguồn sự thật")]
+    DO["Durable Object<br/>socket của waker + realtime UI"]
+    R2["R2<br/>file, tài liệu, backup"]
+    CRON["Cron Trigger<br/>quét lease hết hạn, nhắc hạn"]
+    UI <--> API
+    API <--> D1
+    API <--> R2
+    API <--> DO
+    CRON --> D1
+  end
+  subgraph HOST["Máy chạy AICoworker"]
+    W["opc-waker (không dùng LLM)<br/>WebSocket ra ngoài + p …[+11291]
+</sources>
+
+Chỉ trả JSON theo một trong hai dạng trên.

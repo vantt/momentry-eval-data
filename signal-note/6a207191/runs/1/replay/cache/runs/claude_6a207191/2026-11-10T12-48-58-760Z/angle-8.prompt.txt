@@ -1,0 +1,69 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L695] USER: có nên đổi tên thành code-standard-packaging-installation hoặc cs-packaging-installagion, để sau này có thể thêm cs-architecture-quality cs-test-quality ....
+[L701] USER: ok, dùng cs-packaging-distribution. thảo luận về phần setup, init, doctor. cần làm rõ và chuẩn hóa ở chổ này. với fgos nó là một hệ lớn, chúng ta distribute đi kèm fgctl là bộ bộ cài và upgrade, không phải bin, nó download và deploy bin. ví thế với fgos nó có thể có thể setup, init và doctor. các hệ khác khi dùng install.sh chỉ cài 1 bin như mdview sẽ include luôn command update để tự upgrade. fgos thì làm thông qua fgctl. cần xem lại fgos, thực chất init hay setup gì đó chỉ là alias trỏ về bin doctor.
+[L732] USER: ok, đồng ý, làm hết luôn
+</asks>
+
+<story>
+hook: /dev/tty có đó nhưng không mở được, installer crash thay vì báo
+tension: nho_ma_to (Script kiểm tra thấy /dev/tty tồn tại / Không có terminal thật, ghi vào là crash)
+stakes: 2/3
+# Installer lỗi khi không có terminal: /dev/tty tồn tại nhưng không mở được
+
+**Bối cảnh:** Installer mẫu phải chạy được trong dash và cả khi không có terminal, ví dụ khi agent gọi.
+**Chuyện gì xảy ra:** Test bằng dash trên một release giả lập. Lỗi: /dev/tty tồn tại nhưng không ghi được khi không có terminal, nên script crash thay vì báo cần --yes. Sửa bằng cách thử mở /dev/tty thật. Sau sửa, không có terminal thì báo cần xác nhận; có terminal thì hỏi và huỷ khi người dùng gõ n.
+**Bài học:** Kiểm tra thiết bị tồn tại chưa đủ. Phải thử mở nó mới biết dùng được hay không.
+**Artefact:** Log hai đường chạy, có terminal và không có terminal. Cần che đường dẫn tạm.
+</story>
+
+<excerpt>
+[L861] TOOL Write: /home/vantt/projects/devops/skills/cs-packaging-distribution/templates/install.sh
+[L862] RESULT: The file /home/vantt/projects/devops/skills/cs-packaging-distribution/templates/install.sh has been updated successfully. (file state is current in your context — no need to Read it back)
+[L870] AGENT: Now testing the new `install.sh` against a fake release, using `dash` to make sure it is truly POSIX.
+[L871] TOOL Bash: D=/home/vantt/projects/devops/skills/cs-packaging-distribution; S=/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/it2; rm -rf $S; mkdir -p $S/rel/download/v1.2.3 $S/home $S/w; cd $S/w SH=$(command -v dash || echo sh); echo "shell: $SH" printf '#!/bin/sh\n …[+1248]
+[L875] RESULT: shell: /usr/bin/dash | == help
+…
+[L879] TOOL Bash: D=/home/vantt/projects/devops/skills/cs-packaging-distribution; S=/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/it2 python3 - "$D/templates/install.sh" <<'EOF' import sys;p=sys.argv[1];s=open(p).read() a=' if [ -r /dev/tty ] && [ -w /dev/tty ]; then\n'  …[+914]
+[L880] RESULT: install exit 0 | error: confirmation needed but no terminal is available
+[L890] AGENT: Both paths now behave correctly: with no terminal it asks for `--yes`, and with a terminal it asks and cancels on "n". Last step: a full check of the skill.
+[L891] TOOL Bash: cd /home/vantt/projects/devops/skills/cs-packaging-distribution; sh scripts/lint-guides.sh; grep -rn 'packaging-distribution-guide\|UX-2[0-9]\|case-studies' . ; grep -rn '`setup`\|<bin> setup\|setup/init' common languages | cut -c1-120; echo "words: $(find . -name '*.md' -exec cat {} + | wc -w)"; fi …[+19]
+[L892] RESULT: OK: 212 rules, structure valid | common/07-command-surface.md:43:- **CMD-01** MUST · `doctor` is the only engine that reaches the desired state. Every d
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

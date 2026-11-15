@@ -1,0 +1,1224 @@
+{
+  "id": "6a207191",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f.jsonl",
+  "fromLine": 1,
+  "toLine": 2412,
+  "windowSha": "225acd523cc5ad12",
+  "at": "2026-11-10T03:38:10.725Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.14,
+    "tokens": 53806,
+    "chunks": 1,
+    "hotspots": 41,
+    "entries": 636,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:6a207191",
+    "fromLine": 1,
+    "toLine": 2412,
+    "usd": 0.13506170000000003,
+    "secs": 387,
+    "exitCode": 0,
+    "status": "done",
+    "written": 18,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-11-02-agent-review-doc-lap-bat-duoc-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-1: spine.context: evidence ngoài các dòng đã đưa: \"profile\" | angle-1-retry: spine.context: evidence ngoài các dòng đã đưa: \"profile\""
+      },
+      {
+        "id": "2026-11-02-bon-repo-bon-cach-lam-packaging-c4b4",
+        "status": "angle",
+        "angle": "Dự án là một skill giúp agent làm đóng gói và phân phối (cài, cập nhật, cấu hình, kiểm tra) cho các dự án của người làm, học từ 4 repo mà mỗi repo làm một kiểu. Bản đầu được viết kỹ, mỗi quy tắc có vài dòng giải thích kèm case study, và tưởng vậy là đủ. Người dùng thấy lượng chữ quá nhiều, nên bản sau rút mỗi quy tắc còn một dòng có ID, chi tiết chỉ còn trỏ tới code mẫu, và cắt được khoảng 46% số chữ. Ai viết tài liệu cho agent đọc có thể gặp cùng vấn đề: bản dài hơn không đồng nghĩa với dễ dùng hơn.",
+        "audience": "dev viết skill hoặc tài liệu cho agent đọc",
+        "evidence": [
+          5,
+          317,
+          319,
+          538
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người làm dự án đang gom cách làm packaging và phân phối (cài, cập nhật, cấu hình, kiểm tra) từ 4 repo thành một skill cho agent, để dùng lại cho các dự án sau.",
+            "evidence": [
+              5
+            ]
+          },
+          "want": {
+            "text": "Chắt những cách làm hay của từng repo thành một bộ hướng dẫn tái dùng, có thể thêm guide mới mà không đổi cấu trúc.",
+            "evidence": [
+              5
+            ]
+          },
+          "obstacle": {
+            "text": "Mỗi repo làm packaging một kiểu khác nhau, nên phải tổ chức phần chung và phần riêng theo ngôn ngữ.",
+            "evidence": [
+              5
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bản viết kỹ (mỗi quy tắc vài dòng kèm case study) là đủ; hoá ra người dùng thấy lượng chữ quá nhiều và dư thừa.",
+            "evidence": [
+              317,
+              319
+            ]
+          },
+          "action": {
+            "text": "Viết lại mỗi quy tắc thành một dòng có ID, bỏ 4 file case study và thay bằng references.md trỏ tới code mẫu, bỏ các quy tắc trùng.",
+            "evidence": [
+              538
+            ]
+          },
+          "outcome": {
+            "text": "Còn 190 quy tắc, kiểm tra cấu trúc đạt; số chữ giảm từ khoảng 11.900 xuống khoảng 6.400, tức giảm 46%.",
+            "evidence": [
+              536,
+              538
+            ]
+          },
+          "takeaway": {
+            "text": "Viết skill cho agent đọc: mỗi quy tắc một dòng có ID, chi tiết chỉ để trỏ tới code đã chạy, và đo số chữ như một chỉ số.",
+            "evidence": [
+              328,
+              538
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-fgos-co-ba-lenh-init-setup-c4b4",
+        "status": "angle",
+        "angle": "Dự án fgos là một hệ phân phối lớn gồm bộ cài fgctl và runtime, đang cần làm rõ ba lệnh init, setup, doctor. Người làm tin setup chỉ là tên gọi khác của doctor, nhưng đọc code thì setup còn ghi file rc, tạo config và cài hook. Ai viết CLI có nhiều lệnh chồng nhau nên đọc code trước khi tin vào alias.",
+        "audience": "dev xây CLI có nhiều lệnh init/setup/doctor",
+        "evidence": [
+          701,
+          727
+        ],
+        "spine": {
+          "context": {
+            "text": "Hệ fgos gồm fgctl, bộ cài và nâng cấp, và fgos, bộ triển khai runtime. Đang chuẩn hoá cách phân phối cho các dự án.",
+            "evidence": [
+              701
+            ]
+          },
+          "want": {
+            "text": "Muốn làm rõ và chuẩn hoá init, setup, doctor cho fgos và các hệ phân phối khác.",
+            "evidence": [
+              701
+            ]
+          },
+          "obstacle": {
+            "text": "Ba lệnh chồng chéo nên người dùng và agent không biết chạy lệnh nào.",
+            "evidence": [
+              727
+            ]
+          },
+          "turn": {
+            "text": "Tưởng setup chỉ là tên gọi khác của doctor; hoá ra setup còn ghi file rc, tạo config và cài hook.",
+            "evidence": [
+              701,
+              727
+            ]
+          },
+          "action": {
+            "text": "Thiết kế lại: doctor chỉ đọc, doctor --fix chỉ sửa cái đã có, init bằng doctor --fix cộng quyền tạo mới, setup bỏ đi.",
+            "evidence": [
+              897
+            ]
+          },
+          "outcome": {
+            "text": "Script kiểm tra cấu trúc qua với 212 quy tắc.",
+            "evidence": [
+              892
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi chuẩn hoá lệnh, đọc code để biết lệnh thực sự làm gì; giả định về alias thường sai.",
+            "evidence": [
+              727
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-05-agent-noi-skill-chua-co-routing-c4b4",
+        "status": "angle",
+        "angle": "Một người làm skill cho agent đang đẩy một skill đóng gói cài đặt lên hub dùng chung để người khác duyệt. Agent tưởng skill chưa có phần routing vì chỉ đọc thư mục trên máy, nơi chưa có skill.yaml. Hoá ra hub đã có sẵn 9 trigger, 5 ví dụ và 5 trường hợp không dùng do người duyệt đặt. Ai đẩy metadata lên hub cần biết máy khách không thấy đủ, nên phải hỏi đúng nguồn trước khi kết luận thiếu.",
+        "audience": "người làm agent skill và quy trình duyệt skill dùng chung",
+        "evidence": [
+          1396,
+          1441
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người làm skill cho agent, đang đẩy một skill đóng gói cài đặt lên hub dùng chung để người khác duyệt.",
+            "evidence": [
+              1271
+            ]
+          },
+          "want": {
+            "text": "Muốn skill có phần routing và metadata đầy đủ để agent tìm đúng skill khi cần.",
+            "evidence": [
+              1341
+            ]
+          },
+          "obstacle": {
+            "text": "Hub báo bản skillstation cũ chưa kiểm tra routing, và lệnh show --verbose bị từ chối vì skill được quản lý trên máy hub.",
+            "evidence": [
+              1315,
+              1417
+            ]
+          },
+          "turn": {
+            "text": "Tưởng skill chưa có routing vì chỉ đọc thư mục trên máy; hoá ra hub đã có 9 trigger, 5 ví dụ và 5 trường hợp không dùng do người duyệt đặt.",
+            "evidence": [
+              1396,
+              1441
+            ]
+          },
+          "action": {
+            "text": "Soạn lại skill.yaml: giữ nguyên các mục routing đang có trên hub, thêm operations, topics, technologies, min_scope và counter_examples.",
+            "evidence": [
+              1437
+            ]
+          },
+          "outcome": {
+            "text": "Bản nháp giữ đủ 9 trigger, 5 ví dụ và 5 trường hợp không dùng cũ, thêm một số mục mới. Chưa gửi lên hub.",
+            "evidence": [
+              1441,
+              1453
+            ]
+          },
+          "takeaway": {
+            "text": "Khi metadata nằm trên hub, máy khách không thấy đủ. Trước khi kết luận thiếu, hãy hỏi đúng nguồn.",
+            "evidence": [
+              1417,
+              1441
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-05-hub-de-skill-active-khi-chua-c4b4",
+        "status": "angle",
+        "angle": "Người làm đang xây một skill hướng dẫn đóng gói và phát hành cho agent, rồi gửi lên hub skillstation để dùng lại cho các dự án sau. Họ tưởng skill chỉ chạy khi có người bấm duyệt bản vừa gửi, nhưng hub vẫn phục vụ một bản cũ đã duyệt từ trước, có cùng routing. Trang skill không báo có bản mới đang chờ, nên ai mở trang sẽ tin bản đang chạy là mới nhất và dễ duyệt nhầm, nên bản chờ duyệt cần hiện ngay trên trang của chính skill đó.",
+        "audience": "dev dùng agent để xây skill và gửi skill lên hub chung",
+        "evidence": [
+          5,
+          1489,
+          1503,
+          1507,
+          1515
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đang xây một skill hướng dẫn đóng gói và phát hành cho agent, rồi gửi lên hub skillstation để dùng lại cho các dự án sau.",
+            "evidence": [
+              5,
+              1483
+            ]
+          },
+          "want": {
+            "text": "Muốn bản skill mới được duyệt trước khi hub chạy nó.",
+            "evidence": [
+              1489
+            ]
+          },
+          "obstacle": {
+            "text": "Hub đang active một bản cũ đã duyệt trước đó, có cùng routing; trang skill không báo có bản mới đang chờ.",
+            "evidence": [
+              1501,
+              1503,
+              1507
+            ]
+          },
+          "turn": {
+            "text": "Tưởng skill chỉ lên active sau khi có người bấm duyệt bản vừa gửi; hoá ra hub vẫn phục vụ bản cũ, còn bản mới vẫn chờ duyệt.",
+            "evidence": [
+              1489,
+              1503
+            ]
+          },
+          "action": {
+            "text": "Đối chiếu bản hub đang phục vụ với thư mục skill trên máy, rồi xác nhận bản mới vẫn chờ duyệt.",
+            "evidence": [
+              1500,
+              1503
+            ]
+          },
+          "outcome": {
+            "text": "Bản mới vẫn chờ duyệt, hub giữ bản cũ đang active. Người làm chọn sửa web skillstation để trang skill báo có bản chờ duyệt.",
+            "evidence": [
+              1515,
+              1520,
+              1525
+            ]
+          },
+          "takeaway": {
+            "text": "Trang của một item phải hiện bản chờ duyệt ngay cạnh bản đang active; để hai trạng thái tách rời thì dễ duyệt nhầm bản cũ.",
+            "evidence": [
+              1507,
+              1515
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-05-routing-qua-rong-skill-dong-goi-c4b4",
+        "status": "angle",
+        "angle": "Người làm đang xây hub skillstation, nơi agent tra cứu skill theo việc cần làm, và nhờ agent sửa giao diện web của hub. Agent tin skill đó chưa có phần định tuyến, vì lệnh xem từ máy khách không hiện operations hay min_scope. Hoá ra dữ liệu đó có sẵn trong skill.yaml, chỉ là công cụ không cho xem. Ai dựng hay dùng công cụ cho agent nên nhớ: một trường bị ẩn trông giống như trường không tồn tại.",
+        "audience": "dev dựng hoặc dùng công cụ tra cứu skill cho agent",
+        "evidence": [
+          1534,
+          1555
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đang xây hub skillstation để agent tra cứu skill, và nhờ agent sửa giao diện web của hub.",
+            "evidence": [
+              1520,
+              1534
+            ]
+          },
+          "want": {
+            "text": "Muốn thêm banner và badge 'update pending' trên web hub khi có bản cập nhật chờ duyệt.",
+            "evidence": [
+              1566
+            ]
+          },
+          "obstacle": {
+            "text": "Máy không có skill ak:frontend-development, và hub trả not_found.",
+            "evidence": [
+              1532,
+              1533
+            ]
+          },
+          "turn": {
+            "text": "Agent tưởng skill chưa có phần định tuyến; hoá ra skill.yaml đã có operations và min_scope, chỉ là lệnh xem từ máy khách không hiện ra.",
+            "evidence": [
+              1555
+            ]
+          },
+          "action": {
+            "text": "Agent báo lại cho người làm, đề nghị thêm not_for cho việc giao diện, rồi chờ quyết định.",
+            "evidence": [
+              1555
+            ]
+          },
+          "outcome": {
+            "text": "Người làm xác nhận đã có ak:frontend-development, và agent gọi skill đó với đề bài sửa web UI.",
+            "evidence": [
+              1561,
+              1566
+            ]
+          },
+          "takeaway": {
+            "text": "Trường bị ẩn trong công cụ trông như trường không tồn tại; kiểm tra dữ liệu gốc trước khi kết luận.",
+            "evidence": [
+              1555
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-diem-cham-dau-tien-la-cua-c4b4",
+        "status": "angle",
+        "angle": "Dự án là một bộ hướng dẫn đóng gói và phân phối cho công cụ dòng lệnh, và người làm muốn dùng lại nó cho mọi dự án sau này. Họ tưởng skill đã đủ vì script kiểm tra cấu trúc chạy qua 230 rule. Một agent độc lập đọc theo đúng quy trình lại tìm ra các lệnh mâu thuẫn nhau, mẫu cài đặt vi phạm chính các rule đó, và phần 'cách đã kiểm chứng' trỏ sang dự án khác ngôn ngữ. Ai viết quy tắc cho agent cũng dễ mắc lỗi này, vì kiểm tra cấu trúc xanh không có nghĩa nội dung đã đúng.",
+        "audience": "người viết skill hoặc tài liệu cho agent",
+        "evidence": [
+          5,
+          653,
+          690
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đang viết một bộ skill hướng dẫn đóng gói và phân phối (cài, cập nhật, cấu hình, doctor) cho các công cụ dòng lệnh, để dùng lại cho các dự án sau.",
+            "evidence": [
+              5
+            ]
+          },
+          "want": {
+            "text": "Muốn điểm chạm đầu tiên (giới thiệu, cài đặt, quick start) đủ tốt để người dùng ở lại và phần mềm bán hoặc promote được.",
+            "evidence": [
+              578
+            ]
+          },
+          "obstacle": {
+            "text": "Skill mới có một phần: thiếu câu giới thiệu, thời gian đến kết quả đầu tiên, quick start được test trong CI, demo và khoảnh khắc chạy được ngay lần đầu.",
+            "evidence": [
+              586
+            ]
+          },
+          "turn": {
+            "text": "Tưởng skill đã đủ vì script kiểm tra cấu trúc chạy qua 230 rule. Hoá ra review độc lập tìm ra lệnh mâu thuẫn (INS-13 bảo dùng 'setup', CMD-04 nói không có 'setup'), mẫu install.sh vi phạm chính các rule đó, và phần 'cách đã kiểm chứng' trỏ sang dự án khác ngôn ngữ.",
+            "evidence": [
+              653,
+              690
+            ]
+          },
+          "action": {
+            "text": "Thêm file riêng cho điểm chạm đầu tiên, thêm nhóm rule agent-native (CMD-13 đến CMD-19), rồi giao một agent độc lập review toàn bộ skill.",
+            "evidence": [
+              633,
+              657,
+              675
+            ]
+          },
+          "outcome": {
+            "text": "Review kết luận skill 'về cơ bản dùng được', nhưng nêu 9 điểm cần sửa, trong đó 3 điểm phải sửa ngay.",
+            "evidence": [
+              690,
+              697
+            ]
+          },
+          "takeaway": {
+            "text": "Kiểm tra cấu trúc xanh không chứng minh nội dung nhất quán. Cần một agent độc lập đọc theo đúng quy trình để tìm mâu thuẫn trong nội dung.",
+            "evidence": [
+              653,
+              690
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-installer-loi-khi-khong-co-terminal-c4b4",
+        "status": "angle",
+        "angle": "Dự án là bộ hướng dẫn đóng gói và cài đặt cho các công cụ dòng lệnh, đúc kết từ nhiều repo, và có một installer mẫu phải chạy được cả khi không có terminal. Người làm tin rằng chỉ cần kiểm tra /dev/tty có tồn tại và đọc/ghi được là đủ để biết có hỏi người dùng được không. Hoá ra khi không có terminal, thiết bị vẫn hiện diện nhưng không mở được, nên installer crash thay vì báo cần xác nhận. Ai viết script cài đặt chạy trong CI hay do agent gọi nên chú ý: phải thử mở thiết bị, đừng chỉ kiểm tra nó có đó.",
+        "audience": "dev viết script cài đặt chạy trong CI hoặc do agent gọi",
+        "evidence": [
+          5,
+          701,
+          879,
+          880
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án là bộ hướng dẫn đóng gói và cài đặt cho các công cụ dòng lệnh, đúc kết từ nhiều repo, có một installer mẫu.",
+            "evidence": [
+              5,
+              701
+            ]
+          },
+          "want": {
+            "text": "Installer mẫu phải chạy được cả trong dash và khi không có terminal, ví dụ khi agent gọi.",
+            "evidence": [
+              870
+            ]
+          },
+          "obstacle": {
+            "text": "/dev/tty tồn tại nhưng không mở được khi không có terminal.",
+            "evidence": [
+              879
+            ]
+          },
+          "turn": {
+            "text": "Tưởng kiểm tra /dev/tty có tồn tại và đọc/ghi được là đủ để biết có hỏi người dùng được không; hoá ra phải thử mở thiết bị mới biết.",
+            "evidence": [
+              879,
+              880
+            ]
+          },
+          "action": {
+            "text": "Thay kiểm tra bằng cách thử mở /dev/tty thật; không có terminal thì báo cần --yes, có terminal thì hỏi và huỷ khi người dùng gõ n.",
+            "evidence": [
+              879
+            ]
+          },
+          "outcome": {
+            "text": "Không có terminal, installer báo cần xác nhận thay vì crash; có terminal thì hỏi và huỷ đúng khi gõ n.",
+            "evidence": [
+              880,
+              890
+            ]
+          },
+          "takeaway": {
+            "text": "Kiểm tra thiết bị tồn tại hay có quyền đọc/ghi chưa đủ; phải thử mở nó.",
+            "evidence": [
+              879
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-verify-khong-can-script-12-buoc-c4b4",
+        "status": "none",
+        "none": true,
+        "reason": "Đây là quyết định thiết kế giữa script và bước trong SKILL.md, không có ai tin sai điều gì; chỉ là một mẹo và một bước làm.",
+        "spine": {
+          "context": {
+            "text": "Một skill packaging-distribution dùng cho các dự án CLI của người làm, đang chuẩn hoá cách cài đặt, cập nhật và kiểm tra.",
+            "evidence": [
+              5,
+              701
+            ]
+          },
+          "want": {
+            "text": "Skill tự kiểm tra được việc hiện tại mà không thêm code phải bảo trì.",
+            "evidence": [
+              900
+            ]
+          },
+          "action": {
+            "text": "Thêm bước Verify 12 điểm vào SKILL.md thay vì viết script kiểm tra.",
+            "evidence": [
+              934,
+              951
+            ]
+          },
+          "outcome": {
+            "text": "Script kiểm tra cấu trúc vẫn chạy qua với 212 rule; SKILL.md còn 1044 từ.",
+            "evidence": [
+              945
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi viết script kiểm tra, xem danh sách lệnh trong văn bản đã đủ chưa; script chỉ đáng viết khi muốn khoá vào CI.",
+            "evidence": [
+              929
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-05-5-test-go-chi-loi-tren-c4b4",
+        "status": "angle",
+        "angle": "Skillstation là công cụ chia sẻ skill giữa các máy qua một hub, và người làm đang chuẩn bị đẩy thêm một tính năng. Trên máy dev, 5 test Go lỗi trong khi CI xanh; người làm tưởng test đã được cô lập khỏi máy thật vì TestMain đổi HOME, nhưng hoá ra lệnh status và doctor đi ngược thư mục tới nhà thật và đọc cấu hình agent đang trỏ tới hub. Ai viết test đọc cấu hình ngược thư mục đều có thể dính: đổi HOME chưa đủ, phải cô lập cả thư mục làm việc.",
+        "audience": "dev viết test cho công cụ CLI đọc cấu hình trong thư mục nhà",
+        "evidence": [
+          2063,
+          2168,
+          2221,
+          2246
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người làm công cụ skillstation (CLI và hub để chia sẻ skill giữa các máy), đang đẩy thêm thông báo bản cập nhật chờ duyệt.",
+            "evidence": [
+              2103
+            ]
+          },
+          "want": {
+            "text": "Muốn make check chạy xanh trên máy dev.",
+            "evidence": [
+              2053
+            ]
+          },
+          "obstacle": {
+            "text": "5 test Go lỗi trên main, trên máy dev.",
+            "evidence": [
+              2063
+            ]
+          },
+          "turn": {
+            "text": "Tưởng test đã cô lập khỏi máy thật vì TestMain đổi HOME; hoá ra status và doctor vẫn đi ngược thư mục làm việc tới thư mục nhà thật, và đọc cấu hình Codex, Gemini trỏ tới hub.",
+            "evidence": [
+              2168,
+              2221
+            ]
+          },
+          "action": {
+            "text": "Chạy lại test với HOME tạm: vẫn lỗi. Đọc cơ chế và đối chiếu từng test.",
+            "evidence": [
+              2151,
+              2152,
+              2221
+            ]
+          },
+          "outcome": {
+            "text": "Chưa sửa test. CI trên GitHub cho commit 185b75d đã qua hết; 5 test chỉ lỗi trên máy dev.",
+            "evidence": [
+              2243,
+              2246
+            ]
+          },
+          "takeaway": {
+            "text": "Test tìm cấu hình ngược thư mục phải cách ly cả thư mục làm việc, không chỉ biến môi trường.",
+            "evidence": [
+              2221
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:6a207191 L1-L2412: done; 14 chuyện thô, 18 cụm; ghi 18 mới, gộp 0\nđiểm nóng 41 (thiếu 0); lần chạy 1/1; 0.14 USD\ngóc kể: 8 có, 1 không ra chuyện, 1 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: devops không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-agent-review-doc-lap-bat-duoc-c4b4",
+      "code": "M-CKX6",
+      "title": "Agent review độc lập bắt được chính skill mâu thuẫn và installer vi phạm luật của nó",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-bon-repo-bon-cach-lam-packaging-c4b4",
+      "code": "M-WPNM",
+      "title": "Bốn repo, bốn cách làm packaging: gom thành một skill 230 quy tắc, rồi cắt chữ 46%",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là một skill giúp agent làm đóng gói và phân phối (cài, cập nhật, cấu hình, kiểm tra) cho các dự án của người làm, học từ 4 repo mà mỗi repo làm một kiểu. Bản đầu được viết kỹ, mỗi quy tắc có vài dòng giải thích kèm case study, và tưởng vậy là đủ. Người dùng thấy lượng chữ quá nhiều, nên bản sau rút mỗi quy tắc còn một dòng có ID, chi tiết chỉ còn trỏ tới code mẫu, và cắt được khoảng 46% số chữ. Ai viết tài liệu cho agent đọc có thể gặp cùng vấn đề: bản dài hơn không đồng nghĩa với dễ dùng hơn.",
+      "audience": "dev viết skill hoặc tài liệu cho agent đọc",
+      "spine": {
+        "context": {
+          "text": "Một người làm dự án đang gom cách làm packaging và phân phối (cài, cập nhật, cấu hình, kiểm tra) từ 4 repo thành một skill cho agent, để dùng lại cho các dự án sau.",
+          "lines": [
+            "claude:6a207191#L5"
+          ]
+        },
+        "want": {
+          "text": "Chắt những cách làm hay của từng repo thành một bộ hướng dẫn tái dùng, có thể thêm guide mới mà không đổi cấu trúc.",
+          "lines": [
+            "claude:6a207191#L5"
+          ]
+        },
+        "obstacle": {
+          "text": "Mỗi repo làm packaging một kiểu khác nhau, nên phải tổ chức phần chung và phần riêng theo ngôn ngữ.",
+          "lines": [
+            "claude:6a207191#L5"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bản viết kỹ (mỗi quy tắc vài dòng kèm case study) là đủ; hoá ra người dùng thấy lượng chữ quá nhiều và dư thừa.",
+          "lines": [
+            "claude:6a207191#L317",
+            "claude:6a207191#L319"
+          ]
+        },
+        "action": {
+          "text": "Viết lại mỗi quy tắc thành một dòng có ID, bỏ 4 file case study và thay bằng references.md trỏ tới code mẫu, bỏ các quy tắc trùng.",
+          "lines": [
+            "claude:6a207191#L538"
+          ]
+        },
+        "outcome": {
+          "text": "Còn 190 quy tắc, kiểm tra cấu trúc đạt; số chữ giảm từ khoảng 11.900 xuống khoảng 6.400, tức giảm 46%.",
+          "lines": [
+            "claude:6a207191#L536",
+            "claude:6a207191#L538"
+          ]
+        },
+        "takeaway": {
+          "text": "Viết skill cho agent đọc: mỗi quy tắc một dòng có ID, chi tiết chỉ để trỏ tới code đã chạy, và đo số chữ như một chỉ số.",
+          "lines": [
+            "claude:6a207191#L328",
+            "claude:6a207191#L538"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-fgos-co-ba-lenh-init-setup-c4b4",
+      "code": "M-PB1C",
+      "title": "fgos có ba lệnh init, setup, doctor chồng nhau; chốt doctor là bộ máy duy nhất",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án fgos là một hệ phân phối lớn gồm bộ cài fgctl và runtime, đang cần làm rõ ba lệnh init, setup, doctor. Người làm tin setup chỉ là tên gọi khác của doctor, nhưng đọc code thì setup còn ghi file rc, tạo config và cài hook. Ai viết CLI có nhiều lệnh chồng nhau nên đọc code trước khi tin vào alias.",
+      "audience": "dev xây CLI có nhiều lệnh init/setup/doctor",
+      "spine": {
+        "context": {
+          "text": "Hệ fgos gồm fgctl, bộ cài và nâng cấp, và fgos, bộ triển khai runtime. Đang chuẩn hoá cách phân phối cho các dự án.",
+          "lines": [
+            "claude:6a207191#L701"
+          ]
+        },
+        "want": {
+          "text": "Muốn làm rõ và chuẩn hoá init, setup, doctor cho fgos và các hệ phân phối khác.",
+          "lines": [
+            "claude:6a207191#L701"
+          ]
+        },
+        "obstacle": {
+          "text": "Ba lệnh chồng chéo nên người dùng và agent không biết chạy lệnh nào.",
+          "lines": [
+            "claude:6a207191#L727"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng setup chỉ là tên gọi khác của doctor; hoá ra setup còn ghi file rc, tạo config và cài hook.",
+          "lines": [
+            "claude:6a207191#L701",
+            "claude:6a207191#L727"
+          ]
+        },
+        "action": {
+          "text": "Thiết kế lại: doctor chỉ đọc, doctor --fix chỉ sửa cái đã có, init bằng doctor --fix cộng quyền tạo mới, setup bỏ đi.",
+          "lines": [
+            "claude:6a207191#L897"
+          ]
+        },
+        "outcome": {
+          "text": "Script kiểm tra cấu trúc qua với 212 quy tắc.",
+          "lines": [
+            "claude:6a207191#L892"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi chuẩn hoá lệnh, đọc code để biết lệnh thực sự làm gì; giả định về alias thường sai.",
+          "lines": [
+            "claude:6a207191#L727"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-05-agent-noi-skill-chua-co-routing-c4b4",
+      "code": "M-7YQE",
+      "title": "Agent nói skill chưa có routing vì đọc thư mục trên máy khác với bản trên hub",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người làm skill cho agent đang đẩy một skill đóng gói cài đặt lên hub dùng chung để người khác duyệt. Agent tưởng skill chưa có phần routing vì chỉ đọc thư mục trên máy, nơi chưa có skill.yaml. Hoá ra hub đã có sẵn 9 trigger, 5 ví dụ và 5 trường hợp không dùng do người duyệt đặt. Ai đẩy metadata lên hub cần biết máy khách không thấy đủ, nên phải hỏi đúng nguồn trước khi kết luận thiếu.",
+      "audience": "người làm agent skill và quy trình duyệt skill dùng chung",
+      "spine": {
+        "context": {
+          "text": "Một người làm skill cho agent, đang đẩy một skill đóng gói cài đặt lên hub dùng chung để người khác duyệt.",
+          "lines": [
+            "claude:6a207191#L1271"
+          ]
+        },
+        "want": {
+          "text": "Muốn skill có phần routing và metadata đầy đủ để agent tìm đúng skill khi cần.",
+          "lines": [
+            "claude:6a207191#L1341"
+          ]
+        },
+        "obstacle": {
+          "text": "Hub báo bản skillstation cũ chưa kiểm tra routing, và lệnh show --verbose bị từ chối vì skill được quản lý trên máy hub.",
+          "lines": [
+            "claude:6a207191#L1315",
+            "claude:6a207191#L1417"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng skill chưa có routing vì chỉ đọc thư mục trên máy; hoá ra hub đã có 9 trigger, 5 ví dụ và 5 trường hợp không dùng do người duyệt đặt.",
+          "lines": [
+            "claude:6a207191#L1396",
+            "claude:6a207191#L1441"
+          ]
+        },
+        "action": {
+          "text": "Soạn lại skill.yaml: giữ nguyên các mục routing đang có trên hub, thêm operations, topics, technologies, min_scope và counter_examples.",
+          "lines": [
+            "claude:6a207191#L1437"
+          ]
+        },
+        "outcome": {
+          "text": "Bản nháp giữ đủ 9 trigger, 5 ví dụ và 5 trường hợp không dùng cũ, thêm một số mục mới. Chưa gửi lên hub.",
+          "lines": [
+            "claude:6a207191#L1441",
+            "claude:6a207191#L1453"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi metadata nằm trên hub, máy khách không thấy đủ. Trước khi kết luận thiếu, hãy hỏi đúng nguồn.",
+          "lines": [
+            "claude:6a207191#L1417",
+            "claude:6a207191#L1441"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-05-hub-de-skill-active-khi-chua-c4b4",
+      "code": "M-MWGP",
+      "title": "Hub để skill active khi chưa ai bấm duyệt; web không báo có bản chờ",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang xây một skill hướng dẫn đóng gói và phát hành cho agent, rồi gửi lên hub skillstation để dùng lại cho các dự án sau. Họ tưởng skill chỉ chạy khi có người bấm duyệt bản vừa gửi, nhưng hub vẫn phục vụ một bản cũ đã duyệt từ trước, có cùng routing. Trang skill không báo có bản mới đang chờ, nên ai mở trang sẽ tin bản đang chạy là mới nhất và dễ duyệt nhầm, nên bản chờ duyệt cần hiện ngay trên trang của chính skill đó.",
+      "audience": "dev dùng agent để xây skill và gửi skill lên hub chung",
+      "spine": {
+        "context": {
+          "text": "Người làm đang xây một skill hướng dẫn đóng gói và phát hành cho agent, rồi gửi lên hub skillstation để dùng lại cho các dự án sau.",
+          "lines": [
+            "claude:6a207191#L5",
+            "claude:6a207191#L1483"
+          ]
+        },
+        "want": {
+          "text": "Muốn bản skill mới được duyệt trước khi hub chạy nó.",
+          "lines": [
+            "claude:6a207191#L1489"
+          ]
+        },
+        "obstacle": {
+          "text": "Hub đang active một bản cũ đã duyệt trước đó, có cùng routing; trang skill không báo có bản mới đang chờ.",
+          "lines": [
+            "claude:6a207191#L1501",
+            "claude:6a207191#L1503",
+            "claude:6a207191#L1507"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng skill chỉ lên active sau khi có người bấm duyệt bản vừa gửi; hoá ra hub vẫn phục vụ bản cũ, còn bản mới vẫn chờ duyệt.",
+          "lines": [
+            "claude:6a207191#L1489",
+            "claude:6a207191#L1503"
+          ]
+        },
+        "action": {
+          "text": "Đối chiếu bản hub đang phục vụ với thư mục skill trên máy, rồi xác nhận bản mới vẫn chờ duyệt.",
+          "lines": [
+            "claude:6a207191#L1500",
+            "claude:6a207191#L1503"
+          ]
+        },
+        "outcome": {
+          "text": "Bản mới vẫn chờ duyệt, hub giữ bản cũ đang active. Người làm chọn sửa web skillstation để trang skill báo có bản chờ duyệt.",
+          "lines": [
+            "claude:6a207191#L1515",
+            "claude:6a207191#L1520",
+            "claude:6a207191#L1525"
+          ]
+        },
+        "takeaway": {
+          "text": "Trang của một item phải hiện bản chờ duyệt ngay cạnh bản đang active; để hai trạng thái tách rời thì dễ duyệt nhầm bản cũ.",
+          "lines": [
+            "claude:6a207191#L1507",
+            "claude:6a207191#L1515"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-05-routing-qua-rong-skill-dong-goi-c4b4",
+      "code": "M-35RX",
+      "title": "Routing quá rộng: skill đóng gói bị chọn cho việc frontend thuần",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang xây hub skillstation, nơi agent tra cứu skill theo việc cần làm, và nhờ agent sửa giao diện web của hub. Agent tin skill đó chưa có phần định tuyến, vì lệnh xem từ máy khách không hiện operations hay min_scope. Hoá ra dữ liệu đó có sẵn trong skill.yaml, chỉ là công cụ không cho xem. Ai dựng hay dùng công cụ cho agent nên nhớ: một trường bị ẩn trông giống như trường không tồn tại.",
+      "audience": "dev dựng hoặc dùng công cụ tra cứu skill cho agent",
+      "spine": {
+        "context": {
+          "text": "Người làm đang xây hub skillstation để agent tra cứu skill, và nhờ agent sửa giao diện web của hub.",
+          "lines": [
+            "claude:6a207191#L1520",
+            "claude:6a207191#L1534"
+          ]
+        },
+        "want": {
+          "text": "Muốn thêm banner và badge 'update pending' trên web hub khi có bản cập nhật chờ duyệt.",
+          "lines": [
+            "claude:6a207191#L1566"
+          ]
+        },
+        "obstacle": {
+          "text": "Máy không có skill ak:frontend-development, và hub trả not_found.",
+          "lines": [
+            "claude:6a207191#L1532",
+            "claude:6a207191#L1533"
+          ]
+        },
+        "turn": {
+          "text": "Agent tưởng skill chưa có phần định tuyến; hoá ra skill.yaml đã có operations và min_scope, chỉ là lệnh xem từ máy khách không hiện ra.",
+          "lines": [
+            "claude:6a207191#L1555"
+          ]
+        },
+        "action": {
+          "text": "Agent báo lại cho người làm, đề nghị thêm not_for cho việc giao diện, rồi chờ quyết định.",
+          "lines": [
+            "claude:6a207191#L1555"
+          ]
+        },
+        "outcome": {
+          "text": "Người làm xác nhận đã có ak:frontend-development, và agent gọi skill đó với đề bài sửa web UI.",
+          "lines": [
+            "claude:6a207191#L1561",
+            "claude:6a207191#L1566"
+          ]
+        },
+        "takeaway": {
+          "text": "Trường bị ẩn trong công cụ trông như trường không tồn tại; kiểm tra dữ liệu gốc trước khi kết luận.",
+          "lines": [
+            "claude:6a207191#L1555"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-diem-cham-dau-tien-la-cua-c4b4",
+      "code": "M-BP36",
+      "title": "Điểm chạm đầu tiên là cửa hàng: giới thiệu, quick start và agent-native đứng trước kỹ thuật",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là một bộ hướng dẫn đóng gói và phân phối cho công cụ dòng lệnh, và người làm muốn dùng lại nó cho mọi dự án sau này. Họ tưởng skill đã đủ vì script kiểm tra cấu trúc chạy qua 230 rule. Một agent độc lập đọc theo đúng quy trình lại tìm ra các lệnh mâu thuẫn nhau, mẫu cài đặt vi phạm chính các rule đó, và phần 'cách đã kiểm chứng' trỏ sang dự án khác ngôn ngữ. Ai viết quy tắc cho agent cũng dễ mắc lỗi này, vì kiểm tra cấu trúc xanh không có nghĩa nội dung đã đúng.",
+      "audience": "người viết skill hoặc tài liệu cho agent",
+      "spine": {
+        "context": {
+          "text": "Người làm đang viết một bộ skill hướng dẫn đóng gói và phân phối (cài, cập nhật, cấu hình, doctor) cho các công cụ dòng lệnh, để dùng lại cho các dự án sau.",
+          "lines": [
+            "claude:6a207191#L5"
+          ]
+        },
+        "want": {
+          "text": "Muốn điểm chạm đầu tiên (giới thiệu, cài đặt, quick start) đủ tốt để người dùng ở lại và phần mềm bán hoặc promote được.",
+          "lines": [
+            "claude:6a207191#L578"
+          ]
+        },
+        "obstacle": {
+          "text": "Skill mới có một phần: thiếu câu giới thiệu, thời gian đến kết quả đầu tiên, quick start được test trong CI, demo và khoảnh khắc chạy được ngay lần đầu.",
+          "lines": [
+            "claude:6a207191#L586"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng skill đã đủ vì script kiểm tra cấu trúc chạy qua 230 rule. Hoá ra review độc lập tìm ra lệnh mâu thuẫn (INS-13 bảo dùng 'setup', CMD-04 nói không có 'setup'), mẫu install.sh vi phạm chính các rule đó, và phần 'cách đã kiểm chứng' trỏ sang dự án khác ngôn ngữ.",
+          "lines": [
+            "claude:6a207191#L653",
+            "claude:6a207191#L690"
+          ]
+        },
+        "action": {
+          "text": "Thêm file riêng cho điểm chạm đầu tiên, thêm nhóm rule agent-native (CMD-13 đến CMD-19), rồi giao một agent độc lập review toàn bộ skill.",
+          "lines": [
+            "claude:6a207191#L633",
+            "claude:6a207191#L657",
+            "claude:6a207191#L675"
+          ]
+        },
+        "outcome": {
+          "text": "Review kết luận skill 'về cơ bản dùng được', nhưng nêu 9 điểm cần sửa, trong đó 3 điểm phải sửa ngay.",
+          "lines": [
+            "claude:6a207191#L690",
+            "claude:6a207191#L697"
+          ]
+        },
+        "takeaway": {
+          "text": "Kiểm tra cấu trúc xanh không chứng minh nội dung nhất quán. Cần một agent độc lập đọc theo đúng quy trình để tìm mâu thuẫn trong nội dung.",
+          "lines": [
+            "claude:6a207191#L653",
+            "claude:6a207191#L690"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-installer-loi-khi-khong-co-terminal-c4b4",
+      "code": "M-6ADF",
+      "title": "Installer lỗi khi không có terminal: /dev/tty tồn tại nhưng không mở được",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là bộ hướng dẫn đóng gói và cài đặt cho các công cụ dòng lệnh, đúc kết từ nhiều repo, và có một installer mẫu phải chạy được cả khi không có terminal. Người làm tin rằng chỉ cần kiểm tra /dev/tty có tồn tại và đọc/ghi được là đủ để biết có hỏi người dùng được không. Hoá ra khi không có terminal, thiết bị vẫn hiện diện nhưng không mở được, nên installer crash thay vì báo cần xác nhận. Ai viết script cài đặt chạy trong CI hay do agent gọi nên chú ý: phải thử mở thiết bị, đừng chỉ kiểm tra nó có đó.",
+      "audience": "dev viết script cài đặt chạy trong CI hoặc do agent gọi",
+      "spine": {
+        "context": {
+          "text": "Dự án là bộ hướng dẫn đóng gói và cài đặt cho các công cụ dòng lệnh, đúc kết từ nhiều repo, có một installer mẫu.",
+          "lines": [
+            "claude:6a207191#L5",
+            "claude:6a207191#L701"
+          ]
+        },
+        "want": {
+          "text": "Installer mẫu phải chạy được cả trong dash và khi không có terminal, ví dụ khi agent gọi.",
+          "lines": [
+            "claude:6a207191#L870"
+          ]
+        },
+        "obstacle": {
+          "text": "/dev/tty tồn tại nhưng không mở được khi không có terminal.",
+          "lines": [
+            "claude:6a207191#L879"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng kiểm tra /dev/tty có tồn tại và đọc/ghi được là đủ để biết có hỏi người dùng được không; hoá ra phải thử mở thiết bị mới biết.",
+          "lines": [
+            "claude:6a207191#L879",
+            "claude:6a207191#L880"
+          ]
+        },
+        "action": {
+          "text": "Thay kiểm tra bằng cách thử mở /dev/tty thật; không có terminal thì báo cần --yes, có terminal thì hỏi và huỷ khi người dùng gõ n.",
+          "lines": [
+            "claude:6a207191#L879"
+          ]
+        },
+        "outcome": {
+          "text": "Không có terminal, installer báo cần xác nhận thay vì crash; có terminal thì hỏi và huỷ đúng khi gõ n.",
+          "lines": [
+            "claude:6a207191#L880",
+            "claude:6a207191#L890"
+          ]
+        },
+        "takeaway": {
+          "text": "Kiểm tra thiết bị tồn tại hay có quyền đọc/ghi chưa đủ; phải thử mở nó.",
+          "lines": [
+            "claude:6a207191#L879"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-verify-khong-can-script-12-buoc-c4b4",
+      "code": "M-WA9H",
+      "title": "Verify không cần script: 12 bước trong SKILL.md thay vì code phải bảo trì",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một skill packaging-distribution dùng cho các dự án CLI của người làm, đang chuẩn hoá cách cài đặt, cập nhật và kiểm tra.",
+          "lines": [
+            "claude:6a207191#L5",
+            "claude:6a207191#L701"
+          ]
+        },
+        "want": {
+          "text": "Skill tự kiểm tra được việc hiện tại mà không thêm code phải bảo trì.",
+          "lines": [
+            "claude:6a207191#L900"
+          ]
+        },
+        "action": {
+          "text": "Thêm bước Verify 12 điểm vào SKILL.md thay vì viết script kiểm tra.",
+          "lines": [
+            "claude:6a207191#L934",
+            "claude:6a207191#L951"
+          ]
+        },
+        "outcome": {
+          "text": "Script kiểm tra cấu trúc vẫn chạy qua với 212 rule; SKILL.md còn 1044 từ.",
+          "lines": [
+            "claude:6a207191#L945"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi viết script kiểm tra, xem danh sách lệnh trong văn bản đã đủ chưa; script chỉ đáng viết khi muốn khoá vào CI.",
+          "lines": [
+            "claude:6a207191#L929"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-11-05-5-test-go-chi-loi-tren-c4b4",
+      "code": "M-S8E9",
+      "title": "5 test Go chỉ lỗi trên máy dev: test đọc cấu hình agent thật của chủ máy",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Skillstation là công cụ chia sẻ skill giữa các máy qua một hub, và người làm đang chuẩn bị đẩy thêm một tính năng. Trên máy dev, 5 test Go lỗi trong khi CI xanh; người làm tưởng test đã được cô lập khỏi máy thật vì TestMain đổi HOME, nhưng hoá ra lệnh status và doctor đi ngược thư mục tới nhà thật và đọc cấu hình agent đang trỏ tới hub. Ai viết test đọc cấu hình ngược thư mục đều có thể dính: đổi HOME chưa đủ, phải cô lập cả thư mục làm việc.",
+      "audience": "dev viết test cho công cụ CLI đọc cấu hình trong thư mục nhà",
+      "spine": {
+        "context": {
+          "text": "Một người làm công cụ skillstation (CLI và hub để chia sẻ skill giữa các máy), đang đẩy thêm thông báo bản cập nhật chờ duyệt.",
+          "lines": [
+            "claude:6a207191#L2103"
+          ]
+        },
+        "want": {
+          "text": "Muốn make check chạy xanh trên máy dev.",
+          "lines": [
+            "claude:6a207191#L2053"
+          ]
+        },
+        "obstacle": {
+          "text": "5 test Go lỗi trên main, trên máy dev.",
+          "lines": [
+            "claude:6a207191#L2063"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng test đã cô lập khỏi máy thật vì TestMain đổi HOME; hoá ra status và doctor vẫn đi ngược thư mục làm việc tới thư mục nhà thật, và đọc cấu hình Codex, Gemini trỏ tới hub.",
+          "lines": [
+            "claude:6a207191#L2168",
+            "claude:6a207191#L2221"
+          ]
+        },
+        "action": {
+          "text": "Chạy lại test với HOME tạm: vẫn lỗi. Đọc cơ chế và đối chiếu từng test.",
+          "lines": [
+            "claude:6a207191#L2151",
+            "claude:6a207191#L2152",
+            "claude:6a207191#L2221"
+          ]
+        },
+        "outcome": {
+          "text": "Chưa sửa test. CI trên GitHub cho commit 185b75d đã qua hết; 5 test chỉ lỗi trên máy dev.",
+          "lines": [
+            "claude:6a207191#L2243",
+            "claude:6a207191#L2246"
+          ]
+        },
+        "takeaway": {
+          "text": "Test tìm cấu hình ngược thư mục phải cách ly cả thư mục làm việc, không chỉ biến môi trường.",
+          "lines": [
+            "claude:6a207191#L2221"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-05-may-quet-bao-mat-bao-11-c4b4",
+      "code": "M-HTBC",
+      "title": "Máy quét bảo mật báo 11 critical, toàn chữ trong tài liệu; chủ dự án chọn gửi",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-gui-skill-len-hub-bi-chan-c4b4",
+      "code": "M-YABS",
+      "title": "Gửi skill lên hub bị chặn: gợi ý cờ --user không tồn tại vì máy cài bản cũ",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-momentry-co-quy-tac-mot-cua-c4b4",
+      "code": "M-HBZS",
+      "title": "Momentry có quy tắc một cửa config; skill thiếu, thêm CMD-22 đến CMD-24",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-agent-sua-web-skillstation-tren-nhanh-c4b4",
+      "code": "M-XYK0",
+      "title": "Agent sửa web skillstation trên nhánh riêng, merge thẳng vào main khi được bảo",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-05-tren-hub-ban-dang-active-khong-c4b4",
+      "code": "M-TYTV",
+      "title": "Trên hub, bản đang active không khớp với thư mục skill trên máy này. Agent tải bản hub về, diff từng file, rồi báo rằng bản duyệt cũ đã được áp dụng mà không ai bấm duyệt bản mới.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-gap-loi-goi-y-co-user-c4b4",
+      "code": "M-AXAS",
+      "title": "Gặp lỗi gợi ý cờ `--user` không tồn tại, agent không tin lời gợi ý. Nó so phiên bản client (0.8.0) với hub (0.12.0), nâng cấp client rồi kiểm tra lại bằng `doctor`.",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 0,
+      "strength": 3,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-khi-hub-tu-choi-gui-skill-c4b4",
+      "code": "M-10FV",
+      "title": "Khi hub từ chối gửi skill vì cờ `--yes` cần tin cậy, agent không tìm cách lách. Nó dừng, giải thích lý do và đưa lệnh để người dùng tự chạy trong prompt có dấu `!`.",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-moi-lan-tai-lieu-tro-toi-c4b4",
+      "code": "M-76A9",
+      "title": "Mỗi lần tài liệu trỏ tới một đường dẫn code mẫu ở repo khác, một script kiểm tra đường dẫn đó có thật trên GitHub. Lỗi thiếu file được bắt ngay, không đợi người đọc phát hiện.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

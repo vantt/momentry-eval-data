@@ -1,0 +1,43 @@
+---
+id: 2026-11-03-actions-bi-khoa-vi-thanh-toan-3c6e
+code: M-AP6R
+aliases: [M-AP6R]
+date: 2026-11-03
+repo: repo
+status: raw
+signals: [khac, nguyen_nhan_bat_ngo]
+source: "chat Claude, claude:2dfb5915"
+sessions: ["claude:2dfb5915"]
+captured_by: harvest
+hit_by: [harvest]
+lines: ["claude:2dfb5915#L3785", "claude:2dfb5915#L3794", "claude:2dfb5915#L3804", "claude:2dfb5915#L3812", "claude:2dfb5915#L3881", "claude:2dfb5915#L3917"]
+hook: "Thanh toán lỗi khoá cả Actions, đổi repo sang public là xong"
+tension: gap_ma_phai_chon
+sides: ["Mọi job bị khoá, không dựng được binary, không tạo được rc.3", "Chuyển repo sang public thì Actions miễn phí, phát hành đủ 7 file"]
+strength: 2
+stakes: 2
+hits: 1
+runs: 1
+privacy: unchecked
+links: []
+threads: []
+angle: none
+spine_context: "Công cụ dòng lệnh hỏi Claude Desktop về graph vault Obsidian, đang thay lõi Python bằng lõi Rust."
+spine_context_lines: [profile]
+spine_want: Phát hành thử v0.1.0-rc.3 từ nhánh phase-17 để kiểm tra.
+spine_want_lines: ["claude:2dfb5915#L3717"]
+spine_obstacle: "Mọi job GitHub Actions bị từ chối vì thanh toán lỗi hoặc hết hạn mức, nên không dựng được binary."
+spine_obstacle_lines: ["claude:2dfb5915#L3785"]
+spine_action: "Sau khi repo được chuyển sang public, chạy lại CI, tạo tag v0.1.0-rc.3 và chờ workflow phát hành."
+spine_action_lines: ["claude:2dfb5915#L3808", "claude:2dfb5915#L3881"]
+spine_outcome: "Release v0.1.0-rc.3 thành công, 7 file, checksum khớp."
+spine_outcome_lines: ["claude:2dfb5915#L3917"]
+completeness: 5
+---
+
+# Actions bị khoá vì thanh toán lỗi, mọi job không chạy kể cả dựng binary
+
+**Bối cảnh:** Repo private nên CI dùng số phút Actions tính phí của tài khoản.
+**Chuyện gì xảy ra:** Mọi job bị từ chối với thông báo thanh toán lỗi hoặc đã vượt hạn mức chi tiêu. Agent không tạo được tag rc.3 vì workflow phát hành cũng không chạy. Người dùng đổi repo sang public, Actions chạy miễn phí, CI xanh và rc.3 được phát hành với đủ 7 file.
+**Bài học:** Actions gắn với tài khoản và hạn mức. Trước khi cần phát hành, kiểm tra phương thức thanh toán và hạn mức.
+**Artefact:** Ảnh thông báo lỗi từ Actions (che tên tài khoản).

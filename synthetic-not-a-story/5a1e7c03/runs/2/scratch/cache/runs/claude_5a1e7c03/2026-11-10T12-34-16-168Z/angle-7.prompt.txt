@@ -1,0 +1,71 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Chào em. Tối nay cô cần làm ba việc: chấm nốt bài nghị luận xã hội "lòng biết ơn" của 10A3, sửa rubric, và soạn đề kiểm tra giữa kỳ (thi thứ Ba tuần sau). Bài scan ở bai-lam/, 42 file.
+[L30] USER: Lạ lắm em ạ. Cả 8 em đều đọc câu nhận xét, có 5 em lên hỏi "lần sau em thử… là thử thế nào cô". Trước giờ trả bài chẳng ai hỏi gì. Ít chữ hơn mà các em đọc nhiều hơn.
+[L36] USER: Cô chấm xong rồi. Giờ đề giữa kỳ. Hôm thứ Tư cô có nhờ em soạn phiếu ôn tập, cô gửi nhóm Zalo phụ huynh rồi. Giờ em soạn đề chính thức từ bản nháp de-giua-ky-nhap.md nhé.
+[L42] USER: Chết rồi, đúng là cô dán đề nháp vào cho em soạn sát dạng. Cô đã dặn cả tổ không được để lộ đề, vậy mà chính cô đưa nó lên Zalo. Thi thứ Ba rồi. Giờ phải làm sao em?
+</asks>
+
+<story>
+hook: Thầy cô chỉ ra một quy tắc, agent ghi vào file dự án
+tension: none
+stakes: 1/3
+# Sau khi giáo viên chỉ ra quy tắc không đưa đề thật vào prompt, agent ghi quy tắc đó thành một mục cố định trong file ghi chú của dự án để áp dụng cho các lần sau.
+
+**Chuyện gì xảy ra:** Sau khi giáo viên chỉ ra quy tắc không đưa đề thật vào prompt, agent ghi quy tắc đó thành một mục cố định trong file ghi chú của dự án để áp dụng cho các lần sau.
+**Góc người ngoài:** cách làm phổ biến là Nhắc lại quy tắc trong cuộc trò chuyện hiện tại, hoặc chỉ tin vào việc người dùng sẽ tự nhớ; ở đây khác ở Quy tắc được lưu vào nơi các phiên làm việc sau đọc lại, nên không phụ thuộc vào trí nhớ của người dùng hay của một phiên cụ thể. Người đọc muốn biết cách biến một lỗi đã xảy ra thành ràng buộc lâu dài cho công cụ AI.
+</story>
+
+<excerpt>
+[L41] AGENT: Cô ơi, có vấn đề trước khi em soạn tiếp. Đề Phần II trong bản nháp (đề có ghi BẢO MẬT) trùng gần như nguyên văn với **Đề luyện số 3** trong phiếu ôn tập giữa kỳ, dòng 34, file cô đã gửi nhóm Zalo phụ huynh hôm thứ Tư.
+
+Có lẽ hôm thứ Tư bản nháp đề đã được dán vào khi nhờ soạn đề luyện "na ná đề thật", và đề luyện số 3 bị giữ quá sát đề gốc. Lẽ ra lúc soạn phải đổi chủ đề hoặc ít nhất cảnh báo cô.
+
+Nghĩa là đề bảo mật đã nằm trong tay phụ huynh và học sinh hai ngày nay.
+[L42] USER: Chết rồi, đúng là cô dán đề nháp vào cho em soạn sát dạng. Cô đã dặn cả tổ không được để lộ đề, vậy mà chính cô đưa nó lên Zalo. Thi thứ Ba rồi. Giờ phải làm sao em?
+[L43] AGENT: Không nên gỡ phiếu ôn hay nhắn đính chính vì sẽ gây chú ý. Cách gọn nhất là thay đề thật, giữ nguyên dạng bài để không bất công với các em đã ôn:
+
+1. Giữ dạng: nghị luận về một ý kiến liên quan đến lối sống người trẻ, 600 chữ.
+2. Đổi hẳn chủ đề, ví dụ: "Người trẻ hôm nay dễ nói lời xin lỗi nhưng khó nói lời cảm ơn." hoặc "Muốn đi nhanh hãy đi một mình, muốn đi xa hãy đi cùng nhau."
+3. Báo tổ trưởng là cô đổi đề Phần II, lý do: đề trùng với tài liệu ôn tập đã phát.
+4. Từ nay khi nhờ soạn phiếu ôn, không dán đề thật vào; chỉ đưa dạng bài.
+[L44] USER: Lấy câu "Muốn đi nhanh hãy đi một mình, muốn đi xa hãy đi cùng nhau." Cô sẽ nhắn chị tổ trưởng tối nay. Em sửa đề và ghi quy tắc số 4 vào ghi-chu.md.
+[L45] TOOL Edit: /Users/hang/Documents/ngu-van-10a3/de-thi/de-giua-ky-nhap.md
+[L46] RESULT: The file /Users/hang/Documents/ngu-van-10a3/de-thi/de-giua-ky-nhap.md has been updated successfully.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

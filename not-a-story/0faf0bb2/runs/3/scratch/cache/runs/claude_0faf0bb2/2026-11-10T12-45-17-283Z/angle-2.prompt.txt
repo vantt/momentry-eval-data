@@ -1,0 +1,120 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Bộ dựng công ty một người (One Person Company) vận hành bằng AI agent, nền là Multica. Mỗi khách có một workspace riêng, trong đó các team agent Coding, Content, SEO & Analytics nhận việc qua issue và làm theo workflow có cổng kiểm. Làm cho người điều hành một công ty một người muốn giao việc cho agent nhưng vẫn giữ quyền duyệt ở các bước quan trọng. Ràng buộc chính: tự host Multica và daemon, chạy runtime Claude Code, và thông tin riêng của khách (cấu hình, secret) nằm ngoài repo.
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L657] USER: tại sao không cần cái này `Bridge push chuyển thành agent tự kéo việc; bridge chỉ còn là tuỳ chọn`
+[L712] USER: vậy nếu dùng paperclip là dùng được luôn, không cần làm, chỉ cần setup?
+[L724] USER: A session-scoped Stop hook is now active with condition: "thử paperclip trước, chạy spike trên máy này đi, setup một sample opc company.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that's only for clearing a goal early.
+</asks>
+
+<story>
+hook: Chặn duyệt bằng reviewPolicy mà agent vẫn tự đóng task sau 26 giây
+tension: cam_ma_van_lot (Đặt reviewPolicy human_only, tin rằng agent không thể tự đóng task / Agent tự đóng sau 26 giây vì reviewPolicy chỉ áp khi trả lời xác nhận, cổng thật là executionPolicy)
+stakes: 2/3
+# Nhờ một lần tra cứu nguồn, phát hiện spike Paperclip bị ghi nhầm: 'reviewPolicy' không chặn được việc agent tự đóng task
+
+**Bối cảnh:** Trong spike Paperclip, một task được đặt reviewPolicy human_only nhưng agent vẫn tự chuyển sang done. Lúc đầu kết luận là Paperclip thiếu luồng duyệt.
+**Chuyện gì xảy ra:** Task SEN-3 đặt reviewPolicy human_only, nhưng agent tự đóng task (done) sau 26 giây. Đọc lại doc/execution-semantics.md cho thấy reviewPolicy chỉ áp khi trả lời một xác nhận, còn executionPolicy mới là cổng review thật. Phải sửa lại kết luận trong tài liệu so sánh (§6.3, §8) và trong lesson.
+**Bài học:** Một cờ ‘chỉ người duyệt’ chưa chắc là cổng cứng; đọc đúng cơ chế (xác nhận hay luồng duyệt) trước khi kết luận hệ thống thiếu tính năng.
+**Artefact:** Bảng so sánh reviewPolicy và executionPolicy trong docs/comparison-aicoworker-vs-paperclip.md (che tên đường dẫn vault nếu có).
+**Góc người ngoài:** cách làm phổ biến là Người làm một mình thường sửa lỗi im lặng hoặc để nguyên tài liệu cũ; ít khi công khai đính chính đến mức ghi thành một mục riêng; ở đây khác ở Người đọc muốn biết vì sao phiên này chủ động 'đính chính' thay vì che đi, và việc đó giữ tài liệu tin cậy ra sao.
+</story>
+
+<excerpt>
+[L1318] AGENT: Hà đã checkout SEN-3: task có `executionRunId`, tức agent đã nhận việc theo đúng quy trình trong skill. Mình tiếp tục chờ kết quả.
+[L1324] USER: <task-notification>
+<task-id>bn37e7cwx</task-id>
+<tool-use-id>toolu_01Tit7kf1uKTaYx3mFBwoaHr</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/bn37e7cwx.output</output-file>
+<status>completed</status>
+<summary>Monitor "SEN-3 Finance run status (Paperclip spike)" stream ended</summary>
+<event>issue=done - run=succeeded
+END issue=done - run=succeeded</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L1326] AGENT: SEN-3 kết thúc ở trạng thái **`done`**, và chính agent đã chuyển nó sang `done`, mặc dù task đặt `reviewPolicy: human_only`. Đây có thể là lỗ hổng mình đã ghi trong lesson (`assertTransition` cho phép đi từ bất kỳ trạng thái nào sang bất kỳ trạng thái nào). Mình kiểm tra activity log để xác nhận.
+[L1327] TOOL Bash: I=0529c18d-c7a9-4162-90a7-873c63c595fc; curl -s "http://127.0.0.1:3100/api/companies/44a30586-28dc-45b7-b243-3a920c398032/activity?entityId=$I" | python3 -c " import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) else d.get('items',[]) for a in sorted(d,key=lambda a:a['createdAt']): print …[+552]
+[L1328] RESULT: 07:33:23 user issue.created "" | 07:47:53 user issue.updated {"to": "todo", "from": "backlog"}
+…
+[L2306] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/paperclip; sed -n 142,175p doc/execution-semantics.md
+[L2307] RESULT: ### `in_review` | Execution work is paused because the next move belongs to a reviewer or approver, not the current executor.
+[L2310] AGENT: Có, và còn đầy đủ hơn mình đã mô tả trước đây. Khi đọc thêm `executionPolicy`, mình thấy **một chỗ cần đính chính**: Paperclip **có** luồng review nhiều bước, giao cho agent khác duyệt. Chỉ là spike chưa bật tính năng này.
+
+## Hệ issue của Paperclip có những gì
+
+| Mảng | Có |
+|---|---|
+| Issue cơ bản | Mã `SEN-1` (bộ đếm theo công ty), tiêu đề, mô tả, 7 trạng thái cố định, 4 mức ưu tiên, nhãn |
+| Cấu trúc | Issue cha/con, quan hệ chặn (`blocks`), gắn với goal và project |
+| Giao việc | Người hoặc agent; checkout có khoá (409); assign hay comment là đánh thức agent; gộp các lần đánh thức |
+| Trao đổi | Comment; interaction (xin xác nhận, checkbox, hỏi người dùng); approvals |
+| Sản phẩm | Tài liệu có revision, comment neo vào đoạn văn, file đính kèm, work product, tab Artifacts |
+| Giao diện | List và kanban, bộ lọc, tìm kiếm, inbox (của tôi, chưa đọc, bị chặn), "What needs me" |
+| Tự động | Routine tạo issue theo lịch hoặc webhook; watchdog cho việc bị dừng |
+| **Execution policy** | Các bước **review** và **approval**, mỗi bước có người tham gia là **agent hoặc người** |
+
+## Đính chính về review
+
+Theo `doc/execution-semantics.md#L142-L163`:
+- Khi issue có bước review giao cho một agent, server lưu "thẻ review" và **đánh thức agent duyệt trong cùng một transaction**.
+- Agent duyệt chỉ được **chấp nhận hoặc từ chối**, không được đổi người được giao hay quan hệ phụ thuộc.
+- **Chấp nhận lần review cuối cùng thì issue mới thành `done`.** Từ chối thì yêu cầu sửa quay về agent đã làm.
+- *"A review run that ends without a decision cannot mark the child Done."*
+
+Như vậy Paperclip **có** luồng "agent làm → agent khác duyệt → (người phê duyệt) → xong", và có **chặn ở server**. Đây chính là phần mình từng nói chỉ có ở Multica.
+
+Lý do SEN-3 vẫn bị agent tự đóng: spike chỉ đặt `reviewPolicy: human_only`, **không đặt `executionPolicy`**. Hai thứ này khác nhau:
+- `reviewPolicy` chỉ áp khi trả lời một lời xin xác nhận.
+- `executionPolicy` mới là cổng review/approval thật.
+
+Câu "age …[+1159]
+[L2311] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; node -e ' const fs=require("fs");import(process.argv[1]).then(yaml=>{const f="docs/distillery/lessons/handoff.yaml …[+2150]
+[L2312] RESULT: OK: wrote 51 lessons in 8 domain file(s).
+[L2313] TOOL Bash: cd /home/vantt/project/fgOPC; python3 - <<'EOF' p='docs/comparison-aicoworker-vs-paperclip.md'; s=open(p).read() old='| **Paperclip** | **Mạnh nhất**: không có đường duyệt thì không được vào `in_review` (422); `reviewPolicy` (anyone, not_creator, human_only); approvals; execution policy có bước revi …[+2256]
+[L2314] RESULT: ok
+[L2328] AGENT: Đã sửa xong. Thay đổi chưa được commit:
+- **Learning area:** thêm lesson `execution-policy-review-stages` (giờ có 51 lessons), và ghi chú đính chính vào `per-issue-review-policy`.
+- **`docs/comparison-aicoworker-vs-paperclip.md`:** đính chính §6.3 (ai làm review tốt nhất) và §8 (cứng hay mềm). Kết luận mới: Paperclip **cứng ở việc đóng task nếu có `executionPolicy`**, và có review nhiều bên trong đó agent duyệt agent.
+- **Báo cáo spike, phát hiện #6:** ghi rõ `reviewPolicy` và `executionPolicy` khác nhau, và spike mới chỉ thử cái đầu.
+
+Có hai việc nên làm tiếp:
+1. **Kiểm chứng trên Paperclip đang chạy:** tạo SEN-5 có `executionPolicy` gồm hai bước, Long (agent) review rồi bạn approve. Xem agent có bị chặn khi tự chuyển `done` không. Việc này cần bạn claim quyền chủ qua Tailscale trước, vì server đang ở chế độ có đăng nhập.
+2. **Commit** các đính chính này vào nhánh `docs/opc-research`.
+
+Bạn muốn mình làm việc nào?
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

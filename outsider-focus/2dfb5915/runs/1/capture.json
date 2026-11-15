@@ -1,0 +1,150 @@
+{
+  "id": "2dfb5915",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-pkm/2dfb5915-3011-441f-a6fb-2c7cb5abd60b.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "eef608eecc0bbb60",
+  "at": "2026-11-05T10:07:13.770Z",
+  "dryRun": {
+    "usd": 0.58,
+    "tokens": 91394,
+    "chunks": 1,
+    "hotspots": 9,
+    "entries": 772
+  },
+  "report": {
+    "sid": "claude:2dfb5915",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.3894974499999999,
+    "secs": 45.7,
+    "exitCode": 0,
+    "status": "done",
+    "written": 13,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:2dfb5915 L1-L4000: done; 8 chuyện thô, 13 cụm; ghi 13 mới, gộp 0\nđiểm nóng 9 (thiếu 0); lần chạy 1/1; 0.39 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-mot-claude-code-agent-day-ca",
+      "title": "Một Claude Code agent đẩy cả plan Rust lên `main` với CI xanh, rồi hook dừng không chịu cho dừng",
+      "tension": "giup_ma_hai",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-loi-tren-windows-duong-dan-vault",
+      "title": "Lỗi trên Windows: đường dẫn vault bị lộ dạng JSON-escape trong bản so khớp",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-parity-lech-do-thu-tu-liet",
+      "title": "Parity lệch do thứ tự liệt kê file của hệ điều hành, không phải do thuật toán",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-release-lap-ci-khong-chay-vi",
+      "title": "Release lặp: CI không chạy vì hết hạn mức thanh toán, rồi public repo để thoát",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-bo-cai-va-phat-hanh-windows",
+      "title": "Bộ cài và phát hành Windows: vcruntime140.dll và script cài không kiểm sha",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-thiet-ke-mcp-mot-cua-hai",
+      "title": "Thiết kế MCP một cửa: hai agent độc lập gặp nhau ở 13 tool và bỏ code mode",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-moi-phase-quan-trong-deu-co",
+      "title": "Mọi phase quan trọng đều có một agent review độc lập đọc code (không chạy), ra báo cáo mức High/Medium, rồi gửi lại cho đúng agent đã viết để sửa trên nhánh của nó, rồi mới merge.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-loi-compact-lam-mat-hai-trong",
+      "title": "Lỗi `compact()` làm mất hai trong năm khoá của trạng thái OHS 'chưa sẵn sàng'",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-agent-lam-ban-cai-windows-tai",
+      "title": "Agent làm bản cài Windows: tải sai bản OHS và hạ cấp ngầm",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-khi-hai-agent-cung-sua-cac",
+      "title": "Khi hai agent cùng sửa các file dùng chung (PORTING.md, DECISIONS.md, Cargo.lock), lead merge từng nhánh worktree và giải xung đột bằng script ngắn (giữ cả hai phía với file nhật ký, tạo lại lockfile), rồi chạy lại fmt, clippy, test và parity trước khi push.",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-giu-nguyen-hanh-vi-cua-ban",
+      "title": "Giữ nguyên hành vi của bản Python khi viết lại sang Rust bằng một bộ so khớp tự động: dựng 'golden' (dump toàn bộ bảng index, 81 câu đáp án, 712 lời gọi tool, CLI, handshake MCP) từ bản Python ở một commit được ghim, rồi mỗi lần push CI so bản Rust với golden. CI không cần Python hay token.",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-dua-follow-mot-lenh-liet-ke",
+      "title": "Đưa 'follow': một lệnh liệt kê các commit mới của repo Python chạm vào những đường dẫn được theo dõi, rồi mỗi commit được chuyển, hoặc ghi 'không áp dụng' kèm lý do vào PORTING.md, nâng ghim, dựng lại golden.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-truoc-khi-chuyen-repo-tu-private",
+      "title": "Trước khi chuyển repo từ private sang public, agent tự quét toàn bộ lịch sử git (mọi nhánh) tìm mẫu token GitHub, khoá Anthropic, khoá AWS, private key và tên file nhạy cảm. Kết quả là 0 chỗ khớp.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

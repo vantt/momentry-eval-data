@@ -1,0 +1,97 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L6] USER: You are worktree C. Your worktree is /home/vantt/projects/mcp-skill-hub-simplify (branch wave2/simplify-p4-p3). It already holds your earlier uncommitted work: internal/workspace/workspace.go, internal/migration/migration.go, internal/migration/v3.go, and the phase-03 and phase-04 files. Rules before anything else: - Every read, edit and write call uses an absolute path that starts with /home/vantt/projects/mcp-skill-hub-simplify/. Every bash call runs there. - Never write to /home/vantt/projects/mcp-skill-hub (the lead's main checkout) or to /home/vantt/skill-hub (the live hub). That means no …[+798]
+[L2345] USER: Lead: the untracked file in the main checkout is docs/plans/prompt-wave3-E.md, the lead's own prompt file. That is expected; proceed. In /home/vantt/projects/mcp-skill-hub-simplify (absolute paths only): 1. Commit your current changes (one commit, conventional message), with make check green. 2. Main has moved: worktree D merged, main is at b32d678. Run `git -C /home/vantt/projects/mcp-skill-hub-simplify rebase main`. The lead checked with merge-tree: no conflicts are expected. If any appear, resolve only in your owned paths. 3. Run make check again on the rebased branch. 4. Report: the new co …[+362]
+[L2374] USER: Lead: your Phase 4 checkpoint is merged into main (fast-forward to b01eaa3). Go ahead with Phase 3 in /home/vantt/projects/mcp-skill-hub-simplify (absolute paths only), in the order already given, one commit each, make check green: a. planV3ToV4 + pre-Phase-3 fixture (decisions, reopen-only-on-new-evidence, tombstones, coverage gaps survive). Copy the live hub's Phase-0-format test-audit/.meta/distill.yaml into testdata and prove it converts. b. Remove insight/run lifecycle, revision packages, LINK files, intake layout (skill_add must stop writing sources/intake/; insight.go:832 goes too). Con …[+674]
+</asks>
+
+<story>
+hook: Nới schema cho tiện, 77 mục ngắn khiến lead bắt siết lại
+tension: giup_ma_hai (nới schema để kiểm tra nhanh / lead bắt giữ chặt, chỉ ngoại lệ ở migration)
+stakes: 3/3
+# Nới schema evidence rồi bị lead yêu cầu siết lại
+
+**Bối cảnh:** Dữ liệu distill cũ có bằng chứng dạng repo@sha không có :path; schema mới yêu cầu repo@40-hex:path.
+**Chuyện gì xảy ra:** Để kiểm tra nhanh, agent nới EvidencePattern cho phép repo@sha. Đếm được 77 mục ngắn trong file cũ. Lead phản đối: schema phải giữ chặt cho bài học mới. Quyết định cuối: chỉ chấp nhận dạng ngắn trong migration v4, chuyển thành repo@sha:<đường dẫn skill> hoặc giữ trong trường legacy_where, và ghi sai lệch vào phase-03.
+**Bài học:** Đừng nới schema để khớp dữ liệu cũ; giữ chặt schema mới và để đường migration xử lý phần lộn xộn.
+**Artefact:** Hai regex cũ và mới đặt cạnh nhau.
+</story>
+
+<excerpt>
+[L2504] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/distill_model.go
+[L2506] RESULT: [internal/distill/distill_model.go#DE9C] | 16:
+[L2507] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/schemas/distill.schema.json
+[L2509] RESULT: [schemas/distill.schema.json#B786] | 71: "where": {
+[L2510] TOOL bash: go test ./internal/distill/... ./schemas/...
+[L2512] RESULT: ok github.com/vantt/mcp-skill-hub/internal/distill 0.004s | ok github.com/vantt/mcp-skill-hub/schemas 0.565s
+[L2513] TOOL bash: python3 -c ' import yaml, re with open("/home/vantt/projects/mcp-skill-hub-simplify/internal/migration/testdata/phase0-distill.yaml") as f: doc = yaml.safe_load(f) pattern = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$") invalid = [] for l in doc.get("lessons", []): k = l.get("key", "") if not pattern.ma …[+112]
+[L2515] RESULT: Invalid keys: [] | Total lessons: 42
+[L2516] TOOL bash: python3 -c ' import yaml with open("/home/vantt/projects/mcp-skill-hub-simplify/internal/migration/testdata/phase0-distill.yaml") as f: doc = yaml.safe_load(f) keys = [l.get("key", "") for l in doc.get("lessons", [])] dupes = [k for k in keys if keys.count(k) > 1] print("Duplicate keys:", set(dupes) …[+3]
+[L2518] RESULT: Duplicate keys: set() | Wall time: 0.06 seconds
+[L2519] TOOL bash: python3 -c ' import yaml with open("/home/vantt/projects/mcp-skill-hub-simplify/internal/migration/testdata/phase0-distill.yaml") as f: doc = yaml.safe_load(f) empty_what = [l.get("key") for l in doc.get("lessons", []) if not str(l.get("what", "")).strip()] empty_notable = [l.get("key") for l in doc …[+135]
+[L2521] RESULT: Empty what: [] | Empty notable: []
+…
+[L3653] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/delivery/mcpserver/server_test.go:360-390
+[L3655] RESULT: [internal/delivery/mcpserver/server_test.go#FAFA] | 359: if err != nil {
+[L3656] USER: Lead notes, apply after you finish 3c, as a separate fix commit:
+1. Migration must fail closed: internal/migration/v4.go:440 still has
+   `_ = filepath.WalkDir(...)`. Replace every ignored walk, read or parse
+   error in v4.go with a returned error that names the file. Test: a garbled
+   insight file makes the v4 preview fail with that file name, and the
+   workspace is unchanged.
+2. Evidence regex: you loosened EvidencePattern and distill.schema.json to
+   accept `repo@sha` with no `:path`. Keep the schema and new lessons strict
+   (repo@<40-hex>:path[#Lx-Ly]). Accept the short form only inside the v4
+   migration: convert it to repo@sha:<skill path>, or keep it in a
+   `legacy_where` field. Record the deviation in phase-03.
+3. Main moved (5eeee30..c5696e4: worktree E, telemetry/CLI only). Rebase on
+   main before you report; the lead checked: no conflicts expected.
+Then report all Phase 3 hashes, the contract table diff, and make check.
+[L3657] TOOL grep: paging\.MaximumLimit
+[L3659] RESULT: # internal/delivery/mcpserver/ | ## server.go#22A7
+…
+[L3960] TOOL grep: _ =
+[L3962] RESULT: [internal/migration/v4.go#A5C0] | 439: fullPath := filepath.Join(root, filepath.FromSlash(lDir))
+[L3963] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/distill_model.go
+[L3965] RESULT: [internal/distill/distill_model.go#7FB6] | 16:
+[L3966] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/schemas/distill.schema.json
+[L3968] RESULT: [schemas/distill.schema.json#6045] | 71: "where": {
+[L3969] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/migration/v4.go:60-90,350-420
+[L3971] RESULT: [internal/migration/v4.go#A5C0] | 57:func expandEvidence(raw string, cursors []distill.Cursor) string {
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

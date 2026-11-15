@@ -1,0 +1,1027 @@
+{
+  "id": "5a1e7c01",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/projects/momentry/.claude/worktrees/agent-a16218d210d5a04c4/scripts/eval/synthetic/5a1e7c01-3b2d-4e8a-9f10-2c4d6e8a0b11.jsonl",
+  "fromLine": 1,
+  "toLine": 78,
+  "windowSha": "360bbf6cfb000ce1",
+  "at": "2026-11-10T12:45:39.547Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.056726,
+  "dryRun": {
+    "usd": 0.11,
+    "tokens": 3770,
+    "chunks": 1,
+    "hotspots": 2,
+    "entries": 78,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:5a1e7c01",
+    "fromLine": 1,
+    "toLine": 78,
+    "usd": 0.09625159999999999,
+    "secs": 22.8,
+    "exitCode": 0,
+    "status": "done",
+    "written": 12,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-11-ti-le-mo-tut-tu-52-e024",
+        "status": "angle",
+        "angle": "Chủ bản tin email hằng tuần 'Thư Chủ Nhật' đang viết số 48 thì thấy tỉ lệ mở thư tụt từ 52% xuống 31% trong 4 số gần nhất. Họ tin lỗi nằm ở tiêu đề dài và định viết lại tiêu đề. Khi tách số liệu theo nguồn đăng ký, hoá ra 840 địa chỉ nhập tay từ một workshop chỉ mở 8,8%, còn người đăng ký qua form vẫn mở 53,0%. Ai đang đổi nội dung vì tỉ lệ mở tụt nên kiểm tra nguồn người nhận trước.",
+        "audience": "người làm bản tin email và người theo dõi chỉ số mở thư",
+        "evidence": [
+          1,
+          7,
+          17,
+          20
+        ],
+        "spine": {
+          "context": {
+            "text": "Chủ bản tin email hằng tuần 'Thư Chủ Nhật' đang viết số 48 và dùng MailerLite để gửi.",
+            "evidence": [
+              1,
+              8
+            ]
+          },
+          "want": {
+            "text": "Muốn kéo tỉ lệ mở thư trở lại sau khi tụt.",
+            "evidence": [
+              7
+            ]
+          },
+          "obstacle": {
+            "text": "Tỉ lệ mở của 4 số gần đây giảm từ 52% xuống 31%.",
+            "evidence": [
+              7
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tiêu đề dài là nguyên nhân; hoá ra 840 địa chỉ nhập tay từ workshop chỉ mở 8,8%, còn người đăng ký qua form mở 53,0%.",
+            "evidence": [
+              7,
+              17,
+              20
+            ]
+          },
+          "action": {
+            "text": "Tách tỉ lệ mở theo nguồn đăng ký thay vì viết lại tiêu đề.",
+            "evidence": [
+              14,
+              16,
+              18
+            ]
+          },
+          "outcome": {
+            "text": "Tìm ra nguyên nhân là 840 địa chỉ nhập từ workshop kéo mẫu số lên; đã đề xuất làm sạch danh sách, chưa có kết quả sau đó.",
+            "evidence": [
+              17,
+              22
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi đổi nội dung vì tỉ lệ mở tụt, hãy tách số liệu theo nguồn đăng ký; một đợt nhập danh sách lớn có thể kéo con số chung xuống.",
+            "evidence": [
+              20
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-11-ai-de-xuat-sua-lai-suat-e024",
+        "status": "angle",
+        "angle": "Người làm bản tin Thư Chủ Nhật đang viết số 48 về quỹ khẩn cấp và cần số lãi suất gửi 12 tháng đúng. AI tin rằng mức 6,5–7%/năm là đúng nên đề xuất sửa 4,7% thành 6,5%. Bảng lãi suất hôm nay cho thấy 4,7%; 6,5–7% là mặt bằng cũ, và AI không có cách tra bảng hôm nay. Chuyện đáng nghe vì một con số sai nhưng nghe hợp lý có thể lọt vào bài; quy tắc mới giữ AI ở vai đánh dấu, người tự tra nguồn.",
+        "audience": "người làm nội dung có số liệu tài chính, dùng AI để soạn hoặc kiểm tra bài",
+        "evidence": [
+          1,
+          41,
+          42,
+          43,
+          44
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm bản tin Thư Chủ Nhật đang viết số 48 về quỹ khẩn cấp, có đoạn so sánh chỗ để quỹ.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn số liệu trong phần 3 đúng trước khi gửi.",
+            "evidence": [
+              38
+            ]
+          },
+          "obstacle": {
+            "text": "Bài ghi lãi gửi 12 tháng là 4,7%/năm, và AI tin con số đó thấp.",
+            "evidence": [
+              40,
+              41
+            ]
+          },
+          "turn": {
+            "text": "AI tưởng lãi 12 tháng khoảng 6,5–7%/năm; hoá ra bảng lãi suất hôm nay là 4,7%, còn 6,5–7% là mức cuối 2023.",
+            "evidence": [
+              41,
+              42
+            ]
+          },
+          "action": {
+            "text": "AI đề xuất sửa thành 6,5%, sau đó thêm nguồn và ngày vào bài, rồi thêm quy tắc vào sổ tay: AI chỉ đánh dấu số lãi suất, giá, tỉ giá để người tự kiểm tra.",
+            "evidence": [
+              41,
+              44,
+              45,
+              47,
+              49
+            ]
+          },
+          "outcome": {
+            "text": "Bài giữ 4,7% kèm nguồn và ngày; sổ tay có quy tắc mới.",
+            "evidence": [
+              46,
+              48
+            ]
+          },
+          "takeaway": {
+            "text": "Với số liệu đổi theo thời gian, AI không có dữ liệu hôm nay. Hãy ghi quy tắc để AI chỉ đánh dấu, còn người tự tra nguồn.",
+            "evidence": [
+              43,
+              44
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-11-thu-xac-nhan-lai-cho-840-e024",
+        "status": "angle",
+        "angle": "Thư Chủ Nhật là bản tin email, người làm đang viết số 48 và theo dõi tỉ lệ mở. Người làm tin tiêu đề mới là lý do tỉ lệ mở rớt xuống 31%, và đã tự trách suốt một tuần. Thực ra người đọc cũ vẫn mở khoảng 53%, còn 840 địa chỉ nhập từ một workshop chỉ mở 8,8%, kéo con số chung xuống. Ai nhập danh sách từ sự kiện vào bản tin nên hỏi lại trước khi gửi và đọc tỉ lệ mở theo từng nguồn.",
+        "audience": "người vận hành bản tin email",
+        "evidence": [
+          1,
+          20,
+          21,
+          27
+        ],
+        "spine": {
+          "context": {
+            "text": "Thư Chủ Nhật là bản tin email; người làm đang viết số 48 về quỹ khẩn cấp và xem số liệu tỉ lệ mở.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn hiểu vì sao tỉ lệ mở tụt và nên xử lý 840 địa chỉ thế nào.",
+            "evidence": [
+              21
+            ]
+          },
+          "obstacle": {
+            "text": "Tỉ lệ mở chung rớt xuống 31%.",
+            "evidence": [
+              20
+            ]
+          },
+          "turn": {
+            "text": "Tưởng cách đặt tiêu đề làm tỉ lệ mở tụt; hoá ra người đọc cũ vẫn mở khoảng 53%, còn 840 địa chỉ nhập từ workshop chỉ mở 8,8%, kéo con số chung xuống.",
+            "evidence": [
+              20,
+              21
+            ]
+          },
+          "action": {
+            "text": "Tách tỉ lệ mở theo nguồn đăng ký; soạn thư xác nhận lại cho nhóm workshop, không xoá dữ liệu, chuyển sang không nhận nếu 14 ngày không phản hồi.",
+            "evidence": [
+              22,
+              24,
+              26
+            ]
+          },
+          "outcome": {
+            "text": "Chưa có kết quả trong đoạn trích: thư xác nhận mới soạn, chưa thấy gửi.",
+            "evidence": [
+              26
+            ]
+          },
+          "takeaway": {
+            "text": "Tỉ lệ mở cần đọc theo từng nguồn đăng ký; danh sách nhập từ sự kiện nên hỏi lại trước khi gửi.",
+            "evidence": [
+              27
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-11-link-chu-thich-loi-thieu-dau-e024",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-4: spine.obstacle: evidence ngoài các dòng đã đưa: 32, 33; spine.action: evidence ngoài các dòng đã đưa: 34, 35; spine.outcome: evidence ngoài các dòng đã đưa: 34, 37 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c01/runs/3/llm/angle-4-retry.json"
+      },
+      {
+        "id": "2026-10-11-biet-tieu-de-khong-phai-thu-e024",
+        "status": "angle",
+        "angle": "Thư Chủ Nhật là bản tin email hằng tuần, và người làm đang viết số 48 về quỹ khẩn cấp. Người làm từng nghĩ tiêu đề là lý do, nhưng hoá ra không phải tại tiêu đề. Bài vẫn cần một tiêu đề, nên họ chọn một cái dài hơn kèm tiền tố. Ai viết email hay thông báo cho người khác đọc sẽ thấy điều này quen.",
+        "audience": "người viết email hoặc thông báo cho người đọc",
+        "evidence": [
+          1,
+          60,
+          62,
+          63,
+          65
+        ],
+        "spine": {
+          "context": {
+            "text": "Thư Chủ Nhật là bản tin email hằng tuần, người làm đang viết số 48 về quỹ khẩn cấp.",
+            "evidence": [
+              1,
+              50
+            ]
+          },
+          "want": {
+            "text": "Viết xong số 48 với một tiêu đề, dù đã biết tiêu đề không phải nguyên nhân.",
+            "evidence": [
+              1,
+              60
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tiêu đề là lý do; hoá ra không phải tại tiêu đề.",
+            "evidence": [
+              60
+            ]
+          },
+          "action": {
+            "text": "Nhận 10 gợi ý, chọn số 2, thêm tiền tố 'Quỹ khẩn cấp:', rồi cập nhật dòng đầu bài.",
+            "evidence": [
+              61,
+              62,
+              63,
+              65
+            ]
+          },
+          "outcome": {
+            "text": "Dòng đầu bài đã đổi thành 'Quỹ khẩn cấp: 20 triệu đã đủ chưa?'.",
+            "evidence": [
+              63,
+              65
+            ]
+          },
+          "takeaway": {
+            "text": "Chẩn đoán cho thấy một yếu tố không phải nguyên nhân không có nghĩa là bỏ việc vẫn phải làm.",
+            "evidence": [
+              60,
+              62
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-10-11-so-tay-giong-van-cam-tu-e024",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-6: spine.want: evidence ngoài các dòng đã đưa: 50; spine.obstacle: evidence ngoài các dòng đã đưa: 42; spine.turn: evidence ngoài các dòng đã đưa: 42; spine.action: evidence ngoài các dòng đã đưa: 44, 49; spine.outcome: evidence ngoài các dòng đã đưa: 42, 49 (+2) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c01/runs/3/llm/angle-6-retry.json"
+      },
+      {
+        "id": "2026-10-11-wc-w-ra-1-268-chu-e024",
+        "status": "none",
+        "none": true,
+        "reason": "Trong trích đoạn, agent báo 1.268 chữ và khoảng 5 phút đọc, rồi người làm nhận và lên lịch gửi. Không dòng nào cho thấy con số đó sai. Nhận định wc đếm âm tiết chỉ có trong ghi chú chuyện, không có trong trích đoạn, nên không dựng được chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Người làm bản tin Thư Chủ Nhật, đang viết số 48 về quỹ khẩn cấp.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn bài được soát dấu câu, và có độ dài cùng thời gian đọc để ghi đầu thư.",
+            "evidence": [
+              1,
+              73
+            ]
+          },
+          "action": {
+            "text": "Chạy wc -w trên bản nháp, báo 1.268 chữ và khoảng 5 phút đọc.",
+            "evidence": [
+              74,
+              75,
+              76
+            ]
+          },
+          "outcome": {
+            "text": "Người làm nhận kết quả và lên lịch gửi lúc 7h sáng chủ nhật.",
+            "evidence": [
+              77
+            ]
+          }
+        },
+        "completeness": 4
+      },
+      {
+        "id": "2026-10-11-dau-cach-truoc-dau-cau-grep-e024",
+        "status": "none",
+        "none": true,
+        "reason": "chỉ là soát và sửa lỗi dấu cách thừa trước dấu câu; không ai tin sai điều gì",
+        "spine": {
+          "context": {
+            "text": "Người viết bản tin email hằng tuần \"Thư Chủ Nhật\", đang soạn số 48 về quỹ khẩn cấp.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn soát và sửa hết dấu cách thừa trước dấu câu trong bài.",
+            "evidence": [
+              66
+            ]
+          },
+          "obstacle": {
+            "text": "Bài còn hai chỗ có dấu cách thừa trước dấu câu: một trong nội dung và một ở lời chào cuối thư.",
+            "evidence": [
+              68
+            ]
+          },
+          "action": {
+            "text": "Dùng grep để tìm dấu cách trước dấu câu, dùng sed để xoá chúng, rồi đếm lại.",
+            "evidence": [
+              67,
+              69
+            ]
+          },
+          "outcome": {
+            "text": "Đếm lại ra 0 dòng còn dấu cách trước dấu câu.",
+            "evidence": [
+              70,
+              71
+            ]
+          },
+          "takeaway": {
+            "text": "Soát lỗi dấu câu bằng grep, sửa bằng sed, rồi đếm lại để chắc không còn sót.",
+            "evidence": [
+              69,
+              70
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-10-11-bai-hoc-tu-phien-duoc-ghi-e024",
+        "status": "angle",
+        "angle": "Người làm viết Thư Chủ Nhật, bản tin email về quỹ khẩn cấp. Họ tưởng tiêu đề bài kém là lý do tỉ lệ mở xuống, và tự trách cả tuần. Hoá ra danh sách 840 người nhập từ sự kiện chưa được xác nhận trước, còn con số chung che mất điều đó. Ai gửi email cho danh sách nhập từ sự kiện nên đọc chuyện này.",
+        "audience": "người gửi bản tin email cho danh sách nhập từ sự kiện",
+        "evidence": [
+          1,
+          21,
+          27
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm viết Thư Chủ Nhật, bản tin email về quỹ khẩn cấp, số 48.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn tỉ lệ mở thư không bị kéo xuống vì danh sách.",
+            "evidence": [
+              21
+            ]
+          },
+          "obstacle": {
+            "text": "Có 840 người trong danh sách; giữ họ có thể kéo số xuống, xoá thì tiếc.",
+            "evidence": [
+              21
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tiêu đề bài kém là lý do; hoá ra danh sách nhập từ sự kiện chưa gửi thư xác nhận trước, và con số chung đã che mất điều đó.",
+            "evidence": [
+              21,
+              27
+            ]
+          },
+          "action": {
+            "text": "Soạn thư xác nhận giọng Thư Chủ Nhật, lưu bản nháp, và ghi bài học vào file ghi chú.",
+            "evidence": [
+              23,
+              25,
+              27
+            ]
+          },
+          "outcome": {
+            "text": "Thư xác nhận đã có bản nháp, chưa gửi; người làm sẽ tạo nhóm rồi tự gửi. Bài học đã ghi vào notes.",
+            "evidence": [
+              26,
+              29
+            ]
+          },
+          "takeaway": {
+            "text": "Nhập danh sách từ sự kiện thì gửi thư xác nhận trước, và đọc tỉ lệ mở theo từng nguồn chứ đừng nhìn con số chung.",
+            "evidence": [
+              27
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-11-cuoi-phien-agent-khong-dung-o-e024",
+        "status": "angle",
+        "angle": "Một người viết bản tin email hằng tuần, Thư Chủ Nhật, chuẩn bị số 48 thì tỉ lệ mở chung tụt xuống 31%. Người viết tưởng lỗi nằm ở tiêu đề và tự trách cả tuần, nhưng số liệu cho thấy 840 người nhập từ một workshop giữa tháng 9 gần như không mở thư (8,8%), còn người đọc cũ vẫn mở khoảng 53%. Những người mới này kéo tỉ lệ chung xuống, còn tiêu đề không phải nguyên nhân. Ai tự đo tỉ lệ mở nên tách nhóm theo nguồn đăng ký trước khi đổ lỗi cho nội dung.",
+        "audience": "người làm bản tin email hoặc newsletter tự theo dõi tỉ lệ mở",
+        "evidence": [
+          19,
+          20,
+          21
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người viết bản tin email hằng tuần, Thư Chủ Nhật, đang chuẩn bị số 48 về quỹ khẩn cấp.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn tỉ lệ mở trở lại như trước và biết nên làm gì với danh sách mới.",
+            "evidence": [
+              21
+            ]
+          },
+          "obstacle": {
+            "text": "Tỉ lệ mở chung tụt xuống 31%, trong khi người viết đã nhập 840 người từ workshop giữa tháng 9.",
+            "evidence": [
+              15,
+              20
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tiêu đề kém làm tỉ lệ mở tụt; hoá ra 840 người từ workshop hầu như không mở thư, kéo mẫu số xuống.",
+            "evidence": [
+              19,
+              21
+            ]
+          },
+          "action": {
+            "text": "Tách số liệu theo nguồn đăng ký, soạn thư xác nhận lại cho nhóm workshop, và ngừng gửi cho ai không phản hồi sau 14 ngày.",
+            "evidence": [
+              22,
+              24
+            ]
+          },
+          "outcome": {
+            "text": "Người đọc cũ mở 53,0%; nhóm workshop chỉ 8,8%. Thư xác nhận gửi chiều nay, chưa có kết quả.",
+            "evidence": [
+              19,
+              77
+            ]
+          },
+          "takeaway": {
+            "text": "Khi tỉ lệ mở tụt, tách nhóm theo nguồn đăng ký trước khi đổ lỗi cho tiêu đề.",
+            "evidence": [
+              19,
+              22
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:5a1e7c01 L1-L78: done; 8 chuyện thô, 12 cụm; ghi 12 mới, gộp 0\nđiểm nóng 2 (thiếu 0); lần chạy 1/1; 0.10 USD\ngóc kể: 6 có, 2 không ra chuyện, 2 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: repo không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-11-ti-le-mo-tut-tu-52-e024",
+      "code": "M-24CN",
+      "title": "Tỉ lệ mở tụt từ 52% xuống 31%: lỗi nằm ở 840 người nhập tay, không nằm ở tiêu đề",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Chủ bản tin email hằng tuần 'Thư Chủ Nhật' đang viết số 48 thì thấy tỉ lệ mở thư tụt từ 52% xuống 31% trong 4 số gần nhất. Họ tin lỗi nằm ở tiêu đề dài và định viết lại tiêu đề. Khi tách số liệu theo nguồn đăng ký, hoá ra 840 địa chỉ nhập tay từ một workshop chỉ mở 8,8%, còn người đăng ký qua form vẫn mở 53,0%. Ai đang đổi nội dung vì tỉ lệ mở tụt nên kiểm tra nguồn người nhận trước.",
+      "audience": "người làm bản tin email và người theo dõi chỉ số mở thư",
+      "spine": {
+        "context": {
+          "text": "Chủ bản tin email hằng tuần 'Thư Chủ Nhật' đang viết số 48 và dùng MailerLite để gửi.",
+          "lines": [
+            "claude:5a1e7c01#L1",
+            "claude:5a1e7c01#L8"
+          ]
+        },
+        "want": {
+          "text": "Muốn kéo tỉ lệ mở thư trở lại sau khi tụt.",
+          "lines": [
+            "claude:5a1e7c01#L7"
+          ]
+        },
+        "obstacle": {
+          "text": "Tỉ lệ mở của 4 số gần đây giảm từ 52% xuống 31%.",
+          "lines": [
+            "claude:5a1e7c01#L7"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tiêu đề dài là nguyên nhân; hoá ra 840 địa chỉ nhập tay từ workshop chỉ mở 8,8%, còn người đăng ký qua form mở 53,0%.",
+          "lines": [
+            "claude:5a1e7c01#L7",
+            "claude:5a1e7c01#L17",
+            "claude:5a1e7c01#L20"
+          ]
+        },
+        "action": {
+          "text": "Tách tỉ lệ mở theo nguồn đăng ký thay vì viết lại tiêu đề.",
+          "lines": [
+            "claude:5a1e7c01#L14",
+            "claude:5a1e7c01#L16",
+            "claude:5a1e7c01#L18"
+          ]
+        },
+        "outcome": {
+          "text": "Tìm ra nguyên nhân là 840 địa chỉ nhập từ workshop kéo mẫu số lên; đã đề xuất làm sạch danh sách, chưa có kết quả sau đó.",
+          "lines": [
+            "claude:5a1e7c01#L17",
+            "claude:5a1e7c01#L22"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi đổi nội dung vì tỉ lệ mở tụt, hãy tách số liệu theo nguồn đăng ký; một đợt nhập danh sách lớn có thể kéo con số chung xuống.",
+          "lines": [
+            "claude:5a1e7c01#L20"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-11-ai-de-xuat-sua-lai-suat-e024",
+      "code": "M-CKN4",
+      "title": "AI đề xuất sửa lãi suất từ 4,7% lên 6,5%, người làm tài chính bác vì đó là số cũ",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm bản tin Thư Chủ Nhật đang viết số 48 về quỹ khẩn cấp và cần số lãi suất gửi 12 tháng đúng. AI tin rằng mức 6,5–7%/năm là đúng nên đề xuất sửa 4,7% thành 6,5%. Bảng lãi suất hôm nay cho thấy 4,7%; 6,5–7% là mặt bằng cũ, và AI không có cách tra bảng hôm nay. Chuyện đáng nghe vì một con số sai nhưng nghe hợp lý có thể lọt vào bài; quy tắc mới giữ AI ở vai đánh dấu, người tự tra nguồn.",
+      "audience": "người làm nội dung có số liệu tài chính, dùng AI để soạn hoặc kiểm tra bài",
+      "spine": {
+        "context": {
+          "text": "Người làm bản tin Thư Chủ Nhật đang viết số 48 về quỹ khẩn cấp, có đoạn so sánh chỗ để quỹ.",
+          "lines": [
+            "claude:5a1e7c01#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn số liệu trong phần 3 đúng trước khi gửi.",
+          "lines": [
+            "claude:5a1e7c01#L38"
+          ]
+        },
+        "obstacle": {
+          "text": "Bài ghi lãi gửi 12 tháng là 4,7%/năm, và AI tin con số đó thấp.",
+          "lines": [
+            "claude:5a1e7c01#L40",
+            "claude:5a1e7c01#L41"
+          ]
+        },
+        "turn": {
+          "text": "AI tưởng lãi 12 tháng khoảng 6,5–7%/năm; hoá ra bảng lãi suất hôm nay là 4,7%, còn 6,5–7% là mức cuối 2023.",
+          "lines": [
+            "claude:5a1e7c01#L41",
+            "claude:5a1e7c01#L42"
+          ]
+        },
+        "action": {
+          "text": "AI đề xuất sửa thành 6,5%, sau đó thêm nguồn và ngày vào bài, rồi thêm quy tắc vào sổ tay: AI chỉ đánh dấu số lãi suất, giá, tỉ giá để người tự kiểm tra.",
+          "lines": [
+            "claude:5a1e7c01#L41",
+            "claude:5a1e7c01#L44",
+            "claude:5a1e7c01#L45",
+            "claude:5a1e7c01#L47",
+            "claude:5a1e7c01#L49"
+          ]
+        },
+        "outcome": {
+          "text": "Bài giữ 4,7% kèm nguồn và ngày; sổ tay có quy tắc mới.",
+          "lines": [
+            "claude:5a1e7c01#L46",
+            "claude:5a1e7c01#L48"
+          ]
+        },
+        "takeaway": {
+          "text": "Với số liệu đổi theo thời gian, AI không có dữ liệu hôm nay. Hãy ghi quy tắc để AI chỉ đánh dấu, còn người tự tra nguồn.",
+          "lines": [
+            "claude:5a1e7c01#L43",
+            "claude:5a1e7c01#L44"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-11-thu-xac-nhan-lai-cho-840-e024",
+      "code": "M-Z0E8",
+      "title": "Thư xác nhận lại cho 840 người: hỏi trong hai tuần, không xoá, báo cáo tách nhóm",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Thư Chủ Nhật là bản tin email, người làm đang viết số 48 và theo dõi tỉ lệ mở. Người làm tin tiêu đề mới là lý do tỉ lệ mở rớt xuống 31%, và đã tự trách suốt một tuần. Thực ra người đọc cũ vẫn mở khoảng 53%, còn 840 địa chỉ nhập từ một workshop chỉ mở 8,8%, kéo con số chung xuống. Ai nhập danh sách từ sự kiện vào bản tin nên hỏi lại trước khi gửi và đọc tỉ lệ mở theo từng nguồn.",
+      "audience": "người vận hành bản tin email",
+      "spine": {
+        "context": {
+          "text": "Thư Chủ Nhật là bản tin email; người làm đang viết số 48 về quỹ khẩn cấp và xem số liệu tỉ lệ mở.",
+          "lines": [
+            "claude:5a1e7c01#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn hiểu vì sao tỉ lệ mở tụt và nên xử lý 840 địa chỉ thế nào.",
+          "lines": [
+            "claude:5a1e7c01#L21"
+          ]
+        },
+        "obstacle": {
+          "text": "Tỉ lệ mở chung rớt xuống 31%.",
+          "lines": [
+            "claude:5a1e7c01#L20"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng cách đặt tiêu đề làm tỉ lệ mở tụt; hoá ra người đọc cũ vẫn mở khoảng 53%, còn 840 địa chỉ nhập từ workshop chỉ mở 8,8%, kéo con số chung xuống.",
+          "lines": [
+            "claude:5a1e7c01#L20",
+            "claude:5a1e7c01#L21"
+          ]
+        },
+        "action": {
+          "text": "Tách tỉ lệ mở theo nguồn đăng ký; soạn thư xác nhận lại cho nhóm workshop, không xoá dữ liệu, chuyển sang không nhận nếu 14 ngày không phản hồi.",
+          "lines": [
+            "claude:5a1e7c01#L22",
+            "claude:5a1e7c01#L24",
+            "claude:5a1e7c01#L26"
+          ]
+        },
+        "outcome": {
+          "text": "Chưa có kết quả trong đoạn trích: thư xác nhận mới soạn, chưa thấy gửi.",
+          "lines": [
+            "claude:5a1e7c01#L26"
+          ]
+        },
+        "takeaway": {
+          "text": "Tỉ lệ mở cần đọc theo từng nguồn đăng ký; danh sách nhập từ sự kiện nên hỏi lại trước khi gửi.",
+          "lines": [
+            "claude:5a1e7c01#L27"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-11-link-chu-thich-loi-thieu-dau-e024",
+      "code": "M-4H21",
+      "title": "Link chú thích: lỗi thiếu dấu hai chấm được bắt khi đổi định dạng",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-11-biet-tieu-de-khong-phai-thu-e024",
+      "code": "M-2N78",
+      "title": "Biết tiêu đề không phải thủ phạm, chủ bản tin vẫn xin 10 tiêu đề và chọn số 2",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Thư Chủ Nhật là bản tin email hằng tuần, và người làm đang viết số 48 về quỹ khẩn cấp. Người làm từng nghĩ tiêu đề là lý do, nhưng hoá ra không phải tại tiêu đề. Bài vẫn cần một tiêu đề, nên họ chọn một cái dài hơn kèm tiền tố. Ai viết email hay thông báo cho người khác đọc sẽ thấy điều này quen.",
+      "audience": "người viết email hoặc thông báo cho người đọc",
+      "spine": {
+        "context": {
+          "text": "Thư Chủ Nhật là bản tin email hằng tuần, người làm đang viết số 48 về quỹ khẩn cấp.",
+          "lines": [
+            "claude:5a1e7c01#L1",
+            "claude:5a1e7c01#L50"
+          ]
+        },
+        "want": {
+          "text": "Viết xong số 48 với một tiêu đề, dù đã biết tiêu đề không phải nguyên nhân.",
+          "lines": [
+            "claude:5a1e7c01#L1",
+            "claude:5a1e7c01#L60"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tiêu đề là lý do; hoá ra không phải tại tiêu đề.",
+          "lines": [
+            "claude:5a1e7c01#L60"
+          ]
+        },
+        "action": {
+          "text": "Nhận 10 gợi ý, chọn số 2, thêm tiền tố 'Quỹ khẩn cấp:', rồi cập nhật dòng đầu bài.",
+          "lines": [
+            "claude:5a1e7c01#L61",
+            "claude:5a1e7c01#L62",
+            "claude:5a1e7c01#L63",
+            "claude:5a1e7c01#L65"
+          ]
+        },
+        "outcome": {
+          "text": "Dòng đầu bài đã đổi thành 'Quỹ khẩn cấp: 20 triệu đã đủ chưa?'.",
+          "lines": [
+            "claude:5a1e7c01#L63",
+            "claude:5a1e7c01#L65"
+          ]
+        },
+        "takeaway": {
+          "text": "Chẩn đoán cho thấy một yếu tố không phải nguyên nhân không có nghĩa là bỏ việc vẫn phải làm.",
+          "lines": [
+            "claude:5a1e7c01#L60",
+            "claude:5a1e7c01#L62"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-11-so-tay-giong-van-cam-tu-e024",
+      "code": "M-ATX5",
+      "title": "Sổ tay giọng văn cấm từ 'bí quyết', và grep bắt đúng chỗ vi phạm",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-11-wc-w-ra-1-268-chu-e024",
+      "code": "M-1027",
+      "title": "wc -w ra 1.268 chữ, nhưng wc đếm âm tiết chứ không đếm từ tiếng Việt",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Người làm bản tin Thư Chủ Nhật, đang viết số 48 về quỹ khẩn cấp.",
+          "lines": [
+            "claude:5a1e7c01#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn bài được soát dấu câu, và có độ dài cùng thời gian đọc để ghi đầu thư.",
+          "lines": [
+            "claude:5a1e7c01#L1",
+            "claude:5a1e7c01#L73"
+          ]
+        },
+        "action": {
+          "text": "Chạy wc -w trên bản nháp, báo 1.268 chữ và khoảng 5 phút đọc.",
+          "lines": [
+            "claude:5a1e7c01#L74",
+            "claude:5a1e7c01#L75",
+            "claude:5a1e7c01#L76"
+          ]
+        },
+        "outcome": {
+          "text": "Người làm nhận kết quả và lên lịch gửi lúc 7h sáng chủ nhật.",
+          "lines": [
+            "claude:5a1e7c01#L77"
+          ]
+        }
+      },
+      "completeness": 4
+    },
+    {
+      "id": "2026-10-11-dau-cach-truoc-dau-cau-grep-e024",
+      "code": "M-F145",
+      "title": "Dấu cách trước dấu câu: grep tìm trước, sed sửa sau, đếm lại ra 0",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Người viết bản tin email hằng tuần \"Thư Chủ Nhật\", đang soạn số 48 về quỹ khẩn cấp.",
+          "lines": [
+            "claude:5a1e7c01#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn soát và sửa hết dấu cách thừa trước dấu câu trong bài.",
+          "lines": [
+            "claude:5a1e7c01#L66"
+          ]
+        },
+        "obstacle": {
+          "text": "Bài còn hai chỗ có dấu cách thừa trước dấu câu: một trong nội dung và một ở lời chào cuối thư.",
+          "lines": [
+            "claude:5a1e7c01#L68"
+          ]
+        },
+        "action": {
+          "text": "Dùng grep để tìm dấu cách trước dấu câu, dùng sed để xoá chúng, rồi đếm lại.",
+          "lines": [
+            "claude:5a1e7c01#L67",
+            "claude:5a1e7c01#L69"
+          ]
+        },
+        "outcome": {
+          "text": "Đếm lại ra 0 dòng còn dấu cách trước dấu câu.",
+          "lines": [
+            "claude:5a1e7c01#L70",
+            "claude:5a1e7c01#L71"
+          ]
+        },
+        "takeaway": {
+          "text": "Soát lỗi dấu câu bằng grep, sửa bằng sed, rồi đếm lại để chắc không còn sót.",
+          "lines": [
+            "claude:5a1e7c01#L69",
+            "claude:5a1e7c01#L70"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-11-bai-hoc-tu-phien-duoc-ghi-e024",
+      "code": "M-QEVR",
+      "title": "Bài học từ phiên được ghi thẳng vào file ghi chú của dự án, theo dạng quy trình dùng được lần sau: nhập danh sách từ sự kiện thì gửi thư xác nhận trước, và đọc tỉ lệ mở theo từng nguồn.",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": "Người làm viết Thư Chủ Nhật, bản tin email về quỹ khẩn cấp. Họ tưởng tiêu đề bài kém là lý do tỉ lệ mở xuống, và tự trách cả tuần. Hoá ra danh sách 840 người nhập từ sự kiện chưa được xác nhận trước, còn con số chung che mất điều đó. Ai gửi email cho danh sách nhập từ sự kiện nên đọc chuyện này.",
+      "audience": "người gửi bản tin email cho danh sách nhập từ sự kiện",
+      "spine": {
+        "context": {
+          "text": "Người làm viết Thư Chủ Nhật, bản tin email về quỹ khẩn cấp, số 48.",
+          "lines": [
+            "claude:5a1e7c01#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn tỉ lệ mở thư không bị kéo xuống vì danh sách.",
+          "lines": [
+            "claude:5a1e7c01#L21"
+          ]
+        },
+        "obstacle": {
+          "text": "Có 840 người trong danh sách; giữ họ có thể kéo số xuống, xoá thì tiếc.",
+          "lines": [
+            "claude:5a1e7c01#L21"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tiêu đề bài kém là lý do; hoá ra danh sách nhập từ sự kiện chưa gửi thư xác nhận trước, và con số chung đã che mất điều đó.",
+          "lines": [
+            "claude:5a1e7c01#L21",
+            "claude:5a1e7c01#L27"
+          ]
+        },
+        "action": {
+          "text": "Soạn thư xác nhận giọng Thư Chủ Nhật, lưu bản nháp, và ghi bài học vào file ghi chú.",
+          "lines": [
+            "claude:5a1e7c01#L23",
+            "claude:5a1e7c01#L25",
+            "claude:5a1e7c01#L27"
+          ]
+        },
+        "outcome": {
+          "text": "Thư xác nhận đã có bản nháp, chưa gửi; người làm sẽ tạo nhóm rồi tự gửi. Bài học đã ghi vào notes.",
+          "lines": [
+            "claude:5a1e7c01#L26",
+            "claude:5a1e7c01#L29"
+          ]
+        },
+        "takeaway": {
+          "text": "Nhập danh sách từ sự kiện thì gửi thư xác nhận trước, và đọc tỉ lệ mở theo từng nguồn chứ đừng nhìn con số chung.",
+          "lines": [
+            "claude:5a1e7c01#L27"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-11-cuoi-phien-agent-khong-dung-o-e024",
+      "code": "M-ETWQ",
+      "title": "Cuối phiên, agent không dừng ở bản thảo đã xong. Nó đề nghị đo lại tỉ lệ mở theo từng nhóm sau hai tuần, khi có kết quả thư xác nhận, để kiểm chứng giả thuyết đã nêu.",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": "Một người viết bản tin email hằng tuần, Thư Chủ Nhật, chuẩn bị số 48 thì tỉ lệ mở chung tụt xuống 31%. Người viết tưởng lỗi nằm ở tiêu đề và tự trách cả tuần, nhưng số liệu cho thấy 840 người nhập từ một workshop giữa tháng 9 gần như không mở thư (8,8%), còn người đọc cũ vẫn mở khoảng 53%. Những người mới này kéo tỉ lệ chung xuống, còn tiêu đề không phải nguyên nhân. Ai tự đo tỉ lệ mở nên tách nhóm theo nguồn đăng ký trước khi đổ lỗi cho nội dung.",
+      "audience": "người làm bản tin email hoặc newsletter tự theo dõi tỉ lệ mở",
+      "spine": {
+        "context": {
+          "text": "Một người viết bản tin email hằng tuần, Thư Chủ Nhật, đang chuẩn bị số 48 về quỹ khẩn cấp.",
+          "lines": [
+            "claude:5a1e7c01#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn tỉ lệ mở trở lại như trước và biết nên làm gì với danh sách mới.",
+          "lines": [
+            "claude:5a1e7c01#L21"
+          ]
+        },
+        "obstacle": {
+          "text": "Tỉ lệ mở chung tụt xuống 31%, trong khi người viết đã nhập 840 người từ workshop giữa tháng 9.",
+          "lines": [
+            "claude:5a1e7c01#L15",
+            "claude:5a1e7c01#L20"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tiêu đề kém làm tỉ lệ mở tụt; hoá ra 840 người từ workshop hầu như không mở thư, kéo mẫu số xuống.",
+          "lines": [
+            "claude:5a1e7c01#L19",
+            "claude:5a1e7c01#L21"
+          ]
+        },
+        "action": {
+          "text": "Tách số liệu theo nguồn đăng ký, soạn thư xác nhận lại cho nhóm workshop, và ngừng gửi cho ai không phản hồi sau 14 ngày.",
+          "lines": [
+            "claude:5a1e7c01#L22",
+            "claude:5a1e7c01#L24"
+          ]
+        },
+        "outcome": {
+          "text": "Người đọc cũ mở 53,0%; nhóm workshop chỉ 8,8%. Thư xác nhận gửi chiều nay, chưa có kết quả.",
+          "lines": [
+            "claude:5a1e7c01#L19",
+            "claude:5a1e7c01#L77"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi tỉ lệ mở tụt, tách nhóm theo nguồn đăng ký trước khi đổ lỗi cho tiêu đề.",
+          "lines": [
+            "claude:5a1e7c01#L19",
+            "claude:5a1e7c01#L22"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-11-khi-user-noi-danh-dau-thoi-e024",
+      "code": "M-QXFH",
+      "title": "Khi user nói 'đánh dấu thôi, để mình tự sửa', agent chỉ ghi vị trí và gợi ý, không tự sửa. Sau đó, khi user nói sẽ tự tách đoạn, agent để nguyên đoạn đó.",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-11-khi-sua-loi-chao-cuoi-thu-e024",
+      "code": "M-GZ2P",
+      "title": "Khi sửa lời chào cuối thư, agent đổi sang hai dòng mà user không yêu cầu, rồi nói rõ đây là thay đổi ngoài yêu cầu và đề nghị hoàn tác nếu user muốn giữ một dòng.",
+      "tension": "khac",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

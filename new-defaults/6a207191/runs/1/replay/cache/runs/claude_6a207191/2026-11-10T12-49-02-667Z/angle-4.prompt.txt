@@ -1,0 +1,126 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L1281] USER: Base directory for this skill: /home/vantt/.claude/skills/skillstation-send <!-- Written by Skillstation (wrapper v1). Edit the skill in .agents/skills/skillstation-send/, not here. --> This skill lives in the shared Agent Skills folder. Read `/home/vantt/.claude/skills/skillstation-send/../../../.agents/skills/skillstation-send/SKILL.md` now and follow it as this skill. Wherever it mentions this skill's folder or its scripts, use `/home/vantt/.claude/skills/skillstation-send/../../../.agents/skills/skillstation-send/`. ARGUMENTS: send ./skills/cs-packaging-distribution to the hub (user just e …[+87]
+[L1324] USER: ok, vậy em đẩy lên hub đi
+[L1341] USER: tối ưu lại phần routing and metadata, anh thấy không có topic, không có operations gì cả
+</asks>
+
+<story>
+hook: Agent khẳng định hub chưa có routing; thực tế hub có 9 trigger
+tension: tuong_ma_hoa_ra (Thư mục local không có skill.yaml nên tưởng hub trống / Hub đã có 9 trigger, 5 example, 5 not_for)
+stakes: 1/3
+# Agent khẳng định hub chưa có routing sau khi chỉ xem thư mục local
+
+**Bối cảnh:** Agent muốn thêm topics, operations và technologies vào skill.yaml, nên kiểm tra xem routing hiện có ở đâu.
+**Chuyện gì xảy ra:** Agent chỉ xem thư mục local, thấy không có skill.yaml và kết luận hub chưa có routing. Người dùng hỏi lại thì thực tế hub đã có 9 trigger, 5 example và 5 not_for. skill show --verbose bị từ chối khi chạy từ máy khách, nên chỉ skill_get đọc được routing, nhưng nó không trả về operations, topics, technologies hay min_scope. Agent đã đọc nhầm nguồn và khẳng định sai.
+**Bài học:** Trước khi nói 'chưa có', hãy kiểm tra đúng nguồn chứa dữ liệu đó; mỗi giao diện có thể trả về một tập trường khác nhau.
+**Artefact:** Bảng 'Trên hub / Thêm vào' ở L1441. Không cần che.
+</story>
+
+<excerpt>
+[L1386] TOOL Write: /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml
+[L1389] RESULT: File created successfully at: /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml (file state is current in your context — no need to Read it back)
+[L1396] AGENT: Đúng như anh thấy, skill hiện **không có `skill.yaml`**. Vì vậy trên hub nó không có topic, operation hay routing nào. Bản gửi lên hub từ xa cũng không nhận cờ routing, nên muốn những thông tin này đi kèm thì phải viết sẵn vào `skill.yaml` trong thư mục skill.
+
+Bản nháp ở `/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml`:
+
+**Trước:** không có gì.
+**Sau:**
+
+| Trường | Giá trị |
+|---|---|
+| `labels` | `code-standard` (để gom họ cs-* sau này) |
+| `topics` | packaging, distribution, installation, self-update, release-engineering, cli-ux, agent-native, supply-chain |
+| `technologies` | rust, go, node, posix-sh, powershell, github-actions, cosign, mcp |
+| `operations` | design, implement, review |
+| `min_scope` | `multi_step`: chỉ gợi ý skill cho việc lớn, không gợi ý cho một chỉnh sửa lẻ |
+| `triggers` (10) | install.sh one-line installer for a CLI · self-update or upgrade command for a binary · init and doctor commands for a tool · GitHub release pipeline with checksums and signing · agent-native --help and --json for setup · README intro and quick start for installing a tool · register MCP server in Claude Code, Codex or Gemini on install · uninstall command that keeps user config · config file location and paths for a CLI · packaging and distribution audit of a CLI |
+| `examples` (5) | giống bản nháp trước: Go CLI install/update/release · audit Rust tool · init/doctor cho agent · README quick start · uninstall giữ config |
+| `not_for` (6) | Docker/K8s cho web service · deploy web app · publish thư viện · review kiến trúc/test (để dành cho cs-* khác) · làm tính năng sản phẩm · **cài hoặc dùng một tool có sẵn với tư cách người dùng** |
+| `counter_examples` (3) | "install skillstation on my laptop" · "write a Dockerfile for the API service" · "review this pull request for bugs" |
+
+Tôi thêm `not_for` "cài hoặc dùng một tool có sẵn" và câu đối chứng "install skillstation on my laptop" vì skill có rất nhiều chữ "instal …[+511]
+[L1400] USER: ủa, anh thấy trước vẫn có triggers, examples và not_for mà?
+[L1406] TOOL Bash: ls -la /home/vantt/projects/devops/skills/cs-packaging-distribution/; ls -la /home/vantt/projects/devops/.agents/skills/ 2>/dev/null; skillstation skill --help 2>&1 | head -40
+[L1407] RESULT: total 48 | drwxrwxr-x 7 vantt vantt 4096 Nov 2 14:59 .
+[L1414] TOOL Bash: skillstation skill show cs-packaging-distribution --verbose --json
+[L1417] RESULT (exit 2): Exit code 2 | {"schema_version":"1","status":"error","summary":"The request cannot be accepted.","items":[],"suggested_actions":[],"warnings":[],"error":{"code":"invalid_request","render":{"ERROR":"The request cannot be accepted.","WHY":"This project uses the hub at http://100.93.158.78:7420. Skills are curated on the hub machine.","FIX":"Run this command on the hub machine. Here, `skillstation doctor` checks the connection to that hub."}}}
+[L1421] TOOL ToolSearch: {"query":"select:mcp__skillstation__skill_get,mcp__skillstation__skill_resolve","max_results":2}
+[L1422] RESULT: 
+[L1426] TOOL mcp__skillstation__skill_get: {"skill_id":"cs-packaging-distribution"}
+[L1427] RESULT: {"schema_version":"1","result":{"skill_id":"cs-packaging-distribution","name":"cs-packaging-distribution","description":"Code standard (cs-*) for packaging and distributing a CLI/tool, user-experience first — README intro and quick start, one consist …[+22949]
+[L1437] TOOL Write: /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml
+[L1438] RESULT: The file /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml has been updated successfully. (file state is current in your context — no need to Read it back)
+[L1441] AGENT: Anh nói đúng, tôi nhầm. Lúc nãy tôi chỉ xem thư mục trên máy này, ở đó không có `skill.yaml`. Còn bản trên hub thì có routing: khi duyệt bản gửi trước, người duyệt đã đặt đúng 9 trigger, 5 example và 5 not_for mà tôi soạn. Tôi vừa gọi `skill_get` lấy bản trên hub và thấy đủ cả ba phần đó.
+
+Phần còn thiếu đúng như anh thấy: không có `operations`, `topics`, `technologies` và `min_scope`, vì lệnh duyệt không có cờ để đặt các trường này.
+
+Tôi đã sửa bản nháp `/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml`. Bản mới **giữ nguyên toàn bộ routing đang có trên hub** và chỉ thêm các phần sau:
+
+| Trường | Trên hub | Thêm vào |
+|---|---|---|
+| `operations` | — | `design`, `implement`, `review` |
+| `topics` | — | packaging, distribution, installation, self-update, release-engineering, cli-ux, agent-native, supply-chain |
+| `technologies` | — | rust, go, node, posix-sh, powershell, github-actions, cosign, mcp |
+| `labels` | — | `code-standard` (gom họ cs-*) |
+| `min_scope` | — | `multi_step` |
+| `triggers` | 9 | giữ cả 9, thêm 1: `audit packaging and distribution of a CLI` |
+| `examples` | 5 | giữ nguyên |
+| `not_for` | 5 | giữ cả 5, thêm 1: `install or use an existing tool as an end user` |
+| `counter_examples` | — | `install skillstation on my laptop` · `write a Dockerfile for the API service` · `review this pull request for bugs` |
+
+Hai mục mới cuối cùng (một `not_for` và các `counter_examples`) có cùng một mục đích. Skill này có rất nhiều chữ "install", nên một yêu cầu cài tool bình thường có thể bị chuyển nhầm sang nó.
+
+Anh đồng ý thì tôi chép file vào `skills/cs-packaging-distribution/skill.yaml` rồi gửi lại lên hub, cho xem trước rồi mới chạy `--yes`. Lần gửi này tạo bản gửi mới thay cho `SUB-01M6NAX34J7THX6HNF2M584W8V`, nên trên máy hub chỉ cần duyệt bản mới nhất.
+[L1445] USER: ủa, vậy có cập nhật gì cho các mục trước đó đã có không?
+[L1453] AGENT: Không. 9 trigger, 5 example và 5 not_for đang có trên hub được giữ **nguyên văn từng chữ**. Tôi chỉ thêm vào cuối 1 trigger (`audit packaging and distribution of a CLI`) và 1 not_for (`install or use an existing tool as an end user`).
+
+Lý do tôi không sửa các mục cũ:
+- Chúng đã đúng quy tắc: mỗi trigger nêu rõ đối tượng chứ không chỉ là động từ, mỗi example là câu như người thật gõ và không chép lại trigger.
+- Bản trên hub chưa chạy lần nào, nên chưa có số liệu cho thấy mục nào chuyển nhầm skill.
+
+Cái thật sự thiếu là phần **phân loại**, tức `operations`, `topics`, `technologies`, `min_scope`, và phần **chặn chuyển nhầm**, tức `counter_examples`. Bản nháp chủ yếu bổ sung hai phần này.
+
+Nếu muốn sửa luôn mục cũ, tôi thấy hai mục đáng làm hơn cả:
+- `make --help and --json output agent-native` → `agent-native --help and --json output for a CLI`, để trigger này gắn với CLI thay vì nghe như một việc chung chung.
+- `README intro and quick start for installing a tool` dễ đụng với một skill viết tài liệu nếu sau này hub có. Có thể giữ, rồi theo dõi.
+
+Anh muốn giữ nguyên các mục cũ như bản nháp hiện tại, hay sửa luôn hai mục trên? Anh chốt xong tôi chép file vào thư mục skill rồi gửi lại lên hub.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

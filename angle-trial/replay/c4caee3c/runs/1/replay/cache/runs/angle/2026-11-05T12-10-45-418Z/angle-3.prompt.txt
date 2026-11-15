@@ -1,0 +1,144 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, không rành lĩnh vực của chuyện dưới đây.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Tìm chỗ ngoặt đó trong chuyện dưới đây, hoặc nói thẳng là không có.
+
+Có chỗ ngoặt thì trả:
+- angle: 1-3 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Theo thứ tự: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng (số trong [Lnnn]) của trích đoạn mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết trong angle phải đọc được trong chuyện hoặc trích đoạn. Trích đoạn không đỡ được thì trả none.
+- evidence chỉ gồm số dòng có trong trích đoạn bên dưới.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Viết angle, audience, reason bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"angle":"Test xanh trên máy, đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<story>
+hook: Cùng model, khác CPU: 0,735 trên máy agent, 0,728 trên CI
+tension: tuong_ma_hoa_ra (Cùng một model ONNX thì cùng điểm / Lượng tử int8 ra số khác nhau theo CPU, cổng đỏ vì lệch 0,007)
+stakes: 2/3
+# Cùng model ONNX, CPU khác, điểm khác: cổng chất lượng đỏ vì baseline ghi trên máy khác
+
+**Bối cảnh:** Cổng chất lượng so nDCG@5 eval tiếng Anh không gói với baseline đã ghi trước đó.
+**Chuyện gì xảy ra:** Trên máy agent điểm là 0,735, trên runner GitHub là 0,728, lệch hơn ngưỡng 0,005. Model lượng tử int8 cho số khác nhau theo loại CPU. Cách sửa: cổng so với upstream đo trong cùng lần chạy trên cùng máy; baseline ghi sẵn chỉ còn là cảnh báo trôi. Không hạ baseline nào. Sau sửa, catchup xanh và tag mới được đẩy.
+**Bài học:** Đừng so điểm eval giữa hai máy khác loại CPU; đo đối chứng trong cùng một lần chạy.
+**Artefact:** Bảng 0,735 và 0,728 đặt cạnh nhau.
+**Góc người ngoài:** cách làm phổ biến là Nhiều người khi CI đỏ sẽ nới ngưỡng, bỏ test, hoặc đẩy lại vài lần cho đến khi xanh; ở đây khác ở Người đọc sẽ hỏi vì sao quyết định không hạ ngưỡng được giữ vững qua nhiều lần đỏ, và làm sao phân biệt lỗi thật với lỗi do máy chạy khác.
+</story>
+
+<excerpt>
+[L3283] RESULT: catchup Fail the job when catchup failed 2026-11-02T08:00:20.3075661Z ##[group]Run exit 1 | catchup Fail the job when catchup failed 2026-11-02T08:00:20.3075923Z ^[[36;1mexit 1^[[0m
+[L3287] TOOL Bash: export GH_REPO=vantt/obsidian-hybrid-search; gh run view 41408657204 --log 2>/dev/null | grep -E '"status"|"exit_code"|FAILED|failed|✗|× |FAIL ' | head -25
+[L3288] RESULT: catchup Catchup 2026-11-02T08:00:17.0551318Z QUALITY_FAILED: vantt/v0.17.2 at fcc9f21dab08 (0.17.2-vantt.3). Back on master. | catchup Report failure as issue 2026-11-02T08:00:18.1854783Z ^[[36;1mread -r ref status failed files < <(node -e '^[[0m
+[L3296] TOOL Bash: export GH_REPO=vantt/obsidian-hybrid-search; gh run view 41408657204 --log 2>/dev/null | grep -iE "fail|pending|gate|G3|G8|regress|snippet|baseline" | grep -v "Report failure\|##\[group\]\|shell:" | cut -c40-260 | head -30
+[L3297] RESULT: 252348Z fail-on-cache-miss: false | 6601Z npm notice run 'otf' generate --preset vi-search --out /home/runner/work/obsidian-hybrid-search/obsidian-hybrid-search/vantt/.work/quality/snippets/vault --answers-out /home/runner/work/obsidian-hybrid-search …[+7]
+…
+[L3310] AGENT: Đang đọc báo cáo của lượt catchup vừa hỏng ở cổng chất lượng (QUALITY_FAILED), để tìm mục nào trượt.
+[L3311] TOOL Bash: D=/home/vantt/projects/ohs-wt/ci-41408657204/catchup-report; node -e " const r=JSON.parse(require('fs').readFileSync('$D/catchup.json','utf8')); const walk=(o,p)=>{if(o&&typeof o==='object'){if((o.status==='fail'||o.status==='failed'||o.pass===false||o.ok===false))console.log(p,JSON.stringify(o).sli …[+71]
+[L3312] RESULT: .quality.checks.0 {"id":"upstream-no-pack","status":"fail","detail":"ndcg_5 0.735 (baseline 0.17.2) -> 0.728, tolerance 0.005","value":0.728,"baseline":0.735,"baseline_version":"0.17.2"}
+[L3322] TOOL Bash: export GH_REPO=vantt/obsidian-hybrid-search; gh run view 41406332060 --json jobs --jq '.jobs[]|select(.conclusion!="success")|.name+": "+.conclusion'; gh run view 41406332060 --log-failed 2>/dev/null | grep -iE "error|fail|not found|denied" | cut -c1-220 | head -8
+[L3323] RESULT: smoke (darwin-x64, macos-15-intel): failure | smoke (darwin-x64, macos-15-intel) Fail visibly when the pin-effect check did not pass 2026-11-02T07:31:54.2022340Z ##[group]Run echo "::error::darwin-x64 was not published: onnxruntime-node 1.23.2 change …[+13]
+…
+[L3344] TOOL Bash: echo "17:40 CI catchup 41408657204 QUALITY_FAILED only upstream-no-pack (0.735 local baseline vs 0.728 runner). V12 agent fixing: same-run upstream comparison; may commit/push. vantt.2 bundles: darwin-x64 pin-effect failed (nondeterministic?) -> V03 agent investigating + rerun. Tag v0.17.2-vantt.3 N …[+74]
+[L3345] RESULT: (Bash completed with no output)
+[L3349] AGENT: Lượt catchup trên CI vẫn đỏ. Đó là hỏng thật, nhưng chỉ ở một mục và có nguyên nhân rõ.
+
+**Phần đã sửa xong:** lỗi test bị thứ tự kết quả bằng điểm làm hỏng không còn. Test, 9 bản vá, bài kiểm bất biến, `vi-snippet` 15/15 và mọi mục tiêu G3/G8 đều xanh.
+
+**Phần còn hỏng:** mục `upstream-no-pack` của cổng chất lượng. Mục này so điểm eval tiếng Anh (không có gói) với baseline đã ghi. Baseline ghi trên máy này là 0,735, còn runner GitHub đo được 0,728, chênh hơn mức cho phép 0,005. ONNX lượng tử cho số hơi khác nhau theo CPU, nên so số giữa hai máy khác nhau là sai cách. Tôi không hạ baseline. Agent V12 sẽ sửa để mục này so với bản upstream được dựng và đo ngay trong cùng lần chạy, như bài kiểm bất biến đang làm. Baseline đã ghi chỉ còn dùng để báo độ trôi. Agent được phép tự commit, push và theo dõi CI cho tới khi xanh.
+
+**Gói cho `v0.17.2-vantt.2`:** ba gói đã đăng. Gói Mac Intel lại trượt ở bước kiểm mức lệch của bản ghim, dù trước đó V03 khẳng định kết quả bước này không đổi giữa các lần chạy. Tôi đã giao V03 tìm nguyên nhân, đo độ dao động giữa các lần chạy, làm cho bước kiểm ổn định mà không nới các mức lệch đã chấp nhận, rồi dựng lại gói.
+
+Vì catchup hỏng nên tag `v0.17.2-vantt.3` chưa được đẩy. Bản ổn định hiện tại vẫn là `v0.17.2-vantt.1`, đủ 4 gói.
+
+Đang chạy: V12 (sửa cổng chất lượng), V03 (bước kiểm gói Intel), V14 (báo cáo cuối và L24).
+[L3361] USER: <task-notification>
+<task-id>aa32b998406ef26b1</task-id>
+<tool-use-id>toolu_019DBMWNhUe76MNBAq7uxr9J</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/aa32b998406ef26b1.output</output-file>
+<status>completed</status>
+<summary>Agent "V03 bundles and first release" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE. `v0.17.2-vantt.2` now has all 4 bundles (12 files) and is marked latest. The pin-effect check is fixed so it no longer flips on the runner's CPU.
+
+**Why run 41406332060 failed**
+- It used the allow-list version of `bundle-parity.mjs`. The output shows the "Accepted deltas" line and the run's head commit is a071ef9.
+- The eval numbers depend on the CPU class of the `ubuntu-latest` runner. That run landed on a different CPU than the earlier green ones.
+- On it, the locked side scored obsidian-help ALL 0.728 (green runs: 0.735). The deltas from the pin were:
+
+| Corpus / category | Delta |
+|---|---|
+| obsidian-help ALL | +0.018 |
+| obsidian-help keyword | +0.011 |
+| obsidian-help conceptual | +0.029 |
+| obsidian-help multilingual | +0.054 |
+| vi-synonym | +0.023 |
+
+- On AMD EPYC the same check gives multilingual +0.063 and vi-synonym −0.017, the accepted values.
+- So I was wrong to call the result deterministic across machines. It is deterministic per CPU class, not across them.
+
+**Measurement**
+- I ran the check on 3 runners: AMD EPYC 9V74, 7763 and 7763. All 3 gave identical numbers.
+- Re-running the same side on the same machine gave identical results.
+- The "noise" I first saw between locked and locked2 was my own bug. The pinned run had already modified the tree, so the second "locked" run was actually pinned.
+
+**Fix**
+- The check now lives in `.github/workflows/vantt-pin-effect.yml`, which records the CPU model. It only counts on AMD EPYC, the class the user's accepted deltas were measured on.
+- On another CPU the attempt is marked "inconclusive" and retries on a fresh runner, up to 3 attempts. If none lands on EPYC, the verdict is not ok and darwin-x64 is not published, with a visible error.
+- The accepted deltas are unchanged: multilingual +0.063 and vi-synonym −0.017, margin 0.005, every other category within 0.01.
+- Run 41411464446 for `v0.17.2-vantt.2` hit a non-EP …[+990]
+[L3370] AGENT: V03 đã sửa xong: release `v0.17.2-vantt.2` giờ có đủ 4 gói kèm sha256 và được đánh dấu là bản mới nhất.
+
+Nguyên nhân lần trượt trước: GitHub phân runner lúc thì máy AMD EPYC, lúc thì loại CPU khác, và ONNX cho số khác nhau theo loại CPU. Trên cùng một loại CPU thì kết quả lặp lại y hệt; ba runner EPYC đều cho cùng một số. Hai mức lệch anh đã chấp nhận được đo trên EPYC. Vì vậy bước kiểm giờ chỉ tính kết quả chạy trên EPYC. Gặp máy khác thì nó thử lại trên runner mới, tối đa 3 lần. Nếu vẫn không gặp EPYC, gói Mac Intel không được đăng và CI báo lỗi rõ. Các mức lệch đã chấp nhận giữ nguyên.
+
+Phát hiện này cũng khớp với lỗi `upstream-no-pack` của catchup: 0,735 trên một loại CPU, 0,728 trên loại khác. Hướng sửa đã giao cho V12 là so với bản upstream đo trong cùng một lần chạy, nên không còn phụ thuộc vào loại máy.
+…
+[L3372] RESULT: (Bash completed with no output)
+[L3378] AGENT: Đang chờ hai agent: V12 (sửa cổng chất lượng để CI xanh) và V14 (báo cáo cuối và L24).
+[L3388] USER: <task-notification>
+<task-id>a484f8e19b0d45969</task-id>
+<tool-use-id>toolu_01VJKvi3bx5q7schZ89iRTaW</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a484f8e19b0d45969.output</output-file>
+<status>completed</status>
+<summary>Agent "V12 invariance and quality gate" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+**Run URL:** https://github.com/vantt/obsidian-hybrid-search/actions/runs/41410567165 finished green. The log ends with `SUCCESS: vantt/v0.17.2 at ed7334a3232b (0.17.2-vantt.3)`. The push did not start a catchup on its own, so I dispatched it with `gh workflow run vantt-catchup.yml`. The log shows nothing on the CI-side no-pack check or the per-check gate numbers, so I confirmed only the overall SUCCESS there. The new rule is covered by the 105 unit tests, which pass.
+
+**Summary:** pass or fail no longer depends on numbers recorded on another machine. The fix is pushed to master as `21f6de7`.
+
+**What changed**
+- **No-pack check:** `upstream-no-pack` compares the fork without a pack to pristine upstream measured in the same run. The tolerance is ±0.005 and is now called `upstream.tolerance` in `quality-gates.json`. On macOS ARM the `eval/quality.ts` floors still decide.
+- **Where the upstream number comes from:** `invariance.mjs` writes `vantt/.work/invariance-last.json`, and the gate reuses it only when the sha, HEAD and k match. Otherwise the gate builds a pristine upstream worktree and measures it itself, in the new `lib/same-run.mjs`.
+- **Vietnamese corpus checks:** the vi regression rules and the over-upstream targets (G3 ratio, G8 compound gain) now use a no-pack vi eval of the same tree in the same run, not `0.17.2.vi-search.json`. That reference is the fork without a pack rather than a separately built upstream; T4's identical top_paths are what make it stand in for upstream.
+- **Stored baselines:** they are now a drift report with a new `warn` status, which never fails the gate. This covers `upstream-baseline-drift` and `vi-baseline-drift`, which also warns when a stored baseline has a stale query count. The reports list warnings under `warnings`.
+- **Previous-release baseline:** the `vi-previous-release-*` checks only warn unless `vi.previous_release_enforced`  …[+1061]
+[L3397] AGENT: CI catchup đã xanh và đẩy `v0.17.2-vantt.3`. Đóng issue #2 và kiểm release mới.
+[L3398] TOOL Bash: export GH_REPO=vantt/obsidian-hybrid-search; gh issue view 2 --json state --jq .state; gh issue close 2 --comment "Catchup xanh lại: run https://github.com/vantt/obsidian-hybrid-search/actions/runs/41410567165 (SUCCESS, 0.17.2-vantt.3). Nguyên nhân: test snapshot không gói của P01 hỏng khi hai note  …[+298]
+…
+[L3410] TOOL Bash: echo "18:30 CI catchup green (41410567165), vantt.3 latest with 12 assets (catchup->bundles end to end OK). Issues #2, #3 closed. Remaining: V14 final report + L24; merge vi-snippet-fix; README; PRD14; V15 (user); archive master plan." >> /home/vantt/projects/ohs-wt/lead-state.txt
+[L3411] RESULT: (Bash completed with no output)
+[L3415] AGENT: CI đã xanh trở lại và luồng phát hành tự động chạy trọn từ đầu đến cuối:
+
+- **Cổng chất lượng (V12, `21f6de7`):** đạt hay trượt giờ chỉ dựa vào số đo của upstream trong cùng lần chạy, trên cùng máy. Baseline đã ghi trước đó chỉ dùng để báo độ trôi, không còn làm hỏng cổng. Không baseline nào bị hạ hay sửa.
+- **Catchup ([run 41410567165](https://github.com/vantt/obsidian-hybrid-search/actions/runs/41410567165)):** chạy thành công, tự đẩy tag và tự dựng gói. Release **`v0.17.2-vantt.3`** có đủ 4 gói cho 4 nền, mỗi gói kèm sha256 và `.bundle.json`, và đang là bản mới nhất. Đây là lần đầu catchup tự gọi bước dựng gói trọn vẹn.
+- **Issue:** đã đóng #2 và #3, kèm bình luận ghi nguyên nhân và commit sửa. Fork hiện không còn issue nào mở.
+
+Còn lại:
+- **Từ V14:** báo cáo review cuối và L24. Xong thì tôi merge nhánh `vi-snippet-fix`.
+- **Phần tôi làm:** cập nhật `vantt/README.md`, đánh dấu PRD mục 14, kiểm tổng các điều kiện "Xong khi", rồi chuyển plan tổng vào archive.
+- **Từ anh:** golden set riêng để chạy V15.
+[L3416] USER: Goal check-in: «bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng &gt;=50%.» is still active, and evaluation has been deferred for 120 min because background work is still running:
+- bitb1p76f · shell · cd /home/vantt/projects/obsidian-hybrid-search; python3 - &lt;&lt;'EOF' p='vantt/patches/0001-language-p… [+2204 chars]
+Check on their progress (e.g. read their output). If they are progressing, say so briefly and keep waiting; if they are stuck or no longer needed, fix or stop them and continue toward the goal.
+[L3426] AGENT: Danh sách việc nền chỉ còn một shell lạ, và không thấy V14. Kiểm cả hai.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

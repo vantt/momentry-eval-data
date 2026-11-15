@@ -1,0 +1,74 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Chào em. Tối nay cô cần làm ba việc: chấm nốt bài nghị luận xã hội "lòng biết ơn" của 10A3, sửa rubric, và soạn đề kiểm tra giữa kỳ (thi thứ Ba tuần sau). Bài scan ở bai-lam/, 42 file.
+[L5] USER: Có, ds-lop.csv. Cô chụp theo đúng thứ tự trong sổ.
+[L9] USER: Cô đã đọc được 20 bài, có ghi chú ở cham-diem/ghi-chu.md. Em đọc ghi chú rồi đọc giúp cô 22 bài còn lại (bản chữ OCR ở bai-lam-text/), tóm mỗi bài 2 dòng: luận điểm chính và dẫn chứng.
+</asks>
+
+<story>
+tension: none
+stakes: 1/3
+# Gặp vấn đề, agent dừng việc đang làm, báo cáo mô hình phát hiện được, đưa ba phương án có khuyến nghị rõ, rồi chờ giáo viên chọn trước khi làm tiếp.
+
+**Chuyện gì xảy ra:** Gặp vấn đề, agent dừng việc đang làm, báo cáo mô hình phát hiện được, đưa ba phương án có khuyến nghị rõ, rồi chờ giáo viên chọn trước khi làm tiếp.
+**Góc người ngoài:** cách làm phổ biến là Hoàn thành yêu cầu đang được giao và chỉ nhắc vấn đề phát sinh ở cuối, hoặc tự chọn cách xử lý mà không hỏi; ở đây khác ở Việc dừng để hỏi không phải do thiếu thông tin hay thiếu quyền; agent đưa ra quyết định ảnh hưởng đến cách chấm và đánh giá học sinh, nên đưa cho người có quyền quyết định. Người đọc muốn biết ranh giới giữa việc tự làm và việc phải hỏi.
+</story>
+
+<excerpt>
+[L12] TOOL Bash: grep -li "bác lao công" /Users/hang/Documents/ngu-van-10a3/bai-lam-text/*.txt | wc -l && grep -li "lòng biết ơn là sợi dây vô hình" /Users/hang/Documents/ngu-van-10a3/bai-lam-text/*.txt | wc -l
+[L13] RESULT: 17 | 14
+[L14] AGENT: Trước khi tóm từng bài, em thấy một điều cô cần biết. Trong ghi chú cô đánh dấu nhiều bài "lại bác lao công". Em kiểm tra cả 42 bài:
+
+- 17 bài dùng đúng ví dụ bác lao công trường, ví dụ trong bài mẫu em viết tuần trước.
+- 14 bài mở đầu bằng gần nguyên văn câu "Lòng biết ơn là sợi dây vô hình nối con người với con người", câu mở của bài mẫu.
+- Phần lớn 17 bài này đi theo đúng ba đoạn thân bài của bài mẫu: định nghĩa, biểu hiện qua bác lao công, phê phán người vô ơn.
+
+Bài mẫu được làm để giúp các em yếu biết một bài nghị luận trông thế nào, nhưng có vẻ nhiều em đã chép khung và ví dụ thay vì tự nghĩ.
+[L15] USER: Trời ơi. Đúng là cô xin em bài mẫu để giúp mấy đứa yếu, 6–7 em hay bỏ giấy trắng. Giờ thì 17 bài giống nhau, có cả mấy em khá cũng chép. Cô không biết chấm sao nữa, chấm theo rubric thì bài nào cũng đủ ý, mà đọc lên chẳng thấy các em nghĩ gì.
+[L16] AGENT: Đúng là bài mẫu đã giúp một phần: em xem lại 7 em cô nói hay bỏ giấy trắng, lần này cả 7 em đều viết đủ ba đoạn. Nhưng cái giá là cô mất khả năng nhìn ra tư duy của 17 em, kể cả những em vốn tự viết được.
+
+Một vài cách cô có thể cân nhắc:
+
+1. Chấm đợt này theo rubric như đã công bố (không phạt các em vì làm theo tài liệu cô phát), nhưng ghi nhận xét riêng: "Em thử thay ví dụ bác lao công bằng một người trong đời em."
+2. Cho 17 em viết lại riêng phần dẫn chứng (một đoạn) trong 15 phút đầu tiết sau, không có tài liệu.
+3. Từ nay không phát bài mẫu trọn vẹn. Thay bằng dàn ý mở (chỉ có câu hỏi gợi ý) và ba cách mở bài khác hẳn nhau, để các em phải chọn và tự viết tiếp.
+[L17] USER: Cô làm cả ba. Em soạn giúp cô dàn ý mở cho đề "lòng biết ơn" kiểu đó, chỉ câu hỏi gợi ý thôi, không có ví dụ nào. Và ghi vào ghi chú: không phát bài mẫu trọn vẹn nữa.
+[L18] TOOL Write: /Users/hang/Documents/ngu-van-10a3/tai-lieu/dan-y-mo-long-biet-on.md
+[L19] RESULT: File created successfully at: /Users/hang/Documents/ngu-van-10a3/tai-lieu/dan-y-mo-long-biet-on.md
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

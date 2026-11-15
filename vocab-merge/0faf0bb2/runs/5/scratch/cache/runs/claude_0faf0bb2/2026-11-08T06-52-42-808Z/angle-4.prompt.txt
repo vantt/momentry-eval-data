@@ -1,0 +1,108 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L2756] USER: Stop hook feedback: [thử paperclip trước, chạy spike trên máy này đi, setup một sample opc company.]: Spike và dựng công ty mẫu đã xảy ra: 'Spike đã chạy và công ty mẫu Sen Coffee đã được dựng (3 agent Mai/Long/Hà; goal; projects; SEN-1 và SEN-3 done)'. Nhưng sau đó người dùng trả lời 'bỏ goal, dọn hết paperclip', trợ lý đã gỡ CLI, xoá ~/.paperclip và ghi 'Toàn bộ dữ liệu Sen Coffee trong Paperclip đã mất'. Không có lệnh nào dựng lại Sen Coffee, nên khi kết thúc phiên không còn công ty mẫu nào, và điều kiện được đặt như trạng thái cần đúng tại thời điểm đó không được thoả. Goal vẫn active vì n …[+32]
+[L2760] USER: Stop hook feedback: [thử paperclip trước, chạy spike trên máy này đi, setup một sample opc company.]: Spike đã chạy và công ty mẫu Sen Coffee đã được dựng (3 agent Mai/Long/Hà, goal, project, SEN-1 và SEN-3 done), nên hai bước này đạt tại thời điểm đó. Nhưng sau khi người dùng trả lời 'bỏ goal, dọn hết paperclip', trợ lý đã gỡ CLI, xoá ~/.paperclip và ghi 'Toàn bộ dữ liệu Sen Coffee trong Paperclip đã mất'. Không có lệnh nào trong transcript dựng lại Sen Coffee, nên khi kết thúc phiên không còn công ty mẫu nào. Điều kiện được đặt như trạng thái cần còn đúng khi kết thúc phiên, nên không được t …[+4]
+[L2772] USER: xong rồi spike multica với aicoworker nhé
+</asks>
+
+<story>
+hook: Sửa chuỗi phiên bản để qua mặt kiểm tra, CLI chạy nhưng thoát không output
+tension: giup_ma_hai (Đổi chuỗi phiên bản để vượt rào / CLI chạy được nhưng gateway lỗi, spike trượt)
+stakes: 3/3
+# Multica + OpenClaw trượt: bản OpenClaw bị chặn vì thấp hơn phiên bản tối thiểu
+
+**Bối cảnh:** Spike Multica dùng OpenClaw 2026.3.13 đóng gói trong AICoworker.
+**Chuyện gì xảy ra:** Lần chạy đầu bị từ chối với thông báo 'below the minimum supported version 2026.5.5'. Agent thử đổi chuỗi phiên bản trong wrapper thành 2026.5.5. CLI chạy được, nhưng include config bị báo 'Include path escapes config directory', gọi gateway thất bại, rồi thoát không có output. Ngoài ra, với bản này --session-id dồn mọi lượt vào một session. Kết luận: spike trượt, kèm ba hướng đi tiếp.
+**Bài học:** Giả mạo số phiên bản để qua kiểm tra chỉ đẩy lỗi xuống tầng sâu hơn. Hãy xem xét gate phiên bản trước khi chọn cách tích hợp.
+**Artefact:** Dòng báo lỗi 'below the minimum supported version'. Đường dẫn đã che.
+</story>
+
+<excerpt>
+[L3039] USER: <task-notification>
+<task-id>bwaq2nc82</task-id>
+<summary>Monitor event: "Multica SEN-1 status and comments (spike)"</summary>
+<event>status=todo comments=1</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L3040] TOOL Bash: B=~/multica-spike/bin/multica; $B --profile spike issue comment list 01a18752-e17e-7706-a1bd-fc96d6990aa8 --output json 2>/dev/null | python3 -c " import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) else d.get('comments',[]) for c in d: print('---',c.get('author_type'),c.get('type'),c.g …[+184]
+[L3041] RESULT: --- agent system 2026-10-29T11:02:00Z | openclaw 2026.3.13 is below the minimum supported version 2026.5.5. Run `openclaw update` to upgrade and try again.
+[L3045] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/multica; git show v0.7.1:server/pkg/agent/openclaw.go > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/oc071.go; grep -rn "2026.5.5\|minOpenclaw\|MinOpenclaw\|openclawMinVersion" /tmp/claude-1000/-home-vantt-project-f …[+119]
+[L3046] RESULT: [… earlier output omitted; full output: /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/bztbqtd29.output] | /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/oc071.go:30:c …[+36]
+[L3057] TOOL TaskStop: {"task_id":"bztbqtd29"}
+[L3058] RESULT: {"message":"Successfully stopped task: bztbqtd29 (cd /home/vantt/project/fgOPC/upstreams/multica; git show v0.7.1:server/pkg/agent/openclaw.go > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/oc071.go; grep …[+715]
+[L3061] TOOL Bash: python3 - <<'EOF' import os p=os.path.expanduser('~/multica-spike/bin/openclaw'); s=open(p).read() shim='''case "$1" in --version|-V|version) echo "OpenClaw 2026.5.5 (fgOPC spike shim over 2026.3.13)"; exit 0;; esac ''' s=s.replace('exec /opt/AICoworker', shim+'exec /opt/AICoworker',1); open(p,'w'). …[+145]
+[L3062] RESULT: OpenClaw 2026.5.5 (fgOPC spike shim over 2026.3.13) | multica issue <command> [flags]
+[L3065] TOOL Bash: B=~/multica-spike/bin/multica; $B --profile spike issue rerun 01a18752-e17e-7706-a1bd-fc96d6990aa8 2>&1 | tail -3; sleep 45; $B --profile spike issue runs 01a18752-e17e-7706-a1bd-fc96d6990aa8 --output json 2>/dev/null | python3 -c " import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) el …[+273]
+…
+[L3079] TOOL Bash: B=~/multica-spike/bin/multica; I=01a18752-e17e-7706-a1bd-fc96d6990aa8; R=$($B --profile spike issue runs $I --output json 2>/dev/null | python3 -c "import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) else d.get('runs',[]);print(d[0]['id'])"); $B --profile spike issue run-messages $R --o …[+464]
+[L3080] RESULT: 0 messages | mai sessions: ['agent:mai:main']
+[L3083] AGENT: Agent `mai` **không có session mới**, tức lượt chạy chưa tới được gateway: CLI đã dừng trước đó. Mình đọc log của daemon để biết CLI làm gì.
+[L3084] TOOL Bash: ls -la ~/.multica/profiles/spike/ 2>&1 | head; find ~/.multica -maxdepth 4 -name "*.log" 2>/dev/null | head; wc -c /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/babol182t.output
+[L3085] RESULT: total 44 | drwxr-xr-x 2 vantt vantt 4096 Oct 29 18:04 .
+[L3087] TOOL Bash: grep -iE "openclaw|error|fail|stderr|exit|argv|args" ~/.multica/profiles/spike/daemon.log | tail -25 | cut -c1-400
+[L3088] RESULT: at file:///opt/AICoworker/resources/openclaw/dist/io-BRayLBf6.js:1179:34 | at IncludeProcessor.resolveInclude (file:///opt/AICoworker/resources/openclaw/dist/io-BRayLBf6.js:1177:42)
+[L3100] TOOL TaskStop: {"task_id":"babol182t"}
+[L3101] RESULT: {"message":"Successfully stopped task: babol182t (env -i HOME=$HOME USER=$USER LANG=C.UTF-8 PATH=$HOME/multica-spike/bin:/usr/local/bin:/usr/bin:/bin OPENCLAW_STATE_DIR=$HOME/aicoworker/openclaw MULTICA_OPENCLAW_MODEL=mai DO_NOT_TRACK=1 $HOME/multica …[+571]
+…
+[L3147] TOOL Bash: cd /home/vantt/project/fgOPC; python3 - <<'EOF' p='docs/vision.md'; s=open(p).read() old=[l for l in s.splitlines() if l.startswith('| **B. Multica + AICoworker**')][0] new='| **B. Multica + AICoworker** | Multica điều phối, daemon gọi CLI `openclaw agent` | **Spike trượt** ([báo cáo](spikes/2026-10 …[+1094]
+[L3148] RESULT: ok | 231:| 0b. Spike Multica | Kiểm 4 tiêu chí: workspace, ghi ngược, session, workflow | **Trượt** (2026-10-29): không tương thích với phiên bản OpenClaw mà AICoworker đóng gói |
+[L3150] AGENT: Spike **Multica + AICoworker không đạt**: hôm nay Multica không điều khiển được agent của AICoworker, nên cả 4 tiêu chí đều chưa kiểm được. Nguyên nhân không phải cấu hình mà là **phiên bản OpenClaw**. AICoworker đóng gói **2026.3.13**, còn Multica v0.7.1 cần **≥ 2026.5.5** ở ba chỗ:
+
+1. **Kiểm tra phiên bản:** lượt chạy đầu bị từ chối với thông báo *"openclaw 2026.3.13 is below the minimum supported version 2026.5.5"*.
+2. **File cấu hình riêng của task:** Multica `$include` cấu hình gốc cộng biến `OPENCLAW_INCLUDE_ROOTS`, mà bản 2026.3.13 chưa hỗ trợ. Mình đã thử cho wrapper khai man phiên bản 2026.5.5; CLI chạy được nhưng báo *"Include path escapes config directory"*, gọi gateway thất bại, chuyển sang embedded, rồi thoát mà không có output.
+3. **Định dạng output `--json`:** Multica đọc theo bản 2026.5.5.
+
+**Phần đã chạy được:**
+- Phía Multica ổn: server v0.7.1 trên Docker, workspace Sen Coffee, runtime OpenClaw `online`, agent Mai ở chế độ `gateway`.
+- Phía AICoworker cũng ổn. Mình tạo **agent OpenClaw riêng `mai`** (không đụng tới `main`, model `gemini-3-flash`) và gọi thẳng `openclaw agent --agent mai`, không qua Multica. Agent trả lời đúng mật mã `SEN-MEMORY-7429` trong MEMORY và đúng chữ ký trong SOUL.
+
+**Hai phát hiện phụ:**
+- Ở chế độ gateway **không truyền được model**: RPC `agent` không có tham số model, và CLI 2026.3.13 cũng không có cờ `--model`. Muốn agent dùng model khác thì phải tách thành agent OpenClaw riêng.
+- Với CLI 2026.3.13, `--session-id` vẫn đưa mọi lượt chạy vào chung session `agent:mai:main`, nên các lượt sẽ dồn vào một session.
+
+**Muốn đi tiếp với Multica thì có 3 đường:**
+1. Chờ AICoworker nâng OpenClaw lên ≥ 2026.5.5. Đây là đường sạch nhất.
+2. Vá daemon Multica: bỏ kiểm tra phiên bản, bỏ `$include`, sửa phần đọc output. Cần build Go và tự duy trì bản vá.
+3. Dùng Multica với OpenClaw bản mới chạy độc lập. Cách này bỏ hẳn AICoworker.
+
+Kết quả này khiến **A (Paperclip, đã chạy được) và C (tự xây, gọi đúng CLI của bản OpenClaw mà AICoworker …[+686]
+[L3160] USER: dọn hết multica, giữ lại agent mai
+[L3164] AGENT: Mình dọn Multica theo bảng trong báo cáo spike, giữ nguyên agent `mai`. Trước hết xem lại các mục sẽ xoá.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

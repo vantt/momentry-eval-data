@@ -1,0 +1,212 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+fgOPC là bộ dựng công ty một người vận hành bằng AI agent, chạy trên nền Multica tự host. Làm cho người muốn giao việc cho các team agent (Coding, Content, SEO & Analytics) qua issue, với bước chờ chủ duyệt ở những việc quan trọng. Mỗi khách có một workspace riêng, dựng từ một file cấu hình; thông tin riêng và secret của khách nằm ngoài repo. Hiện chạy với runtime Claude Code.
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L3373] USER: multica là không cần runtime của openclaw luôn?
+[L3386] USER: multica chat multi session được không?
+[L3398] USER: spike multica với claude code đi
+</asks>
+
+<story>
+hook: Agent bị trả lại hai lần, và nó hỏi chủ thay vì bịa giá
+tension: nguoi_dung_may_sai (Agent thường điền đại một con số để cho xong việc / Nó dừng lại hỏi chủ giá và hạn chót, qua cột chỉ 16 giây)
+stakes: 3/3
+# Multica + Claude Code đạt 5/5: issue đi qua cột, agent hỏi chủ thay vì bịa số
+
+**Bối cảnh:** Spike thứ hai với Claude Code làm runtime, kiểm năm tiêu chí: đúng vai, ghi ngược, tiếp nối session, workflow theo cột, chat nhiều phiên.
+**Chuyện gì xảy ra:** Issue tạo không có người nhận được tự giao cho agent viết nội dung, rồi sang cột duyệt và tự giao cho agent khác. Từ lúc chạy tới in_review chỉ mất 16 giây. Người duyệt trả lại hai lần: lần đầu vì thiếu giá, agent sửa nhưng để chỗ trống; lần hai agent dừng và hỏi chủ giá cùng hạn chót thay vì tự điền. Sau khi chủ trả lời, issue đi tiếp tới chờ chủ duyệt. Hai phiên chat với cùng một agent giữ hai session riêng và không lẫn thông tin. Không agent nào tự chuyển done, nhưng điều này mới nằm trong chỉ dẫn, server chưa ép.
+**Bài học:** Workflow theo cột chạy được khi mỗi cột có người xử lý và chỉ dẫn rõ. Ràng buộc 'không tự done' phải nằm ở server, không chỉ trong prompt.
+**Artefact:** Ảnh bảng workflow theo cột với issue đang chờ chủ duyệt. Che địa chỉ nội bộ và tên người.
+</story>
+
+<excerpt>
+[L3489] TOOL Bash: mc(){ $HOME/multica-spike/bin/multica --profile spike "$@"; }; RT=63651069-957b-42cb-b032-192135e1c34c mc agent create --name "Mai (Marketing)" --description "Trưởng phòng Marketing" --runtime-id $RT --model haiku --max-concurrent-tasks 1 --visibility workspace --instructions "Bạn là Mai, trưởng phò …[+1138]
+[L3490] RESULT: 8a9308c1-f1aa-45c3-97e9-666b22a4a49e Mai (Marketing) haiku | 2c9c762d-f344-4245-ad46-de0159df3b8e Long (Sales) haiku
+[L3492] AGENT: **Test 1 (a + b):** giao SEN-1 cho Mai, kèm yêu cầu viết nội dung, comment, rồi chuyển sang `in_review`.
+[L3493] TOOL Bash: mc(){ $HOME/multica-spike/bin/multica --profile spike "$@"; }; printf '%s\n' "Viết 2 câu giới thiệu hộp quà Tết Sen Coffee (cà phê đặc sản + phin + thiệp), mỗi câu dưới 25 chữ, có lời kêu gọi đặt trước." "Đăng kết quả thành MỘT comment trong issue này, rồi chuyển issue sang in_review." | mc issue cr …[+240]
+[L3494] RESULT: 01a18788-54e3-78ef-a323-37c347d312b6 SEN-1 todo
+…
+[L3538] USER: <task-notification>
+<task-id>bjcxhjt76</task-id>
+<tool-use-id>toolu_01MB5kEfvpL1eAtsAbxiSBaK</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/bjcxhjt76.output</output-file>
+<status>completed</status>
+<summary>Monitor "Multica+Claude SEN-1 status (spike B')" stream ended</summary>
+<event>issue=in_review run=completed
+END issue=in_review run=completed</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L3539] TOOL Bash: mc(){ $HOME/multica-spike/bin/multica --profile spike "$@"; }; I=01a18788-54e3-78ef-a323-37c347d312b6; mc issue comment list $I --output json 2>/dev/null | python3 -c " import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) else d.get('comments',[]) for c in d: print('---',c.get('author_ty …[+440]
+[L3540] RESULT: --- agent comment | Hộp quà Tết Sen Coffee: cà phê đặc sản, phin pha và thiệp chúc xuân, trao gửi trọn yêu thương. Đặt trước ngay!
+[L3549] TOOL Bash: mc(){ $HOME/multica-spike/bin/multica --profile spike "$@"; }; I=01a18788-54e3-78ef-a323-37c347d312b6; mc issue comment add --help 2>&1 | grep -E "\-\-(content|parent)" | head -4; printf '%s\n' "[@Mai (Marketing)](mention://agent/8a9308c1-f1aa-45c3-97e9-666b22a4a49e) Câu thứ hai của em hay hơn, nhưn …[+212]
+[L3550] RESULT: --allow-external-file Allow --content-file / --attachment to read a path outside the current working directory. Off by default so a stale file from another run/environment can't be picked up (MUL-4252). | --content string Comment content (decodes \n, …[+95]
+…
+[L3553] RESULT (bị chặn): for r in d[:2]: print({k:r.get(k) for k in ['status','started_at','completed_at']})" grep -E "invoking backend|agent result detail" ~/.multica/profiles/spike/daemon.log tail -2 grep -oE "resume_session=[a-z]+|session_id=[0-9a-f-]+|status=[a-z]+" mc issue comment list $I --output json python3 -c " | import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) else d.get('comments',[]) | c=d[-1];print('---',c.get('author_type'));print((c.get('content') or '')[:500])" mc issue get $I --output j …[+315]
+[L3555] TOOL Bash: mc(){ $HOME/multica-spike/bin/multica --profile spike "$@"; }; I=01a18788-54e3-78ef-a323-37c347d312b6; until [ "$(mc issue runs $I --output json 2>/dev/null | python3 -c "import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) else d.get('runs',[]);print(len([r for r in d if r.get('status') …[+597]
+[L3556] RESULT: resume_session=true | status=completed
+[L3560] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/multica; grep -rnoE "\"X-Workspace-[A-Za-z]+\"" server/internal/middleware/*.go | head -3; grep -n "type CreateIssueStatusRequest" -A6 server/internal/handler/*.go | head -8; grep -n "r.Get(\"/me\"\|/api/me\|members\"" server/cmd/server/router.go | head -5
+[L3561] RESULT: server/internal/middleware/auth.go:138:"X-Workspace-ID" | server/internal/middleware/task_token_workspace.go:81:"X-Workspace-ID"
+…
+[L3615] AGENT: Script Test 5 đã sẵn sàng. Đang chờ SEN-2 đi qua các cột của workflow.
+[L3621] USER: <task-notification>
+<task-id>blv87er8a</task-id>
+<summary>Monitor event: "SEN-2 workflow column transitions (spike B')"</summary>
+<event>status=sales_review assignee=Long</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L3622] AGENT: Mai viết xong và chuyển SEN-2 sang `sales_review`. Issue **tự được giao cho Long**, đúng người xử lý của cột. Đang chờ Long duyệt.
+[L3628] USER: <task-notification>
+<task-id>blv87er8a</task-id>
+<summary>Monitor event: "SEN-2 workflow column transitions (spike B')"</summary>
+<event>status=todo assignee=Mai</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L3629] AGENT: Long **trả lại**: SEN-2 quay về `todo` và tự giao lại cho Mai. Đường "Needs changes" đã chạy. Đang chờ Mai sửa bài.
+[L3634] USER: nhớ cho anh webui address nhé
+[L3643] AGENT: Web UI của Multica:
+
+**http://fg-server.tail342564.ts.net:3310**
+
+Truy cập được từ các máy trong tailnet; dùng `http://100.121.46.35:3310` nếu tên máy không phân giải được.
+
+**Đăng nhập:**
+1. Nhập email **`owner@sen-coffee.local`**. Chỉ email này được phép đăng nhập.
+2. Mã xác nhận không gửi qua email mà nằm trong log của server. Bạn báo mình "lấy mã" để mình đọc từ log, hoặc tự chạy:
+   ```bash
+   docker logs multica-spike-backend-1 2>&1 | grep "Verification code" | tail -1
+   ```
+
+Vào xong, bạn sẽ thấy workspace **Sen Coffee**:
+- project **"Bài đăng Facebook"** với board theo workflow Nháp → Sales review → In review → Done;
+- issue SEN-1 và SEN-2;
+- hai agent Mai và Long.
+
+Địa chỉ và cách đăng nhập đã ghi trong runbook `docs/spikes/2026-10-29-multica-claude/runbook.md`, mục 3.1 và 4. SEN-2 đang ở vòng sửa thứ hai (Long vừa trả lại cho Mai). Mình tiếp tục theo dõi.
+…
+[L3656] AGENT: Mã xác nhận cho `owner@sen-coffee.local`: **970260**
+
+Mã vừa được tạo cách đây khoảng 10 giây. Nếu mã báo hết hạn, bạn bấm gửi lại mã trên trang đăng nhập rồi báo mình "lấy mã" lần nữa.
+[L3663] USER: <task-notification>
+<task-id>blv87er8a</task-id>
+<tool-use-id>toolu_011LYLmaMnf8yPTQZUdVBQkn</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/blv87er8a.output</output-file>
+<status>completed</status>
+<summary>Monitor "SEN-2 workflow column transitions (spike B')" stream ended</summary>
+<event>TIMEOUT status=todo assignee=Mai</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L3671] AGENT: Monitor hết thời gian mà SEN-2 vẫn ở `todo`, giao cho Mai. Có thể Mai chưa chạy lại sau khi bị trả về. Mình xem các lượt chạy và comment.
+[L3672] TOOL Bash: mc(){ $HOME/multica-spike/bin/multica --profile spike "$@"; }; I=01a18789-8b75-7eae-8ee1-d1765815197d; mc issue runs $I --output json 2>/dev/null | python3 -c " import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) else d.get('runs',[]) for r in d: print(r.get('id','')[:8],r.get('status') …[+400]
+[L3673] RESULT: 01a1878a completed 8a9308c1 2026-10-29T12:02:27Z None | 01a1878a completed 2c9c762d 2026-10-29T12:02:16Z None
+…
+[L3679] TOOL Monitor: mc(){ $HOME/multica-spike/bin/multica --profile spike "$@"; }; I=01a18789-8b75-7eae-8ee1-d1765815197d; declare -A NM=([8a9308c1-f1aa-45c3-97e9-666b22a4a49e]=Mai [2c9c762d-f344-4245-ad46-de0159df3b8e]=Long [bd181249-1e51-4a95-9d6d-5bad59578a99]=Owner); prev=""; n=0; while true; do j=$(mc issue get $I …[+481]
+[L3680] RESULT: Monitor started (task b1bp85hl0, expires in 15m unless the source ends first; you get one notice at expiry — re-arm if you still need the watch). You will be notified on each event. Keep working — do not poll or sleep. Events may arrive while you are …[+52]
+[L3691] AGENT: Chủ đã comment: giá 350.000đ, tặng thêm gói 100g, hạn đặt trước 15/01. Đang chờ Mai điền vào bài và Long duyệt lại.
+[L3695] USER: <task-notification>
+<task-id>b1bp85hl0</task-id>
+<summary>Monitor event: "SEN-2 after owner input (spike B')"</summary>
+<event>status=todo assignee=Mai</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L3696] AGENT: Mai đang xử lý thông tin chủ vừa cung cấp. Đang chờ.
+[L3702] USER: <task-notification>
+<task-id>b1bp85hl0</task-id>
+<tool-use-id>toolu_01PoHcJbvBqxirxCnm4z46pE</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/b1bp85hl0.output</output-file>
+<status>completed</status>
+<summary>Monitor "SEN-2 after owner input (spike B')" stream ended</summary>
+<event>status=in_review assignee=Owner
+END status=in_review assignee=Owner</event>
+If this event is something the user would act on now, send a PushNotification. Routine or benign output doesn't need one.
+</task-notification>
+[L3707] AGENT: SEN-2 đã đi hết luồng tới **`in_review`, giao cho chủ (Owner)**. Mình đọc nhanh hai comment cuối, rồi chạy Test 5 (chat) vì Mai giờ đã rảnh.
+[L3708] TOOL Bash: mc(){ $HOME/multica-spike/bin/multica --profile spike "$@"; }; mc issue comment list 01a18789-8b75-7eae-8ee1-d1765815197d --output json 2>/dev/null | python3 -c " import json,sys;d=json.load(sys.stdin);d=d if isinstance(d,list) else d.get('comments',[]) for c in d[-2:]: print('---',c.get('author_typ …[+43]
+…
+[L3710] TOOL Bash: WS=b65ce663-f822-4985-b799-0359ab226333 AGENT=8a9308c1-f1aa-45c3-97e9-666b22a4a49e python3 -I ~/multica-spike/scripts/chat_test.py 2>&1
+[L3711] RESULT: Command running in background with ID: b4ai78lw9. Output is being written to: /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/b4ai78lw9.output. You will be notified when it completes — do not poll that file or sl …[+161]
+[L3712] AGENT: **Test 4 đạt (d), workflow theo cột:**
+- Mai điền đủ giá, ưu đãi và hạn chót → Long **duyệt đạt** → `in_review`, giao cho chủ.
+- Cả luồng có hai vòng "Needs changes" và một lần agent dừng lại hỏi chủ.
+- Không agent nào tự chuyển `done`.
+
+SEN-2 đang chờ bạn duyệt trên web UI. Test 5 (chat 2 phiên) đang chạy.
+[L3723] USER: <task-notification>
+<task-id>b4ai78lw9</task-id>
+<tool-use-id>toolu_012vL51t38t38ibEw9Bgh5vF</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/b4ai78lw9.output</output-file>
+<status>completed</status>
+<summary>Background command "Run two-session chat test with Mai" completed (exit code 0)</summary>
+</task-notification>
+[L3724] TOOL Bash: cat /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/b4ai78lw9.output; grep -E "invoking backend|agent result detail" ~/.multica/profiles/spike/daemon.log | tail -8 | grep -oE "task=[0-9a-f]{8}|resume_session=[a-z]+|session_id=[0-9a-f]{8}" | paste - - - 2>/dev/nu …[+12]
+[L3725] RESULT: sessions: 01a1879a-5731-7ba8-9d33-c4661180fc45 01a1879a-573b-7b2c-9405-536ee51e7971 | A1: Đã nhớ
+[L3729] TOOL Edit: /home/vantt/project/fgOPC/docs/spikes/2026-10-29-multica-claude/runbook.md
+[L3730] RESULT: The file /home/vantt/project/fgOPC/docs/spikes/2026-10-29-multica-claude/runbook.md has been updated successfully. (file state is current in your context — no need to Read it back)
+[L3731] TOOL Bash: cd /home/vantt/project/fgOPC; sed -i 's/^status: đang chạy$/status: đạt 5\/5 (stack vẫn chạy)/' docs/spikes/2026-10-29-multica-claude/runbook.md; cp ~/multica-spike/scripts/workflow.py ~/multica-spike/scripts/chat_test.py docs/spikes/2026-10-29-multica-claude/scripts/; S=/home/vantt/.local/state/ski …[+2036]
+[L3737] RESULT: OK: wrote 52 lessons in 8 domain file(s). | docs ok
+[L3747] AGENT: Spike **Multica + Claude Code đạt 5/5 tiêu chí**, và stack vẫn đang chạy để bạn vào xem.
+
+| Tiêu chí | Kết quả |
+|---|---|
+| (a) Làm đúng vai trò | ✓ Mai viết đúng yêu cầu và ký đúng chữ ký |
+| (b) Ghi ngược vào Multica | ✓ Comment, chuyển `in_review`, mất 16 giây; **không tự chuyển `done`** |
+| (c) Tiếp nối session | ✓ `resume_session=true`, cùng session; Mai sửa đúng "câu thứ hai" mà không cần nhắc lại |
+| (d) Workflow theo cột | ✓ Xem diễn biến SEN-2 bên dưới |
+| (e) Chat nhiều phiên | ✓ Hai phiên, hai session Claude riêng; mỗi phiên nhớ đúng mã khách hàng của mình, không lẫn sang nhau |
+
+**Diễn biến SEN-2**, workflow "Bài đăng FB" (Nháp: Mai → Sales review: Long → In review: chủ → Done):
+1. Issue tạo ra không chỉ định người → **tự giao cho Mai** → Mai viết xong → **tự giao cho Long**.
+2. Long trả lại vì thiếu giá → Mai sửa nhưng để chỗ trống → Long trả lại lần nữa.
+3. **Mai dừng lại và hỏi chủ** giá và hạn chót, nói rõ không tự bịa số liệu bán hàng.
+4. Chủ trả lời → Mai điền vào → Long duyệt đạt → `in_review`, **giao cho bạn**.
+
+**Cần lưu ý:**
+- **Chặn agent tự `done` chỉ nằm trong chỉ dẫn**, server không ép. Trong spike, agent tuân thủ.
+- **Agent chạy với `bypassPermissions`**: được chạy mọi lệnh với quyền user `vantt`, không có sandbox. Nếu dùng thật, đây là điểm phải xử lý.
+- Hướng này **bỏ hoàn toàn AICoworker**: mất bộ nhớ, SOUL, Zalo. License Multica chỉ cho dùng nội bộ.
+- **Chưa kiểm:** steer khi agent đang chạy, và chi phí token theo issue.
+
+**Bạn vào xem trực tiếp:** **http://fg-server.tail342564.ts.net:3310**, email `owner@sen-coffee.local`, cần mã thì báo mình "lấy mã". SEN-2 đang chờ bạn duyệt. Bạn có thể kéo thẻ sang `Done`, hoặc trả về `todo` để xem Mai sửa tiếp.
+
+**Tài liệu (chưa commit):**
+- Runbook `docs/spikes/2026-10-29-multica-claude/runbook.md`: setup, Tailscale, đăng nhập, daemon, kết quả kiểm thử, cách dọn dẹp, kèm 3 script.
+- Lesson `workflow-step-hands-to-handler` có thêm bằng chứng thực tế.
+- `docs/vision.md` thêm hướng B' (đã đạt).
+- ` …[+110]
+[L3752] USER: có cách set passowrd cho user ower không.
+[L3764] AGENT: Mình kiểm tra Multica có hỗ trợ đăng nhập bằng mật khẩu không.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

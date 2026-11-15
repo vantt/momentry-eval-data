@@ -1,0 +1,101 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Hi! Picking up the Brightline Dental churn study. 14 patient interviews are in interviews/, the kickoff notes are in notes/kickoff.md, and the survey export is data/survey.csv. Today I need a synthesis draft and the outline for Thursday's exec readout. First can you list what's in interviews/?
+[L43] USER: Yeah. That's going to be an awkward moment in the room, the one thing they agreed on turns out to be two things. Ok, split it into 'Price A: competitor promo' and 'Price B: checkout surprise' in the synthesis. And put a note to myself: brief Priya before Thursday so she isn't blindsided.
+[L46] USER: Coffee break done. The survey: can you give me n and the top reasons from the multiple-choice question 'Why didn't you come back?'
+[L50] USER: Good. So how many findings do we have in total now?
+</asks>
+
+<story>
+hook: Từ chối đổi nhắc nhở lấy giờ khám trẻ em, người dùng phải gọi người bảo trợ
+tension: chon_mot_mat_mot (Giữ nhắc nhở: rẻ nhất, đứng đầu khảo sát / Bỏ giờ khám trẻ em mà người bảo trợ quan tâm, xuống phụ lục)
+stakes: 3/3
+# Luật 'chọn 3 trong 9' và câu hỏi của người bảo trợ đi vào phụ lục
+
+**Bối cảnh:** Buổi trình bày 20 phút trước CEO, Head of Sales và Head of Ops. Đội có 9 phát hiện ứng viên, từng được gom lại từ phỏng vấn và khảo sát.
+**Chuyện gì xảy ra:** Agent đề xuất ba phát hiện: lễ tân, sốc khi thanh toán và nhắc nhở tự động. Agent cũng gợi ý đổi nhắc nhở lấy giờ khám cho trẻ em để giữ người bảo trợ, nhưng người dùng từ chối vì nhắc nhở là việc rẻ nhất và đứng đầu khảo sát. Giờ khám cho trẻ em (2 phỏng vấn, 57 phản hồi khảo sát) được đưa vào phụ lục kèm ước tính chi phí mở cửa thứ Bảy, và người dùng sẽ gọi trực tiếp người bảo trợ trước buổi họp để giải thích.
+**Bài học:** Ràng buộc thời gian quyết định cấu trúc trình bày: chọn theo tiêu chí rõ ràng (hành động rẻ, ảnh hưởng lớn), và báo trước cho người bảo trợ về vị trí câu hỏi của họ thay vì để họ phát hiện trên slide.
+**Artefact:** Outline với 3 slide chính và 1 slide phụ lục 'Giờ khám cho trẻ em: những gì đã tìm thấy'. Không cần ảnh chụp.
+</story>
+
+<excerpt>
+[L48] RESULT: 412 | forgot / no reminder 97
+[L49] AGENT: n = 412 lapsed patients. Top reasons (multi-select):
+
+1. forgot / no reminder: 97
+2. cost higher than expected: 88
+3. found cheaper clinic: 61
+4. hours not convenient: 57
+5. moved: 40
+6. wait time: 33
+
+This backs up the interviews: 'cost higher than expected' (Price B) is bigger than 'found cheaper clinic' (Price A), and reminders are #1.
+[L50] USER: Good. So how many findings do we have in total now?
+[L51] AGENT: Nine candidate findings:
+
+1. Front-desk continuity (headline)
+2. Price B: checkout surprise / co-pay
+3. Reminder SMS depends on a person, not a system
+4. Price A: competitor whitening promo
+5. Pediatric hours (weekday-only for kids)
+6. Different dentist each visit
+7. Wait times at District 7
+8. Moving away (not addressable)
+9. Online booking abandoned at the insurance step
+[L52] USER: Thursday is 20 minutes with Linda, Derek and Priya. Last time I showed nine findings to an exec team they picked the easiest one and ignored the rest. I want three. Help me choose, and be honest about what we lose.
+[L53] AGENT: If the rule is 'three findings that each lead to a clear action and together explain most of the churn', I'd pick:
+
+1. **Front-desk continuity**: biggest effect, explains the two worst clinics.
+2. **Checkout surprise (Price B)**: second biggest survey reason, fixable with a quote-before-treatment script.
+3. **Reminders as a system**: #1 survey reason, cheap to fix (automated SMS).
+
+What we lose:
+
+- **Pediatric hours (#5)**. This is the costly one: it's the question Linda asked by name at kickoff. 2 interviews and 57 survey mentions, so it's real, but smaller than the three above and an expensive fix (opening weekends). If it's not in the main deck, Linda may feel her question was ignored.
+- **Price A (competitor promo)**: Derek's hypothesis. Leaving it out also needs care.
+
+Alternative: swap #3 for pediatric hours to keep the sponsor happy, but then the cheapest, highest-impact fix (reminders) drops out.
+[L54] USER: No, I'm not swapping. Reminders is the cheapest win and it's the #1 survey reason. Pediatric hours goes to the appendix with the numbers. I'll call Linda Wednesday and tell her directly that her question is answered in the appendix and why it didn't make the top three. Better she hears it from me than discovers it on slide 14.
+[L55] AGENT: Makes sense. I'll put the three in the outline and an appendix slide 'Pediatric hours: what we found' with the 2 interviews, the 57 survey responses and a rough cost of Saturday opening. I'll also add 'Call Linda Wed re: pediatric hours in appendix' to your notes.
+[L56] TOOL Write: /Users/maya/clients/brightline-dental/churn-study/deck/outline.md
+[L57] RESULT: File created successfully at: /Users/maya/clients/brightline-dental/churn-study/deck/outline.md
+[L58] TOOL Edit: /Users/maya/clients/brightline-dental/churn-study/notes/todo.md
+[L59] RESULT: The file /Users/maya/clients/brightline-dental/churn-study/notes/todo.md has been updated successfully.
+[L60] USER: Last thing: make the quote bank a proper table (quote, participant, clinic, theme) and export the outline to docx, Brightline uses Word.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

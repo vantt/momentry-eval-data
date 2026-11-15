@@ -1,0 +1,137 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) là tầng nền tảng để xây và chạy các ứng dụng agent, gồm hạ tầng, skill và tự động hoá nằm dưới mọi ứng dụng agent. Làm cho nhà phát triển, để họ tạo agent mới mà không phải xây mọi thứ từ đầu. Cài bằng một binary `fgctl` trên Linux (x86_64) và Windows 10 trở lên (x86_64), không cần clone repo, npm hay Rust; macOS và Windows ARM chưa được hỗ trợ trong bản alpha. Đang ở bản alpha v0.2.0-rc.2.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L1798] USER: như vậy nhìn tổng quan sẽ có 3 hệ : decision engine, document engine và context engine. và 3 hệ là liên quan sử dụng lẫn nhau
+[L1815] USER: em commit push đi. sau đó bật một hội đồng cấp cao để phân component authority/boundary như thế nào cho hợp lý. trước khi mở hội đồng cho anh biết các family/model sẽ tham gia
+[L1940] USER: kiểm tra lại tất cả tài khoản xem còn work không, nếu grok-4.6 hết quota thì chuyển sang cái gì?
+</asks>
+
+<story>
+hook: Copy một phiên đăng nhập: từ 1 lên 3 nhà cung cấp, nhưng một tài khoản treo 300 giây
+tension: khac (Copy session đưa số nhà cung cấp chạy được từ 1 lên 3 / Một tài khoản thiếu file làm probe treo 200–300 giây)
+stakes: 3/3
+# Một lượt probe sáu nhà cung cấp: từ một family chạy được lên ba sau khi copy session, và một tài khoản OAuth treo 300 giây
+
+**Bối cảnh:** Owner muốn biết tài khoản nào còn dùng được trước khi mở hội đồng kiến trúc. fgOS không quản lý tài khoản của CLI (codex, claude, omp, pi), nên kho tài khoản rỗng.
+**Chuyện gì xảy ra:** Lượt đầu chỉ claude chạy được, openai ra exit 11 vì màn hình đòi đăng nhập OAuth. Sau khi owner copy session, kho tài khoản có hai nhà cung cấp và deepseek, glm chạy được (từ 1 lên 3 family). Gemini và xai vẫn lỗi giao lệnh. Một tài khoản xai thiếu agent.db làm probe treo 200–300 giây.
+**Bài học:** Probe bằng một lượt ngắn 'trả lời OK' cho kết quả thật nhanh hơn đọc cấu hình; và một kho đăng nhập rỗng khiến lệnh treo thay vì báo lỗi nhanh.
+**Artefact:** Bảng family, invocation, kết quả probe qua các lượt (lần 1, sau copy session, sau khai tài khoản). Che email, tên tài khoản và mọi giá trị đăng nhập.
+**Góc người ngoài:** cách làm phổ biến là Chạy một lệnh thử, đọc đầu ra trên màn hình, rồi đoán nguyên nhân khi lỗi, và ghi đè kết quả cũ; ở đây khác ở Kết quả so sánh được qua nhiều lượt, và có lịch sử để truy về lần trước. Người đọc sẽ hỏi làm sao để chạy lại kiểm tra cùng một cách mà không mất dấu vết cũ.
+</story>
+
+<excerpt>
+[L2127] AGENT: Em giải thích sau khi xem hai lượt kiểm vừa lỗi (`openai` và `gemini` thoát với mã 11), vì chúng liên quan trực tiếp tới câu hỏi của anh.
+[L2128] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; for p in openai gemini claude; do echo "===== $p"; python3 - "$S/probe-$p.json" "$S/probe-$p.err" <<'EOF' import sys,json,re j,e=sys.argv[1],sys.argv[2] raw=open(j,encoding='utf8',errors='replace').read( …[+796]
+[L2129] RESULT: ===== openai | {'outcome': 'execution-failure', 'executorId': 'openai', 'status': 'failed', 'verdict': 'not-applicable', 'reason': 'nonzero-process-exit', 'summary': 'the agent was stopped: terminal:delivery-unknown. Its screen ended with: https://au …[+170]
+[L2144] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; cat $S/probe-summary.txt; for p in xai deepseek glm; do echo "===== $p"; python3 - "$S/probe-$p.json" <<'EOF' import sys,json,re raw=open(sys.argv[1],encoding='utf8',errors='replace').read() try: d=json. …[+611]
+[L2148] RESULT: openai exit=11 secs=7 | claude exit=0 secs=16
+[L2154] TOOL Bash: /usr/bin/git status --short | cat; echo "--- herdr panes còn lại của các lượt kiểm:"; herdr pane list </dev/null 2>&1 | head -20 | cut -c1-160
+[L2159] RESULT: M .claude/settings.json | M .fgos/distribution.json
+…
+[L2180] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; node $S/sim-fallback.mjs xai openai </dev/null 2>&1 | head -16; node $S/sim-fallback.mjs xai openai gemini </dev/null 2>&1 | head -16
+[L2185] RESULT: --- loại: xai, openai | ## shape -> pass
+[L2191] AGENT: Em chưa mở hội đồng. Kiểm tra tài khoản cho kết quả đáng lo: hôm nay chỉ có family claude chạy được thật.
+
+## "Kho tài khoản rỗng" nghĩa là gì
+
+fgOS có một tính năng quản lý tài khoản theo kiểu kho: khai các tài khoản của từng nhà cung cấp trong config (`runner.llmAccounts` hoặc `runner.providers`), rồi nó tự theo dõi hạn mức, cách ly tài khoản hết quota và cho thuê (lease) tài khoản cho từng lượt chạy. Lệnh `fgos dispatch inspect --provider-capacity` trả về `{"providers": {}}` vì **cả config dự án lẫn config toàn cục đều không khai danh sách tài khoản nào**. Em đã đọc các khoá config để chắc điều này.
+
+Rỗng không có nghĩa tài khoản hỏng. Nó có nghĩa là **fgOS không quản lý tài khoản**, nó chỉ mở từng CLI (codex, claude, omp) và để CLI dùng phiên đăng nhập của chính nó. Hệ quả: fgOS không biết còn quota hay không, và không tự chuyển tài khoản khi hết quota. Việc kiểm duy nhất đáng tin là chạy thật, nên em đã chạy.
+
+## Kết quả chạy thật (một lượt đọc-chỉ "trả lời OK", tầng `high`)
+
+| Family | Kết quả | Chi tiết |
+|---|---|---|
+| **claude** | **Chạy được** | Trả "OK", 16 giây |
+| **openai** | **Hỏng, cần đăng nhập lại** | Codex CLI hiện URL đăng nhập OAuth, tức phiên đã hết hạn |
+| **gemini** | **Chưa kết luận** | Không xác nhận được lệnh đã gửi (`delivery-unknown`); màn hình omp đã lên bình thường |
+| **xai (grok-4.6)** | **Chưa kết luận** | Cùng lỗi; omp đã nạp Grok 4.6 và đang chờ nhập, nhưng lệnh không tới được |
+| **deepseek** | **Không dùng được** | `pool-unusable`: pool chưa khai tài khoản |
+| **glm (z-ai)** | **Không dùng được** | Cùng lý do |
+
+Với gemini và xai, em **không thể nói tài khoản còn hay hết quota**. Cả hai đi qua omp và cùng thất bại ở khâu giao lệnh, không ở khâu xác thực. Màn hình của xai còn cho thấy mô hình Grok 4.6 đã nạp. Đây giống lỗi omp đã ghi trong tài liệu trước (paste, modal), nhưng em chưa xác nhận nguyên nhân.
+
+Chỉ đọc thêm: các lượt kiểm không để lại pane nào của em, và không làm bẩn file được git theo dõi.
+
+## Nếu grok-4.6 hết quot …[+1532]
+[L2206] USER: đã copy lại session, em thử probe lại dàn account
+[L2212] AGENT: Em chạy lại đúng bộ kiểm cũ cho cả sáu family, sau khi xoá kết quả lần trước.
+…
+[L2273] TOOL Bash: fgos dispatch inspect --provider-capacity --json </dev/null 2>&1 | python3 -c " import sys,json,re d=json.load(sys.stdin); d=d.get('data',d) P=d.get('providers',{}) print('providers:',list(P.keys())) def m(s): return re.sub(r'[\w.+-]+@[\w.-]+','<email>',str(s)) for k,v in P.items(): if isinstance(v, …[+437]
+[L2278] RESULT: providers: ['openrouter', 'thehive'] | openrouter {'accounts': 1}
+[L2284] AGENT: Lần kiểm này khác lần trước: kho tài khoản không còn rỗng, deepseek và glm chạy được, nhưng openai, gemini và xai vẫn chưa. Em chưa mở hội đồng.
+
+## Kết quả probe lại
+
+| Family | Lần trước | Lần này | Chi tiết |
+|---|---|---|---|
+| claude | Chạy được | **Chạy được** | Trả "OK", 15 giây |
+| deepseek | Không dùng được (`pool-unusable`) | **Chạy được** | Trả "OK" qua `pi-herdr`, 31 giây |
+| glm | Không dùng được | **Chạy được** | Trả "OK" qua `pi-cli-bwrap`, 10 giây |
+| openai | Hỏng | **Vẫn hỏng** | Codex vẫn hiện URL đăng nhập OAuth |
+| gemini | Chưa kết luận | **Vẫn lỗi** | Giao lệnh không xác nhận được; màn hình omp ghi `no-model` |
+| xai | Chưa kết luận | **Vẫn lỗi** | Giao lệnh không xác nhận được; Grok 4.6 đã nạp |
+
+Hai điều đã đổi sau khi anh copy session:
+- **Kho tài khoản có dữ liệu:** `fgos dispatch inspect --provider-capacity` giờ trả hai nhà cung cấp, `openrouter` và `thehive`, mỗi nơi một tài khoản, không bị cách ly. `doctor` cũng báo `llmAccounts` khai 2 tài khoản trong 2 pool, và cảnh báo pool bị bỏ qua đã hết. Chính điều này mở khoá deepseek và glm.
+- **Không dọn sót:** em kiểm lại, không còn pane nào của lượt kiểm và không có file git nào bị bẩn.
+
+## Ba family còn hỏng, và nguyên nhân đoán được
+
+- **openai:** codex vẫn đòi đăng nhập. Invocation dùng là `codex-herdr` (không confine), có thể nó đọc thư mục đăng nhập khác với thư mục anh vừa copy. Em chưa kiểm vì sao.
+- **gemini:** màn hình omp ghi **`no-model`**, tức omp mở lên mà chưa chọn được model nào. Đây là dấu hiệu thiếu đăng nhập hoặc cấu hình model cho gemini trong profile omp. Lần trước em chưa thấy dòng này.
+- **xai:** omp đã nạp Grok 4.6, nhưng lệnh vẫn không tới được composer. Nghĩa là xác thực có vẻ ổn, lỗi nằm ở khâu giao lệnh của omp, không phải hết quota. Em chưa xác nhận nguyên nhân.
+
+## Nếu grok-4.6 không dùng được thì chuyển sang gì
+
+Mô phỏng (loại xai) cho kết quả không đổi so với lần trước:
+
+| Ghế | Chuyển sang |
+|---|---|
+| Shaping, synthesizer | openai |
+| Critique, producer | ge …[+1381]
+[L2299] USER: show lại đầy đủ tài khoản và đường dùng
+[L2303] AGENT: Em đọc cấu hình tài khoản và các đường gọi (invocation) của từng family, che email và không đọc nội dung thư mục đăng nhập.
+…
+[L2516] RESULT: openai exit=13 secs=13 | claude exit=0 secs=19
+[L2522] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; echo "--- stderr xai:"; sed 's/[A-Za-z0-9._%+-]*@[A-Za-z0-9.-]*/<email>/g' $S/probe-xai.err | tail -4 | cut -c1-300; echo "--- pane còn sót:"; herdr pane list </dev/null 2>&1 | python3 -c " import sys,js …[+367]
+[L2526] RESULT: --- stderr xai: | fgos: credential refresh-ahead for xai/grok-vantt (omp): skipped (missing-file)
+[L2533] TOOL Bash: python3 - <<'EOF' import json,os p=os.path.expanduser('~/.fgos/config.json') c=json.load(open(p,encoding='utf8')) la=c['runner']['llmAccounts'] la['openai'].pop('codex-default',None) la.pop('xai',None) open(p,'w',encoding='utf8').write(json.dumps(c,ensure_ascii=False,indent=2)+'\n') print('pool:',{k …[+796]
+[L2543] RESULT: pool: {'openrouter': ['openrouter'], 'thehive': ['thehive'], 'openai': ['openai-tetcu72', 'openai-tetnu', 'openai-fgovn'], 'gemini': ['gemini-tetcu72']} | ready
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

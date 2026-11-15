@@ -1,0 +1,186 @@
+{
+  "at": "2026-11-05T09:46:39.563Z",
+  "manifest": "/home/vantt/projects/momentry/.claude/worktrees/agent-a26cd2673c99e1c38/docs/_private/eval/manifest.json",
+  "rows": [
+    {
+      "id": "2dfb5915",
+      "run": 1,
+      "stories": 14,
+      "usd": 0.82468935,
+      "secs": 75.8,
+      "modelSecs": 71.62299999999999,
+      "status": "done",
+      "dryRunUsd": 0.58,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 144183,
+          "tokOut": 4008,
+          "usd": 0.15358544999999998,
+          "secs": 21.424,
+          "share": 0.18623430750015144
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 142929,
+          "tokOut": 3257,
+          "usd": 0.6017509,
+          "secs": 30.646,
+          "share": 0.7296697841435688
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 7565,
+          "tokOut": 1589,
+          "usd": 0.0382875,
+          "secs": 12.089,
+          "share": 0.0464265726239826
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 7317,
+          "tokOut": 966,
+          "usd": 0.031065500000000003,
+          "secs": 7.464,
+          "share": 0.03766933573229727
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 301994,
+          "tokOut": 9820,
+          "usd": 0.8246893499999999,
+          "secs": 71.62299999999999,
+          "share": 1
+        }
+      },
+      "rank": null,
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "2dfb5915",
+      "run": 2,
+      "stories": 31,
+      "usd": 0.9149184,
+      "secs": 196.2,
+      "modelSecs": 191.889,
+      "status": "done",
+      "dryRunUsd": 0.58,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 144196,
+          "tokOut": 29816,
+          "usd": 0.2160579,
+          "secs": 132.53,
+          "share": 0.23614991238562913
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 143609,
+          "tokOut": 2860,
+          "usd": 0.5951735,
+          "secs": 26.208,
+          "share": 0.6505208551932063
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 9453,
+          "tokOut": 3005,
+          "usd": 0.0599995,
+          "secs": 20.607,
+          "share": 0.06557907240689442
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 9205,
+          "tokOut": 1473,
+          "usd": 0.043687500000000004,
+          "secs": 12.544,
+          "share": 0.04775016001427013
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 306463,
+          "tokOut": 37154,
+          "usd": 0.9149184,
+          "secs": 191.889,
+          "share": 1
+        }
+      },
+      "rank": null,
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    }
+  ],
+  "diffs": [
+    {
+      "id": "2dfb5915",
+      "a": 1,
+      "b": 2,
+      "diff": {
+        "stories": 17,
+        "usd": 0.09022905000000003,
+        "secs": 120.39999999999999
+      }
+    }
+  ],
+  "overall": {
+    "sessions": 1,
+    "captures": 2,
+    "usd": 1.73960775,
+    "secs": 272,
+    "recall": null,
+    "p5": null,
+    "p10": null,
+    "tMeanRank": null,
+    "tTopHalf": null,
+    "tLabels": null,
+    "steps": {
+      "harvest": {
+        "calls": 2,
+        "tokIn": 288379,
+        "tokOut": 33824,
+        "usd": 0.36964335,
+        "secs": 153.954,
+        "share": 0.21248660797240068
+      },
+      "outsider": {
+        "calls": 2,
+        "tokIn": 286538,
+        "tokOut": 6117,
+        "usd": 1.1969243999999999,
+        "secs": 56.854,
+        "share": 0.6880426923828087
+      },
+      "hook-tension": {
+        "calls": 2,
+        "tokIn": 17018,
+        "tokOut": 4594,
+        "usd": 0.098287,
+        "secs": 32.696,
+        "share": 0.05649951835406574
+      },
+      "stakes": {
+        "calls": 2,
+        "tokIn": 16522,
+        "tokOut": 2439,
+        "usd": 0.07475300000000001,
+        "secs": 20.008000000000003,
+        "share": 0.04297118129072489
+      },
+      "total": {
+        "calls": 8,
+        "tokIn": 608457,
+        "tokOut": 46974,
+        "usd": 1.7396077499999998,
+        "secs": 263.512,
+        "share": 1
+      }
+    }
+  }
+}

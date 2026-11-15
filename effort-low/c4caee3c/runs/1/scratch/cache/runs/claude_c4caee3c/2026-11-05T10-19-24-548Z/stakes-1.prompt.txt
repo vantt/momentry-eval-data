@@ -1,0 +1,53 @@
+Dưới đây là 21 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Alias: Hit@5 từ 0,73 lên 1,00 nhờ một khoá chuẩn hoá
+   Thêm một view fold và khoá alias là phép chiếu của câu tìm, nên khớp alias không cần lexicon mới. Hit@5 hạng mục alias tăng từ 0,73 lên 1,00 và Hit@1 từ 0,60 lên 0,93. Thay đổi trong lõi gần như không có, nên không cần sửa P01.
+M2. Ghép chuỗi bản vá: cùng sửa một file nên phải đúng thứ tự
+   Áp P03 sau P00 gây xung đột vì cả hai đều sửa cli.ts. Agent dựng lại nhánh ghép theo đúng thứ tự P00, P01, P02, P03, P09 và kiểm bằng git am trên tag. Nhánh ghép có 2.049 test xanh trước khi xuất lại các bản vá. Sau này chuỗi đủ 9 bản vá và mỗi bản mới phải được áp lại theo thứ tự.
+M3. Gói tiếng Đức chạy qua điểm cắm mà không sửa lõi
+   Gói tiếng Đức được viết với tách từ ghép bằng quy hoạch động trên lexicon và đi qua cùng điểm cắm. Trên eval tiếng Đức nDCG@5 tăng từ 0,57 lên 0,97 và không hạng mục nào tụt. Số này được lặp lại qua nhiều báo cáo.
+M4. Phát hành bản dựng nhiều nền bằng tự động hóa: catchup tự kích hoạt bước dựng gói và tạo release, kèm kiểm tra từng nền riêng lẻ
+   Phát hành bản dựng nhiều nền bằng tự động hóa: catchup tự kích hoạt bước dựng gói và tạo release, kèm kiểm tra từng nền riêng lẻ Thường dựng gói bằng tay, hoặc một nền hỏng là chặn cả bản phát hành
+M5. Git chặn bốn lần: pre-push hook, rebase, merge và commit rỗng
+   Lần push đầu bị hook pre-push của upstream chặn, nên agent đặt HUSKY=0 cho lệnh push và từ đó áp dụng cho mọi lần push. Ba lỗi khác là pull --rebase khi còn thay đổi chưa commit, commit khi chỉ có file chưa theo dõi, và merge bị từ chối vì còn thay đổi. Mỗi lỗi đều được xử lý bằng cách commit hoặc stash trước rồi chạy lại.
+M6. Khi CI đỏ do một kiểm tra không ổn định, agent tìm nguyên nhân qua báo cáo tải về và sửa cổng so sánh trên cùng một lần chạy thay vì dựa vào số đo lưu sẵn
+   Khi CI đỏ do một kiểm tra không ổn định, agent tìm nguyên nhân qua báo cáo tải về và sửa cổng so sánh trên cùng một lần chạy thay vì dựa vào số đo lưu sẵn Thường người ta hạ ngưỡng hoặc cập nhật số đo cũ cho xanh lại
+M7. Sửa lỗi gõ sai làm hỏng lexicon: đồng nghĩa tụt từ hạng 4 xuống 7
+   Bộ sửa gõ sai đổi từ phone thành một từ gần trong vault trước khi lexicon kịp nhận ra, kéo kết quả đồng nghĩa từ hạng 4 xuống 7 và Hit@5 hạng mục đồng nghĩa xuống 0,73. Sửa bằng cách lexicon khớp cả câu gốc lẫn câu đã sửa, và các từ đã có trong lexicon được coi là từ đã biết.
+M8. zsh không tách biến chuỗi thành mảng
+   Trong zsh, biến chuỗi chứa nhiều đường dẫn không tự tách thành từng phần khi truyền cho lệnh. Git đọc cả chuỗi như một đường dẫn duy nhất và báo pathspec không tồn tại, nên lệnh thất bại dù file có thật. Sửa bằng cách khai báo mảng.
+M9. Hook .ckignore chặn cả lệnh xoá node_modules lẫn chữ build
+   Hook từ chối lệnh có chứa node_modules hoặc build, kể cả khi lệnh chỉ là ls hay rm dọn thư mục đã xong. Có lúc agent phải chuyển sang công cụ Edit để sửa file vì mọi lệnh có chữ build đều bị chặn. Các lần chặn xảy ra nhiều lần trong phiên.
+M10. Schema index tăng từ 2 lên 3 mà không gọi lại embedder
+   Migration điền các cột mới cho chunk cũ từ văn bản đã lưu, không gọi embedder. Điều này giữ thời gian migrate ngắn và không tốn lại tính toán vector.
+M11. Vì sao onnxruntime bị ghim cho macOS Intel
+   Ban đầu đề xuất bỏ Mac Intel; chủ dự án chọn ghim bản 1.23.2 chỉ cho gói Intel. Đo trên cùng máy thì multilingual lệch +0,063 và vi-synonym lệch -0,017. Số đo này phụ thuộc loại CPU của runner, nên bước kiểm chỉ tính kết quả trên EPYC. Khi gói vi đổi, danh sách mức lệch cho phép thành lỗi thời, nên quy tắc đổi thành chỉ chặn khi tụt quá 0,01.
+M12. Chọn model nhúng: chênh lệch nhỏ hơn nhiễu của bộ đo
+   Chênh lệch nDCG@5 giữa các model chỉ vài câu, nhỏ hơn nhiễu của bộ đo. Model lớn hơn không thắng rõ, nên đề xuất giữ model mặc định và chỉ dùng model lớn cho hồ sơ chất lượng cao, sau khi đo lại trên vault thật.
+M13. Gói tiếng Việt: nDCG@5 từ 0,666 lên 0,932 qua nhiều lớp
+   Lớp chuẩn hoá và fold đưa tổng nDCG@5 từ 0,666 lên 0,813. Hạng mục không dấu tăng từ 0,133 lên 0,951. Sau khi thêm tách từ, lexicon và alias tổng đạt 0,932, và đến bước cuối đạt 0,954 khi bật khôi phục dấu cho embedding. Hạng mục tiếng Anh giữ nguyên 0,735 qua mọi bước.
+M14. Người dùng chốt quyết định bằng câu hỏi có lựa chọn kèm khuyến nghị, rồi agent ghi quyết định đó vào PRD và plan trước khi làm tiếp
+   Người dùng chốt quyết định bằng câu hỏi có lựa chọn kèm khuyến nghị, rồi agent ghi quyết định đó vào PRD và plan trước khi làm tiếp Thường quyết định bằng chat rồi quên, hoặc để agent tự chọn không ghi lại
+M15. Từ điển từ ghép: bỏ pyvi, học từ thống kê trên dữ liệu CC BY
+   Tách từ đưa nDCG@5 của hạng mục tách từ tăng 0,909 lên 0,932. Khi kiểm nguồn, phần lớn danh sách trùng một từ điển GPL nên chủ dự án quyết định bỏ. Từ điển mới học từ 20.523 cặp âm tiết trên ba bộ dữ liệu CC BY, và trên bộ câu khó hơn nDCG tăng từ 0,79 lên 0,86.
+M16. Bộ eval sinh ra quá dễ: baseline upstream tụt từ 0,93 xuống 0,27
+   Điều tra cho thấy mỗi câu tìm trùng với tiêu đề note nên nhánh tiêu đề và nhánh vector tìm thấy dù FTS5 không bỏ dấu được. Làm lại corpus, mỗi cụm 25 note có cùng nội dung và khác một từ khoá, baseline hạng mục không dấu tụt từ 0,93 xuống 0,27 và hạng mục dd từ 0,87 xuống 0,40. Với corpus khó hơn điều kiện mới đạt được mà không hạ ngưỡng.
+M17. Agent tự chia công việc song song cho nhiều subagent, mỗi agent làm trên worktree riêng, rồi lead ghép lại theo đúng thứ tự phụ thuộc (chuỗi bản vá)
+   Agent tự chia công việc song song cho nhiều subagent, mỗi agent làm trên worktree riêng, rồi lead ghép lại theo đúng thứ tự phụ thuộc (chuỗi bản vá) Thường một người hoặc một agent làm tuần tự trên một nhánh; ghép nhiều nhánh song song thường là xung đột và sửa tay
+M18. Lead agent giữ trạng thái điều phối ra file ngoài repo (lead-state.txt) rồi đọc lại sau mỗi lần nhắc hẹn giờ hoặc sau khi nén ngữ cảnh
+   Lead agent giữ trạng thái điều phối ra file ngoài repo (lead-state.txt) rồi đọc lại sau mỗi lần nhắc hẹn giờ hoặc sau khi nén ngữ cảnh Thường người dùng phải tự nhớ đang làm đến đâu, hoặc chỉ dựa vào lịch sử hội thoại
+M19. Khôi phục dấu cho embedding: Hội An thành hội ăn
+   Với câu Hội An, từ An có tỷ lệ 0,5 nên không được coi là câu có dấu, và được khôi phục thành ăn. Ngưỡng 50 % không sai; lỗi nằm ở cách dựng câu gửi cho model nhúng. Sửa bằng cách không đổi từ đã gõ dấu và chỉ khôi phục từ mà vault không bao giờ viết trần. Bật tuỳ chọn này mặc định đưa nDCG@5 tổng từ 0,932 lên 0,954 và sửa hạng mục snippet.
+M20. Ổ tạm đầy quota làm hỏng mọi agent cùng lúc
+   Mỗi worktree tốn khoảng 1,3 GB node_modules. Khi hạn mức 16 GB đầy, mọi lệnh shell của mọi agent đều lỗi với EDQUOT, kể cả lệnh để chẩn đoán. Cách xử lý là dừng hết agent, chuyển nguyên worktree sang ổ thật và cho git nhận lại đường dẫn bằng worktree repair, không xoá gì. Sau đó /tmp còn 26 %, còn thư mục làm việc tạm giảm từ 21 GB xuống 6,4 GB sau khi dọn phần việc đã xong.
+M21. Test ảnh chụp kết quả hỏng vì hai note bằng điểm đổi chỗ
+   Hai note có cùng điểm hybrid nên thứ tự của chúng phụ thuộc thứ tự index trên từng máy, khiến test thỉnh thoảng hỏng. Sửa bằng so khớp chấp nhận hoán vị trong nhóm bằng điểm, còn lại vẫn so khớp tuyệt đối. Một lỗi khác trong cùng bản vá là test phụ thuộc biến môi trường do file test khác để lại. Mục kiểm không gói trong cổng chất lượng cũng từng hỏng: 0,735 trên máy này và 0,728 trên runner, nên sửa để so với upstream đo trong cùng lần chạy.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

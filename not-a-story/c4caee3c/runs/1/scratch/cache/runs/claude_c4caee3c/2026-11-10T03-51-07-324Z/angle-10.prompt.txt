@@ -1,0 +1,99 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Obsidian Hybrid Search is a search engine for your local Obsidian vault, offered as a native Obsidian plugin, an MCP server for AI agents, and a command-line tool. It is for people who keep their notes in Obsidian and want to find them by idea, phrase, title, link, or metadata, and for AI agents that need to start from those notes. It runs locally by default on SQLite, and can optionally use OpenAI-compatible embedding APIs.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L3073] USER: báo cáo tiến độ
+[L3103] USER: nhơ cập nhật trạng thái cho plan. plan xong thì move vào plans/archive/
+[L3256] USER: như vậy những việc cần làm đã xong hết đúng không
+</asks>
+
+<story>
+hook: Hỏi xong hết chưa: còn 60 câu chờ người gán nhãn
+tension: tuong_ma_hoa_ra (Phần lớn việc đã xong / Plan không đóng được vì thiếu 60 câu gán nhãn tay)
+stakes: 2/3
+# Hỏi 'xong hết chưa': plan còn chờ người gán nhãn 60 câu
+
+**Bối cảnh:** Plan có danh sách điều kiện 'Xong khi', và một việc V15 cần golden set riêng do người dùng chuẩn bị.
+**Chuyện gì xảy ra:** Lead trả lời: phần lớn đã xong, bốn việc còn chạy, và V15 cần khoảng 60 câu gán nhãn trên vault thật. Plan không đóng được nếu thiếu V15. Sau đó một agent phía dự án được giao chuẩn bị file.
+**Bài học:** Ghi rõ trong plan việc nào cần người làm, để câu hỏi 'xong chưa' có câu trả lời đúng.
+</story>
+
+<excerpt>
+[L3241] RESULT: Command running in background with ID: bwh090ilr. Output is being written to: /tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/bwh090ilr.output. You will be notified when it completes — do not po …[+179]
+[L3247] AGENT: Bản sửa test so ảnh chụp kết quả (snapshot) của P01 đã commit và push (`5b80ea5`).
+
+Test này hỏng ngẫu nhiên trên CI vì hai note bằng điểm nhau đổi chỗ, mà khi bằng điểm thì upstream không cố định thứ tự. Giờ phép so sánh chấp nhận hoán vị trong nhóm bằng điểm, mọi thứ khác vẫn phải khớp tuyệt đối. Mã tìm kiếm không đổi.
+
+Agent sửa thêm một lỗi có sẵn trong P01: một test chỉ qua nhờ biến môi trường mà file test khác để lại. Cả chuỗi qua 2101 test, kể cả 10 lần chạy với thứ tự file xáo trộn. Test mới đã thêm vào `test_command` của P01.
+
+Lượt push đã kích hoạt catchup trên CI và tôi đang theo dõi. Nếu xanh, catchup sẽ đẩy tag mới và tự dựng gói, rồi tôi đóng issue #2.
+
+Đang chạy:
+- **V14:** báo cáo cuối và L24.
+- **CI:** catchup và dựng gói cho `v0.17.2-vantt.2`.
+
+Nhánh `vi-snippet-fix` vẫn chờ V14 commit xong.
+[L3256] USER: như vậy những việc cần làm đã xong hết đúng không
+[L3260] AGENT: Chưa hết. Phần lớn đã xong, nhưng plan chưa đủ điều kiện "Xong khi". Còn lại:
+
+**Đang chạy, không cần anh:**
+1. **V14:** báo cáo review cuối `vantt/reviews/v0.17.2.md` trên chuỗi đủ 9 bản vá với gói mới nhất.
+2. **L24:** biểu đồ chỉ số qua các bản phát hành. Mã đã viết, chờ báo cáo cuối để chèn vào.
+3. **Merge nhánh `vi-snippet-fix`:** từ điển từ ghép có giấy phép CC BY và fixture `v0.11.0`. Nhánh đã qua mọi cổng, chỉ chờ V14 commit xong file dùng chung.
+4. **CI catchup:** đang chạy lại sau bản sửa test P01. Cần xanh để đóng issue #2. Gói của `v0.17.2-vantt.2` (release do catchup tự tạo) cũng đang dựng.
+
+**Lead làm sau các việc trên:**
+
+5. Cập nhật `vantt/README.md`: đoạn trạng thái còn ghi "Chưa có script, bản vá hay gói nào".
+6. Đánh dấu các việc đã xong trong PRD mục 14, đúng như điều kiện cuối của plan.
+7. Kiểm tổng từng điều kiện "Xong khi" của plan, rồi chuyển plan tổng vào `vantt/plans/archive/`.
+
+**Chờ anh:**
+
+8. **V15:** golden set khoảng 60 câu trên vault thật. Đây là điều kiện bắt buộc của plan; thiếu nó thì phase 5 và goal không đóng được. Theo lời anh, agent bên dự án đang chuẩn bị file này.
+
+Các việc bắt buộc khác (V00–V14, V17–V25) đều đã xong, đã commit và push. Release `v0.17.2-vantt.1` có đủ 4 gói.
+[L3274] USER: <task-notification>
+<task-id>bwh090ilr</task-id>
+<tool-use-id>toolu_01SCBUxa4nMzGwB9t45UuX4G</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/bwh090ilr.output</output-file>
+<status>completed</status>
+<summary>Background command "Watch catchup CI run until it finishes" completed (exit code 0)</summary>
+</task-notification>
+[L3277] TOOL Bash: cat /tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/bwh090ilr.output | tail -25; export GH_REPO=vantt/obsidian-hybrid-search; gh release list --limit 4; gh run view 41406332060 --json conclusion --jq .conclusion
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,1426 @@
+{
+  "at": "2026-11-10T12:47:23.539Z",
+  "manifest": "/home/vantt/projects/momentry/.claude/worktrees/agent-a16218d210d5a04c4/scripts/eval/synthetic/manifest.json",
+  "rankBy": "default",
+  "rows": [
+    {
+      "id": "5a1e7c01",
+      "run": 1,
+      "stories": 12,
+      "usd": 0.08473609999999998,
+      "secs": 258.7,
+      "modelSecs": 243.88099999999997,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 12922,
+          "tokOut": 12446,
+          "usd": 0.0075152000000000005,
+          "secs": 51.3,
+          "share": 0.08868947237364004
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 12153,
+          "tokOut": 3380,
+          "usd": 0.0029053000000000004,
+          "secs": 18.228,
+          "share": 0.03428644934095386
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 6783,
+          "tokOut": 1424,
+          "usd": 0.027805999999999997,
+          "secs": 9.694,
+          "share": 0.3281482154595266
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 6388,
+          "tokOut": 924,
+          "usd": 0.022016,
+          "secs": 7.321,
+          "share": 0.2598184244967611
+        },
+        "angle": {
+          "calls": 10,
+          "tokIn": 80656,
+          "tokOut": 32856,
+          "usd": 0.024493599999999997,
+          "secs": 157.338,
+          "share": 0.28905743832911823
+        },
+        "total": {
+          "calls": 14,
+          "tokIn": 118902,
+          "tokOut": 51030,
+          "usd": 0.08473610000000001,
+          "secs": 243.88099999999997,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 12,
+        "labels": 2,
+        "found": 2,
+        "recall": 1,
+        "p5": 0.8,
+        "p10": 0.5,
+        "tLabels": 2,
+        "tFound": 2,
+        "tMeanRank": 1.5,
+        "half": 6,
+        "tTopHalf": 2,
+        "perLabel": [
+          {
+            "name": "ty-le-mo-thu-workshop",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              3,
+              4,
+              9,
+              11
+            ]
+          },
+          {
+            "name": "lai-suat-4-7",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c01",
+      "run": 2,
+      "stories": 12,
+      "usd": 0.08746209999999999,
+      "secs": 21.6,
+      "modelSecs": 246.082,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 12922,
+          "tokOut": 12446,
+          "usd": 0.0075152000000000005,
+          "secs": 51.3,
+          "share": 0.0859252178943794
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 12153,
+          "tokOut": 3380,
+          "usd": 0.0029053000000000004,
+          "secs": 18.228,
+          "share": 0.03321781663143236
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 7182,
+          "tokOut": 1443,
+          "usd": 0.028794,
+          "secs": 10.335,
+          "share": 0.3292168836558921
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 6787,
+          "tokOut": 1018,
+          "usd": 0.023753999999999997,
+          "secs": 8.881,
+          "share": 0.27159192381614433
+        },
+        "angle": {
+          "calls": 10,
+          "tokIn": 80656,
+          "tokOut": 32856,
+          "usd": 0.024493599999999997,
+          "secs": 157.338,
+          "share": 0.28004815800215177
+        },
+        "total": {
+          "calls": 14,
+          "tokIn": 119700,
+          "tokOut": 51143,
+          "usd": 0.0874621,
+          "secs": 246.082,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 12,
+        "labels": 2,
+        "found": 2,
+        "recall": 1,
+        "p5": 0.8,
+        "p10": 0.6,
+        "tLabels": 2,
+        "tFound": 2,
+        "tMeanRank": 1.5,
+        "half": 6,
+        "tTopHalf": 2,
+        "perLabel": [
+          {
+            "name": "ty-le-mo-thu-workshop",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              3,
+              5,
+              9,
+              10
+            ]
+          },
+          {
+            "name": "lai-suat-4-7",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c02",
+      "run": 1,
+      "stories": 10,
+      "usd": 0.0871991,
+      "secs": 321.9,
+      "modelSecs": 306.367,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 10863,
+          "tokOut": 15125,
+          "usd": 0.0086488,
+          "secs": 67.446,
+          "share": 0.09918450993186856
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 9976,
+          "tokOut": 4733,
+          "usd": 0.0033641,
+          "secs": 24.641,
+          "share": 0.0385795266235546
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 6272,
+          "tokOut": 1286,
+          "usd": 0.025404,
+          "secs": 9.046,
+          "share": 0.29133328210956305
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 5877,
+          "tokOut": 790,
+          "usd": 0.019654,
+          "secs": 7.113,
+          "share": 0.22539223455287957
+        },
+        "angle": {
+          "calls": 11,
+          "tokIn": 85862,
+          "tokOut": 43084,
+          "usd": 0.0301282,
+          "secs": 198.12099999999998,
+          "share": 0.3455104467821342
+        },
+        "total": {
+          "calls": 15,
+          "tokIn": 118850,
+          "tokOut": 65018,
+          "usd": 0.0871991,
+          "secs": 306.367,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 10,
+        "labels": 3,
+        "found": 3,
+        "recall": 1,
+        "p5": 0.6,
+        "p10": 0.4,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 2.6666666666666665,
+        "half": 5,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "front-desk-continuity",
+            "t": true,
+            "rank": 3,
+            "ranks": [
+              3
+            ]
+          },
+          {
+            "name": "price-means-two-things",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1
+            ]
+          },
+          {
+            "name": "three-findings-cut-pediatric",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4,
+              8
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c02",
+      "run": 2,
+      "stories": 10,
+      "usd": 0.09026109999999998,
+      "secs": 18.9,
+      "modelSecs": 306.702,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 10863,
+          "tokOut": 15125,
+          "usd": 0.0086488,
+          "secs": 67.446,
+          "share": 0.09581979390900401
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 9976,
+          "tokOut": 4733,
+          "usd": 0.0033641,
+          "secs": 24.641,
+          "share": 0.037270762266358386
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 6685,
+          "tokOut": 1350,
+          "usd": 0.02687,
+          "secs": 9.542,
+          "share": 0.2976919182239083
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 6290,
+          "tokOut": 867,
+          "usd": 0.021249999999999998,
+          "secs": 6.952,
+          "share": 0.2354281080110923
+        },
+        "angle": {
+          "calls": 11,
+          "tokIn": 85862,
+          "tokOut": 43084,
+          "usd": 0.0301282,
+          "secs": 198.12099999999998,
+          "share": 0.33378941758963726
+        },
+        "total": {
+          "calls": 15,
+          "tokIn": 119676,
+          "tokOut": 65159,
+          "usd": 0.09026109999999998,
+          "secs": 306.702,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 10,
+        "labels": 3,
+        "found": 3,
+        "recall": 1,
+        "p5": 0.6,
+        "p10": 0.4,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 3.6666666666666665,
+        "half": 5,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "front-desk-continuity",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2
+            ]
+          },
+          {
+            "name": "price-means-two-things",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4
+            ]
+          },
+          {
+            "name": "three-findings-cut-pediatric",
+            "t": true,
+            "rank": 5,
+            "ranks": [
+              5,
+              8
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c03",
+      "run": 1,
+      "stories": 7,
+      "usd": 0.0651824,
+      "secs": 198.9,
+      "modelSecs": 186.928,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 11173,
+          "tokOut": 5396,
+          "usd": 0.0038152999999999998,
+          "secs": 25.183,
+          "share": 0.05853267139595964
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 10289,
+          "tokOut": 4649,
+          "usd": 0.0033534000000000003,
+          "secs": 24.243,
+          "share": 0.051446402709933975
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 5662,
+          "tokOut": 903,
+          "usd": 0.020354,
+          "secs": 7.386,
+          "share": 0.3122622057487911
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 5267,
+          "tokOut": 771,
+          "usd": 0.018244,
+          "secs": 7.195,
+          "share": 0.27989150445519034
+        },
+        "angle": {
+          "calls": 7,
+          "tokIn": 56977,
+          "tokOut": 27436,
+          "usd": 0.0194157,
+          "secs": 122.921,
+          "share": 0.297867215690125
+        },
+        "total": {
+          "calls": 11,
+          "tokIn": 89368,
+          "tokOut": 39155,
+          "usd": 0.0651824,
+          "secs": 186.928,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 7,
+        "labels": 3,
+        "found": 3,
+        "recall": 1,
+        "p5": 0.6,
+        "p10": 0.42857142857142855,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 1.3333333333333333,
+        "half": 4,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "bai-mau-long-biet-on",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1
+            ]
+          },
+          {
+            "name": "de-kiem-tra-lot-phieu-on",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2
+            ]
+          },
+          {
+            "name": "rubric-3-tieu-chi",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              5
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c03",
+      "run": 2,
+      "stories": 7,
+      "usd": 0.0654544,
+      "secs": 16.5,
+      "modelSecs": 186.002,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 11173,
+          "tokOut": 5396,
+          "usd": 0.0038152999999999998,
+          "secs": 25.183,
+          "share": 0.058289435087633526
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 10289,
+          "tokOut": 4649,
+          "usd": 0.0033534000000000003,
+          "secs": 24.243,
+          "share": 0.05123261385025301
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 6075,
+          "tokOut": 869,
+          "usd": 0.020839999999999997,
+          "secs": 7.843,
+          "share": 0.31838959642132536
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 5680,
+          "tokOut": 667,
+          "usd": 0.01803,
+          "secs": 5.812,
+          "share": 0.27545894546432326
+        },
+        "angle": {
+          "calls": 7,
+          "tokIn": 56977,
+          "tokOut": 27436,
+          "usd": 0.0194157,
+          "secs": 122.921,
+          "share": 0.29662940917646485
+        },
+        "total": {
+          "calls": 11,
+          "tokIn": 90194,
+          "tokOut": 39017,
+          "usd": 0.0654544,
+          "secs": 186.002,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 7,
+        "labels": 3,
+        "found": 3,
+        "recall": 1,
+        "p5": 0.6,
+        "p10": 0.42857142857142855,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 1.3333333333333333,
+        "half": 4,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "bai-mau-long-biet-on",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1
+            ]
+          },
+          {
+            "name": "de-kiem-tra-lot-phieu-on",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2
+            ]
+          },
+          {
+            "name": "rubric-3-tieu-chi",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              3
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c04",
+      "run": 1,
+      "stories": 10,
+      "usd": 0.08737439999999999,
+      "secs": 317.5,
+      "modelSecs": 301.77299999999997,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 9640,
+          "tokOut": 12257,
+          "usd": 0.0070925,
+          "secs": 53.948,
+          "share": 0.08117366185061071
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 8838,
+          "tokOut": 4044,
+          "usd": 0.0029058,
+          "secs": 19.815,
+          "share": 0.033256880733944956
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 6392,
+          "tokOut": 1250,
+          "usd": 0.025284,
+          "secs": 8.794,
+          "share": 0.289375377684997
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 5997,
+          "tokOut": 895,
+          "usd": 0.020943999999999997,
+          "secs": 7.429,
+          "share": 0.23970407808236738
+        },
+        "angle": {
+          "calls": 11,
+          "tokIn": 83296,
+          "tokOut": 45637,
+          "usd": 0.031148099999999995,
+          "secs": 211.78700000000003,
+          "share": 0.35649000164808
+        },
+        "total": {
+          "calls": 15,
+          "tokIn": 114163,
+          "tokOut": 64083,
+          "usd": 0.08737439999999999,
+          "secs": 301.77299999999997,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 10,
+        "labels": 3,
+        "found": 3,
+        "recall": 1,
+        "p5": 0.8,
+        "p10": 0.4,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 2.3333333333333335,
+        "half": 5,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "preorders-from-leaf-newsletter",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              3
+            ]
+          },
+          {
+            "name": "urgency-subject-lines",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4
+            ]
+          },
+          {
+            "name": "glow30-wrong-code",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c04",
+      "run": 2,
+      "stories": 10,
+      "usd": 0.09100639999999999,
+      "secs": 19.2,
+      "modelSecs": 302.454,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 9640,
+          "tokOut": 12257,
+          "usd": 0.0070925,
+          "secs": 53.948,
+          "share": 0.07793407936145151
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 8838,
+          "tokOut": 4044,
+          "usd": 0.0029058,
+          "secs": 19.815,
+          "share": 0.03192962253204171
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 6805,
+          "tokOut": 1450,
+          "usd": 0.02811,
+          "secs": 10.317,
+          "share": 0.30887937551644723
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 6410,
+          "tokOut": 893,
+          "usd": 0.02175,
+          "secs": 6.587,
+          "share": 0.23899418062905467
+        },
+        "angle": {
+          "calls": 11,
+          "tokIn": 83296,
+          "tokOut": 45637,
+          "usd": 0.031148099999999995,
+          "secs": 211.78700000000003,
+          "share": 0.3422627419610049
+        },
+        "total": {
+          "calls": 15,
+          "tokIn": 114989,
+          "tokOut": 64281,
+          "usd": 0.09100639999999999,
+          "secs": 302.454,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 10,
+        "labels": 3,
+        "found": 3,
+        "recall": 1,
+        "p5": 0.8,
+        "p10": 0.4,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 2.6666666666666665,
+        "half": 5,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "preorders-from-leaf-newsletter",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              5
+            ]
+          },
+          {
+            "name": "urgency-subject-lines",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4
+            ]
+          },
+          {
+            "name": "glow30-wrong-code",
+            "t": true,
+            "rank": 3,
+            "ranks": [
+              3
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c05",
+      "run": 1,
+      "stories": 7,
+      "usd": 0.0615112,
+      "secs": 188.8,
+      "modelSecs": 176.055,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 11273,
+          "tokOut": 6440,
+          "usd": 0.0043473,
+          "secs": 26.118,
+          "share": 0.07067493399576012
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 10317,
+          "tokOut": 3264,
+          "usd": 0.0026636999999999997,
+          "secs": 17.142,
+          "share": 0.043304308808802296
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 5342,
+          "tokOut": 817,
+          "usd": 0.018854000000000003,
+          "secs": 6.597,
+          "share": 0.30651328538542577
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 4947,
+          "tokOut": 657,
+          "usd": 0.016464,
+          "secs": 5.403,
+          "share": 0.26765857274772725
+        },
+        "angle": {
+          "calls": 8,
+          "tokIn": 61197,
+          "tokOut": 26125,
+          "usd": 0.0191822,
+          "secs": 120.795,
+          "share": 0.3118488990622846
+        },
+        "total": {
+          "calls": 12,
+          "tokIn": 93076,
+          "tokOut": 37303,
+          "usd": 0.0615112,
+          "secs": 176.055,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 7,
+        "labels": 3,
+        "found": 3,
+        "recall": 1,
+        "p5": 0.6,
+        "p10": 0.42857142857142855,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 2,
+        "half": 4,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "thang-tet-ngay-thang-dao",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2
+            ]
+          },
+          {
+            "name": "6-mon-71-phan-tram-lai",
+            "t": true,
+            "rank": 3,
+            "ranks": [
+              3
+            ]
+          },
+          {
+            "name": "ma-nv30-lot-facebook",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c05",
+      "run": 2,
+      "stories": 7,
+      "usd": 0.06272319999999999,
+      "secs": 14.7,
+      "modelSecs": 176.483,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 11273,
+          "tokOut": 6440,
+          "usd": 0.0043473,
+          "secs": 26.118,
+          "share": 0.06930928268965869
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 10317,
+          "tokOut": 3264,
+          "usd": 0.0026636999999999997,
+          "secs": 17.142,
+          "share": 0.042467539921432575
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 5755,
+          "tokOut": 836,
+          "usd": 0.01987,
+          "secs": 6.481,
+          "share": 0.3167886842508035
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 5360,
+          "tokOut": 594,
+          "usd": 0.01666,
+          "secs": 5.947,
+          "share": 0.26561144839549
+        },
+        "angle": {
+          "calls": 8,
+          "tokIn": 61197,
+          "tokOut": 26125,
+          "usd": 0.0191822,
+          "secs": 120.795,
+          "share": 0.3058230447426151
+        },
+        "total": {
+          "calls": 12,
+          "tokIn": 93902,
+          "tokOut": 37259,
+          "usd": 0.0627232,
+          "secs": 176.483,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 7,
+        "labels": 3,
+        "found": 3,
+        "recall": 1,
+        "p5": 0.6,
+        "p10": 0.42857142857142855,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 2,
+        "half": 4,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "thang-tet-ngay-thang-dao",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2
+            ]
+          },
+          {
+            "name": "6-mon-71-phan-tram-lai",
+            "t": true,
+            "rank": 3,
+            "ranks": [
+              3
+            ]
+          },
+          {
+            "name": "ma-nv30-lot-facebook",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c06",
+      "run": 1,
+      "stories": 14,
+      "usd": 0.09368749999999997,
+      "secs": 295.9,
+      "modelSecs": 280.692,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 10402,
+          "tokOut": 12020,
+          "usd": 0.0070501999999999995,
+          "secs": 52.392,
+          "share": 0.07525230153435623
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 9705,
+          "tokOut": 3638,
+          "usd": 0.0027895000000000003,
+          "secs": 19.101,
+          "share": 0.029774516344229493
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 6791,
+          "tokOut": 1862,
+          "usd": 0.032201999999999995,
+          "secs": 12.595,
+          "share": 0.34371714476317544
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 6396,
+          "tokOut": 1037,
+          "usd": 0.023162,
+          "secs": 7.723,
+          "share": 0.24722615076717813
+        },
+        "angle": {
+          "calls": 10,
+          "tokIn": 78203,
+          "tokOut": 41327,
+          "usd": 0.028483799999999997,
+          "secs": 188.881,
+          "share": 0.30402988659106067
+        },
+        "total": {
+          "calls": 14,
+          "tokIn": 111497,
+          "tokOut": 59884,
+          "usd": 0.09368749999999999,
+          "secs": 280.692,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 14,
+        "labels": 3,
+        "found": 3,
+        "recall": 1,
+        "p5": 1,
+        "p10": 0.8,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 3,
+        "half": 7,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "doi-dia-diem-9-ngay",
+            "t": true,
+            "rank": 3,
+            "ranks": [
+              3,
+              4,
+              7,
+              10,
+              12,
+              13
+            ]
+          },
+          {
+            "name": "cat-ban-mo-man-may-thap",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              2,
+              7,
+              12
+            ]
+          },
+          {
+            "name": "dung-chung-dan-nhac-vo",
+            "t": true,
+            "rank": 5,
+            "ranks": [
+              5,
+              6
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "5a1e7c06",
+      "run": 2,
+      "stories": 14,
+      "usd": 0.09416949999999998,
+      "secs": 21.2,
+      "modelSecs": 279.192,
+      "status": "done",
+      "dryRunUsd": 0.11,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 10402,
+          "tokOut": 12020,
+          "usd": 0.0070501999999999995,
+          "secs": 52.392,
+          "share": 0.07486712789172716
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 9705,
+          "tokOut": 3638,
+          "usd": 0.0027895000000000003,
+          "secs": 19.101,
+          "share": 0.02962211756460426
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 7204,
+          "tokOut": 1751,
+          "usd": 0.031918,
+          "secs": 11.384,
+          "share": 0.33894201413408803
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 6809,
+          "tokOut": 1031,
+          "usd": 0.023927999999999998,
+          "secs": 7.434,
+          "share": 0.2540950095306867
+        },
+        "angle": {
+          "calls": 10,
+          "tokIn": 78203,
+          "tokOut": 41327,
+          "usd": 0.028483799999999997,
+          "secs": 188.881,
+          "share": 0.3024737308788939
+        },
+        "total": {
+          "calls": 14,
+          "tokIn": 112323,
+          "tokOut": 59767,
+          "usd": 0.09416949999999999,
+          "secs": 279.192,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 14,
+        "labels": 3,
+        "found": 3,
+        "recall": 1,
+        "p5": 1,
+        "p10": 0.8,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 2.6666666666666665,
+        "half": 7,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "doi-dia-diem-9-ngay",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2,
+              4,
+              7,
+              10,
+              12,
+              13
+            ]
+          },
+          {
+            "name": "cat-ban-mo-man-may-thap",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              3,
+              7,
+              12
+            ]
+          },
+          {
+            "name": "dung-chung-dan-nhac-vo",
+            "t": true,
+            "rank": 5,
+            "ranks": [
+              5,
+              6
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    }
+  ],
+  "diffs": [
+    {
+      "id": "5a1e7c03",
+      "a": 1,
+      "b": 2,
+      "diff": {
+        "stories": 0,
+        "usd": 0.00027199999999999447,
+        "secs": -182.4,
+        "recall": 0,
+        "p5": 0,
+        "p10": 0,
+        "tMeanRank": 0,
+        "tTopHalf": 0,
+        "labelAgreement": 1,
+        "tTopHalfAgreement": 1
+      }
+    },
+    {
+      "id": "5a1e7c05",
+      "a": 1,
+      "b": 2,
+      "diff": {
+        "stories": 0,
+        "usd": 0.0012119999999999909,
+        "secs": -174.10000000000002,
+        "recall": 0,
+        "p5": 0,
+        "p10": 0,
+        "tMeanRank": 0,
+        "tTopHalf": 0,
+        "labelAgreement": 1,
+        "tTopHalfAgreement": 1
+      }
+    },
+    {
+      "id": "5a1e7c06",
+      "a": 1,
+      "b": 2,
+      "diff": {
+        "stories": 0,
+        "usd": 0.0004820000000000102,
+        "secs": -274.7,
+        "recall": 0,
+        "p5": 0,
+        "p10": 0,
+        "tMeanRank": -0.3333333333333335,
+        "tTopHalf": 0,
+        "labelAgreement": 1,
+        "tTopHalfAgreement": 1
+      }
+    },
+    {
+      "id": "5a1e7c01",
+      "a": 1,
+      "b": 2,
+      "diff": {
+        "stories": 0,
+        "usd": 0.002726000000000006,
+        "secs": -237.1,
+        "recall": 0,
+        "p5": 0,
+        "p10": 0.09999999999999998,
+        "tMeanRank": 0,
+        "tTopHalf": 0,
+        "labelAgreement": 1,
+        "tTopHalfAgreement": 1
+      }
+    },
+    {
+      "id": "5a1e7c04",
+      "a": 1,
+      "b": 2,
+      "diff": {
+        "stories": 0,
+        "usd": 0.0036319999999999963,
+        "secs": -298.3,
+        "recall": 0,
+        "p5": 0,
+        "p10": 0,
+        "tMeanRank": 0.33333333333333304,
+        "tTopHalf": 0,
+        "labelAgreement": 1,
+        "tTopHalfAgreement": 1
+      }
+    },
+    {
+      "id": "5a1e7c02",
+      "a": 1,
+      "b": 2,
+      "diff": {
+        "stories": 0,
+        "usd": 0.0030619999999999814,
+        "secs": -303,
+        "recall": 0,
+        "p5": 0,
+        "p10": 0,
+        "tMeanRank": 1,
+        "tTopHalf": 0,
+        "labelAgreement": 1,
+        "tTopHalfAgreement": 1
+      }
+    }
+  ],
+  "overall": {
+    "sessions": 6,
+    "captures": 12,
+    "usd": 0.9707673999999997,
+    "secs": 1693.8,
+    "recall": 1,
+    "p5": 0.7333333333333334,
+    "p10": 0.4928571428571429,
+    "tMeanRank": 2.138888888888889,
+    "tTopHalf": 17,
+    "tLabels": 17,
+    "steps": {
+      "harvest": {
+        "calls": 12,
+        "tokIn": 132546,
+        "tokOut": 127368,
+        "usd": 0.07693860000000002,
+        "secs": 552.774,
+        "share": 0.07925544265289504
+      },
+      "outsider": {
+        "calls": 12,
+        "tokIn": 122556,
+        "tokOut": 47416,
+        "usd": 0.0359636,
+        "secs": 246.33999999999997,
+        "share": 0.03704656748877228
+      },
+      "hook-tension": {
+        "calls": 12,
+        "tokIn": 76948,
+        "tokOut": 15241,
+        "usd": 0.306306,
+        "secs": 110.01399999999998,
+        "share": 0.3155297551195065
+      },
+      "stakes": {
+        "calls": 12,
+        "tokIn": 72208,
+        "tokOut": 10144,
+        "usd": 0.245856,
+        "secs": 83.79699999999998,
+        "share": 0.25325943166200265
+      },
+      "angle": {
+        "calls": 114,
+        "tokIn": 892382,
+        "tokOut": 432930,
+        "usd": 0.3057032,
+        "secs": 1999.6860000000004,
+        "share": 0.31490880307682356
+      },
+      "total": {
+        "calls": 162,
+        "tokIn": 1296640,
+        "tokOut": 633099,
+        "usd": 0.9707674000000001,
+        "secs": 2992.611,
+        "share": 1
+      }
+    }
+  },
+  "angleChecks": {}
+}

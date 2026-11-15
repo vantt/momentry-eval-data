@@ -1,0 +1,53 @@
+Dưới đây là 21 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Mô phỏng ghế sai vì thiếu cờ herdr, và 'trần flagship' hoá ra không chặn
+   Bộ mô phỏng chạy không có herdr nên gán openai qua đường khác với phiên thật. Lệnh explain (có herdrPresent) cho thấy các capability critical nâng trần lên frontier. Bảng ghế trước đó sai ở các ghế critical. Khi chạy thật, bước shaping vẫn báo execution-failure dù bảng trên giấy đủ 11/11.
+M2. Ba hệ decision, document, context và vòng phụ thuộc phải cắt theo lớp
+   Agent lập bảng ba hệ theo trạng thái hiện có (tsk-1lv đã xong, Knowledge Registry chạy, instruction registry chỉ có hạt giống) và bảng ai dùng ai. Hai cột đầu dùng nhau thật ở mức dữ liệu, tạo vòng phụ thuộc khi quét lúc ghi. Đề xuất cắt theo lớp để đọc một chiều.
+M3. Kho tài khoản rỗng: fgOS không quản quota, probe là cách duy nhất biết
+   Ban đầu chỉ 1 trong 6 family chạy được (claude). Sau khi đồng bộ phiên đăng nhập, deepseek và glm chạy được, lên 4/6. Openai chặn ở hộp thoại Trust của Codex, còn xai treo 200 đến 300 giây khi profile omp không có đăng nhập. Sau khi vô hiệu hoá tài khoản treo, probe xai qua đúng profile đã đăng nhập pass trong 23 giây.
+M4. Khi cần đọc file chứa bí mật hoặc cấu hình nhạy cảm, agent chỉ đếm số dòng, số bảng, tên khoá, hoặc che giá trị bằng regex trước khi in ra. Email và khoá API không bao giờ hiện nguyên văn trong kết quả.
+   Khi cần đọc file chứa bí mật hoặc cấu hình nhạy cảm, agent chỉ đếm số dòng, số bảng, tên khoá, hoặc che giá trị bằng regex trước khi in ra. Email và khoá API không bao giờ hiện nguyên văn trong kết quả. Thường người làm cat cả file ra màn hình, rồi mới nhận ra đã lộ khoá trong log hoặc lịch sử chat.
+M5. Agent nói 'không có chủ', nhưng tracker đã có đủ chủ
+   Người dùng bác bỏ và yêu cầu tìm lại plan/report. Work item tsk-1lv (sáu item con) đã done và chính là component quản lý decision, với hai trong ba máy kiểm thuộc dòng này. Agent đã tìm sai chỗ: chỉ nhìn bản đồ, không nhìn work item.
+M6. Khi commit, agent chỉ stage đúng các file do chính mình sửa bằng pathspec, giữ nguyên các thay đổi đang dở của người dùng (chưa commit), và kiểm trước xem remote có đụng file đó không rồi mới rebase hoặc push.
+   Khi commit, agent chỉ stage đúng các file do chính mình sửa bằng pathspec, giữ nguyên các thay đổi đang dở của người dùng (chưa commit), và kiểm trước xem remote có đụng file đó không rồi mới rebase hoặc push. Thường dùng git add -A hoặc git stash cho tất cả, rồi commit gộp, dễ kéo theo thay đổi không liên quan.
+M7. Chuỗi dự phòng là danh sách trắng: deepseek và glm không bao giờ được chọn
+   Chuỗi dự phòng của tier flagship và frontier chỉ liệt kê bốn family. Walk chỉ được thu hẹp theo danh sách này, không mở rộng. Sau khi thêm deepseek và z-ai vào chuỗi, mô phỏng cho 11/11 ghế kể cả khi bỏ xai.
+M8. Ba agent quét song song: Knowledge Registry đã chạy, KDE gần như trùng
+   Registry đã chạy thật: 479 topic, 479 doc, chiếm khoảng 15% trong 3146 file .md. Có 332 doc provisional và 147 active, 365 role khác nhau trên 479 doc, và ba chỉ mục song song (492, 479, 0 mục). Agent chính đã kiểm lại các con số bằng lệnh trước khi đưa tổng hợp. Phần thật sự mới của engine chỉ còn sáu thứ, chưa có mã.
+M9. Máy kiểm báo 374 vi phạm nhưng không chạy ở đâu cả
+   Máy kiểm báo 374 vi phạm hiện có, nhưng chỉ test của chính script chạy trong npm test. Với đội, nó như không tồn tại. Khi nối vào, phải làm mới baseline một lần trước, và phải có test dây nối chạy trên repo thật.
+M10. Hội đồng 11 ghế và cổng người: bốn family độc lập cho một câu hỏi kiến trúc
+   Bảng ghế đạt 11 ghế với bốn family khác nhau. Mỗi panelist đề xuất mù, rồi critique, synthesis có red-team và reviewer. Workflow đã chạy và qua framing, nhưng bước shaping báo execution-failure, nên chưa có bản tổng hợp để người duyệt.
+M11. Đổi config toàn cục làm hỏng workspace bản cũ
+   Hướng dẫn yêu cầu cập nhật các máy trước, rồi mới đổi config toàn cục. Ghi nhận ngày 13/10. Agent không có máy cũ để kiểm nên chỉ ghi lại cảnh báo.
+M12. Alias zsh trỏ tới profile chưa tồn tại, grep rc file không thấy đủ
+   Shell tương tác liệt kê alias khác với grep file rc. Có 9 alias omp, trong đó 4 trỏ tới profile chưa có thư mục. Agent tạo khung profile cho 4 alias và để alias tự lưu đăng nhập sau.
+M13. Đếm quan hệ thay thế: 18 quan hệ, chỉ 7 cặp ghi được bằng quan hệ
+   Trong 36 quyết định ADR có 18 quan hệ supersedes, nhưng chỉ 7 cặp có quan hệ được ghi bằng cơ chế relation. Trong 7 cặp đó 5 cặp chỉ thay một phần. Ít nhất 4 quyết định thay thế nhau chỉ trong câu chữ, không có quan hệ. Có đích thay thế không phải quyết định.
+M14. Trước mỗi lần sửa config hoặc dotfile, agent sao lưu bản gốc kèm dấu thời gian, kiểm cú pháp (zsh -n), rồi kiểm hành vi thật (alias hiển thị đúng, probe trả OK). Khi cần gỡ, chỉ cần chép đè bản sao lưu.
+   Trước mỗi lần sửa config hoặc dotfile, agent sao lưu bản gốc kèm dấu thời gian, kiểm cú pháp (zsh -n), rồi kiểm hành vi thật (alias hiển thị đúng, probe trả OK). Khi cần gỡ, chỉ cần chép đè bản sao lưu. Thường sửa trực tiếp file rồi mở shell mới xem có lỗi không. Ít ai giữ bản sao lưu có dấu thời gian.
+M15. Dán khoá thừa một ký tự, API từ chối 401, ghi đè khoá cũ không sao lưu
+   Khoá mới dài 25 ký tự, API trả 401 khi gọi cả trực tiếp. Khoá cũ đã chạy được nhưng không có bản sao lưu vì lệnh ghi đè không sao lưu trước. Sau khi nhập lại có bước tr để bỏ khoảng trắng và curl kiểm trước, khoá dài 24 ký tự và trả 200, pi và omp đều trả OK.
+M16. Kiểm 'doc quá hạn' không bao giờ báo, vì so chuỗi ISO với số
+   Code trừ Date.now() cho trường updatedAt là chuỗi ISO, kết quả là NaN, nên điều kiện luôn sai. Hiện 332 doc provisional đã 47 đến 55 ngày không được cảnh báo.
+M17. Trước khi chạy việc tốn kém hoặc ra ngoài (mở hội đồng nhiều model, probe tài khoản), agent liệt kê rõ family, model và ghế sẽ dùng rồi dừng chờ xác nhận. Khi có kết quả sai, agent nêu lỗi trong chính báo cáo, không giấu.
+   Trước khi chạy việc tốn kém hoặc ra ngoài (mở hội đồng nhiều model, probe tài khoản), agent liệt kê rõ family, model và ghế sẽ dùng rồi dừng chờ xác nhận. Khi có kết quả sai, agent nêu lỗi trong chính báo cáo, không giấu. Thường người dùng chỉ ra lệnh rồi chờ kết quả. Agent hay tự chạy luôn, và chỉ báo khi xong.
+M18. Kiểm tra từng tài khoản bằng một lượt hỏi đọc-chỉ rất ngắn ("trả lời đúng một chữ OK") cùng một bộ kịch bản, chạy nền, phân loại kết quả (ok, quota, auth, trust-prompt). Kết quả cũ được chuyển sang thư mục phụ thay vì xoá, để so sánh giữa các lần.
+   Kiểm tra từng tài khoản bằng một lượt hỏi đọc-chỉ rất ngắn ("trả lời đúng một chữ OK") cùng một bộ kịch bản, chạy nền, phân loại kết quả (ok, quota, auth, trust-prompt). Kết quả cũ được chuyển sang thư mục phụ thay vì xoá, để so sánh giữa các lần. Người dùng thường gọi API bằng curl một lần, đọc lỗi rồi xoá file tạm, không giữ kết quả để so sánh.
+M19. Pull gặp file sinh tự động xung đột, và restore làm mất sửa chưa commit
+   Một digest file sinh tự động xung đột. Agent lấy bản remote vì nó được sinh lại, còn bản local giữ trong stash. Trước khi restore board, agent lưu patch vào scratchpad, rồi sau pull ghi lại các mục log theo đúng thứ tự thời gian.
+M20. Ratchet ghi đè baseline nuốt luôn vi phạm mới
+   Hai script kiểm quyết định đều có lệnh --write-baseline ghi đè baseline mà không so với bản cũ. Ai chạy lại lệnh đó thì mọi vi phạm mới thành 'đã biết' mà không báo. Baseline hiện có 374 mục.
+M21. Regex tiếng Việt: ký tự đ ở đầu từ không khớp với \b
+   Comment ghi rằng trong regex, đ đứng đầu một từ có dấu không khớp, vì \b coi cả hai phía là non-word. Comment nói đã xác nhận bằng test trực tiếp. Agent chưa đi xa hơn vì đây chỉ là đọc code.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

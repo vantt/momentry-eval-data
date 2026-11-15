@@ -1,0 +1,61 @@
+Dưới đây là 25 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Lỗi có gốc ở hai nơi: nhà cung cấp biến nạp model và nhóm kết quả đồng điểm
+   Hai note có cùng điểm hybrid 0,780383795 nên thứ tự phụ thuộc thứ tự index trên từng máy. Agent sửa phép so sánh cho phép hoán vị trong nhóm đồng điểm, còn các trường khác vẫn so khớp tuyệt đối. Test này và một test phụ thuộc biến môi trường do file khác để lại đều được sửa.
+M2. Hook chặn lệnh có chữ 'build' hoặc đường dẫn node_modules, phải đổi công cụ
+   Lệnh có chữ 'build' hoặc đường dẫn node_modules bị chặn nhiều lần, có lúc buộc agent đổi sang công cụ Edit để sửa file. Hook pre-push của upstream cũng chặn push cho đến khi phải đặt HUSKY=0 cho lệnh push. Những lần chặn này làm chậm đợt sửa nhưng không gây hỏng dữ liệu.
+M3. Khôi phục dấu biến tên riêng thành từ thường: ngưỡng không phải lỗi, lỗi nằm ở cách dựng câu embedding
+   Agent đã chứng minh bằng test: một tên riêng hai âm tiết chỉ có một âm tiết có dấu, tỉ lệ 0,5 không vượt ngưỡng nên rơi vào nhánh khôi phục, và âm tiết còn lại bị đổi thành một từ thường hay gặp hơn trong vault. Sửa bằng cách giữ nguyên từ đã gõ có dấu và chỉ khôi phục từ không dấu khi vault không bao giờ viết nó trần và xác suất đủ cao. Sau đó nDCG@5 tổng tăng từ 0,932 lên 0,954, không hạng mục nào tụt, nên tuỳ chọn được bật mặc định.
+M4. Lỗi chạy ngầm: agent dừng im lặng giữa chừng, lead kiểm tiến trình thật rồi gọi lại
+   Lead kiểm danh sách tiến trình và thư mục đầu ra, thấy không có gì chạy, rồi gửi tin nhắn gọi agent tiếp tục. Agent sau đó làm tiếp nhưng vẫn để lại một phần việc dở, và lead phải theo dõi thêm một vòng.
+M5. Từ điển từ ghép: bỏ pyvi vì không rõ nguồn, học lại từ dữ liệu CC BY 4.0
+   Người dùng yêu cầu thay bằng thống kê cặp âm tiết trên dữ liệu có giấy phép rõ. Agent học được 20.523 từ từ ba bộ CC BY 4.0, script dựng lại cho ra file giống hệt từng byte, và vi-compound trên corpus khó tăng từ 0,632 lên 0,983. Từ điển mới tốt hơn hoặc bằng danh sách cũ ở mọi hạng mục.
+M6. PRD ghi chạy cả hai view cho câu có dấu, code thì không; người dùng chọn giữ code và sửa PRD
+   Khi bật hai view cho câu có dấu, vi-semantic tụt 0,083 nDCG@5, nên V13 mặc định không chạy chúng; view bỏ dấu vẫn tự bật khi vault có chữ viết không dấu. Agent đưa lựa chọn cho người dùng và người dùng chọn giữ cách của code, rồi PRD được sửa cho khớp.
+M7. Sửa lỗi gõ chèn đè từ điển đồng nghĩa: vi-synonym tụt 0,80 xuống 0,73
+   Bộ sửa lỗi một ký tự đã viết lại từ mà từ điển đồng nghĩa cần, ví dụ một từ tiếng Anh bị đổi thành một từ gần đó trong vault. Nhánh từ điển giờ khớp cả dạng người dùng gõ, và từ người dùng viết theo dạng từ điển được coi là từ đã biết. Hạng mục trở lại 0,80.
+M8. Người dùng ra quyết định bằng cách chọn trong bảng câu hỏi có khuyến nghị kèm lý do và rủi ro, thay vì mô tả tự do; mỗi quyết định được ghi lại vào PRD/plan ngay lập tức
+   Người dùng ra quyết định bằng cách chọn trong bảng câu hỏi có khuyến nghị kèm lý do và rủi ro, thay vì mô tả tự do; mỗi quyết định được ghi lại vào PRD/plan ngay lập tức Trong đa số cuộc trao đổi với AI, người dùng trả lời bằng câu chữ tự do và quyết định hay nằm rải rác trong hội thoại, khó truy lại sau này
+M9. Ngân sách thời gian test: 318 ms trên runner so với ngưỡng 200 ms
+   Trên runner GitHub, test đo được 318 ms. Thay vì nới ngưỡng, agent thêm biến OHS_PERF_FACTOR nhân ngưỡng khi chạy CI (đặt bằng 3), còn trên máy thật vẫn kiểm đúng 200 ms.
+M10. Lead tự trượt: push merge khi test còn đỏ, và merge khi cây còn thay đổi chưa commit
+   Sau khi merge, một test đỏ nhưng lead đã push trước khi kiểm. Ba lần chạy lại đều xanh (459/459), nên nhiều khả năng là test tốc độ chạy khi máy tải nặng. Trước đó có lần pull --rebase và merge bị từ chối vì cây còn thay đổi chưa commit.
+M11. Sửa thứ hạng snippet 14/15 thành 15/15 mà không đổi dòng mã nào
+   Agent phát hiện không cần sửa mã: nhánh từ điển được tạo khi tuỳ chọn khôi phục dấu còn tắt, nên embedder nhận câu không dấu và note đích không vào nhánh vector. Khi merge tuỳ chọn đã bật mặc định, note đích lên hạng 1 và cổng đạt 15/15. Đổi lại vi-alias giảm 0,016 nhưng vẫn trong ngưỡng 0,02.
+M12. Mac Intel: onnxruntime 1.30 không có bản dựng cho darwin-x64, và điểm eval phụ thuộc loại CPU của runner
+   Lead đề xuất ghim onnxruntime-node 1.23.2 chỉ cho gói Intel và đo lệch điểm trên cùng máy. Agent ban đầu khẳng định kết quả lặp lại được giữa các lần chạy, nhưng khi chạy trên runner CPU khác, multilingual lệch tới +0,054 và điểm tổng của lần chạy catchup là 0,728 thay vì 0,735. Kết luận đúng là điểm lượng tử hoá ổn định theo từng lớp CPU, không ổn định giữa các lớp. Người dùng chấp nhận lệch đã đo rồi chốt quy tắc chỉ chặn khi tụt quá 0,01.
+M13. Corpus tiếng Việt quá dễ: baseline 0,93 không đo được gì, nên làm khó corpus chứ không hạ ngưỡng
+   Agent đi tìm nguyên nhân và thấy mỗi cụm từ truy vấn cũng là tiêu đề note, nên nhánh tiêu đề và nhánh vector tìm ra note dù FTS5 không bỏ dấu được. Chỉ tiêu đề và bố cục làm baseline trông tốt. Người dùng chọn làm corpus khó hơn thay vì hạ ngưỡng. Baseline mới rơi xuống 0,27 và 0,40; sau khi có gói, cả hai đạt 1,00.
+M14. Bật Actions trên fork có workflow upstream: bật rồi tắt 4 workflow nguy hiểm
+   Người dùng đồng ý bật. Lệnh tắt workflow trả 403 vì workflow không đang chạy. Sau khi bật Actions, không có lượt chạy nào kích hoạt và bốn workflow đều ở trạng thái tắt. Sau đó người dùng đổi sang theo upstream thủ công bằng tag ghim.
+M15. Chuỗi CI đỏ liên tiếp: từ thứ tự kết quả đồng điểm đến khác biệt giữa npm 11 và npm 12
+   Các lỗi nối tiếp: hai note cùng điểm đổi thứ tự tuỳ máy; test đọc kết quả npm pack theo dạng mảng nhưng npm 12 trả object; fixture tải tag v0.10.0 cố định trong khi bộ eval đã lên v0.11.0; và test đóng gói đòi file build chưa có trên CI. Mỗi lỗi chỉ là một dòng, nhưng cộng lại mất nhiều giờ chờ.
+M16. Khi một agent nền dừng giữa chừng mà không báo, lead kiểm tiến trình và kết quả thật rồi đánh thức đúng agent đó để làm tiếp, thay vì tự làm thay
+   Khi một agent nền dừng giữa chừng mà không báo, lead kiểm tiến trình và kết quả thật rồi đánh thức đúng agent đó để làm tiếp, thay vì tự làm thay Dev thường bỏ qua tác vụ bị treo hoặc tự làm lại từ đầu, khó biết phần nào đã chạy xong
+M17. Bộ eval riêng trên vault thật: tổng tăng, cổng theo hạng mục đỏ, và quy tắc không để dữ liệu rời máy
+   Tổng nDCG@5 tăng từ 0,600 lên 0,698 nhưng cổng theo hạng mục đỏ vì vi-iy tụt 0,26 khi chỉ một câu rơi khỏi top 5 (mỗi hạng mục chỉ 2 đến 6 câu). Người dùng chọn dùng gói tiếng Việt cho bộ cài và thêm chế độ chi tiết ghi ra file ngoài repo, có chặn đường dẫn trong repo. Lead cũng phải nhắc để câu hỏi và tên note không lên remote công khai.
+M18. Thay vì ngồi chờ, agent đặt lịch đánh thức (wakeup) để kiểm tiến độ các agent nền, rồi ghi trạng thái ra file ngoài repo để sống sót qua việc nén ngữ cảnh
+   Thay vì ngồi chờ, agent đặt lịch đánh thức (wakeup) để kiểm tiến độ các agent nền, rồi ghi trạng thái ra file ngoài repo để sống sót qua việc nén ngữ cảnh Dev thường để một phiên làm việc chạy liên tục, theo dõi bằng cách tự mở terminal xem log; ít người lưu trạng thái điều phối ra file để tiếp tục sau khi ngữ cảnh bị cắt
+M19. Gói tiếng Đức chạy qua điểm cắm mà không sửa lõi: nDCG@5 từ 0,57 lên 0,97
+   Agent viết gói tiếng Đức với tách từ ghép bằng quy hoạch động trên từ điển gốc và chạy qua điểm cắm P01. Trên bộ eval tiếng Đức, nDCG@5 tăng từ 0,57 lên 0,97, không hạng mục nào tụt. Đây là bằng chứng để tin điểm cắm đủ tổng quát.
+M20. Cổng chất lượng so với baseline ghi trên máy khác làm CI đỏ: đo upstream trong cùng lần chạy
+   Catchup đỏ vì một mục duy nhất. Thay vì hạ baseline, agent đổi cổng sang so với upstream đo ngay trong cùng lần chạy, trên cùng máy; baseline ghi sẵn chỉ còn dùng để báo độ trôi và không bao giờ làm hỏng cổng. Lượt sau đó xanh và tự đẩy tag mới cùng bộ gói.
+M21. Sổ PRD: Python và viết lại bằng Rust bị nhầm là một việc
+   PRD ghi N13 là viết lại phần tìm bằng Rust, còn các script Python là V16 thuộc repo dự án. Hai việc khác nhau nhưng tên gọi gần giống. Lead sửa câu chữ của N13 và L15 để ghi rõ đây là viết lại toàn bộ OHS, không liên quan tới script Python.
+M22. Việc L13 và L22 thuộc repo dự án chứ không thuộc fork: phân ranh giới qua câu hỏi của người dùng
+   Agent trả lời nhiều lần, nêu ba khả năng và cân nhắc giữa plugin upstream và plugin dự án. Người dùng cuối cùng chốt cả hai thuộc repo dự án, và PRD mục 14.2 được ghi lại đúng như vậy. Fork không cần thêm việc cho hai mục này.
+M23. Điều phối 25 việc qua chuỗi bản vá: thứ tự áp và xung đột git am
+   Bản vá P03 xung đột với P00 ở cùng một file CLI khi áp theo thứ tự sai. Lead dựng một nhánh tích hợp, áp tuần tự P00, P01, P02, P03, P04, P09, P05, P06, P07 bằng git am --3way, và xuất lại từng bản vá từ nhánh đó. Toàn chuỗi xanh với 2083 test.
+M24. Ổ /tmp có hạn mức làm mọi agent hỏng, phải chuyển worktree sang ổ thật
+   Khi ghi scratchpad, lệnh báo EDQUOT và mọi lệnh shell của mọi agent đều hỏng. Lead dừng toàn bộ agent, chuyển nguyên các worktree sang một thư mục trên ổ chính, sửa lại đường dẫn cho git, rồi chạy lại từng agent từ chỗ đã dừng mà không mất phần việc dở. /tmp sau đó còn 26%. Về sau, dọn dẹp theo từng việc đã xong đưa thư mục làm việc từ 21G xuống 6,4G.
+M25. Đổi cách theo dõi upstream: từ tự động sang ghim tag thủ công
+   Người dùng quyết định không tự đuổi theo upstream. CI được đổi sang đọc một file ghim tag, bỏ lịch tự chạy, và chỉ đồng bộ master khi có yêu cầu. Mục G1 trong PRD được sửa theo.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

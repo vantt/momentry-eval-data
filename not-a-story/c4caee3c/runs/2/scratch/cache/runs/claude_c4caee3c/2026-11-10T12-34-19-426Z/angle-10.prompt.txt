@@ -1,0 +1,173 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Obsidian Hybrid Search is a search engine for your local Obsidian vault, offered as a native Obsidian plugin, an MCP server for AI agents, and a command-line tool. It is for people who keep their notes in Obsidian and want to find them by idea, phrase, title, link, or metadata, and for AI agents that need to start from those notes. It runs locally by default on SQLite, and can optionally use OpenAI-compatible embedding APIs.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L2171] USER: báo cáo tiến độ
+[L2195] USER: còn điểm gì trong prd còn chưa làm
+[L2226] USER: L13 và L22 là gì
+</asks>
+
+<story>
+hook: Agent định làm hai việc ngay trong lõi, nhưng chúng thuộc repo khác
+tension: nguoi_dung_may_sai (Agent đề xuất làm một phần L13 và L22 trong lõi fork / Người dùng hỏi từng mục rồi xếp cả hai vào repo dự án)
+stakes: 2/3
+# Ranh giới fork và repo dự án: hai việc L13 và L22 không thuộc fork
+
+**Bối cảnh:** PRD 9.0 quy định fork chỉ chứa cơ chế chung cho mọi người dùng OHS, không chứa logic sản phẩm.
+**Chuyện gì xảy ra:** Agent ban đầu đề xuất làm một phần của hai việc gợi ý khi viết và sổ câu tìm trong lõi. Người dùng hỏi lại từng mục (plugin hay lõi, thuộc repo nào), rồi quyết định cả hai thuộc repo dự án. PRD mục 14.2 được cập nhật đúng như vậy.
+**Bài học:** Quyết ranh giới repo trước khi viết mã. Hỏi 'thuộc repo nào' sớm để không đưa logic sản phẩm vào fork.
+</story>
+
+<excerpt>
+[L2227] TOOL Bash: grep -n "^| N11 \|^| N20 " vantt/PRD.md | cut -c1-1500
+[L2228] RESULT: 60:| N11 | Gợi ý ngay khi đang viết: ô cạnh bài nháp hiện đoạn gần nghĩa với đoạn đang gõ, bấm để chèn link | Giúp bước "express" ngay trên note, không phải đi tìm | dự án (plugin), cần P04 | đã bàn | Sau V08 | L13 | | 63:| N20 | Sổ câu tìm cục bộ (c …[+149]
+[L2238] AGENT: Theo PRD (mục 2.2), cả hai việc đều làm ở phía dự án, không phải trong repo fork này.
+
+**L13 (N11): gợi ý ngay khi đang viết**
+- Khi bạn đang viết nháp một note trong Obsidian, một ô bên cạnh tự hiện các đoạn trong vault gần nghĩa với đoạn đang gõ. Bấm vào một gợi ý là chèn link tới note đó.
+- Lợi ích: nối ý tưởng ngay lúc viết (bước "express"), không phải dừng lại đi tìm.
+- Nơi làm: plugin của dự án `obsidian-pkm-automation`. Plugin gọi OHS qua `serve --stdio`, dựa vào P04 (`read`, `neighbors`, `search`). P04 đã xong, nên phía fork không cần thêm gì.
+- PRD ghi làm sau V08, nhãn "có thì tốt", công 2–3 ngày.
+
+**L22 (N20): sổ câu tìm cục bộ**
+- Mặc định tắt. Khi bật, công cụ ghi lại ngay trên máy bạn hai loại câu tìm "thất bại": câu không ra kết quả nào, và câu ra kết quả nhưng bạn không mở note nào.
+- Lợi ích: có nguồn câu tìm thật để bổ sung golden set riêng (V15), tức là đo chất lượng đúng chỗ bạn hay tìm hụt.
+- Riêng tư: sổ không rời máy và không vào repo, CI hay báo cáo, đúng quy tắc của PRD về vault thật.
+- Nơi làm: phía dự án, vì ghi được "không mở note nào" thì phải biết thao tác của bạn trong plugin. PRD ghi là ý mới, làm sau V15, công 1 ngày, và cần bạn xác nhận trước khi bắt đầu.
+
+Cả hai đều ngoài phạm vi goal hiện tại, vì goal chỉ gồm các việc bắt buộc V00–V25.
+[L2246] USER: 2 cái này phải là plugins?
+[L2250] AGENT: Không hẳn. L13 gần như bắt buộc là plugin, còn L22 thì không.
+
+**L13 (gợi ý khi đang viết): cần plugin Obsidian.** Việc này phải bắt sự kiện gõ trong trình soạn thảo và hiện một ô bên cạnh. Chỉ mã chạy bên trong Obsidian làm được điều đó; CLI, MCP hay `serve --stdio` thì không. Có hai nơi đặt nó:
+- **Plugin của dự án** (`obsidian-pkm-automation`), như PRD đang ghi.
+- **Plugin OHS của upstream**, tức submodule `obsidian-plugin`, repo `flowing-abyss/obsidian-hybrid-search-plugin`. Plugin này đã nói chuyện với OHS sẵn, nhưng muốn sửa thì phải fork thêm repo này.
+
+Ở cả hai nơi, phần tìm đoạn gần nghĩa đã có trong fork: `search` và `neighbors` qua stdio (P04). Phía fork không cần làm thêm gì.
+
+**L22 (sổ câu tìm cục bộ): chia được làm hai nửa.**
+- **Câu tìm không ra kết quả:** làm được ngay trong lõi OHS, bằng một bản vá nhỏ của fork. Bật bằng biến môi trường, mặc định tắt. Khi bật, câu tìm trả 0 kết quả được ghi vào một file trên máy, nằm cạnh DB và ngoài vault. Không cần plugin, và chạy với mọi cách gọi: CLI, MCP, stdio. Câu tìm của agent AI qua MCP cũng được ghi.
+- **Câu tìm có kết quả nhưng không mở note nào:** phải biết người dùng có bấm vào kết quả hay không, nên cần nơi hiển thị kết quả, tức là plugin. Có một cách gần đúng làm được trong lõi: sau một lần `search`, nếu không có lệnh `read` nào tới các note vừa trả về trong một khoảng thời gian thì coi là "không mở". Cách này hợp với agent AI dùng MCP, vì agent đọc note bằng `read`. Nó không đúng với người bấm mở note trong Obsidian, vì thao tác đó không đi qua OHS.
+
+Tóm lại:
+- L13 là plugin.
+- L22 có thể làm phần lớn bằng một bản vá lõi trong fork, như các bản P02–P07. Phần "không mở note" thì chính xác khi đi qua plugin, gần đúng khi đi qua MCP.
+
+Cả hai vẫn thuộc nhóm "để sau" trong PRD. Nếu bạn muốn đưa L22 vào fork thành một bản vá, tôi sẽ cập nhật PRD rồi giao cho một agent.
+…
+[L2313] TOOL Bash: grep -n "pkm-core\|plugin dự án\|pkm-plugin\|obsidian-pkm-automation" vantt/PRD.md | cut -c1-300 | head -12
+[L2314] RESULT: 8:| Người dùng của fork | Dự án `obsidian-pkm-automation` (sản phẩm PKM cho người làm một mình, freelancer, tiếng Việt). Trong đó OHS là phần tìm theo chữ và theo nghĩa; graph có loại do `kg`/`pkm` lo | | 493:- **Vấn đề:** thiếu action cho mọi việc k …[+194]
+[L2320] AGENT: Theo PRD, L22 (N20) thuộc **phía dự án** (`vantt/obsidian-pkm-automation`), không thuộc fork OHS. Nhưng PRD không ghi cụ thể nó nằm trong plugin hay trong pkm-core. Mục 2.2 chỉ ghi "phía làm: dự án", và repo này không có tài liệu nào nói về pkm-core để tôi đối chiếu.
+
+Xét theo việc L22 phải làm, nó chia tự nhiên thành hai nửa:
+
+| Phần | Nên nằm ở | Lý do |
+|---|---|---|
+| **Ghi nhận sự kiện:** câu tìm, số kết quả, người dùng có mở note nào từ kết quả không | **Plugin Obsidian** | Chỉ plugin thấy được lần gõ tìm và cú bấm mở note. Nếu dùng plugin OHS của upstream (`obsidian-plugin`) thì phải fork nó; nếu dùng plugin của dự án thì làm luôn ở đó. |
+| **Lưu sổ, bật/tắt, dọn cũ, xuất câu cho golden set, chạy eval riêng** | **Phần lõi của dự án** (pkm-core, nếu đó là nơi chứa logic không phụ thuộc giao diện) | Đây là logic xử lý dữ liệu, dùng lại được cho cả máy chủ điện thoại (`pkm-web`, L06) và các lệnh dòng lệnh. Nó nối vào `quality-gate.mjs --private` của fork để chạy eval. |
+
+Nếu chỉ chọn một nơi thì là **plugin**, vì điều kiện "câu ra kết quả mà không mở note nào" chỉ đo chính xác được ở đó. Phần lõi chỉ là chỗ đặt logic cho gọn.
+
+Fork OHS không cần làm thêm gì cho L22. Thứ duy nhất fork có thể góp là bản vá ghi câu không ra kết quả ngay trong lõi OHS, như tôi nêu trước. Bản vá đó chỉ đáng làm nếu bạn muốn ghi cả các câu tìm của agent AI qua MCP; nếu không thì không cần.
+[L2335] USER: <task-notification>
+<summary>Goal check-in: background work still running</summary>
+</task-notification>
+<system-reminder>
+Goal check-in: «bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng &gt;=50%.» is still active, and evaluation has been deferred for 61 min because background work is still running:
+- ab37a12c9eca42ac2 · subagent · V22 semantic branch eval
+- aa32b998406ef26b1 · subagent · V03 bundles and first release
+- bcb2t9qqv · shell · cd /home/vantt/projects/ohs-wt/tmp/v22; until grep -q "aggregated\|rror" full3.err; do sleep 15; d… [+24 chars]
+- bs75cuvod · monitor · full catchup runs finish
+- a56d2771da391c7db · subagent · V02b manual-only upstream follow
+- aa751f122f95d7e6a · subagent · V20b licensed compound dictionary
+- bcttyitb3 · shell · cd /home/vantt/projects/obsidian-hybrid-search; export GH_REPO=vantt/obsidian-hybrid-search; timeo… [+142 chars]
+- b7yase2o1 · monitor · Wait for dry-run to finish
+- b9wpiv5te · monitor · Wait for dry-run completion
+- bdzpizltg · shell · cd /home/vantt/projects/ohs-wt/m-v20b/vantt/packages/ohs-lang-vi &amp;&amp; /usr/bin/time -v node --max-ol… [+267 chars]
+- btflrbnbd · monitor · Run conclusion
+- bg7nlfffk · shell · cd /home/vantt/projects/ohs-wt/tmp/v22; timeout 118 bash -c 'until grep -q "aggregated\|rror" full… [+46 chars]
+- bo7ftx07m · shell · for i in $(seq 1 9); do s=$(GH_REPO=vantt/obsidian-hybrid-search gh run view 41399477114 --json st… [+179 chars]
+- byu6vjl2c · shell · cd /home/vantt/projects/obsidian-hybrid-search; python3 - &lt;&lt;'E' p='vantt/scripts/bundle-smoke.mjs'… [+1255 chars]
+- bq7qmh9nw · monitor · build-compounds first run finishing
+Check on their progress (e.g. read their output). If they are progressing, say so briefly and keep waiting; if they are stuck or no longer needed, fix or stop them and continue toward the goal.
+</system-reminder>
+[L2339] TOOL Bash: df -h /tmp /home/vantt | tail -2; cd /home/vantt/projects/obsidian-hybrid-search && git fetch -q && git log --oneline -3 origin/master; ls -t /home/vantt/projects/ohs-wt/tmp/v22 2>/dev/null | head -3
+…
+[L2360] AGENT: Các việc nền đều đang tiến triển, đĩa còn trống (`/tmp` 31%, `/home` còn 161G).
+
+- **V22:** đang chạy đợt eval đầy đủ.
+- **V20b:** đang dựng danh sách từ ghép từ văn bản có giấy phép rõ ràng.
+- **V14:** đang chờ catchup chạy đủ các tầng cho hai tag.
+- **V02b:** đang chờ lượt chạy thử không đẩy gì lên.
+- **V03:** đang sửa smoke test của gói dựng sẵn.
+
+Có một điểm tôi đã chặn lại: V03 vừa bỏ macOS Intel khỏi danh sách nền dựng gói (`7df17ef`). PRD yêu cầu đủ 4 nền, và bạn chưa duyệt việc cắt này. Tôi đã yêu cầu agent đưa nền này trở lại. Nếu GitHub không còn máy Intel, có thể dựng gói x64 trên máy ARM chạy qua Rosetta. Nếu thật sự không làm được, agent phải báo chặn kèm bằng chứng.
+[L2368] USER: à, vậy thậm chí L22 sẽ là phần của repo vantt/obsidian-pkm?
+[L2372] AGENT: Đúng vậy. Theo PRD, L22 (N20) ghi "phía làm: dự án", tức thuộc repo dự án `vantt/obsidian-pkm-automation`, không thuộc fork OHS này. Lý do:
+
+- L22 cần biết người dùng có bấm mở note từ kết quả tìm hay không. Chỉ giao diện của dự án (plugin, sau này có thêm `pkm-web`) thấy được thao tác đó.
+- Sổ câu tìm là dữ liệu sản phẩm của bạn, gắn với cách bạn dùng PKM. PRD 9.0 quy định fork OHS chỉ chứa cơ chế chung có ích cho mọi người dùng OHS, không chứa logic sản phẩm.
+
+Phần duy nhất có thể liên quan tới fork là chạy eval từ sổ. Việc đó đã có sẵn: dự án xuất câu trong sổ thành golden set rồi gọi `quality-gate.mjs --private` của fork. Fork không cần sửa gì thêm cho L22.
+
+Bản vá ghi câu không ra kết quả ngay trong lõi OHS mà tôi nêu trước chỉ là phương án phụ, để ghi cả câu tìm của agent AI qua MCP. Nếu bạn không cần thì bỏ, và L22 nằm trọn trong repo dự án.
+
+Nếu bạn đồng ý, tôi sẽ ghi rõ vào PRD mục 14.2 rằng L22 thuộc repo `vantt/obsidian-pkm-automation`, giống cách PRD đang ghi cho L06. Trong goal này tôi không làm gì thêm cho L22.
+[L2380] USER: vậy L13 cũng thế?
+[L2382] AGENT: Đúng, L13 cũng thuộc repo dự án. PRD đã ghi rõ: N11 có "phía làm: dự án (plugin), cần P04", và mục 14.2 ghi L13 là "gợi ý khi đang viết trong plugin dự án".
+
+Phần của fork cho L13 đã xong:
+- P04 (V08) cung cấp `read`, `neighbors` và `search` qua một tiến trình `serve --stdio` chạy lâu. Plugin gọi liên tục khi người dùng gõ mà không phải nạp lại model mỗi lần.
+- P07 (V25) phát sự kiện `indexed` và `removed`, để plugin biết lúc nào cần làm mới gợi ý.
+- P06 (V24) cho giới hạn gợi ý trong một tập note, nếu dự án cần.
+
+Phần còn lại là ô gợi ý bên cạnh trình soạn thảo, cách chọn đoạn đang gõ và nút chèn link. Đó đều là giao diện và logic sản phẩm, nên nằm trong plugin của `vantt/obsidian-pkm-automation`.
+
+Vậy cả L13 và L22 đều thuộc repo dự án. Fork OHS không còn việc gì cho hai mục này, và chúng nằm ngoài goal hiện tại.
+[L2394] USER: ok ghi vào PRD là L13, L22 thuộc repo dự án
+[L2396] TOOL Bash: HUSKY=0 git pull -q --rebase --autostash origin master; grep -n "^| L13 \|^| L22 \|^| N11 \|^| N20 " vantt/PRD.md | cut -c1-200; git status --short vantt/PRD.md
+…
+[L2404] TOOL Bash: python3 - <<'EOF' p='vantt/PRD.md' s=open(p).read() a="| L13 | Có thì tốt (N11) | Gợi ý khi đang viết trong plugin dự án | Sau V08 | 2–3 |" b="| L22 | Có thì tốt (N20), ý mới | Sổ câu tìm cục bộ, tắt mặc định, không rời máy | Sau V15 | 1 |" assert a in s and b in s s=s.replace(a,"| L13 | Có thì tốt  …[+858]
+[L2405] RESULT: a50f7d1 docs(vantt): place writing suggestions and the local query log in the project repo
+[L2411] AGENT: Đã ghi vào PRD mục 14.2 rằng L13 và L22 thuộc repo `vantt/obsidian-pkm-automation`, theo quyết định của bạn ngày 2026-11-02. Thay đổi đã commit và push ở `a50f7d1`.
+
+- **L13:** fork đã cung cấp đủ phần nền. P04 cho `read`, `neighbors` và `search` qua stdio, P07 phát sự kiện index, P06 giới hạn tìm trong một tập note.
+- **L22:** plugin của dự án ghi câu tìm và việc người dùng có mở note từ kết quả hay không. Sau đó xuất các câu đó thành golden set riêng và chạy `quality-gate.mjs --private` của fork. Fork không cần thêm gì.
+[L2430] USER: L15 có phải là mấy cái script python chúng ta bỏ qua?
+[L2432] TOOL Bash: grep -n "^| N13 " vantt/PRD.md | cut -c1-700; grep -n -i "python\|\.py\b" vantt/PRD.md | cut -c1-220 | head -10; git show --stat 7ba34c2 | head -15
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

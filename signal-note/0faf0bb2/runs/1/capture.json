@@ -1,0 +1,1485 @@
+{
+  "id": "0faf0bb2",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "6c65e9b384447dc5",
+  "at": "2026-11-10T03:57:44.675Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.4,
+    "tokens": 112227,
+    "chunks": 1,
+    "hotspots": 30,
+    "entries": 1213,
+    "gitCommits": 4
+  },
+  "report": {
+    "sid": "claude:0faf0bb2",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.40246580000000004,
+    "secs": 396.3,
+    "exitCode": 0,
+    "status": "done",
+    "written": 29,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-29-chu-bac-de-xuat-node-server-c455",
+        "status": "angle",
+        "angle": "Một bộ dựng công ty một người bằng đội agent AI cần giao diện quản lý project và task, và người làm ban đầu định viết lại UI vì repo gr8r không có license. Research thấy Paperclip khớp gần 90% tầm nhìn nên đề xuất chạy nó bằng Node trên máy AICoworker, nhưng người chủ bác ngay: Node không hợp, chỉ cần một schema chuẩn trên Cloudflare D1 là đủ. Ai đang chọn hạ tầng cho ứng dụng agent nên đánh giá lại đề xuất cũ khi ràng buộc đổi.",
+        "audience": "dev đang chọn hạ tầng cho ứng dụng dùng agent AI",
+        "evidence": [
+          413,
+          483,
+          493
+        ],
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người vận hành bằng đội agent AI, đang tìm giao diện quản lý project và task.",
+            "evidence": [
+              "profile",
+              257
+            ]
+          },
+          "want": {
+            "text": "Muốn có stack sẵn có để không phải viết lại UI, và chạy được trên hạ tầng rẻ, ưu tiên Cloudflare.",
+            "evidence": [
+              257,
+              413
+            ]
+          },
+          "obstacle": {
+            "text": "Repo gr8r không có license và chỉ là demo frontend, nên ban đầu được đề xuất viết lại.",
+            "evidence": [
+              483
+            ]
+          },
+          "turn": {
+            "text": "Đề xuất chạy Paperclip (Node) trên máy AICoworker như phương án khả thi; hoá ra người chủ bác vì Node không hợp, chỉ cần schema chuẩn trên D1 là đủ cho OPC.",
+            "evidence": [
+              483,
+              493
+            ]
+          },
+          "action": {
+            "text": "Thêm Paperclip vào danh sách distill để tách phần cần Node khỏi phần chạy được trên Workers và D1.",
+            "evidence": [
+              495,
+              496
+            ]
+          },
+          "outcome": {
+            "text": "Mới chỉ bước add xong; clone và delta chưa chạy, chưa có kết quả phân tích.",
+            "evidence": [
+              500
+            ]
+          },
+          "takeaway": {
+            "text": "Khi ràng buộc hạ tầng đổi, đánh giá lại đề xuất cũ theo ràng buộc mới, đừng bảo vệ nó.",
+            "evidence": [
+              483,
+              493
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-paperclip-spike-sen-1-xong-sau-c455",
+        "status": "angle",
+        "angle": "Dự án là bộ dựng công ty một người chạy bằng đội agent AI, và người làm đang thử Paperclip trên máy để điều phối agent qua task có cổng duyệt. Họ tin đặt task là human_only thì agent không tự đóng được; hoá ra agent vẫn chuyển task sang done, nên cổng duyệt không chặn được. Ai dựng quy trình có chủ duyệt nên kiểm cả đường agent đi qua cổng, không chỉ đường chạy thành công.",
+        "audience": "dev dựng quy trình agent có bước duyệt của người",
+        "evidence": [
+          724,
+          1326,
+          1365
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án là bộ dựng công ty một người chạy bằng đội agent AI; người làm đang thử Paperclip trên máy này để điều phối agent qua task.",
+            "evidence": [
+              "profile",
+              724
+            ]
+          },
+          "want": {
+            "text": "Chạy thử Paperclip trên máy và dựng một công ty mẫu để xem vòng giao việc đi được từ đầu đến cuối.",
+            "evidence": [
+              724
+            ]
+          },
+          "obstacle": {
+            "text": "Lệch phiên bản giao thức, model mặc định đã ngừng, và budget chặn agent mà không báo.",
+            "evidence": [
+              1365
+            ]
+          },
+          "turn": {
+            "text": "Tưởng đặt task là human_only thì agent không tự đóng được; hoá ra agent vẫn chuyển task sang done.",
+            "evidence": [
+              1326
+            ]
+          },
+          "action": {
+            "text": "Dựng công ty mẫu, nối ba agent vào agent có sẵn trên máy, vá một dòng trong Paperclip và đặt budget về 0 để chạy được.",
+            "evidence": [
+              877,
+              886,
+              1365
+            ]
+          },
+          "outcome": {
+            "text": "Hai task đi hết vòng: SEN-1 mất 53 giây, SEN-3 mất 26 giây và bị agent tự đóng.",
+            "evidence": [
+              1365
+            ]
+          },
+          "takeaway": {
+            "text": "Thử đầu-cuối phải kiểm cả trường hợp agent đi qua cổng duyệt, không chỉ đường chạy thành công.",
+            "evidence": [
+              1365
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-budget-chan-agent-im-lang-409-c455",
+        "status": "angle",
+        "angle": "Bộ dựng công ty một người chạy bằng đội agent AI, và sau khi đổi model, chủ comment vào issue để đánh thức agent làm lại việc. Chủ tưởng comment sẽ tạo run mới, nhưng budget đã chặn wake vì model không có giá tin cậy, và không có thông báo nào. Ai bật budget cho model chưa có bảng giá nên kiểm tra trước, nếu không agent sẽ đứng im mà không ai biết.",
+        "audience": "dev xây hệ thống agent AI có budget",
+        "evidence": [
+          1137,
+          1160,
+          1170,
+          1175,
+          1185
+        ],
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người chạy bằng đội agent AI, nơi agent nhận việc qua issue và chủ duyệt các bước quan trọng.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Chủ comment vào issue để đánh thức agent làm lại việc sau khi đổi model.",
+            "evidence": [
+              1137,
+              1138
+            ]
+          },
+          "obstacle": {
+            "text": "Comment không tạo run mới; lệnh wake trả 409 vì usage ghi nhận không có giá tin cậy.",
+            "evidence": [
+              1160,
+              1170
+            ]
+          },
+          "turn": {
+            "text": "Tưởng comment của chủ sẽ đánh thức agent; hoá ra budget chặn wake và không có thông báo nào.",
+            "evidence": [
+              1137,
+              1160,
+              1170
+            ]
+          },
+          "action": {
+            "text": "Đặt budget của ba agent về 0, rồi resume agent và theo dõi run.",
+            "evidence": [
+              1174,
+              1184
+            ]
+          },
+          "outcome": {
+            "text": "Trạng thái agent chuyển từ paused (budget) sang running, run mới đang chạy.",
+            "evidence": [
+              1175,
+              1185
+            ]
+          },
+          "takeaway": {
+            "text": "Bật budget cho model không có bảng giá có thể chặn agent mà không báo; kiểm tra giá trước khi bật budget.",
+            "evidence": [
+              1170,
+              1175
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-chon-nen-ui-circle-dep-hon-c455",
+        "status": "angle",
+        "angle": "Bộ dựng công ty một người chạy bằng đội agent AI đang cần một nền giao diện có sẵn, và Circle được đề xuất vì đẹp, gọn kiểu Linear. Kiểm tra kỹ mới thấy Circle dùng Next.js, khó đưa lên Cloudflare dạng file tĩnh và không có tiếng Việt, trong khi Kaneo web build ra file tĩnh và đã có vi-VN. Ai chọn nền UI cho sản phẩm cần đa ngôn ngữ hay deploy tĩnh nên xét hạ tầng và i18n trước, vẻ đẹp xét sau.",
+        "audience": "dev chọn nền UI cho app cần đa ngôn ngữ hoặc deploy tĩnh",
+        "evidence": [
+          3271,
+          3290
+        ],
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người chạy bằng đội agent AI, nền Multica tự host, đang chọn nền giao diện có sẵn.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Tìm ứng cử viên nền UI có sẵn để so với gr8r và dựng giao diện cho dự án.",
+            "evidence": [
+              3204
+            ]
+          },
+          "obstacle": {
+            "text": "Circle đẹp hơn, nhưng dùng Next.js khó đưa lên Cloudflare dạng tĩnh và không có tiếng Việt.",
+            "evidence": [
+              3290
+            ]
+          },
+          "turn": {
+            "text": "Tưởng Circle là nền phù hợp; hoá ra Kaneo web build ra file tĩnh và có sẵn vi-VN, còn Circle thì không.",
+            "evidence": [
+              3271,
+              3290
+            ]
+          },
+          "action": {
+            "text": "Kiểm tra cấu hình Next.js của Circle và danh sách i18n của Kaneo, rồi đổi đề xuất sang Kaneo web.",
+            "evidence": [
+              3280,
+              3287
+            ]
+          },
+          "outcome": {
+            "text": "Đề xuất chốt là Kaneo web làm nền, mượn màn hình từ Circle.",
+            "evidence": [
+              3290
+            ]
+          },
+          "takeaway": {
+            "text": "Chọn nền UI theo chi phí đưa lên hạ tầng và độ phủ i18n trước, rồi mới xét độ đẹp.",
+            "evidence": [
+              3290
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-co-human-only-khong-chan-duoc-c455",
+        "status": "angle",
+        "angle": "Một người đang dựng công ty một người vận hành bằng đội agent AI, và thử Paperclip làm nền để xem có dùng được không. Họ đặt cờ 'chỉ người duyệt' cho một việc, tưởng như vậy là đủ để agent không tự đóng được việc đó. Nhưng agent vẫn chuyển việc sang done; cờ đó chỉ áp khi trả lời một lời xin xác nhận, còn cổng thật là một chuỗi bước kiểm duyệt riêng. Ai tin vào tên cờ mà không thử thì có thể để lọt đúng việc cần chặn.",
+        "audience": "dev dựng agent AI và thử công cụ điều phối việc agent",
+        "evidence": [
+          724,
+          1326,
+          2310
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án dựng công ty một người vận hành bằng đội agent AI, đang thử Paperclip làm nền.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Xem Paperclip có dùng được luôn làm nền không, qua một spike chạy trên máy và một công ty mẫu.",
+            "evidence": [
+              712,
+              724
+            ]
+          },
+          "obstacle": {
+            "text": "Spike đặt cờ 'chỉ người duyệt' cho một việc, nhưng agent vẫn chuyển việc đó sang done.",
+            "evidence": [
+              1326
+            ]
+          },
+          "turn": {
+            "text": "Tưởng cờ reviewPolicy human_only chặn được agent tự đóng việc; hoá ra cờ này chỉ áp khi trả lời một lời xin xác nhận, còn cổng thật là executionPolicy.",
+            "evidence": [
+              2310
+            ]
+          },
+          "action": {
+            "text": "Đọc lại tài liệu execution-semantics, đính chính lesson, bảng so sánh và báo cáo spike.",
+            "evidence": [
+              2306,
+              2312,
+              2313
+            ]
+          },
+          "outcome": {
+            "text": "Paperclip cứng ở việc đóng task khi có executionPolicy; spike chưa kiểm chứng điều này và đã có 51 lessons sau khi cập nhật.",
+            "evidence": [
+              2328
+            ]
+          },
+          "takeaway": {
+            "text": "Đừng tin vào tên cờ; thử cơ chế bắt buộc đi qua để biết nó có thật sự chặn không.",
+            "evidence": [
+              2310
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-gr8r-dep-nhung-khong-license-de-c455",
+        "status": "angle",
+        "angle": "Dự án là bộ dựng công ty một người chạy bằng đội agent AI, và người làm muốn có UI quản lý task giống gr8r. Vì gr8r không có license nên họ định viết UI mới, vì nghĩ không có gì đủ gần. Tìm kỹ thì có dự án MIT khoảng 108k sao làm đúng việc cần, và web của Kaneo đã có tiếng Việt, nối API thật, đáng làm nền hơn. Ai phải chọn nền UI trước khi viết lại nên đọc chuyện này.",
+        "audience": "dev dùng AI đang chọn nền UI hoặc cân nhắc viết lại",
+        "evidence": [
+          417,
+          435,
+          3290
+        ],
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người chạy bằng đội agent AI; đang chọn UI để quản lý project và task.",
+            "evidence": [
+              "profile",
+              257
+            ]
+          },
+          "want": {
+            "text": "Muốn có UI quản lý project/task/comment giống gr8r, chi phí thấp, chạy trên Cloudflare.",
+            "evidence": [
+              257
+            ]
+          },
+          "obstacle": {
+            "text": "gr8r không có license nên không copy code được, và chỉ là bản demo frontend.",
+            "evidence": [
+              417
+            ]
+          },
+          "turn": {
+            "text": "Tưởng phải viết UI mới vì gr8r không dùng được và không có nền nào đủ gần; hoá ra có dự án MIT khoảng 108k sao làm đúng việc đang cần.",
+            "evidence": [
+              417,
+              435,
+              437
+            ]
+          },
+          "action": {
+            "text": "Tìm các dự án sẵn có có license dùng được, rồi kiểm tra từng ứng viên.",
+            "evidence": [
+              419,
+              432,
+              438
+            ]
+          },
+          "outcome": {
+            "text": "Đề xuất lấy web của Kaneo làm nền và mượn màn hình từ Circle; Kaneo đã có tiếng Việt và nối API thật.",
+            "evidence": [
+              3290
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi đề xuất viết lại, tìm xem có dự án sẵn dùng được không; thiết kế đẹp không thay được license.",
+            "evidence": [
+              3302
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-heartbeat-cua-openclaw-ton-mot-luot-c455",
+        "status": "angle",
+        "angle": "Bộ dựng công ty một người chạy bằng đội agent AI đang chọn cách agent nhận việc. Người làm tin rằng bridge chỉ còn là tuỳ chọn vì agent tự kéo việc, nhưng heartbeat của OpenClaw tốn một lượt LLM mỗi nhịp khi file kiểm tra không rỗng: 5 agent mỗi 5 phút là khoảng 1.440 lượt mỗi ngày. Ai chọn kiểu pull cho agent nên đo chi phí vòng kiểm tra trước khi bỏ bridge.",
+        "audience": "dev xây hệ thống agent tự động hoá, đang chọn kiểu pull hay push",
+        "evidence": [
+          657,
+          707
+        ],
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người chạy bằng đội agent AI; đang chọn cách agent nhận việc.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn biết vì sao không cần bridge khi agent tự kéo việc.",
+            "evidence": [
+              657
+            ]
+          },
+          "obstacle": {
+            "text": "Gateway OpenClaw chỉ nghe trên máy cục bộ, Cloudflare không gọi tới được.",
+            "evidence": [
+              707
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bridge chỉ còn là tuỳ chọn vì agent tự kéo việc; hoá ra mỗi heartbeat là một lượt LLM khi HEARTBEAT.md không rỗng.",
+            "evidence": [
+              659,
+              707
+            ]
+          },
+          "action": {
+            "text": "Đọc mã heartbeat-runner, sửa lesson agent-bridge và đề xuất một waker không dùng LLM.",
+            "evidence": [
+              671,
+              690
+            ]
+          },
+          "outcome": {
+            "text": "Bridge vẫn cần, chỉ là bản đơn giản; 5 agent mỗi 5 phút là khoảng 1.440 lượt LLM mỗi ngày.",
+            "evidence": [
+              707
+            ]
+          },
+          "takeaway": {
+            "text": "Đo chi phí một vòng kiểm tra định kỳ bằng số lượt model mỗi ngày trước khi chọn kiểu pull.",
+            "evidence": [
+              707
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-multica-claude-code-dat-5-5-c455",
+        "status": "none",
+        "none": true,
+        "reason": "Excerpt ghi lại việc thử runtime khác sau một lần trượt, nhưng không có dòng nào cho thấy ai tin sai một điều rồi hoá ra khác. Kết quả đảo ngược là của lần chạy, không phải của một niềm tin.",
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người chạy bằng đội agent AI trên nền Multica tự host, đang thử chạy agent bằng Claude Code.",
+            "evidence": [
+              "profile",
+              3398
+            ]
+          },
+          "want": {
+            "text": "Chạy thử Multica với Claude Code để kiểm năm tiêu chí: đúng vai trò, ghi ngược vào Multica, nối tiếp session, workflow theo cột, chat nhiều phiên.",
+            "evidence": [
+              3398,
+              3404
+            ]
+          },
+          "obstacle": {
+            "text": "Lần thử trước với runtime OpenClaw bị trượt, không chạy được với bản đang dùng.",
+            "evidence": [
+              3394
+            ]
+          },
+          "action": {
+            "text": "Kiểm Claude Code trên máy, tải CLI Multica v0.7.1 và xác minh checksum, dựng stack rồi đăng nhập CLI.",
+            "evidence": [
+              3405,
+              3420,
+              3423,
+              3429
+            ]
+          },
+          "outcome": {
+            "text": "Đạt 5/5 tiêu chí; agent comment và chuyển in_review trong 16 giây, không tự chuyển done.",
+            "evidence": [
+              3747
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-29-multica-openclaw-2026-3-13-truot-c455",
+        "status": "angle",
+        "angle": "Dự án là bộ dựng công ty một người chạy bằng đội agent AI, và người làm muốn để Multica điều phối agent của AICoworker thay vì tự viết lớp điều phối. Họ tin chỉ cần giả số phiên bản OpenClaw là Multica sẽ chạy, vì bản đóng gói cũ chỉ bị chặn ở chỗ kiểm tra. Hoá ra bản cũ còn thiếu tính năng include cấu hình, nên lỗi vẫn còn và spike phải ghi là trượt. Ai dựng công cụ điều phối agent nên kiểm phiên bản tối thiểu của runtime trước, vì giả số phiên bản không che được khác biệt thật.",
+        "audience": "dev dựng công cụ điều phối cho agent AI",
+        "evidence": [
+          3045,
+          3061,
+          3150
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án là bộ dựng công ty một người chạy bằng đội agent AI, đang spike Multica để điều phối agent của AICoworker.",
+            "evidence": [
+              "profile",
+              2772
+            ]
+          },
+          "want": {
+            "text": "Để Multica điều khiển được agent của AICoworker qua OpenClaw.",
+            "evidence": [
+              2772,
+              3150
+            ]
+          },
+          "obstacle": {
+            "text": "Multica v0.7.1 yêu cầu OpenClaw từ 2026.5.5, còn AICoworker đóng gói 2026.3.13.",
+            "evidence": [
+              3041,
+              3150
+            ]
+          },
+          "turn": {
+            "text": "Tưởng chỉ cần giả số phiên bản là chạy được; hoá ra bản cũ còn thiếu OPENCLAW_INCLUDE_ROOTS nên lỗi include vẫn chặn.",
+            "evidence": [
+              3045,
+              3061,
+              3150
+            ]
+          },
+          "action": {
+            "text": "Viết wrapper báo phiên bản 2026.5.5 cho CLI 2026.3.13.",
+            "evidence": [
+              3061
+            ]
+          },
+          "outcome": {
+            "text": "Qua được kiểm tra phiên bản nhưng CLI báo 'Include path escapes config directory', gateway thất bại; spike ghi là trượt.",
+            "evidence": [
+              3150
+            ]
+          },
+          "takeaway": {
+            "text": "Kiểm phiên bản tối thiểu của runtime trước khi dựng lớp điều phối lên trên; giả số phiên bản không che được khác biệt thật.",
+            "evidence": [
+              3150
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-cot-workflow-mai-viet-long-tra-c455",
+        "status": "angle",
+        "angle": "Người làm đang dựng một bộ agent AI trên Multica tự host, để agent nhận việc qua issue và đi qua các cột duyệt trước khi chủ chốt. Bài đăng SEN-2 do Mai viết đã sang cột duyệt, nhưng Long trả lại về todo vì thiếu giá, và Mai dừng lại chờ chủ thay vì tự điền. Với dev làm workflow agent, đáng nhớ là bước chuyển cột chưa có nghĩa là xong, và chỗ thiếu số liệu nên để người điền.",
+        "audience": "dev xây workflow cho agent AI",
+        "evidence": [
+          3622,
+          3629,
+          3691,
+          3712
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đang dựng một bộ agent AI trên Multica tự host, cho một công ty một người. Agent nhận việc qua issue và đi qua các cột workflow có chủ duyệt.",
+            "evidence": [
+              "profile",
+              3398
+            ]
+          },
+          "want": {
+            "text": "Muốn thử xem workflow theo cột với agent Mai (viết) và Long (duyệt) có chạy đúng không.",
+            "evidence": [
+              3398
+            ]
+          },
+          "obstacle": {
+            "text": "Long trả SEN-2 về todo và giao lại cho Mai, nên bài chưa qua được vòng duyệt.",
+            "evidence": [
+              3629
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bài nháp chuyển sang cột duyệt là gần xong; hoá ra Long trả lại về todo.",
+            "evidence": [
+              3622,
+              3629
+            ]
+          },
+          "action": {
+            "text": "Mai dừng lại và chờ chủ bổ sung thông tin; chủ comment giá 350.000đ, ưu đãi và hạn đặt trước.",
+            "evidence": [
+              3691
+            ]
+          },
+          "outcome": {
+            "text": "SEN-2 đi tới in_review và giao cho chủ; Long duyệt đạt sau khi Mai điền đủ thông tin.",
+            "evidence": [
+              3702,
+              3712
+            ]
+          },
+          "takeaway": {
+            "text": "Chuyển cột chưa phải là xong: cột duyệt có thể đẩy ngược lại, và thiếu số liệu thì nên để agent hỏi người chứ không tự điền.",
+            "evidence": [
+              3712
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:0faf0bb2 L1-L4000: done; 24 chuyện thô, 29 cụm; ghi 29 mới, gộp 0\nđiểm nóng 30 (thiếu 0); 4 commit git; lần chạy 1/1; 0.40 USD\ngóc kể: 9 có, 1 không ra chuyện\nhồ sơ dự án: fgOPC tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-29-chu-bac-de-xuat-node-server-c455",
+      "code": "M-V4N6",
+      "title": "Chủ bác đề xuất Node server; đổi sang schema chuẩn sinh API và MCP trên Workers và D1",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một bộ dựng công ty một người bằng đội agent AI cần giao diện quản lý project và task, và người làm ban đầu định viết lại UI vì repo gr8r không có license. Research thấy Paperclip khớp gần 90% tầm nhìn nên đề xuất chạy nó bằng Node trên máy AICoworker, nhưng người chủ bác ngay: Node không hợp, chỉ cần một schema chuẩn trên Cloudflare D1 là đủ. Ai đang chọn hạ tầng cho ứng dụng agent nên đánh giá lại đề xuất cũ khi ràng buộc đổi.",
+      "audience": "dev đang chọn hạ tầng cho ứng dụng dùng agent AI",
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người vận hành bằng đội agent AI, đang tìm giao diện quản lý project và task.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L257"
+          ]
+        },
+        "want": {
+          "text": "Muốn có stack sẵn có để không phải viết lại UI, và chạy được trên hạ tầng rẻ, ưu tiên Cloudflare.",
+          "lines": [
+            "claude:0faf0bb2#L257",
+            "claude:0faf0bb2#L413"
+          ]
+        },
+        "obstacle": {
+          "text": "Repo gr8r không có license và chỉ là demo frontend, nên ban đầu được đề xuất viết lại.",
+          "lines": [
+            "claude:0faf0bb2#L483"
+          ]
+        },
+        "turn": {
+          "text": "Đề xuất chạy Paperclip (Node) trên máy AICoworker như phương án khả thi; hoá ra người chủ bác vì Node không hợp, chỉ cần schema chuẩn trên D1 là đủ cho OPC.",
+          "lines": [
+            "claude:0faf0bb2#L483",
+            "claude:0faf0bb2#L493"
+          ]
+        },
+        "action": {
+          "text": "Thêm Paperclip vào danh sách distill để tách phần cần Node khỏi phần chạy được trên Workers và D1.",
+          "lines": [
+            "claude:0faf0bb2#L495",
+            "claude:0faf0bb2#L496"
+          ]
+        },
+        "outcome": {
+          "text": "Mới chỉ bước add xong; clone và delta chưa chạy, chưa có kết quả phân tích.",
+          "lines": [
+            "claude:0faf0bb2#L500"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi ràng buộc hạ tầng đổi, đánh giá lại đề xuất cũ theo ràng buộc mới, đừng bảo vệ nó.",
+          "lines": [
+            "claude:0faf0bb2#L483",
+            "claude:0faf0bb2#L493"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-paperclip-spike-sen-1-xong-sau-c455",
+      "code": "M-BRDP",
+      "title": "Paperclip spike: SEN-1 xong sau 53 giây, SEN-3 sau 26 giây, nhưng agent tự đóng việc",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là bộ dựng công ty một người chạy bằng đội agent AI, và người làm đang thử Paperclip trên máy để điều phối agent qua task có cổng duyệt. Họ tin đặt task là human_only thì agent không tự đóng được; hoá ra agent vẫn chuyển task sang done, nên cổng duyệt không chặn được. Ai dựng quy trình có chủ duyệt nên kiểm cả đường agent đi qua cổng, không chỉ đường chạy thành công.",
+      "audience": "dev dựng quy trình agent có bước duyệt của người",
+      "spine": {
+        "context": {
+          "text": "Dự án là bộ dựng công ty một người chạy bằng đội agent AI; người làm đang thử Paperclip trên máy này để điều phối agent qua task.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "want": {
+          "text": "Chạy thử Paperclip trên máy và dựng một công ty mẫu để xem vòng giao việc đi được từ đầu đến cuối.",
+          "lines": [
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "obstacle": {
+          "text": "Lệch phiên bản giao thức, model mặc định đã ngừng, và budget chặn agent mà không báo.",
+          "lines": [
+            "claude:0faf0bb2#L1365"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng đặt task là human_only thì agent không tự đóng được; hoá ra agent vẫn chuyển task sang done.",
+          "lines": [
+            "claude:0faf0bb2#L1326"
+          ]
+        },
+        "action": {
+          "text": "Dựng công ty mẫu, nối ba agent vào agent có sẵn trên máy, vá một dòng trong Paperclip và đặt budget về 0 để chạy được.",
+          "lines": [
+            "claude:0faf0bb2#L877",
+            "claude:0faf0bb2#L886",
+            "claude:0faf0bb2#L1365"
+          ]
+        },
+        "outcome": {
+          "text": "Hai task đi hết vòng: SEN-1 mất 53 giây, SEN-3 mất 26 giây và bị agent tự đóng.",
+          "lines": [
+            "claude:0faf0bb2#L1365"
+          ]
+        },
+        "takeaway": {
+          "text": "Thử đầu-cuối phải kiểm cả trường hợp agent đi qua cổng duyệt, không chỉ đường chạy thành công.",
+          "lines": [
+            "claude:0faf0bb2#L1365"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-budget-chan-agent-im-lang-409-c455",
+      "code": "M-X6CR",
+      "title": "Budget chặn agent im lặng: 409 'no reliable price' khiến comment của chủ không đánh thức được agent",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Bộ dựng công ty một người chạy bằng đội agent AI, và sau khi đổi model, chủ comment vào issue để đánh thức agent làm lại việc. Chủ tưởng comment sẽ tạo run mới, nhưng budget đã chặn wake vì model không có giá tin cậy, và không có thông báo nào. Ai bật budget cho model chưa có bảng giá nên kiểm tra trước, nếu không agent sẽ đứng im mà không ai biết.",
+      "audience": "dev xây hệ thống agent AI có budget",
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người chạy bằng đội agent AI, nơi agent nhận việc qua issue và chủ duyệt các bước quan trọng.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Chủ comment vào issue để đánh thức agent làm lại việc sau khi đổi model.",
+          "lines": [
+            "claude:0faf0bb2#L1137",
+            "claude:0faf0bb2#L1138"
+          ]
+        },
+        "obstacle": {
+          "text": "Comment không tạo run mới; lệnh wake trả 409 vì usage ghi nhận không có giá tin cậy.",
+          "lines": [
+            "claude:0faf0bb2#L1160",
+            "claude:0faf0bb2#L1170"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng comment của chủ sẽ đánh thức agent; hoá ra budget chặn wake và không có thông báo nào.",
+          "lines": [
+            "claude:0faf0bb2#L1137",
+            "claude:0faf0bb2#L1160",
+            "claude:0faf0bb2#L1170"
+          ]
+        },
+        "action": {
+          "text": "Đặt budget của ba agent về 0, rồi resume agent và theo dõi run.",
+          "lines": [
+            "claude:0faf0bb2#L1174",
+            "claude:0faf0bb2#L1184"
+          ]
+        },
+        "outcome": {
+          "text": "Trạng thái agent chuyển từ paused (budget) sang running, run mới đang chạy.",
+          "lines": [
+            "claude:0faf0bb2#L1175",
+            "claude:0faf0bb2#L1185"
+          ]
+        },
+        "takeaway": {
+          "text": "Bật budget cho model không có bảng giá có thể chặn agent mà không báo; kiểm tra giá trước khi bật budget.",
+          "lines": [
+            "claude:0faf0bb2#L1170",
+            "claude:0faf0bb2#L1175"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-chon-nen-ui-circle-dep-hon-c455",
+      "code": "M-GGB6",
+      "title": "Chọn nền UI: Circle đẹp hơn nhưng Kaneo có tiếng Việt và API thật, đổi khỏi đề xuất Circle",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Bộ dựng công ty một người chạy bằng đội agent AI đang cần một nền giao diện có sẵn, và Circle được đề xuất vì đẹp, gọn kiểu Linear. Kiểm tra kỹ mới thấy Circle dùng Next.js, khó đưa lên Cloudflare dạng file tĩnh và không có tiếng Việt, trong khi Kaneo web build ra file tĩnh và đã có vi-VN. Ai chọn nền UI cho sản phẩm cần đa ngôn ngữ hay deploy tĩnh nên xét hạ tầng và i18n trước, vẻ đẹp xét sau.",
+      "audience": "dev chọn nền UI cho app cần đa ngôn ngữ hoặc deploy tĩnh",
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người chạy bằng đội agent AI, nền Multica tự host, đang chọn nền giao diện có sẵn.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Tìm ứng cử viên nền UI có sẵn để so với gr8r và dựng giao diện cho dự án.",
+          "lines": [
+            "claude:0faf0bb2#L3204"
+          ]
+        },
+        "obstacle": {
+          "text": "Circle đẹp hơn, nhưng dùng Next.js khó đưa lên Cloudflare dạng tĩnh và không có tiếng Việt.",
+          "lines": [
+            "claude:0faf0bb2#L3290"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng Circle là nền phù hợp; hoá ra Kaneo web build ra file tĩnh và có sẵn vi-VN, còn Circle thì không.",
+          "lines": [
+            "claude:0faf0bb2#L3271",
+            "claude:0faf0bb2#L3290"
+          ]
+        },
+        "action": {
+          "text": "Kiểm tra cấu hình Next.js của Circle và danh sách i18n của Kaneo, rồi đổi đề xuất sang Kaneo web.",
+          "lines": [
+            "claude:0faf0bb2#L3280",
+            "claude:0faf0bb2#L3287"
+          ]
+        },
+        "outcome": {
+          "text": "Đề xuất chốt là Kaneo web làm nền, mượn màn hình từ Circle.",
+          "lines": [
+            "claude:0faf0bb2#L3290"
+          ]
+        },
+        "takeaway": {
+          "text": "Chọn nền UI theo chi phí đưa lên hạ tầng và độ phủ i18n trước, rồi mới xét độ đẹp.",
+          "lines": [
+            "claude:0faf0bb2#L3290"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-co-human-only-khong-chan-duoc-c455",
+      "code": "M-4MCW",
+      "title": "Cờ 'human_only' không chặn được agent tự đóng việc: reviewPolicy khác executionPolicy",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người đang dựng công ty một người vận hành bằng đội agent AI, và thử Paperclip làm nền để xem có dùng được không. Họ đặt cờ 'chỉ người duyệt' cho một việc, tưởng như vậy là đủ để agent không tự đóng được việc đó. Nhưng agent vẫn chuyển việc sang done; cờ đó chỉ áp khi trả lời một lời xin xác nhận, còn cổng thật là một chuỗi bước kiểm duyệt riêng. Ai tin vào tên cờ mà không thử thì có thể để lọt đúng việc cần chặn.",
+      "audience": "dev dựng agent AI và thử công cụ điều phối việc agent",
+      "spine": {
+        "context": {
+          "text": "Dự án dựng công ty một người vận hành bằng đội agent AI, đang thử Paperclip làm nền.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Xem Paperclip có dùng được luôn làm nền không, qua một spike chạy trên máy và một công ty mẫu.",
+          "lines": [
+            "claude:0faf0bb2#L712",
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "obstacle": {
+          "text": "Spike đặt cờ 'chỉ người duyệt' cho một việc, nhưng agent vẫn chuyển việc đó sang done.",
+          "lines": [
+            "claude:0faf0bb2#L1326"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng cờ reviewPolicy human_only chặn được agent tự đóng việc; hoá ra cờ này chỉ áp khi trả lời một lời xin xác nhận, còn cổng thật là executionPolicy.",
+          "lines": [
+            "claude:0faf0bb2#L2310"
+          ]
+        },
+        "action": {
+          "text": "Đọc lại tài liệu execution-semantics, đính chính lesson, bảng so sánh và báo cáo spike.",
+          "lines": [
+            "claude:0faf0bb2#L2306",
+            "claude:0faf0bb2#L2312",
+            "claude:0faf0bb2#L2313"
+          ]
+        },
+        "outcome": {
+          "text": "Paperclip cứng ở việc đóng task khi có executionPolicy; spike chưa kiểm chứng điều này và đã có 51 lessons sau khi cập nhật.",
+          "lines": [
+            "claude:0faf0bb2#L2328"
+          ]
+        },
+        "takeaway": {
+          "text": "Đừng tin vào tên cờ; thử cơ chế bắt buộc đi qua để biết nó có thật sự chặn không.",
+          "lines": [
+            "claude:0faf0bb2#L2310"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-gr8r-dep-nhung-khong-license-de-c455",
+      "code": "M-XXPR",
+      "title": "gr8r đẹp nhưng không license; đề xuất viết lại bị chủ hỏi lại và Paperclip được tìm thấy",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là bộ dựng công ty một người chạy bằng đội agent AI, và người làm muốn có UI quản lý task giống gr8r. Vì gr8r không có license nên họ định viết UI mới, vì nghĩ không có gì đủ gần. Tìm kỹ thì có dự án MIT khoảng 108k sao làm đúng việc cần, và web của Kaneo đã có tiếng Việt, nối API thật, đáng làm nền hơn. Ai phải chọn nền UI trước khi viết lại nên đọc chuyện này.",
+      "audience": "dev dùng AI đang chọn nền UI hoặc cân nhắc viết lại",
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người chạy bằng đội agent AI; đang chọn UI để quản lý project và task.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L257"
+          ]
+        },
+        "want": {
+          "text": "Muốn có UI quản lý project/task/comment giống gr8r, chi phí thấp, chạy trên Cloudflare.",
+          "lines": [
+            "claude:0faf0bb2#L257"
+          ]
+        },
+        "obstacle": {
+          "text": "gr8r không có license nên không copy code được, và chỉ là bản demo frontend.",
+          "lines": [
+            "claude:0faf0bb2#L417"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng phải viết UI mới vì gr8r không dùng được và không có nền nào đủ gần; hoá ra có dự án MIT khoảng 108k sao làm đúng việc đang cần.",
+          "lines": [
+            "claude:0faf0bb2#L417",
+            "claude:0faf0bb2#L435",
+            "claude:0faf0bb2#L437"
+          ]
+        },
+        "action": {
+          "text": "Tìm các dự án sẵn có có license dùng được, rồi kiểm tra từng ứng viên.",
+          "lines": [
+            "claude:0faf0bb2#L419",
+            "claude:0faf0bb2#L432",
+            "claude:0faf0bb2#L438"
+          ]
+        },
+        "outcome": {
+          "text": "Đề xuất lấy web của Kaneo làm nền và mượn màn hình từ Circle; Kaneo đã có tiếng Việt và nối API thật.",
+          "lines": [
+            "claude:0faf0bb2#L3290"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi đề xuất viết lại, tìm xem có dự án sẵn dùng được không; thiết kế đẹp không thay được license.",
+          "lines": [
+            "claude:0faf0bb2#L3302"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-heartbeat-cua-openclaw-ton-mot-luot-c455",
+      "code": "M-E3A1",
+      "title": "Heartbeat của OpenClaw tốn một lượt LLM mỗi nhịp: 'bridge chỉ còn tuỳ chọn' là nói quá",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Bộ dựng công ty một người chạy bằng đội agent AI đang chọn cách agent nhận việc. Người làm tin rằng bridge chỉ còn là tuỳ chọn vì agent tự kéo việc, nhưng heartbeat của OpenClaw tốn một lượt LLM mỗi nhịp khi file kiểm tra không rỗng: 5 agent mỗi 5 phút là khoảng 1.440 lượt mỗi ngày. Ai chọn kiểu pull cho agent nên đo chi phí vòng kiểm tra trước khi bỏ bridge.",
+      "audience": "dev xây hệ thống agent tự động hoá, đang chọn kiểu pull hay push",
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người chạy bằng đội agent AI; đang chọn cách agent nhận việc.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết vì sao không cần bridge khi agent tự kéo việc.",
+          "lines": [
+            "claude:0faf0bb2#L657"
+          ]
+        },
+        "obstacle": {
+          "text": "Gateway OpenClaw chỉ nghe trên máy cục bộ, Cloudflare không gọi tới được.",
+          "lines": [
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bridge chỉ còn là tuỳ chọn vì agent tự kéo việc; hoá ra mỗi heartbeat là một lượt LLM khi HEARTBEAT.md không rỗng.",
+          "lines": [
+            "claude:0faf0bb2#L659",
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "action": {
+          "text": "Đọc mã heartbeat-runner, sửa lesson agent-bridge và đề xuất một waker không dùng LLM.",
+          "lines": [
+            "claude:0faf0bb2#L671",
+            "claude:0faf0bb2#L690"
+          ]
+        },
+        "outcome": {
+          "text": "Bridge vẫn cần, chỉ là bản đơn giản; 5 agent mỗi 5 phút là khoảng 1.440 lượt LLM mỗi ngày.",
+          "lines": [
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "takeaway": {
+          "text": "Đo chi phí một vòng kiểm tra định kỳ bằng số lượt model mỗi ngày trước khi chọn kiểu pull.",
+          "lines": [
+            "claude:0faf0bb2#L707"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-multica-claude-code-dat-5-5-c455",
+      "code": "M-5C6Q",
+      "title": "Multica + Claude Code đạt 5/5 tiêu chí: đảo kết quả trượt của lần trước",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người chạy bằng đội agent AI trên nền Multica tự host, đang thử chạy agent bằng Claude Code.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L3398"
+          ]
+        },
+        "want": {
+          "text": "Chạy thử Multica với Claude Code để kiểm năm tiêu chí: đúng vai trò, ghi ngược vào Multica, nối tiếp session, workflow theo cột, chat nhiều phiên.",
+          "lines": [
+            "claude:0faf0bb2#L3398",
+            "claude:0faf0bb2#L3404"
+          ]
+        },
+        "obstacle": {
+          "text": "Lần thử trước với runtime OpenClaw bị trượt, không chạy được với bản đang dùng.",
+          "lines": [
+            "claude:0faf0bb2#L3394"
+          ]
+        },
+        "action": {
+          "text": "Kiểm Claude Code trên máy, tải CLI Multica v0.7.1 và xác minh checksum, dựng stack rồi đăng nhập CLI.",
+          "lines": [
+            "claude:0faf0bb2#L3405",
+            "claude:0faf0bb2#L3420",
+            "claude:0faf0bb2#L3423",
+            "claude:0faf0bb2#L3429"
+          ]
+        },
+        "outcome": {
+          "text": "Đạt 5/5 tiêu chí; agent comment và chuyển in_review trong 16 giây, không tự chuyển done.",
+          "lines": [
+            "claude:0faf0bb2#L3747"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-29-multica-openclaw-2026-3-13-truot-c455",
+      "code": "M-0W73",
+      "title": "Multica + OpenClaw 2026.3.13 trượt: Multica yêu cầu từ 2026.5.5; giả phiên bản vẫn hỏng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là bộ dựng công ty một người chạy bằng đội agent AI, và người làm muốn để Multica điều phối agent của AICoworker thay vì tự viết lớp điều phối. Họ tin chỉ cần giả số phiên bản OpenClaw là Multica sẽ chạy, vì bản đóng gói cũ chỉ bị chặn ở chỗ kiểm tra. Hoá ra bản cũ còn thiếu tính năng include cấu hình, nên lỗi vẫn còn và spike phải ghi là trượt. Ai dựng công cụ điều phối agent nên kiểm phiên bản tối thiểu của runtime trước, vì giả số phiên bản không che được khác biệt thật.",
+      "audience": "dev dựng công cụ điều phối cho agent AI",
+      "spine": {
+        "context": {
+          "text": "Dự án là bộ dựng công ty một người chạy bằng đội agent AI, đang spike Multica để điều phối agent của AICoworker.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L2772"
+          ]
+        },
+        "want": {
+          "text": "Để Multica điều khiển được agent của AICoworker qua OpenClaw.",
+          "lines": [
+            "claude:0faf0bb2#L2772",
+            "claude:0faf0bb2#L3150"
+          ]
+        },
+        "obstacle": {
+          "text": "Multica v0.7.1 yêu cầu OpenClaw từ 2026.5.5, còn AICoworker đóng gói 2026.3.13.",
+          "lines": [
+            "claude:0faf0bb2#L3041",
+            "claude:0faf0bb2#L3150"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng chỉ cần giả số phiên bản là chạy được; hoá ra bản cũ còn thiếu OPENCLAW_INCLUDE_ROOTS nên lỗi include vẫn chặn.",
+          "lines": [
+            "claude:0faf0bb2#L3045",
+            "claude:0faf0bb2#L3061",
+            "claude:0faf0bb2#L3150"
+          ]
+        },
+        "action": {
+          "text": "Viết wrapper báo phiên bản 2026.5.5 cho CLI 2026.3.13.",
+          "lines": [
+            "claude:0faf0bb2#L3061"
+          ]
+        },
+        "outcome": {
+          "text": "Qua được kiểm tra phiên bản nhưng CLI báo 'Include path escapes config directory', gateway thất bại; spike ghi là trượt.",
+          "lines": [
+            "claude:0faf0bb2#L3150"
+          ]
+        },
+        "takeaway": {
+          "text": "Kiểm phiên bản tối thiểu của runtime trước khi dựng lớp điều phối lên trên; giả số phiên bản không che được khác biệt thật.",
+          "lines": [
+            "claude:0faf0bb2#L3150"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-cot-workflow-mai-viet-long-tra-c455",
+      "code": "M-4VWX",
+      "title": "Cột workflow: Mai viết, Long trả lại hai vòng, Mai dừng lại hỏi chủ thay vì bịa giá",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang dựng một bộ agent AI trên Multica tự host, để agent nhận việc qua issue và đi qua các cột duyệt trước khi chủ chốt. Bài đăng SEN-2 do Mai viết đã sang cột duyệt, nhưng Long trả lại về todo vì thiếu giá, và Mai dừng lại chờ chủ thay vì tự điền. Với dev làm workflow agent, đáng nhớ là bước chuyển cột chưa có nghĩa là xong, và chỗ thiếu số liệu nên để người điền.",
+      "audience": "dev xây workflow cho agent AI",
+      "spine": {
+        "context": {
+          "text": "Người làm đang dựng một bộ agent AI trên Multica tự host, cho một công ty một người. Agent nhận việc qua issue và đi qua các cột workflow có chủ duyệt.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L3398"
+          ]
+        },
+        "want": {
+          "text": "Muốn thử xem workflow theo cột với agent Mai (viết) và Long (duyệt) có chạy đúng không.",
+          "lines": [
+            "claude:0faf0bb2#L3398"
+          ]
+        },
+        "obstacle": {
+          "text": "Long trả SEN-2 về todo và giao lại cho Mai, nên bài chưa qua được vòng duyệt.",
+          "lines": [
+            "claude:0faf0bb2#L3629"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bài nháp chuyển sang cột duyệt là gần xong; hoá ra Long trả lại về todo.",
+          "lines": [
+            "claude:0faf0bb2#L3622",
+            "claude:0faf0bb2#L3629"
+          ]
+        },
+        "action": {
+          "text": "Mai dừng lại và chờ chủ bổ sung thông tin; chủ comment giá 350.000đ, ưu đãi và hạn đặt trước.",
+          "lines": [
+            "claude:0faf0bb2#L3691"
+          ]
+        },
+        "outcome": {
+          "text": "SEN-2 đi tới in_review và giao cho chủ; Long duyệt đạt sau khi Mai điền đủ thông tin.",
+          "lines": [
+            "claude:0faf0bb2#L3702",
+            "claude:0faf0bb2#L3712"
+          ]
+        },
+        "takeaway": {
+          "text": "Chuyển cột chưa phải là xong: cột duyệt có thể đẩy ngược lại, và thiếu số liệu thì nên để agent hỏi người chứ không tự điền.",
+          "lines": [
+            "claude:0faf0bb2#L3712"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-kaneo-noi-that-sua-comment-di-c455",
+      "code": "M-BEB0",
+      "title": "Kaneo 'nối thật': sửa comment đi qua API chứ không ghi vào localStorage",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-multica-che-do-local-thay-workspace-c455",
+      "code": "M-S813",
+      "title": "Multica chế độ local thay workspace OpenClaw, mất SOUL và bộ nhớ của agent",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-paperclip-doi-giao-thuc-v4-gateway-c455",
+      "code": "M-20ZP",
+      "title": "Paperclip đòi giao thức v4, gateway chỉ có v3: vá bản đã cài và kiểm chứng bằng commit upstream",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-paperclip-khong-phai-chi-la-dieu-c455",
+      "code": "M-7GD0",
+      "title": "Paperclip không phải chỉ là điều phối: có runtime riêng và UI giấu adapter OpenClaw",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-mo-paperclip-ra-tailnet-tu-khong-c455",
+      "code": "M-F129",
+      "title": "Mở Paperclip ra tailnet: từ không đăng nhập sang có đăng nhập, agent tạm ngừng vì địa chỉ đổi",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-don-paperclip-xoa-khoang-2-4-c455",
+      "code": "M-6R07",
+      "title": "Dọn Paperclip: xoá khoảng 2,4 GB và toàn bộ dữ liệu công ty mẫu, không khôi phục được",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-ma-task-do-server-cap-bang-c455",
+      "code": "M-S3Y0",
+      "title": "Mã task do server cấp bằng một câu UPDATE RETURNING; bằng chứng tăng khi Kaneo làm giống Paperclip",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-script-distill-va-sua-yaml-bang-c455",
+      "code": "M-98C6",
+      "title": "Script distill và sửa YAML bằng thay chuỗi: đổi goal làm vỡ domains, sed và node lỗi",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-stop-hook-giu-goal-song-khoang-c455",
+      "code": "M-5V42",
+      "title": "Stop hook giữ goal sống khoảng 20 lượt sau khi chủ bảo bỏ",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-commit-chon-loc-bang-index-tam-c455",
+      "code": "M-PVXT",
+      "title": "Commit chọn lọc bằng index tạm để không đụng thay đổi đang dở của người khác",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-dang-nhap-multica-khong-co-mat-c455",
+      "code": "M-2MZS",
+      "title": "Đăng nhập Multica không có mật khẩu: mã nằm trong log, rồi đặt mã cố định cho bản test",
+      "tension": "khac",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-thu-tri-nho-agent-hoi-agent-c455",
+      "code": "M-G5TG",
+      "title": "Thử trí nhớ agent: hỏi agent mật mã trong MEMORY.md để kiểm tra workspace",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-phan-hoi-ve-ky-nang-bi-c455",
+      "code": "M-D9HE",
+      "title": "Phản hồi về kỹ năng bị API từ chối vì lỗi validation",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-token-gateway-khong-duoc-in-ra-c455",
+      "code": "M-651P",
+      "title": "Token gateway không được in ra: script đọc từ môi trường của tiến trình đang chạy",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-khi-kiem-ke-nhieu-repo-cung-c455",
+      "code": "M-YBB8",
+      "title": "Khi kiểm kê nhiều repo cùng lúc, agent chạy song song các sub-agent, mỗi cái một mảng, rồi agent chính đối chiếu lại các trích dẫn (đường dẫn, số dòng) trước khi ghi vào tài liệu.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-dua-mot-dich-vu-dang-chay-c455",
+      "code": "M-2WNM",
+      "title": "Đưa một dịch vụ đang chạy trên máy ra mạng riêng (tailnet): đổi chế độ bind và bật đăng nhập, sao lưu cấu hình cũ trước, rồi ghi sẵn cách quay lại. Agent cũng đưa ra hai phương án có ưu nhược rõ ràng và để người dùng chọn.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-truoc-khi-thu-nghiem-agent-viet-c455",
+      "code": "M-WHWW",
+      "title": "Trước khi thử nghiệm, agent viết sẵn bộ tiêu chí đạt/trượt đánh số (a, b, c, d...). Sau khi chạy, báo từng tiêu chí đạt hay trượt, kể cả khi cả lần thử đó thất bại, và ghi nguyên nhân gốc vào báo cáo.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-agent-theo-doi-viec-dang-chay-c455",
+      "code": "M-N1PN",
+      "title": "Agent theo dõi việc đang chạy bằng một Monitor nền: mỗi khi trạng thái hoặc comment đổi, agent nhận thông báo, không cần hỏi lại hay chờ bằng sleep.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-khi-don-dep-sau-mot-lan-c455",
+      "code": "M-3PA6",
+      "title": "Khi dọn dẹp sau một lần thử, agent ghi lại bảng hoàn tác: liệt kê từng thứ đã tạo (tiến trình, cổng, thư mục, file, cache, session trong hệ thống khác), rồi dọn đúng theo bảng và quét lại toàn máy để chắc không sót.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

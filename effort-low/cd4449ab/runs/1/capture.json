@@ -1,0 +1,240 @@
+{
+  "id": "cd4449ab",
+  "run": 1,
+  "host": "omp",
+  "transcript": "/home/vantt/.omp/profiles/gemini-tetcu72/agent/sessions/-projects-mcp-skill-hub-simplify/2026-10-09T02-40-10-134Z_01a11e88-4796-7023-a511-4a8dcd4449ab.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "dadb4c5597fabafa",
+  "at": "2026-11-05T10:23:55.995Z",
+  "dryRun": {
+    "usd": 0.25,
+    "tokens": 92346,
+    "chunks": 1,
+    "hotspots": 143,
+    "entries": 2664
+  },
+  "report": {
+    "sid": "omp:cd4449ab",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.28669500000000003,
+    "secs": 156.4,
+    "exitCode": 0,
+    "status": "done",
+    "written": 23,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "omp:cd4449ab L1-L4000: done; 17 chuyện thô, 23 cụm; ghi 23 mới, gộp 0\nđiểm nóng 143 (thiếu 0); lần chạy 1/1; 0.29 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-09-migrate-hub-that-vo-meta-bi",
+      "title": "Migrate hub thật vỡ: .meta/ bị coi là canonical entity",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-agent-bao-xong-nhung-lead-review",
+      "title": "Agent báo 'xong' nhưng lead review bắt lại nhiều lỗi",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-chuan-hoa-url-repo-mot-dau",
+      "title": "Chuẩn hoá URL repo: một dấu .git làm hai nguồn không khớp",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-migration-v4-nuot-loi-bang-va",
+      "title": "Migration v4 nuốt lỗi bằng `_ =` và lead bắt fail-closed",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-noi-regex-bang-chung-de-test",
+      "title": "Nới regex bằng chứng để test qua, lead yêu cầu siết lại",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-cat-17-mcp-tool-cu-boundary",
+      "title": "Cắt 17 MCP tool cũ: boundary test đỏ 5 lần",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-sua-golden-testdata-cho-khop-output",
+      "title": "Sửa golden testdata cho khớp output mới",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-77-commit-sha-ngan-trong-distill",
+      "title": "77 commit SHA ngắn trong distill.yaml phải mở rộng qua git mirror",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-commit-mang-author-la-gemini-3",
+      "title": "Commit mang author lạ 'gemini-3.8-flash'",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-fixture-v3-v4-yaml-4-va",
+      "title": "Fixture v3→v4: YAML |4 và receipt làm test đỏ nhiều lần",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-so-before-after-bang-hai-binary",
+      "title": "So before/after bằng hai binary: lỗi do clone thiếu runtime",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-xoa-revision-package-vet-bao-undefined",
+      "title": "Xoá revision package: vet báo undefined và distill test đỏ 17 lần",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-make-check-do-17-lan-vi",
+      "title": "make check đỏ 17 lần vì fmt, lint, vet, test",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-test-fixture-doi-hang-loat-go",
+      "title": "Test fixture đổi hàng loạt: go test internal/app mất 9–22 giây mỗi lần",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-edit-tool-tu-choi-anchor-lech",
+      "title": "Edit tool từ chối anchor lệch 15 lần, mỗi lần đọc lại",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-guard-git-status-chan-vi-file",
+      "title": "Guard git status chặn vì file của worktree khác",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-rebase-11-commit-len-main-0",
+      "title": "Rebase 11 commit lên main: 0 conflict",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-cap-nhat-tai-lieu-thiet-ke",
+      "title": "Cập nhật tài liệu thiết kế và bảng contract trong cùng commit với code thay đổi, không để sang PR sau.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-doc-output-test-dai-bang-cach",
+      "title": "Đọc output test dài bằng cách mở artifact theo khoảng dòng hoặc theo phần raw, thay vì chạy lại lệnh hay pipe qua grep.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-dung-ban-sao-byte-for-byte",
+      "title": "Dùng bản sao byte-for-byte của dữ liệu thật từ hub đang chạy làm fixture test, thay vì tự viết fixture giả.",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-dung-o-cac-diem-kiem-tra",
+      "title": "Dừng ở các điểm kiểm tra do người điều phối đặt ra, báo hash commit, rồi chờ xác nhận trước khi làm bước tiếp.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-profile-du-lieu-that-bang-script",
+      "title": "Profile dữ liệu thật bằng script trước khi viết code migration: đếm số bài học, kiểm tra regex key, trùng key, trường rỗng, phân bố trạng thái, độ phủ theo nguồn.",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-xoa-thu-muc-tam-clone-scratch",
+      "title": "Xoá thư mục tạm (clone scratch và binary) ngay sau khi kiểm tra xong.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

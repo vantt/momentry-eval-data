@@ -1,0 +1,171 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L6] USER: You are worktree C. Your worktree is /home/vantt/projects/mcp-skill-hub-simplify (branch wave2/simplify-p4-p3). It already holds your earlier uncommitted work: internal/workspace/workspace.go, internal/migration/migration.go, internal/migration/v3.go, and the phase-03 and phase-04 files. Rules before anything else: - Every read, edit and write call uses an absolute path that starts with /home/vantt/projects/mcp-skill-hub-simplify/. Every bash call runs there. - Never write to /home/vantt/projects/mcp-skill-hub (the lead's main checkout) or to /home/vantt/skill-hub (the live hub). That means no …[+798]
+[L2345] USER: Lead: the untracked file in the main checkout is docs/plans/prompt-wave3-E.md, the lead's own prompt file. That is expected; proceed. In /home/vantt/projects/mcp-skill-hub-simplify (absolute paths only): 1. Commit your current changes (one commit, conventional message), with make check green. 2. Main has moved: worktree D merged, main is at b32d678. Run `git -C /home/vantt/projects/mcp-skill-hub-simplify rebase main`. The lead checked with merge-tree: no conflicts are expected. If any appear, resolve only in your owned paths. 3. Run make check again on the rebased branch. 4. Report: the new co …[+362]
+[L2374] USER: Lead: your Phase 4 checkpoint is merged into main (fast-forward to b01eaa3). Go ahead with Phase 3 in /home/vantt/projects/mcp-skill-hub-simplify (absolute paths only), in the order already given, one commit each, make check green: a. planV3ToV4 + pre-Phase-3 fixture (decisions, reopen-only-on-new-evidence, tombstones, coverage gaps survive). Copy the live hub's Phase-0-format test-audit/.meta/distill.yaml into testdata and prove it converts. b. Remove insight/run lifecycle, revision packages, LINK files, intake layout (skill_add must stop writing sources/intake/; insight.go:832 goes too). Con …[+674]
+</asks>
+
+<story>
+hook: Xoá hai file, test đỏ hơn 12 vòng mới xanh
+tension: nho_ma_to (chỉ gỡ hai file / hơn 12 vòng test đỏ mới xong)
+stakes: 2/3
+# Xoá revision packages: hơn 12 vòng test đỏ trong internal/app
+
+**Bối cảnh:** Gỡ internal/distill/revision_package.go và test, cùng các chỗ validation đọc nó.
+**Chuyện gì xảy ra:** Gỡ hai file revision_package. Test distill đỏ ngay vì validation vẫn duyệt runtime packages. Sau đó go test ./internal/app đỏ hơn 12 lần: tombstone, comparison stale, evidence cần revision và package identity. Mỗi lần sửa một chỗ rồi chạy lại. Lần chạy cuối trong internal/app xanh; vet còn báo thiếu import context trong types.go, đã sửa.
+**Bài học:** Khi gỡ một kiểu dữ liệu, tìm mọi nơi validation đọc nó trước; số lần đỏ cho thấy chỗ phụ thuộc còn sót.
+**Artefact:** Biểu đồ số lần test đỏ theo thứ tự chạy, nếu muốn vẽ.
+</story>
+
+<excerpt>
+[L3053] TOOL grep: distill-submission|source-link|source-candidate|incorporation-outcome|insight-application|insight-decision
+[L3055] RESULT: No matches found
+[L3056] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify rm schemas/distill-submission.schema.json schemas/source-link.schema.json schemas/source-candidate.schema.json schemas/incorporation-outcome.schema.json schemas/insight-application.schema.json schemas/insight-decision.schema.json
+[L3058] RESULT: rm 'schemas/distill-submission.schema.json' | rm 'schemas/incorporation-outcome.schema.json'
+[L3059] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go:170-220
+[L3061] RESULT: [internal/distill/workspace_validation.go#4414] | 166: for _, run := range runs {
+…
+[L3080] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go
+[L3082] RESULT: [internal/distill/workspace_validation.go#EDC0] | 21:// canonical document. It is called for external edits and every catalog rebuild.
+[L3083] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify rm internal/distill/revision_package.go internal/distill/revision_package_test.go
+[L3085] RESULT: rm 'internal/distill/revision_package.go' | rm 'internal/distill/revision_package_test.go'
+[L3086] TOOL bash: go test -v ./internal/distill
+[L3088] RESULT (exit 1): FAIL | Wall time: 0.18 seconds | Command exited with code 1
+[L3089] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go:170-185,205-225
+[L3091] RESULT: [internal/distill/workspace_validation.go#EDC0] | 170: _, ok := sources[run.SourceID]
+[L3092] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go
+[L3094] RESULT: [internal/distill/workspace_validation.go#1983] | 171: if !ok {
+[L3095] TOOL bash: go test -v ./internal/distill
+[L3097] RESULT: === RUN TestDistillDocumentValidation | === PAUSE TestDistillDocumentValidation
+[L3098] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/docs/design/07-storage-and-mutation-model.md:70-105
+…
+[L3136] RESULT: [internal/distill/types.go#CA7D] | 69:type PackagedResource struct {
+[L3137] TOOL bash: go vet ./...
+[L3139] RESULT (exit 1): vet: internal/distill/types.go:81:32: undefined: context | Wall time: 0.30 seconds | Command exited with code 1
+[L3140] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go:1-18
+[L3142] RESULT: [internal/distill/types.go#CA7D] | 1:// Package distill defines the durable, transport-neutral contracts for source learning.
+[L3143] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go
+[L3145] RESULT: [internal/distill/types.go#30D4] | 4:import (
+[L3146] TOOL bash: go vet ./...
+[L3148] RESULT: (no output) | Wall time: 1.66 seconds
+[L3149] TOOL bash: make check
+[L3151] RESULT (exit 2): make: *** [Makefile:21: lint] Error 1 | Wall time: 3.53 seconds | Command exited with code 2
+[L3152] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/app/distill.go:260-268
+…
+[L3184] RESULT: [internal/app/distill.go#AE5B] | 261: runID := "RUN-" + strings.ToUpper(random[:minInt(16, len(random))])
+[L3185] TOOL bash: go test -v ./internal/app -run 'TestSourceLinks|TestInsightApplyIsAtomicTraceableIdempotentAndOutcomeExplicit'
+[L3187] RESULT (exit 1): FAIL | Wall time: 1.48 seconds | Command exited with code 1
+[L3188] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go:75-88
+[L3190] RESULT: [internal/distill/types.go#CC37] | 69:type PackagedResource struct {
+[L3191] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go
+[L3193] RESULT: [internal/distill/types.go#2C60] | 76:
+[L3194] TOOL bash: go test -v ./internal/app -run 'TestSourceLinks|TestInsightApplyIsAtomicTraceableIdempotentAndOutcomeExplicit'
+[L3196] RESULT (exit 1): FAIL | Wall time: 0.12 seconds | Command exited with code 1
+[L3197] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go:1-18
+[L3199] RESULT: [internal/distill/types.go#2C60] | 1:// Package distill defines the durable, transport-neutral contracts for source learning.
+[L3200] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go
+[L3202] RESULT: [internal/distill/types.go#70A9] | 7: "fmt"
+[L3203] TOOL bash: go test -v ./internal/app -run 'TestSourceLinks|TestInsightApplyIsAtomicTraceableIdempotentAndOutcomeExplicit'
+[L3205] RESULT (exit 1): FAIL | Wall time: 4.08 seconds | Command exited with code 1
+[L3206] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/app/insight_test.go:50-70
+[L3208] RESULT: [internal/app/insight_test.go#470F] | 35:func TestApplicationMappingsCoverDirectAndComparisonObservationsWithoutDuplicates(t *testing.T) {
+…
+[L3221] TOOL bash: go test -v ./internal/app -run 'TestSourceLinks|TestInsightApplyIsAtomicTraceableIdempotentAndOutcomeExplicit'
+[L3223] RESULT: === RUN TestInsightApplyIsAtomicTraceableIdempotentAndOutcomeExplicit | === PAUSE TestInsightApplyIsAtomicTraceableIdempotentAndOutcomeExplicit
+[L3224] TOOL bash: go test ./internal/app
+[L3226] RESULT (exit 1): FAIL | Wall time: 17.18 seconds | Command exited with code 1
+[L3227] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/app/distill_test.go:275-305
+[L3229] RESULT: [internal/app/distill_test.go#F2FB] | 274:
+…
+[L3241] RESULT: [internal/distill/workspace_validation.go#9C92] | 21:// canonical document. It is called for external edits and every catalog rebuild.
+[L3242] TOOL bash: go test ./internal/app
+[L3244] RESULT (exit 1): Wall time: 8.86 seconds | Command exited with code 1 | [Some lines truncated to 768 bytes. Read artifact://354 for full output]
+[L3245] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go:40-57
+[L3247] RESULT: [internal/distill/workspace_validation.go#9C92] | 39: // Generic catalog fixtures and workspaces predating distillation may contain
+…
+[L3250] RESULT: [internal/distill/workspace_validation.go#03D2] | 42: // mutation validation omits runtime by design, but still checks every
+[L3251] TOOL bash: go test ./internal/app
+[L3253] RESULT (exit 1): FAIL | Wall time: 11.87 seconds | Command exited with code 1
+[L3254] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go:55-75
+[L3256] RESULT: [internal/distill/workspace_validation.go#03D2] | 52: walk := func(relative string, visit func(string, []byte) error) error {
+…
+[L3259] RESULT: [internal/distill/workspace_validation.go#3171] | 22:func ValidateWorkspace(root string) error {
+[L3260] TOOL bash: go test -v ./internal/app -run 'TestDoctorReportsAndFixesPendingRecovery|TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale'
+[L3262] RESULT (exit 1): FAIL | Wall time: 1.90 seconds | Command exited with code 1
+[L3263] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go:175-195
+[L3265] RESULT: [internal/distill/workspace_validation.go#3171] | 174: for sourceID, run := range latestFinalized {
+…
+[L3274] RESULT: [internal/distill/workspace_validation.go#CF6A] | 189: for _, comparison := range comparisons {
+[L3275] TOOL bash: go test -v ./internal/app -run TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale
+[L3277] RESULT (exit 1): FAIL | Wall time: 2.46 seconds | Command exited with code 1
+[L3278] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go:205-220
+[L3280] RESULT: [internal/distill/workspace_validation.go#CF6A] | 189: for _, comparison := range comparisons {
+…
+[L3283] RESULT: [internal/distill/workspace_validation.go#A97C] | 181: run, ok := runs[observation.RunID]
+[L3284] TOOL bash: go test -v ./internal/app -run TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale
+[L3286] RESULT (exit 1): FAIL | Wall time: 2.21 seconds | Command exited with code 1
+[L3287] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify diff origin/main -- internal/distill/workspace_validation.go
+[L3289] RESULT: internal/distill/workspace_validation.go | 69 +++++++----------------- | 1 file changed, 18 insertions(+), 51 deletions(-)
+…
+[L3313] RESULT: [internal/app/distill.go#8071] | 261: runID := "RUN-" + strings.ToUpper(random[:minInt(16, len(random))])
+[L3314] TOOL bash: go test -v ./internal/app -run TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale
+[L3316] RESULT (exit 1): FAIL | Wall time: 2.33 seconds | Command exited with code 1
+[L3317] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go:75-95
+[L3319] RESULT: [internal/distill/types.go#D944] | 71:type PackagedResource struct {
+…
+[L3322] RESULT: [internal/distill/types.go#6BB6] | 83: var run Run
+[L3323] TOOL bash: go test -v ./internal/app -run TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale
+[L3325] RESULT (exit 1): FAIL | Wall time: 2.50 seconds | Command exited with code 1
+[L3326] TOOL grep: observation evidence requires revision and package identities
+[L3328] RESULT: # internal/distill/ | ## types.go#6BB6
+…
+[L3340] RESULT: [internal/app/distill.go#E0E4] | 263: var resources []distillpkg.PackagedResource
+[L3341] TOOL bash: go test -v ./internal/app -run TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale
+[L3343] RESULT: === RUN TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale | === PAUSE TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale
+[L3344] TOOL bash: go test ./internal/app
+[L3346] RESULT (exit 1): FAIL | Wall time: 21.65 seconds | Command exited with code 1
+[L3347] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go:30-45
+[L3349] RESULT: [internal/distill/workspace_validation.go#A97C] | 26: for _, path := range paths {
+…
+[L3352] RESULT: [internal/distill/workspace_validation.go#BFE2] | 34: if !hasDistillation {
+[L3353] TOOL bash: go test ./internal/app
+[L3355] RESULT: ok github.com/vantt/mcp-skill-hub/internal/app 8.831s | Wall time: 18.08 seconds
+[L3356] TOOL bash: make check
+[L3358] RESULT: go vet ./... | go run github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.14.0 run --new-from-rev=origin/main ./...
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

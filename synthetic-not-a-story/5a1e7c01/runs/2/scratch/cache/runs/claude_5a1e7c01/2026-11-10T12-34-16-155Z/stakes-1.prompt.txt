@@ -1,0 +1,42 @@
+Dưới đây là 12 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+Thường là 0, ở mọi nghề, vì không đổi kết quả việc chính:
+- việc dọn dẹp, đổi tên, định dạng lại, chuyển sang mẫu khác (đổi tên loạt file, kẻ lại một bảng, sửa lỗi chính tả, dọn nhánh git);
+- trục trặc do cài đặt hay môi trường, chỉnh xong là chạy (thiếu phần mềm, chưa đăng nhập, file chưa gửi lên, đường dẫn đổi chỗ);
+- lỗi tự hết khi làm lại, công cụ trục trặc rồi chạy lại được;
+- việc một lần trơn tru, không có gì bất ngờ (xuất báo cáo ra PDF, lên lịch gửi thư, nhập danh sách khách);
+- bước kiểm tra thường lệ không tìm ra gì đáng kể.
+Ngoại lệ: việc vặt mà lộ ra một điều bất ngờ, gây mất dữ liệu, tiền, khách hay thời gian, hoặc buộc phải quyết định, thì chấm theo đúng mức nó làm đổi kết quả.
+
+M1. Sổ tay giọng văn cấm từ 'bí quyết', và grep bắt đúng chỗ vi phạm
+   Agent tìm từ cấm bằng grep và thấy một tiêu đề phụ đang dùng nó. Agent đề xuất hai cách thay thế, chủ bản tin chọn 'Giữ quỹ khỏi tay mình'. Agent cũng chỉ ra hai đoạn dài 6 và 7 câu, và chủ bản tin tự quyết định cách tách.
+M2. Khi sửa lời chào cuối thư, agent đổi sang hai dòng mà user không yêu cầu, rồi nói rõ đây là thay đổi ngoài yêu cầu và đề nghị hoàn tác nếu user muốn giữ một dòng.
+   Khi sửa lời chào cuối thư, agent đổi sang hai dòng mà user không yêu cầu, rồi nói rõ đây là thay đổi ngoài yêu cầu và đề nghị hoàn tác nếu user muốn giữ một dòng. Agent thường đổi âm thầm rồi không báo, hoặc không đổi gì cả. Ít khi có bước báo rõ thay đổi kèm cách lùi lại.
+M3. Biết tiêu đề không phải thủ phạm, chủ bản tin vẫn xin 10 tiêu đề và chọn số 2
+   Chủ bản tin nói rõ ngắn dài lẫn lộn cũng được, và cười rằng giờ đã biết không phải tại tiêu đề. Agent đưa 10 gợi ý, chủ chọn số 2 là '20 triệu đã đủ chưa?' và thêm tiền tố 'Quỹ khẩn cấp:' dù tiêu đề dài hơn. Agent cập nhật dòng đầu bài trong một lần sửa.
+M4. Link chú thích: lỗi thiếu dấu hai chấm được bắt khi đổi định dạng
+   Khi đọc lại phần chú thích, agent thấy link thứ ba thiếu dấu hai chấm sau https và sửa ngay khi chuyển. Ba link được gắn vào ba cụm từ trong câu, rồi phần chú thích cuối bài được xoá trong hai lệnh sửa. Việc đổi định dạng chỉ mất hai lượt sửa nhưng suýt đưa một link hỏng vào bản gửi.
+M5. Bài học từ phiên được ghi thẳng vào file ghi chú của dự án, theo dạng quy trình dùng được lần sau: nhập danh sách từ sự kiện thì gửi thư xác nhận trước, và đọc tỉ lệ mở theo từng nguồn.
+   Bài học từ phiên được ghi thẳng vào file ghi chú của dự án, theo dạng quy trình dùng được lần sau: nhập danh sách từ sự kiện thì gửi thư xác nhận trước, và đọc tỉ lệ mở theo từng nguồn. Người dùng thường giữ bài học trong đầu, còn AI không nhớ gì sang phiên mới. Hiếm khi có người yêu cầu ghi bài học vào đúng file mà các phiên sau sẽ đọc.
+M6. Dấu cách trước dấu câu: grep tìm trước, sed sửa sau, đếm lại ra 0
+   Agent dùng grep để tìm được hai dòng vi phạm, một dòng trong bài và một dòng ở lời chào. Sau đó chạy sed để xoá dấu cách trước mọi dấu câu, rồi chạy lại grep đếm và nhận kết quả 0. Trong lúc sửa, agent đổi lời chào thành hai dòng để gọn hơn trên điện thoại, và chủ bản tin đồng ý.
+M7. AI đề xuất sửa lãi suất từ 4,7% lên 6,5%, người làm tài chính bác vì đó là số cũ
+   Agent cho rằng lãi suất 4,7%/năm ở bài là thấp và đề xuất sửa thành khoảng 6,5%/năm, dựa trên mặt bằng cũ. Chủ bản tin mở bảng lãi suất trực tuyến của một ngân hàng lớn ngay trong ngày và thấy 4,7%, các ngân hàng khác quanh 4,7 đến 5%. Agent thừa nhận không có cách kiểm tra bảng hôm nay, nên con số đề xuất sai gần 2 điểm phần trăm. Sau đó con số được ghi nguồn kèm ngày, và quy tắc mới được thêm vào sổ tay giọng văn: AI chỉ đánh dấu [KIỂM TRA] cho số lãi suất, giá, tỉ giá, không đề xuất số thay thế.
+M8. Cuối phiên, agent không dừng ở bản thảo đã xong. Nó đề nghị đo lại tỉ lệ mở theo từng nhóm sau hai tuần, khi có kết quả thư xác nhận, để kiểm chứng giả thuyết đã nêu.
+   Cuối phiên, agent không dừng ở bản thảo đã xong. Nó đề nghị đo lại tỉ lệ mở theo từng nhóm sau hai tuần, khi có kết quả thư xác nhận, để kiểm chứng giả thuyết đã nêu. Phiên thường kết thúc khi bài viết xong, và việc đo lường sau đó bị bỏ quên, hoặc chỉ nhắc chung chung.
+M9. Khi user nói 'đánh dấu thôi, để mình tự sửa', agent chỉ ghi vị trí và gợi ý, không tự sửa. Sau đó, khi user nói sẽ tự tách đoạn, agent để nguyên đoạn đó.
+   Khi user nói 'đánh dấu thôi, để mình tự sửa', agent chỉ ghi vị trí và gợi ý, không tự sửa. Sau đó, khi user nói sẽ tự tách đoạn, agent để nguyên đoạn đó. Nhiều AI thấy có lỗi là sửa luôn, kể cả khi người dùng đã nói rõ muốn tự làm phần đó.
+M10. Thư xác nhận lại cho 840 người: hỏi trong hai tuần, không xoá, báo cáo tách nhóm
+   Agent đề xuất ba bước: gửi thư xác nhận kèm nút đồng ý cho nhóm workshop, ai không phản hồi trong 14 ngày thì chuyển sang trạng thái không nhận chứ không xoá dữ liệu, và báo cáo tỉ lệ mở tách hai nhóm cho đến khi làm sạch xong. Agent soạn thư xác nhận ba đoạn ngắn và ghi bài học vào ghi chú. Chủ bản tin tạo nhóm riêng trong MailerLite và dự định gửi trong chiều hôm đó.
+M11. Tỉ lệ mở tụt từ 52% xuống 31%: lỗi nằm ở 840 người nhập tay, không nằm ở tiêu đề
+   Tỉ lệ mở chung của 4 số gần nhất giảm từ 52% xuống 31%. Trước khi viết lại tiêu đề, agent xem file xuất thống kê và thấy số người nhận ở số 44 nhảy từ 2.325 lên 3.171, tăng 846 người. Nguyên nhân là 840 địa chỉ nhập một lần ngày 14/9 từ danh sách ký tên ở một workshop. Tách theo nguồn: người đăng ký qua form mở 53,0%, còn nhóm nhập từ workshop chỉ mở 8,8%. Số 43 có tiêu đề dài nhất bảng nhưng vẫn mở 52,2%, nên giả thuyết tiêu đề bị loại.
+M12. wc -w ra 1.268 chữ, nhưng wc đếm âm tiết chứ không đếm từ tiếng Việt
+   Agent chạy wc -w, được 1.268 và quy đổi khoảng 5 phút đọc. Lệnh này đếm theo khoảng trắng, nên với tiếng Việt nó đếm âm tiết, không phải từ, và con số thời gian chỉ là ước tính. Agent cũng khẳng định mọi đoạn đều dưới 5 câu trừ hai đoạn đã tách, nhưng không có lệnh đếm kèm để kiểm chứng.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

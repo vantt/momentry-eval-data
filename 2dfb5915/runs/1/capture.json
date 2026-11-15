@@ -1,0 +1,159 @@
+{
+  "id": "2dfb5915",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-pkm/2dfb5915-3011-441f-a6fb-2c7cb5abd60b.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "eef608eecc0bbb60",
+  "at": "2026-11-05T09:42:45.628Z",
+  "dryRun": {
+    "usd": 0.58,
+    "tokens": 91394,
+    "chunks": 1,
+    "hotspots": 9,
+    "entries": 772
+  },
+  "report": {
+    "sid": "claude:2dfb5915",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.82468935,
+    "secs": 75.8,
+    "exitCode": 0,
+    "status": "done",
+    "written": 14,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:2dfb5915 L1-L4000: done; 8 chuyện thô, 14 cụm; ghi 14 mới, gộp 0\nđiểm nóng 9 (thiếu 0); lần chạy 1/1; 0.82 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-mot-claude-code-agent-day-ca",
+      "title": "Một Claude Code agent đẩy cả plan Rust lên `main` với CI xanh, rồi hook dừng không chịu cho dừng",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-agent-lam-ban-cai-windows-tai",
+      "title": "Agent làm bản cài Windows: tải sai bản OHS và hạ cấp ngầm",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-loi-compact-lam-mat-hai-trong",
+      "title": "Lỗi `compact()` làm mất hai trong năm khoá của trạng thái OHS 'chưa sẵn sàng'",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-loi-tren-windows-duong-dan-vault",
+      "title": "Lỗi trên Windows: đường dẫn vault bị lộ dạng JSON-escape trong bản so khớp",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-parity-lech-do-thu-tu-liet",
+      "title": "Parity lệch do thứ tự liệt kê file của hệ điều hành, không phải do thuật toán",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-05-dung-parity-harness-so-dau-ra",
+      "title": "Dùng parity harness so đầu ra bản Rust với 'golden' sinh từ bản Python ghim ở một commit cụ thể (spec.lock). So từng bảng, từng dòng, từng câu trả lời, từng lời gọi tool, từng byte của tools/list. CI chạy so này không cần Python hay token, vì golden đã commit vào repo.",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-bo-cai-va-phat-hanh-windows",
+      "title": "Bộ cài và phát hành Windows: vcruntime140.dll và script cài không kiểm sha",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-fuzz-so-khop-voi-ban-goc",
+      "title": "Fuzz so khớp với bản gốc: sinh 25.000 note YAML ngẫu nhiên, 15.000 note link ngẫu nhiên và 400 lời gọi tool ngẫu nhiên, chạy qua cả Python lẫn Rust, rồi đếm số lệch. Dùng kết quả này để chọn thư viện YAML (5 ứng viên, số lệch từ 0 đến 21.317).",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-moi-module-loi-xong-thi-mo",
+      "title": "Mỗi module lõi xong thì mở thêm một agent review độc lập, chỉ đọc. Báo cáo review được gửi lại cho agent đã viết để sửa trên nhánh của nó. Review tìm ra lỗi thật như treo khi stderr có byte không phải UTF-8, alias bomb làm hết bộ nhớ, build lỗi nửa chừng để lại index cũ vĩnh viễn.",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-release-lap-ci-khong-chay-vi",
+      "title": "Release lặp: CI không chạy vì hết hạn mức thanh toán, rồi public repo để thoát",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-thiet-ke-mcp-mot-cua-hai",
+      "title": "Thiết kế MCP một cửa: hai agent độc lập gặp nhau ở 13 tool và bỏ code mode",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-chia-plan-thanh-cac-dot-wave",
+      "title": "Chia plan thành các đợt (wave): làm phase nền một mình, rồi chạy 7 phase độc lập song song, mỗi phase một agent trong worktree riêng. Lead tự merge từng nhánh, giải conflict, chạy lại fmt/clippy/test/parity sau mỗi merge rồi mới push.",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-gom-moi-viec-can-nguoi-vault",
+      "title": "Gom mọi việc cần người (vault thật, Claude Desktop trên Windows, một tuần chạy song song) vào một file handoff cho agent chạy ở máy Windows. File có lệnh chính xác, bộ vault thử 6 note kèm đáp án đã kiểm, bảng nghiệm thu ứng với các ô còn mở trong plan, và quy tắc riêng tư: chỉ in số lệch, không in tên note hay đường dẫn.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-quyet-dinh-ky-thuat-duoc-ghi",
+      "title": "Quyết định kỹ thuật được ghi vào docs/DECISIONS.md và spec/PORTING.md ngay lúc chốt: ngày, lựa chọn, lý do, hệ quả. Mỗi chỗ lệch Python có tên ngoại lệ mà bộ so khớp đọc được, và ngoại lệ không dùng tới bị báo 'unused'.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

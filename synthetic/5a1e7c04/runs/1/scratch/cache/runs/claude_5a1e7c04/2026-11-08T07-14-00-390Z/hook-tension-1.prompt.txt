@@ -1,0 +1,38 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Khi sự cố xảy ra gần giờ ra mắt, agent tính chi phí bằng tiền thật, đưa hai phương án có đánh đổi rõ ràng, rồi kiểm tra trạng thái thật trước khi đổi. User chọn phương án.
+   Khi sự cố xảy ra gần giờ ra mắt, agent tính chi phí bằng tiền thật, đưa hai phương án có đánh đổi rõ ràng, rồi kiểm tra trạng thái thật trước khi đổi. User chọn phương án. Hoặc tắt mã ngay không tính toán, hoặc để yên, hoặc sửa theo cảm tính khi đang hoảng.
+M2. Bài học từ lần sai được ghi thành quy tắc trong tài liệu chung của dự án, với hai điều kiện đo lường cụ thể: không dùng từ hạn chót giả, và theo dõi hủy đăng ký cùng khiếu nại chứ không chỉ tỉ lệ mở.
+   Bài học từ lần sai được ghi thành quy tắc trong tài liệu chung của dự án, với hai điều kiện đo lường cụ thể: không dùng từ hạn chót giả, và theo dõi hủy đăng ký cùng khiếu nại chứ không chỉ tỉ lệ mở. Chỉ nhớ trong đầu hoặc trong cuộc trò chuyện, nên lần sau dễ lặp lại lỗi cũ.
+M3. Subject 'sắp hết hạn' làm tỉ lệ mở tăng, nhưng hủy đăng ký tăng 5 lần và bị khiếu nại
+   Tỉ lệ mở tăng khoảng 9 điểm, từ khoảng 40% lên 50%. Nhưng tỉ lệ hủy đăng ký tăng từ khoảng 0,2% lên 1,0%, ước tính khoảng 190 người trên danh sách 9.800. Có 2 khiếu nại spam, trong khi các email trước không có. Tỉ lệ click gần như không đổi (3,4% và 3,0% so với 3,1% và 2,9%). Email 3 nói 'còn 3 tiếng' nhưng pre-order vẫn mở. Inbox nhận 6 phản hồi, trong đó có một người viết rằng hôm qua vẫn nói còn 3 tiếng. Quyết định: dùng subject không có deadline giả, và thêm luật vào email-rules. Luật là không dùng deadline trừ khi có thật, và kiểm tra hủy đăng ký cùng khiếu nại song song với tỉ lệ mở.
+M4. Dọn tên chiến dịch UTM: 4 tên viết hoa lẫn 6 tên thường, và script ghi đè thẳng file gốc
+   Đếm được 4 link đặt tên 'VitC_Launch' và 6 link đặt tên 'vitc-launch'. Một script Python chuẩn hoá cả 15 dòng: source, medium và campaign về chữ thường, gạch dưới đổi thành gạch ngang. Script ghi đè thẳng vào file, không sao lưu. Bước kiểm chứng chỉ in số dòng là 15 và không đếm lại giá trị sau khi sửa.
+M5. Agent nói chắc về mốc thời gian mà chưa đưa truy vấn ra
+   Agent khẳng định đỉnh pre-order ngày 20–21/10 khớp với ngày gửi bản tin, và video TikTok lớn ngày 24 không làm đường cong đơn nhích. Trong transcript không có truy vấn nào theo ngày để kiểm chứng. Agent cũng nói các link bản tin đã được đặt tên đúng từ trước, trong khi bước dọn tên chiến dịch vừa sửa cả 15 link. Người dùng có thể đã dựa vào những khẳng định này khi kể lại với đội.
+M6. Agent tính sai chênh lệch giảm giá, khiến thiệt hại bị đánh giá thấp khoảng một phần ba
+   Agent viết chênh lệch mỗi đơn là khoảng 70k và 400 đơn khoảng 28 triệu. Nhưng 690k nhân 15% là 103,5k, nên chênh lệch đúng là khoảng 103,5k mỗi đơn. Theo cách tính đúng, 400 đơn khoảng 41 triệu, và trần 500 khoảng 52 triệu so với mức 15%. Con số 35 triệu mà người dùng dựa vào để quyết định thấp hơn khoảng một phần ba. Kết luận chọn trần vẫn có thể đúng, nhưng cần tính lại với số đúng.
+M7. Ngay trong đêm ra mắt, khi sự cố còn tươi, user yêu cầu ghi retro theo khung sự cố, quyết định và chi phí. Agent ghi xong và hẹn lấy số liệu theo mã vào hôm sau.
+   Ngay trong đêm ra mắt, khi sự cố còn tươi, user yêu cầu ghi retro theo khung sự cố, quyết định và chi phí. Agent ghi xong và hẹn lấy số liệu theo mã vào hôm sau. Để việc viết retro sang sau hoặc bỏ qua, rồi nhớ lại theo trí nhớ khi họp.
+M8. Mã test nội bộ chưa xoá bị dùng 400 lần ngay đêm ra mắt
+   Đến 20:25 mã đã có 400 lượt dùng. Có hai hướng: tắt ngay, đổi lấy việc người theo dõi thấy lỗi công khai trong bình luận, hoặc giữ mã với trần 500 lượt rồi chuyển sang mã 15%. Người dùng chọn trần 500 và ghim bình luận giải thích. Lúc đó mã đã có 431 lượt, còn 69 lượt. Agent cũng tắt mã test nhân viên 50% còn lại, theo bước dọn mã trong kế hoạch. Bình luận được ghim lúc 20:41.
+M9. Đội tin TikTok kéo đơn, nhưng 61% pre-order đến từ một bản tin đối tác gần như bị quên
+   Trong 614 pre-order, 376 đơn (61%) dùng mã của bản tin đối tác gửi ngày 20. Bản tin này không tốn tiền nên gần như bị quên. TikTok có 12.210 phiên, 49 đơn, tỉ lệ 0,4%. Bản tin có 4.120 phiên, 371 đơn, tỉ lệ 9,0%. Kế hoạch đổi hướng: giữ TikTok ở mức phẳng để làm nhận diện, xin thêm một slot bản tin có trả phí, các kênh khác giữ phẳng, và viết ghi chú ngắn kèm số để thuyết phục sếp.
+M10. Banner ba kích thước: một headline, cắt phụ đề theo khung
+   Giữ nguyên headline 'Brightness, bottled.' ở cả ba khung. Riêng khung vuông bỏ bớt phụ đề, còn '15% off at launch' và CTA 'Shop now', vì crop chặt. Khung dọc đặt CTA 'Swipe up' ở đáy. Alt text dùng chung cho cả ba kích thước. Người dùng duyệt và lưu vào file copy.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

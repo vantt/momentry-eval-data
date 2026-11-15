@@ -1,0 +1,81 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Chào em. Tối nay cô cần làm ba việc: chấm nốt bài nghị luận xã hội "lòng biết ơn" của 10A3, sửa rubric, và soạn đề kiểm tra giữa kỳ (thi thứ Ba tuần sau). Bài scan ở bai-lam/, 42 file.
+[L15] USER: Trời ơi. Đúng là cô xin em bài mẫu để giúp mấy đứa yếu, 6–7 em hay bỏ giấy trắng. Giờ thì 17 bài giống nhau, có cả mấy em khá cũng chép. Cô không biết chấm sao nữa, chấm theo rubric thì bài nào cũng đủ ý, mà đọc lên chẳng thấy các em nghĩ gì.
+[L17] USER: Cô làm cả ba. Em soạn giúp cô dàn ý mở cho đề "lòng biết ơn" kiểu đó, chỉ câu hỏi gợi ý thôi, không có ví dụ nào. Và ghi vào ghi chú: không phát bài mẫu trọn vẹn nữa.
+[L22] USER: Giờ rubric. Rubric hiện tại 10 tiêu chí, mỗi bài cô mất 12 phút, 42 bài là hơn 8 tiếng. Mà trả bài xong các em chỉ nhìn điểm, không đọc. Em xem rubric.md.
+</asks>
+
+<story>
+hook: Rubric 3 tiêu chí: chấm 5 phút một bài thay vì 12
+tension: it_ma_nhieu (Bỏ từ 10 tiêu chí xuống 3 tiêu chí kèm một câu nhận xét / Chấm nhanh gấp đôi, cả 8 em đều đọc nhận xét)
+stakes: 3/3
+# Rubric 10 tiêu chí có/không → 3 tiêu chí theo mức: chấm nhanh gấp đôi, học sinh đọc nhận xét
+
+**Bối cảnh:** Rubric cũ có 10 tiêu chí chấm có/không cho bài nghị luận 10 điểm. Mỗi bài mất khoảng 12 phút, nên 42 bài hơn 8 tiếng và học sinh chỉ nhìn điểm.
+**Chuyện gì xảy ra:** Giáo viên thử rubric mới gồm 3 tiêu chí theo ba mức, cộng một câu nhận xét bắt đầu bằng "Lần sau em thử…". Với 8 bài thử, tổng thời gian là 41 phút, khoảng 5 phút một bài thay vì 12 phút. Ước tính 42 bài sẽ mất khoảng 3,5 tiếng thay vì hơn 8 tiếng. Khi trả thử 8 bài, cả 8 em đọc nhận xét và 5 em hỏi lại "thử là thử thế nào". Rubric cũ được giữ thành bản riêng để so sánh trong họp tổ.
+**Bài học:** Rubric chấm có/không không nói cho học sinh biết phải làm gì; thử trên một mẫu nhỏ và bấm giờ trước khi áp dụng cho cả lớp cho ra số liệu thuyết phục hơn cảm giác.
+**Artefact:** Hai bản rubric cạnh nhau (10 tiêu chí và 3 tiêu chí theo mức), kèm bảng giờ chấm 8 bài thử (che tên học sinh).
+**Góc người ngoài:** cách làm phổ biến là Ghi đè file rubric cũ và áp dụng ngay cho toàn bộ bài, sau đó mới đánh giá xem có hiệu quả không; ở đây khác ở Agent thử nghiệm với một mẫu nhỏ và đo thời gian thực tế, nên quyết định đổi rubric dựa trên số liệu (từ khoảng 12 phút xuống khoảng 5 phút mỗi bài) chứ không phải giả định. Người đọc muốn biết cách biến một thay đổi quy trình thành thử nghiệm có thể đảo ngược.
+</story>
+
+<excerpt>
+[L20] TOOL Edit: /Users/hang/Documents/ngu-van-10a3/cham-diem/ghi-chu.md
+[L21] RESULT: The file /Users/hang/Documents/ngu-van-10a3/cham-diem/ghi-chu.md has been updated successfully.
+[L22] USER: Giờ rubric. Rubric hiện tại 10 tiêu chí, mỗi bài cô mất 12 phút, 42 bài là hơn 8 tiếng. Mà trả bài xong các em chỉ nhìn điểm, không đọc. Em xem rubric.md.
+[L23] TOOL Read: /Users/hang/Documents/ngu-van-10a3/rubric.md
+[L24] RESULT: # Rubric nghị luận xã hội (10 điểm) | 1. Bố cục 3 phần (1đ)
+[L25] AGENT: Rubric 10 tiêu chí này chấm "có hay không có" từng phần, nên bài chép khung bài mẫu sẽ được điểm cao, còn bài tự nghĩ nhưng lệch bố cục lại mất điểm. Nó cũng giải thích vì sao các em chỉ nhìn điểm: 10 dòng 1 điểm không nói cho các em biết phải làm gì khác.
+
+Đề xuất: 3 tiêu chí, mỗi tiêu chí có ba mức, cộng một câu nhận xét duy nhất:
+
+1. **Ý của chính em** (4đ): có quan điểm riêng, dẫn chứng từ đời em hoặc em tự tìm.
+2. **Lập luận** (4đ): các ý nối với nhau, có xét mặt ngược lại.
+3. **Diễn đạt** (2đ): câu rõ, đúng chính tả.
+
+Nhận xét: một câu, bắt đầu bằng "Lần sau em thử…".
+[L26] USER: Ít tiêu chí vậy có sợ thiếu không em? Tổ chuyên môn quen rubric 10 ý rồi.
+[L27] AGENT: Ba tiêu chí vẫn phủ đủ mười ý cũ: bố cục, giải thích, luận điểm, phản đề nằm trong "lập luận"; dẫn chứng và sáng tạo nằm trong "ý của chính em". Điều khác là cô chấm theo mức độ chứ không đánh dấu từng ô. Cô thử với 8 bài trước rồi so thời gian nhé?
+[L28] USER: Ừ, thử 8 bài. Cô vừa chấm 8 bài 21–28 theo rubric mới, bấm giờ. Tổng 41 phút. Hôm qua cô cũng trả thử 8 bài đó trong giờ sinh hoạt.
+[L29] AGENT: 41 phút cho 8 bài, khoảng 5 phút một bài so với 12 phút trước đây. Nếu giữ nhịp này, 42 bài mất chừng 3 tiếng rưỡi thay vì hơn 8 tiếng. Lúc trả thử các em phản ứng thế nào ạ?
+[L30] USER: Lạ lắm em ạ. Cả 8 em đều đọc câu nhận xét, có 5 em lên hỏi "lần sau em thử… là thử thế nào cô". Trước giờ trả bài chẳng ai hỏi gì. Ít chữ hơn mà các em đọc nhiều hơn.
+[L31] AGENT: Đó là tín hiệu tốt nhất: rubric ngắn hơn, chấm nhanh gấp đôi, mà lại là lần đầu các em đọc và hỏi lại nhận xét. Em cập nhật rubric.md sang bản 3 tiêu chí, giữ bản cũ ở rubric-10-tieu-chi.md để cô mang đi họp tổ nếu cần so sánh.
+[L32] TOOL Bash: cd /Users/hang/Documents/ngu-van-10a3 && cp rubric.md rubric-10-tieu-chi.md
+[L33] RESULT: 
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

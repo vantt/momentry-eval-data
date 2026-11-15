@@ -1,0 +1,1213 @@
+{
+  "id": "0faf0bb2",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "6c65e9b384447dc5",
+  "at": "2026-11-10T03:59:30.033Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.4,
+    "tokens": 112227,
+    "chunks": 1,
+    "hotspots": 30,
+    "entries": 1213,
+    "gitCommits": 4
+  },
+  "report": {
+    "sid": "claude:0faf0bb2",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.2967195,
+    "secs": 279.1,
+    "exitCode": 0,
+    "status": "done",
+    "written": 12,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-29-agent-biet-dung-lai-hoi-chu-c455",
+        "status": "none",
+        "none": true,
+        "reason": "Chuyện chỉ có quyết định dừng lại hỏi thay vì bịa số. Không dòng làm chứng nào cho thấy ai tin sai điều gì rồi bị lật ngược, nên không có chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Một bộ dựng công ty một người vận hành bằng AI agent trên nền Multica, đang thử luồng giao việc qua issue có cổng duyệt.",
+            "evidence": [
+              "profile",
+              3398
+            ]
+          },
+          "want": {
+            "text": "Muốn một bài đăng có giá và hạn ưu đãi đi hết luồng tới bước chờ chủ duyệt.",
+            "evidence": [
+              3707
+            ]
+          },
+          "obstacle": {
+            "text": "Chủ chưa đưa giá và hạn đặt trước, nên bài không có số để viết.",
+            "evidence": [
+              3691
+            ]
+          },
+          "action": {
+            "text": "Agent viết bài dừng lại, hỏi chủ qua comment thay vì tự điền số liệu.",
+            "evidence": [
+              3696
+            ]
+          },
+          "outcome": {
+            "text": "Chủ comment giá 350.000đ và hạn 15/01; issue vào in_review, giao cho chủ.",
+            "evidence": [
+              3691,
+              3707
+            ]
+          },
+          "takeaway": {
+            "text": "Ràng buộc không bịa số liệu khiến agent tạm dừng và hỏi người; vòng hỏi-đáp qua comment đủ để hoàn tất bước.",
+            "evidence": [
+              3712
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-10-29-doi-huong-multica-claude-code-dat-c455",
+        "status": "angle",
+        "angle": "Dự án Bộ dựng công ty một người chạy bằng AI agent trên nền Multica, và đang thử xem agent có làm việc theo cột có bước duyệt được không. Người làm tưởng Multica phải chạy trên runtime OpenClaw, nhưng chat nhiều phiên trên bản OpenClaw đang dùng không chạy được, còn đổi sang Claude Code thì đạt 5/5 tiêu chí. Ai định ghép agent vào việc có bước duyệt nên biết runtime nào thật sự chạy trước khi đầu tư.",
+        "audience": "người muốn giao việc cho AI agent có bước duyệt",
+        "evidence": [
+          3373,
+          3386,
+          3747
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án Bộ dựng công ty một người chạy bằng AI agent trên nền Multica, đang thử xem agent có làm việc theo cột có bước duyệt được không.",
+            "evidence": [
+              "profile",
+              3398
+            ]
+          },
+          "want": {
+            "text": "Muốn biết Multica có chạy được với Claude Code và agent có tự giao việc theo cột không.",
+            "evidence": [
+              3398,
+              3404
+            ]
+          },
+          "obstacle": {
+            "text": "Chat nhiều phiên trên OpenClaw không chạy được với bản 2026.3.13.",
+            "evidence": [
+              3386
+            ]
+          },
+          "turn": {
+            "text": "Tưởng Multica phải chạy trên runtime OpenClaw; hoá ra chat nhiều phiên trên OpenClaw không chạy, còn Claude Code thì chạy.",
+            "evidence": [
+              3373,
+              3386
+            ]
+          },
+          "action": {
+            "text": "Đổi runtime sang Claude Code và chạy spike B' kiểm 5 tiêu chí.",
+            "evidence": [
+              3398,
+              3404
+            ]
+          },
+          "outcome": {
+            "text": "Đạt 5/5 tiêu chí; comment và chuyển in_review trong 16 giây, không agent nào tự chuyển done.",
+            "evidence": [
+              3747
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi chọn runtime, kiểm tính năng của đúng bản đang dùng; 'theo lý thuyết có' chưa đủ.",
+            "evidence": [
+              3386
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-nho-mot-lan-tra-cuu-nguon-c455",
+        "status": "angle",
+        "angle": "Dự án dựng công ty một người vận hành bằng AI agent, và người làm muốn biết Paperclip dùng được luôn hay phải tự xây. Trong lần thử, một task đặt cờ 'chỉ người duyệt' vẫn bị agent tự đóng, nên ban đầu kết luận Paperclip thiếu luồng duyệt. Đọc lại tài liệu mới thấy cờ đó chỉ áp khi trả lời xác nhận; cổng review thật là executionPolicy, và spike chưa đặt nó. Ai đặt một cờ 'chỉ người duyệt' rồi tin là đã khoá việc nên kiểm tra cơ chế trước khi kết luận.",
+        "audience": "dev đang chọn công cụ điều phối agent có bước duyệt",
+        "evidence": [
+          712,
+          1326,
+          2310
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án dựng công ty một người vận hành bằng AI agent, đang thử xem Paperclip có dùng luôn được không.",
+            "evidence": [
+              "profile",
+              712
+            ]
+          },
+          "want": {
+            "text": "Muốn biết Paperclip dùng được ngay hay phải tự làm; nếu dùng được thì chỉ cần setup.",
+            "evidence": [
+              712
+            ]
+          },
+          "obstacle": {
+            "text": "Task SEN-3 đặt reviewPolicy human_only nhưng agent vẫn tự chuyển sang done sau khi chạy xong.",
+            "evidence": [
+              1326
+            ]
+          },
+          "turn": {
+            "text": "Tưởng reviewPolicy human_only chặn được việc agent tự đóng nên kết luận Paperclip thiếu luồng duyệt; hoá ra reviewPolicy chỉ áp khi trả lời xác nhận, còn executionPolicy mới là cổng review thật và spike chưa đặt nó.",
+            "evidence": [
+              1326,
+              2310
+            ]
+          },
+          "action": {
+            "text": "Đọc lại tài liệu semantics của Paperclip, sửa lesson và §6.3, §8 trong tài liệu so sánh, ghi đính chính vào báo cáo spike.",
+            "evidence": [
+              2306,
+              2312,
+              2313
+            ]
+          },
+          "outcome": {
+            "text": "Đã đính chính §6.3 và §8 cùng một lesson mới; learning area có 51 lessons; chưa commit và chưa kiểm chứng trên server đang chạy.",
+            "evidence": [
+              2312,
+              2328
+            ]
+          },
+          "takeaway": {
+            "text": "Một cờ 'chỉ người duyệt' chưa chắc là cổng cứng; đọc đúng cơ chế (xác nhận hay luồng duyệt) trước khi kết luận hệ thống thiếu tính năng.",
+            "evidence": [
+              2310
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-phan-tich-lai-vi-sao-bridge-c455",
+        "status": "angle",
+        "angle": "Bộ dựng công ty một người chạy bằng AI agent, đang nối workspace trên Cloudflare D1 với agent trên máy cục bộ. Ban đầu người làm tưởng bridge chỉ là tuỳ chọn, vì agent tự kéo việc theo heartbeat là đủ. Hoá ra mỗi lần heartbeat kiểm tra inbox đều là một lượt gọi model dù không có việc: 5 agent mỗi 5 phút là khoảng 1.440 lượt mỗi ngày, lại trễ tới 60 phút. Ai thiết kế agent tự poll nên đo chi phí một lần thức dậy trước khi chọn kiến trúc.",
+        "audience": "dev xây hệ thống giao việc cho agent AI",
+        "evidence": [
+          657,
+          707
+        ],
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người chạy bằng AI agent, đang nối workspace trên Cloudflare D1 với agent chạy trên máy cục bộ.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn agent nhận việc từ D1 mà không cần server Node.",
+            "evidence": [
+              493
+            ]
+          },
+          "obstacle": {
+            "text": "Gateway của agent chỉ nghe trên máy cục bộ nên Cloudflare không gọi tới được.",
+            "evidence": [
+              707
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bridge chỉ là tuỳ chọn vì agent tự kéo việc theo heartbeat là đủ; hoá ra mỗi lần heartbeat kiểm tra inbox đều tốn một lượt LLM, kể cả khi không có việc.",
+            "evidence": [
+              657,
+              707
+            ]
+          },
+          "action": {
+            "text": "Đọc heartbeat-runner.ts rồi sửa lại kết luận: bridge vẫn cần, nhưng là một waker không dùng LLM.",
+            "evidence": [
+              660,
+              707
+            ]
+          },
+          "outcome": {
+            "text": "Thiết kế được sửa thành ba tầng; chủ phiên hỏi tiếp về việc dùng Paperclip thay vì tự làm bridge.",
+            "evidence": [
+              707,
+              712
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi chọn kiến trúc poll, tính chi phí một lần thức dậy; một lượt LLM trả lời 'không' vẫn tốn tiền.",
+            "evidence": [
+              707
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-spike-multica-aicoworker-truot-openclaw-2026-c455",
+        "status": "angle",
+        "angle": "Dự án là bộ dựng công ty một người chạy bằng AI agent, nền Multica, và người làm đang cố cho Multica điều khiển agent của AICoworker qua CLI openclaw. Ban đầu họ tưởng chỉ cần sửa chuỗi phiên bản là chạy được, nên khai man openclaw lên 2026.5.5 bằng một wrapper. Hoá ra CLI còn lỗi 'Include path escapes config directory' và thoát không in gì, tức phiên bản chỉ là một trong ba chỗ lệch. Người làm ghi nhận là trượt chứ không che đi, và đây là bài học đáng nghe với ai tích hợp công cụ bên thứ ba: kiểm phiên bản thật trước, khai man chỉ làm lỗi lộ muộn hơn.",
+        "audience": "dev tích hợp công cụ AI bên thứ ba",
+        "evidence": [
+          2772,
+          3041,
+          3061,
+          3150
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án là bộ dựng công ty một người vận hành bằng AI agent, nền Multica; đang spike cho Multica điều khiển agent của AICoworker qua CLI openclaw.",
+            "evidence": [
+              "profile",
+              2772
+            ]
+          },
+          "want": {
+            "text": "Muốn Multica điều khiển được agent của AICoworker qua CLI openclaw.",
+            "evidence": [
+              2772
+            ]
+          },
+          "obstacle": {
+            "text": "Multica v0.7.1 từ chối vì openclaw 2026.3.13 thấp hơn bản tối thiểu 2026.5.5.",
+            "evidence": [
+              3041
+            ]
+          },
+          "turn": {
+            "text": "Tưởng chỉ cần khai man phiên bản là chạy được; hoá ra CLI còn lỗi include path và định dạng output, phiên bản chỉ là một trong ba chỗ lệch.",
+            "evidence": [
+              3061,
+              3150
+            ]
+          },
+          "action": {
+            "text": "Chèn shim khai phiên bản 2026.5.5 vào wrapper openclaw rồi chạy lại issue.",
+            "evidence": [
+              3061,
+              3065
+            ]
+          },
+          "outcome": {
+            "text": "CLI báo 'Include path escapes config directory' và thoát không output; 4 tiêu chí chưa kiểm được, spike ghi nhận trượt.",
+            "evidence": [
+              3150
+            ]
+          },
+          "takeaway": {
+            "text": "Kiểm phiên bản thật của bên được điều khiển trước khi tích hợp; khai man phiên bản chỉ làm lỗi lộ muộn hơn.",
+            "evidence": [
+              3061,
+              3150
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-multica-bo-soul-va-bo-nho-c455",
+        "status": "angle",
+        "angle": "Dự án là bộ dựng công ty một người chạy bằng AI agent, nền là Multica, và người làm đang so sánh Multica với AICoworker. Câu hỏi đặt ra giả định rằng Multica cũng định nghĩa agent đầy đủ như AICoworker, có danh tính và bộ nhớ. Đọc code thì thấy Multica cố ý thay workspace của agent OpenClaw bằng thư mục riêng của từng task, bỏ SOUL.md và MEMORY.md của máy chủ, nên ai định ghép hai hệ thống nên kiểm tra điều này trước.",
+        "audience": "dev ghép nhiều hệ thống agent với nhau",
+        "evidence": [
+          2081,
+          2105,
+          2126
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án là bộ dựng công ty một người vận hành bằng AI agent, nền là Multica. Người làm đang so sánh Multica với AICoworker.",
+            "evidence": [
+              "profile",
+              2081
+            ]
+          },
+          "want": {
+            "text": "Muốn biết Multica có định nghĩa agent như AICoworker không.",
+            "evidence": [
+              2081
+            ]
+          },
+          "obstacle": {
+            "text": "Mỗi task chạy trong thư mục mới, nên Multica chỉ nối lại được session cũ của cùng một cặp (agent, issue).",
+            "evidence": [
+              2126
+            ]
+          },
+          "turn": {
+            "text": "Tưởng Multica định nghĩa agent đầy đủ như AICoworker, có danh tính và bộ nhớ; hoá ra Multica bỏ SOUL.md và MEMORY.md của workspace host khi chạy agent OpenClaw.",
+            "evidence": [
+              2081,
+              2105
+            ]
+          },
+          "action": {
+            "text": "Đọc đoạn code cấu hình OpenClaw trong Multica, rồi ghi kết luận vào tài liệu so sánh.",
+            "evidence": [
+              2104,
+              2107,
+              2114
+            ]
+          },
+          "outcome": {
+            "text": "Multica bỏ 2 file SOUL.md và MEMORY.md của host; với Multica + AICoworker, agent mất danh tính và bộ nhớ.",
+            "evidence": [
+              2105,
+              2126
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi ghép hai hệ thống agent, xem lớp điều phối có ghi đè workspace của agent không.",
+            "evidence": [
+              2105
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-spike-paperclip-3-agent-vao-trang-c455",
+        "status": "angle",
+        "angle": "Người làm đang thử Paperclip trên máy để dựng một công ty mẫu, kỳ vọng nối được luôn vào gateway có sẵn. Họ tưởng hai bên ăn khớp, nhưng Paperclip đòi giao thức v4 còn gateway chỉ nói v3, nên ba agent kẹt ở bước verifying. Hạ phiên bản về v3 đưa agent sang sẵn sàng, nhưng một lỗi budget im lặng lại chặn mọi lần đánh thức. Ai dựng agent cho việc thật nên biết vì lỗi kiểu này không báo rõ, agent chỉ đứng yên.",
+        "audience": "dev đang thử công cụ điều phối agent tự host",
+        "evidence": [
+          724,
+          916,
+          984,
+          988,
+          1170
+        ],
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người vận hành bằng AI agent. Người làm đang thử Paperclip trên máy, dựng một công ty mẫu để xem có dùng được ngay với gateway có sẵn không.",
+            "evidence": [
+              "profile",
+              724
+            ]
+          },
+          "want": {
+            "text": "Muốn Paperclip chạy được luôn với gateway, chỉ cần setup mà không phải viết thêm.",
+            "evidence": [
+              712,
+              724
+            ]
+          },
+          "obstacle": {
+            "text": "Ba agent đứng ở trạng thái verifying, paused với lỗi 'The lifecycle step failed'.",
+            "evidence": [
+              916
+            ]
+          },
+          "turn": {
+            "text": "Tưởng Paperclip và gateway ăn khớp; hoá ra Paperclip đòi giao thức v4 trong khi gateway chỉ nói v3.",
+            "evidence": [
+              984,
+              988
+            ]
+          },
+          "action": {
+            "text": "Vá bản cài đặt đổi minProtocol từ 4 xuống 3 ở 3 chỗ, giữ bản gốc .orig, rồi khởi động lại Paperclip.",
+            "evidence": [
+              987,
+              988
+            ]
+          },
+          "outcome": {
+            "text": "Gateway connect probe succeeded. Task SEN-3 kết thúc với run succeeded, nhưng agent tự chuyển issue sang done dù task đặt human_only.",
+            "evidence": [
+              1021,
+              1324,
+              1326
+            ]
+          },
+          "takeaway": {
+            "text": "Khi agent đứng mà không báo, kiểm tra budget trước khi đổ lỗi cho gateway: một giá trị budget chưa có giá có thể chặn mọi lần đánh thức.",
+            "evidence": [
+              1170,
+              1175
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-loi-gemini-3-pro-no-longer-c455",
+        "status": "angle",
+        "angle": "Dự án dựng công ty một người bằng AI agent đang thử Paperclip trên máy, và cần biết agent thật sự chạy ở đâu. Lúc đầu câu trả lời mô tả Paperclip chỉ là lớp điều phối, còn suy nghĩ diễn ra ở OpenClaw. Khi đọc code, hoá ra Paperclip có runtime riêng để chạy các CLI agent, và OpenClaw bị ẩn khỏi màn hình thêm agent. Ai chọn công cụ cho agent nên kiểm tra xem nó có tự chạy agent hay không trước khi quyết định.",
+        "audience": "dev dựng hệ thống agent cho công ty một người",
+        "evidence": [
+          724,
+          1519,
+          1523,
+          1574
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án dựng công ty một người vận hành bằng AI agent; đang chạy spike thử Paperclip trên máy để dựng một công ty mẫu.",
+            "evidence": [
+              "profile",
+              724
+            ]
+          },
+          "want": {
+            "text": "Muốn chọn giữa Paperclip và AICoworker/OpenClaw để chạy agent, xem bên nào tổ chức, lưu artifact và chat tốt hơn.",
+            "evidence": [
+              724,
+              1576
+            ]
+          },
+          "obstacle": {
+            "text": "Giao diện Paperclip không cho chọn OpenClaw trực tiếp, nên không rõ agent thật sự chạy ở đâu.",
+            "evidence": [
+              1523
+            ]
+          },
+          "turn": {
+            "text": "Tưởng Paperclip chỉ điều phối còn agent chạy ở OpenClaw; hoá ra Paperclip có runtime riêng và OpenClaw bị ẩn khỏi UI.",
+            "evidence": [
+              1519,
+              1574
+            ]
+          },
+          "action": {
+            "text": "Đọc code UI và adapter, rồi sửa tài liệu spike theo đó.",
+            "evidence": [
+              1529,
+              1562
+            ]
+          },
+          "outcome": {
+            "text": "Mô tả Paperclip được sửa từ 'chỉ điều phối' sang 'có runtime riêng'; hai hướng được nêu, chủ chưa chọn.",
+            "evidence": [
+              1574,
+              1576
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi tin một công cụ chỉ điều phối, kiểm tra xem nó có tự chạy agent không.",
+            "evidence": [
+              1574
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-model-mac-dinh-cua-aicoworker-da-c455",
+        "status": "none",
+        "none": true,
+        "reason": "Excerpt chỉ ghi nhận cấu hình model và lỗi gateway. Không có chỗ nào người làm nói hoặc làm lộ điều họ tưởng đúng rồi hoá sai, nên không có chỗ ngoặt để kể.",
+        "spine": {
+          "context": {
+            "text": "Bộ dựng công ty một người bằng AI agent trên Multica; người làm đang thử Paperclip và dựng một công ty mẫu trên máy.",
+            "evidence": [
+              "profile",
+              724
+            ]
+          },
+          "want": {
+            "text": "Muốn chạy thử Paperclip và dựng một sample OPC company trên máy này.",
+            "evidence": [
+              724
+            ]
+          },
+          "obstacle": {
+            "text": "Gọi gateway AICoworker thất bại vì thiếu credential.",
+            "evidence": [
+              1120
+            ]
+          },
+          "action": {
+            "text": "Đọc cấu hình model và model đang ghim của session agent chính.",
+            "evidence": [
+              1079,
+              1115
+            ]
+          },
+          "outcome": {
+            "text": "Lệnh gọi gateway chưa qua được, vì cần token rõ ràng.",
+            "evidence": [
+              1120
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-29-chu-tu-dang-nhap-bang-ma-c455",
+        "status": "none",
+        "none": true,
+        "reason": "Không có ai tin sai điều gì: bước đặt mã cố định là cấu hình thử nghiệm đã nêu rõ từ đầu, và việc phát hiện không có đăng nhập bằng mật khẩu không đi kèm niềm tin nào được ghi lại trong trích đoạn.",
+        "spine": {
+          "context": {
+            "text": "Dự án là bộ dựng công ty một người vận hành bằng AI agent, nền Multica; người làm đang dựng workspace cho một khách và cần vào web UI để kiểm tra.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn vào được web UI Multica để xem workspace và các issue.",
+            "evidence": [
+              3634
+            ]
+          },
+          "obstacle": {
+            "text": "Server không có SMTP hay Resend nên mã xác nhận chỉ nằm trong log, và Multica không có đăng nhập bằng mật khẩu.",
+            "evidence": [
+              3650,
+              3772
+            ]
+          },
+          "action": {
+            "text": "Đặt mã cố định cho môi trường thử nghiệm (ban đầu là \"demo\", sau đổi thành 123456), khởi động lại backend và kiểm tra đăng nhập.",
+            "evidence": [
+              3775,
+              3850
+            ]
+          },
+          "outcome": {
+            "text": "Kiểm tra đăng nhập với mã 123456 trả về 200 và thành công.",
+            "evidence": [
+              3851
+            ]
+          },
+          "takeaway": {
+            "text": "Mã cố định kiểu dev chỉ dùng được khi APP_ENV không phải production; cần kiểm tra điều này trước khi dựa vào nó.",
+            "evidence": [
+              3772
+            ]
+          }
+        },
+        "completeness": 6
+      }
+    ],
+    "message": "claude:0faf0bb2 L1-L4000: done; 10 chuyện thô, 12 cụm; ghi 12 mới, gộp 0\nđiểm nóng 30 (thiếu 0); 4 commit git; lần chạy 1/1; 0.30 USD\ngóc kể: 7 có, 3 không ra chuyện\nhồ sơ dự án: fgOPC tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-29-agent-biet-dung-lai-hoi-chu-c455",
+      "code": "M-F570",
+      "title": "Agent biết dừng lại hỏi chủ thay vì tự bịa số liệu bán hàng",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một bộ dựng công ty một người vận hành bằng AI agent trên nền Multica, đang thử luồng giao việc qua issue có cổng duyệt.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L3398"
+          ]
+        },
+        "want": {
+          "text": "Muốn một bài đăng có giá và hạn ưu đãi đi hết luồng tới bước chờ chủ duyệt.",
+          "lines": [
+            "claude:0faf0bb2#L3707"
+          ]
+        },
+        "obstacle": {
+          "text": "Chủ chưa đưa giá và hạn đặt trước, nên bài không có số để viết.",
+          "lines": [
+            "claude:0faf0bb2#L3691"
+          ]
+        },
+        "action": {
+          "text": "Agent viết bài dừng lại, hỏi chủ qua comment thay vì tự điền số liệu.",
+          "lines": [
+            "claude:0faf0bb2#L3696"
+          ]
+        },
+        "outcome": {
+          "text": "Chủ comment giá 350.000đ và hạn 15/01; issue vào in_review, giao cho chủ.",
+          "lines": [
+            "claude:0faf0bb2#L3691",
+            "claude:0faf0bb2#L3707"
+          ]
+        },
+        "takeaway": {
+          "text": "Ràng buộc không bịa số liệu khiến agent tạm dừng và hỏi người; vòng hỏi-đáp qua comment đủ để hoàn tất bước.",
+          "lines": [
+            "claude:0faf0bb2#L3712"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-29-doi-huong-multica-claude-code-dat-c455",
+      "code": "M-GAXP",
+      "title": "Đổi hướng: Multica + Claude Code đạt 5/5 tiêu chí sau khi Multica + AICoworker trượt",
+      "tension": "khac",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án Bộ dựng công ty một người chạy bằng AI agent trên nền Multica, và đang thử xem agent có làm việc theo cột có bước duyệt được không. Người làm tưởng Multica phải chạy trên runtime OpenClaw, nhưng chat nhiều phiên trên bản OpenClaw đang dùng không chạy được, còn đổi sang Claude Code thì đạt 5/5 tiêu chí. Ai định ghép agent vào việc có bước duyệt nên biết runtime nào thật sự chạy trước khi đầu tư.",
+      "audience": "người muốn giao việc cho AI agent có bước duyệt",
+      "spine": {
+        "context": {
+          "text": "Dự án Bộ dựng công ty một người chạy bằng AI agent trên nền Multica, đang thử xem agent có làm việc theo cột có bước duyệt được không.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L3398"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết Multica có chạy được với Claude Code và agent có tự giao việc theo cột không.",
+          "lines": [
+            "claude:0faf0bb2#L3398",
+            "claude:0faf0bb2#L3404"
+          ]
+        },
+        "obstacle": {
+          "text": "Chat nhiều phiên trên OpenClaw không chạy được với bản 2026.3.13.",
+          "lines": [
+            "claude:0faf0bb2#L3386"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng Multica phải chạy trên runtime OpenClaw; hoá ra chat nhiều phiên trên OpenClaw không chạy, còn Claude Code thì chạy.",
+          "lines": [
+            "claude:0faf0bb2#L3373",
+            "claude:0faf0bb2#L3386"
+          ]
+        },
+        "action": {
+          "text": "Đổi runtime sang Claude Code và chạy spike B' kiểm 5 tiêu chí.",
+          "lines": [
+            "claude:0faf0bb2#L3398",
+            "claude:0faf0bb2#L3404"
+          ]
+        },
+        "outcome": {
+          "text": "Đạt 5/5 tiêu chí; comment và chuyển in_review trong 16 giây, không agent nào tự chuyển done.",
+          "lines": [
+            "claude:0faf0bb2#L3747"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi chọn runtime, kiểm tính năng của đúng bản đang dùng; 'theo lý thuyết có' chưa đủ.",
+          "lines": [
+            "claude:0faf0bb2#L3386"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-nho-mot-lan-tra-cuu-nguon-c455",
+      "code": "M-1BFV",
+      "title": "Nhờ một lần tra cứu nguồn, phát hiện spike Paperclip bị ghi nhầm: 'reviewPolicy' không chặn được việc agent tự đóng task",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án dựng công ty một người vận hành bằng AI agent, và người làm muốn biết Paperclip dùng được luôn hay phải tự xây. Trong lần thử, một task đặt cờ 'chỉ người duyệt' vẫn bị agent tự đóng, nên ban đầu kết luận Paperclip thiếu luồng duyệt. Đọc lại tài liệu mới thấy cờ đó chỉ áp khi trả lời xác nhận; cổng review thật là executionPolicy, và spike chưa đặt nó. Ai đặt một cờ 'chỉ người duyệt' rồi tin là đã khoá việc nên kiểm tra cơ chế trước khi kết luận.",
+      "audience": "dev đang chọn công cụ điều phối agent có bước duyệt",
+      "spine": {
+        "context": {
+          "text": "Dự án dựng công ty một người vận hành bằng AI agent, đang thử xem Paperclip có dùng luôn được không.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L712"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết Paperclip dùng được ngay hay phải tự làm; nếu dùng được thì chỉ cần setup.",
+          "lines": [
+            "claude:0faf0bb2#L712"
+          ]
+        },
+        "obstacle": {
+          "text": "Task SEN-3 đặt reviewPolicy human_only nhưng agent vẫn tự chuyển sang done sau khi chạy xong.",
+          "lines": [
+            "claude:0faf0bb2#L1326"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng reviewPolicy human_only chặn được việc agent tự đóng nên kết luận Paperclip thiếu luồng duyệt; hoá ra reviewPolicy chỉ áp khi trả lời xác nhận, còn executionPolicy mới là cổng review thật và spike chưa đặt nó.",
+          "lines": [
+            "claude:0faf0bb2#L1326",
+            "claude:0faf0bb2#L2310"
+          ]
+        },
+        "action": {
+          "text": "Đọc lại tài liệu semantics của Paperclip, sửa lesson và §6.3, §8 trong tài liệu so sánh, ghi đính chính vào báo cáo spike.",
+          "lines": [
+            "claude:0faf0bb2#L2306",
+            "claude:0faf0bb2#L2312",
+            "claude:0faf0bb2#L2313"
+          ]
+        },
+        "outcome": {
+          "text": "Đã đính chính §6.3 và §8 cùng một lesson mới; learning area có 51 lessons; chưa commit và chưa kiểm chứng trên server đang chạy.",
+          "lines": [
+            "claude:0faf0bb2#L2312",
+            "claude:0faf0bb2#L2328"
+          ]
+        },
+        "takeaway": {
+          "text": "Một cờ 'chỉ người duyệt' chưa chắc là cổng cứng; đọc đúng cơ chế (xác nhận hay luồng duyệt) trước khi kết luận hệ thống thiếu tính năng.",
+          "lines": [
+            "claude:0faf0bb2#L2310"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-phan-tich-lai-vi-sao-bridge-c455",
+      "code": "M-ZDMQ",
+      "title": "Phân tích lại vì sao 'bridge chỉ là tuỳ chọn' là sai: heartbeat 60 phút và chi phí một lượt LLM mỗi lần kiểm tra",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Bộ dựng công ty một người chạy bằng AI agent, đang nối workspace trên Cloudflare D1 với agent trên máy cục bộ. Ban đầu người làm tưởng bridge chỉ là tuỳ chọn, vì agent tự kéo việc theo heartbeat là đủ. Hoá ra mỗi lần heartbeat kiểm tra inbox đều là một lượt gọi model dù không có việc: 5 agent mỗi 5 phút là khoảng 1.440 lượt mỗi ngày, lại trễ tới 60 phút. Ai thiết kế agent tự poll nên đo chi phí một lần thức dậy trước khi chọn kiến trúc.",
+      "audience": "dev xây hệ thống giao việc cho agent AI",
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người chạy bằng AI agent, đang nối workspace trên Cloudflare D1 với agent chạy trên máy cục bộ.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn agent nhận việc từ D1 mà không cần server Node.",
+          "lines": [
+            "claude:0faf0bb2#L493"
+          ]
+        },
+        "obstacle": {
+          "text": "Gateway của agent chỉ nghe trên máy cục bộ nên Cloudflare không gọi tới được.",
+          "lines": [
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bridge chỉ là tuỳ chọn vì agent tự kéo việc theo heartbeat là đủ; hoá ra mỗi lần heartbeat kiểm tra inbox đều tốn một lượt LLM, kể cả khi không có việc.",
+          "lines": [
+            "claude:0faf0bb2#L657",
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "action": {
+          "text": "Đọc heartbeat-runner.ts rồi sửa lại kết luận: bridge vẫn cần, nhưng là một waker không dùng LLM.",
+          "lines": [
+            "claude:0faf0bb2#L660",
+            "claude:0faf0bb2#L707"
+          ]
+        },
+        "outcome": {
+          "text": "Thiết kế được sửa thành ba tầng; chủ phiên hỏi tiếp về việc dùng Paperclip thay vì tự làm bridge.",
+          "lines": [
+            "claude:0faf0bb2#L707",
+            "claude:0faf0bb2#L712"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi chọn kiến trúc poll, tính chi phí một lần thức dậy; một lượt LLM trả lời 'không' vẫn tốn tiền.",
+          "lines": [
+            "claude:0faf0bb2#L707"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-spike-multica-aicoworker-truot-openclaw-2026-c455",
+      "code": "M-A8R9",
+      "title": "Spike Multica + AICoworker trượt: OpenClaw 2026.3.13 dưới phiên bản tối thiểu 2026.5.5 của Multica",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là bộ dựng công ty một người chạy bằng AI agent, nền Multica, và người làm đang cố cho Multica điều khiển agent của AICoworker qua CLI openclaw. Ban đầu họ tưởng chỉ cần sửa chuỗi phiên bản là chạy được, nên khai man openclaw lên 2026.5.5 bằng một wrapper. Hoá ra CLI còn lỗi 'Include path escapes config directory' và thoát không in gì, tức phiên bản chỉ là một trong ba chỗ lệch. Người làm ghi nhận là trượt chứ không che đi, và đây là bài học đáng nghe với ai tích hợp công cụ bên thứ ba: kiểm phiên bản thật trước, khai man chỉ làm lỗi lộ muộn hơn.",
+      "audience": "dev tích hợp công cụ AI bên thứ ba",
+      "spine": {
+        "context": {
+          "text": "Dự án là bộ dựng công ty một người vận hành bằng AI agent, nền Multica; đang spike cho Multica điều khiển agent của AICoworker qua CLI openclaw.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L2772"
+          ]
+        },
+        "want": {
+          "text": "Muốn Multica điều khiển được agent của AICoworker qua CLI openclaw.",
+          "lines": [
+            "claude:0faf0bb2#L2772"
+          ]
+        },
+        "obstacle": {
+          "text": "Multica v0.7.1 từ chối vì openclaw 2026.3.13 thấp hơn bản tối thiểu 2026.5.5.",
+          "lines": [
+            "claude:0faf0bb2#L3041"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng chỉ cần khai man phiên bản là chạy được; hoá ra CLI còn lỗi include path và định dạng output, phiên bản chỉ là một trong ba chỗ lệch.",
+          "lines": [
+            "claude:0faf0bb2#L3061",
+            "claude:0faf0bb2#L3150"
+          ]
+        },
+        "action": {
+          "text": "Chèn shim khai phiên bản 2026.5.5 vào wrapper openclaw rồi chạy lại issue.",
+          "lines": [
+            "claude:0faf0bb2#L3061",
+            "claude:0faf0bb2#L3065"
+          ]
+        },
+        "outcome": {
+          "text": "CLI báo 'Include path escapes config directory' và thoát không output; 4 tiêu chí chưa kiểm được, spike ghi nhận trượt.",
+          "lines": [
+            "claude:0faf0bb2#L3150"
+          ]
+        },
+        "takeaway": {
+          "text": "Kiểm phiên bản thật của bên được điều khiển trước khi tích hợp; khai man phiên bản chỉ làm lỗi lộ muộn hơn.",
+          "lines": [
+            "claude:0faf0bb2#L3061",
+            "claude:0faf0bb2#L3150"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-multica-bo-soul-va-bo-nho-c455",
+      "code": "M-DRMX",
+      "title": "Multica bỏ SOUL và bộ nhớ của agent OpenClaw: mất 'con người' của agent khi ghép với AICoworker",
+      "tension": "hop_ma_tan",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là bộ dựng công ty một người chạy bằng AI agent, nền là Multica, và người làm đang so sánh Multica với AICoworker. Câu hỏi đặt ra giả định rằng Multica cũng định nghĩa agent đầy đủ như AICoworker, có danh tính và bộ nhớ. Đọc code thì thấy Multica cố ý thay workspace của agent OpenClaw bằng thư mục riêng của từng task, bỏ SOUL.md và MEMORY.md của máy chủ, nên ai định ghép hai hệ thống nên kiểm tra điều này trước.",
+      "audience": "dev ghép nhiều hệ thống agent với nhau",
+      "spine": {
+        "context": {
+          "text": "Dự án là bộ dựng công ty một người vận hành bằng AI agent, nền là Multica. Người làm đang so sánh Multica với AICoworker.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L2081"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết Multica có định nghĩa agent như AICoworker không.",
+          "lines": [
+            "claude:0faf0bb2#L2081"
+          ]
+        },
+        "obstacle": {
+          "text": "Mỗi task chạy trong thư mục mới, nên Multica chỉ nối lại được session cũ của cùng một cặp (agent, issue).",
+          "lines": [
+            "claude:0faf0bb2#L2126"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng Multica định nghĩa agent đầy đủ như AICoworker, có danh tính và bộ nhớ; hoá ra Multica bỏ SOUL.md và MEMORY.md của workspace host khi chạy agent OpenClaw.",
+          "lines": [
+            "claude:0faf0bb2#L2081",
+            "claude:0faf0bb2#L2105"
+          ]
+        },
+        "action": {
+          "text": "Đọc đoạn code cấu hình OpenClaw trong Multica, rồi ghi kết luận vào tài liệu so sánh.",
+          "lines": [
+            "claude:0faf0bb2#L2104",
+            "claude:0faf0bb2#L2107",
+            "claude:0faf0bb2#L2114"
+          ]
+        },
+        "outcome": {
+          "text": "Multica bỏ 2 file SOUL.md và MEMORY.md của host; với Multica + AICoworker, agent mất danh tính và bộ nhớ.",
+          "lines": [
+            "claude:0faf0bb2#L2105",
+            "claude:0faf0bb2#L2126"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi ghép hai hệ thống agent, xem lớp điều phối có ghi đè workspace của agent không.",
+          "lines": [
+            "claude:0faf0bb2#L2105"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-spike-paperclip-3-agent-vao-trang-c455",
+      "code": "M-3RRH",
+      "title": "Spike Paperclip: 3 agent vào trạng thái 'paused' vì lệch giao thức v3/v4 và một lỗi budget im lặng",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang thử Paperclip trên máy để dựng một công ty mẫu, kỳ vọng nối được luôn vào gateway có sẵn. Họ tưởng hai bên ăn khớp, nhưng Paperclip đòi giao thức v4 còn gateway chỉ nói v3, nên ba agent kẹt ở bước verifying. Hạ phiên bản về v3 đưa agent sang sẵn sàng, nhưng một lỗi budget im lặng lại chặn mọi lần đánh thức. Ai dựng agent cho việc thật nên biết vì lỗi kiểu này không báo rõ, agent chỉ đứng yên.",
+      "audience": "dev đang thử công cụ điều phối agent tự host",
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người vận hành bằng AI agent. Người làm đang thử Paperclip trên máy, dựng một công ty mẫu để xem có dùng được ngay với gateway có sẵn không.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "want": {
+          "text": "Muốn Paperclip chạy được luôn với gateway, chỉ cần setup mà không phải viết thêm.",
+          "lines": [
+            "claude:0faf0bb2#L712",
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "obstacle": {
+          "text": "Ba agent đứng ở trạng thái verifying, paused với lỗi 'The lifecycle step failed'.",
+          "lines": [
+            "claude:0faf0bb2#L916"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng Paperclip và gateway ăn khớp; hoá ra Paperclip đòi giao thức v4 trong khi gateway chỉ nói v3.",
+          "lines": [
+            "claude:0faf0bb2#L984",
+            "claude:0faf0bb2#L988"
+          ]
+        },
+        "action": {
+          "text": "Vá bản cài đặt đổi minProtocol từ 4 xuống 3 ở 3 chỗ, giữ bản gốc .orig, rồi khởi động lại Paperclip.",
+          "lines": [
+            "claude:0faf0bb2#L987",
+            "claude:0faf0bb2#L988"
+          ]
+        },
+        "outcome": {
+          "text": "Gateway connect probe succeeded. Task SEN-3 kết thúc với run succeeded, nhưng agent tự chuyển issue sang done dù task đặt human_only.",
+          "lines": [
+            "claude:0faf0bb2#L1021",
+            "claude:0faf0bb2#L1324",
+            "claude:0faf0bb2#L1326"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi agent đứng mà không báo, kiểm tra budget trước khi đổ lỗi cho gateway: một giá trị budget chưa có giá có thể chặn mọi lần đánh thức.",
+          "lines": [
+            "claude:0faf0bb2#L1170",
+            "claude:0faf0bb2#L1175"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-loi-gemini-3-pro-no-longer-c455",
+      "code": "M-8SHY",
+      "title": "Lỗi 'Gemini 3 Pro no longer available' và sự cố tự đóng task: hai bằng chứng cho ranh giới giữa lớp điều phối và lớp runtime",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án dựng công ty một người bằng AI agent đang thử Paperclip trên máy, và cần biết agent thật sự chạy ở đâu. Lúc đầu câu trả lời mô tả Paperclip chỉ là lớp điều phối, còn suy nghĩ diễn ra ở OpenClaw. Khi đọc code, hoá ra Paperclip có runtime riêng để chạy các CLI agent, và OpenClaw bị ẩn khỏi màn hình thêm agent. Ai chọn công cụ cho agent nên kiểm tra xem nó có tự chạy agent hay không trước khi quyết định.",
+      "audience": "dev dựng hệ thống agent cho công ty một người",
+      "spine": {
+        "context": {
+          "text": "Dự án dựng công ty một người vận hành bằng AI agent; đang chạy spike thử Paperclip trên máy để dựng một công ty mẫu.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "want": {
+          "text": "Muốn chọn giữa Paperclip và AICoworker/OpenClaw để chạy agent, xem bên nào tổ chức, lưu artifact và chat tốt hơn.",
+          "lines": [
+            "claude:0faf0bb2#L724",
+            "claude:0faf0bb2#L1576"
+          ]
+        },
+        "obstacle": {
+          "text": "Giao diện Paperclip không cho chọn OpenClaw trực tiếp, nên không rõ agent thật sự chạy ở đâu.",
+          "lines": [
+            "claude:0faf0bb2#L1523"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng Paperclip chỉ điều phối còn agent chạy ở OpenClaw; hoá ra Paperclip có runtime riêng và OpenClaw bị ẩn khỏi UI.",
+          "lines": [
+            "claude:0faf0bb2#L1519",
+            "claude:0faf0bb2#L1574"
+          ]
+        },
+        "action": {
+          "text": "Đọc code UI và adapter, rồi sửa tài liệu spike theo đó.",
+          "lines": [
+            "claude:0faf0bb2#L1529",
+            "claude:0faf0bb2#L1562"
+          ]
+        },
+        "outcome": {
+          "text": "Mô tả Paperclip được sửa từ 'chỉ điều phối' sang 'có runtime riêng'; hai hướng được nêu, chủ chưa chọn.",
+          "lines": [
+            "claude:0faf0bb2#L1574",
+            "claude:0faf0bb2#L1576"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi tin một công cụ chỉ điều phối, kiểm tra xem nó có tự chạy agent không.",
+          "lines": [
+            "claude:0faf0bb2#L1574"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-model-mac-dinh-cua-aicoworker-da-c455",
+      "code": "M-PRK1",
+      "title": "Model mặc định của AICoworker đã ngừng, làm hỏng cả agent chính ngay cả khi không chạy spike",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Bộ dựng công ty một người bằng AI agent trên Multica; người làm đang thử Paperclip và dựng một công ty mẫu trên máy.",
+          "lines": [
+            "profile",
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "want": {
+          "text": "Muốn chạy thử Paperclip và dựng một sample OPC company trên máy này.",
+          "lines": [
+            "claude:0faf0bb2#L724"
+          ]
+        },
+        "obstacle": {
+          "text": "Gọi gateway AICoworker thất bại vì thiếu credential.",
+          "lines": [
+            "claude:0faf0bb2#L1120"
+          ]
+        },
+        "action": {
+          "text": "Đọc cấu hình model và model đang ghim của session agent chính.",
+          "lines": [
+            "claude:0faf0bb2#L1079",
+            "claude:0faf0bb2#L1115"
+          ]
+        },
+        "outcome": {
+          "text": "Lệnh gọi gateway chưa qua được, vì cần token rõ ràng.",
+          "lines": [
+            "claude:0faf0bb2#L1120"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-29-chu-tu-dang-nhap-bang-ma-c455",
+      "code": "M-S1QZ",
+      "title": "Chủ tự đăng nhập bằng mã cố định vì Multica không có mật khẩu và chỉ gửi mã vào log",
+      "tension": "khac",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Dự án là bộ dựng công ty một người vận hành bằng AI agent, nền Multica; người làm đang dựng workspace cho một khách và cần vào web UI để kiểm tra.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn vào được web UI Multica để xem workspace và các issue.",
+          "lines": [
+            "claude:0faf0bb2#L3634"
+          ]
+        },
+        "obstacle": {
+          "text": "Server không có SMTP hay Resend nên mã xác nhận chỉ nằm trong log, và Multica không có đăng nhập bằng mật khẩu.",
+          "lines": [
+            "claude:0faf0bb2#L3650",
+            "claude:0faf0bb2#L3772"
+          ]
+        },
+        "action": {
+          "text": "Đặt mã cố định cho môi trường thử nghiệm (ban đầu là \"demo\", sau đổi thành 123456), khởi động lại backend và kiểm tra đăng nhập.",
+          "lines": [
+            "claude:0faf0bb2#L3775",
+            "claude:0faf0bb2#L3850"
+          ]
+        },
+        "outcome": {
+          "text": "Kiểm tra đăng nhập với mã 123456 trả về 200 và thành công.",
+          "lines": [
+            "claude:0faf0bb2#L3851"
+          ]
+        },
+        "takeaway": {
+          "text": "Mã cố định kiểu dev chỉ dùng được khi APP_ENV không phải production; cần kiểm tra điều này trước khi dựa vào nó.",
+          "lines": [
+            "claude:0faf0bb2#L3772"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-29-tu-chia-mot-yeu-cau-mo-c455",
+      "code": "M-VDQ2",
+      "title": "Tự chia một yêu cầu mơ hồ thành các nhánh nghiên cứu song song (distill từng repo, kiểm kê nhiều hệ thống cùng lúc) rồi gom kết quả thành một bảng so sánh có dẫn chứng file:dòng",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-don-sach-thu-nghiem-sau-khi-c455",
+      "code": "M-SGTS",
+      "title": "Dọn sạch thử nghiệm sau khi xong: gỡ CLI, container, volume, thư mục dữ liệu, và các session/cache do thử nghiệm sinh ra, rồi kiểm lại bằng grep và kiểm tra cổng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

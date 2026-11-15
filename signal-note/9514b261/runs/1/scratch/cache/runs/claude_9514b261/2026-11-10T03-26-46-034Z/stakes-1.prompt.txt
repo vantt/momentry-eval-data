@@ -1,0 +1,41 @@
+Dưới đây là 15 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Một lượt probe sáu nhà cung cấp: từ một family chạy được lên ba sau khi copy session, và một tài khoản OAuth treo 300 giây
+   Lượt đầu chỉ claude chạy được, openai ra exit 11 vì màn hình đòi đăng nhập OAuth. Sau khi owner copy session, kho tài khoản có hai nhà cung cấp và deepseek, glm chạy được (từ 1 lên 3 family). Gemini và xai vẫn lỗi giao lệnh. Một tài khoản xai thiếu agent.db làm probe treo 200–300 giây.
+M2. Agent ghi đè khoá API TheHive mà không sao lưu: khoá dán thừa một ký tự, 401, phải nhập lại
+   Agent đưa lệnh nhập khoá mà không sao lưu auth.json trước. Owner dán khoá, API trả 401 cho cả pi và omp. Khoá mới dài 25 ký tự trong khi khoá cũ dài 24, nên có ký tự thừa lúc dán. Sau khi owner nhập lại bằng lệnh có sao lưu và tr -d khoảng trắng, API trả 200 và bốn lượt kiểm đều OK.
+M3. Agent kiểm tra khoá API mà không in giá trị ra. Nó chỉ đếm độ dài và loại ký tự, và che giá trị bằng regex khi đưa các alias lên màn hình.
+   Agent kiểm tra khoá API mà không in giá trị ra. Nó chỉ đếm độ dài và loại ký tự, và che giá trị bằng regex khi đưa các alias lên màn hình. Cat file hoặc dán khoá vào chat để xem, hoặc hiển thị nguyên cấu hình chứa bí mật.
+M4. Ba agent song song cho thấy thứ 'đề xuất mới' đã chạy thật: Knowledge Registry có 479 doc, 332 cái vẫn provisional
+   Knowledge Registry đã chạy, phủ 479 doc (khoảng 15% trong 3146 file .md). 332 doc đang provisional, 147 active. Cảnh báo doc-provisional-aged không bao giờ bắn: code trừ updatedAt là chuỗi ISO nên ra NaN. Từ đó 332 doc đã provisional khoảng 47–55 ngày mà không ai biết. Phần thật sự mới của engine chỉ còn sáu thứ chưa có mã.
+M5. Trước khi sửa file cấu hình toàn cục, agent sao lưu bản gốc có dấu thời gian, sửa bằng script chỉ thay khi chuỗi xuất hiện đúng một lần (assert count == 1), rồi kiểm lại cú pháp.
+   Trước khi sửa file cấu hình toàn cục, agent sao lưu bản gốc có dấu thời gian, sửa bằng script chỉ thay khi chuỗi xuất hiện đúng một lần (assert count == 1), rồi kiểm lại cú pháp. Mở file bằng trình soạn thảo, sửa tay, và chỉ nhận ra lỗi khi chương trình khởi động không được.
+M6. Hội đồng kiến trúc chạy được bước framing, còn bước shaping ba panelist thì hỏng
+   Framing pass. Shaping, bước ba panelist mù chạy song song, báo execution-failure. Khi đọc trạng thái, agent gặp lỗi đọc JSON, rồi đọc được cấu trúc bước shaping và thấy đơn vị shape-proposals bị lỗi.
+M7. Khi commit, agent chỉ stage đúng file do chính nó sửa bằng pathspec, không dùng add tất cả, và để nguyên các thay đổi chưa commit của người dùng trong cây làm việc.
+   Khi commit, agent chỉ stage đúng file do chính nó sửa bằng pathspec, không dùng add tất cả, và để nguyên các thay đổi chưa commit của người dùng trong cây làm việc. Chạy git add -A rồi commit một lượt, kéo theo file của người khác hoặc file tạm.
+M8. Kéo remote, file nhật ký bảng chương trình bị sửa song song: agent phải dựng lại bản ghi
+   Agent lưu patch của phần sửa, khôi phục file, pull với autostash, rồi ghi lại các mục nhật ký lên đầu file theo đúng thứ tự giờ và chuyển hàng RULE sang running. Commit được tách theo đúng file của agent, không đụng thay đổi dở của owner.
+M9. Agent kết luận 'trần maxTier flagship chặn hội đồng', rồi đính chính: capability critical chạy tầng frontier
+   Lệnh fgos dispatch explain cho thấy capability critical (shape, synthesize, explain) dùng tầng frontier, còn frame và critique (high) dùng flagship. Bộ mô phỏng chạy không có herdr nên gán openai qua đường sai. Agent đính chính cả ba điều đã nói và sửa bảng ghế.
+M10. Máy đưa con số sai ('332/332 provisional'), người đếm lại thì ra 332 trên 147
+   Báo cáo ghi '332/332 doc đã migrate vẫn provisional'. Agent chính đếm lại trong doc-registry.json và chỉ ra 479 doc, 332 provisional, 147 active. Con số tổng đúng, nhưng cách diễn đạt của báo cáo không khớp dữ liệu.
+M11. Alias zsh cho 'tài khoản LLM' có tám profile omp, bốn cái trỏ vào thư mục chưa tồn tại
+   Agent liệt kê alias codex, pi, omp, agy từ zsh -i, che giá trị bí mật. Có bốn alias omp trỏ vào profile chưa có thư mục, nên agent tạo khung config.yml cho chúng, không tạo đăng nhập. Chỉ còn một alias omp trỏ vào chỗ trống.
+M12. Trước khi chạy nhiều lệnh gọi tốn tiền hoặc có thể treo, agent chạy trước một bản mô phỏng chỉ đọc (không gọi model nào) để xem từng ghế sẽ được gán cho nhà cung cấp nào và có dự phòng không.
+   Trước khi chạy nhiều lệnh gọi tốn tiền hoặc có thể treo, agent chạy trước một bản mô phỏng chỉ đọc (không gọi model nào) để xem từng ghế sẽ được gán cho nhà cung cấp nào và có dự phòng không. Mở luôn hội đồng hoặc chạy workflow đa agent, rồi mới phát hiện ghế nào không có người làm.
+M13. Chuỗi dự phòng của hội đồng không có deepseek và glm: walk chỉ thu hẹp, không mở rộng
+   deepseek và glm chạy được nhưng không nằm trong tierFallback ở tầng flagship và frontier, nên walk kết thúc sớm dù còn family khả dụng. Sau khi thêm hai family vào danh sách, mô phỏng cho 11/11 ghế, kể cả khi mất xai. Doctor đạt các check tier-fallback.
+M14. Agent nói ba máy kiểm 'không thuộc component nào', rồi phát hiện một component đã xong với sáu item con
+   Agent kết luận ba máy kiểm không thuộc component nào. Owner nói có một component tên canonical-decision-projection. Kiểm bằng work item thì tsk-1lv và sáu item con đều done (merge 83a3684b2). Hai trong ba máy kiểm thuộc dòng việc này. Agent đính chính kết luận cũ và viết lại plan.
+M15. Lệnh nhập khoá đầu tiên đã có bản sao lưu nhưng bản sao hỏng vẫn còn trên đĩa
+   Agent xác nhận file .bak chứa khoá 25 ký tự bị từ chối và đề nghị xoá. Owner yêu cầu dọn dẹp, agent kiểm độ dài rồi xoá. Một lệnh python đọc JSON lỗi vì trường không phải dict, và agent đọc lại đúng cấu trúc.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

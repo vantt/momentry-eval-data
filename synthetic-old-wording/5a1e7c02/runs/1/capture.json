@@ -1,0 +1,987 @@
+{
+  "id": "5a1e7c02",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/projects/momentry/scripts/eval/synthetic/5a1e7c02-8c4f-4d21-a6b3-7e9f0a1b2c22.jsonl",
+  "fromLine": 1,
+  "toLine": 67,
+  "windowSha": "d5f52a899c219220",
+  "at": "2026-11-08T07:10:41.311Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.11,
+    "tokens": 3952,
+    "chunks": 1,
+    "hotspots": 2,
+    "entries": 67,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:5a1e7c02",
+    "fromLine": 1,
+    "toLine": 67,
+    "usd": 0.0871991,
+    "secs": 321.9,
+    "exitCode": 0,
+    "status": "done",
+    "written": 10,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-14-hai-lanh-dao-cung-noi-gia-8a83",
+        "status": "angle",
+        "angle": "Một người làm nghiên cứu đang khảo sát vì sao bệnh nhân của các phòng khám nha khoa bỏ đi: tỷ lệ không quay lại tăng từ 22% lên 31%. Hai trưởng bộ phận cùng nói 'giá' là vấn đề, nên bản tóm tắt tưởng họ đã đồng thuận. Ghi chú thô cho thấy một người lo đối thủ chạy khuyến mãi rẻ hơn, người kia lo đồng chi trả tăng khiến bệnh nhân sốc khi thanh toán, và hai vấn đề này cần hai hành động khác nhau. Ai dùng AI để tóm tắt biên bản họp nên đối chiếu với ghi chú gốc trước khi tin là đã thống nhất.",
+        "audience": "người làm nghiên cứu hoặc tư vấn dùng AI để tóm tắt biên bản họp",
+        "evidence": [
+          14,
+          41,
+          42
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người làm nghiên cứu đang khảo sát vì sao bệnh nhân của các phòng khám nha khoa khách hàng bỏ đi, và tỷ lệ không quay lại trong 18 tháng đã tăng từ 22% lên 31%.",
+            "evidence": [
+              1,
+              14
+            ]
+          },
+          "want": {
+            "text": "Muốn có bản tổng hợp và outline cho buổi báo cáo điều hành, với 3 hành động rõ ràng đến cuối Q4.",
+            "evidence": [
+              1,
+              14
+            ]
+          },
+          "obstacle": {
+            "text": "Hai trưởng bộ phận cùng nói 'giá' là vấn đề, nhưng họ có thể đang nói hai chuyện khác nhau.",
+            "evidence": [
+              42
+            ]
+          },
+          "turn": {
+            "text": "Tưởng hai trưởng bộ phận đã đồng thuận về giá; hoá ra một người nói về đối thủ chạy khuyến mãi tẩy trắng rẻ hơn, người kia nói về đồng chi trả tăng khiến bệnh nhân sốc khi thanh toán.",
+            "evidence": [
+              14,
+              39,
+              41
+            ]
+          },
+          "action": {
+            "text": "Tách 'giá' thành hai vấn đề trong bản tổng hợp: Giá A là khuyến mãi cạnh tranh, Giá B là bất ngờ khi thanh toán. Ghi nhớ brief người phụ trách vận hành trước buổi họp.",
+            "evidence": [
+              43
+            ]
+          },
+          "takeaway": {
+            "text": "Khi các bên cùng dùng một từ, hãy đối chiếu ghi chú thô với bản tóm tắt trước khi báo đồng thuận.",
+            "evidence": [
+              42
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-10-14-khao-sat-va-phong-van-xep-8a83",
+        "status": "angle",
+        "angle": "Một người làm nghiên cứu lý do bệnh nhân nha khoa rời phòng khám, dựa trên 14 phỏng vấn sâu và khảo sát 412 người đã lapse, đang chuẩn bị báo cáo cho ban điều hành. Agent viết rằng khảo sát 'củng cố' phỏng vấn, nhưng phỏng vấn cho giá đứng đầu (7 người) còn khảo sát cho quên hoặc không có nhắc nhở đứng đầu (97). Ai làm nghiên cứu kết hợp phỏng vấn với khảo sát nên đọc, vì hai nguồn khác nhau không tự động xác nhận nhau.",
+        "audience": "người làm nghiên cứu khách hàng dùng cả phỏng vấn lẫn khảo sát",
+        "evidence": [
+          23,
+          49
+        ],
+        "spine": {
+          "context": {
+            "text": "Một nghiên cứu về lý do bệnh nhân nha khoa rời phòng khám, dùng 14 phỏng vấn sâu và khảo sát 412 người đã lapse, chuẩn bị bản tổng hợp cho buổi báo cáo điều hành.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn tổng hợp lý do bệnh nhân rời đi để trình bày trong buổi báo cáo điều hành.",
+            "evidence": [
+              1,
+              15
+            ]
+          },
+          "obstacle": {
+            "text": "Hai nguồn xếp hạng lý do khác nhau: phỏng vấn đặt giá lên đầu, khảo sát đặt nhắc nhở lên đầu.",
+            "evidence": [
+              23,
+              48
+            ]
+          },
+          "turn": {
+            "text": "Agent tưởng khảo sát củng cố phỏng vấn; hoá ra thứ hạng đảo ngược: phỏng vấn có giá đứng đầu (7 người), khảo sát có quên hoặc không có nhắc nhở đứng đầu (97).",
+            "evidence": [
+              23,
+              49
+            ]
+          },
+          "action": {
+            "text": "Viết bản nháp phân tích đầu tiên và báo rằng khảo sát xác nhận phỏng vấn.",
+            "evidence": [
+              21,
+              49
+            ]
+          },
+          "outcome": {
+            "text": "Có chín phát hiện ứng viên; nhắc nhở SMS phụ thuộc vào một người được tách thành mục riêng, và giá được chia thành hai mục.",
+            "evidence": [
+              51
+            ]
+          },
+          "takeaway": {
+            "text": "Khi hai nguồn xếp hạng khác nhau, trình bày cả hai và nêu lý do như cỡ mẫu hay cách hỏi; đừng gọi là củng cố.",
+            "evidence": [
+              23,
+              49
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-14-mot-cau-lo-loi-ve-le-8a83",
+        "status": "angle",
+        "angle": "Một chuỗi nha khoa đang nhờ nhóm nghiên cứu tìm vì sao bệnh nhân bỏ đi, dựa trên 14 buổi phỏng vấn và khảo sát. Nhóm ban đầu gom các lý do vào 'giá' và 'nhắc lịch', tưởng đó là nguyên nhân chính, và phía khách hàng cũng không nhắc đến lễ tân khi bắt đầu dự án. Một câu lỡ lời về cô lễ tân trong một buổi phỏng vấn, khi được tra lại cả bộ dữ liệu, lại cho thấy có bệnh nhân ở lại chỉ vì người đó. Phòng khám nào mất nhiều lễ tân hơn thì tỷ lệ bỏ đi cao hơn gần gấp đôi, dù mới chỉ 6 phòng khám nên đây là tương quan chứ chưa chắc là nhân quả.",
+        "audience": "người làm nghiên cứu khách hàng hoặc dịch vụ có khách quay lại",
+        "evidence": [
+          23,
+          29,
+          33,
+          34
+        ],
+        "spine": {
+          "context": {
+            "text": "Một chuỗi nha khoa đang nhờ nhóm tìm vì sao bệnh nhân bỏ đi, qua 14 phỏng vấn và khảo sát.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn có bản tổng hợp và outline cho buổi trình bày điều hành thứ Năm.",
+            "evidence": [
+              1
+            ]
+          },
+          "obstacle": {
+            "text": "Phần lớn lý do bị gom vào nhóm 'giá' (7 người), nên tín hiệu về lễ tân bị che.",
+            "evidence": [
+              23
+            ]
+          },
+          "turn": {
+            "text": "Tưởng giá và nhắc lịch là nguyên nhân chính; hoá ra nhiều lý do trong đó liên quan đến sự liên tục của lễ tân.",
+            "evidence": [
+              23,
+              29
+            ]
+          },
+          "action": {
+            "text": "Grep toàn bộ phỏng vấn tìm lễ tân, rồi đối chiếu danh sách nhân sự với tỷ lệ bỏ đi theo phòng khám.",
+            "evidence": [
+              27,
+              31
+            ]
+          },
+          "outcome": {
+            "text": "Phòng khám có 4 lễ tân nghỉ trong 12 tháng có tỷ lệ bỏ đi 41%; phòng có 0–1 người nghỉ là 19–24% (số do agent báo, mới 6 phòng khám).",
+            "evidence": [
+              32,
+              33
+            ]
+          },
+          "takeaway": {
+            "text": "Khi một chi tiết lạc đề lặp lại trong phỏng vấn, hãy tra lại toàn bộ dữ liệu và đối chiếu với vận hành, nhưng ghi rõ cỡ mẫu nhỏ.",
+            "evidence": [
+              29,
+              33
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-14-luat-chon-3-trong-9-va-8a83",
+        "status": "angle",
+        "angle": "Một nhóm đang tìm vì sao bệnh nhân của một phòng khám nha khoa bỏ không quay lại, và sắp trình bày kết quả cho ban lãnh đạo trong 20 phút. Ban lãnh đạo từng đồng ý rằng giá là vấn đề, nhưng dữ liệu cho thấy đó là hai chuyện khác nhau: đối thủ có khuyến mãi rẻ hơn, còn khách bất ngờ với chi phí lúc thanh toán (88 so với 61 lượt chọn). Ai phải cắt nhiều phát hiện xuống vài điểm cho lãnh đạo sẽ gặp đúng kiểu này: một chữ \"giá\" có thể gom hai vấn đề khác nhau.",
+        "audience": "người làm nghiên cứu người dùng phải trình bày kết quả cho lãnh đạo",
+        "evidence": [
+          1,
+          43,
+          49,
+          51,
+          52
+        ],
+        "spine": {
+          "context": {
+            "text": "Nghiên cứu vì sao bệnh nhân của một phòng khám nha khoa bỏ không quay lại, sắp có buổi trình bày cho ban lãnh đạo.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn chọn ba phát hiện có hành động rõ ràng để ban lãnh đạo ghi nhớ.",
+            "evidence": [
+              52
+            ]
+          },
+          "obstacle": {
+            "text": "Có 9 phát hiện ứng viên trong 20 phút, và lần trước ban lãnh đạo chỉ nhớ một việc dễ nhất.",
+            "evidence": [
+              51,
+              52
+            ]
+          },
+          "turn": {
+            "text": "Ban lãnh đạo tưởng giá là một vấn đề; hoá ra là hai: đối thủ khuyến mãi (Price A) và khách bất ngờ với chi phí lúc thanh toán (Price B).",
+            "evidence": [
+              43,
+              49
+            ]
+          },
+          "action": {
+            "text": "Chọn ba phát hiện, đưa giờ khám trẻ em xuống phụ lục, và ghi việc báo trước cho người có câu hỏi đó.",
+            "evidence": [
+              54,
+              55
+            ]
+          },
+          "outcome": {
+            "text": "Đã viết outline và thêm việc gọi người bảo trợ vào danh sách việc cần làm.",
+            "evidence": [
+              56,
+              59
+            ]
+          },
+          "takeaway": {
+            "text": "Khi cắt bớt phát hiện cho lãnh đạo, nói rõ tiêu chí chọn và báo trước cho người có câu hỏi bị chuyển xuống phụ lục.",
+            "evidence": [
+              53,
+              54
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-14-tro-ly-bao-con-so-ma-8a83",
+        "status": "angle",
+        "angle": "Một chuỗi nha khoa đang mất bệnh nhân, và người làm đang tổng hợp phỏng vấn để trình bày cho lãnh đạo vào thứ Năm. Cả nhóm ban đầu tin nguyên nhân là giá và nhắc lịch, nhưng khi đọc lại, nhiều chỗ bị xếp vào giá có thể do người lễ tân cũ nghỉ, khiến bệnh nhân mất luôn việc nhắc lịch và giải thích phí. Dữ liệu cho thấy phòng khám có nhiều người nghỉ thì tỉ lệ rời bỏ cao gấp khoảng đôi, nhưng chỉ có 6 phòng khám nên chưa thể kết luận. Với ai dùng AI phân tích dữ liệu khách hàng, đây là lúc cần đối chiếu con số với output gốc trước khi đưa lên slide.",
+        "audience": "người làm phân tích nghiên cứu khách hàng có dùng AI",
+        "evidence": [
+          23,
+          29,
+          33
+        ],
+        "spine": {
+          "context": {
+            "text": "Một chuỗi nha khoa đang mất bệnh nhân; người làm đang khảo sát vì sao và tổng hợp 14 phỏng vấn cùng dữ liệu khảo sát.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn có bản tổng hợp và dàn ý cho buổi trình bày lãnh đạo vào thứ Năm.",
+            "evidence": [
+              1
+            ]
+          },
+          "obstacle": {
+            "text": "Lúc khởi động không ai nhắc đến lễ tân, nên muốn kiểm tra liên hệ này phải nối thêm bảng nhân sự.",
+            "evidence": [
+              30,
+              34
+            ]
+          },
+          "turn": {
+            "text": "Tưởng nguyên nhân rời bỏ là giá và nhắc lịch; hoá ra nhiều chỗ bị xếp vào giá có thể liên quan đến việc người lễ tân cũ nghỉ.",
+            "evidence": [
+              23,
+              29,
+              34
+            ]
+          },
+          "action": {
+            "text": "Tìm mọi lần nhắc đến lễ tân, nối bảng nhân sự với tỉ lệ rời bỏ theo phòng khám, rồi đưa phát hiện vào bản nháp.",
+            "evidence": [
+              25,
+              27,
+              31,
+              35
+            ]
+          },
+          "outcome": {
+            "text": "Một phòng khám có 4 người nghỉ trong 12 tháng có tỉ lệ rời bỏ 41%; nhóm ít người nghỉ là 19–24%. Chỉ có 6 phòng khám nên chưa chứng minh được.",
+            "evidence": [
+              32,
+              33
+            ]
+          },
+          "takeaway": {
+            "text": "Một con số tương quan trên 6 đơn vị chỉ là gợi ý; ghi rõ cỡ mẫu và đối chiếu với output gốc trước khi đưa lên slide.",
+            "evidence": [
+              32,
+              33
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-14-ten-file-sai-ngay-doc-header-8a83",
+        "status": "none",
+        "none": true,
+        "reason": "Đây là việc dọn tên file thường: agent đoán ngày từ tên file, người dùng kiểm tra header và sửa ngay. Không ai tin sai một điều có ý nghĩa để kể thành chuyện.",
+        "spine": {
+          "context": {
+            "text": "Một nghiên cứu churn cho khách hàng nha khoa: 14 phỏng vấn bệnh nhân, cần bản tổng hợp nháp và dàn ý cho buổi báo cáo điều hành thứ Năm.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Có bản tổng hợp nháp và dàn ý cho buổi báo cáo điều hành.",
+            "evidence": [
+              1
+            ]
+          },
+          "obstacle": {
+            "text": "Hai file phỏng vấn lệch mẫu tên.",
+            "evidence": [
+              4
+            ]
+          },
+          "action": {
+            "text": "Đổi tên hai file theo ngày ghi trong header; file P06 đổi thành 25/09 chứ không phải 24/09 như tên file.",
+            "evidence": [
+              5,
+              8
+            ]
+          },
+          "outcome": {
+            "text": "Cả 14 file đều theo cùng một mẫu tên.",
+            "evidence": [
+              10
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-14-tu-ghi-chu-tho-toi-bang-8a83",
+        "status": "none",
+        "none": true,
+        "reason": "Chỉ là đổi định dạng bảng và xuất docx; không ai tin sai điều gì.",
+        "spine": {
+          "context": {
+            "text": "Một người làm nghiên cứu về việc khách rời bỏ (churn) cho chuỗi phòng khám nha khoa, dựa trên 14 cuộc phỏng vấn và dữ liệu khảo sát.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Cần bản nháp tổng hợp và dàn ý cho buổi trình bày điều hành thứ Năm.",
+            "evidence": [
+              1
+            ]
+          },
+          "obstacle": {
+            "text": "Chỉ có 20 phút với ba người nghe, trong khi có chín phát hiện phải chọn ra ba.",
+            "evidence": [
+              52
+            ]
+          },
+          "action": {
+            "text": "Chuyển bảng trích dẫn sang bảng 4 cột (trích dẫn, người, phòng khám, chủ đề) và xuất dàn ý sang docx cho khách dùng Word.",
+            "evidence": [
+              60,
+              61,
+              63
+            ]
+          },
+          "outcome": {
+            "text": "Bảng trích dẫn có 29 câu và file docx đã sẵn sàng.",
+            "evidence": [
+              64,
+              65
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-14-agent-ghi-ngay-vao-danh-sach-8a83",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-8: spine.context: evidence ngoài các dòng đã đưa: \"profile\" | angle-8-retry: JSON hỏng (SyntaxError)"
+      },
+      {
+        "id": "2026-10-14-agent-bat-dau-ghi-ban-nhap-8a83",
+        "status": "none",
+        "none": true,
+        "reason": "Không ai tin sai điều gì rồi hoá ra khác. Việc agent viết nháp dần là cách làm thông thường. Kiểm tra ngày P06 và tên nhân viên vẫn chưa có kết quả trong đoạn trích.",
+        "spine": {
+          "context": {
+            "text": "Người làm đang khảo sát churn cho Brightline Dental: 14 buổi phỏng vấn bệnh nhân, một file khảo sát, và ghi chú kickoff.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Cần bản nháp tổng hợp và dàn ý cho buổi báo cáo thứ Năm.",
+            "evidence": [
+              1
+            ]
+          },
+          "action": {
+            "text": "Agent bắt đầu ghi pass1.md ngay khi đang đọc, không chờ đọc xong cả 14 bản.",
+            "evidence": [
+              20,
+              21
+            ]
+          },
+          "outcome": {
+            "text": "pass1.md đã được tạo, kèm đếm sơ bộ: giá 7, nhắc SMS 2, giờ trẻ em 2.",
+            "evidence": [
+              22,
+              23
+            ]
+          }
+        },
+        "completeness": 4
+      },
+      {
+        "id": "2026-10-14-truoc-khi-doc-agent-dem-so-8a83",
+        "status": "none",
+        "none": true,
+        "reason": "Đếm số từ và báo ước lượng thời gian là bước làm việc thường. Trong đoạn trích không ai tin sai điều gì và không có chỗ ngoặt nào.",
+        "spine": {
+          "context": {
+            "text": "Dự án nghiên cứu lý do khách hàng rời bỏ phòng khám nha Brightline Dental, với 14 buổi phỏng vấn bệnh nhân và file khảo sát.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Người dùng cần bản tổng hợp nháp và dàn ý cho buổi báo cáo điều hành thứ Năm.",
+            "evidence": [
+              1,
+              15
+            ]
+          },
+          "action": {
+            "text": "Agent đếm số từ của 14 buổi phỏng vấn (khoảng 62k từ), báo trước sẽ mất vài phút, rồi bắt đầu đọc P01 và tạo synthesis/pass1.md.",
+            "evidence": [
+              16,
+              17,
+              18,
+              20,
+              21,
+              22
+            ]
+          }
+        },
+        "completeness": 3
+      }
+    ],
+    "message": "claude:5a1e7c02 L1-L67: done; 7 chuyện thô, 10 cụm; ghi 10 mới, gộp 0\nđiểm nóng 2 (thiếu 0); lần chạy 1/1; 0.09 USD\ngóc kể: 5 có, 4 không ra chuyện, 1 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: repo không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-14-hai-lanh-dao-cung-noi-gia-8a83",
+      "code": "M-Z4EB",
+      "title": "Hai lãnh đạo cùng nói 'giá', nhưng thật ra là hai vấn đề khác nhau",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người làm nghiên cứu đang khảo sát vì sao bệnh nhân của các phòng khám nha khoa bỏ đi: tỷ lệ không quay lại tăng từ 22% lên 31%. Hai trưởng bộ phận cùng nói 'giá' là vấn đề, nên bản tóm tắt tưởng họ đã đồng thuận. Ghi chú thô cho thấy một người lo đối thủ chạy khuyến mãi rẻ hơn, người kia lo đồng chi trả tăng khiến bệnh nhân sốc khi thanh toán, và hai vấn đề này cần hai hành động khác nhau. Ai dùng AI để tóm tắt biên bản họp nên đối chiếu với ghi chú gốc trước khi tin là đã thống nhất.",
+      "audience": "người làm nghiên cứu hoặc tư vấn dùng AI để tóm tắt biên bản họp",
+      "spine": {
+        "context": {
+          "text": "Một người làm nghiên cứu đang khảo sát vì sao bệnh nhân của các phòng khám nha khoa khách hàng bỏ đi, và tỷ lệ không quay lại trong 18 tháng đã tăng từ 22% lên 31%.",
+          "lines": [
+            "claude:5a1e7c02#L1",
+            "claude:5a1e7c02#L14"
+          ]
+        },
+        "want": {
+          "text": "Muốn có bản tổng hợp và outline cho buổi báo cáo điều hành, với 3 hành động rõ ràng đến cuối Q4.",
+          "lines": [
+            "claude:5a1e7c02#L1",
+            "claude:5a1e7c02#L14"
+          ]
+        },
+        "obstacle": {
+          "text": "Hai trưởng bộ phận cùng nói 'giá' là vấn đề, nhưng họ có thể đang nói hai chuyện khác nhau.",
+          "lines": [
+            "claude:5a1e7c02#L42"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng hai trưởng bộ phận đã đồng thuận về giá; hoá ra một người nói về đối thủ chạy khuyến mãi tẩy trắng rẻ hơn, người kia nói về đồng chi trả tăng khiến bệnh nhân sốc khi thanh toán.",
+          "lines": [
+            "claude:5a1e7c02#L14",
+            "claude:5a1e7c02#L39",
+            "claude:5a1e7c02#L41"
+          ]
+        },
+        "action": {
+          "text": "Tách 'giá' thành hai vấn đề trong bản tổng hợp: Giá A là khuyến mãi cạnh tranh, Giá B là bất ngờ khi thanh toán. Ghi nhớ brief người phụ trách vận hành trước buổi họp.",
+          "lines": [
+            "claude:5a1e7c02#L43"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi các bên cùng dùng một từ, hãy đối chiếu ghi chú thô với bản tóm tắt trước khi báo đồng thuận.",
+          "lines": [
+            "claude:5a1e7c02#L42"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-14-khao-sat-va-phong-van-xep-8a83",
+      "code": "M-YVVN",
+      "title": "Khảo sát và phỏng vấn xếp hạng lý do rời đi khác nhau",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người làm nghiên cứu lý do bệnh nhân nha khoa rời phòng khám, dựa trên 14 phỏng vấn sâu và khảo sát 412 người đã lapse, đang chuẩn bị báo cáo cho ban điều hành. Agent viết rằng khảo sát 'củng cố' phỏng vấn, nhưng phỏng vấn cho giá đứng đầu (7 người) còn khảo sát cho quên hoặc không có nhắc nhở đứng đầu (97). Ai làm nghiên cứu kết hợp phỏng vấn với khảo sát nên đọc, vì hai nguồn khác nhau không tự động xác nhận nhau.",
+      "audience": "người làm nghiên cứu khách hàng dùng cả phỏng vấn lẫn khảo sát",
+      "spine": {
+        "context": {
+          "text": "Một nghiên cứu về lý do bệnh nhân nha khoa rời phòng khám, dùng 14 phỏng vấn sâu và khảo sát 412 người đã lapse, chuẩn bị bản tổng hợp cho buổi báo cáo điều hành.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn tổng hợp lý do bệnh nhân rời đi để trình bày trong buổi báo cáo điều hành.",
+          "lines": [
+            "claude:5a1e7c02#L1",
+            "claude:5a1e7c02#L15"
+          ]
+        },
+        "obstacle": {
+          "text": "Hai nguồn xếp hạng lý do khác nhau: phỏng vấn đặt giá lên đầu, khảo sát đặt nhắc nhở lên đầu.",
+          "lines": [
+            "claude:5a1e7c02#L23",
+            "claude:5a1e7c02#L48"
+          ]
+        },
+        "turn": {
+          "text": "Agent tưởng khảo sát củng cố phỏng vấn; hoá ra thứ hạng đảo ngược: phỏng vấn có giá đứng đầu (7 người), khảo sát có quên hoặc không có nhắc nhở đứng đầu (97).",
+          "lines": [
+            "claude:5a1e7c02#L23",
+            "claude:5a1e7c02#L49"
+          ]
+        },
+        "action": {
+          "text": "Viết bản nháp phân tích đầu tiên và báo rằng khảo sát xác nhận phỏng vấn.",
+          "lines": [
+            "claude:5a1e7c02#L21",
+            "claude:5a1e7c02#L49"
+          ]
+        },
+        "outcome": {
+          "text": "Có chín phát hiện ứng viên; nhắc nhở SMS phụ thuộc vào một người được tách thành mục riêng, và giá được chia thành hai mục.",
+          "lines": [
+            "claude:5a1e7c02#L51"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi hai nguồn xếp hạng khác nhau, trình bày cả hai và nêu lý do như cỡ mẫu hay cách hỏi; đừng gọi là củng cố.",
+          "lines": [
+            "claude:5a1e7c02#L23",
+            "claude:5a1e7c02#L49"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-14-mot-cau-lo-loi-ve-le-8a83",
+      "code": "M-756T",
+      "title": "Một câu lỡ lời về lễ tân hoá ra là tín hiệu churn lớn nhất",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một chuỗi nha khoa đang nhờ nhóm nghiên cứu tìm vì sao bệnh nhân bỏ đi, dựa trên 14 buổi phỏng vấn và khảo sát. Nhóm ban đầu gom các lý do vào 'giá' và 'nhắc lịch', tưởng đó là nguyên nhân chính, và phía khách hàng cũng không nhắc đến lễ tân khi bắt đầu dự án. Một câu lỡ lời về cô lễ tân trong một buổi phỏng vấn, khi được tra lại cả bộ dữ liệu, lại cho thấy có bệnh nhân ở lại chỉ vì người đó. Phòng khám nào mất nhiều lễ tân hơn thì tỷ lệ bỏ đi cao hơn gần gấp đôi, dù mới chỉ 6 phòng khám nên đây là tương quan chứ chưa chắc là nhân quả.",
+      "audience": "người làm nghiên cứu khách hàng hoặc dịch vụ có khách quay lại",
+      "spine": {
+        "context": {
+          "text": "Một chuỗi nha khoa đang nhờ nhóm tìm vì sao bệnh nhân bỏ đi, qua 14 phỏng vấn và khảo sát.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn có bản tổng hợp và outline cho buổi trình bày điều hành thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "obstacle": {
+          "text": "Phần lớn lý do bị gom vào nhóm 'giá' (7 người), nên tín hiệu về lễ tân bị che.",
+          "lines": [
+            "claude:5a1e7c02#L23"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng giá và nhắc lịch là nguyên nhân chính; hoá ra nhiều lý do trong đó liên quan đến sự liên tục của lễ tân.",
+          "lines": [
+            "claude:5a1e7c02#L23",
+            "claude:5a1e7c02#L29"
+          ]
+        },
+        "action": {
+          "text": "Grep toàn bộ phỏng vấn tìm lễ tân, rồi đối chiếu danh sách nhân sự với tỷ lệ bỏ đi theo phòng khám.",
+          "lines": [
+            "claude:5a1e7c02#L27",
+            "claude:5a1e7c02#L31"
+          ]
+        },
+        "outcome": {
+          "text": "Phòng khám có 4 lễ tân nghỉ trong 12 tháng có tỷ lệ bỏ đi 41%; phòng có 0–1 người nghỉ là 19–24% (số do agent báo, mới 6 phòng khám).",
+          "lines": [
+            "claude:5a1e7c02#L32",
+            "claude:5a1e7c02#L33"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi một chi tiết lạc đề lặp lại trong phỏng vấn, hãy tra lại toàn bộ dữ liệu và đối chiếu với vận hành, nhưng ghi rõ cỡ mẫu nhỏ.",
+          "lines": [
+            "claude:5a1e7c02#L29",
+            "claude:5a1e7c02#L33"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-14-luat-chon-3-trong-9-va-8a83",
+      "code": "M-06RY",
+      "title": "Luật 'chọn 3 trong 9' và câu hỏi của người bảo trợ đi vào phụ lục",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một nhóm đang tìm vì sao bệnh nhân của một phòng khám nha khoa bỏ không quay lại, và sắp trình bày kết quả cho ban lãnh đạo trong 20 phút. Ban lãnh đạo từng đồng ý rằng giá là vấn đề, nhưng dữ liệu cho thấy đó là hai chuyện khác nhau: đối thủ có khuyến mãi rẻ hơn, còn khách bất ngờ với chi phí lúc thanh toán (88 so với 61 lượt chọn). Ai phải cắt nhiều phát hiện xuống vài điểm cho lãnh đạo sẽ gặp đúng kiểu này: một chữ \"giá\" có thể gom hai vấn đề khác nhau.",
+      "audience": "người làm nghiên cứu người dùng phải trình bày kết quả cho lãnh đạo",
+      "spine": {
+        "context": {
+          "text": "Nghiên cứu vì sao bệnh nhân của một phòng khám nha khoa bỏ không quay lại, sắp có buổi trình bày cho ban lãnh đạo.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn chọn ba phát hiện có hành động rõ ràng để ban lãnh đạo ghi nhớ.",
+          "lines": [
+            "claude:5a1e7c02#L52"
+          ]
+        },
+        "obstacle": {
+          "text": "Có 9 phát hiện ứng viên trong 20 phút, và lần trước ban lãnh đạo chỉ nhớ một việc dễ nhất.",
+          "lines": [
+            "claude:5a1e7c02#L51",
+            "claude:5a1e7c02#L52"
+          ]
+        },
+        "turn": {
+          "text": "Ban lãnh đạo tưởng giá là một vấn đề; hoá ra là hai: đối thủ khuyến mãi (Price A) và khách bất ngờ với chi phí lúc thanh toán (Price B).",
+          "lines": [
+            "claude:5a1e7c02#L43",
+            "claude:5a1e7c02#L49"
+          ]
+        },
+        "action": {
+          "text": "Chọn ba phát hiện, đưa giờ khám trẻ em xuống phụ lục, và ghi việc báo trước cho người có câu hỏi đó.",
+          "lines": [
+            "claude:5a1e7c02#L54",
+            "claude:5a1e7c02#L55"
+          ]
+        },
+        "outcome": {
+          "text": "Đã viết outline và thêm việc gọi người bảo trợ vào danh sách việc cần làm.",
+          "lines": [
+            "claude:5a1e7c02#L56",
+            "claude:5a1e7c02#L59"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi cắt bớt phát hiện cho lãnh đạo, nói rõ tiêu chí chọn và báo trước cho người có câu hỏi bị chuyển xuống phụ lục.",
+          "lines": [
+            "claude:5a1e7c02#L53",
+            "claude:5a1e7c02#L54"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-14-tro-ly-bao-con-so-ma-8a83",
+      "code": "M-MGR0",
+      "title": "Trợ lý báo con số mà output công cụ không hiện: kiểm chứng trước khi đưa vào slide",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một chuỗi nha khoa đang mất bệnh nhân, và người làm đang tổng hợp phỏng vấn để trình bày cho lãnh đạo vào thứ Năm. Cả nhóm ban đầu tin nguyên nhân là giá và nhắc lịch, nhưng khi đọc lại, nhiều chỗ bị xếp vào giá có thể do người lễ tân cũ nghỉ, khiến bệnh nhân mất luôn việc nhắc lịch và giải thích phí. Dữ liệu cho thấy phòng khám có nhiều người nghỉ thì tỉ lệ rời bỏ cao gấp khoảng đôi, nhưng chỉ có 6 phòng khám nên chưa thể kết luận. Với ai dùng AI phân tích dữ liệu khách hàng, đây là lúc cần đối chiếu con số với output gốc trước khi đưa lên slide.",
+      "audience": "người làm phân tích nghiên cứu khách hàng có dùng AI",
+      "spine": {
+        "context": {
+          "text": "Một chuỗi nha khoa đang mất bệnh nhân; người làm đang khảo sát vì sao và tổng hợp 14 phỏng vấn cùng dữ liệu khảo sát.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn có bản tổng hợp và dàn ý cho buổi trình bày lãnh đạo vào thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "obstacle": {
+          "text": "Lúc khởi động không ai nhắc đến lễ tân, nên muốn kiểm tra liên hệ này phải nối thêm bảng nhân sự.",
+          "lines": [
+            "claude:5a1e7c02#L30",
+            "claude:5a1e7c02#L34"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng nguyên nhân rời bỏ là giá và nhắc lịch; hoá ra nhiều chỗ bị xếp vào giá có thể liên quan đến việc người lễ tân cũ nghỉ.",
+          "lines": [
+            "claude:5a1e7c02#L23",
+            "claude:5a1e7c02#L29",
+            "claude:5a1e7c02#L34"
+          ]
+        },
+        "action": {
+          "text": "Tìm mọi lần nhắc đến lễ tân, nối bảng nhân sự với tỉ lệ rời bỏ theo phòng khám, rồi đưa phát hiện vào bản nháp.",
+          "lines": [
+            "claude:5a1e7c02#L25",
+            "claude:5a1e7c02#L27",
+            "claude:5a1e7c02#L31",
+            "claude:5a1e7c02#L35"
+          ]
+        },
+        "outcome": {
+          "text": "Một phòng khám có 4 người nghỉ trong 12 tháng có tỉ lệ rời bỏ 41%; nhóm ít người nghỉ là 19–24%. Chỉ có 6 phòng khám nên chưa chứng minh được.",
+          "lines": [
+            "claude:5a1e7c02#L32",
+            "claude:5a1e7c02#L33"
+          ]
+        },
+        "takeaway": {
+          "text": "Một con số tương quan trên 6 đơn vị chỉ là gợi ý; ghi rõ cỡ mẫu và đối chiếu với output gốc trước khi đưa lên slide.",
+          "lines": [
+            "claude:5a1e7c02#L32",
+            "claude:5a1e7c02#L33"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-14-ten-file-sai-ngay-doc-header-8a83",
+      "code": "M-Y18J",
+      "title": "Tên file sai ngày: đọc header trước khi đổi tên",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một nghiên cứu churn cho khách hàng nha khoa: 14 phỏng vấn bệnh nhân, cần bản tổng hợp nháp và dàn ý cho buổi báo cáo điều hành thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Có bản tổng hợp nháp và dàn ý cho buổi báo cáo điều hành.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "obstacle": {
+          "text": "Hai file phỏng vấn lệch mẫu tên.",
+          "lines": [
+            "claude:5a1e7c02#L4"
+          ]
+        },
+        "action": {
+          "text": "Đổi tên hai file theo ngày ghi trong header; file P06 đổi thành 25/09 chứ không phải 24/09 như tên file.",
+          "lines": [
+            "claude:5a1e7c02#L5",
+            "claude:5a1e7c02#L8"
+          ]
+        },
+        "outcome": {
+          "text": "Cả 14 file đều theo cùng một mẫu tên.",
+          "lines": [
+            "claude:5a1e7c02#L10"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-14-tu-ghi-chu-tho-toi-bang-8a83",
+      "code": "M-XN6V",
+      "title": "Từ ghi chú thô tới bảng trích dẫn và docx cho khách dùng Word",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một người làm nghiên cứu về việc khách rời bỏ (churn) cho chuỗi phòng khám nha khoa, dựa trên 14 cuộc phỏng vấn và dữ liệu khảo sát.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Cần bản nháp tổng hợp và dàn ý cho buổi trình bày điều hành thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "obstacle": {
+          "text": "Chỉ có 20 phút với ba người nghe, trong khi có chín phát hiện phải chọn ra ba.",
+          "lines": [
+            "claude:5a1e7c02#L52"
+          ]
+        },
+        "action": {
+          "text": "Chuyển bảng trích dẫn sang bảng 4 cột (trích dẫn, người, phòng khám, chủ đề) và xuất dàn ý sang docx cho khách dùng Word.",
+          "lines": [
+            "claude:5a1e7c02#L60",
+            "claude:5a1e7c02#L61",
+            "claude:5a1e7c02#L63"
+          ]
+        },
+        "outcome": {
+          "text": "Bảng trích dẫn có 29 câu và file docx đã sẵn sàng.",
+          "lines": [
+            "claude:5a1e7c02#L64",
+            "claude:5a1e7c02#L65"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-14-agent-ghi-ngay-vao-danh-sach-8a83",
+      "code": "M-BC44",
+      "title": "Agent ghi ngay vào danh sách việc cần làm của dự án những cam kết người dùng chỉ nói miệng: gọi điện cho người bảo trợ trước buổi họp, và chuẩn bị trước cho một trưởng bộ phận.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-14-agent-bat-dau-ghi-ban-nhap-8a83",
+      "code": "M-XD0P",
+      "title": "Agent bắt đầu ghi bản nháp tổng hợp ra file ngay khi đang đọc 14 bản phỏng vấn, rồi ghi tiếp dần, thay vì đọc hết rồi mới viết.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Người làm đang khảo sát churn cho Brightline Dental: 14 buổi phỏng vấn bệnh nhân, một file khảo sát, và ghi chú kickoff.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Cần bản nháp tổng hợp và dàn ý cho buổi báo cáo thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "action": {
+          "text": "Agent bắt đầu ghi pass1.md ngay khi đang đọc, không chờ đọc xong cả 14 bản.",
+          "lines": [
+            "claude:5a1e7c02#L20",
+            "claude:5a1e7c02#L21"
+          ]
+        },
+        "outcome": {
+          "text": "pass1.md đã được tạo, kèm đếm sơ bộ: giá 7, nhắc SMS 2, giờ trẻ em 2.",
+          "lines": [
+            "claude:5a1e7c02#L22",
+            "claude:5a1e7c02#L23"
+          ]
+        }
+      },
+      "completeness": 4
+    },
+    {
+      "id": "2026-10-14-truoc-khi-doc-agent-dem-so-8a83",
+      "code": "M-S59E",
+      "title": "Trước khi đọc, agent đếm số từ của toàn bộ tài liệu rồi báo trước với người dùng rằng sẽ mất vài phút.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Dự án nghiên cứu lý do khách hàng rời bỏ phòng khám nha Brightline Dental, với 14 buổi phỏng vấn bệnh nhân và file khảo sát.",
+          "lines": [
+            "claude:5a1e7c02#L1"
+          ]
+        },
+        "want": {
+          "text": "Người dùng cần bản tổng hợp nháp và dàn ý cho buổi báo cáo điều hành thứ Năm.",
+          "lines": [
+            "claude:5a1e7c02#L1",
+            "claude:5a1e7c02#L15"
+          ]
+        },
+        "action": {
+          "text": "Agent đếm số từ của 14 buổi phỏng vấn (khoảng 62k từ), báo trước sẽ mất vài phút, rồi bắt đầu đọc P01 và tạo synthesis/pass1.md.",
+          "lines": [
+            "claude:5a1e7c02#L16",
+            "claude:5a1e7c02#L17",
+            "claude:5a1e7c02#L18",
+            "claude:5a1e7c02#L20",
+            "claude:5a1e7c02#L21",
+            "claude:5a1e7c02#L22"
+          ]
+        }
+      },
+      "completeness": 3
+    }
+  ]
+}

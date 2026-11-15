@@ -1,0 +1,208 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Obsidian Hybrid Search is a search engine for your local Obsidian vault, offered as a native Obsidian plugin, an MCP server for AI agents, and a command-line tool. It is for people who keep their notes in Obsidian and want to find them by idea, phrase, title, link, or metadata, and for AI agents that need to start from those notes. It runs locally by default on SQLite, and can optionally use OpenAI-compatible embedding APIs.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L2602] USER: em khuyên như nào?
+[L2644] USER: V15 đang đợi file của anh?
+[L2693] USER: có 1 agent khác đang tìm cách đưa golden-set vào project, chắc nó xong sẽ update ở remote. agent đó cũng đang cài thử để dùng trên windows.
+</asks>
+
+<story>
+hook: Một tên riêng hai chữ bị 'sửa' thành từ thường, điểm tụt
+tension: giup_ma_hai (Phục hồi dấu để tìm tiếng Việt chuẩn hơn / Tên riêng bị đổi thành từ thường, kéo điểm tìm kiếm xuống)
+stakes: 3/3
+# Tên riêng hai chữ bị phục hồi dấu thành từ thường, kéo nDCG@5 xuống
+
+**Bối cảnh:** Khi bật restoreForEmbedding, một câu có một chữ có dấu trên hai chữ được coi là chưa có dấu, nên chữ không dấu bị phục hồi theo từ phổ biến hơn trong vault.
+**Chuyện gì xảy ra:** Model eval phát hiện một tên riêng hai chữ bị đổi sang từ thường. Ngưỡng 50% của PRD không sai, lỗi nằm ở cách dựng câu gửi cho embedder. Agent viết test thất bại trên mã cũ trước, rồi sửa để chỉ phục hồi chữ không dấu khi vault không bao giờ viết nó trần và độ tin cậy đủ. nDCG@5 tổng tăng từ 0,932 lên 0,954, không hạng mục nào tụt, và tuỳ chọn được bật mặc định.
+**Bài học:** Đừng sửa ngưỡng khi lỗi nằm ở chỗ dựng đầu vào. Viết test chứng minh lỗi trước khi sửa.
+**Artefact:** Bảng nDCG@5 trước và sau cho hạng mục liên quan.
+</story>
+
+<excerpt>
+[L2702] AGENT: Đã ghi vào plan (`efdc9d0`): V15 chờ agent bên dự án chuẩn bị golden set, rồi tôi chạy `quality-gate.mjs --private`.
+
+Hai lưu ý cho agent bên đó:
+1. **Không để câu hỏi hay tên note của vault thật lên remote công khai.** Quy tắc 7 của plan và PRD 11.5 yêu cầu golden set riêng nằm ngoài repo, CI và log; repo chỉ được giữ số tổng hợp. Nếu "đưa vào project" nghĩa là commit vào một repo riêng tư mà chỉ anh truy cập được thì không sao. Nếu là repo công khai, hoặc repo `vantt/obsidian-test-fixture`, thì không được.
+2. **Phần cài thử trên Windows rất có giá trị cho V03.** Smoke test của tôi chạy trên máy Windows sạch của GitHub, nên chưa đo được cảnh báo SmartScreen do gói chưa ký mã, cũng chưa đo lần tải model đầu tiên trên mạng thật. Nếu agent đó gặp lỗi gì, anh chuyển cho tôi để sửa trong `bundle.mjs` hoặc smoke test.
+
+Khi bên đó cập nhật xong, anh cho tôi biết repo và đường dẫn của file, hoặc anh tự chạy lệnh dưới đây rồi dán số tổng hợp cho tôi:
+```
+node vantt/scripts/quality-gate.mjs --private <golden-set.json> --vault <vault> --with-lang vi
+```
+[L2724] USER: <task-notification>
+<task-id>ab37a12c9eca42ac2</task-id>
+<tool-use-id>toolu_01HNqnCRZkUAUMbZfHfJhRuA</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ab37a12c9eca42ac2.output</output-file>
+<status>completed</status>
+<summary>Agent "V22 semantic branch eval" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS
+
+**Tóm tắt:** Đã đo xong 5 cấu hình model × `restoreForEmbedding` bật/tắt × reranker bật/tắt, mỗi model index một lần. Báo cáo kèm bảng và đề xuất đã viết xong. Concerns nằm ở dưới: bộ đo là corpus sinh, và `ohs-lang-vi` có một lỗi mới tìm ra.
+
+**File** (trong cây chung chỉ tạo các file được phép):
+- `/home/vantt/projects/obsidian-hybrid-search/vantt/reviews/semantic-eval-2026-11-02.md`
+- `/home/vantt/projects/obsidian-hybrid-search/vantt/scripts/semantic-eval.mjs`
+- `/home/vantt/projects/obsidian-hybrid-search/vantt/scripts/lib/semantic-worker.mjs`
+- `/home/vantt/projects/obsidian-hybrid-search/vantt/scripts/lib/semantic-export-onnx.py` (xuất ONNX cho model chưa có)
+- `/home/vantt/projects/obsidian-hybrid-search/vantt/plans/261102-1240-v22-semantic-eval/plan.md`
+- JSON đầy đủ từng câu ở `/home/vantt/projects/ohs-wt/tmp/v22/semantic-eval.json`, ngoài kho.
+
+Không commit hay checkout gì. `git status` hiện cho thấy `semantic-worker.mjs` ở trạng thái modified, tức file đó đã được commit sau lần ghi của tôi. Có thể lead đã commit, tôi không làm.
+
+**Cách đo:**
+- Corpus `vi-search@v0.10.0`: 363 note, 255 câu. Cây OHS `4c69fbf`, gói `ohs-lang-vi` 0.2.0 dựng từ `e3e7eb0`, ONNX giới hạn 4 luồng.
+- 4 model: e5-small, e5-base, bge-m3 và halong. Halong là bản tinh chỉnh tiếng Việt từ e5-base (Apache-2.0), không có ONNX nên tôi tự xuất và lượng tử hoá int8. Có thêm bản fp32 của halong để thấy chất lượng gốc.
+- Máy dùng chung, tải trung bình 3 đến 8, nên thời gian mỗi câu sai số khoảng ±30%.
+
+**Số chính** (nDCG@5 toàn bộ 255 câu; "bật/tắt" là `restoreForEmbedding`):
+
+| Model | tắt | bật | bật + rerank |
+|---|---|---|---|
+| e5-small | 0,932 | 0,950 | 0,950 |
+| e5-base | 0,942 | 0,947 | 0,953 |
+| bge-m3 | 0,942 | 0,948 | 0,951 |
+| halong int8 | 0,940 | 0,948 | 0,953 |
+| halong fp32 | 0,947 | 0,952 | 0,956 |
+
+- Chênh lệch giữa các model chỉ vài câu, nhỏ hơn nhiễu của bộ 255 câu.
+-  …[+3276]
+[L2733] AGENT: V22 xong. Báo cáo đề xuất bật `restoreForEmbedding`, mặc định tắt reranker, giữ e5-small làm model mặc định, và dùng bge-m3 cho hồ sơ chất lượng cao. Agent cũng tìm ra hai lỗi thật trong gói tiếng Việt. Tôi commit báo cáo trước.
+[L2734] TOOL Bash: HUSKY=0 git pull -q --rebase --autostash origin master; git status --short | grep -v '^??' ; git log --oneline -3 -- vantt/scripts/lib/semantic-worker.mjs
+[L2735] RESULT: M vantt/PRD.md | M vantt/scripts/lib/review-core.mjs
+…
+[L2772] RESULT: (Bash completed with no output)
+[L2776] AGENT: V22 đã xong, báo cáo đã commit ở `8d3b3e6` (`vantt/reviews/semantic-eval-2026-11-02.md`).
+
+Đề xuất cho bộ cài của dự án:
+- **Bật `restoreForEmbedding`:** nDCG@5 tăng 0,005–0,018.
+- **Reranker:** mặc định tắt. Bật thì `vi-semantic` tăng 0,05–0,10, nhưng mỗi câu chậm thêm khoảng 150 ms và phải tải thêm 616 MB.
+- **Model:** mặc định giữ e5-small như upstream. Hồ sơ chất lượng cao dùng `Xenova/bge-m3`; model này phân biệt cặp gần nghĩa với cặp nhiễu tốt nhất (AUC 0,968). Không model nào index 2.000 note quá 30 phút trên máy 4 luồng.
+- Số đo này lấy trên corpus sinh, nên cần đo lại trên vault thật (V15) trước khi chốt model.
+
+V22 cũng tìm ra hai lỗi thật trong gói tiếng Việt. Tôi đã giao sửa cả hai:
+1. **Gói đóng gói thiếu thư mục `data/`.** Khi thiếu, OHS im lặng chạy như không có gói. Agent V20b đang sửa: đưa `data/` vào gói, và cho gói báo lỗi rõ ràng khi thiếu dữ liệu.
+2. **`restoreForEmbedding` sửa nhầm chữ trong câu có dấu một phần**, ví dụ "Hội An". Một agent mới sẽ chứng minh nguyên nhân bằng test trước khi sửa, rồi chốt có bật tuỳ chọn này mặc định hay không theo quy tắc eval.
+
+Đang chạy:
+- V03: gói Mac Intel và nối catchup với bước dựng gói.
+- V14: báo cáo review cuối, sau đó làm L24.
+- V20b: từ điển có giấy phép và đóng gói `data/`.
+- V13b: sửa lỗi `restoreForEmbedding`.
+- Agent sửa test so ảnh chụp của P01.
+
+Phase 5 chỉ còn chờ V15.
+[L2787] USER: <task-notification>
+<task-id>a0cdad2417d4368ad</task-id>
+<tool-use-id>toolu_01GgYrPDf3RAFKd2FMpUHvaW</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a0cdad2417d4368ad.output</output-file>
+<status>completed</status>
+<summary>Agent "V13b fix restoreForEmbedding bug" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+**Root cause (proven).** V22's hypothesis was right, but the threshold is not the bug.
+- "Hội An" has 1 accented syllable out of 2, a ratio of 0.5. `accentedRatio` uses `&gt;`, so the query is not "accented" and goes down the restoration branch.
+- There "Hội" is pinned, but "An" is restored to the more common vault word "ăn".
+- `embedQuery` became "hội ăn". A new test failed on the old code with `Received: "hội ăn"`.
+- The `&gt;` matches PRD 10.3 ("hơn 50%"), so I kept it. The bug is in how `embedQuery` is built.
+
+**Fix.**
+- `src/query.ts`, `restoredText`: words typed with accents are never changed. In a partially accented query, an unaccented word is restored only when two conditions hold. The vault never writes that word bare (new `RestoredToken.literalDocs`, set in `src/restore.ts`), and its restored form has probability ≥ `embedMinConfidence`. That keeps names like "An".
+- If no word changes, `embedQuery` is not set.
+- New tests in `pack.test.ts` cover "Hội An", mixed restoration, and the confidence threshold. The README also notes the `&gt;` semantics.
+- All 459 tests pass and `tsc` is clean.
+
+**Eval (nDCG@5, e5-small, rerank off, tree `wt-p01b`, built pack from this branch).** "Base" is the upstream baseline and "V13" is the earlier pack result.
+
+| Category | Base | V13 | off | on | on−off |
+|---|---|---|---|---|---|
+| ALL | 0.666 | 0.813 | 0.932 | 0.954 | +0.022 |
+| vi-snippet | 0.463 | 0.743 | 0.777 | 0.975 | +0.198 |
+| vi-dd | 0.263 | 0.888 | 0.888 | 0.975 | +0.087 |
+| vi-unaccented | 0.133 | 0.951 | 0.951 | 1.000 | +0.049 |
+| vi-typo | 0.488 | 0.661 | 0.975 | 1.000 | +0.025 |
+| vi-names | 0.909 | 0.975 | 1.000 | 1.000 | 0 |
+| vi-partial-accent | 0.872 | 0.933 | 1.000 | 1.000 | 0 |
+| vi-telex, vi-mixed-en, vi-semantic, vi-synonym, vi-abbr, vi-alias | — | — | — | — | 0 |
+
+- "off" and "on" are the post-fix runs with `restoreForEmbedding` false and true.
+- The ot …[+1139]
+[L2789] AGENT: V13b xong, nguyên nhân đã chứng minh bằng test. Với "Hội An", chữ "An" bị phục hồi dấu thành "ăn", từ hay gặp hơn trong vault. Ngưỡng 50% không sai và đúng PRD. Lỗi nằm ở cách dựng câu gửi cho model nhúng. Sau khi sửa, bật `restoreForEmbedding` làm nDCG@5 tổng tăng từ 0,932 lên 0,954, không hạng mục nào tụt, nên tuỳ chọn này giờ bật mặc định. Merge vào `master`.
+[L2790] TOOL Bash: HUSKY=0 git pull -q --rebase --autostash origin master; HUSKY=0 git merge -q --no-ff vantt/work/v13b -m "merge(vantt): keep names intact when restoring accents for embeddings Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && echo MERGED && (cd vantt/packages/ohs-lang-vi && npx vitest run 2 …[+878]
+[L2796] RESULT: MERGED | ⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+…
+[L2837] TOOL Bash: echo "16:10 V13b merged b964988 (restoreForEmbedding default on, 0.954). Pack test flake under load once (3 reruns green). V03 Intel pinned 1.23.2, smoke ok; parity criterion changed to same-machine pinned vs locked <=0.01; per-platform gating; catchup->bundles wired (new_tag output)." >> /home/vant …[+32]
+[L2838] RESULT: (Bash completed with no output)
+[L2842] AGENT: - **V13b đã merge** (`b964988`). `restoreForEmbedding` giờ bật mặc định, nDCG@5 tổng tăng từ 0,932 lên 0,954. Ngay sau merge có một test hỏng, ba lần chạy lại đều xanh (459/459). Nhiều khả năng đó là test tốc độ chạy lúc máy đang tải nặng.
+- **Gói Mac Intel (V03):** ghim `onnxruntime-node` 1.23.2, bản mới nhất còn có file cho Intel. Gói dựng được và smoke test xanh trên máy Intel. Gói chưa phát hành vì không qua điều kiện so với Linux mà tôi đặt. Điều kiện đó sai: ngay gói Mac ARM, không ghim gì, cũng lệch Linux tới 0,063, vì ONNX cho số khác nhau theo từng CPU. Tôi đã đổi điều kiện: trên cùng một máy, so bản ghim với bản gốc, ngưỡng vẫn 0,01. Một nền hỏng giờ chỉ chặn gói của nền đó, không chặn ba gói còn lại.
+- **Catchup đã nối với bước dựng gói.** Khi catchup đẩy tag mới, CI tự dựng gói và gắn vào release.
+
+Đang chạy: V03 (đo lại điều kiện cho gói Intel), V14 (báo cáo cuối, sau đó L24), V20b (từ điển có giấy phép), agent sửa test so ảnh chụp kết quả của P01.
+[L2851] USER: <task-notification>
+<task-id>aa751f122f95d7e6a</task-id>
+<tool-use-id>toolu_013wCpBV2WdYdxER162bKYau</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/aa751f122f95d7e6a.output</output-file>
+<status>completed</status>
+<summary>Agent "V20b licensed compound dictionary" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS
+
+**Summary:** The shipped compound dictionary no longer comes from pyvi. It is a 20,523-entry list learned from syllable-pair statistics over three CC BY 4.0 datasets, and the build script reproduces it byte for byte. The new list matches or beats the pyvi list in every eval category; `vi-compound` goes from 0.632 (upstream) to 0.983. `segment` stays on by default. One target fails: the G8-snippet check (`check-snippets.mjs`) is now 14/15 on the new fixture, and the cause is the fixture change, not the dictionary (see Concerns).
+
+**Branch + commits** (`vantt/work/v20b`, worktree `/home/vantt/projects/ohs-wt/m-v20b`, not pushed):
+- `74d3859` test(vantt): pin vi-search fixture v0.11.0 with harder compound queries. This bumps `FIXTURE_TAG` in `run-eval.mjs`, and also the pins in `semantic-eval.mjs` and `review-upstream.mjs`. It also updates `golden-set.json` (now 270 queries), re-records the baseline and updates the eval README.
+- `6802cdf` feat(vantt): learn the compound dictionary from CC BY corpus statistics. It contains:
+  - `scripts/build-compounds.mjs` and the new `data/compounds.txt`;
+  - `data/README.md` and `data/ATTRIBUTION.md`;
+  - removal of `LICENSE-pyvi.txt` and `scripts/compounds.mjs`;
+  - the load-failure change and its tests;
+  - updates to the package README, the PRD Q9 row and the phase-04 note;
+  - the sub-plan `vantt/plans/261102-1321-v20b-licensed-compounds/plan.md`.
+
+**Corpus + license** (I read each license on the dataset page at the pinned revision):
+- **ALT** (`mutiyama/alt` @afbd92e, Vietnamese translations of Wikinews sentences): CC BY 4.0.
+- **`nvidia/Nemotron-Personas-Vietnam`** @950724d, 1 of 11 shards (model-generated text): CC BY 4.0.
+- **`th1nhng0/vietnamese-legal-documents`** @8977887 (from vbpl.vn): the documents are not protected by copyright under Article 15 of Vietnam's IP law, and the compiled dataset is CC BY 4.0.
+
+To …[+5702]
+[L2862] AGENT: V20b xong. Từ điển từ ghép mới có 20.523 từ, học từ ba bộ dữ liệu giấy phép CC BY 4.0, không lấy mục nào từ pyvi, và tốt hơn hoặc bằng danh sách pyvi ở mọi hạng mục. `vi-compound` trên fixture khó hơn tăng từ 0,632 (upstream) lên 0,983. Gói giờ báo lỗi rõ ràng khi thiếu dữ liệu.
+
+Còn một điểm chưa đạt: `vi-snippet` còn 14/15, cổng chất lượng yêu cầu 100%. Câu "quen ngu" rơi khỏi top 10 vì fixture mới thêm note, không phải do từ điển. Agent trước đã ghi rằng câu này vốn chỉ đứng hạng 8. Merge bây giờ thì CI sẽ đỏ, nên tôi giao sửa thứ hạng trong gói trước, rồi mới merge cả hai cùng lúc.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

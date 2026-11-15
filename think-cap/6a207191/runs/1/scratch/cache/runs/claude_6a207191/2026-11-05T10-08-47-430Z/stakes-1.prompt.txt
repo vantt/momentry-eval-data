@@ -1,0 +1,63 @@
+Dưới đây là 26 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Skill 'ak:frontend-development' không nạp được: đổi tên và chưa reload, agent đọc thẳng file
+   Gọi 'ak:frontend-development' báo Unknown skill, skill_get cũng không thấy. Tìm trên máy thì skill nằm trong thư mục skill của project với tên ak-frontend-development (gạch ngang). Skill chưa được nạp vào phiên, nên agent đọc thẳng SKILL.md và làm theo. Skill mới muốn hiện trong danh sách phải chạy reload-skills, nên lời 'chạy được ngay' lúc đầu không đúng.
+M2. Thông báo 'đang chờ duyệt' cho web: 229 test xanh trước khi có ai mở trình duyệt
+   Agent làm trên nhánh riêng trong repo skillstation. Có một hàm chọn bản chờ mới nhất theo mã SUB (có thứ tự thời gian), một banner trên trang skill với nút Review và Discard older kèm xác nhận, một nhãn Update waiting trong danh sách, và nhãn Older trong hàng chờ. Có 4 file mới, 6 file sửa. Kết quả là 229 test web qua, tsc, eslint và build sạch. Một lỗi TypeScript được sửa bằng optional chaining. Một cấu hình ignore chặn đọc thư mục dist nên agent phải dùng lệnh khác. Agent chưa mở trình duyệt thật và chưa commit khi người dùng hỏi.
+M3. Routing sống trên hub: máy gửi không thấy metadata, phải đọc mã nguồn để biết trường skill.yaml
+   skill_get chỉ trả về trigger, example và not_for. skill show --verbose bị từ chối vì phải chạy trên máy hub. Lint báo hub chưa kiểm tra routing vì hub chạy bản cũ. Agent ban đầu nói skill không có routing, người dùng phải sửa lại. Các trường operations, topics, technologies, min_scope và counter_examples chỉ tìm được khi đọc mã nguồn skillstation. Người dùng cũng phàn nàn skillstation-send không quản lý được routing, và agent thừa nhận.
+M4. Agent đưa lệnh chưa kiểm tra: --user không tồn tại, client 0.8.0 lệch hub 0.12.0
+   Agent gợi ý lệnh connect --hub với cờ --user mà không chạy --help trước. CLI báo lỗi unknown argument --user, và thông báo lỗi còn gợi ý đúng cờ không tồn tại. Client là 0.8.0 trong khi hub là 0.12.0. Sau khi update lên 0.13.0 và connect bằng token file với --global, doctor báo Healthy.
+M5. Đề xuất script rồi tự rút lại: verify bằng 12 bước cho agent, không code phải bảo trì
+   Agent đề xuất scripts/audit-project.sh với khoảng 25 đến 30 kiểm tra, rồi đổi ý: script là code phải bảo trì và đi ngược mục tiêu skill gọn. Agent đề xuất bước Verify 12 điểm do agent tự chạy theo hướng dẫn. Người dùng đồng ý. SKILL.md có 12 bước, mỗi bước ghi lệnh, tiêu chí đạt và rule liên quan.
+M6. Agent báo 'cả ba agent đã kết nối' khi grep chỉ thấy Codex và Gemini
+   Lệnh grep trên bốn file cấu hình (hai file của Claude Code, Codex và Gemini) chỉ trả về hai file: Gemini settings và Codex config. Agent vẫn báo cấu hình của Claude Code, Codex và Gemini đều đã có hub. Báo cáo vượt quá kết quả kiểm tra.
+M7. Gom lệnh rải rác về một file: bộ lệnh chuẩn và cờ JSON chung cho mọi CLI
+   Agent gom về common/07-command-surface.md. Upgrade được thêm làm alias của update. --version và version đều phải chạy, bài học từ fgctl thiếu --version. Các cờ chung --json, -y, --dry-run, -q, -v, NO_COLOR có cùng nghĩa ở mọi lệnh. Có bảng exit code chung: 0, 1, 2, và 10 cho update --check có bản mới. Các định nghĩa lệnh cũ trong UPD-01 và DOC-02 được trỏ về file này.
+M8. Reviewer độc lập bắt skill tự mâu thuẫn: 'setup' vs 'init', installer mẫu vi phạm luật của chính nó
+   Reviewer đóng vai một agent phân phối cho Go CLI có MCP server rồi đi theo quy trình của skill. Nó tìm ra ba lỗi phải sửa: INS-13 bảo dùng setup trong khi CMD-04 nói không có setup; installer mẫu in lệnh Next sai; chuỗi init --yes rồi doctor --fix không bao giờ chạy connect, nên agent chỉ đọc --help sẽ không đăng ký MCP. Installer mẫu cũng vi phạm luật: thiếu --help, gỡ cài đặt không hỏi, hỏng trên Alpine, crash khi --version không có giá trị. Sau khi sửa, số rule là 212.
+M9. Chuẩn hoá init/doctor: doctor là bộ máy duy nhất, init = doctor --fix cộng tạo mới
+   Agent viết lại các file common. init là doctor --fix cộng quyền tạo mới. doctor chỉ đọc. doctor --fix không bao giờ biến một thư mục bất kỳ thành project. setup bỏ, chỉ giữ như alias ẩn của init. Thêm hai kiểu phân phối: A (một binary có update) và B (bộ cài và runtime như fgctl, update chỉ chuyển sang ctl upgrade). Viết lại các file 00, 03, 05, 07, 30, 40, 50, 60, 80, 85, 90 và SKILL, CONTRIBUTING, references. Bản này cũng sửa mâu thuẫn từ review: INS-13 dùng init, installer in Next với đường dẫn tuyệt đối.
+M10. Installer mẫu: kiểm /dev/tty 'đọc ghi được' vẫn crash khi không có terminal
+   Lần chạy đầu, gỡ cài đặt bị chặn bởi kiểm tra 'installer chưa đóng dấu phiên bản' đặt trước nhánh gỡ cài đặt, nên agent chuyển kiểm tra xuống sau. Khi chạy bằng dash trong môi trường không có terminal, script crash: /dev/tty qua được kiểm tra -r và -w nhưng không mở được. Sửa bằng cách thử mở thật. Bây giờ không có terminal thì báo cần --yes, có terminal thì hỏi và hủy khi trả lời n.
+M11. 'Cửa hàng' của phần mềm là màn hình đầu README: người dùng nói, skill thêm 16 rule
+   Agent thêm common/03-first-contact.md với 16 rule: tagline nói về nỗi đau của người dùng, GIF không quá 40 giây, quick start có lời hứa thời gian, tối đa ba lệnh tới kết quả đầu tiên, quick start chạy trong CI. Sau đó người dùng nhờ agent-native, agent thêm CMD-13 đến CMD-19 và một dòng cài đặt nhờ agent trong README. Số rule đi từ 220 lên 230.
+M12. Giả thuyết 'setup là alias của doctor' sai: setup còn ghi thêm 5 thứ ngoài doctor
+   Đọc code cho thấy giả thuyết sai. fgctl init chạy tuần tự fgos init, doctor --fix rồi doctor. Lệnh setup cũ gọi cùng các fix, cộng thêm năm việc doctor không làm: ghi dòng source vào rc, tạo file cấu hình, cài git hook, cài Claude hook, copy skill. Chính help của setup ghi rằng doctor --fix chỉ chạy các fix đã đăng ký. Từ đó thiết kế chuyển sang một bộ máy kiểm tra duy nhất.
+M13. Thử lỗi cố ý để kiểm script: lint bắt ID sai, check đường dẫn bắt glob không khớp
+   Lần kiểm tham chiếu đầu báo hai đường dẫn không tồn tại: một glob health*.go không khớp file nào và một file bị gọi sai tên, agent sửa cả hai. Lint lần đầu trả exit 1 vì máy thiếu shellcheck, agent nói rõ điều đó chứ không coi là đạt. Để chắc lint bắt được lỗi thật, agent chèn ID UPD-99 vào tham chiếu, lint báo unknown rule. Dải CMD-19..23 bị báo thiếu CMD-22 và CMD-23.
+M14. Subagent báo update ghi đè binary: chỉ là suy luận từ đọc code, chưa chạy thử
+   Báo cáo nói lệnh update ghi file .tar.gz tải về đè lên chính binary đang chạy thay vì giải nén. Nó cũng nói lệnh gỡ cài đặt in ra trong installer macOS trỏ tới một file không được publish. Agent ghi hai điểm này vào danh sách việc còn lại và nói rõ đây là kết luận từ đọc code, chưa chạy thử.
+M15. Hub báo 'active' khi bản mới đang chờ: ba bản gửi cho một skill, trang skill không báo
+   Agent so bản hub đang phục vụ với thư mục local: giống hệt, chỉ khác một dòng trống hub chèn sau frontmatter. Bản active là kết quả của một lần duyệt trước đó, không khớp với mã nào trong danh sách đã gửi. Trang skill trên web chỉ hiện bản active, còn bản chờ nằm riêng ở Waiting for review, nên không có cảnh báo nào.
+M16. Harness gắn cờ output subagent nhưng agent không báo lại cho người dùng
+   Phần hiển thị cho người dùng sau đó chỉ nói có bao nhiêu báo cáo đã về, rồi agent tiếp tục viết case study. Ghi chú về đoạn bị gắn cờ không được nhắc lại.
+M17. Agent không tin lời mình là đúng. Nó tự chạy lại các lệnh, đọc file thật, và khi thấy kết quả không khớp (ví dụ grep chỉ ra 2 file thay vì 3, hay skill không có trường như mình nghĩ) thì sửa lại nhận định.
+   Agent không tin lời mình là đúng. Nó tự chạy lại các lệnh, đọc file thật, và khi thấy kết quả không khớp (ví dụ grep chỉ ra 2 file thay vì 3, hay skill không có trường như mình nghĩ) thì sửa lại nhận định. Người dùng thường tin câu trả lời của AI nếu nghe có lý, hoặc chỉ hỏi lại khi thấy lỗi rõ ràng.
+M18. Quét bảo mật chặn skill vì 7 dòng 'curl | sh' nằm trong tài liệu hướng dẫn
+   Lần quét đầu báo 11 phát hiện: 7 critical rce.pipe-to-shell, 1 high persist.autostart, 3 medium privesc. Agent đọc lại hai script kiểm tra và kết luận chúng chỉ đọc file, không có hành vi nguy hiểm thật; các mục đều là chữ trong tài liệu. Người dùng chọn gửi kèm cảnh báo. Lần gửi sau quét ra đúng 11 phát hiện.
+M19. Học quy tắc 'config một cửa' từ project khác: thêm 3 rule, nâng CFG-12 lên MUST
+   Agent đọc commit và tài liệu của momentry, rồi so sáu ý với skill. Skill có các mảnh rời như thứ tự ưu tiên CFG-04, config explain UX-12, set/unset UX-14 nhưng thiếu quy tắc 'một cửa'. Agent thêm CMD-22 đến CMD-24 (một cửa, phạm vi --project và --repo, không tự bật dự án), nâng CFG-12 từ MAY lên MUST, và thêm UX-17 để giao diện gọi cùng hàm ghi. Số rule từ 212 lên 215. Commit bên momentry chưa nằm trong bản phát hành nào nên agent ghi chú đây là cách làm chưa được chứng minh.
+M20. Cổng tin cậy hub chặn --yes: lệnh '!' không có terminal nên chỉ in bản xem trước
+   Lệnh bị từ chối vì hub chỉ được khai báo trong cấu hình project, chưa tin cậy ở cấp user, nên không cho gửi token và file bằng --yes. Agent không lách qua. Khi chạy bằng tiền tố '!' trong Claude Code, lệnh chỉ in bản xem trước gồm 29 file (70,5 KB) rồi dừng, vì không có terminal để xác nhận.
+M21. Việc frontend vẫn bị chọn skill đóng gói: từ 'install' kéo sai, hub trừ điểm mà vẫn thắng
+   Agent từ chối và hỏi lại. Lần hai hub báo không có skill nào khớp. Tiêu chí not_for đã bị trừ điểm nhưng skill đóng gói vẫn thắng, vì chữ 'install' xuất hiện nhiều trong skill. Agent đề xuất thêm not_for về giao diện và các counter_examples.
+M22. Mẫu tham chiếu chọn sai ngôn ngữ: Go CLI bị trỏ sang code Rust
+   Reviewer chỉ ra một Go CLI sẽ được trỏ tới code Rust của mdview, trong khi skillstation (Go, có MCP proxy) là dự án cùng loại. GO-03 còn khuyên goreleaser dù skillstation không dùng. Agent thêm bảng 'Start from' theo loại dự án vào references.md, thêm cột ngôn ngữ, và đổi GO-03 sang pipeline của skillstation.
+M23. Bỏ bước skill_resolve khi dùng skill gửi: kết quả giống nhau nhưng quy trình bị bỏ
+   Agent đi thẳng tới skillstation-send mà không gọi skill_resolve. Kết quả trùng với dự đoán nên không ảnh hưởng gì, nhưng agent tự thừa nhận đã bỏ qua bước này và hứa lần sau gọi trước.
+M24. Push thẳng lên main: 5 test Go đỏ chỉ trên máy tôi vì test đọc cấu hình thật của người dùng
+   make check có 5 test Go trong package cli đỏ. Agent stash thay đổi để chạy baseline trên main và thấy đúng 5 lỗi đó. Gốc rễ: TestMain đổi HOME và XDG nhưng không đổi thư mục làm việc. status và doctor đi ngược cây thư mục từ cwd lên tới thư mục home, gặp cấu hình Codex và Gemini được ghi lúc connect --global cùng hôm đó, rồi coi home là một project. Đường dẫn binary đăng ký khác với binary test nên báo FAILED, làm 5 assertion đỏ. Agent đẩy thẳng lên main bằng fast-forward, không qua PR, vì lỗi đã có sẵn trên main. CI GitHub xanh vì runner không có các file cấu hình đó.
+M25. Bốn repo thành một bộ luật: bản đầu 11.900 từ, bị chê dài, cắt còn 6.400
+   Bốn subagent đọc song song bốn repo. Bản đầu gồm bốn file case study và khoảng hai chục file hướng dẫn, mỗi rule có tiêu đề kèm 2 đến 6 dòng giải thích, tổng khoảng 11.900 từ. Người dùng nói bản này dư thừa. Agent sao lưu bản cũ rồi viết lại: mỗi rule còn một dòng, bốn case study thay bằng một bảng references.md, bỏ các rule trùng. Số từ còn khoảng 6.400 (giảm 46%), số rule khoảng 190.
+M26. Đặt tên họ skill: 'cs-' dễ bị đọc thành C#, nên mô tả mở đầu phải giải nghĩa
+   Agent đề xuất giữ 'distribution' thay vì 'installation' vì skill còn gồm release, update, config và tích hợp agent. So giữa 'cs-' và 'code-standard-' (dài 36 ký tự), chọn cs-packaging-distribution, đồng thời đưa 'Code standard (cs-*)' lên đầu mô tả vì agent chọn skill qua mô tả. Đổi tên thư mục và symlink trong cùng một lượt.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

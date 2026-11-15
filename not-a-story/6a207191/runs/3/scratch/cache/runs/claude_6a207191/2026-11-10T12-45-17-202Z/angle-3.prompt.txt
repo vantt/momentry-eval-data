@@ -1,0 +1,187 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L954] USER: khoan xong chưa
+[L967] USER: Thêm skill vào hub skillstation
+[L1012] USER: kích hoạt skill-curator
+</asks>
+
+<story>
+hook: Công cụ gợi ý cờ --user không tồn tại, hub vẫn hiện bản cũ
+tension: tuong_ma_hoa_ra (Thông báo lỗi chỉ cách sửa bằng cờ --user, đẩy bản mới là xong / cờ không có, trang vẫn hiện bản cũ là active, 3 bản kẹt trong hàng chờ)
+stakes: 2/3
+# Lỗi UX từ chính công cụ của mình: gợi ý cờ --user không tồn tại, và hub 'active' không phải bản vừa gửi
+
+**Bối cảnh:** Chủ dùng skillstation để đưa skill lên hub từ xa. Agent gặp hàng loạt trục trặc khi gửi và duyệt.
+**Chuyện gì xảy ra:** Thông báo lỗi gợi ý cờ --user, nhưng connect không có cờ đó (skillstation 0.8.0 trên máy, hub 0.12.0). Sau khi kết nối toàn cục và đẩy bản gửi, trang skill vẫn hiện bản cũ là 'active' mà không báo có bản chờ duyệt. Ba bản gửi cùng một skill cùng nằm trong hàng chờ. Agent đã viết một thay đổi UI cho trang chi tiết và danh sách skill (229 test web qua), merge và push lên main, CI xanh.
+**Bài học:** Thông báo lỗi và trạng thái 'đang dùng' phải nói rõ có bản đang chờ. Nếu không, người duyệt sẽ duyệt nhầm bản cũ.
+**Artefact:** Ảnh chụp trang skill có dải 'An update to this skill is waiting for review' (che SUB-id và địa chỉ hub).
+**Góc người ngoài:** cách làm phổ biến là Dev thường hoặc làm theo gợi ý của công cụ, hoặc dừng lại hỏi người khác; ít ai tự đối chiếu trạng thái thật trên đĩa sau mỗi thao tác cấu hình; ở đây khác ở Agent không đoán 'chắc đã xong', mà đo lại bằng bằng chứng (grep file, so phiên bản, chạy doctor) và báo rõ phần nào đã có, phần nào chưa. Người đọc sẽ muốn biết vì sao cách này tránh được lỗi 'tưởng đã kết nối'.
+</story>
+
+<excerpt>
+[L1068] AGENT: Bản xem trước đúng: 29 file, 70,5 KB, gửi lên như một skill mới. Nhưng chưa có gì được gửi. Lý do là lệnh chạy bằng `!` trong Claude Code không phải terminal tương tác, nên skillstation không hỏi được anh mà chỉ in bản xem trước.
+
+Dòng gợi ý `--yes` ở cuối nhiều khả năng sẽ bị chặn y như lúc tôi thử: hub này chưa được tin cậy ở cấp user, nên `--yes` không được phép gửi token. Anh có hai cách:
+
+**Cách 1: chạy trong một terminal thật** (cửa sổ terminal riêng, ngoài Claude Code) rồi trả lời câu hỏi:
+```
+cd /home/vantt/projects/devops && skillstation skill commit ./skills/cs-packaging-distribution
+```
+
+**Cách 2: tin cậy hub ở cấp user trước, rồi gửi bằng `--yes`.** Làm được ngay tại đây:
+```
+! skillstation connect --hub http://100.93.158.78:7420 --user
+! cd /home/vantt/projects/devops && skillstation skill commit ./skills/cs-packaging-distribution --yes
+```
+Lệnh đầu cho phép mọi project trên máy này dùng hub đó.
+
+Gửi xong, lệnh sẽ in mã `SUB-…`. Anh lên máy hub và bảo agent ở đó "curate my Skillstation" để duyệt và kích hoạt, như tôi đã ghi ở trên.
+[L1073] USER: <bash-input> skillstation connect --hub http://100.93.158.78:7420 --user</bash-input>
+[L1074] USER: <bash-stdout></bash-stdout><bash-stderr>ERROR: The request cannot be accepted.
+WHY: unknown argument "--user"
+FIX: Run `skillstation connect [&lt;path&gt;] [-g|--global] [--host claude|codex|gemini] [--dry-run]` in
+     the project folder, or `skillstation connect --hub &lt;url&gt; --token-file &lt;file&gt;` for a hub on
+     another machine.
+</bash-stderr>
+[L1084] AGENT: Đây là bug của skillstation: thông báo lỗi lúc trước gợi ý `--user`, nhưng `connect` không có cờ đó. Tôi đang xem cờ đúng là gì.
+[L1085] TOOL Bash: skillstation connect --help 2>&1 | sed -n 1,45p; echo ----; jq '.mcpServers.skillstation' .mcp.json 2>/dev/null
+[L1086] RESULT: Usage: skillstation connect [<path>] [-g|--global] [--host claude|codex|gemini]... [--dry-run] [--json] | skillstation connect --hub <url> --token-file <file> [-g|--global]
+[L1093] TOOL Bash: skillstation connect --hub http://100.93.158.78:7420 --token-file /home/vantt/.config/skillstation/hub-tokens/100.93.158.78-7420 -g --dry-run 2>&1 | head -30
+[L1094] RESULT: Dry run: agent connection for your user account (all projects) to the hub at | http://100.93.158.78:7420 was not written.
+[L1102] AGENT: Bản chạy thử ổn: hub kết nối được và chấp nhận token. Nếu chạy thật, lệnh sẽ ghi vào cấu hình user của Claude Code (`~/.claude.json`, `~/.claude/settings.json`), Codex và Gemini, để mọi project đều thấy hub. Chỉ đường dẫn token file được ghi vào, không ghi token.
+
+Có một điểm đáng chú ý: **skillstation trên máy này là 0.8.0, còn hub là 0.12.0.** Gợi ý sai về cờ `--user` có thể là lỗi của bản cũ này. Tôi đề xuất cập nhật trước, rồi kết nối và gửi skill:
+
+```
+! skillstation update
+! cd /home/vantt/projects/devops && skillstation connect --global --hub http://100.93.158.78:7420 --token-file /home/vantt/.config/skillstation/hub-tokens/100.93.158.78-7420
+! cd /home/vantt/projects/devops && skillstation skill commit ./skills/cs-packaging-distribution --yes
+```
+
+Lệnh `connect --global` thay đổi cấu hình agent cho mọi project, nên tôi để anh tự chạy. Nếu anh muốn tôi chạy hộ thì cứ nói. Gửi xong sẽ có mã `SUB-…` để duyệt trên máy hub.
+
+Một ghi chú cho skill của chúng ta: lỗi này là ví dụ thật của rule CMD-10 (phần Fix phải là một lệnh dán vào chạy được). Thông báo của skillstation lại gợi ý một cờ không tồn tại. Nếu sau khi update mà lỗi vẫn còn, nên báo cho repo skillstation.
+[L1107] USER: mới kết nối hub rồi xem ok không
+[L1109] TOOL Bash: cd /tmp && skillstation --version; skillstation status 2>&1 | head -20; echo ----; skillstation doctor 2>&1 | tail -25; echo ----; jq '.mcpServers.skillstation.args' ~/.claude.json 2>/dev/null
+…
+[L1437] TOOL Write: /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml
+[L1438] RESULT: The file /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml has been updated successfully. (file state is current in your context — no need to Read it back)
+[L1441] AGENT: Anh nói đúng, tôi nhầm. Lúc nãy tôi chỉ xem thư mục trên máy này, ở đó không có `skill.yaml`. Còn bản trên hub thì có routing: khi duyệt bản gửi trước, người duyệt đã đặt đúng 9 trigger, 5 example và 5 not_for mà tôi soạn. Tôi vừa gọi `skill_get` lấy bản trên hub và thấy đủ cả ba phần đó.
+
+Phần còn thiếu đúng như anh thấy: không có `operations`, `topics`, `technologies` và `min_scope`, vì lệnh duyệt không có cờ để đặt các trường này.
+
+Tôi đã sửa bản nháp `/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/skill.yaml`. Bản mới **giữ nguyên toàn bộ routing đang có trên hub** và chỉ thêm các phần sau:
+
+| Trường | Trên hub | Thêm vào |
+|---|---|---|
+| `operations` | — | `design`, `implement`, `review` |
+| `topics` | — | packaging, distribution, installation, self-update, release-engineering, cli-ux, agent-native, supply-chain |
+| `technologies` | — | rust, go, node, posix-sh, powershell, github-actions, cosign, mcp |
+| `labels` | — | `code-standard` (gom họ cs-*) |
+| `min_scope` | — | `multi_step` |
+| `triggers` | 9 | giữ cả 9, thêm 1: `audit packaging and distribution of a CLI` |
+| `examples` | 5 | giữ nguyên |
+| `not_for` | 5 | giữ cả 5, thêm 1: `install or use an existing tool as an end user` |
+| `counter_examples` | — | `install skillstation on my laptop` · `write a Dockerfile for the API service` · `review this pull request for bugs` |
+
+Hai mục mới cuối cùng (một `not_for` và các `counter_examples`) có cùng một mục đích. Skill này có rất nhiều chữ "install", nên một yêu cầu cài tool bình thường có thể bị chuyển nhầm sang nó.
+
+Anh đồng ý thì tôi chép file vào `skills/cs-packaging-distribution/skill.yaml` rồi gửi lại lên hub, cho xem trước rồi mới chạy `--yes`. Lần gửi này tạo bản gửi mới thay cho `SUB-01M6NAX34J7THX6HNF2M584W8V`, nên trên máy hub chỉ cần duyệt bản mới nhất.
+[L1445] USER: ủa, vậy có cập nhật gì cho các mục trước đó đã có không?
+[L1453] AGENT: Không. 9 trigger, 5 example và 5 not_for đang có trên hub được giữ **nguyên văn từng chữ**. Tôi chỉ thêm vào cuối 1 trigger (`audit packaging and distribution of a CLI`) và 1 not_for (`install or use an existing tool as an end user`).
+
+Lý do tôi không sửa các mục cũ:
+- Chúng đã đúng quy tắc: mỗi trigger nêu rõ đối tượng chứ không chỉ là động từ, mỗi example là câu như người thật gõ và không chép lại trigger.
+- Bản trên hub chưa chạy lần nào, nên chưa có số liệu cho thấy mục nào chuyển nhầm skill.
+
+Cái thật sự thiếu là phần **phân loại**, tức `operations`, `topics`, `technologies`, `min_scope`, và phần **chặn chuyển nhầm**, tức `counter_examples`. Bản nháp chủ yếu bổ sung hai phần này.
+
+Nếu muốn sửa luôn mục cũ, tôi thấy hai mục đáng làm hơn cả:
+- `make --help and --json output agent-native` → `agent-native --help and --json output for a CLI`, để trigger này gắn với CLI thay vì nghe như một việc chung chung.
+- `README intro and quick start for installing a tool` dễ đụng với một skill viết tài liệu nếu sau này hub có. Có thể giữ, rồi theo dõi.
+
+Anh muốn giữ nguyên các mục cũ như bản nháp hiện tại, hay sửa luôn hai mục trên? Anh chốt xong tôi chép file vào thư mục skill rồi gửi lại lên hub.
+…
+[L1480] RESULT: {"schema_version":"1","summary":"Sent cs-packaging-distribution as SUB-01M6NB8WMEJCZHFQ8RGPR0PZ2F.","items":[],"suggested_actions":[],"warnings":[],"error":null,"skill_id":"cs-packaging-distribution","hub":"http://100.93.158.78:7420","submission_id": …[+52]
+[L1483] AGENT: Đã gửi lên hub, mã bản gửi là **`SUB-01M6NB8WMEJCZHFQ8RGPR0PZ2F`**, đang chờ duyệt. Thư mục skill giờ có thêm `skills/cs-packaging-distribution/skill.yaml` với đúng hai trigger anh duyệt:
+- `agent-native --help and --json output for a CLI`
+- `README install section and quick start for a CLI`
+
+Trên máy hub, anh chỉ cần duyệt bản mới nhất này và bỏ hai bản cũ `SUB-01M6NAX34J7THX6HNF2M584W8V` và `SUB-01M6DMW0CATJGWRG5C15R2J1D4` (nếu bản này còn trong hàng chờ). Khi duyệt, máy hub vẫn sẽ hiện 11 cảnh báo bảo mật như lần trước, đều là chữ trong tài liệu và mẫu installer, không phải lệnh skill tự chạy.
+
+**Về câu hỏi skill hỗ trợ:**
+- **`skillstation-send`**: tôi làm theo phần "Improve routing" của skill này. Example là 3–5 câu như người thật gõ; trigger nêu rõ đối tượng; not_for là việc gần giống nhưng thuộc skill khác. Tôi cũng làm theo quy trình gửi của nó: xem trước, quét bảo mật, chờ anh đồng ý rồi mới `--yes`.
+- **Quy tắc của `skill-curator`**: skill này không chạy được trên máy này, nên tôi đọc thẳng file hướng dẫn của nó trong bản clone repo skillstation để lấy quy tắc. Quy tắc giống như trong `skillstation-send`.
+- **Mã nguồn skillstation, không phải skill**: `skillstation-send` không nói `skill.yaml` có những trường nào, nên tôi đọc mã nguồn để biết. Đó là các trường `operations`, `topics`, `technologies`, `labels`, `min_scope`, `counter_examples`, và giá trị `multi_step`.
+- **`skill_get`**: tôi dùng để xem routing đang có trên hub, nhờ đó giữ nguyên các mục cũ.
+
+Có một bước tôi đã bỏ qua. Theo hướng dẫn của skillstation, tôi phải gọi `skill_resolve` khi bắt đầu việc này để hub chọn skill, nhưng tôi đã dùng thẳng `skillstation-send`. Kết quả không đổi vì nó đúng là skill dành cho việc này, nhưng lần sau tôi sẽ gọi `skill_resolve` trước.
+
+Duyệt xong anh báo tôi. Tôi sẽ gọi `skill_resolve` với 5 câu example và 3 câu counter_example để kiểm tra mỗi câu ra đúng skill.
+[L1489] USER: sao chưa bấm duyệt mà hub đã để là active nhỉ
+[L1500] TOOL Bash: H=/home/vantt/.local/state/skillstation/remote/100.93.158.78-7420-0c3a98e8be/cs-packaging-distribution/26610960625bc3a4a75c9d63c6ea9d8f40b2dd71c5f884b87547b8cdd0779fd6; diff -rq "$H" /home/vantt/projects/devops/skills/cs-packaging-distribution; diff "$H/SKILL.md" /home/vantt/projects/devops/skills/c …[+78]
+[L1501] RESULT: Files /home/vantt/.local/state/skillstation/remote/100.93.158.78-7420-0c3a98e8be/cs-packaging-distribution/26610960625bc3a4a75c9d63c6ea9d8f40b2dd71c5f884b87547b8cdd0779fd6/SKILL.md and /home/vantt/projects/devops/skills/cs-packaging-distribution/SKIL …[+214]
+[L1503] AGENT: Bản đang **active** trên hub không phải bản vừa gửi. Đó là bản của một lần duyệt trước đó.
+
+Tôi so bản hub đang phục vụ (bản mà `skill_get` tải về máy này) với thư mục skill ở đây:
+- **Nội dung giống hệt.** Chỉ khác một dòng trống mà hub tự chèn sau phần frontmatter của `SKILL.md`.
+- **Routing trên hub đúng là bản tôi soạn**, gồm 9 trigger, 5 example và 5 not_for. Lúc trước tôi đưa routing này kèm lệnh `skillstation skill review SUB-01M6DMW0CATJGWRG5C15R2J1D4 --trigger …`.
+- **Không có `skill.yaml`**, vì tôi mới tạo file này cho lần gửi gần nhất.
+
+Vậy là đã có người duyệt một bản gửi trước trên máy hub, kèm routing đó. Rất có thể là `SUB-01M6DMW0…`, duyệt bằng chính lệnh tôi đưa, có thể qua curator hoặc qua trang web. Hub tạo skill mới bằng một lần chạy duyệt + approve + activate, nên skill lên active ngay. Từ máy này tôi không xem được lịch sử duyệt, nên không biết chắc ai duyệt và duyệt bản nào. Anh xem trên máy hub bằng `skillstation skill show cs-packaging-distribution --verbose`, hoặc ở mục lịch sử trên trang web.
+
+Bản mới `SUB-01M6NB8WMEJCZHFQ8RGPR0PZ2F` vẫn **đang chờ duyệt**. Trước khi bản này được duyệt, hub tiếp tục dùng bản active hiện tại, chưa có operations hay topics.
+
+Thêm một điều: thư mục skill ở đây vẫn giữ thời gian sửa đổi là ngày 2/11. Vì vậy nếu lúc trước anh "vừa chỉnh xong" ở một chỗ khác thì các chỉnh sửa đó chưa nằm trong bản gửi. Ba bản gửi đều có cùng nội dung hướng dẫn; bản cuối chỉ khác là có thêm `skill.yaml`.
+[L1507] USER: à, ui của web, tại skill khong có thông báo là skill đang cần duyệt lại, chỉ vào mục wait for review mới có.
+[L1515] AGENT: Đúng vậy. Trên hub, bản gửi chờ duyệt (`SUB-…`) và skill đang active là hai thứ tách riêng. Bản gửi chỉ gắn vào skill khi được áp dụng lúc duyệt. Vì thế trang của skill vẫn hiện bản cũ là active và không cho biết đang có bản thay thế chờ duyệt. Người xem phải tự vào **Waiting for review** mới thấy.
+
+Đây là một thiếu sót về UX. Người mở trang skill sẽ tưởng bản đang chạy là mới nhất, và dễ quên duyệt bản mới. Ở đây có ba bản gửi cho cùng một skill, nên càng dễ duyệt nhầm bản cũ.
+
+Tôi đề xuất sửa phía skillstation như sau:
+- **Trên trang skill:** hiện một dải thông báo, ví dụ "1 update waiting for review (SUB-…, sent 14:53 from <máy>)", kèm nút đi thẳng tới trang duyệt.
+- **Trong danh sách skill:** thêm nhãn "update pending" cạnh skill có bản chờ duyệt.
+- **Khi có nhiều bản cùng chờ:** gom chúng lại, chỉ đề xuất bản mới nhất và cho bỏ các bản cũ chỉ bằng một thao tác.
+- **Trong CLI:** `skillstation status` và `skill show <id>` cũng nên hiện dòng "update waiting for review".
+
+Tôi chưa đọc mã web UI của skillstation, nên chưa biết chắc hiện tại có chỗ nào khác đã hiện thông tin này hay không. Anh muốn tôi soạn issue cho `vantt/skillstation` gồm ý này và lỗi gợi ý cờ `--user` lúc trước không? Tôi sẽ đưa nội dung cho anh xem trước rồi mới tạo.
+[L1520] USER: ok.  dùng `/ak:frontend-development` skill để làm. còn việc phía trên, có vẻ skillstation-send không có năng lực để quản lý routing/metadata hay sao á. lúc kêu sửa phải nhắc tới mấy lần và không hiển thị được metadata hiện tại.
+[L1525] TOOL Skill: {"skill":"ak:frontend-development","args":"In the vantt/skillstation web UI: on a skill's page and in the skills list, show that an update for that skill is waiting for review (pending SUB-… submissions), with a link to review it; group several pending submissions for the same skill and propose the  …[+9]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

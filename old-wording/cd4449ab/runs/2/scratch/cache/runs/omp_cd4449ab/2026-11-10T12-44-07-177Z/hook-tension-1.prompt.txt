@@ -1,0 +1,52 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Rebase 11 commit lên main mới: hash đổi nhưng không xung đột
+   Rebase xong không có xung đột. Tip của branch đổi từ 6b95b7a sang b01eaa3 trên đầu main b32d678. make check xanh sau rebase với 24 package ok. Lead đã dùng merge-tree để dự đoán trước là không có xung đột.
+M2. Migration v3 sang v4: block scalar YAML sai làm receipt WAL không đọc được
+   Python yaml parse được chuỗi, nhưng decoder yaml.v3 của Go báo 'did not find expected key' ở dòng 1. Nguyên nhân là chỉ báo thụt lề |4 sai trong block scalar. Đổi thành | thì decode thành công và phần migration được tiếp tục.
+M3. Báo cáo nói đã xong, lead bắt được key repository còn sót
+   Agent kiểm lại và thấy nhánh ghi repository vẫn còn, cùng một hàm provDoc không dùng. Sửa để ghi repo, xoá code chết và thêm test kiểm tra có repo, không có repository và content_digest. Test trust verdict vẫn giữ nguyên sau sửa.
+M4. Dry run trên bản sao hub thật: thư mục .meta bị coi như entity canonical
+   Lead đánh dấu Phase 4 chưa mergeable. Nguyên nhân là trong workspace v1 và v2, thư mục .meta vẫn là metadata của hub nhưng validator đọc nó như entity canonical. Agent sửa để đọc .skillhub/schema-version, nếu nhỏ hơn 3 thì loại .meta khỏi canonical và catalog. Sau đó schema-version chạy từ 1 lên 3 và validate pass.
+M5. Commit do agent tạo mang tên tác giả khác với chủ repo
+   Một số commit, gồm checkpoint Phase 4 lần hai, migration v4, và commit xoá revision package, có tác giả là tên model thay vì chủ repo. Lỗi này chỉ lộ ra khi đọc git log có tác giả. Nguyên nhân chưa được kiểm trong phiên.
+M6. Một hậu tố .git làm hỏng việc gộp nguồn; key repo và repository lệch nhau
+   Test migration báo 'invalid source entry: unknown field repo'. Sau khi sửa key, việc gộp nguồn vẫn không khớp: debug in ra matches=false cho hai URL chỉ khác đuôi .git. Hàm chuẩn hoá bỏ .git và dấu / cuối rồi đưa host về chữ thường, sau đó hai URL cho cùng kết quả và nguồn được gộp thành một với hai role.
+M7. Gỡ 17 tool MCP cũ, test ranh giới curator buộc tool phải đăng ký đủ
+   Agent viết test ranh giới trước, lúc đó đỏ. Sau đó xoá curation_tools.go, viết lại source_tools và insight_tools, thêm source_list. Diff gom lại là 19 file, thêm 350 dòng và xoá 1650 dòng. Nhiều test MCP đỏ trong lúc làm và phải cập nhật thêm server_test.
+M8. Test source_import v3: fixture repo file:// phải khớp kiểu Revision và Record
+   Lỗi xuất hiện lần lượt: URL phải có dạng file://, Revision phải đúng cấu trúc, Record thiếu trường. Có lúc make check đỏ ở một test không liên quan, nhưng TestGitRevisionAt lại xanh khi chạy riêng. Sau khi sửa, các test TestSourceImport xanh.
+M9. make check đỏ nhiều lần vì gofmt và lint, phải chạy make fmt trước
+   Mỗi lần thêm file hoặc sửa struct, gofmt lại không được chạy. Phần lớn lần đỏ ở fmt-check, sửa bằng make fmt rồi mới sang lint. Lint chạy với --new-from-rev=origin/main nên chỉ bắt lỗi trong code mới. Tổng cộng khoảng sáu lần fmt-check đỏ.
+M10. Checkpoint: agent dừng chờ lead merge rồi mới làm Phase 3
+   Có ba vòng review lớn cho Phase 4, mỗi vòng agent sửa rồi báo hash và dừng. Lead merge fast-forward sau checkpoint đã kiểm. Sau đó Phase 3 được chia thành ba commit a, b, c, mỗi commit có báo cáo riêng.
+M11. Đọc file distill 1184 dòng của hub thật: 77 hash rút gọn cần nở ra đầy đủ
+   Đếm được 77 mục commit rút gọn. Mỗi hash rút gọn phải nở ra bằng git rev-parse trên mirror, ví dụ một hash ngắn ra đúng 40 ký tự. Phân loại cho thấy 39 lesson đang ở trạng thái candidate và 3 ở trạng thái planned. Độ phủ của một nguồn là 15 mục đã đọc và 7 chưa đọc, nguồn kia là 6 và 4.
+M12. Test xanh nhưng description thành '>-' và thứ tự tên bị đảo
+   Một skill dùng block scalar YAML trong frontmatter, parser đọc từng dòng nên description thành đúng chuỗi '>-'. Resolver dùng description để định tuyến, nên đây là regression thật. Thứ tự tên cũng sai vì H1 đè lên name trong meta. Sau khi dùng parser YAML thật và đặt lại thứ tự ưu tiên, diff trước sau của name khớp nhau.
+M13. Đổi định dạng một file kéo theo test đỏ ở 7 package và cờ -update golden
+   Agent sửa fixture từng package. Kết quả cuối go test ./... xanh ở 24 package. Ở web, golden được tạo lại bằng cờ -update. Manifest CLI đổi experiment_id để khớp replay. Lead nhắc giữ fixture ở mức tối thiểu vì worktree D cũng có thể sửa cùng file.
+M14. Migration phải fail closed: lỗi đọc file bị nuốt trong vòng WalkDir
+   Grep dấu gán bỏ qua lỗi tìm thấy một chỗ nuốt lỗi WalkDir. Agent viết lại v4.go để trả lỗi có tên file và thêm test cho một file insight bị hỏng. Test đầu tiên vẫn đỏ, và phiên dừng khi test đang được chạy lại.
+M15. Xoá revision package và schema: test validation đỏ hơn 10 lần
+   Agent git rm sáu schema và hai file revision package. ValidateWorkspace vẫn đọc runtime packages nên test đỏ nhiều lần, agent sửa dần từng chỗ. Một test tombstone đòi hỏi hành vi cũ, nên git log -S được dùng để tìm nguồn gốc của nó. Diff cuối so với main: validation thêm 18 dòng và xoá 51 dòng.
+M16. Quy tắc pre-commit chặn commit khi worktree khác để file dở trên main
+   Lần kiểm tra đầu, git status trên main hiện file telemetry đã sửa, nên agent dừng và chưa commit. Lead nới quy tắc: chỉ dừng khi file mình sở hữu xuất hiện trong danh sách, còn file của D thì bỏ qua. Sau đó main còn hai file của D, nhưng commit vẫn tiếp tục được.
+M17. Công cụ sửa file từ chối khoảng 15 lần vì số dòng không khớp
+   Đa số lỗi là dòng không hiển thị hoặc neo không khớp. Thông báo gợi ý đọc lại đúng vùng rồi gửi lại. Mỗi lỗi tốn thêm một lượt đọc, và cả phiên có khoảng 15 lần như vậy.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

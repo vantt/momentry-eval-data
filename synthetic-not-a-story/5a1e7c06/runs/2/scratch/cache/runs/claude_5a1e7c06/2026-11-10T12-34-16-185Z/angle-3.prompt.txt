@@ -1,0 +1,76 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Chào bạn. Còn 9 ngày nữa là đến đêm nhạc Gió Mùa (15/11). Hôm nay mình cần xếp ca tình nguyện viên và gộp tech rider của hai ban. File ở thư mục này. Bắt đầu với tình nguyện viên nhé: tinh-nguyen-vien.csv có 18 bạn, cần chia 3 ca: dựng (14h–18h), soát vé (18h–20h30), dọn (22h–24h).
+[L9] USER: Toang rồi bạn ơi. Chị Ngân bên sân thượng Lầu Bảy vừa gọi: đội phòng cháy chữa cháy kiểm tra hôm qua, đình chỉ sân thượng cho đến khi lắp thêm lối thoát hiểm, ít nhất một tháng. Chị ấy giới thiệu hai chỗ thay, nhưng mình phải trả lời trước 17h hôm nay không thì người khác lấy. Mình đã bán 300 vé.
+</asks>
+
+<story>
+hook: Sân thượng bị đình chỉ 9 ngày trước đêm nhạc, 300 vé đã bán
+tension: gap_ma_phai_chon (Địa điểm C đủ 350 chỗ nhưng đắt thêm 22 triệu, dự phòng chỉ còn 9 triệu / Địa điểm B rẻ, có sân khấu sẵn nhưng chỉ 220 chỗ, 80 vé không có chỗ)
+stakes: 3/3
+# Sân thượng bị đình chỉ 9 ngày trước đêm nhạc: 300 vé đã bán, chốt địa điểm trong buổi chiều
+
+**Bối cảnh:** Đội PCCC đình chỉ địa điểm đã nhận cọc, còn 9 ngày trước đêm diễn và đã bán 300 vé. Chủ sự kiện phải trả lời hai địa điểm thay thế trước 17h cùng ngày.
+**Chuyện gì xảy ra:** Địa điểm B có 220 chỗ đứng, cùng giá, có sân khấu nhỏ sẵn. Địa điểm C có 350 chỗ nhưng tổng chi là 37 tr, đắt hơn 22 tr sau khi thuê sân khấu riêng. Ngân sách dự phòng chỉ còn 9 tr, nên C gần như không khả thi. Chọn B nghĩa là 80 vé không có chỗ.
+**Bài học:** Khi phải đổi địa điểm gấp, quy mọi lựa chọn về một con số là ngân sách dự phòng còn lại, rồi so sánh; đừng so cảm tính về không khí hay vị trí.
+**Artefact:** Bảng so sánh hai địa điểm (sức chứa, chi phí, đi lại, không khí). Che tên địa điểm, tên người liên hệ và số điện thoại.
+</story>
+
+<excerpt>
+[L7] RESULT: File created successfully at: /home/quan/Documents/dem-nhac-gio-mua/ca-tnv.csv
+[L8] AGENT: Đã ghi ca-tnv.csv. Bạn Sơn để dự phòng ca soát vé.
+[L9] USER: Toang rồi bạn ơi. Chị Ngân bên sân thượng Lầu Bảy vừa gọi: đội phòng cháy chữa cháy kiểm tra hôm qua, đình chỉ sân thượng cho đến khi lắp thêm lối thoát hiểm, ít nhất một tháng. Chị ấy giới thiệu hai chỗ thay, nhưng mình phải trả lời trước 17h hôm nay không thì người khác lấy. Mình đã bán 300 vé.
+[L10] AGENT: Mình giúp bạn chốt nhanh. Bạn gửi mình thông tin hai chỗ (sức chứa, giá, ngày trống, khoảng cách) là mình so ngay.
+[L11] USER: 1. Kho Gạo, quận 4: trong nhà, 220 chỗ đứng, giá 15 triệu (bằng giá Lầu Bảy), trống 15/11, có sẵn sân khấu nhỏ. 2. Nhà văn hoá Thanh Niên: 350 chỗ, 31 triệu, xa trung tâm, trống 15/11, phải thuê sân khấu riêng 6 triệu.
+[L12] AGENT: So nhanh:
+
+| | Kho Gạo | NVH Thanh Niên |
+|---|---|---|
+| Sức chứa | 220 (thiếu 80 so với vé đã bán) | 350 (đủ) |
+| Chi phí | 15 tr | 31 + 6 = 37 tr (thêm 22 tr) |
+| Đi lại | trung tâm | xa, khán giả phải đổi kế hoạch |
+| Không khí | gần gũi, hợp nhạc mộc | hội trường, rộng và lạnh |
+
+Ngân sách dự phòng còn bao nhiêu? Nếu dưới 22 triệu thì NVH Thanh Niên gần như không khả thi. Với Kho Gạo, bài toán là 80 vé dư: hoàn tiền, hoặc mời họ sang buổi sau.
+[L13] USER: Dự phòng còn 9 triệu thôi. Vậy là Kho Gạo. Còn 80 vé thì sao?
+[L14] AGENT: Cách gọn nhất trong ngày hôm nay: chốt Kho Gạo ngay để giữ chỗ, rồi xử lý 80 vé sau. Với 80 vé, đề xuất: hoàn tiền 100% cho 80 người mua sau cùng, kèm mã ưu tiên mua vé buổi Gió Mùa tiếp theo. Có thể hỏi trước ai muốn tự nguyện nhận hoàn tiền, thường sẽ có 20–30 người không đi được.
+
+Nếu bạn đồng ý, mình soạn tin nhắn trả lời chị Ngân và email cho người mua vé.
+[L15] USER: Chốt Kho Gạo. Mình gọi chị Ngân luôn. Bạn soạn email cho người mua vé, hỏi tự nguyện trước, hạn trả lời 48 tiếng.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

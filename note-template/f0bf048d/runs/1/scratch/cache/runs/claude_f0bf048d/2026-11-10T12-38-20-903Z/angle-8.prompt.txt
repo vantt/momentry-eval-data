@@ -1,0 +1,103 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L1174] USER: vậy cần phải kết hợp giữa việc setup 1 workspace và gắn các gói nghiệp vụ vào space đó. đúng không
+[L1183] USER: đồng ý, làm manifest luôn với finejapan
+[L1282] USER: anh muốn đóng gói kỹ tất cả các vai của marketing cho anh. tuy nhiên cần làm trước seo, social, content và ads
+</asks>
+
+<story>
+hook: Plan bật DataForSEO cho khách chưa mua, sửa đúng một dòng
+tension: nho_ma_to (Một nhánh xử lý workspace bị thiếu / Server trả phí được tạo cho khách chưa mua)
+stakes: 2/3
+# DataForSEO: kiểm giá thay vì trả lời theo trí nhớ, và plan bật add-on cho khách chưa mua
+
+**Bối cảnh:** Bộ SEO cần dữ liệu từ khoá. Hai lựa chọn: serper.dev và DataForSEO.
+**Chuyện gì xảy ra:** Agent kiểm lại giá của serper (2.500 lượt miễn phí, khoảng 1 USD cho 1.000 lượt, không có search volume) và của DataForSEO (nạp tối thiểu 50 USD, không hết hạn, SERP từ 0,0006 USD). Ước tính một khách vừa và nhỏ khoảng 2 đến 5 USD mỗi tháng. Đề xuất đổi: bỏ serper, chỉ dùng DataForSEO. Trong lúc làm, plan tạo server DataForSEO cho khách chưa mua, vì nhánh xử lý workspace chưa tồn tại không lọc add-on. Sửa một dòng và kiểm đủ ba trường hợp.
+**Bài học:** Khi số liệu đổi, đổi đề xuất kèm lý do. Khi plan có nhánh riêng cho trạng thái chưa tồn tại, phải test từng nhánh.
+**Artefact:** Bảng giá ước tính theo tác vụ, ghi rõ là ước tính.
+</story>
+
+<excerpt>
+[L1370] TOOL AskUserQuestion: {"questions":[{"question":"Bộ Social đăng bài và hẹn giờ qua công cụ nào?","header":"Social tool","multiSelect":false,"options":[{"label":"Buffer (Recommended)","description":"MCP do Buffer host, dùng app đã được Meta/TikTok duyệt sẵn nên khỏi qua App Review. Có số liệu bài đăng. Có gói miễn phí (gi …[+2050]
+[L1373] RESULT: The user answered: "Bộ Social đăng bài và hẹn giờ qua công cụ nào?"="tự chế extension automation qua browser được không.", "Có dùng DataForSEO (dữ liệu từ khoá, SERP, backlink, crawl) cho bộ SEO không? Trả theo lượt, nạp tối thiểu $50."="ủa serp.dev  …[+338]
+[L1376] AGENT: Bạn có hỏi thêm hai điểm. Tôi kiểm thông tin về serper trước khi trả lời, để không trả lời theo trí nhớ:
+[L1377] TOOL WebSearch: {"query":"serper.dev pricing free queries MCP server official","mode":"standard"}
+[L1378] TOOL Bash: for p in serper-search-scrape-mcp-server @marcopesani/mcp-server-serper serper-mcp-server; do npm view $p name version time.modified repository.url 2>/dev/null | head -4; echo; done; curl -s https://pypi.org/pypi/serper-mcp-server/json | python3 -c 'import json,sys;d=json.load(sys.stdin);print(d["in …[+73]
+…
+[L1409] RESULT: **Pricing:** Backlinks API endpoints (`/backlinks/*`) are billed per task and per row, in Live mode only: | - **Per task:** $0.024
+[L1412] RESULT: The page doesn't give the Google Organic SERP rates you're asking for. It doesn't list Standard queue, Priority, or Live prices, and it doesn't say whether Google's pricing is per 10 or per 100 results. | The only Google figure is a summary card for  …[+381]
+[L1414] AGENT: DataForSEO **không có phí thuê bao**: nạp trước tối thiểu **$50**, tiền **không hết hạn**, và tài khoản mới được tặng $1 dùng thử. Tôi kiểm trên trang giá của họ ngày 2026-10-30:
+
+| Dịch vụ | Giá | Dùng cho |
+|---|---|---|
+| SERP API (kết quả Google) | từ **$0.0006** / một lượt tìm (chế độ xếp hàng; chế độ trả ngay đắt hơn) | Theo dõi thứ hạng, xem đối thủ trên SERP |
+| Keywords Data (search volume từ Google Ads) | từ **$0.0012** / task | Search volume của từ khoá |
+| DataForSEO Labs | **$0.012 / task + $0.00012 / dòng** | Gợi ý từ khoá, độ khó, từ khoá đối thủ đang lên top |
+| Backlinks | **$0.024 / task + $0.000036 / dòng** (vd 1.000 backlink ≈ $0.06) | Phân tích backlink |
+| On-Page (crawl) | từ **$0.00015** / trang | Audit kỹ thuật toàn site |
+
+**Ước tính cho một khách mỗi tháng** (website vừa và nhỏ). Đây là tôi tự tính, không phải số của DataForSEO:
+
+| Việc | Lượng dùng | Chi phí |
+|---|---|---|
+| Theo dõi 100 từ khoá, mỗi tuần một lần | 400 lượt SERP | ~$0.24 |
+| Nghiên cứu từ khoá | 20 task Labs, mỗi task ~500 dòng | ~$1.4 |
+| Search volume | vài task | < $0.1 |
+| Crawl 500 trang | 500 trang | ~$0.08 |
+| Backlink, của khách và 3 đối thủ | ~10 task | ~$0.6 |
+| **Tổng** | | **khoảng $2–5 mỗi khách mỗi tháng** |
+
+Với mức đó, $50 nạp một lần dùng được cho khoảng 10 khách trong vài tháng.
+
+**So với serper.dev:** SERP của DataForSEO **còn rẻ hơn** serper ($0.0006 so với khoảng $0.001 một lượt), lại có thêm search volume, độ khó, backlink và crawl, và có **MCP chính thức** (`dataforseo-mcp-server` 3.1.3). Nên tôi đổi đề xuất: **chỉ dùng DataForSEO**, bỏ serper. Keyword Planner qua MCC vẫn giữ làm nguồn search volume miễn phí dự phòng.
+
+Có một điều tôi chưa xác nhận được: trước đây Backlinks API từng yêu cầu cam kết tối thiểu theo tháng. Trang giá hiện tại không nói gì về việc này. Kiểm lại trong tài khoản trước khi bật phần backlink là xong.
+
+Nếu bạn đồng ý dùng DataForSEO thì tạo tài khoản và nạp $50. Gửi tôi **login và password API**, xem ở mục *API Access* trong …[+84]
+[L1439] USER: hãy support từ miễn phí đến trả tiền (dataforseo)
+[L1460] TOOL Bash: cd ~/project/fgOPC/multica && git status --short && grep -n "optional\|missing\|renderMcp\|function filler\|tier" tools/opc.mjs | head -60 && cat packages/opc-seo-analytics/.fgopc.yaml && ls packages/opc-seo-analytics/agents/*
+…
+[L1597] AGENT: Key PageSpeed đã chạy được. Chạy thử `client plan` cho finejapan, lần lượt ở mức miễn phí và có add-on:
+[L1598] TOOL Bash: cd ~/project/fgOPC/multica && node tools/opc.mjs client plan ~/opc-clients/finejapan 2>&1 | grep -v "^+ \(skill\|agent\|member\|squad\|project\|routine\|workflow\|status\)" | head -30; echo ====; S=/tmp/claude-1000/-opt-AICoworker/f0bf048d-0996-462f-94f4-0d8f367f342c/scratchpad/clients; rm -rf $S; m …[+370]
+[L1601] RESULT (exit 1): --- members | plan: 0 invitation(s) | (eval):1: === not found
+[L1603] AGENT: Còn một lỗi: khách chưa mua mà plan vẫn tạo server `dataforseo`. Khi workspace chưa tồn tại, plan chạy một nhánh mã khác. Tôi tìm nhánh đó:
+[L1604] TOOL Bash: cd ~/project/fgOPC/multica && grep -n "does not exist yet" -B3 -A25 tools/opc.mjs | grep -n "mcp"
+[L1607] RESULT: 22:631- await this.mcpServers(); | Shell cwd was reset to /opt/AICoworker
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

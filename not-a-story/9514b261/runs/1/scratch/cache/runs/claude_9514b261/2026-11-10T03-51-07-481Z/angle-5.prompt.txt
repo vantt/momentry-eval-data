@@ -1,0 +1,135 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) là tầng nền tảng để xây và chạy các ứng dụng agent, gồm hạ tầng, skill và tự động hoá nằm dưới mọi app agent, để lập trình viên tạo agent mới thay vì làm lại từ đầu. Hiện đang ở bản alpha v0.2.0-rc.2 cho Linux x86_64 (glibc 2.35 trở lên) và Windows 10 trở lên x86_64; macOS và Windows ARM chưa được hỗ trợ. Cài bằng một file nhị phân `fgctl` và chạy trong một kho git có sẵn, không cần clone, npm hay Rust toolchain.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L551] USER: dùng ak-research để nghiên cứu chi tiết rõ ràng lại về component này và lưu vào 1 report, sau đó link report này trở lại phần chúng ta đang thảo luận.
+[L561] USER: Base directory for this skill: /home/vantt/projects/forgent/.claude/skills/ak-research This is a generated thin wrapper (tsk-1qi) -- do not edit directly, edit the source instead. The real skill content lives at `../../../.agents/skills/ak-research/SKILL.md`, an assembled projection whose generated header identifies its canonical source. Read that file and follow it directly.
+[L917] USER: bật một agent để tìm hiểu plans plans/260925-documentation-authority-unification/, docs/platform/proposals/documentation-system-unification.md; đọc kỹ 2 plans và tìm xem trong kế hoạch có dự định xây dựng các component giúp gom nhóm và giảm thiểu sự trùng lặp như canonical-decision-projection-component không?
+</asks>
+
+<story>
+hook: Kế hoạch ghi trên board, nhưng hai đầu nhánh chưa từng được push
+tension: tuong_ma_hoa_ra (Board ghi kế hoạch với manifest 331 file / Nhánh chưa push nên không đọc được, agent không đoán)
+stakes: 2/3
+# Kế hoạch 260925 nằm trên nhánh chưa push: agent không đọc được manifest 331 file
+
+**Bối cảnh:** Plan hợp nhất thẩm quyền tài liệu có phase file chỉ tồn tại trên nhánh remote, không nằm trong main checkout.
+**Chuyện gì xảy ra:** Agent dùng git show trên nhánh remote để đọc phase file, nhưng đầu nhánh chỉ có commit ngày 2026-10-13, và hai đầu nhánh được ghi trong board chưa được push. Vì vậy phase 7, phase 8 bước 3 đến 5 và manifest 331 file không đọc được. Agent báo rõ điều này và không suy đoán nội dung.
+**Bài học:** Plan nằm trên nhánh chưa push là plan không ai khác thấy được. Kiểm xem đầu nhánh có tồn tại trên remote trước khi phân tích.
+**Artefact:** Không cần ảnh.
+</story>
+
+<excerpt>
+[L942] TOOL Agent: Research doc-plan dedup components
+[L943] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: a25f87d3c133a5876 (internal ID - do not mention to user. Use SendMessa …[+86]
+[L957] AGENT: Em đã bật agent `researcher` chạy nền. Agent chỉ đọc, và chỉ được ghi một file báo cáo tại `plans/reports/research-261021-1707-doc-plan-dedup-components.md`.
+
+Em chạy `fgos dispatch decide` trước, kết quả là `in-process`. Agent sẽ đọc:
+- toàn bộ `plan.md` (704 dòng) và bản đề xuất (1129 dòng);
+- ba file review độc lập;
+- các phase file chỉ có trên nhánh remote `plan/260925-documentation-authority-unification`, đọc bằng `git show` vì main checkout không có chúng.
+
+Agent sẽ trả lời năm điểm:
+- **Danh sách component** gom nhóm và khử trùng lặp trong kế hoạch, mỗi cái kèm chủ, phase và trạng thái mã thực tế.
+- **Đối chiếu** từng component với `tsk-1lv`: trùng, chồng một phần, bổ sung hay độc lập.
+- **Tập quyết định hiệu lực:** ai tính nó và ở phase nào.
+- **Chủ của việc giao luật tới agent**, và thứ tự với Phase 9.
+- **Điểm va chạm** nếu lane RULE xây component mới trong lúc cutover chạy.
+
+Báo cáo cũng sẽ tách phần đã kiểm bằng mã khỏi phần chỉ suy luận. Khi agent xong em sẽ đọc báo cáo, kiểm lại các điểm quan trọng rồi báo anh. Em chưa có kết quả nào nên chưa kết luận gì.
+[L966] USER: component trong plan này tên gì và nó đã có mặt trong map của component authority/boundary chưa plans/reports/research-261021-1643-canonical-decision-projection-component.md
+[L969] AGENT: Em tra nhanh hai file bản đồ ranh giới trong repo. Đây chỉ là tra cứu hẹp, không trùng phần agent đang đọc.
+…
+[L1018] AGENT: Agent đã xong. Trước khi báo, em kiểm lại hai điểm quan trọng nhất của kết quả.
+[L1019] TOOL Bash: ls -la plans/reports/research-261021-1707-doc-plan-dedup-components.md | awk '{print $5" bytes"}'; wc -l plans/reports/research-261021-1707-doc-plan-dedup-components.md; echo "--RUL102 hai nơi:"; sed -n 1135p docs/specs/runner.md | cut -c1-200; sed -n 362p docs/specs/distribution.md | cut -c1-200; e …[+410]
+[L1024] RESULT: 33728 bytes | 170 plans/reports/research-261021-1707-doc-plan-dedup-components.md
+[L1036] TOOL Bash: sed -n 1805,1815p src/cli/command-registry.mjs | cut -c1-220; fgos doc --help </dev/null 2>&1 | head -12 | cut -c1-160
+[L1041] RESULT: }, | {
+[L1048] AGENT: Agent đã xong. Em đã kiểm lại các điểm chính trên main: báo cáo có thật (170 dòng), `docs/platform/` không có registry claim, và nhánh remote vẫn ở `168a27c6c`. Báo cáo ở `plans/reports/research-261021-1707-doc-plan-dedup-components.md`.
+
+## Trả lời câu hỏi: kế hoạch có xây component kiểu canonical-decision-projection không
+
+**Không có component runtime nào trong kế hoạch.** Có hai lớp khác nhau:
+
+- **Kế hoạch 260925 (H1):** xây bộ công cụ di trú dùng một lần, chạy bằng script, để khử trùng và giữ một chủ cho mỗi claim trong lúc cutover. Toàn bộ chỉ có trên nhánh `168a27c6c`, chưa merge.
+- **Proposal (H2, H3):** Knowledge and Documentation Engine, Effective Decision Reducer, claim registry, Agent Context Engine. Đây là "preserved future", bị cố ý hoãn, không có mã ở đâu, kể cả trên nhánh.
+
+Vì vậy phần em nói ở lượt trước ("component trong kế hoạch là H2 và H3") cần sửa lại: H2 và H3 nằm trong proposal, không nằm trong kế hoạch thi công.
+
+## Quan hệ với tsk-1lv
+
+**Bổ sung, ít chồng, không thay thế.** Kế hoạch không nhắc `--relation`, `authoritative_for` hay bốn cửa retrospective. Nó chạm tsk-1lv ở ba chỗ: giữ `docs/decisions/index.md` làm bản chiếu sinh ra, dời chỗ ở của phần "Lịch sử quyết định" sang `docs/platform/<area>/decisions/`, và sửa các chỗ đọc đường dẫn cũ.
+
+**Hai chỗ chồng thật:**
+1. Helper `cross-area-claims` (nháp Phase 7) và `doc-near-duplicate`/`authoritative-match` cùng giải bài "hai tài liệu nhận cùng một chủ đề". Chúng chạy trên hai corpus khác nhau: `Canonical for` ở `docs/platform` và `authoritative_for` ở tài liệu người dùng cuối.
+2. Proposal §4.7.3 muốn gỡ component Retrospective, trong khi bốn cửa kiểm của tsk-1lv-5 nằm bên trong nó. Việc này không thuộc phase nào của kế hoạch.
+
+**Em thêm một điểm:** `fgos doc` đã có trên main (quản lý doc slot, gồm `supersede` và `retire`). Nghĩa là repo đã có hai cơ chế thay thế riêng cho quyết định và cho tài liệu. `fgos doc check` của Phase 10 là subcommand khác, chưa tồn tại.
+
+## Hai câu hỏi còn lại
+
+- ** …[+1833]
+[L1059] USER: plan này cuối cùng có xây dựng tool hay hệ thống gì không plan/260925-documentation-authority-unification
+[L1068] AGENT: Em đọc phần danh sách công cụ trong báo cáo của agent để trả lời đúng, không dựa vào trí nhớ.
+[L1069] TOOL Read: /home/vantt/projects/forgent/plans/reports/research-261021-1707-doc-plan-dedup-components.md
+[L1070] RESULT: 1 # Nghiên cứu: kế hoạch hợp nhất thẩm quyền tài liệu 260925 có component gom nhóm, khử trùng như canonical-decision-projection không | 2
+[L1082] AGENT: Có, nhưng gần như toàn bộ là **công cụ di trú dùng một lần**, không phải hệ thống chạy lâu dài. Em trả lời theo báo cáo của agent, đã đọc lại phần bảng và em kiểm bằng mã trên main (không thấy mã của các công cụ này).
+
+## Plan 260925 xây gì (13 mục, phase 1–10)
+
+Toàn bộ là script ở `scripts/` phục vụ việc chuyển corpus tài liệu nền tảng sang `docs/platform/**`:
+
+| Nhóm | Xây gì | Mục đích |
+|---|---|---|
+| Điều hướng | Switchboard (một tuyến đọc cho từng area) | Biết đọc bản cũ hay bản mới trong lúc chuyển |
+| Chặn lúc ghi | Legacy-docs ratchet (`check-legacy-docs-ratchet.mjs`, 745 dòng) | Chặn file mới hoặc sửa chưa ghi sổ dưới `docs/specs`, `docs/architect` |
+| Khử trùng và một chủ | Ledger claim (`generate-doc-inventory.mjs`, 1973 dòng) và cổng bảo toàn (`check-doc-inventory-gates.mjs`, 1474 dòng) | Mỗi đơn vị nguồn có id claim và đúng một chủ đích. Cổng chặn nếu một claim có nhiều chủ |
+| Luật loại tài liệu | Hiến pháp tối thiểu và `check-doc-constitution.mjs` | Loại tài liệu, nơi đặt, điều kiện promote và retire |
+| Giữ đường dẫn cũ | Bảng alias và resolver | Log bất biến vẫn trỏ `docs/specs/...` mà vẫn giải được |
+| Không để mất ý | Sổ claim bị rơi (17 mục), đóng nhóm trùng (818 nhóm) và xung đột (151 nhóm) | Chặn Phase 9 nếu còn claim chưa có chủ |
+| Kiểm trước khi xoá | Kiểm trạng thái candidate, kiểm retirement (15 kiểm, hiện 15 bị chặn) | Không xoá tài liệu cũ khi chưa chứng minh có bản thay |
+| Sửa người đọc | Manifest viết lại consumer (1.037 file đọc, 331 file sẽ vá) | Mọi chỗ đọc đường dẫn cũ được sửa đúng một lần |
+| Chống ghi trong cutover | Cutover write lease (mới ở thiết kế, chưa có mã) | Khoá ghi tài liệu khi đang chuyển |
+| Sau cutover | Phase 10: `fgos doc classify`, `new`, `check`, `inventory`, `retirement-check` | **Chưa authorize**, chưa có chủ |
+
+## Có hệ thống chạy lâu dài không
+
+**Gần như không.** Đúng một thứ có thể sống sau cutover là bộ kiểm của Phase 10 (`fgos doc check`...), mà nó chưa được phép làm. Còn lại, phần "khử trùng và một c …[+1581]
+[L1093] USER: `Effective Decision Reducer` có vẻ giống canonical-decision-projection-component
+[L1098] AGENT: Em đọc định nghĩa của reducer trong proposal để so sánh cho đúng, không dựa vào tóm tắt.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

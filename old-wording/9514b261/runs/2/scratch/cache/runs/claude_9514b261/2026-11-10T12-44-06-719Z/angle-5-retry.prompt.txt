@@ -1,0 +1,125 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) là tầng nền tảng để xây và chạy các ứng dụng agent, gồm hạ tầng, skill và tự động hoá nằm dưới mọi app agent, để lập trình viên tạo agent mới thay vì làm lại từ đầu. Hiện đang ở bản alpha v0.2.0-rc.2 cho Linux x86_64 (glibc 2.35 trở lên) và Windows 10 trở lên x86_64; macOS và Windows ARM chưa được hỗ trợ. Cài bằng một file nhị phân `fgctl` và chạy trong một kho git có sẵn, không cần clone, npm hay Rust toolchain.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L966] USER: component trong plan này tên gì và nó đã có mặt trong map của component authority/boundary chưa plans/reports/research-261021-1643-canonical-decision-projection-component.md
+[L1059] USER: plan này cuối cùng có xây dựng tool hay hệ thống gì không plan/260925-documentation-authority-unification
+[L1093] USER: `Effective Decision Reducer` có vẻ giống canonical-decision-projection-component
+</asks>
+
+<story>
+hook: 36 quyết định, 18 quan hệ thay thế, mà 4 cái chỉ nằm trong câu chữ
+tension: tuong_ma_hoa_ra (Có 18 quan hệ thay thế ghi sẵn, tưởng tính được quyết định nào còn hiệu lực / 5 trên 7 chỉ thay một phần, có cái trỏ tới mã băm tài liệu)
+stakes: 2/3
+# Chuỗi thay thế quyết định: 36 ADR, 18 quan hệ, và ít nhất 4 quyết định chỉ nói trong câu chữ
+
+**Bối cảnh:** Chủ hỏi reducer 'tập quyết định hiệu lực' có đủ dữ liệu chưa. Agent đếm trực tiếp trong event log.
+**Chuyện gì xảy ra:** Trong 4679 sự kiện decision, 37 có scope. Trong 36 ADR có 8 quyết định mang quan hệ supersedes, tổng cộng 18 quan hệ. Với 7 cặp quyết định nền tảng, id khớp được nhưng 5 trên 7 chỉ thay một phần. Ít nhất 4 quyết định thay điều khoản chỉ được ghi trong câu chữ, và có đích thay thế không phải quyết định mà là một mã băm tài liệu. Dữ liệu vì vậy chưa đủ để tính tập hiệu lực.
+**Bài học:** Muốn máy tính được cái nào còn hiệu lực, quan hệ thay thế phải là dữ liệu có cấu trúc, không được để trong văn bản.
+**Artefact:** Bảng phân loại 7 cặp quan hệ, chỉ có số liệu. Không cần ảnh.
+</story>
+
+<excerpt>
+[L1099] TOOL Bash: sed -n 495,545p docs/platform/proposals/documentation-system-unification.md | cut -c1-300; echo ....; sed -n 1048,1054p docs/platform/proposals/documentation-system-unification.md | cut -c1-300; sed -n 1096,1100p docs/platform/proposals/documentation-system-unification.md | cut -c1-300
+[L1104] RESULT: The repository already has part of this foundation: | - `src/setup/instruction-registry.mjs` discovers canonical instruction units;
+[L1116] TOOL Bash: python3 - <<'EOF' import json,re sup=[];adr=0;adr_sup=0 for line in open('.fgos/events.jsonl',encoding='utf8'): if '"decision"' not in line: continue try: e=json.loads(line) except: continue d=e.get('data') or e.get('payload') or e t=json.dumps(e,ensure_ascii=False) if '"type":"decision"' not in t.r …[+515]
+[L1121] RESULT: D-ADR decisions in log: 36 | trong đó có relation supersedes: 8 | tổng supersedes: 18
+[L1128] AGENT: Anh nhận xét đúng. Chúng cùng giải một bài toán gốc ("cái nào là bản hiện hành, cái nào đã bị thay"), nhưng không phải cùng một component. Reducer là lớp đọc nằm trên thứ `tsk-1lv` đã xây.
+
+## Giống ở đâu
+
+Cả hai đều dựa vào chuỗi supersession của quyết định, và cùng muốn agent đừng đọc ra kết luận cũ. Proposal tự thừa nhận điều này: nó liệt `fgos decision-index` vào "nền đã có" (`documentation-system-unification.md:495-503`) và gọi index là "lịch sử theo thời gian, vẫn hiển thị quyết định đã bị thay".
+
+## Khác ở đâu
+
+| | canonical-decision-projection (`tsk-1lv`, đã làm) | Effective Decision Reducer (proposal H3, chưa có mã) |
+|---|---|---|
+| Phía | **Ghi** và **chiếu** | **Đọc** và **biên dịch** |
+| Việc chính | Bắt khai `--relation`, quét nơi còn trích quyết định cũ, sinh index theo thời gian | Với mỗi phạm vi quyết định, tính kết luận **hiện hành**, ẩn tổ tiên đã vô hiệu khỏi brief mặc định nhưng giữ vết chuỗi |
+| Đầu ra | `docs/decisions/index.md` (liệt kê cả cũ lẫn mới) | Phần "effective decisions" trong brief L1 của agent, kèm ngân sách token |
+| Mức chi tiết | Cấp quyết định (`supersedes:<id>`) | Đòi cả cấp **điều khoản/claim**, vì "latest ADR wins" không an toàn khi quyết định mới chỉ thay một vế (`:534-541`, câu mở 16) |
+
+Nói gọn: `tsk-1lv` bảo đảm **chuỗi thay thế được ghi đúng**. Reducer **dùng chuỗi đó** để cho agent thấy tập hiện hành. Cái sau cần cái trước, nên hai thứ bổ sung nhau.
+
+## Chỗ có nguy cơ thành trùng thật
+
+Proposal có thêm một thành phần H2 tên "Claim and Decision Registry" (mục #16 trong báo cáo của agent) với supersession đầy đủ và một phần, nhưng **không nhắc `state.decisions` hay `--relation`**. Nếu H2 dựng kho supersession riêng thì sẽ có hai nơi mô hình hoá cùng một quan hệ: cấp quyết định ở `tsk-1lv`, cấp claim ở H2. Reducer sẽ phải chọn đọc nguồn nào. Đây mới là chỗ cần chốt, không phải bản thân reducer.
+
+## Dữ liệu hiện có đã đủ cho reducer chưa
+
+Em đếm trực tiếp trong `.fgos/events.jsonl`:
+- 36 quyết định mang tiền tố `D-ADR`, ch …[+1404]
+[L1142] USER: kiểm hai điểm đó đi
+…
+[L1150] RESULT: {"seq":19193,"ts":"2026-08-17T14:15:26.137Z","type":"decision","payload":{"text":"D-ADR0012: Đồ thị typed-edge derive -- một đồ thị typed-edge derive trên work item (deps→blocks, parent→parent-child); bảo đảm acyclic mở rộng sang đồ thị hợp nhất. Sup …[+305]
+[L1157] TOOL Bash: python3 - <<'EOF' import json,re,collections recs=[] for line in open('.fgos/events.jsonl',encoding='utf8'): if '"type":"decision"' not in line: continue try: e=json.loads(line) except: continue if e.get('type')!='decision': continue p=e['payload']; p['_seq']=e['seq']; recs.append(p) print('tổng dec …[+1227]
+[L1163] RESULT: tổng decision events: 4679 | có scope: 37 [('runner', 15), ('work-state', 12), ('platform-foundations', 5), ('architecture-map', 3), ('system-overview', 2)]
+[L1176] AGENT: Em tìm nơi tài liệu nhắc "Claim and Decision Registry", rồi quay lại điểm kiểm thứ hai.
+[L1177] TOOL Bash: grep -rn -i "Claim and Decision Registry" docs plans --include='*.md' --include='*.json' --include='*.yaml' 2>/dev/null | cut -c1-230 | head -20; echo "--- nhánh 260925:"; /usr/bin/git grep -n -i "Claim and Decision Registry" origin/plan/260925-documentation-authority-unification -- . 2>/dev/null |  …[+22]
+…
+[L1206] AGENT: Tài liệu chỉ nói về nó ở một chỗ. Em hoàn tất điểm kiểm thứ hai rồi trả lời cả hai.
+[L1207] TOOL Bash: python3 - <<'EOF' import json,re recs=[] for line in open('.fgos/events.jsonl',encoding='utf8'): if '"type":"decision"' not in line: continue try: e=json.loads(line) except: continue if e.get('type')=='decision': recs.append(e['payload']) state_adr={} for r in recs: m=re.match(r'D-ADR(\d{4})',r['tex …[+1468]
+[L1212] RESULT: Điểm 1 (tinh lại): đích có trong STATE (không tính index): | ADR0002: state=có, index=có
+[L1220] TOOL Bash: python3 - <<'EOF' import re rows={} for l in open('docs/decisions/index.md',encoding='utf8'): m=re.match(r'\|\s*([^|]+)\|\s*D-ADR(\d{4}):',l) if m: rows[m.group(2)]=l rel={('0012','0002'),('0024','0006'),('0025','0023'),('0028','0026'),('0029','0026'),('0030','0025'),('0031','0028')} newer={a for a, …[+390]
+[L1230] RESULT: 0010 | tham chiếu ADR khác: [] | có relation: không | [] | 0015 | tham chiếu ADR khác: [] | có relation: không | []
+[L1237] AGENT: ## Tài liệu nói về "Claim and Decision Registry" ở đâu
+
+Chỉ có **một chỗ** trong tài liệu: bảng thành phần con ở `docs/platform/proposals/documentation-system-unification.md:672` (§4.7.1). Bản trên nhánh 260925 giống hệt (dòng 674). Không có trong `plan.md`, phase file hay ledger ý định (ledger chỉ có PF-I006 cho cả engine).
+
+Hàng đó ghi: sở hữu "claim identity, decision provenance, full/partial supersession, effective/inactive status"; **không** sở hữu "agent prompt assembly".
+
+Đọc kỹ đoạn quanh nó, em phải **đính chính điều em nói ở lượt trước**. Em bảo proposal "không nhắc `state.decisions`" và có nguy cơ dựng kho song song. Chính xác hơn:
+- Ngay dưới bảng (`:668-669`), proposal nói `src/state/knowledge-registry.mjs`, decision state/projection và end-user index sẽ "belong on this side of the boundary after consolidation". Tức là kho decision hiện có được dự định **nhập vào H2**, không bị bỏ ngoài.
+- §9.2 mục 1 ghi "generalize the existing registry by profile rather than creating a parallel store".
+- Nó vẫn không nhắc `--relation` hay `tsk-1lv` bằng tên. Nguy cơ song song vì vậy thấp hơn em nói, nhưng chưa được chốt bằng văn bản.
+
+## Hai điểm em vừa kiểm
+
+**Điểm 1: id `ADR000N` có khớp `D-ADR00NN` không. Có, không cần bộ giải id.** Cả 7 quan hệ `supersedes:ADR00NN` giữa các quyết định nền tảng đều giải ra đúng bản ghi `D-ADR00NN`, trong state lẫn trong index. Hai ngoại lệ:
+- `supersedes:base-workflow-model-2ae492d8` (D-ADR0027) trỏ vào một mã băm tài liệu, không phải quyết định, nên không giải được.
+- Các quan hệ kiểu `tsk-224`, `D8`, `D4` thuộc quyết định cấp item, khác tập.
+
+**Điểm 2: 18 quan hệ có phủ đủ không. Chưa đủ, và còn một vấn đề nặng hơn.**
+
+| Loại | Kết quả |
+|---|---|
+| Quan hệ có sẵn cho quyết định nền tảng | 7 cặp (0012→0002, 0024→0006, 0025→0023, 0028→0026, 0029→0026, 0030→0025, 0031→0028) |
+| Supersession chỉ nằm trong câu chữ, **không có quan hệ** | ít nhất 4: D-ADR0055 (thay điều khoản 1 và 4 của L3 và một phần D-ADR0003), D-ADR0056 (thay phần  …[+1558]
+[L1253] USER: như vậy cần thêm note về canonical-decision-projection vào chổ tài liệu của Effective Decision Reducer để biết và nhớ rằng chúng ta đã có một phần liên quan. nhắc nhở thêm về việc cập nhật component authority/boundary
+[L1258] AGENT: Trước khi sửa, em kiểm luật cập nhật của hai file này và xem DOC đang sửa chúng ở nhánh nào, để khỏi gây va chạm.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

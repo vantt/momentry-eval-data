@@ -1,0 +1,762 @@
+{
+  "id": "6a207191",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f.jsonl",
+  "fromLine": 1,
+  "toLine": 2412,
+  "windowSha": "225acd523cc5ad12",
+  "at": "2026-11-10T12:36:24.309Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.14,
+    "tokens": 53806,
+    "chunks": 1,
+    "hotspots": 41,
+    "entries": 636,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:6a207191",
+    "fromLine": 1,
+    "toLine": 2412,
+    "usd": 0.09004229999999999,
+    "secs": 271.7,
+    "exitCode": 0,
+    "status": "done",
+    "written": 7,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-11-02-mot-skill-packaging-cho-ca-ho-c4b4",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-1: spine.context: evidence ngoài các dòng đã đưa: \"profile\" | angle-1-retry: spine.context: evidence ngoài các dòng đã đưa: \"profile\""
+      },
+      {
+        "id": "2026-11-02-skillstation-chan-gui-len-hub-roi-c4b4",
+        "status": "angle",
+        "angle": "Một người làm đang gom các skill đóng gói và phân phối để mọi agent dùng chung qua hub skillstation, và họ muốn skill mới vào được hub để agent tìm thấy. Họ tưởng skill đang active thì bản đó là bản mới nhất đã được duyệt. Hoá ra bản active là bản của lần duyệt trước, bản vừa gửi vẫn nằm trong hàng chờ, và trang skill không báo gì về bản chờ đó. Ai đưa công cụ có hàng chờ duyệt nên hiện trạng thái 'có bản mới đang chờ' ngay trên trang đích, để người duyệt không nhầm bản cũ là bản mới nhất.",
+        "audience": "dev dùng công cụ có hàng chờ duyệt cho skill và agent",
+        "evidence": [
+          5,
+          1489,
+          1503,
+          1507,
+          1515
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đang gom các skill đóng gói và phân phối (cài đặt, cập nhật, cấu hình) để mọi agent dùng chung qua hub skillstation.",
+            "evidence": [
+              5
+            ]
+          },
+          "want": {
+            "text": "Đưa skill lên hub để agent ở mọi project tự tìm và dùng.",
+            "evidence": [
+              967
+            ]
+          },
+          "obstacle": {
+            "text": "Hub chặn lệnh gửi có --yes vì chưa tin cậy ở cấp user.",
+            "evidence": [
+              1007
+            ]
+          },
+          "turn": {
+            "text": "Tưởng skill đang active nghĩa là bản mới nhất đã được duyệt; hoá ra bản active là bản của lần duyệt trước, còn bản vừa gửi nằm trong Waiting for review và trang skill không báo.",
+            "evidence": [
+              1489,
+              1503,
+              1507
+            ]
+          },
+          "action": {
+            "text": "Gửi skill lên hàng chờ, sau đó gửi lại bản có routing; mỗi lần có một mã SUB mới.",
+            "evidence": [
+              1167,
+              1480
+            ]
+          },
+          "outcome": {
+            "text": "Bản mới vẫn chờ duyệt, trang vẫn hiện bản active cũ; người làm đề xuất dải thông báo 'có bản chờ duyệt' trên trang skill và giao việc làm UI.",
+            "evidence": [
+              1515,
+              1525
+            ]
+          },
+          "takeaway": {
+            "text": "Công cụ có hàng chờ duyệt phải hiện 'có bản mới đang chờ' ngay trên trang đích, nếu không người duyệt tưởng bản đang chạy là mới nhất.",
+            "evidence": [
+              1507,
+              1515
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-skill-phai-tu-chung-minh-bang-c4b4",
+        "status": "angle",
+        "angle": "Một người đang gom các cách đóng gói và phát hành tốt từ vài dự án CLI thành một skill cho agent, để mỗi dự án mới chỉ cần gọi skill. Agent tưởng phải viết 25–30 script mới kiểm được skill một cách nhất quán, nhưng người làm hỏi lại thì hoá ra không cần: agent tự chạy --help, doctor --json và đọc rule là đủ. Script chỉ đáng viết khi tiêu chí đã ổn định, nên bước kiểm cuối cùng được thay bằng khoảng 10 lệnh trong SKILL.md, và bước quan trọng nhất là bật một agent mới chỉ giao 'cài X giúp tôi'. Dev làm CLI hoặc đang dùng agent để viết quy chuẩn sẽ thấy đây là cách đo UX rẻ hơn hẳn việc viết thêm script.",
+        "audience": "dev làm CLI và dùng agent để viết quy chuẩn",
+        "evidence": [
+          5,
+          910,
+          929
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm gom cách đóng gói và phát hành tốt từ nhiều dự án CLI (mdview, skillstation, herdr-go, forgent) thành một skill cho agent.",
+            "evidence": [
+              5
+            ]
+          },
+          "want": {
+            "text": "Muốn skill chứa các thực hành tốt, và agent có thể cài đặt một công cụ chỉ bằng --help.",
+            "evidence": [
+              5,
+              636
+            ]
+          },
+          "obstacle": {
+            "text": "Chưa biết cách kiểm tra xem agent có làm đúng theo skill mà không phải đọc tay từng rule.",
+            "evidence": [
+              910
+            ]
+          },
+          "turn": {
+            "text": "Agent tưởng phải có 25–30 script mới kiểm được nhất quán; hoá ra agent tự làm được mà không cần script.",
+            "evidence": [
+              910,
+              929
+            ]
+          },
+          "action": {
+            "text": "Bỏ đề xuất script, thêm khoảng 10 lệnh kiểm vào SKILL.md, và bật một agent mới chỉ giao 'cài X giúp tôi' để thử.",
+            "evidence": [
+              922,
+              929,
+              934,
+              937
+            ]
+          },
+          "outcome": {
+            "text": "Đã gọi lệnh sửa SKILL.md để thêm bước Verify; trích đoạn không có kết quả của lệnh đó.",
+            "evidence": [
+              937
+            ]
+          },
+          "takeaway": {
+            "text": "Chỉ viết script kiểm khi tiêu chí đã ổn định; trước đó, đo UX bằng một agent mới là đủ.",
+            "evidence": [
+              929
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-05-nam-test-go-do-chi-tren-c4b4",
+        "status": "angle",
+        "angle": "Dự án skillstation (CLI và hub cho skill) vừa đưa một thay đổi giao diện web lên main, và trên máy dev 5 test Go đỏ dù thay đổi không đụng tới chúng. Người làm tưởng test đã được cô lập vì đổi HOME sang thư mục tạm, nhưng lệnh status và doctor vẫn đi ngược từ thư mục làm việc lên tới home thật và đọc cấu hình Codex, Gemini đang có trên máy. CI trên GitHub vẫn xanh vì máy đó không có các file ấy. Ai viết test đọc cấu hình theo thư mục cha nên cô lập cả thư mục làm việc, không chỉ HOME.",
+        "audience": "dev viết test cho công cụ CLI có đọc cấu hình trên máy cá nhân",
+        "evidence": [
+          2103,
+          2152,
+          2221,
+          2246
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án skillstation (CLI và hub cho skill) vừa đưa một thay đổi giao diện web lên main.",
+            "evidence": [
+              2103
+            ]
+          },
+          "want": {
+            "text": "Muốn đưa commit web lên main và thấy CI xanh.",
+            "evidence": [
+              2103
+            ]
+          },
+          "obstacle": {
+            "text": "5 test Go trong internal/delivery/cli đỏ trên máy dev dù commit web không đụng tới chúng.",
+            "evidence": [
+              2103
+            ]
+          },
+          "turn": {
+            "text": "Tưởng đổi HOME sang thư mục tạm là đã cô lập test; hoá ra status và doctor vẫn đi ngược từ thư mục làm việc tới home thật và đọc cấu hình Codex, Gemini đã ghi lúc 14:46.",
+            "evidence": [
+              2152,
+              2221
+            ]
+          },
+          "action": {
+            "text": "Chạy lại test với HOME tạm và vẫn đỏ, rồi truy nguyên nhân trong code và file cấu hình; merge commit web vào main.",
+            "evidence": [
+              2103,
+              2151,
+              2158
+            ]
+          },
+          "outcome": {
+            "text": "CI GitHub cho commit web xanh; 5 test Go vẫn đỏ trên máy dev và chưa được sửa.",
+            "evidence": [
+              2243,
+              2246
+            ]
+          },
+          "takeaway": {
+            "text": "Test đi tìm config theo thư mục cha có thể đọc cấu hình thật của người dùng; đổi HOME không đủ, phải cô lập cả thư mục làm việc.",
+            "evidence": [
+              2221
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-05-quy-tac-mot-cua-config-tu-c4b4",
+        "status": "none",
+        "none": true,
+        "reason": "Đây là việc đối chiếu và bổ sung một quy tắc còn thiếu, không có ai tin sai điều gì. Ghi chú 'chưa phát hành' chỉ là lưu ý, không phải niềm tin bị bác bỏ.",
+        "spine": {
+          "context": {
+            "text": "Dự án momentry vừa chốt quy tắc mọi cài đặt đổi qua `config`; người làm muốn kiểm tra skill chung đã có quy chuẩn này chưa.",
+            "evidence": [
+              2255
+            ]
+          },
+          "want": {
+            "text": "Biết skill cs-packaging-distribution đã có quy chuẩn 'một cửa config' chưa.",
+            "evidence": [
+              2255
+            ]
+          },
+          "obstacle": {
+            "text": "Skill chỉ có các mảnh rời về config (CFG-04, UX-12, UX-14), thiếu quy tắc cấm cờ lẻ.",
+            "evidence": [
+              2324
+            ]
+          },
+          "action": {
+            "text": "Thêm CMD-22..24, nâng CFG-12 lên MUST, thêm tham chiếu momentry rồi gửi lên hub.",
+            "evidence": [
+              2385,
+              2407
+            ]
+          },
+          "outcome": {
+            "text": "lint-guides qua với 215 quy tắc; check-references xác nhận mọi đường dẫn; bản gửi đang chờ duyệt.",
+            "evidence": [
+              2385,
+              2407
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-05-phat-hien-mot-cho-ux-te-c4b4",
+        "status": "angle",
+        "angle": "Dự án skillstation là hub chia sẻ skill cho agent, và người làm đang đưa một bộ hướng dẫn đóng gói lên đó. Người làm tưởng skill chưa được duyệt thì sẽ không active; hoá ra hub vẫn giữ bản của lần duyệt trước, còn bản mới nằm ở Waiting for review mà trang skill không báo. Ai dùng hub để chia sẻ skill cho agent nên biết trạng thái active có thể lệch so với bản vừa gửi.",
+        "audience": "dev dùng hub để chia sẻ skill cho agent",
+        "evidence": [
+          1489,
+          1503,
+          1507
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án skillstation là hub chia sẻ skill cho agent; người làm đang đưa bộ hướng dẫn đóng gói cs-packaging-distribution lên hub.",
+            "evidence": [
+              5,
+              1520
+            ]
+          },
+          "want": {
+            "text": "Muốn hub hiện đúng bản đang chờ duyệt và quản lý được routing/metadata của skill.",
+            "evidence": [
+              1520
+            ]
+          },
+          "obstacle": {
+            "text": "Trang skill không báo có bản chờ duyệt, và bản đang active là bản của một lần duyệt trước.",
+            "evidence": [
+              1503,
+              1507
+            ]
+          },
+          "turn": {
+            "text": "Tưởng skill chưa được duyệt thì không thể active; hoá ra hub vẫn giữ bản của lần duyệt trước, còn bản gửi mới chỉ nằm ở Waiting for review.",
+            "evidence": [
+              1489,
+              1503
+            ]
+          },
+          "action": {
+            "text": "Thêm thông báo bản chờ duyệt vào trang skill và danh sách skill, rồi gộp và đẩy lên main.",
+            "evidence": [
+              2008,
+              2103
+            ]
+          },
+          "outcome": {
+            "text": "Web qua 229 test, kiểm tra kiểu, lint và build đều sạch; commit 185b75d đã lên main và CI đang chạy. Hub chưa đổi vì cần phát hành bản mới.",
+            "evidence": [
+              2008,
+              2103
+            ]
+          },
+          "takeaway": {
+            "text": "Trạng thái active trên hub có thể đến từ lần duyệt cũ; trước khi tin bản mới đã lên, hãy xem mục Waiting for review.",
+            "evidence": [
+              1503,
+              1515
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-hoi-lai-nguoi-dung-de-xac-c4b4",
+        "status": "angle",
+        "angle": "Một người làm đang gom cách đóng gói và phát hành một CLI (cài đặt, cập nhật, cấu hình, doctor) từ vài dự án GitHub thành một skill, rồi gửi lên hub skillstation để agent khác dùng. Agent gợi ý chạy `connect --user` để khỏi phải xác nhận mỗi lần gửi, nhưng skillstation báo cờ này không được bản đang cài nhận. Hoá ra client và hub khác phiên bản (0.8.0 so với 0.12.0), nên một lệnh do agent gợi ý phải được đối chiếu với bản đang chạy trước khi tin. Dev hay để agent chạy lệnh CLI nên cần biết điều này.",
+        "audience": "dev dùng agent để chạy lệnh CLI và viết skill cho agent",
+        "evidence": [
+          1068,
+          1074,
+          1102
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người làm đang gom cách đóng gói và phát hành một CLI (cài đặt, cập nhật, cấu hình, doctor) từ vài dự án GitHub thành một skill, rồi gửi lên hub skillstation để agent khác dùng.",
+            "evidence": [
+              5
+            ]
+          },
+          "want": {
+            "text": "Muốn đưa skill đóng gói vào hub skillstation để dùng lại cho các dự án sau.",
+            "evidence": [
+              5,
+              967
+            ]
+          },
+          "obstacle": {
+            "text": "Lệnh gửi bị skillstation chặn vì hub chưa được tin cậy ở cấp user.",
+            "evidence": [
+              1004
+            ]
+          },
+          "turn": {
+            "text": "Agent tin cờ `--user` sẽ cấp quyền gửi cho mọi project; skillstation báo cờ này không được nhận. Lộ ra: lệnh gợi ý chưa được kiểm tra với bản đang cài.",
+            "evidence": [
+              1068,
+              1074
+            ]
+          },
+          "action": {
+            "text": "Kiểm tra dry-run, phát hiện client 0.8.0 khác hub 0.12.0, rồi người làm tự kết nối bằng cờ global.",
+            "evidence": [
+              1102,
+              1152
+            ]
+          },
+          "outcome": {
+            "text": "Gửi được skill và nhận mã SUB; nhưng hub chưa kiểm tra được routing vì vẫn chạy bản cũ.",
+            "evidence": [
+              1315,
+              1334
+            ]
+          },
+          "takeaway": {
+            "text": "Lệnh CLI do agent gợi ý nên đối chiếu với bản đang cài trước khi chạy; bản client mới chưa chắc hub đã có cùng tính năng.",
+            "evidence": [
+              1074,
+              1102
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:6a207191 L1-L2412: done; 5 chuyện thô, 7 cụm; ghi 7 mới, gộp 0\nđiểm nóng 41 (thiếu 0); lần chạy 1/1; 0.09 USD\ngóc kể: 5 có, 1 không ra chuyện, 1 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: devops không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-mot-skill-packaging-cho-ca-ho-c4b4",
+      "code": "M-V1P9",
+      "title": "Một skill packaging cho cả họ dự án: từ 46% dư thừa đến bộ lệnh init/doctor chung",
+      "tension": "giup_ma_hai",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-skillstation-chan-gui-len-hub-roi-c4b4",
+      "code": "M-GX29",
+      "title": "Skillstation chặn gửi lên hub, rồi hub tự kích hoạt skill mà chưa ai duyệt",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người làm đang gom các skill đóng gói và phân phối để mọi agent dùng chung qua hub skillstation, và họ muốn skill mới vào được hub để agent tìm thấy. Họ tưởng skill đang active thì bản đó là bản mới nhất đã được duyệt. Hoá ra bản active là bản của lần duyệt trước, bản vừa gửi vẫn nằm trong hàng chờ, và trang skill không báo gì về bản chờ đó. Ai đưa công cụ có hàng chờ duyệt nên hiện trạng thái 'có bản mới đang chờ' ngay trên trang đích, để người duyệt không nhầm bản cũ là bản mới nhất.",
+      "audience": "dev dùng công cụ có hàng chờ duyệt cho skill và agent",
+      "spine": {
+        "context": {
+          "text": "Người làm đang gom các skill đóng gói và phân phối (cài đặt, cập nhật, cấu hình) để mọi agent dùng chung qua hub skillstation.",
+          "lines": [
+            "claude:6a207191#L5"
+          ]
+        },
+        "want": {
+          "text": "Đưa skill lên hub để agent ở mọi project tự tìm và dùng.",
+          "lines": [
+            "claude:6a207191#L967"
+          ]
+        },
+        "obstacle": {
+          "text": "Hub chặn lệnh gửi có --yes vì chưa tin cậy ở cấp user.",
+          "lines": [
+            "claude:6a207191#L1007"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng skill đang active nghĩa là bản mới nhất đã được duyệt; hoá ra bản active là bản của lần duyệt trước, còn bản vừa gửi nằm trong Waiting for review và trang skill không báo.",
+          "lines": [
+            "claude:6a207191#L1489",
+            "claude:6a207191#L1503",
+            "claude:6a207191#L1507"
+          ]
+        },
+        "action": {
+          "text": "Gửi skill lên hàng chờ, sau đó gửi lại bản có routing; mỗi lần có một mã SUB mới.",
+          "lines": [
+            "claude:6a207191#L1167",
+            "claude:6a207191#L1480"
+          ]
+        },
+        "outcome": {
+          "text": "Bản mới vẫn chờ duyệt, trang vẫn hiện bản active cũ; người làm đề xuất dải thông báo 'có bản chờ duyệt' trên trang skill và giao việc làm UI.",
+          "lines": [
+            "claude:6a207191#L1515",
+            "claude:6a207191#L1525"
+          ]
+        },
+        "takeaway": {
+          "text": "Công cụ có hàng chờ duyệt phải hiện 'có bản mới đang chờ' ngay trên trang đích, nếu không người duyệt tưởng bản đang chạy là mới nhất.",
+          "lines": [
+            "claude:6a207191#L1507",
+            "claude:6a207191#L1515"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-skill-phai-tu-chung-minh-bang-c4b4",
+      "code": "M-138W",
+      "title": "Skill phải tự chứng minh bằng agent mới: test 'cài X giúp tôi' chỉ bằng --help",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người đang gom các cách đóng gói và phát hành tốt từ vài dự án CLI thành một skill cho agent, để mỗi dự án mới chỉ cần gọi skill. Agent tưởng phải viết 25–30 script mới kiểm được skill một cách nhất quán, nhưng người làm hỏi lại thì hoá ra không cần: agent tự chạy --help, doctor --json và đọc rule là đủ. Script chỉ đáng viết khi tiêu chí đã ổn định, nên bước kiểm cuối cùng được thay bằng khoảng 10 lệnh trong SKILL.md, và bước quan trọng nhất là bật một agent mới chỉ giao 'cài X giúp tôi'. Dev làm CLI hoặc đang dùng agent để viết quy chuẩn sẽ thấy đây là cách đo UX rẻ hơn hẳn việc viết thêm script.",
+      "audience": "dev làm CLI và dùng agent để viết quy chuẩn",
+      "spine": {
+        "context": {
+          "text": "Người làm gom cách đóng gói và phát hành tốt từ nhiều dự án CLI (mdview, skillstation, herdr-go, forgent) thành một skill cho agent.",
+          "lines": [
+            "claude:6a207191#L5"
+          ]
+        },
+        "want": {
+          "text": "Muốn skill chứa các thực hành tốt, và agent có thể cài đặt một công cụ chỉ bằng --help.",
+          "lines": [
+            "claude:6a207191#L5",
+            "claude:6a207191#L636"
+          ]
+        },
+        "obstacle": {
+          "text": "Chưa biết cách kiểm tra xem agent có làm đúng theo skill mà không phải đọc tay từng rule.",
+          "lines": [
+            "claude:6a207191#L910"
+          ]
+        },
+        "turn": {
+          "text": "Agent tưởng phải có 25–30 script mới kiểm được nhất quán; hoá ra agent tự làm được mà không cần script.",
+          "lines": [
+            "claude:6a207191#L910",
+            "claude:6a207191#L929"
+          ]
+        },
+        "action": {
+          "text": "Bỏ đề xuất script, thêm khoảng 10 lệnh kiểm vào SKILL.md, và bật một agent mới chỉ giao 'cài X giúp tôi' để thử.",
+          "lines": [
+            "claude:6a207191#L922",
+            "claude:6a207191#L929",
+            "claude:6a207191#L934",
+            "claude:6a207191#L937"
+          ]
+        },
+        "outcome": {
+          "text": "Đã gọi lệnh sửa SKILL.md để thêm bước Verify; trích đoạn không có kết quả của lệnh đó.",
+          "lines": [
+            "claude:6a207191#L937"
+          ]
+        },
+        "takeaway": {
+          "text": "Chỉ viết script kiểm khi tiêu chí đã ổn định; trước đó, đo UX bằng một agent mới là đủ.",
+          "lines": [
+            "claude:6a207191#L929"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-05-nam-test-go-do-chi-tren-c4b4",
+      "code": "M-CF4C",
+      "title": "Năm test Go đỏ chỉ trên máy dev: lỗi vì cấu hình agent thật bị đọc vào test",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án skillstation (CLI và hub cho skill) vừa đưa một thay đổi giao diện web lên main, và trên máy dev 5 test Go đỏ dù thay đổi không đụng tới chúng. Người làm tưởng test đã được cô lập vì đổi HOME sang thư mục tạm, nhưng lệnh status và doctor vẫn đi ngược từ thư mục làm việc lên tới home thật và đọc cấu hình Codex, Gemini đang có trên máy. CI trên GitHub vẫn xanh vì máy đó không có các file ấy. Ai viết test đọc cấu hình theo thư mục cha nên cô lập cả thư mục làm việc, không chỉ HOME.",
+      "audience": "dev viết test cho công cụ CLI có đọc cấu hình trên máy cá nhân",
+      "spine": {
+        "context": {
+          "text": "Dự án skillstation (CLI và hub cho skill) vừa đưa một thay đổi giao diện web lên main.",
+          "lines": [
+            "claude:6a207191#L2103"
+          ]
+        },
+        "want": {
+          "text": "Muốn đưa commit web lên main và thấy CI xanh.",
+          "lines": [
+            "claude:6a207191#L2103"
+          ]
+        },
+        "obstacle": {
+          "text": "5 test Go trong internal/delivery/cli đỏ trên máy dev dù commit web không đụng tới chúng.",
+          "lines": [
+            "claude:6a207191#L2103"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng đổi HOME sang thư mục tạm là đã cô lập test; hoá ra status và doctor vẫn đi ngược từ thư mục làm việc tới home thật và đọc cấu hình Codex, Gemini đã ghi lúc 14:46.",
+          "lines": [
+            "claude:6a207191#L2152",
+            "claude:6a207191#L2221"
+          ]
+        },
+        "action": {
+          "text": "Chạy lại test với HOME tạm và vẫn đỏ, rồi truy nguyên nhân trong code và file cấu hình; merge commit web vào main.",
+          "lines": [
+            "claude:6a207191#L2103",
+            "claude:6a207191#L2151",
+            "claude:6a207191#L2158"
+          ]
+        },
+        "outcome": {
+          "text": "CI GitHub cho commit web xanh; 5 test Go vẫn đỏ trên máy dev và chưa được sửa.",
+          "lines": [
+            "claude:6a207191#L2243",
+            "claude:6a207191#L2246"
+          ]
+        },
+        "takeaway": {
+          "text": "Test đi tìm config theo thư mục cha có thể đọc cấu hình thật của người dùng; đổi HOME không đủ, phải cô lập cả thư mục làm việc.",
+          "lines": [
+            "claude:6a207191#L2221"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-05-quy-tac-mot-cua-config-tu-c4b4",
+      "code": "M-JZ0C",
+      "title": "Quy tắc 'một cửa config' từ momentry được chép thành quy chuẩn chung",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Dự án momentry vừa chốt quy tắc mọi cài đặt đổi qua `config`; người làm muốn kiểm tra skill chung đã có quy chuẩn này chưa.",
+          "lines": [
+            "claude:6a207191#L2255"
+          ]
+        },
+        "want": {
+          "text": "Biết skill cs-packaging-distribution đã có quy chuẩn 'một cửa config' chưa.",
+          "lines": [
+            "claude:6a207191#L2255"
+          ]
+        },
+        "obstacle": {
+          "text": "Skill chỉ có các mảnh rời về config (CFG-04, UX-12, UX-14), thiếu quy tắc cấm cờ lẻ.",
+          "lines": [
+            "claude:6a207191#L2324"
+          ]
+        },
+        "action": {
+          "text": "Thêm CMD-22..24, nâng CFG-12 lên MUST, thêm tham chiếu momentry rồi gửi lên hub.",
+          "lines": [
+            "claude:6a207191#L2385",
+            "claude:6a207191#L2407"
+          ]
+        },
+        "outcome": {
+          "text": "lint-guides qua với 215 quy tắc; check-references xác nhận mọi đường dẫn; bản gửi đang chờ duyệt.",
+          "lines": [
+            "claude:6a207191#L2385",
+            "claude:6a207191#L2407"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-11-05-phat-hien-mot-cho-ux-te-c4b4",
+      "code": "M-SKHS",
+      "title": "Phát hiện một chỗ UX tệ trên sản phẩm (trang web không báo có bản chờ duyệt) và sửa tại chỗ thay vì chỉ ghi nhận",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": "Dự án skillstation là hub chia sẻ skill cho agent, và người làm đang đưa một bộ hướng dẫn đóng gói lên đó. Người làm tưởng skill chưa được duyệt thì sẽ không active; hoá ra hub vẫn giữ bản của lần duyệt trước, còn bản mới nằm ở Waiting for review mà trang skill không báo. Ai dùng hub để chia sẻ skill cho agent nên biết trạng thái active có thể lệch so với bản vừa gửi.",
+      "audience": "dev dùng hub để chia sẻ skill cho agent",
+      "spine": {
+        "context": {
+          "text": "Dự án skillstation là hub chia sẻ skill cho agent; người làm đang đưa bộ hướng dẫn đóng gói cs-packaging-distribution lên hub.",
+          "lines": [
+            "claude:6a207191#L5",
+            "claude:6a207191#L1520"
+          ]
+        },
+        "want": {
+          "text": "Muốn hub hiện đúng bản đang chờ duyệt và quản lý được routing/metadata của skill.",
+          "lines": [
+            "claude:6a207191#L1520"
+          ]
+        },
+        "obstacle": {
+          "text": "Trang skill không báo có bản chờ duyệt, và bản đang active là bản của một lần duyệt trước.",
+          "lines": [
+            "claude:6a207191#L1503",
+            "claude:6a207191#L1507"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng skill chưa được duyệt thì không thể active; hoá ra hub vẫn giữ bản của lần duyệt trước, còn bản gửi mới chỉ nằm ở Waiting for review.",
+          "lines": [
+            "claude:6a207191#L1489",
+            "claude:6a207191#L1503"
+          ]
+        },
+        "action": {
+          "text": "Thêm thông báo bản chờ duyệt vào trang skill và danh sách skill, rồi gộp và đẩy lên main.",
+          "lines": [
+            "claude:6a207191#L2008",
+            "claude:6a207191#L2103"
+          ]
+        },
+        "outcome": {
+          "text": "Web qua 229 test, kiểm tra kiểu, lint và build đều sạch; commit 185b75d đã lên main và CI đang chạy. Hub chưa đổi vì cần phát hành bản mới.",
+          "lines": [
+            "claude:6a207191#L2008",
+            "claude:6a207191#L2103"
+          ]
+        },
+        "takeaway": {
+          "text": "Trạng thái active trên hub có thể đến từ lần duyệt cũ; trước khi tin bản mới đã lên, hãy xem mục Waiting for review.",
+          "lines": [
+            "claude:6a207191#L1503",
+            "claude:6a207191#L1515"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-hoi-lai-nguoi-dung-de-xac-c4b4",
+      "code": "M-ZWNM",
+      "title": "Hỏi lại người dùng để xác nhận trước những hành động có thể bị hoàn tác khó, ví dụ gửi lên hub hay đẩy code lên GitHub",
+      "tension": "khac",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": "Một người làm đang gom cách đóng gói và phát hành một CLI (cài đặt, cập nhật, cấu hình, doctor) từ vài dự án GitHub thành một skill, rồi gửi lên hub skillstation để agent khác dùng. Agent gợi ý chạy `connect --user` để khỏi phải xác nhận mỗi lần gửi, nhưng skillstation báo cờ này không được bản đang cài nhận. Hoá ra client và hub khác phiên bản (0.8.0 so với 0.12.0), nên một lệnh do agent gợi ý phải được đối chiếu với bản đang chạy trước khi tin. Dev hay để agent chạy lệnh CLI nên cần biết điều này.",
+      "audience": "dev dùng agent để chạy lệnh CLI và viết skill cho agent",
+      "spine": {
+        "context": {
+          "text": "Một người làm đang gom cách đóng gói và phát hành một CLI (cài đặt, cập nhật, cấu hình, doctor) từ vài dự án GitHub thành một skill, rồi gửi lên hub skillstation để agent khác dùng.",
+          "lines": [
+            "claude:6a207191#L5"
+          ]
+        },
+        "want": {
+          "text": "Muốn đưa skill đóng gói vào hub skillstation để dùng lại cho các dự án sau.",
+          "lines": [
+            "claude:6a207191#L5",
+            "claude:6a207191#L967"
+          ]
+        },
+        "obstacle": {
+          "text": "Lệnh gửi bị skillstation chặn vì hub chưa được tin cậy ở cấp user.",
+          "lines": [
+            "claude:6a207191#L1004"
+          ]
+        },
+        "turn": {
+          "text": "Agent tin cờ `--user` sẽ cấp quyền gửi cho mọi project; skillstation báo cờ này không được nhận. Lộ ra: lệnh gợi ý chưa được kiểm tra với bản đang cài.",
+          "lines": [
+            "claude:6a207191#L1068",
+            "claude:6a207191#L1074"
+          ]
+        },
+        "action": {
+          "text": "Kiểm tra dry-run, phát hiện client 0.8.0 khác hub 0.12.0, rồi người làm tự kết nối bằng cờ global.",
+          "lines": [
+            "claude:6a207191#L1102",
+            "claude:6a207191#L1152"
+          ]
+        },
+        "outcome": {
+          "text": "Gửi được skill và nhận mã SUB; nhưng hub chưa kiểm tra được routing vì vẫn chạy bản cũ.",
+          "lines": [
+            "claude:6a207191#L1315",
+            "claude:6a207191#L1334"
+          ]
+        },
+        "takeaway": {
+          "text": "Lệnh CLI do agent gợi ý nên đối chiếu với bản đang cài trước khi chạy; bản client mới chưa chắc hub đã có cùng tính năng.",
+          "lines": [
+            "claude:6a207191#L1074",
+            "claude:6a207191#L1102"
+          ]
+        }
+      },
+      "completeness": 7
+    }
+  ]
+}

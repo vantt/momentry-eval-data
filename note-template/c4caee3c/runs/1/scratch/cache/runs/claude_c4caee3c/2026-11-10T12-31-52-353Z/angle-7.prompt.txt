@@ -1,0 +1,169 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, kết hợp tìm theo nghĩa, tìm từ khoá, tên, thẻ, thư mục và liên kết giữa các ghi chú. Có ba cách dùng: plugin Obsidian để tìm khi đang viết, máy chủ MCP để tác tử AI tìm và đọc ghi chú, và công cụ dòng lệnh cho việc lập chỉ mục và viết script. Dữ liệu lưu cục bộ bằng SQLite, mô hình nhúng mặc định chạy trên máy, và có thể tuỳ chọn dùng API embedding tương thích OpenAI.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L2430] USER: L15 có phải là mấy cái script python chúng ta bỏ qua?
+[L2458] USER: vậy nên viết rõ là viết lại OHS bùng rust
+[L2474] USER: L24 thì làm gì
+</asks>
+
+<story>
+hook: Mỗi bản tụt 0,005 không ngưỡng nào bắt, 5 bản tụt 0,025
+tension: cam_ma_van_lot (Mỗi lần đều dưới ngưỡng chặn / Cộng lại tụt 0,025 mà không ai hay)
+stakes: 1/3
+# Biểu đồ xu hướng qua các bản phát hành (đang làm)
+
+**Bối cảnh:** Mỗi báo cáo review chỉ so hai bản, nên không thấy được điểm trôi dần qua nhiều bản.
+**Chuyện gì xảy ra:** Chủ dự án xác nhận làm biểu đồ xu hướng. Mục tiêu: sau 5 bản, mỗi bản tụt 0,005 là đã tụt 0,025 dù không lần nào vượt ngưỡng. Code và test đã xong (34 test). Biểu đồ đang chờ lần chạy báo cáo cuối và chưa được tạo khi phiên dừng.
+**Bài học:** Ngưỡng cho từng lần so sánh có thể che xu hướng. Vẽ điểm qua thời gian để thấy.
+**Artefact:** Biểu đồ chưa tạo; sẽ là ảnh các chỉ số theo bản phát hành.
+</story>
+
+<excerpt>
+[L2466] AGENT: Tôi đã sửa PRD (commit `b0828af`). Hai mục N13 (mục 2.2) và L15 (mục 14.2) giờ ghi rõ là "viết lại toàn bộ OHS (index và tìm) bằng Rust, thay cho OHS chạy bằng Node". Cả hai cũng ghi thêm rằng việc này khác với việc chuyển script Python của dự án, vốn thuộc V16.
+[L2474] USER: L24 thì làm gì
+[L2476] AGENT: L24 (N22) là **thêm biểu đồ chỉ số eval qua nhiều bản phát hành vào báo cáo review upstream**. PRD xếp nó vào nhóm "có thì tốt", là ý mới, làm sau V14, công khoảng nửa ngày, và thuộc phía fork.
+
+Hiện nay mỗi báo cáo review (`vantt/reviews/<tag>.md`, do V14 sinh ra) chỉ so **hai** bản: upstream mới với fork cũ và fork mới. Bạn thấy được bản này tốt hơn hay tệ hơn bản trước, nhưng không thấy xu hướng.
+
+L24 giải quyết việc đó:
+- Gom số eval của mọi bản đã review, như `v0.17.2-vantt.1` và các bản sau. Số liệu lấy từ các file `vantt/reviews/<tag>.data.json` mà `review-upstream.mjs` đã ghi sẵn.
+- Vẽ biểu đồ đường theo thời gian cho các chỉ số chính: nDCG@5 và Hit@5 tổng, từng hạng mục `vi-*` quan trọng (`vi-unaccented`, `vi-semantic`, `vi-synonym`…), eval tiếng Anh của upstream, có thể thêm thời gian index và thời gian mỗi câu.
+- Chèn biểu đồ vào báo cáo review mới nhất.
+
+Lợi ích:
+- **Thấy chất lượng giảm dần.** Mỗi bản tụt 0,005 thì không lần nào vượt ngưỡng 0,01 của cổng chất lượng, nhưng sau 5 bản đã tụt 0,025. So hai bản liền nhau không lộ ra điều này, biểu đồ thì có.
+- **Thấy upstream tiến bộ.** Nếu upstream tự cải thiện phần tìm, biểu đồ cho thấy khoảng cách giữa fork và upstream đang hẹp lại. Đó là dấu hiệu có bản vá hoặc phần nào của gói sắp bỏ được.
+- **Có căn cứ để quyết** khi review: nâng bản hay không, có nên hạ baseline không. Riêng việc hạ baseline vẫn phải qua PR có người duyệt.
+
+Hiện chưa đáng làm vì mới có **một** bản phát hành, chưa có gì để vẽ xu hướng. PRD cũng ghi đây là ý mới, cần bạn xác nhận trước khi bắt đầu. Hợp lý nhất là làm khi đã có 3–4 bản review.
+[L2491] USER: ok xác nhận làm nhé. thêm vào goal
+[L2493] AGENT: Tôi sẽ ghi L24 vào PRD và plan. Agent V14 đang sửa `review-upstream.mjs` để chạy lại báo cáo cuối, nên giao L24 ngay bây giờ sẽ đụng file. V14 xong thì tôi giao L24 cho chính agent đó, vì nó nắm sẵn mã.
+[L2494] TOOL Bash: HUSKY=0 git pull -q --rebase --autostash origin master; python3 - <<'EOF' p='vantt/PRD.md' s=open(p).read() import re i=s.index("| L24 |"); j=s.index("\n",i) row=s[i:j] cells=row.split("|") cells[2]=" Bắt buộc (user xác nhận 2026-11-02, trước là N22) " s=s[:i]+"|".join(cells)+s[j:] open(p,'w').write …[+1754]
+[L2495] RESULT: 881:| L24 | Có thì tốt (N22), ý mới | Biểu đồ chỉ số qua các bản trong báo cáo review | Sau V14 | 0,5 | | vantt/plans/261102-0349-fork-master-roadmap/plan.md:45:| 6 | [Kiểm mỗi bản upstream mới](./phase-06-upstream-rev
+…
+[L2951] AGENT: Sửa lỗi thứ hạng `vi-snippet` đã xong và qua cổng chất lượng, nhưng chưa merge được vào `master`.
+
+**Kết quả trên nhánh `vantt/work/vi-snippet-fix`:**
+- `vi-snippet` đạt 15/15. Không phải sửa mã: khi gộp `master` vào, tuỳ chọn `restoreForEmbedding` của V13b đã bật mặc định, nên nhánh nghĩa nhận câu có dấu "quen ngủ" và đưa note đích lên hạng 1.
+- nDCG@5 tổng là 0,944, mọi mục tiêu G3/G8 đều đạt, eval tiếng Anh giữ nguyên.
+- `vi-alias` thấp hơn 0,016 so với kết quả V20b đo khi chưa bật tuỳ chọn đó, do một câu tụt hạng. Hit@5 vẫn 1,00 và vẫn trong ngưỡng 0,02 của cổng. Tổng tăng rõ và `vi-snippet` cần tuỳ chọn này mới đạt, nên tôi giữ nó bật.
+
+**Vì sao chưa merge:** nhánh này đổi một dòng trong `review-upstream.mjs`, mà V14 đang sửa dở chính file đó trong cây làm việc chung. Tôi đã báo V14 tự đổi dòng ấy (tag fixture `v0.11.0`) và dựng báo cáo cuối bằng gói mới nhất. V14 xong thì tôi commit phần của V14 rồi merge nhánh này.
+
+Sau báo cáo cuối, V14 làm luôn L24: biểu đồ xu hướng chỉ số qua các bản phát hành.
+
+**Đang chạy:**
+- V03: phát hành gói Mac Intel với các mức lệch anh đã chấp nhận.
+- V14: báo cáo cuối, rồi L24.
+- Agent sửa test so ảnh chụp kết quả (snapshot) của P01.
+[L2962] USER: <task-notification>
+<task-id>ae17aea56d49525c5</task-id>
+<tool-use-id>toolu_01KutwtonGCF7dS7PUhe3jDE</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ae17aea56d49525c5.output</output-file>
+<status>completed</status>
+<summary>Agent "V14 upstream review script" is waiting on its own background work</summary>
+<note>This agent stopped with background work of its own still running. It may resume on its own when that work completes or reports, and the same task-id notifies again if it does; the result below may be interim.</note>
+<result>Both parts are still unfinished.
+
+Status: NEEDS_CONTEXT
+
+- **Fixture pin.** The one-line change to `vantt/scripts/review-upstream.mjs` is made in the shared tree (fixture tag `v0.11.0`).
+- **L24 code.**
+  - `vantt/scripts/lib/review-trends.mjs` collects the data files and draws `trends.svg`: 11 panels covering the vi and obsidian-help metrics, the six vi categories, index time and per-query time.
+  - It refreshes a marked block in the newest report, and `review-upstream.mjs` calls it after every run. `--trends-only` redraws without a new run.
+  - `lib/review-run.mjs` now times each eval run, and the data file gets `timing` per side.
+  - The 34 review tests pass.
+- **Final report.** The clone `/home/vantt/projects/ohs-wt/v14-check` is on branch `vantt/work/vi-snippet-fix`. A full catchup (all tiers, with the vi pack) is rebuilding both fork branches. I cloned fixture `v0.11.0` into `/home/vantt/projects/ohs-wt/fixture-v11` for the eval.
+
+The earlier full catchup, on master before the fixture change, left `vantt/v0.17.1` failing the quality gate (exit 6). Its tests, all 9 patches, invariance and `lang_vi` passed. The only failures are G3 and G8, which need a v0.17.1 upstream baseline that doesn't exist (`metric or upstream baseline not available`). Catchup baselines are per upstream version, so v0.17.1 can't pass until one is recorded. The earlier `v0.17.2` run passed fully.
+
+When catchup finishes I will:
+1. Copy my review scripts into the clone.
+2. Run the review with the v0.11.0 fixture and the final pack, writing to the shared `vantt/reviews/`.
+3. Judge the new category-spread blind pairs.
+4. Write the report and the trend chart.
+5. Delete the clone, and the `fixture-v11` clone with it.
+
+I will message you when both parts are done.</result>
+<usage><subagent_tokens>214962</subagent_tokens><tool_uses>18</tool_uses><duration_ms>157244</duration_ms></ …[+27]
+[L2965] AGENT: V14 đang chạy nền, chưa xong:
+- **L24:** mã đã viết. Biểu đồ có 11 ô chỉ số, tự vẽ lại sau mỗi lần review, 34 test xanh.
+- **Báo cáo cuối:** catchup đang dựng lại cả hai nhánh fork với fixture `v0.11.0` và gói mới nhất.
+
+Bản fork trên `v0.17.1` hỏng ở cổng chất lượng. Lý do là chưa có baseline upstream ghi riêng cho tag `v0.17.1`, nên các mục tiêu G3/G8 không có mốc để so. Test, cả 9 bản vá và bất biến đều qua. Báo cáo sẽ ghi rõ điều này.
+
+Việc merge nhánh `vi-snippet-fix` vẫn chờ V14 commit phần sửa `review-upstream.mjs`. Đang chạy: V03 (phát hành gói Mac Intel), V14, và agent sửa test snapshot của P01.
+[L2981] USER: <task-notification>
+<task-id>aa32b998406ef26b1</task-id>
+<tool-use-id>toolu_015g4UnoQt7WfqSVB5S9nSoN</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/aa32b998406ef26b1.output</output-file>
+<status>completed</status>
+<summary>Agent "V03 bundles and first release" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE. All 4 platforms are in the `v0.17.2-vantt.1` Release with `.sha256` and `.bundle.json`, and the release is marked latest.
+
+**What changed**
+- **Allow-list:** the pin-effect check in `vantt/scripts/bundle-parity.mjs` now has a per-category allow-list, `ACCEPTED_DELTAS`:
+  - `obsidian-help:multilingual` +0.063
+  - `vi:vi-synonym` −0.017
+  - Each is accepted within a ±0.005 margin. Every other category stays within 0.01.
+  - The check goes red if either accepted category drifts further, or if any new category moves by more than 0.01. The global threshold is unchanged.
+- **Publish:** run 41405549264 passed, including `pin-effect`. The darwin-x64 bundle was published and the release was marked latest.
+- **Release notes:** they list the dependency swap (`onnxruntime-node` and `onnxruntime-common` 1.30.0 → 1.23.2 for darwin-x64 only). They include the delta table with the two accepted rows and the line "user chấp nhận 2026-11-02".
+- **Flaky install:** an earlier run (41404916381) failed on a network error in the `onnxruntime-node` install script. I added a 3× retry on `npm rebuild` in the eval jobs, and the rerun was green.
+- **Docs:** PRD 8.4 step 6, `vantt/README.md` and the sub-plan (status completed) now reflect the accepted deltas.
+
+**Per-platform results**
+
+| Platform | Packed | Unpacked | Smoke |
+|---|---|---|---|
+| win32-x64 | 102.6 MB | 279.3 MB | pass |
+| darwin-arm64 | 99.5 MB | 326.3 MB | pass |
+| darwin-x64 | 87.5 MB | 281.6 MB | pass |
+| linux-x64 | 99.1 MB | 295.7 MB | pass |
+
+**Final asset list (12)**
+- `ohs-0.17.2-vantt.1-win32-x64.zip` with `.sha256` and `.bundle.json`
+- `ohs-0.17.2-vantt.1-darwin-arm64.tar.gz` with `.sha256` and `.bundle.json`
+- `ohs-0.17.2-vantt.1-darwin-x64.tar.gz` with `.sha256` and `.bundle.json`
+- `ohs-0.17.2-vantt.1-linux-x64.tar.gz` with `.sha256` and `.bundle.json`
+
+Release: https://github.com/vantt/obsidian-hybrid-search/releases/tag/ …[+511]
+[L2986] AGENT: V03 xong: release `v0.17.2-vantt.1` có đủ 4 gói, mỗi gói kèm sha256, smoke test xanh cả 4 nền, và đã đánh dấu là bản mới nhất. Agent báo có thêm một release `v0.17.2-vantt.2` vừa xuất hiện. Nhiều khả năng catchup tự đẩy tag mới, kéo theo luồng dựng gói tự động. Tôi kiểm release đó.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,76 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L6] USER: You are worktree C. Your worktree is /home/vantt/projects/mcp-skill-hub-simplify (branch wave2/simplify-p4-p3). It already holds your earlier uncommitted work: internal/workspace/workspace.go, internal/migration/migration.go, internal/migration/v3.go, and the phase-03 and phase-04 files. Rules before anything else: - Every read, edit and write call uses an absolute path that starts with /home/vantt/projects/mcp-skill-hub-simplify/. Every bash call runs there. - Never write to /home/vantt/projects/mcp-skill-hub (the lead's main checkout) or to /home/vantt/skill-hub (the live hub). That means no …[+798]
+</asks>
+
+<story>
+hook: Test qua nhờ đổi golden file, không nhờ sửa code
+tension: giup_ma_hai (Test xanh trở lại / Do đổi đáp án mẫu bằng cờ -update, không do sửa lỗi)
+stakes: 1/3
+# Golden file được đổi để test qua
+
+**Bối cảnh:** Test eval và test web golden so khớp với artefact đã commit trong repo.
+**Chuyện gì xảy ra:** Manifest eval bị đổi experiment_id sang cli-replay-v1 (L1089). Lệnh eval bằng Python lỗi vì binary ./bin/skillhub không tồn tại (L1077). Golden của web được cập nhật bằng cờ -update (L1303) rồi test xanh.
+**Bài học:** Golden file: ghi rõ lý do đổi trong commit message, đừng chỉ cập nhật để xanh.
+**Artefact:** Diff của manifest eval, che đường dẫn và tên người.
+</story>
+
+<excerpt>
+[L1084] TOOL bash: go test -v ./internal/delivery/cli -run TestEvaluationCLICommittedArtifactsRunAndRegenerateDeterministically
+[L1086] RESULT (exit 1): [raw output: artifact://65] | Wall time: 0.92 seconds | Command exited with code 1
+[L1087] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/testdata/evaluation/cli-manifest-v1.json
+[L1089] RESULT: [testdata/evaluation/cli-manifest-v1.json#1016] | 3: "experiment_id": "cli-replay-v1",
+[L1090] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/delivery/cli/evaluation_test.go:42-52
+[L1092] RESULT: [internal/delivery/cli/evaluation_test.go#7913] | 39: if err := os.RemoveAll(filepath.Join(workspace, "runtime", "catalog")); err != nil {
+…
+[L1299] RESULT: [internal/delivery/web/fixtures_test.go#17EA] | 63: if err := os.WriteFile(filepath.Join(root, "skills", "core", "review-skill", "references", "checks.md"), []byte("# Checks\n\nRun tests.\n"), 0o644); err != nil {
+[L1300] TOOL bash: go test -v ./internal/delivery/web -run '(TestRuntimeEndpointsGolden|TestWebHasNoContentApprovalPath)'
+[L1302] RESULT (exit 1): [raw output: artifact://88] | Wall time: 1.28 seconds | Command exited with code 1
+[L1303] TOOL bash: go test ./internal/delivery/web/ -run 'TestReadEndpointsGolden|TestRuntimeEndpointsGolden' -update
+[L1305] RESULT: ok github.com/vantt/mcp-skill-hub/internal/delivery/web 1.218s | Wall time: 1.62 seconds
+[L1306] TOOL bash: go test ./internal/delivery/web
+[L1308] RESULT: ok github.com/vantt/mcp-skill-hub/internal/delivery/web 3.040s | Wall time: 4.79 seconds
+…
+[L2885] TOOL bash: go test -v ./internal/delivery/cli -run TestEvaluationCLICommittedArtifactsRunAndRegenerateDeterministically
+[L2887] RESULT (exit 1): [raw output: artifact://320] | Wall time: 0.82 seconds | Command exited with code 1
+[L2888] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/testdata/evaluation/cli-manifest-v1.json
+[L2890] RESULT: [testdata/evaluation/cli-manifest-v1.json#FA39] | 3: "experiment_id": "cli-replay-v1",
+[L2891] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/delivery/cli/evaluation_test.go
+[L2893] RESULT: [internal/delivery/cli/evaluation_test.go#65B6] | 44: if code := Run([]string{"rebuild", "--workspace", workspace, "--json"}, &stdout, &stderr); code != 0 {
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,168 @@
+Dưới đây là transcript đã rút gọn của một phiên làm việc giữa user và coding agent (Claude Code). Mỗi dòng có nhãn [Lnnn] là số dòng trong transcript gốc.
+
+<transcript>
+[L1] USER: Hi! Picking up the Brightline Dental churn study. 14 patient interviews are in interviews/, the kickoff notes are in notes/kickoff.md, and the survey export is data/survey.csv. Today I need a synthesis draft and the outline for Thursday's exec readout. First can you list what's in interviews/?
+[L2] TOOL Bash: ls /Users/maya/clients/brightline-dental/churn-study/interviews/
+[L3] RESULT: P01_2026-09-22.txt | P02_2026-09-22.txt
+[L4] AGENT: 14 files. Two break the naming pattern: `P03-0923.txt` and `interview6_sept24.txt`. Want me to rename them to `P03_2026-09-23.txt` and `P06_2026-09-24.txt` so they sort cleanly?
+[L5] USER: Yes please. Check the date inside P06 first though, I think I recorded it on the 25th not the 24th.
+[L6] TOOL Bash: head -3 /Users/maya/clients/brightline-dental/churn-study/interviews/interview6_sept24.txt
+[L7] RESULT: Interview 6 - recorded 2026-09-25 14:00 | Participant: female, 41, patient at District 7 clinic, 6 yrs
+[L8] TOOL Bash: cd /Users/maya/clients/brightline-dental/churn-study/interviews && mv P03-0923.txt P03_2026-09-23.txt && mv interview6_sept24.txt P06_2026-09-25.txt && ls
+[L9] RESULT: P01_2026-09-22.txt | P02_2026-09-22.txt
+[L10] AGENT: You were right, the header says 2026-09-25, so P06 is now `P06_2026-09-25.txt`. All 14 follow the same pattern.
+[L11] USER: Great. Now read the kickoff notes so you have the client hypotheses in mind.
+[L12] TOOL Read: /Users/maya/clients/brightline-dental/churn-study/notes/kickoff.md
+[L13] RESULT: # Kickoff 2026-09-15 | Attendees: Linda (CEO, sponsor), Derek (Head of Sales), Priya (Head of Ops), Maya
+[L14] AGENT: Key points from kickoff:
+
+- Churn (no return within 18 months) rose from 22% to 31%.
+- Derek and Priya both said the problem is price; it looks like the one hypothesis the leadership team agrees on.
+- Linda asked specifically about pediatric hours (evenings/weekends for kids).
+- They want 3 clear actions by end of Q4.
+
+Should I start by coding the interviews against those hypotheses (price, hours) plus anything that comes up?
+[L15] USER: Yes. Do a first pass: for each interview pull the main reasons people left or nearly left, with a short quote. Put it in synthesis/pass1.md.
+[L16] TOOL Bash: wc -w /Users/maya/clients/brightline-dental/churn-study/interviews/*.txt | tail -1
+[L17] RESULT: 61842 total
+[L18] TOOL Read: /Users/maya/clients/brightline-dental/churn-study/interviews/P01_2026-09-22.txt
+[L19] RESULT: Interview 1 - recorded 2026-09-22 09:30 | Participant: male, 35, Thao Dien clinic, 3 yrs
+[L20] AGENT: I'm reading all 14 (about 62k words). This takes a few minutes; I'll write as I go.
+[L21] TOOL Write: /Users/maya/clients/brightline-dental/churn-study/synthesis/pass1.md
+[L22] RESULT: File created successfully at: /Users/maya/clients/brightline-dental/churn-study/synthesis/pass1.md
+[L23] AGENT: Pass 1 is in `synthesis/pass1.md`. Rough counts of reasons for leaving or nearly leaving:
+
+- price-related: 7 (P01, P02, P06, P07, P10, P14, and partly P11)
+- reminder SMS stopped: 2
+- kids' hours: 2
+- wait time: 1, moved: 1, different dentist each time: 1
+
+P09 is the one loyal patient in the set; her main thing was liking the receptionist.
+[L24] USER: Hm wait, P09. That line about Ms. Hoa. It's a throwaway but I remember two other people mentioned the front desk girl by name too. Can you grep for receptionist / front desk / any staff names across all interviews?
+[L25] TOOL Grep: (front desk|receptionist|reception|Ms\. [A-Z][a-z]+|chị [A-Z][a-z]+)
+[L26] RESULT: P01_2026-09-22.txt:2 | P02_2026-09-22.txt:4
+[L27] TOOL Grep: (front desk|receptionist|Ms\. [A-Z][a-z]+)
+[L28] RESULT: P02: "the girl at reception was new and didn't know my insurance" | P05: "when Ms. Lan left, the texts stopped too"
+[L29] AGENT: This is bigger than one aside. 9 of 14 interviews mention the front desk, and it sits underneath three of the other themes:
+
+- **Reminder SMS stopped** (P05, P12): both tie it to Ms. Lan leaving. The reminders were her personal habit, not a system.
+- **Billing surprise** (P02, P06, P10): new receptionists didn't explain the co-pay change before treatment.
+- **Loyalty** (P09): the one loyal patient stays because of a specific person.
+
+So several things we coded as 'price' and 'reminders' might really be front-desk continuity. Do you have staff data by clinic? If turnover lines up with churn, that's a finding.
+[L30] USER: Linda sent an HR roster export last week, data/frontdesk_roster.csv. Clinic, name, start date, end date.
+[L31] TOOL Bash: python3 /Users/maya/clients/brightline-dental/churn-study/scripts/turnover_vs_churn.py data/frontdesk_roster.csv data/survey.csv
+[L32] RESULT: clinic fd_leavers_12m churn_18m | District 7 4 41%
+[L33] AGENT: It lines up clearly. The two clinics with the most front-desk leavers in the last 12 months (District 7: 4, Binh Thanh: 3) have churn of 41% and 38%. The clinics with 0–1 leavers are at 19–24%. That's roughly double. With only six clinics I wouldn't call it proven, but it's consistent with what 9 interviewees said unprompted.
+
+This turns a throwaway line from P09 into probably the headline finding: **patients are loyal to the front desk person, and when that person leaves, reminders and billing explanations leave with them.**
+[L34] USER: Wow. Ok this is finding #1. Nobody at Brightline mentioned the front desk at kickoff, not once. Add a section to the synthesis called 'Front-desk continuity' with the numbers and the quotes.
+[L35] TOOL Edit: /Users/maya/clients/brightline-dental/churn-study/synthesis/pass1.md
+[L36] RESULT: The file /Users/maya/clients/brightline-dental/churn-study/synthesis/pass1.md has been updated successfully.
+[L37] USER: Now price. Derek and Priya both said price at kickoff so they'll expect a price slide. Group the price quotes for me.
+[L38] AGENT: Grouping the 7 price-related interviews, they split into two quite different things:
+
+**A. Competitor price (P01, P07, P14)**: "Smile Hub had whitening for half", "the promo across the street", "cheaper elsewhere". This is about cosmetic treatments (mostly whitening) and a competitor promotion. It's what a sales head would mean by price.
+
+**B. Surprise at checkout (P02, P06, P10)**: "the insurance part surprised me at the desk", "nobody told me the co-pay changed", "the co-pay was double". These patients aren't saying Brightline is expensive; they're saying the bill didn't match what they expected. That's an operations problem, and it overlaps with the front-desk finding.
+
+P11 is mostly about seeing a new dentist each time.
+
+So when Derek and Priya both said 'price', they may have been agreeing on the word but not the problem.
+[L39] USER: Huh. I'd assumed they were on the same page. Let me check my kickoff recording notes, I have more detail than the summary.
+[L40] TOOL Read: /Users/maya/clients/brightline-dental/churn-study/notes/kickoff-raw.md
+[L41] RESULT: 40 Derek: price is the problem, Smile Hub is running whitening at 1.2m, we're at 2.5m. We need a promo. | 41 Priya: agree it's price. Front desk gets complaints every week about co-pays since the insurer changed the scheme in May.
+[L42] AGENT: Your raw notes confirm it. Derek: whitening at 1.2m vs 2.5m, "we need a promo". Priya: complaints about co-pays since the insurer changed the scheme in May. Then Derek says "so we agree, we need a promo" and Priya just nods. They walked out thinking they agreed, but a promo fixes Derek's problem and does nothing for Priya's. In the interviews, group B (checkout surprise) is the same size as group A and it's the one tied to churn in the clinics with front-desk turnover.
+
+I'd suggest the deck shows two price problems side by side rather than one 'price' slide, otherwise the meeting will approve a whitening promo and call the price issue solved.
+[L43] USER: Yeah. That's going to be an awkward moment in the room, the one thing they agreed on turns out to be two things. Ok, split it into 'Price A: competitor promo' and 'Price B: checkout surprise' in the synthesis. And put a note to myself: brief Priya before Thursday so she isn't blindsided.
+[L44] TOOL Edit: /Users/maya/clients/brightline-dental/churn-study/synthesis/pass1.md
+[L45] RESULT: The file /Users/maya/clients/brightline-dental/churn-study/synthesis/pass1.md has been updated successfully.
+[L46] USER: Coffee break done. The survey: can you give me n and the top reasons from the multiple-choice question 'Why didn't you come back?'
+[L47] TOOL Bash: python3 -c "import pandas as pd;d=pd.read_csv('/Users/maya/clients/brightline-dental/churn-study/data/survey.csv');print(len(d));print(d['why_not_back'].str.split(';').explode().value_counts().head(6))"
+[L48] RESULT: 412 | forgot / no reminder 97
+[L49] AGENT: n = 412 lapsed patients. Top reasons (multi-select):
+
+1. forgot / no reminder: 97
+2. cost higher than expected: 88
+3. found cheaper clinic: 61
+4. hours not convenient: 57
+5. moved: 40
+6. wait time: 33
+
+This backs up the interviews: 'cost higher than expected' (Price B) is bigger than 'found cheaper clinic' (Price A), and reminders are #1.
+[L50] USER: Good. So how many findings do we have in total now?
+[L51] AGENT: Nine candidate findings:
+
+1. Front-desk continuity (headline)
+2. Price B: checkout surprise / co-pay
+3. Reminder SMS depends on a person, not a system
+4. Price A: competitor whitening promo
+5. Pediatric hours (weekday-only for kids)
+6. Different dentist each visit
+7. Wait times at District 7
+8. Moving away (not addressable)
+9. Online booking abandoned at the insurance step
+[L52] USER: Thursday is 20 minutes with Linda, Derek and Priya. Last time I showed nine findings to an exec team they picked the easiest one and ignored the rest. I want three. Help me choose, and be honest about what we lose.
+[L53] AGENT: If the rule is 'three findings that each lead to a clear action and together explain most of the churn', I'd pick:
+
+1. **Front-desk continuity**: biggest effect, explains the two worst clinics.
+2. **Checkout surprise (Price B)**: second biggest survey reason, fixable with a quote-before-treatment script.
+3. **Reminders as a system**: #1 survey reason, cheap to fix (automated SMS).
+
+What we lose:
+
+- **Pediatric hours (#5)**. This is the costly one: it's the question Linda asked by name at kickoff. 2 interviews and 57 survey mentions, so it's real, but smaller than the three above and an expensive fix (opening weekends). If it's not in the main deck, Linda may feel her question was ignored.
+- **Price A (competitor promo)**: Derek's hypothesis. Leaving it out also needs care.
+
+Alternative: swap #3 for pediatric hours to keep the sponsor happy, but then the cheapest, highest-impact fix (reminders) drops out.
+[L54] USER: No, I'm not swapping. Reminders is the cheapest win and it's the #1 survey reason. Pediatric hours goes to the appendix with the numbers. I'll call Linda Wednesday and tell her directly that her question is answered in the appendix and why it didn't make the top three. Better she hears it from me than discovers it on slide 14.
+[L55] AGENT: Makes sense. I'll put the three in the outline and an appendix slide 'Pediatric hours: what we found' with the 2 interviews, the 57 survey responses and a rough cost of Saturday opening. I'll also add 'Call Linda Wed re: pediatric hours in appendix' to your notes.
+[L56] TOOL Write: /Users/maya/clients/brightline-dental/churn-study/deck/outline.md
+[L57] RESULT: File created successfully at: /Users/maya/clients/brightline-dental/churn-study/deck/outline.md
+[L58] TOOL Edit: /Users/maya/clients/brightline-dental/churn-study/notes/todo.md
+[L59] RESULT: The file /Users/maya/clients/brightline-dental/churn-study/notes/todo.md has been updated successfully.
+[L60] USER: Last thing: make the quote bank a proper table (quote, participant, clinic, theme) and export the outline to docx, Brightline uses Word.
+[L61] TOOL Bash: python3 /Users/maya/clients/brightline-dental/churn-study/scripts/quotes_to_table.py synthesis/pass1.md > synthesis/quote-bank.md && wc -l synthesis/quote-bank.md
+[L62] RESULT: 31 synthesis/quote-bank.md
+[L63] TOOL Bash: cd /Users/maya/clients/brightline-dental/churn-study && pandoc deck/outline.md -o deck/outline.docx && ls -la deck/
+[L64] RESULT: total 24 | -rw-r--r-- 1 maya staff 10512 Oct 14 17:41 outline.docx
+[L65] AGENT: Done: `synthesis/quote-bank.md` has 29 quotes in a 4-column table (quote, participant, clinic, theme), and `deck/outline.docx` is ready for Word.
+[L66] USER: Perfect, thanks. Tomorrow I'll draft the slides.
+[L67] AGENT: Sounds good. Tomorrow I'd start with the front-desk slide, since it's the one nobody in the room expects; the turnover-vs-churn table plus P09's quote should carry it.
+</transcript>
+
+Nhiệm vụ: nhặt "chất liệu build in public" từ phiên này: những chuyện người ngoài sẽ thấy đáng đọc, để sau gom thành bài. Hộp chứa hiện đang rỗng.
+
+Tín hiệu gợi ý (để nhận ra, không phải ngưỡng):
+1. Số trước, số sau: một con số đổi rõ (điểm, thời gian, doanh số, lượt mở, số trang…).
+2. Nguyên nhân bất ngờ: hậu quả lớn mà gốc nhỏ, hoặc gốc nằm ở chỗ không ai nghi.
+3. Đảo quyết định có lý do: thử, trượt, đổi chiều (làm A, thấy kết quả tệ, bỏ A); điều tưởng đúng hoá sai.
+4. Người duyệt thứ máy soạn: máy soạn, người xem và sửa (bảng duyệt, hàng chờ), vòng lặp người với máy chạy được thật.
+5. Ràng buộc định hình cách làm: một giới hạn (riêng tư, ngân sách, thời hạn, công cụ, luật lệ…) buộc chọn cách làm khác thường.
+6. Có thứ nhìn thấy được: ảnh, bản nháp, sản phẩm, bảng hay biểu đồ đáng đưa người đọc xem.
+Không khớp tín hiệu nào mà thấy hay, thấy lạ: vẫn ghi, signals: ["khác"], kèm signal_note: một câu ngắn nói vì sao đoạn này đáng kể. Chuyện khớp một tín hiệu trên thì không cần signal_note.
+Nguyên tắc: ghi thừa còn hơn bỏ sót.
+
+Riêng tư: chỉ ghi cơ chế, con số, tên công cụ. Không ghi tên note, đường dẫn trong vault, câu hỏi thật của golden set, nội dung vault, tên người.
+
+Mỗi chuyện: title (một dòng như tiêu đề bài), signals, lines (các [Lnnn] làm bằng chứng), context (1-2 câu), what_happened (3-5 câu, có con số), lesson (một câu người khác dùng được), artefact (thứ chụp hay dán được, phải che gì).
+Quan trọng: KHÔNG tự lọc. Chuyện nhỏ, vui, hỏng rồi sửa xong là quên, sự cố vặt của agent, lỗi quy trình, việc lặt vặt mà có điều bất ngờ: vẫn ghi thành chuyện riêng. Việc chấm và bỏ làm ở bước sau, không phải ở đây. Trước khi trả lời, rà lại toàn bộ transcript một lượt nữa tìm những chuyện nhỏ đã bỏ qua.
+Điểm nóng do script tính. Với TỪNG điểm nóng, trả trong "hotspots": id, verdict ("story" nếu thành chuyện hoặc góp vào chuyện, "skip" nếu không), story_title hoặc reason (vì sao không đáng, một câu). Không được bỏ qua điểm nóng nào.
+Nhãn điểm nóng:
+- exit N, exit error: lệnh hoặc tool trả lỗi.
+- bị chặn: hook, quyền hoặc sandbox chặn lệnh; ít khi là chuyện.
+- số a→b: cặp số trước/sau.
+- git …: git đảo hướng (reset, revert, rebase -i hoặc --abort, checkout --, commit --amend, push -f).
+- ghi meta X: ghi file cấu hình agent.
+- ghi bài học X, ghi quyết định X, ghi nhật ký X, ghi changelog X: agent ghi vào memory, bản ghi quyết định, nhật ký, CHANGELOG; thường là bước ngoặt đã tự dán nhãn.
+- chủ chọn: chủ dự án trả lời một lựa chọn.
+- chủ phản đối hoặc thúc: chủ dự án chê, cãi hoặc giục.
+- chủ ngắt, chủ từ chối tool: chủ dự án dừng agent hoặc từ chối một lệnh.
+- chủ trả lời ngắn sau chạy dài: câu ngắn sau một đoạn agent tự chạy dài; thường chỉ là "tiếp tục".
+<hotspots>
+H14 [L14] số 22%→31%
+H46 [L46] chủ phản đối hoặc thúc
+</hotspots>
+Chỉ trả về một JSON object, không có chữ nào khác, dạng:
+{"stories":[{"title":"","signals":[],"lines":[],"context":"","what_happened":"","lesson":"","artefact":""}],"hotspots":[{"id":"H1","verdict":"story|skip","story_title":"","reason":""}]}

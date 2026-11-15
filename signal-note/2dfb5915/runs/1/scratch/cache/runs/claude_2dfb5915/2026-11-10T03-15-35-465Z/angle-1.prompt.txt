@@ -1,0 +1,112 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ giúp hỏi Claude Desktop về graph của vault Obsidian: note nào nối với note nào, đi từ ý này tới ý kia qua đâu, và note nào lạc khỏi mạng. Làm cho người làm một mình hoặc freelancer, dùng tiếng Việt. Chạy trên máy của người dùng dưới dạng một file cài duy nhất, không cần cài Python, và index vault được lưu trong SQLite trên máy đó. Mục tiêu hiện tại: viết lại lõi bằng Rust để thay bản Python cũ trong Claude Desktop, cho kết quả giống bản Python trên cùng dữ liệu.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L2898] USER: bản vá P04 bên fork OHS đã xong nhé
+[L3009] USER: project vantt/browser-worker có một cơ chế code mode đơn giản.
+[L3027] USER: cần bật agent để thảo luận và brainstorm cho tốt về interface của mcp nhé.
+</asks>
+
+<story>
+hook: Test 5 khoá luôn qua, vì kiểm trước khi compact xoá mất 2 khoá
+tension: tuong_ma_hoa_ra (Test kiểm 5 khoá đều xanh / Agent thật chỉ nhận 3 khoá vì compact bỏ khoá null)
+stakes: 2/3
+# Chạy thử tool MCP: compact() xoá khoá null làm lỗi ohs_not_ready chỉ còn 3 khoá, test cũ không bắt được vì kiểm trước khi compact
+
+**Bối cảnh:** Hợp đồng lỗi quy định ohs_not_ready phải có đủ 5 khoá để agent biết đang khởi động hay đang index.
+**Chuyện gì xảy ra:** Hàm compact bỏ mọi khoá có giá trị null trên mọi kết quả. Khi OHS đang starting thì progress và eta_s là null, nên agent nhận 3 khoá. Test 5 khoá kiểm trước compact nên luôn qua. Sửa: miễn compact cho lỗi này và thêm test ở tầng MCP.
+**Bài học:** Test phải kiểm đầu ra cuối cùng sau mọi lớp biến đổi, không chỉ kiểm lớp bên trong.
+**Artefact:** Ví dụ JSON trước và sau khi compact (không có nội dung note).
+</story>
+
+<excerpt>
+[L3088] AGENT: Kongming cũng đã xong. Hai agent làm độc lập nhưng ra kết luận gần như trùng nhau:
+
+- **Giữ tool rời, không làm code mode.** Cơ chế của `browser-worker` là 3 meta-tool (tìm tool, mô tả tool, gọi tool), hợp với bộ 57–69 tool. Với khoảng 13 tool trên Claude Desktop thì nó làm mỗi phiên tốn thêm lượt gọi, và che mất bước chọn giữa `find` và `search`.
+- **`read` do `pkm` tự đọc file, không chuyển sang OHS.** Cả hai đều đề xuất điều này. Nó lệch với plan, nên cần anh chốt.
+- **`search` chỉ phơi khoảng 7 tham số và trả ít trường.** Mỗi câu có bước tìm sẽ bớt khoảng 2–3 nghìn token.
+- **`related` nhận thẳng câu hỏi.** Câu D1 và D3 còn 2 lượt gọi thay vì 3, và không câu A–D nào tăng lượt.
+- **Token định nghĩa tool mỗi phiên giảm từ khoảng 5,7–6,0 nghìn xuống khoảng 3,8–4,4 nghìn.** Số này ước lượng theo độ dài chuỗi, chưa đo thật.
+
+Kongming chỉ ra thêm vài chỗ phải sửa khi làm. Có hai thông báo lỗi đang bảo agent "gọi tool search của OHS trước", không còn đúng khi chỉ còn một cửa. `read` cũng phải tự giữ giới hạn độ dài để bộ cắt không chặt đứt JSON.
+
+Giờ hai agent đang phản biện chéo bản của nhau và mỗi bên đưa ra một danh sách tool gộp. Xong vòng này tôi gửi anh bản cuối cùng kèm các câu cần chốt.
+[L3098] USER: <task-notification>
+<task-id>a29d11870b6e13c39</task-id>
+<tool-use-id>toolu_01GMfFQc7n8j7NXbX87X9qEc</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a29d11870b6e13c39.output</output-file>
+<status>completed</status>
+<summary>Agent "Brainstorm one-door MCP signature" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Kongming và mình thống nhất ở các ý chính: 13 tool, `read` do `pkm` tự đọc, `search` cắt gọn, `related` nhận câu hỏi làm đường chính, không làm code mode, không thêm tool `status`. Mình đã thêm mục "7. Phản biện chéo" (khoảng 50 dòng) vào cuối `/home/vantt/projects/obsidian-pkm/plans/reports/brainstormer-261102-1826-one-door-mcp-signature.md`, không tạo file mới.
+
+**Chỗ Kongming tốt hơn, mình nhận:**
+- Kết quả dùng khoá `id` thay cho `path`, đúng với cách các tool cũ gọi note.
+- Thiết kế `read`:
+  - Tham số là `nodes`, `max_chars` (mặc định 4000), `offset`.
+  - Note sai id thì báo lỗi trong đúng mục đó kèm `did_you_mean`, các note khác vẫn trả về.
+  - `read` tự cắt đều các thân note, để bộ cắt `--max-chars` không chặt giữa JSON. Bản của mình chép dạng của OHS nên dính đúng lỗi này.
+- `related` dùng tên `node` thay cho `path`.
+- `search` có thêm `system` (mặc định ẩn trang hệ thống), có `title`, và chỉ giữ 7 tham số.
+- `search` chờ tối đa 8 giây khi OHS đang khởi động; mã lỗi `ohs_error`; test ghim kích thước danh sách tool.
+- Đặt `search` cạnh `find` và `read` cạnh `note`. Việc này không tốn thêm ở bộ so khớp, vì `parity/src/compare.rs` so cả file `tools_list.json`: thêm tool ở đâu cũng phải ghi ngoại lệ.
+
+**Chỗ mình không đồng ý:**
+- **Số token của danh sách tool bị tính thấp.** Kongming tính khoảng 7 KB, tức khoảng 1,9 nghìn token. File golden ở dạng JSON gọn dài 13.381 ký tự, tức khoảng 3,3 đến 3,8 nghìn token. Thứ hạng các phương án không đổi, nhưng ngưỡng cho test kích thước phải là khoảng 17 KB chứ không phải 11 KB.
+- **Lỗi `ohs_not_ready` không phải "đã đủ 5 khoá".** Mọi kết quả qua `compact()` trong `mcp.rs` (dòng 692), hàm này bỏ khoá rỗng. Ngoài trạng thái `indexing`, `progress` và `eta_s` rỗng nên agent chỉ thấy 3 khoá. Cần sửa và test ở tầng MCP.
+- **`related`:** không thêm `title` vào mọi dòng, vì id đã chứa tên file. Mình nhận `snippet` 160 ký tự, nhưng chỉ cho các note hạt giố …[+1857]
+[L3100] AGENT: Brainstormer đã phản biện xong. Hai bên đã gần như thống nhất được bộ 13 tool. Tôi đang chờ kongming phản biện ngược lại, sau đó gửi anh bản chốt kèm các câu cần quyết.
+[L3110] USER: <task-notification>
+<task-id>a1e4cdc7ead3d9d59</task-id>
+<tool-use-id>toolu_016trXBxnNQY4KHaY6eCJChh</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a1e4cdc7ead3d9d59.output</output-file>
+<status>completed</status>
+<summary>Agent "Independent MCP interface design" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Đã nối mục "11. Phản biện chéo" vào `/home/vantt/projects/obsidian-pkm/plans/reports/kongming-261102-1826-one-door-mcp-interface.md`. Tóm tắt cho coordinator:
+
+**Xác nhận phát hiện `compact()`:** đúng. `compact()` (`crates/pkm/src/mcp.rs:227–238`) lọc mọi khoá `null`; `tools_call` áp nó lên mọi kết quả (`mcp.rs:692`). Ở `starting`/`model_missing`/`broken`, `progress` và `eta_s` là `null` (`ohs/state.rs:59–65`) nên agent chỉ nhận 3 khoá; test 5 khoá ở `state.rs:326` kiểm trước `compact` nên không bắt được. Sửa: miễn `compact` cho object `error == "ohs_not_ready"` (chỗ `is_error` đã có ngoại lệ tương tự) và thêm test ở tầng `mcp`.
+
+**Nhận từ bản brainstormer (7 điểm):** sửa `compact`; quy tắc ánh xạ hai bộ tên tham số OHS (MCP `snippet_length`/`path` → stdio `snippetLength`/`notePath`, gộp `queries`); đổi `SERVER_NAME = "kg"` (`mcp.rs:37`) và dòng đầu `instructions`; `path` mơ hồ → `did_you_mean` từ `find`; chặn `..`/ngoài vault ở `read`, `doctor` cảnh báo MCP `ohs` song song, khung changelog, 4 tiêu chí nghiệm thu; lấy số token nền đo từ golden (11 tool ≈ 3,3 k, hai cửa ≈ 6,0 k + 1,2 k); `related` nhận `queries`.
+
+**Giữ quan điểm (6 điểm, có bằng chứng):** `search` trả 5 trường (bỏ `rank/tags/aliases/matchedBy`; `compact` giữ mảng rỗng, `mcp.rs:226`); 7 tham số không có `frontmatter` (trùng `select`, `defs.rs:214`), `paths`, `threshold`; `read` dạng riêng với `max_chars` 4000 + `offset` + ngân sách tổng (mặc định trọn note sẽ bị bộ cắt `--max-chars` chặt giữa JSON, `mcp.rs:700–709`) và lỗi `error + did_you_mean` như `note` (`tools.rs:593`), nhượng tên tham số `paths`; vẫn ưu tiên chèn `search`/`read` cạnh `find`/`note`; không ghim QuickJS vào điều kiện xem lại code mode; giữ `title`/`snippet` trong `related`.
+
+**Bộ gộp 13 tool:** 10 tool cũ nguyên; `search(query, queries, path, mode, scope, limit, snippet_length, system)` → `{count, mode, items[{id,title,type,score,snippet}]}`; `read(paths, ma …[+799]
+[L3117] TOOL Bash: grep -o '"name": *"[a-z_]*"\|^ *"[a-z_]*": *{ *"type"' crates/pkm/src/mcp/defs.rs 2>/dev/null | head -60 || ls crates/pkm/src
+[L3118] RESULT: (Bash completed with no output)
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

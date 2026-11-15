@@ -1,0 +1,73 @@
+Dưới đây là 31 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Hai lệch chỉ thấy trên Windows: đường dẫn escape trong JSON
+   Đường dẫn Windows trong JSON có dấu gạch chéo ngược bị escape thành hai dấu. Hàm Scrub chỉ che dạng thường, nên đường dẫn vault lộ trong đầu ra. Trên Linux hai dạng giống nhau nên không lộ. Sửa Scrub để che cả dạng escape, ưu tiên chuỗi dài nhất. Golden không đổi.
+M2. Harness chặn chuỗi sleep, chờ CI bằng vòng until
+   Harness chặn lệnh kết hợp sleep và gh run watch, yêu cầu dùng vòng until hoặc chạy nền. Agent chuyển sang chạy nền và không chia nhỏ sleep để lách.
+M3. Bản cài có thể hạ cấp gói OHS mới về bản cũ
+   Máy đang có gói mới hơn bản ghim sẽ bị đổi về gói cũ. Sửa: so phiên bản theo dạng X.Y.Z kèm hậu tố và chỉ nâng khi gói cũ hơn hoặc không rõ phiên bản. Gói đưa vào bằng cờ --ohs không bao giờ bị ghi đè.
+M4. Compact() xoá khoá null, lỗi ohs_not_ready chỉ còn 3 khoá
+   Hàm compact của server lọc mọi khoá có giá trị null. Khi OHS ở trạng thái starting, progress và eta_s là null nên bị bỏ, agent chỉ thấy 3 khoá. Test kiểm 5 khoá chạy trước compact nên không bắt được lỗi. Hai agent thiết kế cùng xác nhận.
+M5. tools/call treo vô hạn khi build index panic
+   Nếu build index lần đầu panic, cờ ready không bao giờ được đặt. tools/call chờ không giới hạn nên treo mãi, và server cũng không thoát. Lỗi thứ hai: paths và loops nhận max_len không trần, từ khoảng 8 đến 10 cạnh có thể bùng nổ tổ hợp. Đã thêm catch_unwind, timeout cho tools/call, trần max_len là 12 và timeout truy vấn 10 giây.
+M6. Hai agent thiết kế bộ tool MCP độc lập, rồi phản biện chéo
+   Hai bên đồng ý 13 tool. read do pkm tự đọc file, không đi qua OHS, vì OHS không đọc được note khi đang index. Phương án code mode bị từ chối vì Claude Desktop không có shell, còn 13 tool thì không cần meta tool tìm kiếm. Người dùng đồng ý phương án read tự đọc.
+M7. Probe OHS: kill -9 vẫn không để lại tiến trình node
+   6 trên 6 truy vấn trả về cùng bộ note và cùng thứ tự với CLI của OHS. Khi kill -9 lúc đang index, OHS thấy stdin đóng và thoát trong dưới 1 giây, không còn tiến trình node nào.
+M8. Alias bomb: note 338 byte ăn 1.45 GB RAM
+   Một note 338 byte với 7 tầng alias tạo 11.1 triệu props và 1.45 GB RSS. Tầng thứ tám ước tính cần khoảng 14 GB. Python cũng có hành vi này nên đặc tả vẫn khớp, nhưng đó vẫn là lỗ hổng. Sửa bằng ngân sách mỗi note là 1 triệu props và 64 MiB. Vượt ngân sách thì ghi lỗi MemoryError và ghi nhận như sai lệch có chủ đích.
+M9. Tên vault trên Windows lấy cả đường dẫn đầy đủ
+   Hàm basename chỉ tách theo dấu gạch chéo xuôi, nên trên Windows tên vault thành cả đường dẫn ổ C. Tên đó đi vào instructions và link mở vault. Python dùng ntpath.basename, tách cả hai loại dấu và bỏ ký tự ổ đĩa. Bản Rust được sửa theo Python.
+M10. So khớp với bản Python bằng golden: từ 47 mục chưa có về 0 lệch
+   Bộ so khớp gồm 64 mục: bảng index, 81 câu đáp án, 712 lời gọi tool và đầu ra CLI. Giữa đợt, có 47 mục còn ghi chưa có. Khi các phase xong, kết quả là 64 mục khớp, 0 lệch, 0 mục chưa có. Vault thật không lên CI.
+M11. CI đỏ vì cache xoá file nhưng giữ thư mục rỗng
+   Rust-cache chỉ lưu thư mục target. Nó xoá file nằm ngoài các thư mục build nhưng vẫn giữ thư mục rỗng. Một lần chạy đã lưu cache với dump chỉ còn thư mục rỗng. Các lần sau cache được khôi phục khớp chính xác, và bước so khớp từ chối ghi vào thư mục không có manifest. Gốc lỗi là ghi dump vào chỗ cache quản lý.
+M12. Phản hồi máy Windows thật: báo cáo được sửa trên main
+   Báo cáo nêu bốn việc: che đường dẫn trong JSON, lỗi in tiếng Việt qua pipe, PyYAML không được nhìn thấy, và bản bàn giao còn chỉ dẫn cũ. Agent sửa trên main và CI xanh trên ba nền. Sau đó người dùng hỏi còn việc gì khi máy Windows đã làm nhiều việc.
+M13. Repo private hay public: đảo quyết định vì Actions ngừng chạy
+   Quyết định giữ private được chốt ở bước chọn phương án. Khi rc.3 chạy, GitHub từ chối mọi job vì tài khoản có vấn đề thanh toán, không phải lỗi code. Người dùng chuyển repo sang public, CI chạy lại. Từ đó khách tải OHS từ Release không cần đăng nhập.
+M14. Agent phase 17 chạy 39 phút và 170 lần gọi tool
+   Agent chạy khoảng 39 phút với 170 lần gọi tool và khoảng 540 nghìn token phụ. Nó phải dừng phần chốt chữ ký tool theo yêu cầu thay đổi phạm vi, rồi làm lại phần nội bộ. Các lần CI trên nhánh cũng chạy lại nhiều lần.
+M15. Job macOS bị huỷ vì chờ runner, chạy lại thì qua
+   Job dựng binary macOS chờ runner quá 15 phút rồi bị GitHub huỷ. Việc này lặp lại ở rc.1 và rc.2. Một lần rerun gặp lỗi HTTP 500 nên phải thử lại. Đọc log trước khi sửa giúp biết lỗi nằm ở hạ tầng hay ở code.
+M16. Viết tay JSON-RPC cho MCP thay vì dùng rmcp
+   Binary đã strip: bản viết tay 0.68 MB, rmcp 2.79 MB. Số crate kéo theo là 12 so với 56. Build release sạch mất 2.5 s so với 16.5 s. rmcp lệch Python ở 5 điểm của tầng giao thức, ví dụ thông báo lỗi unknown method và dòng không phải JSON không có phản hồi. Chọn viết tay.
+M17. Windows: binary cần vcruntime140.dll, và tiếng Việt hỏng khi cài qua irm
+   pkm.exe phụ thuộc vcruntime140.dll, nhiều máy Windows sạch không có DLL này, nên Claude Desktop không chạy được server. Đã build với CRT tĩnh và thêm bước CI kiểm tra không còn phụ thuộc DLL. PowerShell 5.1 đọc script qua irm làm hỏng dấu tiếng Việt, nên thông báo cài đặt chuyển sang tiếng Anh chỉ dùng ASCII.
+M18. Kiểm secret trong toàn bộ lịch sử trước khi công khai repo
+   Lệnh quét đầu tiên bị từ chối quyền. Agent thu hẹp bằng grep các mẫu token GitHub, khoá Anthropic, khoá AWS và private key trên toàn bộ git log, kết quả 0. Tìm thêm file tên secret, credential hay pem trong lịch sử, không thấy gì.
+M19. Build index: 58.6 ms xuống 21.2 ms
+   Python mất 58.6 ms, Rust mất 21.2 ms, nhanh gần 2.8 lần. Bản build không đổi thì gần như ngang nhau: 2.4 ms so với 2.1 ms. Bộ so khớp chạy bản debug nên số đo ở đó chỉ mang tính tham khảo.
+M20. Stop hook của /goal chặn dừng hàng chục lần
+   Hook chặn dừng đến hàng chục lần, và mỗi lần agent đều phải trả lời rằng vẫn đang chờ. Khi người dùng thu hẹp phạm vi xuống bản cài được, hook vẫn chặn vì điều kiện gốc không đổi. Cuối cùng người dùng phải tự xoá hoặc đổi điều kiện.
+M21. Báo cáo audit viết sai một ý, lead đối chiếu và sửa
+   Báo cáo nói chưa có bằng chứng các action checkout v7, upload-artifact v7 và download-artifact v8 chạy được. Trước đó đã có workflow_dispatch chạy thành công với đúng các bản đó và đã kiểm sha256 của bốn binary. Lead đối chiếu với bằng chứng và sửa lại nhận định.
+M22. Hook chặn cargo build khi agent kiểm packaging
+   Hook scout-block chặn lệnh cargo build và truy cập thư mục target, nên agent không dựng được binary. Mọi kết luận về binary, ví dụ thiếu DLL, chỉ đến từ đọc mã và chưa được chạy thật. Muốn cho phép cần thêm ngoại lệ vào file ignore của hook.
+M23. Review phase 9: build lỗi giữa chừng làm index sai mãi
+   Reviewer tìm ra hai lỗi mức cao: build lỗi làm edges cũ tồn tại mãi, và hai build chạy cùng lúc gây lỗi lock. Sửa bằng cờ dirty trong meta, file lock cạnh DB, và đọc note trước khi mở transaction ghi. Python có cùng lỗi edges cũ, nên bản Rust ghi nhận đây là khác biệt có chủ đích cho phần lock.
+M24. Chọn thư viện YAML bằng đo: 0 lệch so với 35 đến 36 lệch
+   Bộ kg-solo không phân biệt được các ứng viên, cả năm đều 0 lệch. Dùng 58 ca biên và 25.000 note sinh ngẫu nhiên thì khác: unsafe-libyaml cộng lớp tương thích cho 0 lệch. libyaml-safer panic khi khối block là giá trị cuối (242 note). serde_norway lệch 35 ca biên và 20.916 note. saphyr lệch 36 ca và 21.317 note.
+M25. Đổi tên MCP server từ kg sang pkm
+   Quyết định Q2 được ghi vào docs/DECISIONS.md: đổi tên thành pkm ở đợt một cửa. Mục kg cũ do pkm ghi sẽ được đổi tên tại chỗ, còn mục kg của bản Python được giữ để chạy song song.
+M26. Ước lượng token theo số ký tự: một bên thấp hơn gần một nửa
+   Một agent ước lượng danh sách tool khoảng 7 KB, tương đương 1.9 nghìn token. File golden thực tế dài 13.381 ký tự, tương đương 3.3 đến 3.8 nghìn token. Ngưỡng test kích thước phải đổi từ khoảng 11 KB lên khoảng 17 KB. Thứ hạng phương án không đổi nhưng con số tuyệt đối sai.
+M27. Vault riêng tư: chế độ private chỉ in số lệch
+   Chế độ --private chỉ in số lệch và không ghi gì vào vault. Đầu ra và report.json không chứa tên note, đường dẫn hay tên vault. Trên bản sao kg-solo với cờ giống vault B, 55 mục khớp. Chạy trên vault B thật vẫn chờ người dùng mở cổng.
+M28. Port gói ngôn ngữ OHS: không bật thì index dựng lại liên tục
+   Nếu pkm và MCP ohs của người dùng dùng chung một index nhưng cấu hình gói ngôn ngữ khác nhau, OHS sẽ dựng lại view gói liên tục. Port vào Rust: mọi lần khởi động OHS đều đặt biến này khi có gói. Kiểm với gói thật cho thấy status báo language_pack.loaded là true.
+M29. PyYAML không nạp được vì cờ -I giấu user site
+   Cờ -I gồm -E, -s và -P. Cờ -s ẩn user site, đúng nơi pip --user cài thư viện. Đổi sang -E -P: vẫn bỏ biến môi trường PYTHON*, vẫn không đưa thư mục script hay cwd vào sys.path, nhưng thấy được user site. Yêu cầu Python từ 3.11 trở lên.
+M30. Một plan 17 phase, nhiều agent song song, merge từng nhánh
+   Phase 01 (khung workspace) chạy một mình vì mọi phase khác phụ thuộc nó. Sau đó 7 phase W1 chạy song song, mỗi phase trong worktree riêng. Agent xong việc thì nhánh được review, merge vào main rồi push. CI xanh trên Linux, macOS và Windows ngay sau đợt merge đầu tiên.
+M31. Gộp nhánh song song: Cargo.lock và đoạn PORTING lặp lại
+   Mỗi lần merge, xung đột Cargo.lock được giải bằng cách tạo lại lockfile. Sau một lần merge, spec/PORTING.md có một mục MCP server bị lặp, phải xoá hai lần. Các nhánh cùng sửa một file tổng hợp nên xung đột lặp lại ở mỗi đợt.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

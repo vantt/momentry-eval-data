@@ -1,0 +1,62 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Một builder cho ba writer .meta/skill.yaml
+   Agent tạo buildInitialSkillMetaYAML dùng chung (L2133). Test source_import v3 đỏ liên tục (bốn đến năm lần) vì nguồn git cần file:// và record thiếu trường. Sau khi sửa, test xanh và commit gom một lần.
+M2. Công cụ sửa file neo dòng sai, phải đọc lại
+   Khoảng 15 lần lệnh sửa bị từ chối do neo dòng không khớp. Mỗi lần agent phải đọc lại đoạn file rồi phát hành lại lệnh sửa với neo mới.
+M3. 11 commit rebase lên main không xung đột
+   Rebase thành công 11 commit (L2360) và make check xanh sau rebase (L2364-2366). Lead đã dự đoán trước bằng merge-tree rằng không có xung đột.
+M4. Quy tắc an toàn chặn commit vì file của worktree khác
+   Lần đầu agent dừng và báo vì main có file của worktree khác (L1363). Chủ mở luật: chỉ cần không có file do mình sửa (L1364). Lần sau lại dừng vì một file prompt untracked, chủ xác nhận là bình thường (L2345). Luật được viết lại nhiều lần trong một phiên.
+M5. Fixture test được copy nguyên byte từ file dữ liệu thật của hub (chỉ đọc, trong thư mục scratch), thay vì viết tay một mẫu đơn giản.
+   Fixture test được copy nguyên byte từ file dữ liệu thật của hub (chỉ đọc, trong thư mục scratch), thay vì viết tay một mẫu đơn giản. Viết fixture tay cho gọn, đoán cấu trúc dữ liệu thật rồi test trên đó.
+M6. Golden file được đổi để test qua
+   Manifest eval bị đổi experiment_id sang cli-replay-v1 (L1089). Lệnh eval bằng Python lỗi vì binary ./bin/skillhub không tồn tại (L1077). Golden của web được cập nhật bằng cờ -update (L1303) rồi test xanh.
+M7. Báo cáo nói xong, code vẫn ghi key cũ 'repository'
+   Chủ phát hiện skill_add vẫn ghi 'repository' vào sources[] (L2025). Agent sửa sang 'repo', xoá đường dẫn provDoc không dùng và thêm test kiểm tra không còn 'repository' và 'content_digest' (L2110).
+M8. Commit mang tên tác giả là model
+   Bốn commit (L2354, L2965, L3370, L3959) ghi Author là tên model, trong khi git user của phiên là chủ dự án. Không ai trong phiên nhận thấy trước khi báo cáo commit.
+M9. Test xanh mà real hub vẫn hỏng: 'canonical entity is missing an ID'
+   Dry-run của lead trên clone hub thật báo lỗi ở bước v1 sang v2: 'canonical entity is missing an ID'. Gốc là .meta/** thuộc hub-meta nhưng validator vẫn đọc nó như canonical entity. Agent sửa canonical và schema để bỏ qua .meta khi schema dưới 3 (L1523-1537). Báo cáo đầu tiên ghi schema 1 sang 3.
+M10. Test 'meta upstream không tự duyệt' đỏ 5 lần
+   Test đỏ 5 lần liên tiếp. Mỗi lần sửa một chỗ thì lộ ra chỗ tiếp theo, trong đó có điều kiện đọc meta ở loadTrackedSkills (L606-607) khi metaBytes rỗng. Gốc nằm ở đường đọc meta, không nằm ở logic duyệt.
+M11. Migration v4 nuốt lỗi duyệt cây thư mục
+   Code có dòng _ = filepath.WalkDir(...), bỏ lỗi đọc. Lead yêu cầu fail-closed: mỗi lỗi đọc hoặc parse phải trả về lỗi có tên file, và khi preview lỗi thì workspace không đổi (L3656). Agent viết test với một file insight bị hỏng.
+M12. Migration có marker phiên bản rõ ràng (file schema-version), mỗi bước là một hàm đăng ký theo thứ tự, có bước preview, rồi apply với receipt có thể replay.
+   Migration có marker phiên bản rõ ràng (file schema-version), mỗi bước là một hàm đăng ký theo thứ tự, có bước preview, rồi apply với receipt có thể replay. Viết script migrate một lần, đoán trạng thái cũ theo cấu trúc file, không có marker hay receipt.
+M13. Nới regex bằng chứng để test qua, người duyệt yêu cầu siết lại
+   Để test pass, agent nới EvidencePattern và distill.schema.json cho phép repo@sha không có :path (L3963-3968). Lead bắt lỗi: giữ schema chặt cho lesson mới (repo@40 ký tự hex:path), chỉ chấp nhận dạng ngắn trong migration và ghi vào phase-03.
+M14. Hai cách viết cùng một URL repo thành một nguồn
+   Ban đầu hai URL cho hai nguồn. Agent thử chuẩn hoá bằng Python và cả hai ra cùng chuỗi, nhưng debug trong Go vẫn báo matches=false (L1818). Sửa thứ tự trim khoảng trắng và đuôi .git rồi merge. Kết quả là một nguồn duy nhất có roles [upstream, learning] (L1827).
+M15. So sánh đầu ra thật của sản phẩm trước và sau thay đổi: chạy binary cũ và binary mới trên hai bản clone mới của dữ liệu thật, rồi diff từng trường của lệnh 'skill show --json'.
+   So sánh đầu ra thật của sản phẩm trước và sau thay đổi: chạy binary cũ và binary mới trên hai bản clone mới của dữ liệu thật, rồi diff từng trường của lệnh 'skill show --json'. Chỉ dựa vào unit test và test tích hợp trong repo, không so output thật trên dữ liệu thật.
+M16. Phase 0 distill: 1184 dòng, 42 lesson, 77 mục commit viết tắt
+   File dài 1184 dòng, 46 KB, có 42 lesson và 77 mục commit viết tắt (L2416). Agent tra mirror git để nở chúng thành SHA đủ 40 ký tự (L2461). Thống kê: 39 lesson ở trạng thái candidate, 3 ở planned, coverage openclaw có 15 mục đã đọc và 7 chưa đọc. Test chuyển đổi chạy nhiều vòng trước khi xanh.
+M17. Người duyệt bắt regression mà fixture bỏ sót: mô tả thành '>-'
+   Frontmatter của một skill dùng block scalar (>-) nên sau migration mô tả thành '>-', đây là lỗi định tuyến. Tên 'test-audit' thành 'Test Audit'. Fixture ban đầu chỉ kiểm trust nên không bắt được. Agent đổi sang YAML parser thật và đặt thứ tự ưu tiên tên. Sau sửa, tên giữ 'test-audit' (L1890).
+M18. Model distill: test reopen và gỡ revision packages đỏ liên tục
+   Xóa revision_package.go và test của nó (L3083-3085). Gỡ thêm sáu schema JSON cũ. Test distill đỏ nhiều vòng: thêm nhánh skipRuntimePackages (L3238), rồi test tombstone đỏ liên tục qua các lần sửa validate (H3262 đến H3346).
+M19. Agent dừng sau mỗi checkpoint (commit, rebase, báo hash) và chờ người review/merge trước khi làm phần tiếp theo, dù đã có sẵn danh sách việc cần làm.
+   Agent dừng sau mỗi checkpoint (commit, rebase, báo hash) và chờ người review/merge trước khi làm phần tiếp theo, dù đã có sẵn danh sách việc cần làm. Agent thường làm liền một mạch đến hết task rồi báo cáo một lần, hoặc chỉ dừng khi bị chặn.
+M20. Một dòng YAML thụt lề làm receipt không đọc được
+   Test lỗi ở bước đọc receipt. Decoder báo 'did not find expected key' ở dòng 1 (L2743). Gốc là block scalar before_content thiếu thụt lề đúng. Sau khi sửa thành block scalar hợp lệ, decode thành công (L2746). Một dòng thụt lề làm cả receipt không đọc được.
+M21. Vòng sửa test sau khi đổi schema: 24 package, lặp đi lặp lại
+   go test ./... đỏ lần đầu ở L669. Sau nhiều vòng sửa fixture (migration, mutation, web golden, app, cli, mcpserver), lần chạy cuối là 24 package ok và 2 package không có test (L1311). Mỗi vòng sửa một chỗ rồi chạy lại.
+M22. Xóa 17 tool MCP cũ và đặt test ranh giới curator trước
+   Commit căn chỉnh đổi 19 file, +350 và -1650 dòng (L3956). Xóa 17 tool cũ như inbox_list và insight_*, xoá curation_tools.go. Hai bản SKILL.md của curator được cập nhật bằng cp để boundary test xanh (L3596). Test ranh giới được viết trước khi sửa code.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

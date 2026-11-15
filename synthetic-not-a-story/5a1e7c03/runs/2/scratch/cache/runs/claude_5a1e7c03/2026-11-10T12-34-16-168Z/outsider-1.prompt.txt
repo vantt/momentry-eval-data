@@ -1,0 +1,105 @@
+Dưới đây là transcript đã rút gọn của một phiên làm việc giữa user và coding agent (Claude Code). Mỗi dòng có nhãn [Lnnn] là số dòng trong transcript gốc.
+
+<transcript>
+[L1] USER: Chào em. Tối nay cô cần làm ba việc: chấm nốt bài nghị luận xã hội "lòng biết ơn" của 10A3, sửa rubric, và soạn đề kiểm tra giữa kỳ (thi thứ Ba tuần sau). Bài scan ở bai-lam/, 42 file.
+[L2] TOOL Bash: ls /Users/hang/Documents/ngu-van-10a3/bai-lam | head -6 && ls /Users/hang/Documents/ngu-van-10a3/bai-lam | wc -l
+[L3] RESULT: IMG_20261023_0712.pdf | IMG_20261023_0713.pdf
+[L4] AGENT: Có đủ 42 file nhưng tên là tên ảnh chụp từ điện thoại (IMG_20261023_...), khó đối chiếu với sổ điểm. Cô có danh sách lớp không? Em đổi tên theo dạng "07-NguyenVanAn.pdf" theo đúng thứ tự cô chụp.
+[L5] USER: Có, ds-lop.csv. Cô chụp theo đúng thứ tự trong sổ.
+[L6] TOOL Bash: cd /Users/hang/Documents/ngu-van-10a3 && python3 scripts/doi_ten.py ds-lop.csv bai-lam/ && ls bai-lam | head -4
+[L7] RESULT: 01-BuiThiAnh.pdf | 02-DangMinhChau.pdf
+[L8] AGENT: Đã đổi tên 42 file theo sổ, từ 01-BuiThiAnh.pdf đến 42-VuNgocYen.pdf.
+[L9] USER: Cô đã đọc được 20 bài, có ghi chú ở cham-diem/ghi-chu.md. Em đọc ghi chú rồi đọc giúp cô 22 bài còn lại (bản chữ OCR ở bai-lam-text/), tóm mỗi bài 2 dòng: luận điểm chính và dẫn chứng.
+[L10] TOOL Read: /Users/hang/Documents/ngu-van-10a3/cham-diem/ghi-chu.md
+[L11] RESULT: # Ghi chú chấm 10A3 | - 03 Đạt: lạc đề nửa sau
+[L12] TOOL Bash: grep -li "bác lao công" /Users/hang/Documents/ngu-van-10a3/bai-lam-text/*.txt | wc -l && grep -li "lòng biết ơn là sợi dây vô hình" /Users/hang/Documents/ngu-van-10a3/bai-lam-text/*.txt | wc -l
+[L13] RESULT: 17 | 14
+[L14] AGENT: Trước khi tóm từng bài, em thấy một điều cô cần biết. Trong ghi chú cô đánh dấu nhiều bài "lại bác lao công". Em kiểm tra cả 42 bài:
+
+- 17 bài dùng đúng ví dụ bác lao công trường, ví dụ trong bài mẫu em viết tuần trước.
+- 14 bài mở đầu bằng gần nguyên văn câu "Lòng biết ơn là sợi dây vô hình nối con người với con người", câu mở của bài mẫu.
+- Phần lớn 17 bài này đi theo đúng ba đoạn thân bài của bài mẫu: định nghĩa, biểu hiện qua bác lao công, phê phán người vô ơn.
+
+Bài mẫu được làm để giúp các em yếu biết một bài nghị luận trông thế nào, nhưng có vẻ nhiều em đã chép khung và ví dụ thay vì tự nghĩ.
+[L15] USER: Trời ơi. Đúng là cô xin em bài mẫu để giúp mấy đứa yếu, 6–7 em hay bỏ giấy trắng. Giờ thì 17 bài giống nhau, có cả mấy em khá cũng chép. Cô không biết chấm sao nữa, chấm theo rubric thì bài nào cũng đủ ý, mà đọc lên chẳng thấy các em nghĩ gì.
+[L16] AGENT: Đúng là bài mẫu đã giúp một phần: em xem lại 7 em cô nói hay bỏ giấy trắng, lần này cả 7 em đều viết đủ ba đoạn. Nhưng cái giá là cô mất khả năng nhìn ra tư duy của 17 em, kể cả những em vốn tự viết được.
+
+Một vài cách cô có thể cân nhắc:
+
+1. Chấm đợt này theo rubric như đã công bố (không phạt các em vì làm theo tài liệu cô phát), nhưng ghi nhận xét riêng: "Em thử thay ví dụ bác lao công bằng một người trong đời em."
+2. Cho 17 em viết lại riêng phần dẫn chứng (một đoạn) trong 15 phút đầu tiết sau, không có tài liệu.
+3. Từ nay không phát bài mẫu trọn vẹn. Thay bằng dàn ý mở (chỉ có câu hỏi gợi ý) và ba cách mở bài khác hẳn nhau, để các em phải chọn và tự viết tiếp.
+[L17] USER: Cô làm cả ba. Em soạn giúp cô dàn ý mở cho đề "lòng biết ơn" kiểu đó, chỉ câu hỏi gợi ý thôi, không có ví dụ nào. Và ghi vào ghi chú: không phát bài mẫu trọn vẹn nữa.
+[L18] TOOL Write: /Users/hang/Documents/ngu-van-10a3/tai-lieu/dan-y-mo-long-biet-on.md
+[L19] RESULT: File created successfully at: /Users/hang/Documents/ngu-van-10a3/tai-lieu/dan-y-mo-long-biet-on.md
+[L20] TOOL Edit: /Users/hang/Documents/ngu-van-10a3/cham-diem/ghi-chu.md
+[L21] RESULT: The file /Users/hang/Documents/ngu-van-10a3/cham-diem/ghi-chu.md has been updated successfully.
+[L22] USER: Giờ rubric. Rubric hiện tại 10 tiêu chí, mỗi bài cô mất 12 phút, 42 bài là hơn 8 tiếng. Mà trả bài xong các em chỉ nhìn điểm, không đọc. Em xem rubric.md.
+[L23] TOOL Read: /Users/hang/Documents/ngu-van-10a3/rubric.md
+[L24] RESULT: # Rubric nghị luận xã hội (10 điểm) | 1. Bố cục 3 phần (1đ)
+[L25] AGENT: Rubric 10 tiêu chí này chấm "có hay không có" từng phần, nên bài chép khung bài mẫu sẽ được điểm cao, còn bài tự nghĩ nhưng lệch bố cục lại mất điểm. Nó cũng giải thích vì sao các em chỉ nhìn điểm: 10 dòng 1 điểm không nói cho các em biết phải làm gì khác.
+
+Đề xuất: 3 tiêu chí, mỗi tiêu chí có ba mức, cộng một câu nhận xét duy nhất:
+
+1. **Ý của chính em** (4đ): có quan điểm riêng, dẫn chứng từ đời em hoặc em tự tìm.
+2. **Lập luận** (4đ): các ý nối với nhau, có xét mặt ngược lại.
+3. **Diễn đạt** (2đ): câu rõ, đúng chính tả.
+
+Nhận xét: một câu, bắt đầu bằng "Lần sau em thử…".
+[L26] USER: Ít tiêu chí vậy có sợ thiếu không em? Tổ chuyên môn quen rubric 10 ý rồi.
+[L27] AGENT: Ba tiêu chí vẫn phủ đủ mười ý cũ: bố cục, giải thích, luận điểm, phản đề nằm trong "lập luận"; dẫn chứng và sáng tạo nằm trong "ý của chính em". Điều khác là cô chấm theo mức độ chứ không đánh dấu từng ô. Cô thử với 8 bài trước rồi so thời gian nhé?
+[L28] USER: Ừ, thử 8 bài. Cô vừa chấm 8 bài 21–28 theo rubric mới, bấm giờ. Tổng 41 phút. Hôm qua cô cũng trả thử 8 bài đó trong giờ sinh hoạt.
+[L29] AGENT: 41 phút cho 8 bài, khoảng 5 phút một bài so với 12 phút trước đây. Nếu giữ nhịp này, 42 bài mất chừng 3 tiếng rưỡi thay vì hơn 8 tiếng. Lúc trả thử các em phản ứng thế nào ạ?
+[L30] USER: Lạ lắm em ạ. Cả 8 em đều đọc câu nhận xét, có 5 em lên hỏi "lần sau em thử… là thử thế nào cô". Trước giờ trả bài chẳng ai hỏi gì. Ít chữ hơn mà các em đọc nhiều hơn.
+[L31] AGENT: Đó là tín hiệu tốt nhất: rubric ngắn hơn, chấm nhanh gấp đôi, mà lại là lần đầu các em đọc và hỏi lại nhận xét. Em cập nhật rubric.md sang bản 3 tiêu chí, giữ bản cũ ở rubric-10-tieu-chi.md để cô mang đi họp tổ nếu cần so sánh.
+[L32] TOOL Bash: cd /Users/hang/Documents/ngu-van-10a3 && cp rubric.md rubric-10-tieu-chi.md
+[L33] RESULT: 
+[L34] TOOL Write: /Users/hang/Documents/ngu-van-10a3/rubric.md
+[L35] RESULT: File created successfully at: /Users/hang/Documents/ngu-van-10a3/rubric.md
+[L36] USER: Cô chấm xong rồi. Giờ đề giữa kỳ. Hôm thứ Tư cô có nhờ em soạn phiếu ôn tập, cô gửi nhóm Zalo phụ huynh rồi. Giờ em soạn đề chính thức từ bản nháp de-giua-ky-nhap.md nhé.
+[L37] TOOL Read: /Users/hang/Documents/ngu-van-10a3/de-thi/de-giua-ky-nhap.md
+[L38] RESULT: # ĐỀ KIỂM TRA GIỮA KỲ I — NGỮ VĂN 10 (BẢO MẬT) | Phần II. Viết (6đ): Viết bài văn nghị luận (khoảng 600 chữ) bàn về ý kiến: "Người trẻ hôm nay sống vội nên ít khi dừng lại để lắng nghe."
+[L39] TOOL Grep: sống vội
+[L40] RESULT: tai-lieu/phieu-on-tap-giua-ky.md:34:Đề luyện số 3: Viết bài văn nghị luận (khoảng 600 chữ) bàn về ý kiến: "Người trẻ hôm nay sống vội nên ít khi dừng lại để lắng nghe."
+[L41] AGENT: Cô ơi, có vấn đề trước khi em soạn tiếp. Đề Phần II trong bản nháp (đề có ghi BẢO MẬT) trùng gần như nguyên văn với **Đề luyện số 3** trong phiếu ôn tập giữa kỳ, dòng 34, file cô đã gửi nhóm Zalo phụ huynh hôm thứ Tư.
+
+Có lẽ hôm thứ Tư bản nháp đề đã được dán vào khi nhờ soạn đề luyện "na ná đề thật", và đề luyện số 3 bị giữ quá sát đề gốc. Lẽ ra lúc soạn phải đổi chủ đề hoặc ít nhất cảnh báo cô.
+
+Nghĩa là đề bảo mật đã nằm trong tay phụ huynh và học sinh hai ngày nay.
+[L42] USER: Chết rồi, đúng là cô dán đề nháp vào cho em soạn sát dạng. Cô đã dặn cả tổ không được để lộ đề, vậy mà chính cô đưa nó lên Zalo. Thi thứ Ba rồi. Giờ phải làm sao em?
+[L43] AGENT: Không nên gỡ phiếu ôn hay nhắn đính chính vì sẽ gây chú ý. Cách gọn nhất là thay đề thật, giữ nguyên dạng bài để không bất công với các em đã ôn:
+
+1. Giữ dạng: nghị luận về một ý kiến liên quan đến lối sống người trẻ, 600 chữ.
+2. Đổi hẳn chủ đề, ví dụ: "Người trẻ hôm nay dễ nói lời xin lỗi nhưng khó nói lời cảm ơn." hoặc "Muốn đi nhanh hãy đi một mình, muốn đi xa hãy đi cùng nhau."
+3. Báo tổ trưởng là cô đổi đề Phần II, lý do: đề trùng với tài liệu ôn tập đã phát.
+4. Từ nay khi nhờ soạn phiếu ôn, không dán đề thật vào; chỉ đưa dạng bài.
+[L44] USER: Lấy câu "Muốn đi nhanh hãy đi một mình, muốn đi xa hãy đi cùng nhau." Cô sẽ nhắn chị tổ trưởng tối nay. Em sửa đề và ghi quy tắc số 4 vào ghi-chu.md.
+[L45] TOOL Edit: /Users/hang/Documents/ngu-van-10a3/de-thi/de-giua-ky-nhap.md
+[L46] RESULT: The file /Users/hang/Documents/ngu-van-10a3/de-thi/de-giua-ky-nhap.md has been updated successfully.
+[L47] TOOL Edit: /Users/hang/Documents/ngu-van-10a3/cham-diem/ghi-chu.md
+[L48] RESULT: The file /Users/hang/Documents/ngu-van-10a3/cham-diem/ghi-chu.md has been updated successfully.
+[L49] AGENT: Đã đổi đề Phần II và ghi quy tắc. Em cũng kiểm tra lại: câu mới không xuất hiện trong phiếu ôn hay tài liệu nào trong tai-lieu/.
+[L50] TOOL Grep: đi một mình
+[L51] RESULT: No matches found
+[L52] USER: Cuối cùng: trường bắt nhập điểm theo mẫu nhap-diem-mau.xlsx, cột "Mã HS", "Họ tên", "ĐĐGgk" làm tròn 1 chữ số. Điểm của cô ở diem-10a3.csv. Em chuyển giúp.
+[L53] TOOL Bash: cd /Users/hang/Documents/ngu-van-10a3 && python3 -c "import pandas as pd;d=pd.read_csv('diem-10a3.csv');d['ĐĐGgk']=d['diem'].round(1);d.rename(columns={'ma':'Mã HS','ten':'Họ tên'})[['Mã HS','Họ tên','ĐĐGgk']].to_excel('nhap-diem-10a3.xlsx',index=False);print(len(d))"
+[L54] RESULT: 42
+[L55] AGENT: Đã tạo nhap-diem-10a3.xlsx với 42 dòng, ba cột đúng tên mẫu, điểm làm tròn 1 chữ số.
+[L56] USER: Cảm ơn em. Mai cô in dàn ý mở cho lớp.
+[L57] AGENT: Dạ. Chúc cô buổi kiểm tra thứ Ba suôn sẻ.
+</transcript>
+
+Một lượt trước đã nhặt các chuyện sau từ phiên này:
+<picked>
+K1. Bài mẫu giúp học sinh yếu, nhưng 17/42 bài bị chép khung
+K2. Rubric 10 tiêu chí có/không → 3 tiêu chí theo mức: chấm nhanh gấp đôi, học sinh đọc nhận xét
+K3. Phiếu ôn trùng đề thi thật: bản nháp bị dán vào prompt, đề đã lộ qua Zalo
+K4. Đổi tên 42 ảnh chụp theo sổ lớp bằng script, chạy trước khi kiểm tra thứ tự
+K5. Chuyển điểm sang file nhập trường: làm tròn kiểu Python có thể lệch với quy ước
+</picked>
+
+Nhiệm vụ của bạn chỉ là bước người ngoài. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của phiên này.
+Tìm những việc user hoặc agent làm trơn tru, coi là hiển nhiên, không ai trong phiên ngạc nhiên, nhưng người đọc kia sẽ hỏi lại "làm sao vậy?" hoặc "tôi cũng muốn có cái đó". Bỏ qua những việc mà dev bình thường đã làm (chạy test, commit, đọc log...). Với mỗi việc, so với cách làm phổ biến thật sự ngoài đời, không so với chuẩn chuyên gia.
+Liệt kê 3-8 việc. Mỗi việc: what, common_practice, gap (khác ở đâu, vì sao người đọc muốn biết), lines, already_picked (id ở đầu dòng nếu trùng chuyện đã nhặt, không thì null).
+Riêng tư: không ghi tên note, đường dẫn trong vault, câu hỏi thật, tên người.
+Chỉ trả JSON: {"outsider":[{"what":"","common_practice":"","gap":"","lines":[],"already_picked":null}]}

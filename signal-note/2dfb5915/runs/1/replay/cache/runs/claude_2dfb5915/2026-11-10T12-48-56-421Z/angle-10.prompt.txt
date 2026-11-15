@@ -1,0 +1,83 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ giúp hỏi Claude Desktop về graph của vault Obsidian: note nào nối với note nào, đi từ ý này tới ý kia qua đâu, và note nào lạc khỏi mạng. Làm cho người làm một mình hoặc freelancer, dùng tiếng Việt. Chạy trên máy của người dùng dưới dạng một file cài duy nhất, không cần cài Python, và index vault được lưu trong SQLite trên máy đó. Mục tiêu hiện tại: viết lại lõi bằng Rust để thay bản Python cũ trong Claude Desktop, cho kết quả giống bản Python trên cùng dữ liệu.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L1140] USER: b,c đồng ý. chưa hiểu a. do ohs của tôi là private?
+[L1160] USER: 3 giữ private, việc này tính sau.
+[L1177] USER: vậy với ohs, khách có gh cũng phải login github
+</asks>
+
+<story>
+hook: Phải copy cả lỗi làm tròn của Python để điểm lệch bằng 0
+tension: giup_ma_hai (Thuật toán cộng có bù sai số chính xác hơn / Bản Rust phải bắt chước đúng nó mới khớp từng bit)
+stakes: 2/3
+# Hàm sum của Python có bù sai số: copy đúng thuật toán để điểm related khớp đến từng bit
+
+**Bối cảnh:** Thuật toán related dùng tổng số thực rất nhiều lần. Port bằng sum thông thường thì lệch ở bit cuối cùng.
+**Chuyện gì xảy ra:** Python 3.14 dùng thuật toán cộng có bù sai số, nên bản Rust phải copy đúng thuật toán của CPython. Kết quả 15 lời gọi golden và 400 lời gọi sinh ngẫu nhiên khớp hoàn toàn, chênh lệch điểm bằng 0.
+**Bài học:** Khi cần khớp bit với một bản khác, sai khác nhỏ nhất thường nằm ở thư viện số học của bản đó chứ không nằm ở thuật toán.
+**Artefact:** Bảng 15 lời gọi golden khớp, chênh điểm 0. Không đưa dữ liệu.
+</story>
+
+<excerpt>
+[L1635] RESULT: Command running in background with ID: boaammm7f. Output is being written to: /tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/boaammm7f.output. You will be notified when it completes — do not poll that fi …[+169]
+[L1641] AGENT: I'm waiting for that CI run and for the `related` agent to finish.
+[L1650] USER: <task-notification>
+<task-id>a0da0c15a5e4b7988</task-id>
+<tool-use-id>toolu_01NrKuvNnnU7pwFqPQVrmKqf</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a0da0c15a5e4b7988.output</output-file>
+<status>completed</status>
+<summary>Agent "Phase 11b related PageRank" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>`related` is done, and with no OHS it gives exactly the same output as Python on kg-solo. All 15 golden `related` calls match bit for bit, including order, `pushes` and `touched`, with a score difference of 0. I also generated 400 random calls, ran them through Python with `dump-python.py --replay`, and they all match too. The full kg-solo parity check now shows 64 items and 0 unnamed diffs. The 14 items still "chưa có" are all in the MCP/CLI layers.
+
+**Branch and commits:** branch `worktree-agent-a0da0c15a5e4b7988`, at merge commit `dab08aa` followed by `810c663309cab6465e6fe6a5a5c078de28e11093`. Not pushed or merged. The merge of `worktree-agent-a7edaab571b62fd7a` conflicted in `spec/PORTING.md`, `parity/src/rust_side.rs` and `parity/src/rust_side/index_tables.rs`. I kept both sides in each.
+
+**Checks:** `cargo fmt --all --check`, `cargo clippy --workspace --all-targets -- -D warnings` and `cargo test --workspace` all pass. I also ran the new `#[ignore]` test against the real OHS package in p04 on Linux. It passed in 6.6 s and left no `node` process behind.
+
+**How it matches Python exactly:**
+- **Summing:** the Python that built the golden (3.14) sums floats with error compensation, so `related::py_sum` copies CPython's algorithm. A plain sum is off in the last bit.
+- **Edge order:** edges are read with Python's exact SQL, which has no `ORDER BY`.
+- **Queue and ordering:** the push queue, the order nodes first get mass, and all sorts behave like Python's `deque`, `dict` and stable sort.
+- **Rounding:** `round(x, 5)` rounds ties to even, as in Python.
+- **Bad arguments:** where Python raises, Rust returns an error with the same exception name.
+
+**How OHS plugs in:** `Context` now has `with_ohs`, `set_ohs` and `ohs()`, holding an optional `Arc&lt;Ohs&gt;`. These are additions only; no existing API changed. A call with only `query` (no `hits`) gets its seeds from `Ohs::search`. If the session has no …[+2873]
+[L1657] TOOL Bash: git merge --no-edit worktree-agent-a0da0c15a5e4b7988 2>&1 | tail -1; git diff --name-only --diff-filter=U
+[L1658] RESULT: Automatic merge failed; fix conflicts and then commit the result. | parity/src/rust_side.rs
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

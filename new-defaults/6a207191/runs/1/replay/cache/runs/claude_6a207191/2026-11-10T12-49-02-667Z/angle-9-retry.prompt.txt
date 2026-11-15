@@ -1,0 +1,140 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L2018] USER: này là em code và fix luôn rồi?
+[L2113] USER: mô tả rõ 5 lỗi go
+[L2255] USER: trong project ~/projects/momentry hình như có một quy tắc mới về bộ lệnh config, command để ghi nhận config. em xem lại bên đó và kiểm tra với skill cs-packaging-distribution xem mình có quy chuẩn này chưa
+</asks>
+
+<story>
+hook: Skill cấm cờ lẻ nhưng chưa có quy tắc nào chặn file repo chứa khóa máy
+tension: cam_ma_van_lot (Quy tắc config một cửa đã có / File config của repo vẫn có thể chứa khóa chỉ dành cho máy)
+stakes: 2/3
+# Quy tắc config một cửa từ momentry đưa vào skill: CMD-22..24, CFG-12 lên MUST
+
+**Bối cảnh:** Người dùng nhắc có quy tắc mới ở momentry: mọi cài đặt đổi qua lệnh config, kể cả cài đặt riêng từng dự án.
+**Chuyện gì xảy ra:** Agent đối chiếu sáu quy tắc của momentry với skill và thấy skill thiếu quy tắc cấm cờ lẻ, thiếu --project và --repo, và file config của repo có thể chứa khóa chỉ dành cho máy. Agent thêm ba rule CMD-22..24, nâng CFG-12 lên MUST (file repo không được chứa khóa máy, bí mật hay ngân sách), và thêm UX-17 yêu cầu giao diện gọi đúng hàm ghi của CLI. Lint tăng từ 212 lên 215 rule. Agent ghi chú rằng commit của momentry chưa nằm trong bản phát hành nào.
+**Bài học:** Khi một dự án thêm quy tắc mới, hãy chép nguyên tắc (không chép code) vào skill chung và ghi rõ trạng thái chưa phát hành.
+**Artefact:** Bảng đối chiếu 'Ý của momentry / Skill hiện có / Đánh giá' ở L2324. Không chứa tên người.
+</story>
+
+<excerpt>
+[L2243] RESULT: CI exit=0 | success
+[L2246] AGENT: CI trên GitHub cho commit `185b75d` (phần thông báo "update waiting for review" trên web) **đã qua hết**. Kết quả gồm bước Web UI, bộ test Verify trên Ubuntu, macOS và Windows, lint, fuzz, kiểm tra installer, và build chéo cho 6 nền tảng.
+
+Kết quả này cũng khớp với giải thích về 5 lỗi Go: máy CI không có `~/.codex/config.toml` và `~/.gemini/settings.json` trỏ tới hub, nên các test đó không lỗi. Chúng chỉ lỗi trên máy anh.
+
+Trên `main` vừa có thêm ba commit không phải của tôi: `506dacb`, `39a452d`, `490c142`. Có lẽ từ một phiên khác của anh. CI của cả ba đang chạy.
+
+Anh có muốn tôi sửa phần cách ly test, để 5 test Go không lỗi trên máy anh nữa không?
+[L2255] USER: trong project ~/projects/momentry hình như có một quy tắc mới về bộ lệnh config, command để ghi nhận config. em xem lại bên đó và kiểm tra với skill cs-packaging-distribution xem mình có quy chuẩn này chưa
+[L2264] TOOL Bash: cd ~/projects/momentry && git log --oneline -15 2>/dev/null; ls; grep -rli "config" --include='*.md' . 2>/dev/null | grep -v node_modules | head -30
+[L2267] RESULT: 451236f Merge per-project settings through momentry config --project | be79753 docs: report on per-project settings through momentry config
+[L2270] TOOL Bash: cd ~/projects/momentry && cat plans/reports/fullstack-developer-261105-config-project-scope.md; git show --stat de173ef | head -30; cat plans/b*/ 2>/dev/null; grep -n -i "config" plans/journals/*.md plans/board.md | head -20
+…
+[L2315] TOOL Bash: cd ~/projects/momentry && git remote -v | head -2; git tag --contains de173ef 2>/dev/null | head -3; grep -n "ui-api\|setProjectBox\|write(" lib/ui-api.mjs | head -8
+[L2319] RESULT: origin https://github.com/vantt/momentry (fetch) | origin https://github.com/vantt/momentry (push)
+[L2324] AGENT: **Chưa có đủ.** Skill `cs-packaging-distribution` mới có các mảnh rời về config. Quy tắc chính của momentry là *"mọi cài đặt chỉ đổi qua `config`, kể cả cài đặt riêng từng dự án"* thì skill chưa có.
+
+**Quy tắc mới bên momentry**
+
+Quy tắc được thêm ở commit `de173ef` hôm nay, ghi trong mục "Cài đặt" của `docs/development.md`:
+1. **Chỉ một cửa:** mọi cài đặt đổi qua `momentry config show|get|set|unset`. Không thêm cờ lẻ ở lệnh khác, ví dụ không có `init --box`. Khoá mới khai báo trong schema (cài đặt chung) hoặc trong `PROJECT_KEYS` (cài đặt riêng dự án).
+2. **Cài đặt riêng dự án dùng cùng bộ lệnh, chỉ thêm cờ:** `--project`, hoặc `--repo DIR` để chỉ định repo. `show --project` in từng khoá kèm nơi đặt giá trị: repo, máy này, người dùng, mặc định hay biến môi trường. Lỗi có mã riêng, ví dụ khoá chỉ dành cho dự án mà quên `--project` thì báo `config-project-only`; gõ sai tên khoá thì báo `config-unknown-key` kèm gợi ý.
+3. **Giao diện web gọi đúng các hàm ghi của CLI.** Không có bản ghi thứ hai, nên mỗi quy tắc chỉ nằm ở một chỗ.
+4. **Lệnh tắt chỉ là lối vào khác của khoá config.** `pause`/`resume` gọi đúng hàm ghi của `config set paused true|false --project`, và phần help ghi rõ tên khoá.
+5. **Khoá chỉ của máy không bao giờ ghi vào file của repo.** `.momentry.json` có ghi `paused`, `private` hay `budget` cũng bị bỏ qua, nên repo clone về không tự nâng ngân sách được.
+6. **Config không tự bật dự án.** Ghi vào repo chưa `init` thì bị từ chối, kèm lời gợi ý chạy `momentry init`.
+
+**Đối chiếu với skill**
+
+| Ý của momentry | Skill hiện có | Đánh giá |
+|---|---|---|
+| 1. Chỉ một cửa `config`, không cờ lẻ | Khối lệnh chuẩn có `config path\|show\|get\|set\|unset\|edit\|…`; UX-14 nói `set`/`unset` dùng cho lệnh một dòng và cho agent | **Thiếu** quy tắc cấm cờ lẻ và lệnh riêng cho từng cài đặt |
+| 2. Cài đặt dự án qua `--project`/`--repo`, `show` ghi nguồn | CFG-04 có thứ tự ưu tiên flag > env > project > user > default; UX-12 có `config explain <key>` cho biết tầng nào đặt giá  …[+1967]
+[L2333] USER: thêm quy tắc
+[L2341] TOOL Bash: cd /home/vantt/projects/devops/skills/cs-packaging-distribution && sed -n 40,100p common/07-command-surface.md
+[L2344] RESULT: ``` | ## 3. The init / doctor model — one engine
+[L2349] TOOL Bash: python3 -I - <<'EOF' import re p='common/07-command-surface.md'; s=open(p).read() old="<app> config path|show|get|set|unset|edit|explain|check|default\n" assert old in s s=s.replace(old,"<app> config path|show|get|set|unset|edit|explain|check|default [--project [--repo DIR]]\n",1) s=s.rstrip('\n')+" …[+2515]
+[L2358] RESULT: OK: 215 rules, structure valid | references.md:39:| CMD-22..24, CFG-12, UX-17 (one config door, `--project` scope, UI shares the writers) | Node | momentry | `lib/config-cmd.mjs`, `lib/ui-api.mjs`, `test/config-project.test.mjs` |
+[L2363] AGENT: Lint đã qua: 215 quy tắc, cấu trúc hợp lệ. Giờ tôi kiểm tra các đường dẫn tham chiếu mới có thật trên GitHub không.
+[L2364] TOOL Bash: sh scripts/check-references.sh 2>&1 | tail -5
+…
+[L2372] TOOL Bash: cd /home/vantt/projects/devops && skillstation skill scan ./skills/cs-packaging-distribution --json 2>/dev/null | python3 -I -c "import json,sys;d=json.load(sys.stdin);f=d['scans'][0]['findings'];print(len(f),'findings');[print(x['severity'],x['rule'],x['file'],x['line']) for x in f]"; skillstation  …[+189]
+[L2375] RESULT: 11 findings | critical rce.pipe-to-shell common/03-first-contact.md 33
+[L2385] AGENT: Tôi đã thêm quy tắc vào skill `cs-packaging-distribution` và đã kiểm tra:
+- `lint-guides.sh` qua: 215 quy tắc, nhiều hơn trước 3 quy tắc.
+- `check-references.sh` xác nhận mọi đường dẫn tham chiếu, kể cả 3 file mới bên momentry, đều có trên GitHub.
+
+**Những gì đã đổi**
+- **`common/07-command-surface.md`:**
+  - Dòng `config` trong khối lệnh chuẩn có thêm `[--project [--repo DIR]]`.
+  - Thêm mục mới **"6. Config — one door for every setting"**, gồm 3 quy tắc:
+    - **CMD-22 MUST:** mọi cài đặt, kể cả cài đặt riêng dự án, đều đổi qua `config show|get|set|unset`. Các lệnh khác không nhận cờ cài đặt, ví dụ không có `init --box`; cài đặt mới thêm thành một khoá trong schema. Lệnh tắt như `pause`/`resume` phải gọi đúng hàm ghi của khoá tương ứng, và help phải ghi rõ khoá đó. Giao diện web cũng gọi đúng các hàm ghi này.
+    - **CMD-23 SHOULD:** phạm vi dự án dùng cùng các lệnh trên, thêm `--project` hoặc `--repo DIR`. `show --project` in nguồn của từng giá trị. Dùng sai phạm vi thì báo lỗi kèm cách sửa. `--dry-run` cho biết file nào sẽ bị ghi.
+    - **CMD-24 MUST:** `config` không tự bật dự án. Lệnh ghi cần dự án đã init thì bị từ chối, kèm gợi ý `<app> init`.
+- **`common/50-config-state.md`, CFG-12:** nâng từ MAY lên **MUST** và mở rộng. File của repo không được đặt khoá của máy, khoá bí mật hay khoá giới hạn chi tiêu; hàm ghi không bao giờ ghi các khoá đó vào file repo; khi đọc file repo thì bỏ qua và báo từng khoá bị bỏ. Repo clone về không được nâng ngân sách hay tắt chế độ riêng tư.
+- **`common/05-user-experience.md`, UX-17:** trang cài đặt trên giao diện phải gọi *đúng hàm ghi* của `config set`, không chỉ ghi cùng file.
+- **`references.md`:** thêm dòng momentry trỏ tới `lib/config-cmd.mjs`, `lib/ui-api.mjs` và `test/config-project.test.mjs`.
+
+Theo `CONTRIBUTING.md`, cách làm chỉ được coi là "đã chứng minh" khi đã chạy thật với người dùng. Commit `de173ef` của momentry chưa nằm trong bản phát hành nào. Tôi vẫn đưa nó vào `references.md` vì đã có test đầy đủ, nhưng nên g …[+312]
+[L2393] USER: ok, đẩy lên hub đi
+[L2401] TOOL Bash: skillstation skill commit ./skills/cs-packaging-distribution --yes --json
+[L2404] RESULT: {"schema_version":"1","summary":"Sent cs-packaging-distribution as SUB-01M6NFEPA6DSJHQPAPKZ7WCJHP.","items":[],"suggested_actions":[],"warnings":[],"error":null,"skill_id":"cs-packaging-distribution","hub":"http://100.93.158.78:7420","submission_id": …[+52]
+[L2407] AGENT: Đã gửi lên hub, mã bản gửi là **`SUB-01M6NFEPA6DSJHQPAPKZ7WCJHP`**, đang chờ duyệt.
+
+Bản này gồm cả nội dung lẫn metadata:
+- 3 quy tắc config mới (CMD-22..24);
+- CFG-12 nâng lên MUST, cùng UX-17 đã sửa;
+- dòng tham chiếu momentry trong `references.md`;
+- `skill.yaml` với operations, topics, technologies, min_scope, counter_examples và hai trigger đã sửa.
+
+Trên máy hub, anh chỉ cần **duyệt bản này** và bỏ ba bản cũ:
+- `SUB-01M6NB8WMEJCZHFQ8RGPR0PZ2F`
+- `SUB-01M6NAX34J7THX6HNF2M584W8V`
+- `SUB-01M6DMW0CATJGWRG5C15R2J1D4`, nếu bản này còn trong hàng chờ
+
+Hub hiện vẫn chạy bản skillstation cũ, nên chưa có nút "Discard older" vừa làm. Anh phải bỏ từng bản cũ trong mục Waiting for review.
+
+Khi duyệt, máy hub sẽ thấy lại 11 cảnh báo bảo mật quen thuộc. Tất cả đều là chữ trong tài liệu và trong mẫu installer, không có cảnh báo mới.
+
+Duyệt xong anh báo tôi. Tôi sẽ thử `skill_resolve` với các câu ví dụ và câu đối chứng, để xem skill có còn bị chọn nhầm cho việc frontend như lúc trước không.
+[L2417] USER: duyệt rồi đó bé
+[L2426] TOOL mcp__skillstation__skill_get: {"skill_id":"cs-packaging-distribution"}
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

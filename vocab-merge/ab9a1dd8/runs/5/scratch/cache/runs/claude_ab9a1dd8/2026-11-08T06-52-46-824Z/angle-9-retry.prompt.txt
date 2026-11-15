@@ -1,0 +1,181 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L9] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-research # Research ## Research Methodology Always honoring **KISS** and **DRY** principles. Deliver the full requested scope — never trim or defer what the user explicitly asked for. Add nothing unrequested. With `--yagni`, additionally challenge and cut any scope not needed for the stated outcome. **Be honest, be brutal, straight to the point, and be concise.** ### Phase 1: Scope Definition First, you will clearly define the research scope by: - Identifying key terms and concepts to investigate - Determining the r …[+5899]
+[L42] USER: Base directory for this skill: /home/vantt/.claude/skills/cs-packaging-distribution # cs-packaging-distribution ## ⚑ PRIORITY ORDER — the owner's rule; it overrides everything below 1. **User experience (paramount)** - **First contact:** intro, install, quick start, first success. - **Command syntax:** one surface, the same in every project — `init` the first time, `doctor` when something's wrong, `update` for a new version. - **Agent-native:** `--help` and `--json` are enough for an agent to install, set up and repair the tool. - **Ease:** - one-command install and update; - minimal dependenc …[+5302]
+[L251] USER: giải thích 4 điểm cần quyết?
+</asks>
+
+<story>
+hook: Đổi ý từ 'hook chỉ in' sang 'tự cài': tốn 300 dòng và rủi ro file cấu hình
+tension: khac (Người dùng chọn công cụ tự cài hook cho tiện / Cái giá: 200–300 dòng code và file cấu hình có thể bị đổi định dạng)
+stakes: 3/3
+# Đảo quyết định PRD: từ 'hook chỉ in' sang 'công cụ tự cài hook'
+
+**Bối cảnh:** PRD (mục 3.2, 6.4) chốt rằng công cụ không bao giờ tự sửa settings của Claude Code hay Codex. Người dùng phải tự dán cấu hình hook vào.
+**Chuyện gì xảy ra:** Agent đưa hai phương án kèm đánh đổi. Người dùng chọn tự cài và yêu cầu có --dry-run. Agent ước 200–300 dòng code cộng test, và nêu cái giá là file cấu hình có thể bị đổi định dạng khi ghi lại. Quyết định này đảo mục PRD nên phải sửa PRD cho khớp.
+**Bài học:** Quyết định trong PRD là ràng buộc có giá. Khi đảo, hãy liệt kê rõ cái giá và cơ chế bảo vệ: sao lưu, từ chối file hỏng, kiểm lại trước khi ghi.
+**Artefact:** Bảng hai phương án (chỉ in + doctor kiểm, so với tự cài + sao lưu). Không cần che.
+</story>
+
+<excerpt>
+[L236] AGENT: Kết luận: phần lõi của momentry ổn, nhưng phần phân phối gần như chưa có. Một người mới, hay một agent chỉ đọc `--help`, hiện không thể tự đi từ con số 0 tới lần chạy đầu thành công.
+
+Tôi đã chạy các bước kiểm của skill trong một HOME tạm, không đụng tới cấu hình thật của bạn.
+
+**Những gì đã đạt:**
+- CLI không phụ thuộc gói ngoài. stdout chỉ chứa dữ liệu, lỗi đi ra stderr.
+- Thứ tự ưu tiên cấu hình được ghi rõ. Thư mục cache có quyền 0700, và file cấu hình hỏng thì báo lỗi chứ không im lặng.
+- Công cụ chỉ in cấu hình hook, không tự sửa `~/.claude/settings.json`.
+- `init` chạy lại nhiều lần vẫn an toàn.
+- 205/205 test qua trên bản clone sạch.
+
+**Thiếu sót lớn nhất (tầng 1, trải nghiệm người dùng):**
+1. **README:** quick start dùng `<momentry>` nhưng không có bước lấy code. Chưa có câu nói lợi ích cho người dùng, chưa có lời hứa "từ 0 tới kết quả đầu trong N phút, cần gì".
+2. **Không có phiên bản, release, `install.sh`, `update`, `uninstall`.** `momentry --version` báo "lệnh lạ".
+3. **Không có `doctor`.** `init --yes --json` lỗi "Unknown option '--yes'". `init` chỉ tạo `.momentry.json`, không tạo hộp chứa chuyện, nên `list` và `check` thoát 1 với "không có hộp" ngay sau quick start.
+4. **`--help` quá mỏng.** Ví dụ `init --help` chỉ in "momentry init [--repo]", không có mô tả, giá trị mặc định, ví dụ hay mã thoát.
+5. **Hook có thể chết im lặng (rủi ro thực tế lớn nhất).** Cấu hình hook in ra ghi cứng đường dẫn Node tuyệt đối. Nếu bạn nâng Node qua nvm/fnm hoặc chuyển thư mục clone, hook hỏng mà không ai biết, vì lệnh `hook` luôn thoát 0 và không có `doctor` để phát hiện.
+
+**Phát hiện phụ:** `test/imports.test.mjs` quét cả các thư mục chưa đưa vào git (`.claude/`, `.agentkit/`). Vì vậy trong bản làm việc này nó báo 1 test hỏng (202/203), dù trên bản clone sạch thì qua hết.
+
+**Đề xuất:** đóng gói thành một file nén mã nguồn kèm một lệnh `momentry` nhỏ cài vào `~/.local/bin`, và cho hook gọi qua lệnh đó để sống sót khi nâng Node. Trước khi làm release, nên làm năm việc kh …[+1167]
+[L251] USER: giải thích 4 điểm cần quyết?
+[L256] AGENT: Cả bốn điểm đều là lựa chọn sản phẩm. Skill có chuẩn riêng, còn PRD hoặc code hiện tại đã đi một hướng khác, nên tôi không tự chọn thay bạn.
+
+## 1. Hook: chỉ in ra, hay để công cụ tự cài?
+
+**Hiện tại:** `momentry hooks --print --claude` in đoạn JSON, bạn tự dán vào `~/.claude/settings.json`. PRD mục 3.2 và 6.4 chốt rằng công cụ không bao giờ tự sửa file đó.
+
+**Skill muốn:** `init` tự phát hiện Claude Code hoặc Codex trên máy và tự ghi hook vào, để chạy một lệnh là xong.
+
+**Đánh đổi:**
+- **Chỉ in (như PRD):** an toàn, vì bạn luôn thấy và duyệt cái gì được thêm vào file cấu hình chung của mọi phiên Claude. Đổi lại người mới phải tự dán, dễ dán sai chỗ, dễ quên, và hiện không có gì báo khi hook hỏng.
+- **Tự cài (`connect --yes`):** tiện hơn và agent tự làm trọn được. Đổi lại công cụ phải sửa file của người khác một cách cẩn thận: sao lưu trước, giữ nguyên phần của bạn, từ chối nếu file đang hỏng. Code phức tạp hơn, và đi ngược quyết định đã chốt.
+
+**Tôi đề xuất:** giữ "chỉ in", nhưng thêm `doctor` kiểm hook ở chế độ chỉ đọc. Nó xem hook có trong file không, có trỏ tới file còn tồn tại không, và có chạy được không. Nếu sai, `doctor` in đúng lệnh để sửa. Cách này vẫn giữ quyết định PRD mà xử lý được rủi ro hook chết im lặng.
+
+## 2. Mã thoát: giữ như hiện tại hay theo chuẩn?
+
+**Hiện tại:** 0 là xong, **1 là gõ sai lệnh hoặc sai cờ**, **2 là `check` thấy lỗi khuôn hoặc vi phạm riêng tư**. Các mã 3, 4, 5 có nghĩa riêng.
+
+**Skill muốn:** 0 là xong, **1 là có lỗi**, **2 là gõ sai lệnh**. Nghĩa của 1 và 2 ngược với hiện tại.
+
+**Vì sao chuyện này quan trọng:** README và PRD đã công bố bảng mã thoát. Nếu bạn hoặc ai đó dùng `momentry check --staged` làm pre-commit hook, hay viết script dựa vào "thoát 2 nghĩa là có vi phạm riêng tư", thì đổi mã sẽ làm script đó hiểu sai mà không báo lỗi gì. Sai ở đúng chỗ kiểm riêng tư là loại sai nguy hiểm nhất.
+
+**Tôi đề xuất:** giữ bảng hiện tại và ghi lý do lệch chuẩn vào checklist. Lợi ích của việc theo chuẩn là nhất quán với các dự án khác  …[+1948]
+[L264] USER: 1) tự fix thì làm nhiều lắm đúng không? 2. chỉnh lại theo chuẩn 3. có hổ trợ windows, wsl, linux và macos nhé . 4) A
+[L267] TOOL Read: /home/vantt/projects/momentry/docs/packaging-checklist.md
+[L268] RESULT: 1 # Packaging checklist — momentry | 2
+…
+[L290] TOOL Edit: /home/vantt/projects/momentry/docs/packaging-checklist.md
+[L291] RESULT: The file /home/vantt/projects/momentry/docs/packaging-checklist.md has been updated successfully.
+[L300] AGENT: Tôi đã ghi điểm 2, 3, 4 vào `docs/packaging-checklist.md`. Điểm 1 thì trả lời câu hỏi của bạn bên dưới.
+
+## 1) Tự cài hook có nhiều việc không?
+
+**Không nhiều như nghe.** Tôi ước khoảng 200–300 dòng code cộng test. Phần khó không nằm ở số dòng mà ở mấy chỗ phải làm cẩn thận.
+
+Những việc cần làm:
+1. **Ghi vào `~/.claude/settings.json`.** File này là JSON thuần nên Node đọc và ghi được, không cần thư viện ngoài. Thêm 3 mục `PreCompact`, `SessionEnd`, `SessionStart` vào khoá `hooks`, không đụng phần còn lại.
+2. **Biết mục nào là của mình.** Sau quyết định 4A, hook sẽ là lệnh ổn định `momentry hook session-end`, nên chỉ cần tìm chuỗi `momentry hook`. Có rồi thì không thêm lần nữa, và gỡ cũng chỉ gỡ đúng các mục đó.
+3. **An toàn khi ghi:**
+   - sao lưu file trước khi sửa;
+   - từ chối nếu file đang hỏng, không ghi đè thành `{}`;
+   - ghi qua file tạm rồi đổi tên, giữ nguyên quyền file;
+   - trước khi ghi, kiểm lại xem file có bị Claude Code sửa trong lúc mình đang làm không.
+4. **Codex:** ghi `~/.codex/hooks.json` cũng là JSON nên làm tương tự. Bước duyệt tin cậy hook thì Codex tự hỏi người dùng, nên mình không cần sửa `config.toml`. Đây là may mắn, vì sửa TOML mà không có thư viện thì rất phiền.
+5. **Mẫu `/bip`:** chép file vào `~/.claude/commands/bip.md`. Việc này dễ.
+6. **`uninstall` gỡ ngược lại,** và `doctor` dùng chung phần đọc ở bước 2.
+
+Có hai cái giá cần biết. Thứ nhất, file của bạn có thể bị đổi định dạng nhẹ, ví dụ thụt lề, khi ghi lại. Thứ hai, chọn tự cài là đảo một quyết định đã chốt trong PRD (mục 3.2, 6.4, 12), nên phải sửa PRD cho khớp.
+
+Thêm một điểm đáng cân nhắc: phần đọc và nhận diện hook (bước 2) thì `doctor` đằng nào cũng phải có. Vậy phần làm thêm cho việc tự cài thực ra chỉ là bước 3, ghi file an toàn.
+
+Bạn chọn **tự cài** (`init` tự cài hook, có `--dry-run` xem trước) hay **chỉ in + doctor kiểm**?
+
+## Đã ghi vào checklist
+
+- **2) Mã thoát theo chuẩn:** 0 là xong, 1 là có lỗi (kể cả `check` thấy vi phạm), 2 là gõ sai lệnh hoặc cờ. Mã 3, 4, 5 giữ  …[+745]
+[L315] USER: `/bip` là làm gì vậy
+[L319] TOOL Bash: cd /home/vantt/projects/momentry; cat prompts/bip.md; grep -n -i "bip" docs/prd.md | head -20; grep -n -i "bip" lib/*.mjs | head
+[L322] RESULT: <!-- Mẫu lệnh /bip (PRD 6.4). Cùng một thân dùng cho Claude (.claude/commands/bip.md) và Codex (~/.codex/prompts/bip.md); cả hai thay $ARGUMENTS bằng chữ user gõ sau /bip. Chỗ điền: {bin} lệnh gọi công cụ bằng đường dẫn tuyệt đối, ví dụ "/usr/bin/nod …[+34]
+[L332] AGENT: `/bip` là lệnh tắt để bạn tự đánh dấu "chỗ này đáng kể" ngay trong lúc đang làm việc với Claude Code hoặc Codex. Tên lấy từ "**b**uild **i**n **p**ublic".
+
+## Cách dùng
+
+Đang làm, bạn thấy vừa có chuyện hay, ví dụ sửa một dòng mà nhanh gấp 10 lần. Bạn gõ:
+
+```
+/bip đổi cache từ Map sang LRU, p95 giảm 800ms còn 90ms
+```
+
+Phần ghi chú phía sau có thể bỏ trống.
+
+## Điều gì xảy ra
+
+`/bip` thực chất là một prompt mẫu (`prompts/bip.md`) bảo agent làm bốn việc:
+
+1. Viết 2–4 câu về chuyện vừa xảy ra ngay trước đó: chuyện gì, con số trước và sau, vì sao đáng kể. Nếu bạn có ghi chú thì giữ ý của bạn.
+2. Chỉ ghi cơ chế, con số và tên công cụ. Không ghi tên người, tên note hay nội dung riêng tư.
+3. Chạy `momentry add --by human --title "…" --note "…"`. Lệnh này tạo ngay một file chuyện trong hộp, có đánh dấu "người chọn", và vẫn đi qua bộ kiểm riêng tư.
+4. Báo lại cho bạn một dòng (id chuyện hoặc lỗi), rồi quay lại việc đang dở.
+
+Trên Claude Code còn có thêm một lợi ích: dòng `/bip` nằm lại trong transcript. Lần gom tự động sau, momentry coi chỗ đó là một "điểm nóng" và chấm điểm kỹ hơn. Codex thì bung prompt ra thành chữ nên không còn dấu `/bip`, vì vậy trên Codex chỉ có đường `add`.
+
+## Vì sao cần, khi đã có hook gom tự động?
+
+Hook gom sau phiên và chỉ bắt được những gì có dấu vết trong transcript, như con số đổi, lệnh lỗi hay git bị đảo ngược. `/bip` bắt những khoảnh khắc mà chỉ bạn biết là đáng kể. Theo PRD, đây là hai đường bổ sung cho nhau: máy gom rộng, người đánh dấu chính xác.
+
+## Liên quan tới việc đóng gói
+
+Hiện `/bip` cũng phải cài tay, và gặp đúng hai vấn đề như hook:
+- **Cài tay:** bạn phải tự chép mẫu do `hooks --print` in ra vào `.claude/commands/bip.md` hoặc `~/.codex/prompts/bip.md`.
+- **Ghi cứng đường dẫn:** mẫu chứa đường dẫn Node tuyệt đối (`"/usr/bin/node" "/…/bin/momentry.mjs"`), nên cũng hỏng khi bạn nâng Node hay chuyển thư mục.
+
+Vì vậy quyết định ở điểm 1 (tự cài hay chỉ in) áp dụng cho cả `/bip`. Với phương án 4A, mẫu chỉ cần gọi `momentry add …` qua  …[+55]
+[L340] USER: 1) tự cài luôn, dùng '/ak-plan' lập plan đi.
+[L342] TOOL Skill: {"skill":"ak-plan","args":"Lập plan triển khai packaging/distribution cho momentry theo audit cs-packaging-distribution. Nguồn: docs/packaging-checklist.md và plans/reports/packaging-audit-261103-1557-cs-packaging-distribution.md. Quyết định user đã chốt: (1) init tự cài hook Claude/Codex và mẫu /bi …[+573]
+[L345] RESULT: Launching skill: ak-plan
+…
+[L1704] TOOL Bash: cd /home/vantt/projects/momentry; sed -n 512,611p docs/prd.md; sed -n 709,740p docs/prd.md
+[L1708] RESULT: ## 7. Cấu trúc code | ### 7.1 Cây thư mục
+[L1718] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' p='docs/prd.md'; s=open(p).read() R=[ ("| Tự sửa `~/.claude/settings.json`, `~/.codex/*` | Cài hook là việc user duyệt. |\n", ""), ("6. Hook PreCompact, SessionEnd, SessionStart (Claude) và pre_compact (Codex), chạy nền; quét bù Codex bằng `session …[+8058]
+[L1721] RESULT: MISSING: bin/momentry.mjs kiểm `process.versions.node` lúc chạy, thấp hơn thì i | 403:**Node:** cần Node ≥ 20 (`Array.prototype.findLast`, `readdirSync({recursive})`). `bin/momentry.mjs` kiểm `process.versions.node` lúc chạy, thấp hơn thì in lỗi và t …[+136]
+[L1731] TOOL Bash: cd /home/vantt/projects/momentry; sed -i '403s/(riêng lệnh `hook` vẫn thoát 0 và ghi `hook.log`)/(riêng lệnh `hook` vẫn thoát 0, không làm gì)/' docs/prd.md; sed -n 403p docs/prd.md | cut -c1-200; grep -n "momentry hook\|hooks --print" docs/prd.md | head
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

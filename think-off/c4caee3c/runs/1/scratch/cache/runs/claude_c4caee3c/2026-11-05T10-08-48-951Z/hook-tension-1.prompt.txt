@@ -1,0 +1,69 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Cổng chất lượng đỏ vì số baseline ghi trên máy khác loại CPU
+   Trên máy agent, điểm eval tiếng Anh upstream là 0,735, còn runner GitHub đo được 0,728, vượt ngưỡng 0,005 và làm catchup đỏ. ONNX lượng tử hoá cho số hơi khác nhau theo loại CPU. Sửa đổi: cổng so với upstream được đo ngay trong cùng lần chạy, trên cùng máy; baseline đã ghi chỉ còn dùng để báo độ trôi. Cùng nguyên nhân sau đó cũng khiến bước so sánh gói Intel chỉ ổn định trên một loại CPU.
+M2. Release CI hỏng nhiều lần vì npm 12 đổi định dạng và bản dựng chưa biên dịch
+   Lần đỏ đầu do test npm pack đọc mảng trong khi npm 12 trả về object. Một lần khác do fixture ghim v0.10.0 trong khi bộ eval đã sang v0.11.0. Một lần khác, test đóng gói đòi file build/index.js trong khi tầng lang_vi chưa biên dịch gói. Mỗi lỗi mở một issue tự động, và agent đóng issue sau khi xanh.
+M3. Hiểu nhầm tên việc: Python bị bỏ và Rust bị viết lại
+   Người duyệt hỏi L15 có phải các script Python bị bỏ không; lead trả lời trước đó nhầm vì hai việc khác nhau. Sau đó PRD được sửa để ghi rõ viết lại toàn bộ OHS bằng Rust, khác với việc chuyển script Python của dự án. Tương tự, L13 và L22 được chuyển sang repo dự án thay vì fork.
+M4. Gói tiếng Đức chứng minh điểm cắm ngôn ngữ dùng được cho ngôn ngữ khác
+   Gói ohs-lang-de chạy qua P01 không cần sửa lõi nào. Trong eval tiếng Đức, nDCG@5 tăng từ 0,57 lên 0,97 và không hạng mục nào tụt. Đồng thời đây là bằng chứng cho điểm cắm chung, không chỉ cho tiếng Việt.
+M5. Lỗi phục hồi dấu 'Hội An' thành 'hội ăn' và vì sao bật mặc định
+   Với Hội An, Hội giữ nguyên nhưng An bị phục hồi thành ăn, vì ăn phổ biến hơn trong vault. Agent chứng minh bằng test mới thất bại trên mã cũ, rồi sửa: từ đã gõ dấu không bao giờ đổi, và từ không dấu chỉ được phục hồi khi vault không bao giờ viết trần và độ tin cậy đủ cao. Sau sửa, nDCG@5 tổng tăng từ 0,932 lên 0,954 khi bật. Cùng lúc, vi-snippet từ 14/15 lên 15/15 chỉ vì tuỳ chọn này đã bật mặc định, không cần sửa xếp hạng.
+M6. Đẩy merge khi test còn đỏ, và pre-push hook bị bỏ qua bằng HUSKY=0
+   Lần merge V13b được đẩy trong khi gói có một test đỏ; lead thừa nhận lẽ ra phải dừng. Chạy lại ba lần đều xanh, nên nhiều khả năng test tốc độ bị ảnh hưởng vì máy đang tải nặng. Trước đó hook pre-push của upstream chặn push, và phiên làm việc đặt HUSKY=0 cho các lệnh push sau đó.
+M7. Quy trình kiểm tra thủ công upstream thay cho tự động đuổi theo
+   Người duyệt chọn chuyển sang ghim tag upstream trong một file và chỉ đồng bộ khi được yêu cầu. Lịch chạy được bỏ, tag v0.17.2 được ghim, và CI chỉ dựng trên tag đã ghim. Mục tiêu G1 trong PRD được sửa lại theo quyết định này.
+M8. Lead ghi trạng thái điều phối ra một file (lead-state.txt) sau mỗi mốc, để công việc còn lại sống qua lúc context bị nén (compact) hoặc khi phiên bị ngắt.
+   Lead ghi trạng thái điều phối ra một file (lead-state.txt) sau mỗi mốc, để công việc còn lại sống qua lúc context bị nén (compact) hoặc khi phiên bị ngắt. Phần lớn người dùng AI chỉ dựa vào lịch sử hội thoại. Khi hội thoại dài, họ thường phải nhắc lại từ đầu hoặc mất dấu việc đang chạy.
+M9. Điều phối ghép các gói phát hành bằng CI và kích thước gói
+   Ba gói đầu qua smoke test trên máy sạch của GitHub, gồm kiểm sha256, đường dẫn có dấu cách và tiếng Việt, và giao thức MCP. Kích thước gói nén 87 đến 103 MB, giải nén 280 đến 330 MB. Gói Windows chưa đo cảnh báo SmartScreen vì chưa ký mã.
+M10. Hẹn giờ tự kiểm tra tiến trình bằng cơ chế đánh thức theo lịch, thay vì chờ liên tục hoặc hỏi user.
+   Hẹn giờ tự kiểm tra tiến trình bằng cơ chế đánh thức theo lịch, thay vì chờ liên tục hoặc hỏi user. Người dùng thường phải tự quay lại kiểm tra, hoặc chạy lệnh chờ treo cả phiên.
+M11. Kế hoạch có trạng thái theo từng phase và từng việc con, có điều kiện 'Xong khi' cụ thể. Khi xong thì chuyển vào thư mục archive, và các đường dẫn tham chiếu được sửa theo.
+   Kế hoạch có trạng thái theo từng phase và từng việc con, có điều kiện 'Xong khi' cụ thể. Khi xong thì chuyển vào thư mục archive, và các đường dẫn tham chiếu được sửa theo. Thông thường kế hoạch chỉ là một ghi chú nằm yên hoặc bị bỏ quên. Trạng thái thường không khớp với thực tế và không ai dọn.
+M12. Đĩa tạm đầy hạn mức, mọi lệnh shell của mọi agent đều hỏng
+   Ghi file trạng thái bị lỗi EDQUOT, rồi cả lệnh tìm dung lượng cũng lỗi exit 134. Lead dừng toàn bộ 11 agent, chuyển các worktree sang ổ đĩa thật, sửa đường dẫn bằng git worktree repair và cho agent chạy lại. Không mất phần việc nào; /tmp về còn 26%.
+M13. Hai note có điểm bằng hệt nhau làm snapshot CI đỏ theo thứ tự ngẫu nhiên
+   Hai note có điểm hybrid đều là 0,780383795, nên thứ tự giữa chúng phụ thuộc thứ tự index trên từng máy. Test chỉ thất bại trên CI. Agent viết phép so sánh chấp nhận hoán vị trong nhóm bằng điểm, còn mọi thứ khác vẫn khớp tuyệt đối; mã tìm kiếm không đổi. Trong lúc sửa, agent còn tìm ra một test phụ thuộc biến môi trường do file test khác để lại.
+M14. Gói macOS Intel: onnxruntime mới bỏ Intel, ghim bản cũ và đổi quy tắc chặn
+   Lead đề xuất ghim 1.23.2 chỉ cho gói Intel; người duyệt chấp nhận. Trên cùng máy, bản ghim cho multilingual cao hơn 0,063 và vi-synonym thấp hơn 0,017. Gói tiếng Việt sau đó đổi, và đo lại thì vi-snippet cao hơn 0,024, vi-synonym thấp hơn 0,021. Người duyệt đổi quy tắc thành chỉ chặn khi tụt quá 0,01 thay vì danh sách cho phép từng hạng mục. Kích thước gói giải nén 280 đến 330 MB, vượt mục tiêu 250 MB và được chấp nhận có ghi chú.
+M15. Test fast-check hỏng ngẫu nhiên vì hàm đếm token của chính test
+   Test thay dấu + và # bằng khoảng trắng trước khi đếm token. Chuỗi như mũi tên cộng dấu kết hợp U+0338 cộng # bị tokenizer đọc thành một token, nhưng sau khi thay thì test đếm khác, nên báo lỗi dù gói đúng. Agent viết helper đếm đúng như tokenizer của view, giữ nguyên phép kiểm, thêm test hồi quy và xác nhận qua 20.000 lần chạy.
+M16. Dọn dẹp chỉ những thứ đã xong, giữ lại phần agent còn dùng, và báo lại con số cụ thể trước và sau.
+   Dọn dẹp chỉ những thứ đã xong, giữ lại phần agent còn dùng, và báo lại con số cụ thể trước và sau. Người dùng thường xoá tạm mọi thứ một lượt, hoặc không dọn gì cho đến khi đĩa đầy.
+M17. Gói tiếng Việt tăng từ 0,666 lên 0,932 qua các lần đo, đặc biệt câu không dấu
+   Số đo qua các giai đoạn: nDCG@5 tổng 0,666 của upstream lên 0,813 khi có V13, rồi 0,932 khi đủ các thành phần. vi-unaccented từ 0,133 lên 0,951 và Hit@5 từ 0,27 lên 1,00; vi-dd từ 0,263 lên 0,888. Với vi-alias, Hit@1 từ 0,60 lên 0,93 sau khi thêm view fold.
+M18. Agent dừng giữa chừng không báo lại, lead phải gọi tiếp
+   Lead kiểm tiến trình và thấy agent đã dừng mà không báo; báo cáo cuối vẫn là bản cũ từ vài giờ trước. Lead gửi tin nhắn tiếp tục công việc và nhờ hoàn thành báo cáo.
+M19. Sửa lỗi tương tác: bộ sửa gõ sai làm từ đồng nghĩa tụt thứ hạng
+   Bộ sửa gõ sai viết lại từ như phone thành một từ gần nghĩa trong vault, nên từ đồng nghĩa không còn được nhận dạng. Thứ hạng của một câu tụt từ 4 xuống 7, và Hit@5 vi-synonym tụt xuống 0,73. Sửa đổi: lexicon khớp cả dạng người dùng gõ lẫn dạng đã sửa, và từ người dùng viết theo dạng đồng nghĩa được coi là từ đã biết.
+M20. Hook chặn mọi lệnh có chữ build, kể cả khi chỉ đọc đường dẫn
+   Lệnh kiểm tra gói bị chặn vì tên thư mục build, và lệnh xoá node_modules trong worktree cũng bị chặn. Agent chuyển sang công cụ sửa file thay cho lệnh shell để sửa test. Đây là ràng buộc của môi trường, không phải lỗi trong mã.
+M21. Điều phối 11 agent song song: worktree, xung đột và thứ tự chuỗi bản vá
+   Chuỗi bản vá phải áp đúng thứ tự, vì P03 và P00 cùng sửa cli.ts nên lỗi xung đột khi đảo. Lead dựng nhánh ghép riêng, tái tạo chuỗi theo đúng thứ tự, rồi chạy full gate. Một lần merge bị huỷ vì có thay đổi chưa commit; việc merge nhánh V18 phải giao lại cho chính agent giải xung đột.
+M22. Từ điển từ ghép: bỏ pyvi vì trùng 95% với nguồn GPL, học lại từ dữ liệu CC BY
+   Phân tích cho thấy 95% danh sách pyvi trùng với Viet74K (GPL), nên người duyệt yêu cầu thay nguồn. Agent học 20.523 từ ghép từ thống kê cặp âm tiết trên ba bộ dữ liệu CC BY 4.0, rồi kiểm chứng script dựng lại cho ra file giống hệt từng byte. Với segment bật mặc định, nDCG@5 tổng tăng từ 0,909 lên 0,932; vi-compound khó hơn tăng từ 0,632 lên 0,983.
+M23. Khi user cho phép làm việc không cần chờ, lead tách việc đang bị chặn khỏi việc không bị chặn, rồi chạy tiếp các việc không bị chặn song song.
+   Khi user cho phép làm việc không cần chờ, lead tách việc đang bị chặn khỏi việc không bị chặn, rồi chạy tiếp các việc không bị chặn song song. Nhiều người chờ hết mọi việc rồi mới làm bước tiếp theo, hoặc dừng cả dự án chỉ vì một đầu việc bị kẹt.
+M24. Lead đối chiếu kết luận của agent với tài liệu và kết quả đo trước khi tin, và khi agent nhận sai thì agent đo lại và đính chính rõ ràng.
+   Lead đối chiếu kết luận của agent với tài liệu và kết quả đo trước khi tin, và khi agent nhận sai thì agent đo lại và đính chính rõ ràng. Nhiều người chấp nhận báo cáo của AI gần như nguyên văn, hoặc ngược lại tranh luận cho đến khi ai đó thắng.
+M25. Pre-push hook chặn push và mẫu lệnh HUSKY=0 lặp lại
+   Lệnh push đầu tiên thất bại vì hook; commit đã vào máy nhưng chưa lên origin. Lệnh sau đó đặt HUSKY=0 cho mọi lần push. Một lệnh pull --rebase cũng bị từ chối vì có thay đổi chưa commit, buộc phải autostash.
+M26. Corpus tổng hợp quá dễ khiến cổng đo không bao giờ đạt được
+   Baseline upstream chưa có gói đã đạt Hit@5 0,93 ở vi-unaccented và 0,87 ở vi-dd, nên điều kiện gấp đôi không thể đạt. Nguyên nhân là mỗi cụm từ cần tìm cũng là tiêu đề note, nên nhánh vector và khớp tiêu đề tìm được note dù FTS5 không bỏ dấu. Agent đo trực tiếp unicode61 và thấy nó chỉ bỏ dấu khi syllable có một dấu, còn syllable hai dấu như ế, ữ, ợ, ặ và chữ đ thì không. Sau khi làm corpus khó hơn, baseline giảm còn 0,27 và 0,40.
+M27. Vault thật không rời máy: eval chi tiết chỉ ghi ra ngoài repo, có kiểm đường dẫn
+   Eval trên vault thật chỉ in số tổng hợp. Chế độ chi tiết ghi từng câu ra file ngoài repo với quyền 0600, và script từ chối ghi nếu đường dẫn nằm trong repo, trong worktree khác hoặc qua symlink. Kết quả cho thấy 61 câu, nDCG@5 tổng 0,600 lên 0,698, nhưng vài hạng mục nhỏ tụt vì chỉ có 2 đến 6 câu mỗi hạng mục.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

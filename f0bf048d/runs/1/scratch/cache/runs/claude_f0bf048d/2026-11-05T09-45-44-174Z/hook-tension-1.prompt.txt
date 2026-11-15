@@ -1,0 +1,33 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Đổi khoá bí mật an toàn: tạo PAT mới, cập nhật mọi chỗ chứa bản cũ (tìm bằng grep nội dung khắp home), kiểm PAT mới chạy được rồi mới thu hồi PAT cũ, và xác nhận bản cũ hết hiệu lực.
+   Đổi khoá bí mật an toàn: tạo PAT mới, cập nhật mọi chỗ chứa bản cũ (tìm bằng grep nội dung khắp home), kiểm PAT mới chạy được rồi mới thu hồi PAT cũ, và xác nhận bản cũ hết hiệu lực. Thu hồi key cũ rồi tạo key mới, hoặc quên mất bản sao còn nằm ở file cấu hình khác.
+M2. Hạ tầng 'an toàn cho agent' bằng cơ chế, không bằng lời dặn
+   Bản thiết kế quyền đầu tiên được một agent độc lập phản biện và tìm ra: mã đăng nhập dev 6 ký tự trong .env cho phép đăng nhập thành chủ, daemon đặc quyền chạy dưới user có docker tương đương root, và không có backup. Giai đoạn 0 làm trong phiên: dừng daemon, tách PAT của chủ khỏi user daemon bằng cách tạo member riêng, và thay PAT cũ. Bot không có quyền chỉ đọc trên repo private cá nhân nên phương án (c) bị loại sau khi kiểm tài liệu GitHub; chọn hoãn. Lệnh sudo lần 2 báo lỗi vì file PAT đã bị xoá sau lần chạy thứ nhất.
+M3. Thiết kế tầng công cụ trả phí theo bậc: mặc định miễn phí, bật add-on trả phí (DataForSEO) bằng một dòng trong manifest từng khách; thiếu add-on thì plan không tạo MCP server đó. Kèm chỉ dẫn agent cộng dồn chi phí mỗi lần gọi và hỏi chủ khi vượt $1 mỗi issue.
+   Thiết kế tầng công cụ trả phí theo bậc: mặc định miễn phí, bật add-on trả phí (DataForSEO) bằng một dòng trong manifest từng khách; thiếu add-on thì plan không tạo MCP server đó. Kèm chỉ dẫn agent cộng dồn chi phí mỗi lần gọi và hỏi chủ khi vượt $1 mỗi issue. Hoặc dùng tool miễn phí cho tất cả, hoặc gắn key trả phí chung cho mọi agent và hy vọng không tốn nhiều.
+M4. Đóng gói theo khách: một workspace, nhiều bộ, và sự cố ghi đè team Coding
+   Gói opc-studio ban đầu chứa cả team Coding; deploy nó ghi đè instructions và squad của gói opc-coding do phiên khác đang làm, khiến 3 agent bị gỡ khỏi squad. Lỗi gốc là plan chỉ đọc phần thay đổi của gói mình, bỏ qua dòng thay đổi ngoài Marketing. Sau đó tách thành 3 gói theo bộ (content, seo-analytics, coding) và mỗi khách một file manifest; deploy không bao giờ xoá nên không gỡ được bộ đã cài.
+M5. Kiểm tra bằng chạy thật, không bằng --version
+   Tôi đã kiểm bằng --version và trạng thái online rồi báo xong, nhưng người dùng nhắc 'anh thấy chạy rồi đấy'; khi đối chiếu log thì đúng là Pi OpenAI và Grok đã có 3 lượt chạy lúc 17:40 mà tôi chưa nhìn thấy. Sau đó tạo agent spike-gemini và giao STU-15, hoàn thành trong khoảng 30 giây, không lỗi, đúng model gemini-3.8-flash.
+M6. Mỗi bước hạ tầng làm tay đều được 'dạy lại' vào skill của agent vận hành rồi deploy lại, và có quy tắc rõ việc nào agent tự làm (đảo ngược được), việc nào phải hỏi (xoá, tiêu tiền, nâng cấp), việc nào chỉ soạn sẵn lệnh sudo cho người chạy.
+   Mỗi bước hạ tầng làm tay đều được 'dạy lại' vào skill của agent vận hành rồi deploy lại, và có quy tắc rõ việc nào agent tự làm (đảo ngược được), việc nào phải hỏi (xoá, tiêu tiền, nâng cấp), việc nào chỉ soạn sẵn lệnh sudo cho người chạy. Người vận hành tự làm rồi ghi runbook trong wiki, hiếm khi cập nhật; hoặc agent làm gì cũng hỏi, hoặc làm gì cũng tự làm.
+M7. Runtime theo tài khoản: pi, omp và tên lệnh bọc
+   Runtime OpenAI ban đầu offline vì profile được đổi tên sau khi lệnh bọc được tạo, nên daemon bỏ qua lệnh cũ; chỉ tắt bật lại profile là lên. Model thật (gpt-6.1-sol, grok-4.7) khác model cấu hình (gpt-5.5, grok-4.6), do lúc đăng nhập chọn khác. Lượt chạy đầu tiên với 3 runtime đều hoàn thành: STU-10…14 không lỗi, trong đó Google và DuckDuckGo chặn truy cập từ máy chủ, chỉ Bing trả kết quả.
+M8. Trạm tuần tự: agent SEO chạy được trên MCP GA4 và Search Console thật, nhưng key bị thiếu quyền đọc
+   Lần thử đầu, key service account trả về rỗng vì chưa được cấp quyền vào property, nên khó biết xác thực có chạy không. Sau khi cấp quyền, run_report qua MCP trả về số liệu thật, ví dụ kênh Direct 58 session trong 7 ngày. Search Console ban đầu không có số liệu vì property đang trỏ bản www cũ, trong khi website đã redirect 301 sang bản không www. Lần chạy agent đầu tiên (STU-6) bị blocked vì file key không được chép đúng vào home của user daemon, dù bước cài MCP đã thành công.
+M9. Lỗi nhỏ, sửa xong đã quên: kiểm chéo sau lệnh sudo
+   Hàng loạt lệnh báo exit 1 hoặc 127 do glob zsh không khớp, gcloud chưa cài, dirname thiếu tham số, hoặc file đã đổi tên. Mỗi lần đều được sửa bằng lệnh khác trong cùng lượt và không ảnh hưởng tiến độ.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

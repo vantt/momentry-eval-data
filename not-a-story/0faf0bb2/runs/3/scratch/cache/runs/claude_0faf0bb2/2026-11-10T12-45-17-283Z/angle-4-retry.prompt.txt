@@ -1,0 +1,125 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Bộ dựng công ty một người (One Person Company) vận hành bằng AI agent, nền là Multica. Mỗi khách có một workspace riêng, trong đó các team agent Coding, Content, SEO & Analytics nhận việc qua issue và làm theo workflow có cổng kiểm. Làm cho người điều hành một công ty một người muốn giao việc cho agent nhưng vẫn giữ quyền duyệt ở các bước quan trọng. Ràng buộc chính: tự host Multica và daemon, chạy runtime Claude Code, và thông tin riêng của khách (cấu hình, secret) nằm ngoài repo.
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L2035] USER: luồng theo cột nghĩa là sao?
+[L2043] USER: vậy so sánh cách tổ chức của agent, workflow, workspace, session và artifact space (nơi lưu in/out artifact). workflow/review là cơ chế cứng của system hay là luật uyển chuyển trong điều phối agent?
+[L2081] USER: multica có bộ định nghĩa agent như aicoworker?
+</asks>
+
+<story>
+hook: Ghép hai agent lại, agent mất luôn 'con người' và trí nhớ của nó
+tension: hop_ma_tan (Ghép Multica với AICoworker để có điều phối và agent sẵn có / Workspace bị thay, SOUL.md và MEMORY.md của agent bị loại, mất danh tính)
+stakes: 2/3
+# Multica bỏ SOUL và bộ nhớ của agent OpenClaw: mất 'con người' của agent khi ghép với AICoworker
+
+**Bối cảnh:** Câu hỏi: Multica có định nghĩa agent như AICoworker không. Đọc code thì thấy Multica cố ý đổi workspace OpenClaw thành thư mục của từng task.
+**Chuyện gì xảy ra:** Trong openclaw_config.go, Multica đặt workspace của mọi agent OpenClaw thành thư mục task và ghi rõ SOUL.md và MEMORY.md của host bị loại trừ. Multica không có bộ nhớ dài hạn; chỉ nối lại được session theo cặp (agent, issue). Ở chế độ gateway thì có thể giữ được danh tính nhưng chưa kiểm chứng.
+**Bài học:** Trước khi ghép hai hệ thống agent, tìm xem lớp điều phối có ghi đè không gian làm việc của agent hay không.
+**Artefact:** Trích dẫn comment trong code 'Host-workspace SOUL.md and MEMORY.md are therefore excluded' (không kèm đường dẫn máy).
+</story>
+
+<excerpt>
+[L2100] RESULT: server/internal/daemon/execenv/hermes_memory_test.go | server/internal/daemon/execenv/openclaw_config.go
+[L2104] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/multica; grep -n -iE "memory|workspace|MEMORY" server/internal/daemon/execenv/openclaw_config.go | head -15
+[L2105] RESULT: 275:// Override both the default and every agent-specific workspace so native skill | 276:// discovery stays in the task workdir. Host-workspace SOUL.md and MEMORY.md are
+[L2107] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/multica; sed -n 270,285p server/internal/daemon/execenv/openclaw_config.go
+[L2108] RESULT: // prepareOpenclawConfig writes a per-task wrapper and returns its config path | // and include root. OpenClaw's loader resolves JSON5, includes, and environment
+…
+[L2114] TOOL Edit: /home/vantt/project/fgOPC/docs/comparison-aicoworker-vs-paperclip.md
+[L2115] RESULT: The file /home/vantt/project/fgOPC/docs/comparison-aicoworker-vs-paperclip.md has been updated successfully. (file state is current in your context — no need to Read it back)
+[L2126] AGENT: Có, Multica có định nghĩa agent, nhưng ở mức "**bản mô tả công việc**". AICoworker thì định nghĩa cả "**con người**" của agent.
+
+## So sánh định nghĩa agent
+
+| Thành phần | **AICoworker / OpenClaw** | **Multica** |
+|---|---|---|
+| Danh tính, tính cách | `SOUL.md`, `IDENTITY.md`, `USER.md` trong workspace | Tên, avatar, description (chỉ để hiển thị, không đưa vào prompt) |
+| Chỉ dẫn công việc | `AGENTS.md`, `TOOLS.md`, nạp ở mọi lượt | **`instructions`**: một ô văn bản gửi kèm mỗi lượt chạy |
+| **Bộ nhớ dài hạn** | `MEMORY.md`, `memory/`, memory-lancedb; tóm tắt session khi `/new` | **Không có.** Mỗi task chạy trong thư mục mới; chỉ tiếp nối được session cũ của cùng (agent, issue) |
+| Skill | Skill trong workspace, skill dùng chung, store | Skill của workspace gắn vào agent, được ghi vào thư mục task trước mỗi lượt |
+| Model | Theo agent hoặc mặc định | Model, thinking level, service tier |
+| Tool, quyền | Sandbox native/container, phạm vi tool, network, filesystem | Biến môi trường, tham số CLI, MCP (riêng hoặc dùng chung), allowlist Composio. Sandbox do runtime bên dưới lo |
+| Lịch, kích hoạt | Heartbeat `HEARTBEAT.md`, cron | Autopilot (lịch, webhook, API), wakeup theo sự kiện |
+| Agent con, nhóm | `subagents.allowAgents`, room | Squad (leader + thành viên) |
+| Kênh chat | Gắn kênh Zalo/Telegram… cho agent | Kênh ở cấp workspace; chat session với agent |
+| Đóng gói, chia sẻ | **Gói `.agent`** (SOUL, docs, skill, wizard cài đặt), store | Duplicate agent; template đã bị gỡ; **Agent Builder** (AI hỏi đáp rồi viết cấu hình hộ) |
+| Gợi ý mở đầu chat | — | Tối đa 3 conversation starter |
+
+## Phát hiện quan trọng
+
+Code của Multica **cố ý bỏ** danh tính và bộ nhớ của agent OpenClaw. Trước mỗi lượt chạy, nó đặt workspace của mọi agent OpenClaw thành thư mục của task, và comment trong code ghi rõ:
+
+> *"Host-workspace SOUL.md and MEMORY.md are therefore excluded."*
+> (`server/internal/daemon/execenv/openclaw_config.go#L274-L278`)
+
+Nghĩa là với **Multica + AICoworker**, agent …[+1321]
+[L2130] USER: viết 1 tài liệu ghi nhận chi tiết cách chúng ta làm spike paperclip + aicoworker
+[L2133] AGENT: Mình viết một runbook chi tiết, tách khỏi báo cáo kết quả đã có, để người khác làm lại được từng bước. Các script đã dùng (đang nằm trong scratchpad) cũng được chép vào repo. Các script này không chứa bí mật, vì token được đọc từ `/proc` lúc chạy.
+…
+[L2328] AGENT: Đã sửa xong. Thay đổi chưa được commit:
+- **Learning area:** thêm lesson `execution-policy-review-stages` (giờ có 51 lessons), và ghi chú đính chính vào `per-issue-review-policy`.
+- **`docs/comparison-aicoworker-vs-paperclip.md`:** đính chính §6.3 (ai làm review tốt nhất) và §8 (cứng hay mềm). Kết luận mới: Paperclip **cứng ở việc đóng task nếu có `executionPolicy`**, và có review nhiều bên trong đó agent duyệt agent.
+- **Báo cáo spike, phát hiện #6:** ghi rõ `reviewPolicy` và `executionPolicy` khác nhau, và spike mới chỉ thử cái đầu.
+
+Có hai việc nên làm tiếp:
+1. **Kiểm chứng trên Paperclip đang chạy:** tạo SEN-5 có `executionPolicy` gồm hai bước, Long (agent) review rồi bạn approve. Xem agent có bị chặn khi tự chuyển `done` không. Việc này cần bạn claim quyền chủ qua Tailscale trước, vì server đang ở chế độ có đăng nhập.
+2. **Commit** các đính chính này vào nhánh `docs/opc-research`.
+
+Bạn muốn mình làm việc nào?
+[L2332] USER: multica có bộ định nghĩa agent như aicoworker?
+[L2336] AGENT: Câu này mình đã trả lời ở trên. Tóm tắt lại:
+
+**Có, nhưng mỏng hơn nhiều.** Định nghĩa agent của Multica giống một "bản mô tả công việc", còn AICoworker định nghĩa cả "con người".
+
+| | **AICoworker** | **Multica** |
+|---|---|---|
+| Danh tính, tính cách | `SOUL.md`, `IDENTITY.md`, `USER.md` | Tên, avatar, description (chỉ để hiển thị) |
+| Chỉ dẫn | `AGENTS.md`, `TOOLS.md` | Một ô `instructions`, gửi kèm mỗi lượt chạy |
+| **Bộ nhớ dài hạn** | `MEMORY.md`, memory-lancedb, tự tóm tắt phiên | **Không có** (chỉ tiếp nối session của cùng một issue) |
+| Skill | Skill trong workspace và skill dùng chung; skill-creator | Skill của workspace gắn vào agent |
+| Model, tool | Model; sandbox; phạm vi tool | Model, thinking level; env, tham số CLI, MCP |
+| Lịch | Heartbeat, cron | Autopilot, wakeup theo sự kiện |
+| Đóng gói | Gói `.agent`, store | Duplicate agent; Agent Builder (AI viết cấu hình hộ) |
+
+**Điểm quan trọng nhất:** khi chạy agent OpenClaw, Multica **cố ý thay workspace** bằng thư mục riêng của từng task. Comment trong code ghi rõ *"Host-workspace SOUL.md and MEMORY.md are therefore excluded"* (`server/internal/daemon/execenv/openclaw_config.go#L274-L278`). Nghĩa là dùng Multica + AICoworker thì agent **mất danh tính, bộ nhớ và skill** của AICoworker, tức mất luôn phần tự cải tiến mà AICoworker làm tốt nhất. Phát hiện này đã có trong lesson `multica-strips-openclaw-workspace`, trong `docs/vision.md` (§2 và §8.5), và trong tài liệu so sánh §5.
+
+Hai việc ở tin trước vẫn đang chờ bạn chọn: kiểm chứng `executionPolicy` trên Paperclip, và commit các đính chính.
+[L2340] USER: như vậy nếu dùng paperclip + aicoworker thì mỗi loại hình công việc sẽ có workflow khác nhau (số cột khác nhau thì giải quyêt ra sao)?
+[L2343] AGENT: Paperclip không có "cột tự đặt": board luôn có 7 trạng thái cố định. Muốn mỗi loại việc có quy trình riêng thì phải dùng các cơ chế khác của nó. Mình kiểm tra 4 cơ chế liên quan trước khi đề xuất: `executionPolicy` có nhận nhiều bước không, issue con và quan hệ phụ thuộc, routine/template, và skill chuyển kế hoạch thành task.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,37 @@
+Dưới đây là 13 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Dùng nhiều agent con đọc song song các repo lớn (kiểm kê schema, runtime, UI) rồi tổng hợp thành bảng so sánh có căn cứ.
+   Dùng nhiều agent con đọc song song các repo lớn (kiểm kê schema, runtime, UI) rồi tổng hợp thành bảng so sánh có căn cứ. Người dùng thường đọc từng repo một bằng tay hoặc hỏi một AI duy nhất, rất chậm và dễ bỏ sót.
+M2. Mỗi lần thử một hệ thống (spike), agent ghi lại đầy đủ runbook có script đăng nhập không lưu bí mật, kèm bảng hoàn tác, để có thể dựng lại hoặc dọn sạch.
+   Mỗi lần thử một hệ thống (spike), agent ghi lại đầy đủ runbook có script đăng nhập không lưu bí mật, kèm bảng hoàn tác, để có thể dựng lại hoặc dọn sạch. Phần lớn dev chỉ ghi chú vài dòng hoặc không ghi gì, rồi quên các bước đã làm và không dọn sạch được máy.
+M3. Budget chặn agent không báo: model gói thuê bao không có giá nên mọi lần đánh thức bị 409
+   Lệnh wake trả 409 'recorded usage has no reliable price'. Đặt ngân sách tháng cho agent khiến Paperclip từ chối mọi lần đánh thức vì model gói không có giá để tính chi phí. Đặt budget về 0 cho cả ba agent, resume Mai, run mới chạy và task hoàn thành trong 53 giây.
+M4. Multica v0.7.1 từ chối OpenClaw 2026.3.13 vì yêu cầu bản ≥2026.5.5: spike trượt
+   Lượt chạy đầu bị từ chối với 'below the minimum supported version 2026.5.5'. Thử khai man phiên bản bằng shim thì CLI báo 'Include path escapes config directory' vì bản 2026.3.13 thiếu OPENCLAW_INCLUDE_ROOTS. Kết luận không đạt 4 tiêu chí nào. Dọn toàn bộ stack Docker, volume và 3 image (~1,2 GB), giữ lại agent mai.
+M5. Agent làm việc nhiều bước mà user không phải nhắc lại: khi phát hiện lỗi hoặc thiếu thông tin, agent tự dừng, báo cáo rồi chờ, sau đó tiếp tục đúng chỗ đã dừng.
+   Agent làm việc nhiều bước mà user không phải nhắc lại: khi phát hiện lỗi hoặc thiếu thông tin, agent tự dừng, báo cáo rồi chờ, sau đó tiếp tục đúng chỗ đã dừng. Phần lớn người dùng AI coding agent phải theo dõi sát, nhắc lại yêu cầu, hoặc tự chạy lại lệnh khi agent đi lạc.
+M6. Ba hướng tích hợp, bốn cách đóng gói: vì sao không có hệ nào đóng gói được cả công ty OPC
+   Paperclip đóng gói được cả công ty theo chuẩn Agent Companies v1 nhưng thiếu workflow nhiều bước. AICoworker đóng gói một agent qua .agent nhưng không gói nhiều agent. Multica chỉ export được skill. Đề xuất gói OPC theo chuẩn mở cộng phần mở rộng WORKFLOW.md và công cụ deploy đa nền tảng.
+M7. Multica + Claude Code đạt 5/5 tiêu chí: agent tự giao việc, bị trả lại, hỏi chủ rồi duyệt
+   Issue được tạo không chỉ định người, tự giao cho Mai rồi Long. Long trả lại hai lần vì thiếu giá. Mai dừng lại và hỏi chủ thay vì tự bịa số liệu bán hàng. Chủ comment giá 350.000đ, Long duyệt, issue lên in_review giao cho chủ. Không agent nào tự chuyển done. Thời gian ghi ngược là 16 giây.
+M8. Agent Paperclip để task đã có người duyệt tự chuyển sang done
+   Agent Hà tự chuyển SEN-3 sang done dù task có human_only. Activity log cho thấy chỉ có 'issue.updated from backlog to todo'. Ban đầu kết luận 'lỗ hổng ở assertTransition', sau đó đính chính: reviewPolicy chỉ áp khi trả lời xác nhận, còn executionPolicy mới là cổng review thật. Spike chưa bật executionPolicy nên không thể kết luận cổng này hoạt động hay không.
+M9. Trong lúc agent đang chạy một tác vụ dài, người dùng vẫn giao thêm việc khác (đọc tài liệu, sửa báo cáo, kiểm tra một ứng viên) và agent xử lý song song mà không bỏ dở việc cũ.
+   Trong lúc agent đang chạy một tác vụ dài, người dùng vẫn giao thêm việc khác (đọc tài liệu, sửa báo cáo, kiểm tra một ứng viên) và agent xử lý song song mà không bỏ dở việc cũ. Nhiều người dùng phải chờ AI xong việc hiện tại mới yêu cầu tiếp, hoặc hủy và bắt đầu lại.
+M10. Trước khi ghi nhận kết luận vào tài liệu, agent đối chiếu lại từng trích dẫn file:dòng bằng lệnh đọc thực, rồi mới ghi vào learning area.
+   Trước khi ghi nhận kết luận vào tài liệu, agent đối chiếu lại từng trích dẫn file:dòng bằng lệnh đọc thực, rồi mới ghi vào learning area. Thường người dùng tin vào tóm tắt của AI hoặc chỉ đọc lướt, ít khi kiểm tra từng dòng dẫn chứng.
+M11. Chuỗi đăng nhập test: mã xác nhận chỉ nằm trong log server, rồi đặt mã cố định 123456
+   Mã được ghi vào log của container, nên phải đọc log để lấy. Multica không có đăng nhập mật khẩu; chỉ biến MULTICA_DEV_VERIFICATION_CODE bị bỏ qua nếu APP_ENV=production. Đặt mã cố định 135790, sau đó đổi thành 123456 theo yêu cầu, backend restart và đăng nhập thử thành công.
+M12. Paperclip: lệch phiên bản giao thức làm agent kẹt ở verifying, vá một dòng trong bản đã cài
+   Ba agent đều dừng ở lifecycle 'verifying' với lỗi 'The lifecycle step failed'. Log cho thấy harness_test_failed. Gốc là Paperclip đòi giao thức gateway phiên bản 4 (minProtocol=4), còn gateway AICoworker chỉ nói v3. Commit ec2d87d của Paperclip bump v3→v4 nhưng ghi là không đổi nội dung giao thức. Sửa minProtocol thành 3 ở 3 chỗ trong bản đã cài (có file .orig), restart, và trạng thái chuyển sang ready cho cả 3 agent.
+M13. Agent tự phát hiện mâu thuẫn giữa lời nói trước đó và bằng chứng mới, rồi đính chính công khai thay vì giữ nguyên kết luận cũ.
+   Agent tự phát hiện mâu thuẫn giữa lời nói trước đó và bằng chứng mới, rồi đính chính công khai thay vì giữ nguyên kết luận cũ. Nhiều người dùng sẽ thấy agent cố bảo vệ câu trả lời trước, hoặc sẽ không kiểm tra lại trích dẫn đã đưa ra.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

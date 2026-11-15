@@ -1,0 +1,77 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Installer mượn từ dự án khác đã chạy thật
+   Lệnh ls báo không có file ở một đường dẫn, nhưng tìm được installer đã chạy thật ở một dự án khác trên máy. Agent đọc và viết lại theo đó, chỉ dùng ASCII vì PowerShell 5.1 đọc sai UTF-8 khi chạy qua pipe.
+M2. Thử host thật trong mạng bị ngắt: unshare chặn mọi request ra ngoài
+   omp báo 'Incorrect API key' với khoá giả, cho thấy nó đã cố gọi API. Agent chạy lại qua unshare -rn, namespace mạng rỗng, để chắc không có request nào ra ngoài. Hook vẫn ghi được log cục bộ.
+M3. Hook .ckignore chặn lệnh bash có chuỗi dist và .git
+   Lần đầu, lệnh tạo file workflow CI bị chặn vì chứa dist. Agent chuyển sang công cụ ghi file. Lần hai, khi viết test, lệnh bash chứa .git cũng bị chặn, và agent đọc file bằng công cụ khác.
+M4. Reviewer độc lập tìm 16 lỗi sau khi bộ test đã xanh
+   Reviewer báo 4 lỗi nặng, 5 trung bình, 7 nhẹ. Phần lớn nằm ở nhánh Windows và ở đường dẫn tuỳ chỉnh, những chỗ test Linux không chạy tới. Agent sửa hết trong phạm vi và thêm test cho từng lỗi.
+M5. Lệnh xoá có biến shell bị Claude Code chặn, agent viết lại đường dẫn đầy đủ
+   Chặn an toàn của Claude Code từ chối lệnh rm -rf vì biến có thể rỗng và khiến lệnh xoá vượt phạm vi. Thao tác này không bị chặn ở người dùng. Agent viết lại lệnh, thay biến bằng đường dẫn cụ thể.
+M6. Đổi mã thoát: mã 1 và 2 đảo nghĩa, thành thay đổi hợp đồng công khai
+   Người dùng chọn theo chuẩn. Mã mới là 0 xong, 1 có lỗi, 2 sai cú pháp; mã 3, 4, 5 giữ nghĩa riêng. Các test kiểm mã thoát phải sửa, và CHANGELOG có mục Breaking.
+M7. Repo sau symlink trên macOS: so khớp đường dẫn làm mất transcript
+   Một test trên macOS không thấy phiên nào. Nguyên nhân là /var là symlink tới /private/var, nên so khớp đường dẫn thất bại. Agent sửa bằng cách so khớp theo cả hai dạng đường dẫn, dùng realpath, và macOS xanh.
+M8. Dữ liệu nằm trong thư mục cài trên Windows: uninstall sẽ xoá cache
+   Reviewer phát hiện rằng uninstall hứa giữ dữ liệu nhưng thực tế sẽ xoá cache cùng thư mục cài. Agent tách thư mục chương trình và thư mục dữ liệu, rồi thêm kiểm tra chủ sở hữu trước khi xoá, kèm điều kiện cho --purge.
+M9. zsh của agent không tách biến và báo no matches khi glob rỗng, khiến lệnh kiểm chết trước khi chạy
+   Ít nhất bốn lần lệnh chết ngay từ đầu: zsh không tách biến lệnh, không tìm thấy file vì biến không được mở rộng, và glob không khớp báo lỗi thay vì trả về rỗng. Mỗi lần phải chuyển sang bash -c để chạy lại.
+M10. Hook bị bỏ qua im lặng: lệnh hook luôn thoát 0 nên lỗi không ai thấy
+   Khi nâng Node qua nvm hoặc đổi thư mục clone, đường dẫn cứng hỏng, nhưng lệnh hook vẫn thoát 0 nên không có tín hiệu nào. Agent đổi hook sang gọi qua lệnh momentry đã cài, nơi tìm Node lúc chạy.
+M11. Đo hook thật bằng phiên không đăng nhập: workflow xanh nhưng chưa chứng minh được
+   Phiên Claude xanh nhưng không đủ để kết luận hook có chạy. Phiên Codex sau khi sửa tên sự kiện vẫn thất bại, và không có log hook nào. Vì không đăng nhập được, không thể chứng minh được là hook có được gọi trước khi lỗi xác thực xảy ra.
+M12. Agent mở một bài nghiên cứu về ba công cụ chưa biết, chạy song song với việc viết code, rồi chuyển các câu hỏi sản phẩm thành lựa chọn để user chọn trước khi lập plan.
+   Agent mở một bài nghiên cứu về ba công cụ chưa biết, chạy song song với việc viết code, rồi chuyển các câu hỏi sản phẩm thành lựa chọn để user chọn trước khi lập plan. Người làm một mình thường tự đoán hướng đi rồi làm thẳng, hoặc đọc tài liệu tuần tự mà không dừng để hỏi quyết định.
+M13. Đảo quyết định PRD: init tự cài hook thay vì chỉ in đoạn cấu hình
+   Agent đưa hai phương án với đánh đổi cụ thể: chỉ in thì an toàn nhưng người mới dễ dán sai, còn tự cài thì phải sao lưu và giữ phần của người dùng. Người dùng chọn tự cài. Ước lượng khoảng 200 đến 300 dòng code cộng test, và PRD được sửa ở ba mục.
+M14. Plan tạo bằng CLI: validate và checkbox tự chuyển từ danh sách số
+   ak plan validate báo hợp lệ. Các mục việc viết dạng danh sách số được đổi thành checkbox bằng một đoạn awk, và đếm cho ra 8 và 6 checkbox theo phase.
+M15. Thả hàng loạt quarantine: kiểm lại từng mục, giữ mục còn lộ thông tin
+   Lệnh mới kiểm lại từng mục trước khi thả. Mục sạch được đưa vào hộp, mục còn vi phạm riêng tư vẫn bị giữ. Thêm một test cho mỗi nhánh, test tổng từ 234 lên 235, và tài liệu tham chiếu lệnh được sinh lại.
+M16. Commit kéo nhầm đổi tên README, main thiếu file và CI đỏ
+   Commit của agent kéo theo việc đổi tên này, nên main thiếu README.md và CI đỏ toàn bộ. Người dùng chọn commit README song ngữ đang có, và sau đó CI xanh lại.
+M17. Đọc mã nguồn Codex để hiểu cơ chế duyệt tin cậy hook
+   Agent tìm trong mã nguồn mở và thấy công thức hash phức tạp, nhiều chỗ dễ sai khi tự tính. Thay vào đó, agent tìm thấy cờ bypass_hook_trust, dùng cho môi trường probe.
+M18. Ba host mới, ba cách lưu transcript: 27 thư mục profile phải tìm tự động
+   pi và omp lưu JSONL theo thư mục làm việc. agy lưu transcript ở đường dẫn lồng nhau theo phiên. Trên máy có 4 thư mục Codex, 9 của pi, 10 của omp và 4 của agy, tổng 27. Bộ đọc mới đọc được 5 transcript agy thật.
+M19. Codex không chạy hook momentry từ đầu: tên sự kiện viết sai kiểu bị bỏ qua
+   Codex bỏ qua hook không báo lỗi nên không ai biết trong thời gian dài. Khi đối chiếu với mã nguồn Codex, agent thấy hai tên sai. Đổi thành PreCompact, SessionEnd và SessionStart, thêm SessionEnd, rồi push; CI vẫn xanh.
+M20. Lệnh hook Windows: dùng đường dẫn gạch chéo và file .cmd để chạy được ở cả cmd lẫn Git Bash
+   Agent chọn lệnh hook dạng đường dẫn có gạch chéo tới file momentry.cmd để chạy được ở cả hai shell. /bip gọi momentry theo tên vì installer đã thêm thư mục shim vào PATH. Tài liệu ghi rõ phần này chưa được đo trên phiên thật.
+M21. Vòng agent-native hội tụ từ hai vòng xuống một: thêm lệnh thật thay cho câu hướng dẫn
+   Vòng đầu, agent vướng vì lệnh sửa cho nguồn chặn riêng tư chỉ là câu văn trong thông báo, không chạy được. Agent thêm lệnh config privacy-add. Vòng sau, agent hội tụ ngay ở lần đầu, từ hai vòng xuống một.
+M22. Hai đường gom: máy quét rộng, người đánh dấu khoảnh khắc bằng /bip
+   /bip là lệnh tắt để người dùng đánh dấu ngay khoảnh khắc đáng kể đang làm, kèm một dòng ghi chú. Hook quét sau phiên chỉ bắt được dấu vết trong transcript như số đổi, lệnh lỗi hay git đảo ngược, còn /bip bắt được khoảnh khắc chỉ người làm biết.
+M23. PowerShell 5.1 và cmd.exe: escape nháy làm uninstall không xoá gì nhưng vẫn báo thành công
+   Node escape nháy kép thành \" mà cmd không hiểu, nên lệnh del thất bại âm thầm và file vẫn còn. Ở installer, node -p với dấu nháy kép lồng trong PowerShell 5.1 làm lệnh hỏng, nên bản cài luôn báo 'Node quá cũ' dù Node đủ mới.
+M24. CI chín tổ hợp lần đầu: Linux xanh, macOS và Windows đỏ hàng loạt
+   Linux xanh, macOS đỏ hai test, Windows đỏ 38 test. Số lỗi Windows xuống còn 4 sau lần sửa đầu, và về 0 khi test được viết lại không giả định POSIX. Nguyên nhân là test chèn đường dẫn thô vào JSON, kiểm quyền 0600, tách bằng dấu hai chấm, và claude giả không chạy được trên Windows.
+M25. Đóng gói tái tạo được: hai lần cho cùng sha256
+   Đóng gói hai lần cho cùng một checksum, và cài lại không đổi gì. Installer kiểm được archive khi bị sửa và từ chối cài.
+M26. Stop hook giữ phiên lại: plan 45 trên 45 nhưng chưa xong vì release chưa cắt
+   Lần 1, plan còn 43 trên 45 việc vì phải push GitHub, và agent hỏi quyền. Lần 2, plan đã 45 trên 45 nhưng hook báo chưa đủ 'tốt đẹp' vì v0.1.0 chưa phát hành và hook Windows chưa đo. Sau khi người dùng đồng ý, tag và release v0.1.0 chạy xanh.
+M27. Agy không có sự kiện kết thúc phiên: gom khi mở phiên sau
+   Không có sự kiện kết thúc phiên nên không gom được lúc đóng. Người dùng chọn gom khi mở phiên sau. Agent tìm mọi profile trên máy để quét.
+M28. Release v0.1.0: lệnh cài một dòng chạy được từ GitHub thật
+   Release chạy xanh từ đầu tới cuối trên chín tổ hợp, tạo bản nháp, cài thử trên ba hệ điều hành, rồi công bố. Agent chạy đúng lệnh cài một dòng trong README với GitHub thật trong HOME tạm, cài được v0.1.0.
+M29. Dò cấu trúc transcript chỉ in khoá và kiểu, không in giá trị
+   Lần đầu, script dò chạy trên Node 24 bị lỗi evalTypeScript. Agent dùng find với bộ lọc kích thước để chọn một transcript 400 dòng và chỉ in khoá và kiểu bản ghi.
+M30. Test xanh trên clone sạch, đỏ trong bản làm việc: test quét cả thư mục chưa git
+   Trên bản làm việc, 202 trên 203 test qua, vì test đọc cả thư mục công cụ agent chưa được track. Trên clone sạch, 205 trên 205 qua. Sau khi loại thư mục không thuộc gói, số test tăng dần: 230, 232, 247 khi thêm module mới.
+M31. Push bị từ chối vì remote có commit mới, rebase không xung đột
+   Agent fetch, xem hai commit trên remote (một tài liệu đặt tên và một dòng trong danh mục docs), rồi rebase các commit của mình lên trên. Không có xung đột và push thành công. Agent không dùng force.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

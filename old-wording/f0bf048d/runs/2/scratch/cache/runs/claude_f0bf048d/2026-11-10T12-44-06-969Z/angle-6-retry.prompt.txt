@@ -1,0 +1,104 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L675] USER: skillstation để sau. làm vụ seo trước. nhất là ga và console
+[L717] USER: Lệnh 2: This app is blocked This app tried to access sensitive info in your Google Account. To keep your account safe, Google blocked this access.
+[L761] USER: xong. finejapanvietnam.com
+</asks>
+
+<story>
+hook: Deploy gói Marketing lặng lẽ đưa 3 agent Coding về bản cũ
+tension: hop_ma_tan (deploy gói mới chỉ để chạy phần Marketing / 3 agent Coding bị đưa về bản cũ và gỡ khỏi squad)
+stakes: 2/3
+# Deploy một gói ghi đè team của gói khác trong cùng workspace
+
+**Bối cảnh:** Hai gói (một gói của phiên song song, một gói của mình) cùng deploy vào một workspace Multica. Gói của mình vẫn giữ bản cũ của team Coding.
+**Chuyện gì xảy ra:** Lần deploy đầu tiên của gói mới đưa instructions, model và skill của 3 agent Coding về bản cũ, gỡ 3 agent khỏi squad và gắn sai workflow cho một project. Lúc đọc plan, agent bỏ qua các dòng ngoài phần Marketing. Sau đó deploy lại gói Coding từ file gốc, plan báo 0 thay đổi. Nguyên nhân gốc là gói Coding nằm sẵn trong gói Marketing. Deploy không xoá thực thể trên server nên các agent đang chạy không bị ảnh hưởng.
+**Bài học:** Khi nhiều gói cùng trỏ vào một workspace thì mỗi gói chỉ được giữ đúng phần của nó, và phải đọc toàn bộ plan trước khi deploy.
+**Artefact:** Bảng plan trước và sau deploy, đã che tên workspace và id.
+**Góc người ngoài:** cách làm phổ biến là Thường cấu hình thẳng trên giao diện hoặc chạy script một lần, mỗi lần chỉnh thì sửa tay trên server và ít khi có bước xem trước thay đổi; ở đây khác ở Người dùng thường chỉ có một bộ cấu hình dùng chung. Ở đây mỗi khách có manifest riêng, deploy luôn chạy plan trước và kiểm lại, nên gói ghi đè team khác (K1) và cài nhầm workspace chỉ xảy ra một lần rồi được chặn bằng cơ chế.
+</story>
+
+<excerpt>
+[L855] TOOL Bash: cd ~/project/fgOPC/multica; ls packages/opc-coding packages/opc-coding/agents; grep -n "workspace\|runtime" packages/opc-coding/.fgopc.yaml; node tools/opc.mjs plan packages/opc-coding 2>&1 | grep -v "^warn\|^= "
+[L862] RESULT: packages/opc-coding: | COMPANY.md
+[L865] TOOL Bash: cd ~/project/fgOPC/multica; node tools/opc.mjs deploy packages/opc-coding 2>&1 | grep -v "^warn\|^= " | tail -5; echo "--- recheck:"; node tools/opc.mjs plan packages/opc-coding 2>&1 | tail -1
+[L868] RESULT: + member coding/vy | + member coding/tam
+[L871] TOOL Bash: TOKEN=$(cat ~/multica-spike/.pat); H="Authorization: Bearer $TOKEN"; WS=$(curl -s -H "$H" localhost:8310/api/workspaces | python3 -c 'import json,sys;print([w["id"] for w in json.load(sys.stdin) if w["slug"]=="opc-studio"][0])'); curl -s -H "$H" -H "X-Workspace-ID: $WS" "localhost:8310/api/issues?li …[+332]
+[L874] RESULT: STU-5 in_review Sửa ghi chú 2026-10-30T10:23:21 | STU-2 in_review Email chào mừng người đăng ký bản tin OP 2026-10-29T16:00:35
+…
+[L885] TOOL Bash: cd ~/project/fgOPC/multica/packages/opc-studio; grep -rn "coding-standards\|code-review-checklist\|khoa\|minh\|quan\|product-app\|feature\|Coding\|GH_TOKEN" . | grep -v "^./agents/\(khoa\|minh\|quan\)/\|^./teams/coding/\|^./workflows/feature/\|^./projects/product-app/\|^./skills/\(coding-standards\| …[+92]
+[L888] RESULT: COMPANY.md:16: - GH_TOKEN | COMPANY.md:26:- **Coding** (trưởng nhóm Khoa): Minh viết code, Quân review. Workflow `feature`.
+[L896] TOOL Bash: cd ~/project/fgOPC/multica/packages/opc-studio && git rm -rq agents/khoa agents/minh agents/quan teams/coding workflows/feature projects/product-app skills/coding-standards skills/code-review-checklist && python3 - <<'EOF' def edit(p, pairs): t=open(p).read() for a,b in pairs: assert t.count(a)==1,( …[+1248]
+[L897] RESULT: 6:description: "Công ty phần mềm một người: chủ ra quyết định, một team coding và một team marketing bằng AI agent." | 7-version: 0.1.0
+[L902] TOOL Bash: cd ~/project/fgOPC/multica && git add packages/opc-studio && git commit -q -F - <<'EOF' opc-studio: Marketing only; the Coding team lives in opc-coding Both packages deploy into workspace opc-studio. Keeping the old Coding team here meant deploying opc-studio reverted opc-coding's agents, squad and  …[+264]
+[L903] RESULT: 0c4d9ce opc-studio: Marketing only; the Coding team lives in opc-coding | 8aa7b92 opc-studio: SEO, analytics and tracking agents with GA4 and Search Console MCP
+[L904] TOOL Write: /home/vantt/.claude/projects/-opt-AICoworker/memory/opc-packages-shared-workspace.md
+[L905] RESULT: File created successfully at: /home/vantt/.claude/projects/-opt-AICoworker/memory/opc-packages-shared-workspace.md
+[L906] TOOL Bash: echo "- [OPC packages share a workspace](opc-packages-shared-workspace.md) — opc-studio + opc-coding both deploy to workspace opc-studio; plan and read every change first" >> /home/vantt/.claude/projects/-opt-AICoworker/memory/MEMORY.md
+[L910] RESULT: (Bash completed with no output)
+[L915] AGENT: Phần GA4 đã chạy. Tôi đã deploy 3 agent SEO/GA4 lên Multica, gọi thử được số liệu thật của `finejapanvietnam.com`. Search Console chưa có số liệu vì đang cấp quyền nhầm property.
+
+**Phải báo trước: lần deploy đầu tiên của tôi đã ghi đè lên team Coding của phiên song song.** Team này nằm trong gói riêng `opc-coding` (phiên kia chưa commit), deploy vào cùng workspace `opc-studio`. Gói `opc-studio` của tôi vẫn còn bản Coding cũ, và tôi đã bỏ qua các dòng thay đổi ngoài phần Marketing khi đọc `plan`. Hậu quả:
+- instructions, model và skill của Khoa, Minh, Quân bị đưa về bản cũ;
+- Bảo, Vy, Tâm bị gỡ khỏi squad Coding;
+- project `product-app` bị gắn sai workflow.
+
+**Đã khôi phục:** tôi deploy lại `opc-coding` từ chính file của phiên kia, sau đó `plan` báo `0 change(s)`. Issue STU-5 đang chờ bạn duyệt spec không bị ảnh hưởng, vì nó được cập nhật lần cuối trước lần deploy của tôi.
+
+**Đã sửa tận gốc:** tôi bỏ phần Coding khỏi gói `opc-studio` (commit `0c4d9ce`), giờ gói này chỉ còn Marketing. Deploy không bao giờ xoá thực thể trên server, nên các agent Coding đang chạy không bị đụng tới. Tôi cũng đã ghi lại bài học này vào bộ nhớ.
+
+**Đã chạy (commit `8aa7b92`):**
+- 3 agent SEO Specialist, Analytics Reporter, Tracking Specialist trên daemon `fg-server-opc`, cùng skill, MCP server và project "Số liệu marketing".
+- GA4 property `274853955`: gọi `run_report` qua MCP trả về số liệu thật, ví dụ kênh Direct có 58 session trong 7 ngày.
+- Lịch báo cáo tuần đã tạo nhưng đang **paused**. Tôi sẽ bật sau khi Search Console có số liệu.
+
+**Bạn cần làm thêm cho Search Console:** `www.finejapanvietnam.com` chuyển hướng 301 sang `finejapanvietnam.com` (không www). Property bạn đã cấp quyền là bản `www`, cũ, có 0 lượt hiển thị từ tháng 7. Trong Search Console, mở dropdown chọn property:
+- Nếu có **`finejapanvietnam.com`** (Domain property) hoặc **`https://finejapanvietnam.com/`**: vào Settings → Users and permissions, thêm `opc-marketing@opc-marketing-906828.iam.gserviceaccount.com` với quyền  …[+327]
+[L920] USER: khoan, anh muốn chúng ta build bộ agent để nó làm. nhưng giờ thành em làm? tức là agent chỉ cần đầy đủ công cụ để làm là tốt nhất.
+[L923] AGENT: Bạn nói đúng. Lẽ ra tôi chỉ cần trang bị đủ công cụ cho agent, nhưng mấy bước vừa rồi tôi đã tự làm thay: tìm property ID, phát hiện lỗi `www`, chẩn đoán Search Console. Những việc đó SEO Specialist và Analytics Reporter phải tự làm được bằng MCP đã gắn: `get_account_summaries`, `list_sites`, `list_sitemaps`, `index_inspect`, cộng WebFetch.
+
+Từ giờ tôi chỉ làm phần hạ tầng, còn việc chuyên môn giao cho agent qua issue. Việc đầu tiên là giao chính vụ Search Console này cho SEO Specialist. Đây cũng là bài kiểm tra đầu cuối xem agent có thật sự dùng được MCP không. Tôi xem API tạo issue:
+…
+[L1155] RESULT: 237d250 One workspace per client, one package per set: opc-studio package -> opc-content | M ../docs/comparison-aicoworker-vs-paperclip.md
+[L1157] AGENT: Cập nhật bộ nhớ theo mô hình mới:
+[L1158] TOOL Write: /home/vantt/.claude/projects/-opt-AICoworker/memory/opc-packages-shared-workspace.md
+[L1159] RESULT: The file /home/vantt/.claude/projects/-opt-AICoworker/memory/opc-packages-shared-workspace.md has been updated successfully.
+[L1160] TOOL Bash: sed -i 's|^- \[OPC packages share a workspace\].*|- [OPC sets per client](opc-packages-shared-workspace.md) — one workspace per client, one package per set (opc-content, opc-seo-analytics, opc-coding); plan before deploy; agents do the domain work|' /home/vantt/.claude/projects/-opt-AICoworker/memor …[+78]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

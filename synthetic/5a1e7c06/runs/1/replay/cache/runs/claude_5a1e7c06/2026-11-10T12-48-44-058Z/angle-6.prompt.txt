@@ -1,0 +1,77 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Chào bạn. Còn 9 ngày nữa là đến đêm nhạc Gió Mùa (15/11). Hôm nay mình cần xếp ca tình nguyện viên và gộp tech rider của hai ban. File ở thư mục này. Bắt đầu với tình nguyện viên nhé: tinh-nguyen-vien.csv có 18 bạn, cần chia 3 ca: dựng (14h–18h), soát vé (18h–20h30), dọn (22h–24h).
+[L15] USER: Chốt Kho Gạo. Mình gọi chị Ngân luôn. Bạn soạn email cho người mua vé, hỏi tự nguyện trước, hạn trả lời 48 tiếng.
+[L18] USER: 11h20, chị Ngân xác nhận Kho Gạo rồi, cọc 5 triệu. Ghi vào nhat-ky.md giúp mình.
+[L21] USER: Giờ tech rider. Ngõ Nhỏ và Chuồn Chuồn đã thống nhất dùng chung dàn nhạc (trống, ampli) để tiết kiệm tiền thuê và đổi set nhanh. Bạn gộp hai file rider/ thành một danh sách thuê thiết bị.
+</asks>
+
+<story>
+hook: Hai tech rider ghi 'dùng chung', đặt cạnh nhau chỉ còn loa và mixer chung
+tension: tuong_ma_hoa_ra (Hai ban tưởng dùng chung được trống, monitor, ampli / Đặt cạnh nhau, chỉ loa chính và mixer là chung thật)
+stakes: 2/3
+# Hai tech rider 'dùng chung' tan khi đặt cạnh nhau: trống, monitor, ampli đều khác
+
+**Bối cảnh:** Hai ban thống nhất dùng chung dàn trống và ampli để tiết kiệm tiền thuê và đổi set nhanh. Thoả thuận này chỉ dựa trên tên hạng mục, chưa ai đối chiếu từng dòng kỹ thuật.
+**Chuyện gì xảy ra:** Trống: một ban setup tay trái, ban kia tay phải, đổi mất 15–20 phút và cymbal phải thay. Monitor: một ban dùng in-ear, ban kia dùng 4 monitor sàn. Guitar: một ban cắm DI thẳng, ban kia cần 2 ampli đèn có mic. Đổi set ước 25 phút, trong khi kịch bản chỉ để 10 phút. Chỉ dàn loa chính và mixer là thật sự dùng chung được.
+**Bài học:** 'Dùng chung' trên danh sách chưa phải là dùng chung được; đặt hai rider cạnh nhau, dòng nào cũng phải có người đối chiếu.
+**Artefact:** Bảng so sánh hai rider theo hạng mục (trống, monitor, guitar, thời gian đổi set). Che tên ban nhạc.
+**Góc người ngoài:** cách làm phổ biến là Nhận thoả thuận của các bên làm đầu vào, rồi gộp thành một danh sách thuê thiết bị mà không kiểm tra từng dòng với file gốc; ở đây khác ở Lời 'ok' trong nhóm không phải là thông số thiết bị. Việc đối chiếu từng dòng phát hiện ra mâu thuẫn trước đêm diễn, nên user chọn thuê hai dàn khi còn kịp, chứ không phải lúc đã đứng trên sân khấu.
+</story>
+
+<excerpt>
+[L19] TOOL Edit: /home/quan/Documents/dem-nhac-gio-mua/nhat-ky.md
+[L20] RESULT: The file /home/quan/Documents/dem-nhac-gio-mua/nhat-ky.md has been updated successfully.
+[L21] USER: Giờ tech rider. Ngõ Nhỏ và Chuồn Chuồn đã thống nhất dùng chung dàn nhạc (trống, ampli) để tiết kiệm tiền thuê và đổi set nhanh. Bạn gộp hai file rider/ thành một danh sách thuê thiết bị.
+[L22] TOOL Read: /home/quan/Documents/dem-nhac-gio-mua/rider/ngo-nho.md
+[L23] RESULT: # Ngõ Nhỏ – tech rider | - Trống: bộ 5 trống, setup TAY TRÁI (tay trống thuận tay trái)
+[L24] TOOL Read: /home/quan/Documents/dem-nhac-gio-mua/rider/chuon-chuon.md
+[L25] RESULT: # Chuồn Chuồn – tech rider | - Trống: bộ 4 trống, setup tay phải, cymbal riêng mang theo
+[L26] AGENT: Mình gộp thì thấy "dùng chung" chỉ đúng trên giấy:
+
+- **Trống**: Ngõ Nhỏ cần setup tay trái, Chuồn Chuồn tay phải. Đổi qua lại phải tháo và lắp lại gần hết, khoảng 15–20 phút, cymbal của Chuồn Chuồn cũng phải thay.
+- **Monitor**: Ngõ Nhỏ dùng in-ear, Chuồn Chuồn dùng 4 monitor sàn. Hai hệ thống khác nhau, phải có cả hai.
+- **Guitar**: Ngõ Nhỏ cắm Kemper thẳng DI, Chuồn Chuồn cần 2 ampli đèn có mic. Không có gì dùng chung được.
+
+Tổng thời gian đổi set ước khoảng 25 phút, trong khi kịch bản chỉ để 10 phút. Cái duy nhất hai ban thật sự dùng chung được là dàn loa chính và bàn mixer, vốn có sẵn.
+
+Nói cách khác, thoả thuận dùng chung không còn đứng được khi đặt hai rider cạnh nhau.
+[L27] USER: Hai ban nói với mình là ok dùng chung mà… chắc lúc đó mọi người chỉ nghĩ "trống là trống". Giờ sao, thuê hai bộ thì tốn bao nhiêu?
+[L28] TOOL Bash: cat /home/quan/Documents/dem-nhac-gio-mua/bao-gia/thue-thiet-bi.csv
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

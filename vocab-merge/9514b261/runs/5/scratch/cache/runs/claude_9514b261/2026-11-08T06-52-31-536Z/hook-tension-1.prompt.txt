@@ -1,0 +1,51 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Máy kiểm tuổi tài liệu không bao giờ báo vì trừ chuỗi ngày ISO ra NaN
+   Registry có 479 doc, trong đó 332 đang provisional và 147 active. Check cảnh báo doc provisional quá hạn trừ updatedAt là chuỗi ISO nên ra NaN, nên check chưa bao giờ bắn, trong khi 332 doc đã 47 đến 55 ngày. Cùng lúc có ba chỉ mục tài liệu song song với 492, 479 và 0 mục. Có 365 role khác nhau trên 479 doc, trong khi thiết kế là tập đóng nhỏ.
+M2. File hướng dẫn agent vượt trần 32 KiB của Codex, và Codex cắt im lặng
+   File đo 46.754 byte, sau đó 46.919 byte, vượt trần khoảng 1,4 lần. Codex cắt sau trần mà không báo. Vì khối AgentKit chưa commit, agent không git add nguyên file mà chỉ stage phần của mình.
+M3. Đổi tên tài khoản cho thống nhất: nhiều chỗ tham chiếu, và một profile tạo nhầm phải chuyển đi
+   Agent tạo một profile theo yêu cầu đầu, rồi người dùng đổi ý. Agent kiểm profile đó chưa đăng nhập (0 dòng credential) và chuyển đi thay vì xoá. Khi đổi tên thư mục pi, agent liệt kê mọi chỗ tham chiếu trong zshrc và config trước rồi mới đổi. Kiểm lại thì fgOS không còn chỗ nào trỏ tới tên cũ.
+M4. Pull vào repo có file sinh tự động xung đột, chỉnh sửa của chủ máy phải đi qua stash
+   Agent restore file board rồi pull với autostash. File mutation-census là bản sinh tự động và phía remote đã sinh lại, nên xung đột. Agent nhận bản remote, còn bản của chủ máy nằm trong stash. Các chỉnh sửa board phải hoàn lại, pull, rồi áp lại theo thứ tự thời gian. Khi push, remote đi trước thêm 28 commit. Agent kiểm remote không đụng các file dirty rồi rebase và push.
+M5. Bảng ghế hội đồng mô phỏng sai vì thiếu cờ herdr, và giả định trần model cũng sai
+   Ban đầu agent chạy bộ mô phỏng không có herdr, nên gán ghế cho một family khác. Agent cũng tin trần flagship áp cho mọi ghế. Lệnh dispatch explain (có herdr) cho thấy ghế critical chạy tầng frontier. Walk còn thiếu deepseek và z-ai nên mất dự phòng. Sau khi sửa cấu hình, mô phỏng đạt 11 trên 11 ghế có gán được. Khi chạy thật, bước shaping trả execution-failure ở một ghế.
+M6. Không in giá trị bí mật. Email được che, khóa API chỉ được kiểm bằng độ dài và loại ký tự, và khóa được nhập bằng read -s để không vào lịch sử shell.
+   Không in giá trị bí mật. Email được che, khóa API chỉ được kiểm bằng độ dài và loại ký tự, và khóa được nhập bằng read -s để không vào lịch sử shell. Dùng cat để xem file cấu hình hoặc dán thẳng khóa vào lệnh.
+M7. Máy kiểm 374 vi phạm không chạy ở đâu, và --write-baseline ghi đè nuốt vi phạm mới
+   check-decision-codes báo 374 vi phạm nhưng không nằm trong npm test, nên như không tồn tại. Cả hai script ghi đè baseline vô điều kiện. Ai chạy lại lệnh thì mọi vi phạm mới thành đã biết mà không báo. Pre-commit còn trỏ tới hai file không tồn tại. Kế hoạch đề xuất so với baseline cũ và chỉ cho tăng khi có cờ --allow-growth tường minh.
+M8. Đếm dòng bảng markdown sai 54 thành 52 vì tính cả dòng tiêu đề
+   Agent ghi 54 hàng, rồi sửa thành 52 hàng dữ liệu vì bảng có dòng tiêu đề. Chuyện nhỏ, nhưng một con số sai trong báo cáo có thể dẫn tới kết luận sai về kích thước.
+M9. Hỏi quyết định một lần, mỗi câu kèm khuyến nghị của agent, và người dùng chỉ cần trả lời ngắn như 'đồng ý' hoặc một số.
+   Hỏi quyết định một lần, mỗi câu kèm khuyến nghị của agent, và người dùng chỉ cần trả lời ngắn như 'đồng ý' hoặc một số. Đặt nhiều câu hỏi mở cùng lúc, rồi người dùng phải viết lại câu trả lời dài.
+M10. Lệnh ghi lại khoá API không sao lưu làm mất khoá đang chạy, khoá mới bị 401 vì dư một ký tự cuối
+   Agent đưa lệnh ghi đè auth.json mà chưa sao lưu, dù trước đó đã nói không cần nhập lại. Khoá mới dài 25 ký tự bị API trả 401 Invalid or expired token, cả khi gọi thẳng. Phân loại ký tự cho thấy ký tự cuối là ký tự đặc biệt, trong khi khoá cũ dài 24 ký tự. Người dùng nhập lại bằng lệnh mới có sao lưu và làm sạch khoảng trắng. API trả 200 và cả bốn lượt pi/omp đều OK.
+M11. Chia kế hoạch thành các phase theo rủi ro va chạm: làm ngay phần không đụng việc khác, và chờ duyệt phần chạm vùng đang bị khóa. Agent chỉ tự quyết trong khung đã được duyệt.
+   Chia kế hoạch thành các phase theo rủi ro va chạm: làm ngay phần không đụng việc khác, và chờ duyệt phần chạm vùng đang bị khóa. Agent chỉ tự quyết trong khung đã được duyệt. Làm hết một lượt một lúc, hoặc hỏi ý kiến cho mọi việc, kể cả việc nhỏ.
+M12. Đọc binary để tìm khoá cấu hình provider của omp khi CLI không có tài liệu
+   Agent không tìm được tài liệu nên dùng strings trên binary 256 MB để tìm chuỗi models.yml và các khoá như baseUrl và apiKey. Sau khoảng năm lượt tìm kiếm mới có kết quả đủ dùng. Agent viết models.yml với khoá lấy bằng lệnh jq lúc chạy. omp liệt kê đúng hai model và lượt gọi thử trả OK.
+M13. Từ một họ model chạy được lên bốn, và một tài khoản treo 300 giây vì kho đăng nhập thiếu file
+   Lần probe đầu chỉ claude chạy được. Sau khi người dùng copy session và khai pool, deepseek và glm chạy được. Openai thất bại vì codex đứng trước pi trong thứ tự invocation và chiếm lượt, rồi bị hộp thoại đăng nhập hoặc Trust this folder chặn. Xai treo 200 đến 300 giây vì profile omp thiếu agent.db, và stderr chỉ ghi skipped missing-file. Sau khi sửa thứ tự và kho, openai qua pi-herdr exit 0 trong 26 giây, xai exit 0 trong 23 giây. Gemini có một run bị gắn inconclusive dù agent đã trả OK.
+M14. Chia việc nghiên cứu cho nhiều agent chạy song song, mỗi agent chỉ đọc và ghi một báo cáo riêng. Agent chính sau đó đếm lại số liệu và kiểm các khẳng định quan trọng trước khi tổng hợp.
+   Chia việc nghiên cứu cho nhiều agent chạy song song, mỗi agent chỉ đọc và ghi một báo cáo riêng. Agent chính sau đó đếm lại số liệu và kiểm các khẳng định quan trọng trước khi tổng hợp. Hỏi một AI rồi lấy câu trả lời đầu tiên làm kết luận, hoặc để nhiều agent cùng ghi vào một chỗ.
+M15. Commit chỉ đúng file của mình bằng pathspec, quét bí mật trước khi commit, và pull --rebase với autostash để không đụng thay đổi dở của chủ máy.
+   Commit chỉ đúng file của mình bằng pathspec, quét bí mật trước khi commit, và pull --rebase với autostash để không đụng thay đổi dở của chủ máy. Chạy git add -A rồi commit tất cả, hoặc pull thẳng và giải quyết xung đột khi nó xuất hiện.
+M16. 18 quan hệ thay thế trong log nhưng chỉ 8 có relation, và 5 trong 7 cặp ghi được chỉ thay một phần
+   Trong events có 36 quyết định D-ADR và 18 quan hệ supersedes, nhưng chỉ 8 có relation kiểu supersedes. Khi đối chiếu index, 7 cặp ghi được và 5 trong số đó chỉ thay một phần. Ít nhất 4 quyết định thay thế chỉ nói trong câu chữ, không có quan hệ. Một đích thay thế còn là mã băm tài liệu, không phải quyết định.
+M17. Agent khẳng định 'không component nào quản' rồi người dùng nhắc ra một component đã xong
+   Agent tra architecture-manifest và reading-map, không thấy hàng chủ, rồi kết luận ba máy kiểm không thuộc component nào. Người duyệt hỏi lại «kiểm là kiểm gì» và nhắc một component đã gom và làm tươi luật. Tìm trong work items thì thấy tsk-1lv đã done cùng sáu item con, và state có 699 quyết định. Hai trong ba máy thuộc dòng việc này, nên agent phải đính chính.
+M18. Ghi config toàn cục có cảnh báo: khoá mới có thể làm hỏng máy chạy release cũ
+   Agent sao lưu config, chỉ ghi khoá runner.llmAccounts và giữ nguyên các khoá khác. Doctor báo năm check về tài khoản đều PASS. Việc kiểm các workspace khác chạy release cũ thì chưa làm, và được để lại như việc còn lại.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

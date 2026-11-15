@@ -1,0 +1,116 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh cho vault Obsidian, có thêm cửa MCP để hỏi Claude Desktop về graph của vault: note nào nối với note nào, đi từ ý này sang ý khác qua đâu, và note nào bị lạc khỏi mạng. Làm cho người làm một mình hoặc freelancer dùng tiếng Việt, nên phải cài được mà không cần Python và chỉ là một file chạy trên Windows, macOS hoặc Linux. Chạy ngay trên máy của người dùng, nơi giữ vault. Mục tiêu hiện tại: viết lại lõi bằng Rust để cho kết quả khớp với bản Python trên cùng một vault.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L3009] USER: project vantt/browser-worker có một cơ chế code mode đơn giản.
+[L3027] USER: cần bật agent để thảo luận và brainstorm cho tốt về interface của mcp nhé.
+[L3170] USER: đồng ý read.
+</asks>
+
+<story>
+hook: Bản sửa lặng lẽ hạ gói vantt.4 về vantt.3
+tension: giup_ma_hai (Bản sửa nhằm giữ đúng phiên bản ghim / Nó hạ cấp gói mới hơn về bản cũ)
+stakes: 2/3
+# Bản sửa OHS hạ cấp gói mới hơn về bản ghim cũ
+
+**Bối cảnh:** Installer thay gói OHS khi phiên bản khác bản ghim.
+**Chuyện gì xảy ra:** Gói vantt.4 trong thư mục của pkm bị thay bằng vantt.3 vì ghim là vantt.3, tức là hạ cấp. Review bắt được trước khi phát hành. Sửa: chỉ nâng khi gói cũ hơn hoặc không đọc được phiên bản, và có test cho gói đưa vào bằng cờ.
+**Bài học:** So sánh phiên bản theo thứ tự, không theo việc khác nhau.
+</story>
+
+<excerpt>
+[L3275] USER: <task-notification>
+<task-id>a783364d9ee909491</task-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a783364d9ee909491.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix Windows test-report issues" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>CI on `main` is now fully green, so the last concern from my report is resolved. The run covering my commits (41466714478, on `583f5b8`) first came back red. The cause was the aarch64-apple-darwin asset job: it waited 15 minutes for a runner, never started, and GitHub cancelled it. The code was not the cause. I re-ran only that failed job and it passed. Every job in the run now succeeds:
+
+- the three check jobs on ubuntu, macos and windows, including the parity check;
+- all four asset builds.
+
+Status: DONE_WITH_CONCERNS
+Summary: The Windows report is on `main`, the masking, UTF-8 output and probe isolation fixes are pushed, the handoff and plan status are updated, and CI on `main` is green.
+Concerns/Blockers: Still open:
+- Phase 10 needs the private parity run repeated on Windows.
+- Phase 13 needs a test on a Windows machine without Python.
+- Sections A5 and B3 of the handoff still give OHS `vantt.3` and its old sha256, but `main` now pins `vantt.4`.
+- The plan store points at another agent's worktree, so I set phase status in the phase files by hand.</result>
+<usage><subagent_tokens>115607</subagent_tokens><tool_uses>70</tool_uses><duration_ms>2430514</duration_ms></usage>
+<worktree><worktreePath>/home/vantt/projects/obsidian-pkm/.claude/worktrees/agent-a783364d9ee909491</worktreePath><worktreeBranch>worktree-agent-a783364d9ee909491</worktreeBranch></worktree>
+</task-notification>
+[L3277] AGENT: Việc sửa các lỗi trong báo cáo thử Windows đã xong. CI trên main giờ xanh hết. Lần chạy đầu có một job dựng binary macOS ARM bị GitHub huỷ vì chờ máy runner quá 15 phút, không phải lỗi code. Agent đã chạy lại riêng job đó và nó qua.
+
+Hai agent kia vẫn đang chạy: một agent đưa `ohs-release-pin` vào main, một agent làm phase 17 và đang chờ CI trên nhánh.
+[L3286] USER: <task-notification>
+<task-id>ad85100aee7f729ff</task-id>
+<tool-use-id>toolu_014HXqYR4Wxi9vFLwqL8qD68</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/ad85100aee7f729ff.output</output-file>
+<status>completed</status>
+<summary>Agent "Review and land ohs-release-pin" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>The `ohs-release-pin` branch is now on `main` together with the OHS pin bump to v0.17.2-vantt.4, and CI on the tip (`583f5b8`, run 41466714478) passed on all three OSes and all four release builds.
+
+**Review.** One real bug, now fixed in commit `2d000c2`. The branch replaced the package in pkm's own `ohs` directory whenever its version was *different* from the pin, so a *newer* package would have been downgraded. Your case shows it: a v0.17.2-vantt.4 package in that directory, with `main` still pinning vantt.3, would have been swapped back to vantt.3.
+- I added `ohs_bundle::older_than_pin`, which compares versions of the form `X.Y.Z[-vantt.N]`. Only an older package, or one with no version, gets upgraded. A package that is equal, newer, or has a version it can't compare is kept.
+- `doctor` now warns only for older packages and reports newer ones as ok. It suggests the `pkm mcp install` fix only when the package is in the default directory, since reinstalling never touches a package given with `--ohs`.
+- A package given with `--ohs DIR` is never overwritten. The branch already behaved this way; there is now a test for it.
+
+Everything else you asked me to check was correct, so I left it unchanged:
+- Windows paths are made absolute and escaped correctly in the config JSON.
+- Config writes still use compare-and-swap.
+- `doctor` only reads.
+- `language_pack.loaded=false` is reported as broken with all 5 not-ready keys.
+- The `OBSIDIAN_IGNORE_PATTERNS` value is sent only when the package has `lang/ohs-lang-vi`.
+- A failed download leaves the old package in place.
+
+**Pin bump.** I cherry-picked `3dd81f0`. The only conflict was in `docs/DECISIONS.md`, and I kept both entries. In the Windows handoff and the phase-13 plan I changed vantt.3 to vantt.4. In a later commit I also replaced the old win32 sha256 still in section A5 of the Windows handoff, which another agent had flagged.
+
+**Checks.** Format, c …[+1663]
+[L3293] TOOL Agent: Phase 15 round 2 spec catch-up
+[L3294] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: ad92dc2d66a3f67da (internal ID - do not mention to user. Use SendMessa …[+86]
+[L3299] AGENT: Nhánh `ohs-release-pin` đã vào main, CI xanh trên Windows, macOS và Linux.
+
+- **Review tìm ra một lỗi và đã sửa.** Nhánh gốc thay gói OHS mỗi khi phiên bản *khác* bản ghim, kể cả khi gói đang dùng *mới hơn*. Như vậy máy chạy `vantt.4` sẽ bị hạ xuống `vantt.3`. Giờ chỉ gói *cũ hơn* hoặc không rõ phiên bản mới bị nâng. `doctor` chỉ cảnh báo khi gói cũ hơn bản ghim.
+- **Gói OHS anh đưa vào bằng `--ohs DIR` không bao giờ bị ghi đè.** Giờ đã có test cho điều này.
+- **Main giờ ghim OHS `vantt.4`,** cùng bản với `C:\tools\ohs` trên máy anh. Bản bàn giao Windows cũng đã sửa sang `vantt.4` kèm sha256 mới.
+- **Agent Windows không cần rebase nhánh của họ nữa.** Họ chỉ cần làm tiếp từ main, hoặc từ rc.2 khi có.
+
+Phase 15 lượt 2, chuyển các commit Python sau `223c9c3`, vừa bắt đầu chạy. Agent phase 17 vẫn đang chờ CI trên nhánh `phase-17-one-door`. Phase 15 xong thì main sẵn sàng cho rc.2, và tôi sẽ xin anh duyệt tag.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

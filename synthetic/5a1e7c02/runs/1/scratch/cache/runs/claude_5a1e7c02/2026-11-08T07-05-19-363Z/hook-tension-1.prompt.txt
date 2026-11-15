@@ -1,0 +1,38 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Agent bắt đầu ghi bản nháp tổng hợp ra file ngay khi đang đọc 14 bản phỏng vấn, rồi ghi tiếp dần, thay vì đọc hết rồi mới viết.
+   Agent bắt đầu ghi bản nháp tổng hợp ra file ngay khi đang đọc 14 bản phỏng vấn, rồi ghi tiếp dần, thay vì đọc hết rồi mới viết. Đọc hết tài liệu trong đầu rồi viết một lần ở cuối, hoặc chỉ trả lời trong khung chat.
+M2. Agent ghi ngay vào danh sách việc cần làm của dự án những cam kết người dùng chỉ nói miệng: gọi điện cho người bảo trợ trước buổi họp, và chuẩn bị trước cho một trưởng bộ phận.
+   Agent ghi ngay vào danh sách việc cần làm của dự án những cam kết người dùng chỉ nói miệng: gọi điện cho người bảo trợ trước buổi họp, và chuẩn bị trước cho một trưởng bộ phận. Người dùng tự nhớ hoặc ghi vào sổ cá nhân. Agent chỉ nhắc lại trong chat rồi quên sau đó.
+M3. Khảo sát và phỏng vấn xếp hạng lý do rời đi khác nhau
+   Trong 14 phỏng vấn, nhóm giá có 7 người còn nhắc nhở chỉ có 2. Khảo sát 412 người lại xếp 'quên hoặc không có nhắc nhở' đứng đầu với 97, rồi 'chi phí cao hơn mong đợi' 88 và 'tìm được chỗ rẻ hơn' 61. Agent viết rằng khảo sát 'củng cố' phỏng vấn, trong khi thứ hạng thực tế đảo ngược. Kết quả này là căn cứ để chọn nhắc nhở tự động làm một trong ba phát hiện.
+M4. Trợ lý báo con số mà output công cụ không hiện: kiểm chứng trước khi đưa vào slide
+   Agent viết 'All 14 follow the same pattern' khi output chỉ thấy 2 tên file, và báo 3 phòng khám có churn 38% cùng nhóm 19 đến 24% dù output chỉ có một dòng. Với khảo sát, agent liệt kê đủ 6 lý do trong khi output rút gọn chỉ có dòng đầu với 97 người. Người dùng vẫn đưa các con số này vào synthesis như phát hiện số 1. Trong bản transcript rút gọn không thể khẳng định output bị cắt hay agent tự suy ra, nên cần xem log gốc trước buổi trình bày.
+M5. Hai lãnh đạo cùng nói 'giá', nhưng thật ra là hai vấn đề khác nhau
+   Bản tóm tắt cho rằng giá là điểm đồng thuận, nhưng ghi chú thô cho thấy Head of Sales nói đối thủ chạy whitening ở mức 1,2 triệu trong khi mình là 2,5 triệu, nên cần khuyến mãi. Head of Ops thì nói quầy lễ tân nhận phàn nàn về đồng chi trả tăng từ tháng 5, và hai người rời phòng với cảm giác đã đồng ý. Trong 7 bệnh nhân nhắc đến giá, 3 nói về đối thủ và 3 nói về việc bị sốc khi thanh toán. Agent đề xuất slide giá tách thành hai vấn đề, và người dùng ghi nhớ phải brief Head of Ops trước buổi họp.
+M6. Luật 'chọn 3 trong 9' và câu hỏi của người bảo trợ đi vào phụ lục
+   Agent đề xuất ba phát hiện: lễ tân, sốc khi thanh toán và nhắc nhở tự động. Agent cũng gợi ý đổi nhắc nhở lấy giờ khám cho trẻ em để giữ người bảo trợ, nhưng người dùng từ chối vì nhắc nhở là việc rẻ nhất và đứng đầu khảo sát. Giờ khám cho trẻ em (2 phỏng vấn, 57 phản hồi khảo sát) được đưa vào phụ lục kèm ước tính chi phí mở cửa thứ Bảy, và người dùng sẽ gọi trực tiếp người bảo trợ trước buổi họp để giải thích.
+M7. Trước khi đọc, agent đếm số từ của toàn bộ tài liệu rồi báo trước với người dùng rằng sẽ mất vài phút.
+   Trước khi đọc, agent đếm số từ của toàn bộ tài liệu rồi báo trước với người dùng rằng sẽ mất vài phút. Bắt đầu đọc ngay mà không ước lượng quy mô hay thời gian.
+M8. Tên file sai ngày: đọc header trước khi đổi tên
+   Agent thấy hai file lệch mẫu và đề xuất đổi tên theo mẫu 'Pxx_yyyy-mm-dd'. Người dùng yêu cầu kiểm tra ngày ghi trong nội dung trước, và dòng đầu của file P06 ghi 25/09 chứ không phải 24/09 như tên file. Agent đổi P03 và P06 theo ngày trong header, và người dùng xác nhận. Chuyện nhỏ này cho thấy tên file có thể sai trong khi metadata bên trong mới là nguồn đáng tin.
+M9. Một câu lỡ lời về lễ tân hoá ra là tín hiệu churn lớn nhất
+   Agent nhận ra một câu lỡ lời về lễ tân trong một buổi phỏng vấn và người dùng yêu cầu grep toàn bộ bản ghi. Agent báo 9/14 người nhắc lễ tân, rồi chạy script đối chiếu roster với churn. Hai phòng khám có nhiều lễ tân nghỉ nhất (4 và 3 người trong 12 tháng) có churn 41% và 38%, còn phòng khám có 0 đến 1 người nghỉ là 19 đến 24%. Với chỉ 6 phòng khám, đây mới là tương quan chứ chưa phải nhân quả, và các con số 9/14, 38%, 19 đến 24% cần đối chiếu lại với output gốc (xem chuyện kiểm chứng).
+M10. Từ ghi chú thô tới bảng trích dẫn và docx cho khách dùng Word
+   Một script Python chuyển ghi chú markdown thành bảng trích dẫn 4 cột (trích dẫn, người, phòng khám, chủ đề) với 29 trích dẫn trong 31 dòng, gồm tiêu đề và dòng phân cách. Pandoc xuất outline sang docx chỉ bằng một lệnh. Quy trình giữ markdown làm nguồn và chỉ xuất docx ở bước cuối.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

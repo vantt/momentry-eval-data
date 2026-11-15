@@ -1,0 +1,46 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Với email gửi người mua vé, agent viết bản nháp ra file markdown để user đọc lại, không gửi đi và không dán vào chat. Việc gọi điện cho địa điểm do user tự làm.
+   Với email gửi người mua vé, agent viết bản nháp ra file markdown để user đọc lại, không gửi đi và không dán vào chat. Việc gọi điện cho địa điểm do user tự làm. Soạn email trong chat rồi gửi luôn, hoặc gửi thẳng qua công cụ tự động.
+M2. Khi user quyết định, họ trả lời bằng một dòng ('Chốt Kho Gạo', 'Giữ anh Tùng, cắt Mây Thấp') sau khi agent đã nêu đủ cái giá của mỗi lựa chọn.
+   Khi user quyết định, họ trả lời bằng một dòng ('Chốt Kho Gạo', 'Giữ anh Tùng, cắt Mây Thấp') sau khi agent đã nêu đủ cái giá của mỗi lựa chọn. Người dùng trì hoãn, hỏi thêm nhiều vòng, hoặc xin thời gian suy nghĩ trước khi chốt một quyết định lớn.
+M3. Hai tech rider 'dùng chung' tan khi đặt cạnh nhau: trống, monitor, ampli đều khác
+   Trống: một ban setup tay trái, ban kia tay phải, đổi mất 15–20 phút và cymbal phải thay. Monitor: một ban dùng in-ear, ban kia dùng 4 monitor sàn. Guitar: một ban cắm DI thẳng, ban kia cần 2 ampli đèn có mic. Đổi set ước 25 phút, trong khi kịch bản chỉ để 10 phút. Chỉ dàn loa chính và mixer là thật sự dùng chung được.
+M4. Dời địa điểm kéo theo 80 vé dư: hỏi tự nguyện trước khi hoàn tiền
+   Kế hoạch là hỏi tự nguyện trước với hạn trả lời 48 giờ, kỳ vọng khoảng 20–30 người không đi được. Phần còn lại mới hoàn tiền, ước tính 80 vé × 250.000 = 20 tr, kèm mã ưu tiên cho buổi sau. Email nháp được soạn sẵn. Kết quả chưa có khi phiên kết thúc, nên khoản hoàn cuối cùng còn bỏ ngỏ.
+M5. Kịch bản ngắn đi 20 phút sau khi bỏ một suất diễn, và chuyển sang bảng
+   Kịch bản cũ dạng chữ được đổi thành bảng ba cột: giờ, mục, người phụ trách. Bỏ suất diễn, thêm 5 phút hát mộc lúc 19h, đổi set rút còn 8 phút. Chương trình kết thúc 21:15, sớm 20 phút so với bản cũ.
+M6. Cuối phiên, agent không kết thúc bằng 'xong'. Nó nêu rõ việc tiếp theo phụ thuộc vào một dữ kiện user sẽ có vào ngày mai (số người tự nguyện nhận hoàn tiền), và hẹn sẽ tính lại khi có số đó.
+   Cuối phiên, agent không kết thúc bằng 'xong'. Nó nêu rõ việc tiếp theo phụ thuộc vào một dữ kiện user sẽ có vào ngày mai (số người tự nguyện nhận hoàn tiền), và hẹn sẽ tính lại khi có số đó. Kết thúc phiên bằng tóm tắt, để các việc treo cho người dùng tự nhớ.
+M7. Phép tính ngân sách báo thiếu 12 tr, nhưng số trong phiên cho thấy thiếu gần 20 tr
+   Script báo thu 75 tr (300 vé) và chi cũ 66 tr, dư 9 tr. Cộng thêm 5,6 tr dàn nhạc, 3 tr cọc mất và 20 tr hoàn vé, phép tính đơn giản cho thấy thiếu khoảng 19,6 tr, không phải 12 tr như được báo. Khoản 12 tr đó đã là cơ sở để chọn cắt một ban diễn. Chênh lệch này chưa được đối chiếu lại.
+M8. Dùng chung dàn nhạc tiết kiệm 4,5 tr, nhưng thuê riêng thành 10,1 tr
+   Ban thứ nhất: trống 2,5 tr và in-ear 1,8 tr, tổng 4,3 tr. Ban thứ hai: trống 2 tr, monitor 2 tr, ampli 1,8 tr, tổng 5,8 tr. Tổng 10,1 tr so với 4,5 tr trong ngân sách, thêm 5,6 tr. Đổi set rút từ khoảng 25 phút còn khoảng 8 phút vì dàn thứ hai dựng sẵn bên cánh gà.
+M9. Xếp ca tình nguyện viên theo nhóm rảnh giờ, rồi ghi file ngay
+   Phân loại theo khung rảnh: 7 bạn rảnh cả ngày, 8 bạn chỉ buổi tối, 3 bạn sau 21h. Xếp 6 bạn dựng, 7 bạn soát vé kèm 1 dự phòng, 4 bạn dọn. Tổng 18 người khớp. Sau khi người dùng đồng ý, file được ghi ngay.
+M10. Trước khi đề xuất địa điểm, agent hỏi một con số quyết định (ngân sách dự phòng còn bao nhiêu) và nói rõ ngưỡng 22 triệu sẽ loại phương án nào.
+   Trước khi đề xuất địa điểm, agent hỏi một con số quyết định (ngân sách dự phòng còn bao nhiêu) và nói rõ ngưỡng 22 triệu sẽ loại phương án nào. Đưa ra khuyến nghị ngay dựa trên giả định, hoặc liệt kê ưu nhược điểm rồi để người dùng tự chọn.
+M11. Để tính ảnh hưởng của từng thay đổi (thêm dàn, mất cọc, hoàn vé), agent chạy script ngân sách với các tham số --them cộng dồn, thay vì sửa trực tiếp bảng tính.
+   Để tính ảnh hưởng của từng thay đổi (thêm dàn, mất cọc, hoàn vé), agent chạy script ngân sách với các tham số --them cộng dồn, thay vì sửa trực tiếp bảng tính. Sửa trực tiếp file ngân sách hoặc tính nhẩm từng khoản rồi cộng lại.
+M12. Cắt một đội diễn để giữ kỹ thuật, rồi tự bù bằng việc cụ thể
+   Chọn giữ kỹ thuật vì in-ear và ampli đèn chung một sân khấu nhỏ rủi ro cao. Ban sinh viên mất suất diễn lớn đầu tiên, nhưng được cho hát mộc 5 phút lúc đón khách, hứa suất mở màn buổi sau, và ưu tiên hoàn tiền cho khoảng 40 khán giả mua qua ban đó. Chủ sự kiện sẽ nói trực tiếp trong tối cùng ngày.
+M13. Sân thượng bị đình chỉ 9 ngày trước đêm nhạc: 300 vé đã bán, chốt địa điểm trong buổi chiều
+   Địa điểm B có 220 chỗ đứng, cùng giá, có sân khấu nhỏ sẵn. Địa điểm C có 350 chỗ nhưng tổng chi là 37 tr, đắt hơn 22 tr sau khi thuê sân khấu riêng. Ngân sách dự phòng chỉ còn 9 tr, nên C gần như không khả thi. Chọn B nghĩa là 80 vé không có chỗ.
+M14. Ghi nhật ký ngay khi chốt, kể cả lời hứa không nằm trong hợp đồng
+   Ghi hai lần vào nhật ký: khoản cọc địa điểm mới 5 tr được xác nhận lúc 11h20, và quyết định cắt suất diễn kèm các phương án bù đắp. Lời hứa suất mở màn buổi sau được ghi để không bị quên.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

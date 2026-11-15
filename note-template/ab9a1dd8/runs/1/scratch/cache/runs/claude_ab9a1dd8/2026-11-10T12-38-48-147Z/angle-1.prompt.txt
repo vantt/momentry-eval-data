@@ -1,0 +1,121 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+momentry là công cụ đọc transcript các phiên làm việc với coding agent (Claude Code, Codex và một số agent khác), rồi nhặt ra những chuyện đáng kể để kể ra ngoài, như một con số đổi, một lỗi có gốc bất ngờ hay một quyết định bị đảo. Mỗi chuyện được ghi thành một file markdown trong repo và xếp hạng theo độ hấp dẫn, độ căng và mức quan trọng. Làm cho người làm một mình, người build in public, viết blog kỹ thuật hoặc báo cáo tuần, không muốn để mất chất liệu. Chạy trên máy của người dùng, đọc transcript cục bộ, có danh sách tên riêng để chặn không cho lộ vào repo, và giao diện web chỉ mở trên máy đó hoặc qua mạng riêng của người dùng. Mục tiêu v2: không bỏ sót chuyện đáng kể, không làm chậm hay lệch phiên làm việc chính, và không để lọt dữ liệu riêng vào repo.
+</project>
+
+<asks>
+[L9] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-research # Research ## Research Methodology Always honoring **KISS** and **DRY** principles. Deliver the full requested scope — never trim or defer what the user explicitly asked for. Add nothing unrequested. With `--yagni`, additionally challenge and cut any scope not needed for the stated outcome. **Be honest, be brutal, straight to the point, and be concise.** ### Phase 1: Scope Definition First, you will clearly define the research scope by: - Identifying key terms and concepts to investigate - Determining the r …[+5899]
+[L42] USER: Base directory for this skill: /home/vantt/.claude/skills/cs-packaging-distribution # cs-packaging-distribution ## ⚑ PRIORITY ORDER — the owner's rule; it overrides everything below 1. **User experience (paramount)** - **First contact:** intro, install, quick start, first success. - **Command syntax:** one surface, the same in every project — `init` the first time, `doctor` when something's wrong, `update` for a new version. - **Agent-native:** `--help` and `--json` are enough for an agent to install, set up and repair the tool. - **Ease:** - one-command install and update; - minimal dependenc …[+5302]
+</asks>
+
+<story>
+hook: 205/205 test qua, nhưng người mới cài xong chẳng có gì dùng được
+tension: tuong_ma_hoa_ra (Test xanh 205/205 trên clone sạch / Quick start lỗi, init không tạo hook nào trong HOME trống)
+stakes: 3/3
+# Audit: 205/205 test qua nhưng người mới không cài được gì
+
+**Bối cảnh:** Audit đóng gói một CLI Node không phụ thuộc gói ngoài, chạy quick start trong HOME tạm để không đụng cấu hình thật.
+**Chuyện gì xảy ra:** Bộ test báo 205/205 qua trên clone sạch, nhưng trong workspace chỉ còn 202/203 vì test quét cả thư mục chưa đưa vào git. Quick start cho thấy init --yes lỗi 'Unknown option', list và check thoát 1 vì chưa có hộp, và init không tạo hook hay lệnh bip nào trong HOME trống. Kết luận: phần lõi ổn, phần phân phối gần như bằng 0.
+**Bài học:** Test xanh trên clone sạch không chứng minh người dùng cài được; chỉ chạy quick start từ HOME trống mới lộ khoảng trống.
+**Artefact:** Bảng kết quả verify theo tầng ưu tiên, đạt và thiếu. Che đường dẫn HOME và tên người dùng.
+</story>
+
+<excerpt>
+[L127] TOOL Bash: cd /home/vantt/projects/momentry; sed -n 80,197p lib/config.mjs; grep -n "spawn\|detached\|process.execPath\|BIN\b" lib/hook.mjs | head -20; node --test test/*.test.mjs 2>&1 | tail -8
+[L137] RESULT: const isObj = (v) => v && typeof v === 'object' && !Array.isArray(v); | /** Expands dotted keys ("harvest.runs": 3) into nested objects. */
+[L146] TOOL Bash: cd /home/vantt/projects/momentry; node --test test/imports.test.mjs 2>&1 | grep -v "^ *at " | head -30; node --test test/*.test.mjs 2>&1 | grep -E "^ℹ (tests|pass|fail)"; sed -n 95,143p lib/hook.mjs; grep -rn "claude\b.*-p\|'claude'" lib/llm.mjs | head -5; ls docs; cat docs/README.md | head -30
+[L149] RESULT: === Running 40-Combination Matrix Compilation Tests === | ✓ All 40 matrix combinations compiled successfully in SVG, Fragment, and HTML modes!
+[L156] TOOL Bash: cd /home/vantt/projects/momentry; node --test test/imports.test.mjs 2>&1 | grep -E "not ok|✖|Error|expected|actual|\.mjs" | head -15; sed -n 1,40p test/imports.test.mjs
+[L157] RESULT: usage: node render-check.mjs <file.html|url> [--out dir] [--viewports 375x812,768x1024,1440x900] | ✖ test/imports.test.mjs (287.497477ms)
+[L167] TOOL Bash: cd /tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad && rm -rf clone && git clone -q /home/vantt/projects/momentry clone && cd clone && node --test test/*.test.mjs 2>&1 | grep -E "^ℹ (tests|pass|fail)"; git -C /home/vantt/projects/momentry remote -v; git  …[+118]
+[L170] RESULT: ℹ tests 205 | ℹ pass 205
+[L174] TOOL Bash: cd /home/vantt/projects/momentry; grep -n -i "npm\|package.json\|cài\|install\|phân phối\|version\|phiên bản\|uninstall\|gỡ" docs/prd.md | head -40; grep -n "^## \|^### " docs/prd.md | head -60
+[L177] RESULT: 52:6. Hook PreCompact, SessionEnd, SessionStart (Claude) và pre_compact (Codex), chạy nền; quét bù Codex bằng `session_start` nếu sự kiện này dùng được (chưa kiểm payload, mục 6.4), dự phòng `momentry scan`. Công cụ chỉ in đoạn cấu hình hook; user tự …[+88]
+…
+[L223] RESULT: File created successfully at: /home/vantt/projects/momentry/plans/reports/packaging-audit-261103-1557-cs-packaging-distribution.md (file state is current in your context — no need to Read it back)
+[L229] TOOL Bash: cd /tmp && node /home/vantt/projects/momentry/bin/momentry.mjs init --yes --json </dev/null; echo "exit=$?"
+[L232] RESULT: Unknown option '--yes'. To specify a positional argument starting with a '-', place it at the end of the command after '--', as in '-- "--yes" | exit=1
+[L236] AGENT: Kết luận: phần lõi của momentry ổn, nhưng phần phân phối gần như chưa có. Một người mới, hay một agent chỉ đọc `--help`, hiện không thể tự đi từ con số 0 tới lần chạy đầu thành công.
+
+Tôi đã chạy các bước kiểm của skill trong một HOME tạm, không đụng tới cấu hình thật của bạn.
+
+**Những gì đã đạt:**
+- CLI không phụ thuộc gói ngoài. stdout chỉ chứa dữ liệu, lỗi đi ra stderr.
+- Thứ tự ưu tiên cấu hình được ghi rõ. Thư mục cache có quyền 0700, và file cấu hình hỏng thì báo lỗi chứ không im lặng.
+- Công cụ chỉ in cấu hình hook, không tự sửa `~/.claude/settings.json`.
+- `init` chạy lại nhiều lần vẫn an toàn.
+- 205/205 test qua trên bản clone sạch.
+
+**Thiếu sót lớn nhất (tầng 1, trải nghiệm người dùng):**
+1. **README:** quick start dùng `<momentry>` nhưng không có bước lấy code. Chưa có câu nói lợi ích cho người dùng, chưa có lời hứa "từ 0 tới kết quả đầu trong N phút, cần gì".
+2. **Không có phiên bản, release, `install.sh`, `update`, `uninstall`.** `momentry --version` báo "lệnh lạ".
+3. **Không có `doctor`.** `init --yes --json` lỗi "Unknown option '--yes'". `init` chỉ tạo `.momentry.json`, không tạo hộp chứa chuyện, nên `list` và `check` thoát 1 với "không có hộp" ngay sau quick start.
+4. **`--help` quá mỏng.** Ví dụ `init --help` chỉ in "momentry init [--repo]", không có mô tả, giá trị mặc định, ví dụ hay mã thoát.
+5. **Hook có thể chết im lặng (rủi ro thực tế lớn nhất).** Cấu hình hook in ra ghi cứng đường dẫn Node tuyệt đối. Nếu bạn nâng Node qua nvm/fnm hoặc chuyển thư mục clone, hook hỏng mà không ai biết, vì lệnh `hook` luôn thoát 0 và không có `doctor` để phát hiện.
+
+**Phát hiện phụ:** `test/imports.test.mjs` quét cả các thư mục chưa đưa vào git (`.claude/`, `.agentkit/`). Vì vậy trong bản làm việc này nó báo 1 test hỏng (202/203), dù trên bản clone sạch thì qua hết.
+
+**Đề xuất:** đóng gói thành một file nén mã nguồn kèm một lệnh `momentry` nhỏ cài vào `~/.local/bin`, và cho hook gọi qua lệnh đó để sống sót khi nâng Node. Trước khi làm release, nên làm năm việc kh …[+1167]
+[L251] USER: giải thích 4 điểm cần quyết?
+[L256] AGENT: Cả bốn điểm đều là lựa chọn sản phẩm. Skill có chuẩn riêng, còn PRD hoặc code hiện tại đã đi một hướng khác, nên tôi không tự chọn thay bạn.
+
+## 1. Hook: chỉ in ra, hay để công cụ tự cài?
+
+**Hiện tại:** `momentry hooks --print --claude` in đoạn JSON, bạn tự dán vào `~/.claude/settings.json`. PRD mục 3.2 và 6.4 chốt rằng công cụ không bao giờ tự sửa file đó.
+
+**Skill muốn:** `init` tự phát hiện Claude Code hoặc Codex trên máy và tự ghi hook vào, để chạy một lệnh là xong.
+
+**Đánh đổi:**
+- **Chỉ in (như PRD):** an toàn, vì bạn luôn thấy và duyệt cái gì được thêm vào file cấu hình chung của mọi phiên Claude. Đổi lại người mới phải tự dán, dễ dán sai chỗ, dễ quên, và hiện không có gì báo khi hook hỏng.
+- **Tự cài (`connect --yes`):** tiện hơn và agent tự làm trọn được. Đổi lại công cụ phải sửa file của người khác một cách cẩn thận: sao lưu trước, giữ nguyên phần của bạn, từ chối nếu file đang hỏng. Code phức tạp hơn, và đi ngược quyết định đã chốt.
+
+**Tôi đề xuất:** giữ "chỉ in", nhưng thêm `doctor` kiểm hook ở chế độ chỉ đọc. Nó xem hook có trong file không, có trỏ tới file còn tồn tại không, và có chạy được không. Nếu sai, `doctor` in đúng lệnh để sửa. Cách này vẫn giữ quyết định PRD mà xử lý được rủi ro hook chết im lặng.
+
+## 2. Mã thoát: giữ như hiện tại hay theo chuẩn?
+
+**Hiện tại:** 0 là xong, **1 là gõ sai lệnh hoặc sai cờ**, **2 là `check` thấy lỗi khuôn hoặc vi phạm riêng tư**. Các mã 3, 4, 5 có nghĩa riêng.
+
+**Skill muốn:** 0 là xong, **1 là có lỗi**, **2 là gõ sai lệnh**. Nghĩa của 1 và 2 ngược với hiện tại.
+
+**Vì sao chuyện này quan trọng:** README và PRD đã công bố bảng mã thoát. Nếu bạn hoặc ai đó dùng `momentry check --staged` làm pre-commit hook, hay viết script dựa vào "thoát 2 nghĩa là có vi phạm riêng tư", thì đổi mã sẽ làm script đó hiểu sai mà không báo lỗi gì. Sai ở đúng chỗ kiểm riêng tư là loại sai nguy hiểm nhất.
+
+**Tôi đề xuất:** giữ bảng hiện tại và ghi lý do lệch chuẩn vào checklist. Lợi ích của việc theo chuẩn là nhất quán với các dự án khác  …[+1948]
+…
+[L1218] RESULT: XDG_RUNTIME_DIR=/run/user/1000 | XDG_SESSION_CLASS=user
+[L1225] TOOL Bash: cd /home/vantt/projects/momentry; S=/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/t1; rm -rf $S; mkdir -p $S/home $S/repo; cd $S/repo && git init -q; E="env -i PATH=$PATH HOME=$S/home" M="$E node /home/vantt/projects/momentry/bin/momentry.mjs" $M init …[+400]
+[L1226] RESULT (exit 1): cat: /tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/t1/home/.claude/settings.json: No such file or directory | ls: cannot access '/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/t1/home/.claude/commands': No such file or directory | tail: cannot open '/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/t1/home/.claude/commands/bip.md' for reading: No such file …[+13]
+[L1235] AGENT: Đang chạy thử `init` trong HOME tạm (zsh không tách biến, chuyển sang script bash).
+[L1236] TOOL Bash: cat > /tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/sbx.sh <<'EOF' # usage: source sbx.sh <name>; defines S, m() S=/tmp/claude-1000/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413/scratchpad/$1 rm -rf "$S"; mkdir -p "$S/home" "$S/re …[+698]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

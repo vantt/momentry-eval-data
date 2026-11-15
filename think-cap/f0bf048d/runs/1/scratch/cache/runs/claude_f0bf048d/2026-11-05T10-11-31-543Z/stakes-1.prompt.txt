@@ -1,0 +1,55 @@
+Dưới đây là 22 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Runtime profile offline dù lệnh bọc đã có: daemon chỉ dò lại khi profile đổi
+   Hai runtime OpenAI ở hai workspace báo offline. Daemon chỉ dò lại profile khi profile bị sửa. Tắt rồi bật lại profile thì cả hai lên online trong vòng vài lần kiểm, tổng cộng 6 profile đã chạy.
+M2. Không dùng pi update vì tự nâng cấp ngoài bản ghim
+   Lệnh update của pi và omp tự nâng cấp ra ngoài phiên bản đã ghim trong script. Thay vào đó, script có lệnh status so bản ghim với bản mới nhất, và tools cài đúng bản ghim, giữ bản cũ để quay lại trong vài giây.
+M3. Bot không push được là do quyền GitHub, không phải lời dặn
+   Người dùng hỏi vì sao không push. Lý do: repo private của tài khoản free không bảo vệ được main, và bot có quyền ghi thì hook pre-push vẫn bị qua bằng --no-verify. Chọn deploy key chỉ đọc; thay đổi của bot đi qua nhánh ops/ và người duyệt fetch về.
+M4. Giới hạn 8000 ký tự buộc tách vai trò thành skill
+   Giữ nguyên văn mỗi vai trò thành một skill kèm file LICENSE, còn AGENTS.md chỉ chứa phần gắn vai trò vào công ty. Cách này giữ được nội dung gốc mà không vượt giới hạn.
+M5. Trước khi làm thao tác rủi ro, agent kiểm trạng thái thật trên máy và xác nhận bằng số liệu (đếm chỗ chứa PAT, kiểm daemon có task đang chạy trước khi dừng).
+   Trước khi làm thao tác rủi ro, agent kiểm trạng thái thật trên máy và xác nhận bằng số liệu (đếm chỗ chứa PAT, kiểm daemon có task đang chạy trước khi dừng). Thường làm theo kế hoạch đã viết, không kiểm lại; dừng dịch vụ mà không biết có việc đang chạy hay không.
+M6. Trả lời sai về quyền read-only của GitHub, và sửa
+   Phương án ban đầu dựa vào quyền read-only cho collaborator. Đọc tài liệu GitHub thì thấy repo private của tài khoản cá nhân không cấp được quyền chỉ đọc. Nhận lỗi, đưa hai phương án thay thế kèm rủi ro, người dùng chọn hoãn.
+M7. Plan tạo MCP trả phí dù khách chưa mua, do nhánh workspace chưa tồn tại
+   Plan có hai nhánh: workspace đã tồn tại thì lọc đúng, còn workspace chưa tồn tại thì đi nhánh khác và vẫn tạo server dataforseo. Tìm ra nhánh bằng grep 'does not exist yet' rồi thêm bộ lọc vào danh sách mcp. Kiểm bằng ba trường hợp, DataForSEO không được tạo khi khách chưa mua.
+M8. Lệnh sudo chạy lần hai báo lỗi vì lần đầu đã xoá file
+   Lần đầu chạy thành công rồi xoá file PAT sau khi dùng. Lần hai báo thiếu file PAT, và agent giải thích lý do. Phải dùng PAT mới được mint trước.
+M9. Search Console trả rỗng vì property sai, không phải lỗi xác thực
+   Ban đầu cả GA4 và Search Console đều trả {} vì chưa cấp quyền. Sau khi cấp, property Search Console được chọn là bản www cũ với 0 lượt hiển thị từ tháng 7, trong khi website 301 chuyển về bản không www. Kết quả rỗng dễ bị đọc nhầm là lỗi xác thực.
+M10. Deploy gói thứ hai ghi đè team của phiên song song
+   Lần deploy đầu của opc-studio đưa instructions, model và skill của 3 agent Coding về bản cũ, gỡ 3 agent khỏi squad và gắn sai workflow cho một project. Agent đã bỏ qua các dòng ngoài phần Marketing khi đọc plan. Khôi phục bằng cách deploy lại opc-coding từ file của phiên kia; plan sau đó báo 0 thay đổi. Sau đó xoá phần Coding khỏi gói opc-studio.
+M11. Phản biện độc lập tìm ra mã đăng nhập dev và các lỗ nghiêm trọng
+   Bản phản biện xếp hạng lỗ: mã đăng nhập dev trong .env cho phép đăng nhập thành chủ; daemon nghiệp vụ mang quyền quản trị ở mọi workspace; broker root đọc file agent có thể ghi. Agent kiểm lại từng điểm trên máy trước khi đưa vào tài liệu. Bản v2 được viết lại theo phản biện.
+M12. Sau mỗi thao tác làm tay trên máy, agent ghi lại cách làm vào skill của trợ lý vận hành và deploy lại, để lần sau trợ lý tự làm được.
+   Sau mỗi thao tác làm tay trên máy, agent ghi lại cách làm vào skill của trợ lý vận hành và deploy lại, để lần sau trợ lý tự làm được. Thường ghi chú vào README hoặc chỉ nhớ trong đầu người vận hành; trợ lý AI không biết những bước đó.
+M13. Mọi bước làm tay phải được dạy lại cho System Operator
+   Sau nhiều bước làm tay (cài runtime, đổi tên lệnh, nâng cấp, tách user), người dùng yêu cầu mọi bước đều được dạy lại cho System Operator. Mỗi lần, agent ghi quy trình vào skill, deploy lại, rồi chạy plan xác nhận 0 thay đổi. Thêm tài liệu references/privileged.md cho việc cần root.
+M14. Cài gcloud: ghim bản 14 ngày tuổi và đối chiếu md5
+   Bản mới nhất là 591.0.0 (ra 2026-09-15). Chọn 589.0.0 (ra 2026-10-13) để có ít nhất hai tuần kiểm chứng. Tải về, so md5 với metadata trên GCS: khớp. Cài vào ~/.local/bin và tắt gửi thống kê.
+M15. Agent tự làm được việc gần như hết trong phạm vi của nó: tự cài công cụ, tự kiểm tra, tự chọn cách làm, và chỉ dừng lại hỏi chủ khi có việc khó đảo ngược hoặc tốn tiền.
+   Agent tự làm được việc gần như hết trong phạm vi của nó: tự cài công cụ, tự kiểm tra, tự chọn cách làm, và chỉ dừng lại hỏi chủ khi có việc khó đảo ngược hoặc tốn tiền. Thường hoặc cho agent toàn quyền (bypass permission) hoặc bắt người duyệt từng bước, ít khi có ranh giới rõ theo mức độ đảo ngược được.
+M16. Lượt chạy thật đầu tiên: tìm kiếm web bị chặn từ máy chủ
+   5 issue đều hoàn thành không lỗi, nhưng nguồn tìm kiếm khác nhau: DuckDuckGo đòi CAPTCHA, Google trả 429 và chuyển sang trang sorry, chỉ Bing trả kết quả. Thống kê token ghi model khác model cấu hình (gpt-6.1-sol và grok-4.7, thay vì gpt-5.5 và grok-4.6). Runtime Gemini chạy xong trong khoảng 30 giây.
+M17. Google chặn scope nhạy cảm khi đăng nhập bằng gcloud
+   Màn hình báo 'This app is blocked' vì app OAuth mặc định của gcloud không được phép dùng scope nhạy cảm. Phần GA4 chuyển sang thêm quyền bằng tay trong giao diện, mất khoảng 30 giây.
+M18. Daemon ops tắt và không tự lên sau khi khởi động lại
+   Khi dừng hai daemon, daemon ops được đánh dấu disabled và daemon spike là transient unit không có lệnh bật lại. Khi người dùng hỏi vì sao System Operator offline, agent giải thích đây là quyết định đã ghi trong kế hoạch, và đề xuất bật lại sau khi kiểm rủi ro.
+M19. Tách thiết lập workspace khách khỏi gắn bộ nghiệp vụ
+   Tên gói opc-studio gây nhầm vì nó là workspace của chính mình. Đổi gói thành opc-content, bỏ deploy mặc định vào opc-studio, và dựng hai lớp: workspace của khách (một lần) và các bộ nghiệp vụ (gắn thêm hoặc gỡ theo gói khách mua).
+M20. Backup theo giờ bị bác, vì backup là điều kiện để agent tự làm
+   Người dùng hỏi vì sao hằng giờ. Agent đề xuất mỗi ngày, backup trước thao tác rủi ro, và mỗi giờ khi có khách trả tiền. Người dùng hỏi mục tiêu có phải là chắc ăn không; câu trả lời là backup còn cho phép agent tự làm nhiều việc hơn, vì việc nào khôi phục được thì không cần hỏi chủ.
+M21. Daemon agent đăng nhập bằng PAT của chủ, và cách cắt
+   Bản phản biện chỉ ra máy có mã đăng nhập dev 6 ký tự trong .env và daemon agent dùng PAT chủ. Grep trong home tìm thấy đúng 3 bản sao PAT. Tạo PAT mới, kiểm PAT mới chạy được rồi mới thu hồi PAT cũ (HTTP 204). Sau đó tạo user agents-opc chỉ là member của 2 workspace, chuyển daemon sang user này.
+M22. Chép credential OAuth giữa hai user Linux sẽ đá nhau khi token quay vòng
+   Đề xuất chép file credential của user cũ sang. Chép được và chạy được lúc đầu, nhưng mỗi phiên tự làm mới token và token cũ bị thay, nên user này làm mới thì bản của user kia hỏng với lỗi 401. Khuyến nghị đăng nhập riêng cho mỗi user (chỉ mất khoảng một phút).
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

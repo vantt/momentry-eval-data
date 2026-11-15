@@ -1,0 +1,102 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L6] USER: You are worktree C. Your worktree is /home/vantt/projects/mcp-skill-hub-simplify (branch wave2/simplify-p4-p3). It already holds your earlier uncommitted work: internal/workspace/workspace.go, internal/migration/migration.go, internal/migration/v3.go, and the phase-03 and phase-04 files. Rules before anything else: - Every read, edit and write call uses an absolute path that starts with /home/vantt/projects/mcp-skill-hub-simplify/. Every bash call runs there. - Never write to /home/vantt/projects/mcp-skill-hub (the lead's main checkout) or to /home/vantt/skill-hub (the live hub). That means no …[+798]
+[L1462] USER: Review of your Phase 4 by the lead: NOT mergeable yet. A dry run on a clone of the real hub fails. Fix these, test-first, in your worktree: 1. Real-hub migration fails at v1→v2 (the step is already on main, and you own internal/migration this wave): "skills/default/test-audit/.meta/skill.yaml: canonical entity is missing an ID". In a v1/v2 workspace, .meta/** is hub-meta (IsHubMeta). Never validate it as a canonical entity. planV2ToV3 reads it only as Phase 0 input. 2. The Phase 0 .meta/skill.yaml format is real data and must migrate: - fields: id (may be absent; take it from the directory), s …[+1942]
+[L1713] USER: Lead's second review: the real-hub migration now runs (schema 3, validate passes, trust unchanged). A before/after diff of `skill show --json` shows agent-visible regressions that your fixture test missed. Fix them test-first: 1. Description broken: herdr-cook-plan's SKILL.md frontmatter uses a YAML block scalar (`description: >-` followed by an indented paragraph). After migration its description is literally ">-". Parse the frontmatter with a real YAML parser (reuse the existing frontmatter parser in the codebase if there is one), never line by line. The resolver uses description, so this is …[+1536]
+</asks>
+
+<story>
+hook: Xóa một file, test distill đỏ nhiều vòng liền
+tension: nho_ma_to (Chỉ xoá revision_package.go và sáu schema cũ / Test đỏ nhiều vòng, sửa chỗ này lộ chỗ khác)
+stakes: 2/3
+# Model distill: test reopen và gỡ revision packages đỏ liên tục
+
+**Bối cảnh:** Gỡ lớp revision package và đưa model distill mới lên, kèm logic reopen khi có bằng chứng mới.
+**Chuyện gì xảy ra:** Xóa revision_package.go và test của nó (L3083-3085). Gỡ thêm sáu schema JSON cũ. Test distill đỏ nhiều vòng: thêm nhánh skipRuntimePackages (L3238), rồi test tombstone đỏ liên tục qua các lần sửa validate (H3262 đến H3346).
+**Bài học:** Trước khi xoá một lớp dữ liệu, grep toàn bộ chỗ đọc nó để biết những test nào sẽ đỏ.
+**Artefact:** Danh sách file bị xoá và số lần test tombstone đỏ.
+</story>
+
+<excerpt>
+[L1969] RESULT: [internal/distill/distill_model_test.go#D33B] | Successfully wrote 5430 bytes to internal/distill/distill_model_test.go
+[L1970] TOOL bash: go test -v ./internal/distill
+[L1972] RESULT (exit 1): [raw output: artifact://192] | Wall time: 0.45 seconds | Command exited with code 1
+[L1973] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/distill_model.go
+[L1975] RESULT: [internal/distill/distill_model.go#5C4E] | 145: if incoming.Decision.Status == "" {
+…
+[L3080] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go
+[L3082] RESULT: [internal/distill/workspace_validation.go#EDC0] | 21:// canonical document. It is called for external edits and every catalog rebuild.
+[L3083] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify rm internal/distill/revision_package.go internal/distill/revision_package_test.go
+[L3085] RESULT: rm 'internal/distill/revision_package.go' | rm 'internal/distill/revision_package_test.go'
+[L3086] TOOL bash: go test -v ./internal/distill
+[L3088] RESULT (exit 1): FAIL | Wall time: 0.18 seconds | Command exited with code 1
+…
+[L3130] RESULT (exit error): 73: Size int64 `json:"size"` | 74: Side string `json:"side"` | Verify the content matches what you intend to touch, then re-issue the edit with the same [path#tag] header — a straight retry now succeeds without a re-read. If the content does NOT match, fix your line numbers.
+[L3131] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go:65-80
+[L3133] RESULT: [internal/distill/types.go#9903] | 56:type RevisionPackage struct {
+[L3134] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go
+[L3136] RESULT: [internal/distill/types.go#CA7D] | 69:type PackagedResource struct {
+[L3137] TOOL bash: go vet ./...
+[L3139] RESULT (exit 1): vet: internal/distill/types.go:81:32: undefined: context | Wall time: 0.30 seconds | Command exited with code 1
+[L3140] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go:1-18
+…
+[L3235] RESULT: internal/distill/workspace_validation.go | 24 +----------------------- | 1 file changed, 1 insertions(+), 23 deletions(-)
+[L3236] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go:35-56
+[L3238] RESULT: [internal/distill/workspace_validation.go#1983] | 24: if skipRuntimePackages {
+[L3239] TOOL edit: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go
+[L3241] RESULT: [internal/distill/workspace_validation.go#9C92] | 21:// canonical document. It is called for external edits and every catalog rebuild.
+…
+[L3259] RESULT: [internal/distill/workspace_validation.go#3171] | 22:func ValidateWorkspace(root string) error {
+[L3260] TOOL bash: go test -v ./internal/app -run 'TestDoctorReportsAndFixesPendingRecovery|TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale'
+[L3262] RESULT (exit 1): FAIL | Wall time: 1.90 seconds | Command exited with code 1
+[L3263] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go:175-195
+[L3265] RESULT: [internal/distill/workspace_validation.go#3171] | 174: for sourceID, run := range latestFinalized {
+…
+[L3313] RESULT: [internal/app/distill.go#8071] | 261: runID := "RUN-" + strings.ToUpper(random[:minInt(16, len(random))])
+[L3314] TOOL bash: go test -v ./internal/app -run TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale
+[L3316] RESULT (exit 1): FAIL | Wall time: 2.33 seconds | Command exited with code 1
+[L3317] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go:75-95
+[L3319] RESULT: [internal/distill/types.go#D944] | 71:type PackagedResource struct {
+…
+[L3343] RESULT: === RUN TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale | === PAUSE TestDistillGeneratesRemovalTombstoneAndMarksComparisonStale
+[L3344] TOOL bash: go test ./internal/app
+[L3346] RESULT (exit 1): FAIL | Wall time: 21.65 seconds | Command exited with code 1
+[L3347] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/workspace_validation.go:30-45
+[L3349] RESULT: [internal/distill/workspace_validation.go#A97C] | 26: for _, path := range paths {
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

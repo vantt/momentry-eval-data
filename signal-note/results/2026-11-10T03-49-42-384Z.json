@@ -1,0 +1,263 @@
+{
+  "at": "2026-11-10T03:49:42.384Z",
+  "manifest": "/home/vantt/projects/momentry/docs/_private/eval/manifest.json",
+  "rankBy": "default",
+  "rows": [
+    {
+      "id": "c4caee3c",
+      "run": 1,
+      "stories": 25,
+      "usd": 0.3354496,
+      "secs": 324.5,
+      "modelSecs": 308.15,
+      "status": "done",
+      "dryRunUsd": 0.37,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 169781,
+          "tokOut": 20509,
+          "usd": 0.13616299999999998,
+          "secs": 94.914,
+          "share": 0.4059119462357385
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 167547,
+          "tokOut": 1707,
+          "usd": 0.088041,
+          "secs": 12.014,
+          "share": 0.2624567148090205
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 9644,
+          "tokOut": 2706,
+          "usd": 0.046348,
+          "secs": 18.984,
+          "share": 0.1381668065783951
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 9249,
+          "tokOut": 1360,
+          "usd": 0.032098,
+          "secs": 9.538,
+          "share": 0.09568650551379404
+        },
+        "profile": {
+          "calls": 1,
+          "tokIn": 7812,
+          "tokOut": 1009,
+          "usd": 0.0012857,
+          "secs": 5.644,
+          "share": 0.003832766531842638
+        },
+        "angle": {
+          "calls": 10,
+          "tokIn": 126229,
+          "tokOut": 37782,
+          "usd": 0.0315139,
+          "secs": 167.05599999999998,
+          "share": 0.09394526033120923
+        },
+        "total": {
+          "calls": 15,
+          "tokIn": 490262,
+          "tokOut": 65073,
+          "usd": 0.33544959999999996,
+          "secs": 308.15,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 25,
+        "labels": 11,
+        "found": 9,
+        "recall": 0.8181818181818182,
+        "p5": 1,
+        "p10": 1,
+        "tLabels": 4,
+        "tFound": 3,
+        "tMeanRank": 4.666666666666667,
+        "half": 13,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "tmp-het-han-muc",
+            "t": true,
+            "rank": 8,
+            "ranks": [
+              8,
+              20
+            ]
+          },
+          {
+            "name": "actions-fork-workflow-upstream",
+            "t": false,
+            "rank": 16,
+            "ranks": [
+              16
+            ]
+          },
+          {
+            "name": "watcher-debounce-5s",
+            "t": false,
+            "rank": null,
+            "ranks": []
+          },
+          {
+            "name": "mac-intel-onnxruntime",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4,
+              11,
+              14
+            ]
+          },
+          {
+            "name": "hoi-an-thanh-an",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2,
+              7
+            ]
+          },
+          {
+            "name": "onnx-khac-theo-cpu",
+            "t": false,
+            "rank": 4,
+            "ranks": [
+              4,
+              12
+            ]
+          },
+          {
+            "name": "snapshot-bang-diem",
+            "t": true,
+            "rank": null,
+            "ranks": []
+          },
+          {
+            "name": "npm12-pack-object",
+            "t": false,
+            "rank": 11,
+            "ranks": [
+              11,
+              12
+            ]
+          },
+          {
+            "name": "phuc-hoi-dau-bien-mot-tu",
+            "t": false,
+            "rank": 2,
+            "ranks": [
+              2
+            ]
+          },
+          {
+            "name": "don-21-gb-thu-muc-tam",
+            "t": false,
+            "rank": 8,
+            "ranks": [
+              8
+            ]
+          },
+          {
+            "name": "goi-tieng-viet-ndcg-5-0",
+            "t": false,
+            "rank": 1,
+            "ranks": [
+              1,
+              2,
+              3,
+              5,
+              6,
+              7,
+              9,
+              10
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    }
+  ],
+  "diffs": [],
+  "overall": {
+    "sessions": 1,
+    "captures": 1,
+    "usd": 0.3354496,
+    "secs": 324.5,
+    "recall": 0.8181818181818182,
+    "p5": 1,
+    "p10": 1,
+    "tMeanRank": 4.666666666666667,
+    "tTopHalf": 3,
+    "tLabels": 4,
+    "steps": {
+      "harvest": {
+        "calls": 1,
+        "tokIn": 169781,
+        "tokOut": 20509,
+        "usd": 0.13616299999999998,
+        "secs": 94.914,
+        "share": 0.4059119462357385
+      },
+      "outsider": {
+        "calls": 1,
+        "tokIn": 167547,
+        "tokOut": 1707,
+        "usd": 0.088041,
+        "secs": 12.014,
+        "share": 0.2624567148090205
+      },
+      "hook-tension": {
+        "calls": 1,
+        "tokIn": 9644,
+        "tokOut": 2706,
+        "usd": 0.046348,
+        "secs": 18.984,
+        "share": 0.1381668065783951
+      },
+      "stakes": {
+        "calls": 1,
+        "tokIn": 9249,
+        "tokOut": 1360,
+        "usd": 0.032098,
+        "secs": 9.538,
+        "share": 0.09568650551379404
+      },
+      "profile": {
+        "calls": 1,
+        "tokIn": 7812,
+        "tokOut": 1009,
+        "usd": 0.0012857,
+        "secs": 5.644,
+        "share": 0.003832766531842638
+      },
+      "angle": {
+        "calls": 10,
+        "tokIn": 126229,
+        "tokOut": 37782,
+        "usd": 0.0315139,
+        "secs": 167.05599999999998,
+        "share": 0.09394526033120923
+      },
+      "total": {
+        "calls": 15,
+        "tokIn": 490262,
+        "tokOut": 65073,
+        "usd": 0.33544959999999996,
+        "secs": 308.15,
+        "share": 1
+      }
+    }
+  },
+  "angleChecks": {}
+}

@@ -1,0 +1,115 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh cho vault Obsidian, có thêm cửa MCP để hỏi Claude Desktop về graph của vault: note nào nối với note nào, đi từ ý này sang ý khác qua đâu, và note nào bị lạc khỏi mạng. Làm cho người làm một mình hoặc freelancer dùng tiếng Việt, nên phải cài được mà không cần Python và chỉ là một file chạy trên Windows, macOS hoặc Linux. Chạy ngay trên máy của người dùng, nơi giữ vault. Mục tiêu hiện tại: viết lại lõi bằng Rust để cho kết quả khớp với bản Python trên cùng một vault.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+</asks>
+
+<story>
+hook: Tự viết JSON-RPC: binary nhỏ hơn 4 lần, build nhanh hơn 6 lần
+tension: it_ma_nhieu (Tự viết giao thức thay vì dùng thư viện / Binary 0,68 MB thay vì 2,79 MB, build 2,5 giây)
+stakes: 2/3
+# Chọn tự viết JSON-RPC thay vì rmcp: binary 0,68 MB so với 2,79 MB
+
+**Bối cảnh:** Chọn thư viện MCP cho server Rust, phải khớp hành vi của bản Python.
+**Chuyện gì xảy ra:** rmcp kéo 56 crate và tokio, build sạch 16,5 giây so với 2,5 giây, binary 2,79 MB so với 0,68 MB. rmcp lệch Python ở 5 điểm trong tầng giao thức. Claude Code thử server/discover trước rồi mới fallback sang initialize, đúng nhánh Python đang dùng, nên ghi lại như điều kiện xem lại.
+**Bài học:** Thư viện chuẩn có thể lệch thông điệp lỗi của bản gốc, cần đo trước khi chọn.
+</story>
+
+<excerpt>
+[L261] RESULT: 8:dependencies: [1] | 24:- [x] Đích: `x86_64-pc-windows-msvc`, `aarch64-apple-darwin`, `x86_64-apple-darwin`, `x86_64-unknown-linux-gnu`.
+[L267] AGENT: Phases 01, 06, 07 and 14 are merged and pushed. The release dispatch run built all four binaries, every sha256 checked OK, and no Release was created. Phases 02, 03, 04 and 05 are still running.
+[L279] USER: <task-notification>
+<task-id>ab32aa7628af408bd</task-id>
+<tool-use-id>toolu_015NSnW1z9NxUNVuaHRFvLVy</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/ab32aa7628af408bd.output</output-file>
+<status>completed</status>
+<summary>Agent "Phase 03 MCP probe" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I've built two small Rust MCP servers and Claude Code called the tool on both. Q4 is decided in favour of a hand-written JSON-RPC server rather than `rmcp`. The phase stays `in-progress` until you run the Claude Desktop test on Windows.
+
+**Claude Code test:** I ran Claude Code 2.1.316 headless with a temporary MCP config, so your global config is untouched. It completed the handshake and a tool call against both servers and returned the correct Vietnamese note ids. The full transcript is in section 5 of the report.
+
+**Protocol version:** Python echoes the version the client asks for if it knows it (`2025-06-18`, `2025-03-26` or `2024-11-05`), otherwise it answers `2025-06-18`. Both Rust servers do exactly the same. Claude Code asked for `2025-11-25` and all three servers answered `2025-06-18`.
+
+**One thing you should know:** Claude Code 2.1.316 first tries `server/discover` from the newer 2026-07-28 protocol. When that fails it falls back to `initialize`, and that fallback is the path Python uses. If a later Claude Code drops the fallback, the Python server breaks first. I wrote that down as the trigger for revisiting Q4.
+
+**Why hand-written (Q4):**
+
+| | Hand-written (`s2-hand`) | `rmcp` 3.8.0 (`s2-rmcp`) |
+|---|---|---|
+| Binary size (stripped release) | 0.68 MB | 2.79 MB |
+| Crates pulled in | 12 | 56 |
+| Clean release build | 2.5 s | 16.5 s |
+| Async runtime | none | `tokio` required (it panics at runtime if timers are off) |
+
+- **Wording control is not the deciding factor.** Both servers produce a `find` entry in `tools/list` that matches Python's string for string, key order included. A test checks this against a JSON file exported from the pinned Python code.
+- **The real problem with `rmcp` is the protocol layer.** It differs from Python in five places:
+  - unknown method: the error message reads `nope/x` instead of `method not found: nope/x`;
+  - a line that is not JSON: no reply at all, where Pyth …[+2475]
+[L285] TOOL Bash: git merge --no-edit worktree-agent-ab32aa7628af408bd 2>&1 | tail -2; git status --short | grep -v '^??' ; (cd probes/s2-mcp && cargo test -q 2>&1 | grep "test result") ; git push -q origin main && echo pushed
+[L286] RESULT: create mode 100644 probes/s2-mcp/tests/python-find-tool.json | create mode 100644 probes/s2-mcp/tests/stdio_session.rs
+[L292] AGENT: Phase 03 is merged and pushed; it chose hand-written JSON-RPC for Q4. It stays in-progress until you run the Windows Claude Desktop test, which I'll bundle into the wave-end user list. Phases 02, 04 and 05 are still running.
+[L307] USER: <task-notification>
+<task-id>a4e470bc69dc710c2</task-id>
+<tool-use-id>toolu_01UMecc41wAYbkBzFswD8DGF</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a4e470bc69dc710c2.output</output-file>
+<status>completed</status>
+<summary>Agent "Phase 04 OHS stdio probe" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>## Phase Implementation Report
+
+### Executed Phase
+- Phase: phase-04-spec-probe-ohs (bài thử S3, OHS stdio)
+- Plan: /home/vantt/projects/obsidian-pkm/.claude/worktrees/agent-a4e470bc69dc710c2/plans/261102-0535-rust-core-port-master
+- Status: completed
+
+The probe passes both acceptance criteria. Rust starts one OHS `serve --stdio` process from the fork's prebuilt bundle and waits for `{"ready":true}`. It sends 6 `search` requests at once and matches each answer by `id`, and it returns every path in NFC. For the CLI comparison I ran `bin/ohs search --json` with the same options on the same DB: 6 of 6 queries return the same set of notes, in the same order. After every exit `ps` shows no node process left, including after a `kill -9` on the probe while indexing was running: OHS saw stdin close and exited in under 1 s.
+
+### Files Modified
+- `probes/s3-ohs/Cargo.toml`, `Cargo.lock`, `.gitignore`. The crate has an empty `[workspace]` table, so it is not a member of the root workspace.
+- `probes/s3-ohs/src/lib.rs` (about 690 lines): finds the package (`--ohs` flag, then `PKM_OHS_DIR`), runs the client, normalizes paths to NFC, maps `status` to the D7 states, and shuts down with a time limit.
+- `probes/s3-ohs/src/main.rs`: the `s3-ohs` binary.
+- `probes/s3-ohs/src/bin/fake-ohs.rs`: a fake server speaking the same protocol, so the tests need neither Node nor a model.
+- `probes/s3-ohs/tests/stdio_client.rs`: 8 tests against the fake server, plus 1 `#[ignore]` test against the real OHS.
+- `plans/reports/probe-s3-ohs-261102-1317.md`: the report, in Vietnamese.
+- `plans/261102-0535-rust-core-port-master/phase-04-spec-probe-ohs.md`: boxes ticked with `ak plan check`, and `status: done` set in the frontmatter. I did not touch the plan store.
+
+### Tasks Completed
+- [x] OHS package `0.17.2-vantt.1` linux-x64 (sha256 `9160d45e…`, checked). The release has no files yet, so I took the package from the build artifacts of …[+3133]
+[L314] TOOL Bash: git merge --no-edit worktree-agent-a4e470bc69dc710c2 2>&1 | tail -1; (cd probes/s3-ohs && cargo test -q 2>&1 | grep -c "test result: ok"); pgrep -af "node.*ohs" | head; git push -q origin main && echo pushed
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

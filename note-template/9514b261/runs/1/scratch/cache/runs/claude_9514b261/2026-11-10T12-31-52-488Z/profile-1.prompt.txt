@@ -1,0 +1,162 @@
+Bạn đọc tài liệu của một dự án phần mềm và viết hồ sơ ngắn cho người ngoài chưa từng nghe về nó. Hồ sơ này sẽ đứng đầu mọi câu chuyện kể về dự án, để người nghe biết đang nói về cái gì.
+
+Trả:
+- profile: 3-5 câu, chữ thường ngày. Theo thứ tự: dự án là gì; làm cho ai; ràng buộc chính (ví dụ chạy trên máy, giữ riêng tư, ngôn ngữ người dùng, nền tảng); mục tiêu hiện tại, chỉ khi tài liệu có nói. Tài liệu không nói mục tiêu thì kết thúc ở ràng buộc, không thêm câu "Mục tiêu hiện tại: chưa có".
+
+Luật cứng:
+- Chỉ dùng điều tài liệu nói. Không đoán, không thêm con số, khách hàng, kế hoạch hay động cơ tài liệu không ghi. Ý nào tài liệu không nói thì bỏ hẳn ý đó, không viết câu nói về tài liệu (như "tài liệu không nói mục tiêu").
+- Không đoán người làm là một nhóm hay một người khi tài liệu không nói.
+- Không chép lệnh, đường dẫn, khoá, địa chỉ hay tên người.
+- Tài liệu không cho biết dự án làm gì (chỉ có quy tắc cho agent, mẫu trống, danh sách lệnh) thì trả none kèm lý do ngắn.
+- Viết cùng ngôn ngữ với phần lớn tài liệu.
+
+Ví dụ:
+{"profile":"Một công cụ dòng lệnh sao lưu ảnh từ điện thoại vào ổ cứng trong nhà. Làm cho người không rành kỹ thuật, nên chỉ có một lệnh và không phải cấu hình gì. Ảnh không bao giờ rời mạng nhà. Mục tiêu hiện tại: chạy được trên Windows."}
+
+Ví dụ không có:
+{"none":true,"reason":"chỉ có quy tắc viết code cho agent, không nói dự án làm gì"}
+
+<sources>
+### README.md
+# Forgent
+
+<!-- FGOS:BACKLOG-BADGES:START -->
+![backlog declined](https://img.shields.io/badge/backlog%20declined-4-red) ![backlog done](https://img.shields.io/badge/backlog%20done-86-brightgreen) ![backlog parked](https://img.shields.io/badge/backlog%20parked-0-yellow) ![backlog in-flight](https://img.shields.io/badge/backlog%20in--flight-1-blue) ![backlog proposed](https://img.shields.io/badge/backlog%20proposed-16-lightgrey)
+<!-- FGOS:BACKLOG-BADGES:END -->
+
+**The Foundation for Generative Agents.**
+
+Forgent (fgOS) is the platform layer for building and running agent applications — the infrastructure, skills, and automation that sit beneath every agent app, so developers can forge new agents instead of building everything from scratch.
+
+## Install
+
+fgOS is in alpha. The current alpha is
+[`v0.2.0-rc.2`](https://github.com/vantt/forgent/releases/tag/v0.2.0-rc.2), a
+GitHub pre-release. A pre-release is never "latest", so an alpha is installed by
+naming its tag in `FGCTL_VERSION`. Nothing needs a clone, npm or a Rust
+toolchain: the installer puts one small binary, `fgctl`, on your machine, and
+`fgctl init` downloads and checks the rest.
+
+### Alpha quick start: Linux (x86_64)
+
+```bash
+curl -fsSL https://github.com/vantt/forgent/releases/download/v0.2.0-rc.2/install.sh \
+  | FGCTL_VERSION=v0.2.0-rc.2 sh
+cd your-project                      # an existing git repository
+FGCTL_VERSION=v0.2.0-rc.2 fgctl init
+.fgos/installation/bin/fgos setup    # once per project: config defaults and hooks
+.fgos/installation/bin/fgos doctor
+```
+
+`install.sh` puts `fgctl` in `~/.local/bin` (or `FGCTL_INSTALL_DIR`); add that
+directory to `PATH` if the installer says it is missing. The Linux build runs on
+glibc 2.35 and later (Ubuntu 22.04 and newer).
+
+### Alpha quick start: Windows 10 or later (x86_64)
+
+Open PowerShell (no Git Bash, no WSL, no administrator rights):
+
+```powershell
+$env:FGCTL_VERSION = 'v0.2.0-rc.2'
+irm https://github.com/vantt/forgent/releases/download/v0.2.0-rc.2/install.ps1 | iex
+$env:Path = "$env:LOCALAPPDATA\fgos\bin;$env:Path"    # this session only
+cd your-project                      # an existing git repository
+fgctl init
+.\.fgos\installation\bin\fgos.cmd setup
+.\.fgos\installation\bin\fgos.cmd doctor
+```
+
+`install.ps1` installs `fgctl.exe` into `%LOCALAPPDATA%\fgos\bin` (or
+`FGCTL_INSTALL_DIR`), checks the download against the release's `SHA256SUMS` and
+changes nothing on your `PATH`: the `$env:Path` line above covers the current
+session, and the installer prints the command to make it permanent. `fgctl init`
+needs `curl.exe`, which ships with Windows 10 1803 and later. After `fgctl init`,
+put `.fgos\installation\bin` on `PATH` (or call `fgos.cmd` by path); it runs from
+PowerShell and `cmd.exe` alike. `fgctl init` must run inside a git repository, as on Linux.
+
+macOS and Windows on ARM are not supported in this alpha.
+
+### Stable releases and other options
+
+Once a release is not a pre-release, `install.sh` installs it by default, with no
+`FGCTL_VERSION`:
+
+```bash
+curl -fsSL https://github.com/vantt/forgent/releases/latest/download/install.sh | sh
+```
+
+and on Windows `irm https://github.com/vantt/forgent/releases/latest/download/install.ps1 | iex`.
+Until the first release newer than `v0.1.0` is stable, "latest" is `v0.1.0`,
+which predates the Windows assets.
+
+Then initialize your project from inside its git repository. A plain
+`fgctl init` uses the release the project's committed `.fgos/distribution.json`
+pins; with no pin it downloads the latest release (through `curl`), checks it
+against the release's `SHA256SUMS`, and installs it. No tarball download by hand:
+
+```bash
+fgctl init
+```
+
+To pick a different release:
+
+```bash
+FGCTL_VERSION=v0.2.0-rc.2 fgctl init         # an exact tag; needed for pre-releases
+FGCTL_FROM=./fgos-<tag>-x86_64-unknown-linux-gnu.tar.gz fgctl init   # a local build, build dir, or URL
+fgctl init --from <path-or-URL>              # same as FGCTL_FROM
+```
+
+A download writes its tag into the committed `.fg …[+4917]
+
+### AGENTS.md
+# forgent
+
+**The Foundation for Generative Agents.**
+
+Forgent (fgOS) is the platform layer for building and running agent applications — the infrastructure, skills, and automation that sit beneath every agent app, so developers can forge new agents instead of building everything from scratch.
+
+- README.md — product description + documentation index
+- docs/platform/platform-foundations.md — L1-L10 locked design laws; L5 is this repo's definition of done (six questions, below)
+- docs/platform/system-overview/spec.md — area map, shared entities, cross-area flows
+- docs/reading-map.md — where every doc and source path in this repo lives
+- docs/backlog.md — product backlog (PBI rows: proposed / in-flight / done)
+- plans/261017-1313-fgos-platform-program-board/plan.md — platform program board (lanes, waits, shared-file collisions). Do not read it by default. Open it only when you start, finish, block or land a platform lane (lock/git/state/config/runner): read the "Các luồng" and "File chung dễ va" sections, update your own lane's row, and add one line at the top of its `log.md`. Never read `log.md` whole; grep it by lane ID, date or commit.
+- docs/platform/runner/contracts/routing-handoff.md — agent-to-agent handoff contract + trust boundary
+- docs/decisions/index.md — generated projection of platform/repo-wide decisions (`fgos decision-index`); narrative lives in each area's spec.md "Lịch sử quyết định" section and in decisions/ where present; resolve renamed/split scopes through docs/platform/governance.md#decision-scope-to-holder-table
+- domains/<domain>/AGENTS.md — domain-specific doctrine (e.g. domains/coding/AGENTS.md for fgos-coding-* workflows), read dynamically by fgos-routing
+
+## Product priority order (D-ADR0030, docs/platform/runner/decisions/h-36d872fbb0e5.md#0030-thêm-bậc-ưu-tiên-2-release-con-người-vào-thứ-tự-ưu-tiên-sản-phẩm)
+
+1. **Ship Faster** — giao nhanh hơn, không đoán mò, giảm friction/better-dev-ux, ít chờ đợi.
+2. **Release con người** — giải phóng con người khỏi việc ngồi canh chờ trả lời. Hệ thống tự phán đoán, tự vận hành ở mức cao nhất có thể; chỉ hỏi người khi thật sự cần, và khi hỏi thì gom thành bộ để mỗi lần người quay lại trả lời được nhiều nhất rồi đi tiếp; mỗi câu theo mẫu câu hỏi quyết định (`core/skills/_shared/decision-question.md`). Tự quyết trong khung đã duyệt (phạm vi + ngân sách ghi lúc duyệt); sắp vượt khung thì dừng và hỏi theo mẫu. Một câu hỏi treo không được nghẽn phần việc khác của cùng item còn tiến được — stage/skill vì vậy phải chia nhỏ, mịn, mỗi mảnh park/tiến độc lập.
+   Khi phân tích của chính agent đã chọn rõ một phương án, hãy quyết và báo cáo, không hỏi lại. Chỉ hỏi khi các phương án thật sự ngang nhau hoặc phụ thuộc vào ý định của người dùng.
+3. **DoD** — reproducibly verifiable result + evidence-linked documentation.
+4. **Polish Sau DoD** — hoàn thiện sau ngưỡng, không mở scope.
+
+Tốc độ ở mục 1 là tốc độ ship của **project đang DÙNG fgOS** (fgOS không loại trừ khi tự dogfood) — không phải tốc độ tự thân team fgOS build một tính năng của chính fgOS. Đừng chọn phương án rẻ để fgOS tự triển khai nếu nó làm project dùng fgOS chậm hơn.
+
+Thứ tự cố định — bậc dưới không ghi đè bậc trên. Chi tiết: docs/platform/runner/decisions/h-36d872fbb0e5.md#0030-thêm-bậc-ưu-tiên-2-release-con-người-vào-thứ-tự-ưu-tiên-sản-phẩm's "Lịch sử quyết định" § D-ADR0030 (mở rộng D-ADR0025; narrative đầy đủ, docs/decisions/*.md corpus đã retired tsk-1lv-4).
+
+## Ranh giới sứ mệnh (D-ADR0035, docs/platform/platform-foundations.md#0035-xác-lập-ranh-giới-sứ-mệnh-fgos-phục-vụ-project-khácbusiness-workflow-không-tự-phát-triển-chính-nó-mặc-định)
+
+fgOS tồn tại để: 
+ 1. phát triển các project khác 
+ 2. làm nền vận hành các business base workflow 
+ 
+fgOS KHÔNG phải để (3) tự phát triển chính nó. Mission #3 là dogfood cần thiết trong lúc xây, không phải lý do fgOS tồn tại.  Khi làm việc trong chính repo (nơi fgOS tự-host trên chính source của mình), đừng mặc định coi "sửa fgOS" là mục tiêu chỉ vì đó là việc trước mắ …[+45288]
+
+### CLAUDE.md
+# Project Rules
+
+Every agent CLI used on this repository (Claude Code, Codex, omp, pi, agy)
+reads one shared instruction file: AGENTS.md. Claude Code reads AGENTS.md on
+its own only when no CLAUDE.md exists, so this file stays and does nothing but
+import it. Put every rule in AGENTS.md, never here; a tool that writes its own
+block into this file (for example `gitnexus analyze`) makes Claude read that
+block twice. The bare import below must never be wrapped in backticks; that
+disables it.
+
+@AGENTS.md
+</sources>
+
+Chỉ trả JSON theo một trong hai dạng trên.

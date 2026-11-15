@@ -1,0 +1,164 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) is a platform layer for building and running agent applications, providing the infrastructure, skills, and automation beneath each agent app so developers can build new agents without starting from scratch. It is in alpha and is installed as one small command-line binary, then set up inside an existing git repository. The alpha runs only on Linux (x86_64, glibc 2.35 or later) and Windows 10 or later (x86_64), since macOS and Windows on ARM are not supported yet.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L3300] USER: probe đi em
+[L3527] USER: liệt kê lại cho anh toàn bộ zsh alias của llm acounts trên máy này
+[L3609] USER: cài đặt thehive cho pi và omp theo hướng dẫn: <pasted_content id="f677"> 1. Chuẩn bị trên máy mới - Cài pi CLI, cùng bản với máy này nếu được. Máy này đang chạy settings có lastChangelogVersion 1.2.0. - Lấy repo bằng git pull, để có .fgos/config.json có sẵn các model thehive/...@thehive. - Lấy API key TheHive qua password manager hoặc dashboard TheHive. Không gửi key qua git hoặc chat. 2. Tạo thư mục tài khoản D=~/.pi/accounts/thehive mkdir -p "$D" && chmod 700 "$D" # models.json: khai báo provider và 2 model cat > "$D/models.json" <<'EOF' { "providers": { "thehive": { "baseUrl": "https://api. …[+1548]
+</asks>
+
+<story>
+hook: Khoá cũ 24 ký tự bị ghi đè bởi khoá mới 25 ký tự lỗi
+tension: giup_ma_hai (Đưa lệnh nhập khoá mới cho nhanh / Không sao lưu nên mất khoá cũ đang chạy, khoá mới thừa một ký tự cho 401)
+stakes: 1/3
+# Lệnh nhập khoá TheHive ghi đè khoá đang chạy không sao lưu, khoá dán thừa một ký tự cho 401
+
+**Bối cảnh:** Chủ dự án cài TheHive cho pi và omp theo hướng dẫn. Máy đã có khoá chạy được từ trước.
+**Chuyện gì xảy ra:** Agent đưa lệnh ghi khoá mới nhưng không sao lưu auth.json trước, nên khoá cũ đang chạy bị ghi đè. Khoá mới dài 25 ký tự bị API trả 401 Invalid or expired token, còn khoá cũ dài 24. Agent đã đoán khoá dán thừa một ký tự và tự nhận lỗi vì không đưa lệnh có sao lưu. Sau khi chủ dự án nhập lại với sao lưu và loại khoảng trắng, API trả 200 và pi, omp cho cả deepseek lẫn glm đều OK.
+**Bài học:** Luôn sao lưu thông tin xác thực trước khi ghi đè, loại khoảng trắng khi dán khoá, và kiểm bằng một lượt gọi API trước khi tin.
+**Artefact:** Đoạn lệnh có sao lưu và curl kiểm tra, với khoá thay bằng placeholder, không in giá trị khoá.
+**Góc người ngoài:** cách làm phổ biến là Sửa thẳng file, hoặc chỉ dựa vào git để hoàn tác. Với file không nằm trong git (config home, zshrc) thì thường không có bản sao nào; ở đây khác ở Phiên có sao lưu config và zshrc, nhưng riêng lần nhập khoá TheHive lại ghi đè không sao lưu, nên đoạn này rút ra bài học ngược. Người đọc sẽ muốn biết cách sao lưu chuẩn trước khi sửa file ngoài git.
+</story>
+
+<excerpt>
+[L3847] TOOL Bash: cd ~ && python3 - <<'EOF' import os p=os.path.expanduser('~/.zshrc') s=open(p,encoding='utf8').read() assert 'pi-thehive' not in s and 'omp-thehive' not in s def once(a,b): global s assert s.count(a)==1,(a[:70],s.count(a)); s=s.replace(a,b) once(' pi-claude-01 pi-grok-vantt pi-xai-vantt pi-openroute …[+1291]
+[L3852] RESULT: zshrc đã cập nhật | cú pháp ok
+[L3864] AGENT: Em đã xong phần cài đặt. Đây là lệnh nhập khoá TheHive, và có một điều cần biết trước: **máy này đã có khoá**, nên anh không cần nhập lại trừ khi muốn thay.
+
+## Lệnh nhập khoá
+
+Dán nguyên khối này vào terminal. Khoá anh gõ vào ô ẩn của `read -s`, nên không hiện trên màn hình, không nằm trong lệnh và không vào history:
+
+```zsh
+read -rs "?TheHive API key: " K; echo
+K="$K" python3 -c "import json,os;p=os.path.expanduser('~/.pi/accounts/thehive/auth.json');json.dump({'thehive':{'type':'api_key','key':os.environ['K']}},open(p,'w'))"
+chmod 600 ~/.pi/accounts/thehive/auth.json; unset K
+```
+
+Một lệnh này cấp khoá cho **cả pi lẫn omp**, vì profile omp `thehive` lấy khoá lúc chạy từ chính file `auth.json` của pi (nên không có hai bản khoá). Kiểm lại sau khi nhập, mỗi lệnh phải trả đúng `OK`:
+
+```zsh
+pi-thehive -p "Reply with exactly the single word OK and nothing else."
+omp-thehive --model thehive/deepseek-ai/deepseek-v4.1-flash-1017 -p "Reply with exactly the single word OK and nothing else."
+```
+
+## Hiện trạng trên máy này
+
+| Phần | Kết quả |
+|---|---|
+| **pi** `~/.pi/accounts/thehive` | Đã cài đúng hướng dẫn từ trước (`models.json` hai model, `settings.json`, thư mục `700`, `auth.json` `600` với một khoá loại `api_key`). Em gọi thử: trả `OK` |
+| **omp** profile `thehive` | Em tạo mới: `~/.omp/profiles/thehive/agent/models.yml` (provider `thehive`, `api: openai-completions`, hai model), cùng `config.yml`. omp liệt kê đủ hai model và em gọi thử: trả `OK` |
+| **zsh** | Thêm alias `pi-thehive` và `omp-thehive`, thêm `thehive` vào `PI_ACCOUNTS` và `OMP_ACCOUNTS`. Mở shell mới em thấy cả hai alias và hai công tắc đã liệt kê. Có sao lưu zshrc (bản `backup4`) |
+| **fgOS** | Pool `thehive` đã khai sẵn trong `~/.fgos/config.json`, không cần thêm gì |
+
+Em không đọc hay in khoá. Em chỉ thấy khoá là loại `api_key`, dài 24 ký tự, và để các lệnh gọi thử tự lấy khoá qua `jq` lúc chạy.
+
+## Hai điều cần lưu ý
+
+1. **omp cần khoá ở dạng `apiKey` trong `models.yml`.** Em đặt nó là `!jq -r .the …[+870]
+[L3874] USER: đã nhập key cho thehive, kiểm tra omp và pi
+[L3879] TOOL Bash: cd /tmp && python3 - <<'EOF' import json,os,time p=os.path.expanduser('~/.pi/accounts/thehive/auth.json') j=json.load(open(p)) print('auth.json: khoá cấp 1',list(j.keys()),'| loại',j['thehive'].get('type'),'| độ dài khoá',len(j['thehive'].get('key','')),'| sửa',time.strftime('%H:%M:%S',time.localtim …[+1070]
+[L3888] RESULT: auth.json: khoá cấp 1 ['thehive'] | loại api_key | độ dài khoá 25 | sửa 22:06:29 | quyền 600 | --- pi (deepseek mặc định):
+[L3895] TOOL Bash: cd /tmp && python3 - <<'EOF' import json,os,re,collections p=os.path.expanduser('~/.pi/accounts/thehive/auth.json') k=json.load(open(p))['thehive']['key'] def cls(c): if c.isalpha(): return 'chữ' if c.isdigit(): return 'số' if c in '-_': return 'gạch' if c.isspace(): return 'KHOẢNG TRẮNG/xuống dòng' …[+457]
+[L3899] RESULT: độ dài 25 | phân loại: {'chữ': 18, 'số': 4, 'ký tự đặc biệt': 3} | ký tự đầu thuộc loại: chữ | ký tự cuối thuộc loại: ký tự đặc biệt
+[L3906] TOOL Bash: cd /tmp && python3 - <<'EOF' import json,os,urllib.request,urllib.error k=json.load(open(os.path.expanduser('~/.pi/accounts/thehive/auth.json')))['thehive']['key'] for path in ('/api/v3/models',): req=urllib.request.Request('https://api.thehive.ai'+path,headers={'Authorization':'Bearer '+k,'Accept': …[+366]
+[L3915] RESULT: /api/v3/models -> 401 {"status_code":401,"message":"Invalid or expired token"} | --- còn bản sao lưu khoá cũ nào do em tạo không:
+[L3920] AGENT: Khoá vừa nhập bị chính API TheHive từ chối (401 "Invalid or expired token"), nên pi và omp không có lỗi: cả hai đều chạy đúng, vấn đề nằm ở khoá.
+
+## Kết quả kiểm tra
+
+| Kiểm tra | Kết quả |
+|---|---|
+| pi, model mặc định (deepseek) | 401 Invalid or expired token |
+| pi, model glm | 401 |
+| omp, deepseek | 401 |
+| omp, glm | 401 |
+| Gọi thẳng `https://api.thehive.ai/api/v3/models` bằng khoá đó | **401**, cùng thông báo |
+| Định dạng khoá lưu | Bình thường: `auth.json` đúng dạng, loại `api_key`, quyền `600`, không có khoảng trắng, ngoặc hay tiền tố `Bearer` thừa |
+
+Em chỉ in loại ký tự, không in khoá. Khoá mới dài 25 ký tự, gồm 18 chữ, 4 số và 3 ký tự đặc biệt, ký tự cuối là ký tự đặc biệt.
+
+## Nguyên nhân khả dĩ
+
+Vì API từ chối cả khi gọi trực tiếp, khoá này sai, bị cắt, hoặc đã hết hạn. Gợi ý: khoá cũ trên máy này dài 24 ký tự (đã chạy được lúc trước), còn khoá mới 25 và kết thúc bằng ký tự đặc biệt, nên có thể khi dán đã thừa hoặc dính một ký tự ở cuối. Em không chắc nguyên nhân, chỉ nêu dấu hiệu.
+
+## Một điều em phải nói thẳng
+
+**Lệnh nhập khoá đã ghi đè khoá cũ mà không có bản sao lưu**, và khoá cũ đang chạy được (pi và omp đều trả OK trước đó). Em đã nhắc "không cần nhập lại trừ khi muốn thay" nhưng lẽ ra phải đưa lệnh có sao lưu `auth.json` trước. Em không có bản sao nào để khôi phục, và em cũng không đi lục các bản sao tạm của fgOS để tìm khoá, vì đó là đọc bí mật.
+
+## Cách xử lý
+
+Lấy lại khoá từ dashboard TheHive hoặc password manager, rồi nhập lại bằng lệnh có sao lưu và kiểm tra ngay:
+
+```zsh
+cp -p ~/.pi/accounts/thehive/auth.json ~/.pi/accounts/thehive/auth.json.bak
+read -rs "?TheHive API key: " K; echo
+K="$(printf %s "$K" | tr -d '[:space:]')" python3 -c "import json,os;p=os.path.expanduser('~/.pi/accounts/thehive/auth.json');json.dump({'thehive':{'type':'api_key','key':os.environ['K']}},open(p,'w'))"
+chmod 600 ~/.pi/accounts/thehive/auth.json; unset K
+curl -s -o /dev/null -w "%{http_code}\n" -H "Authorization: Bearer $(jq -r .thehive.key ~/.pi/accounts/ …[+430]
+[L3930] USER: rôi 200
+[L3934] AGENT: Khoá TheHive đã nhận 200, em chạy lại bốn lượt kiểm pi và omp.
+[L3935] TOOL Bash: cd /tmp && python3 - <<'EOF' import json,os p=os.path.expanduser('~/.pi/accounts/thehive/auth.json') j=json.load(open(p)); k=j['thehive']['key'] print('auth.json: loại',j['thehive'].get('type'),'| độ dài khoá',len(k),'| quyền',oct(os.stat(p).st_mode)[-3:]) EOF T="Reply with exactly the single word O …[+814]
+[L3944] RESULT: auth.json: loại api_key | độ dài khoá 24 | quyền 600 | --- pi deepseek:
+[L3949] AGENT: TheHive đã chạy được trên cả pi và omp, cả hai model.
+
+| Kiểm tra | Kết quả |
+|---|---|
+| pi, deepseek (model mặc định) | `OK` |
+| pi, glm | `OK` |
+| omp, deepseek | `OK` |
+| omp, glm | `OK` |
+| `auth.json` | Dạng `api_key`, khoá dài 24 ký tự (như khoá cũ), quyền `600` |
+
+Khoá mới dài 24 ký tự, đúng bằng khoá cũ, nên khoá 25 ký tự trước đó có một ký tự thừa lúc dán. Lệnh có `tr -d '[:space:]'` và bước `curl` đã xử lý đúng.
+
+Dùng được ngay các alias `pi-thehive` và `omp-thehive` (đã có trong zsh). Em không đọc hay in khoá.
+
+## Việc dọn dẹp nhỏ
+
+Lệnh vừa rồi để lại `~/.pi/accounts/thehive/auth.json.bak`. Đây là bản sao **khoá 25 ký tự bị từ chối** (nó sao lưu trước khi ghi đè khoá mới). Nó là khoá hỏng, nhưng vẫn là thông tin xác thực nên anh nên xoá: `rm ~/.pi/accounts/thehive/auth.json.bak`. Em không tự xoá vì là file của anh.
+
+## Còn lại
+
+- **Hội đồng kiến trúc** vẫn đang chạy nền (`wf-run-1792588557887-a8496d01`). Em chưa xem được kết quả nên chưa báo gì.
+- **Hai việc em chưa làm**: chạy `fgos doctor` chỉ đọc ở các workspace khác để kiểm config toàn cục hôm nay có làm hỏng release cũ không (cảnh báo cuối hướng dẫn TheHive), và khai kho `codex` theo từng tài khoản openai cho fgOS.
+
+Anh muốn em xem trạng thái hội đồng bây giờ, hay làm kiểm tra các workspace khác trước?
+[L3958] USER: dọn dẹp nhỏ rồi xem trạng thái hội đồng.
+[L3961] AGENT: Em kiểm bản sao đúng là khoá hỏng (chỉ đếm độ dài) rồi xoá, sau đó xem trạng thái hội đồng.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

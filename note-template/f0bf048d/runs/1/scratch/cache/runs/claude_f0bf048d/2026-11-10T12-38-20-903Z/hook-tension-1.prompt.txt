@@ -1,0 +1,68 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Gói coding còn gắn cứng tên workspace nên chưa bán cho khách khác được
+   Gói gắn cứng workspace, tên công ty, và repo GitHub của một khách. Muốn bán bộ Coding cho khách khác thì phải chuyển sang đọc từ manifest của khách. Agent không tự sửa vì phiên kia đang chạy thử trên gói này.
+M2. Chi phí: API Google miễn phí, chỗ tốn tiền là token Claude của agent
+   Service account và key JSON miễn phí. GA4 và Search Console API không tính tiền nếu project không gắn billing, vượt hạn mức chỉ trả 429. Chi phí thật là token Claude: skill dài khoảng 15k ký tự được nạp vào mỗi task, cộng dữ liệu MCP trả về. Con số hạn mức là hiểu biết của agent, chưa kiểm lại trên trang quota hiện tại.
+M3. Agent phản biện tìm ra mã đăng nhập dev 6 ký tự trong file cấu hình
+   Bản phản biện xếp lỗ hổng nghiêm trọng nhất: file cấu hình của Multica có mã đăng nhập dev 6 ký tự. Ai gọi được API và biết email của chủ có thể đăng nhập thành chủ. Agent kiểm lại trên máy và xác nhận. Một commit của phiên song song đã xoá mã này, nhưng tài liệu chưa biết điều đó. Harness cũng cảnh báo rằng output phản biện có đoạn giống chỉ dẫn, nên được coi là phát hiện để báo lại, không phải lệnh để làm theo.
+M4. Free mặc định, trả phí là add-on theo khách; PageSpeed key báo lỗi rồi có điểm 0,31
+   Công cụ miễn phí mặc định gồm Search Console, GA4, PageSpeed và WebFetch. DataForSEO là add-on, bật cho từng khách trong manifest. Key PageSpeed đầu tiên báo API key not found, sau khi sửa đã gọi được. Điểm performance mobile của website khách đầu tiên là 0,31. Tài liệu được cập nhật để chủ biết khi nào bật, khi nào tắt add-on.
+M5. GitHub repo cá nhân không cấp được quyền chỉ đọc; chặn bằng cơ chế thay vì lời dặn
+   Agent đề xuất cấp quyền chỉ đọc cho bot. Kiểm tài liệu GitHub thì repo private của tài khoản cá nhân chỉ cấp được quyền ghi. Agent rút lại đề xuất. Còn hai lựa chọn: organization miễn phí (chưa rõ gói Free có cài đặt fork và CI cho PR từ fork hay không), hoặc GitHub Pro khoảng 4 USD một tháng. Chủ chọn hoãn. Khi đẩy script đặc quyền, agent giải thích rằng chỉ cần bot không có quyền ghi là đủ, không cần dặn nó đừng push.
+M6. Chạy thật lần đầu: model trong thống kê khác cấu hình, Google và DuckDuckGo chặn máy chủ
+   Cấu hình ghi gpt-5.5 và grok-4.6, nhưng thống kê token ghi gpt-6.1-sol và grok-4.7. Khi đọc web, DuckDuckGo đòi CAPTCHA, Google trả 429, chỉ Bing trả kết quả. Agent báo blocked thay vì cào tiếp. Agent Gemini chạy xong trong khoảng 30 giây, viết đúng một comment rồi chuyển in_review.
+M7. Mọi thao tác tay phải được dạy lại cho System Operator
+   Chủ yêu cầu System Operator tự cài và nâng cấp pi và omp. Sau đó lệnh root chỉ cần chạy một lần để cấp quyền ghi cho thư mục runtime, và các lần cài sau không cần sudo. Khi daemon ops đang tắt, agent đề xuất bật lại, nhưng chủ yêu cầu liệt kê các bước còn lại trước. Chủ yêu cầu rõ mọi bước làm tay đều phải dạy lại cho System Operator, nên agent ghi vào memory và viết tài liệu quy trình riêng.
+M8. Đưa công việc chuyên môn cho agent qua issue có thật trong hệ thống, thay vì tự làm thay, rồi kiểm từng runtime bằng một tác vụ nhỏ và đọc thống kê lượt chạy.
+   Đưa công việc chuyên môn cho agent qua issue có thật trong hệ thống, thay vì tự làm thay, rồi kiểm từng runtime bằng một tác vụ nhỏ và đọc thống kê lượt chạy. Người vận hành hay tự chạy thử hoặc tự làm luôn phần việc của agent, và ít khi kiểm bằng lượt chạy thật.
+M9. Key JSON in ra log khi tạo bằng gcloud
+   Lệnh tạo key in nội dung key ra terminal, nên nội dung key nằm trong log của phiên. Agent đã cảnh báo chủ không chia sẻ log. Key được chuyển vào thư mục tạm có quyền 600 và sau đó được đưa sang nơi lưu cố định.
+M10. Hai phiên cùng một repo: commit từng file, không đụng file đang dở
+   Agent kiểm git status trước khi sửa, commit đúng các file của mình và để nguyên file của phiên kia. Có lần git add lỗi vì đường dẫn đã đổi, phải kiểm lại và amend. Phiên kia sau đó chuyển sang cài theo khách, khớp với mô hình mới.
+M11. Mô hình một khách một workspace, mua bộ nào cài bộ đó
+   Chủ đưa ra mô hình: workspace là đơn vị, khách mua bộ nào thì chỉ có team của bộ đó. Gói nội dung đổi tên thành opc-content và bỏ deploy mặc định. Agent nhận ra lớp hạ tầng của khách (workspace, thành viên, daemon, secret) đang bị ngầm gộp vào bộ, nên đề xuất một manifest cho mỗi khách. Chủ đồng ý, và manifest của khách đầu tiên chạy plan sạch.
+M12. Ba mắt xích từ trang web độc tới quyền root
+   Chuỗi leo thang gồm ba mắt xích: daemon của agent khách dùng PAT của chủ, agent đó giao được việc cho System Operator, và System Operator chạy dưới user có quyền docker, tương đương root. Trước khi làm gì, kiểm thấy hai daemon đều rảnh, không có task. Dừng cả hai, tạo user agents-opc chỉ là member của các workspace khách, rồi thu hồi PAT cũ. Đóng được mắt xích đầu tiên, còn mắt xích thứ ba phải đợi tách user riêng.
+M13. Deploy một gói làm ghi đè cả team của phiên khác
+   Lần deploy đầu tiên làm đưa instructions, model và skill của ba agent kỹ thuật về bản cũ, và gỡ ba agent này khỏi squad. Nguyên nhân là đã bỏ qua các dòng thay đổi ngoài phần Marketing khi đọc plan. Khôi phục bằng cách deploy lại gói của phiên kia (plan về 0 thay đổi), sau đó xoá phần Coding khỏi gói Marketing. Deploy không xoá thực thể trên server nên các agent đang chạy không bị ảnh hưởng.
+M14. Khảo sát MCP Ads, Social, Content: chỉ đọc, host bởi nền tảng, Zalo chưa có MCP
+   Google Ads có MCP chính thức nhưng chỉ đọc. Meta và TikTok có MCP do nền tảng host, đọc và sửa được, chiến dịch tạo ra ở trạng thái paused. WordPress cần plugin adapter cộng Application Password. Không MCP nào đăng được bài lên Zalo OA. Chủ hỏi có thể tự làm automation qua trình duyệt không, agent trả lời không nên làm đường chính vì rủi ro checkpoint và cookie cá nhân.
+M15. Backup hằng giờ cho DB 27 MB: đổi mục tiêu sang để agent tự làm nhiều hơn
+   Chủ hỏi vì sao backup nhiều thế. Database chỉ 27 MB, thư mục uploads gần như rỗng, mỗi lần backup thêm vài trăm KB. Đề xuất đổi thành backup mỗi ngày, cộng thêm backup ngay trước các thao tác rủi ro. Chủ hỏi mục tiêu là gì, và câu trả lời là backup để agent được tự làm các việc có thể đảo ngược, không chỉ để chống mất dữ liệu.
+M16. Chặn một hành vi bằng cơ chế (quyền Unix, quyền tài khoản, mạng) thay vì dựa vào lời dặn trong prompt, và giải thích rõ với người dùng về điều này.
+   Chặn một hành vi bằng cơ chế (quyền Unix, quyền tài khoản, mạng) thay vì dựa vào lời dặn trong prompt, và giải thích rõ với người dùng về điều này. Nhiều người viết quy tắc vào prompt và tin agent sẽ tuân theo.
+M17. Runtime offline vì daemon chỉ dò lại profile khi profile bị sửa
+   Đã tạo sáu profile, mỗi workspace ba cái. Chủ yêu cầu đổi tên lệnh bọc theo mẫu nhà cung cấp và tài khoản. Profile đổi tên trước khi lệnh được cài nên daemon không tìm thấy lệnh và để runtime offline. Daemon chỉ dò lại khi profile bị sửa. Tắt rồi bật profile thì runtime online trong vài giây, và cả hai runtime OpenAI đều online. Cách xử lý được ghi vào skill để lần sau tự xử.
+M18. Dùng một agent khác để phản biện bản thiết kế trước khi duyệt, rồi sửa theo phản biện và kiểm lại từng phát hiện bằng lệnh thật trên máy.
+   Dùng một agent khác để phản biện bản thiết kế trước khi duyệt, rồi sửa theo phản biện và kiểm lại từng phát hiện bằng lệnh thật trên máy. Thường người viết tự rà soát tài liệu của mình, ít khi nhờ một bản đọc độc lập và kiểm chứng từng điểm.
+M19. Cài MCP xong nhưng bước chép key bị sót: agent bị mù
+   Chạy thử issue STU-6, agent báo không có file key. Lệnh cài server đã chạy, nhưng lệnh chép key đứng sau thì không. Agent không có sudo nên mọi bước root phải nhờ chủ chạy. Sửa gói: khai báo file bí mật trong manifest, lệnh tools tự chép, rồi kiểm lại dưới đúng user daemon. Lỗi kiểu này từ nay được bắt trước khi agent chạy.
+M20. Thay PAT của chủ trên máy agent: lần sudo thứ hai báo lỗi
+   Lệnh login lần hai báo lỗi vì lần đầu đã chạy thành công và xoá file PAT. Tìm được PAT của chủ ở đúng 3 chỗ trong home của user daemon. Tạo PAT mới, cập nhật cả 3 chỗ, kiểm PAT mới hoạt động, rồi mới thu hồi PAT cũ (trả về 204). Chuyển 12 agent sang runtime mới: PUT từng phần thành công, POST thì trả 405. Sau đó chạy thử một issue, agent chạy đúng dưới user mới và không đọc được PAT cũ.
+M21. Dùng gói cài đặt có ghim phiên bản, kiểm bản phát hành đã có ít nhất hai tuần, và kiểm checksum trước khi cài công cụ trên máy (gcloud, uv, omp, MCP server).
+   Dùng gói cài đặt có ghim phiên bản, kiểm bản phát hành đã có ít nhất hai tuần, và kiểm checksum trước khi cài công cụ trên máy (gcloud, uv, omp, MCP server). Thường người ta chạy lệnh curl | bash hoặc cài bản mới nhất, không kiểm checksum hay tuổi bản phát hành.
+M22. Trước khi thay đổi hệ thống, chạy bước chỉ đọc để kiểm hiện trạng (user, daemon, file, port, container) rồi mới viết kế hoạch và tài liệu.
+   Trước khi thay đổi hệ thống, chạy bước chỉ đọc để kiểm hiện trạng (user, daemon, file, port, container) rồi mới viết kế hoạch và tài liệu. Nhiều người sửa thẳng trên máy đang chạy hoặc dựa vào trí nhớ về cấu hình.
+M23. Google chặn scope GA4 với client mặc định của gcloud
+   gcloud chưa có trên máy. Sau khi cài và đăng nhập, lệnh xin scope analytics.manage.users bị Google chặn với thông báo app bị khoá, vì client mặc định của gcloud không được phép dùng scope đó. Phần project, bật API, tạo service account và key làm được bằng CLI. Phần cấp quyền GA4 phải làm tay trong khoảng 30 giây.
+M24. Search Console trỏ sai property: 0 lượt hiển thị từ tháng 7
+   Service account xác thực được với cả GA4 lẫn Search Console, nhưng cả hai trả về rỗng vì chưa được cấp quyền. Sau khi cấp quyền, Search Console chỉ có số 0 từ tháng 7. Website đã redirect 301 từ bản www sang bản không www, còn property được cấp quyền là bản www cũ. Để kiểm agent, issue giao việc không kể trước lỗi này, xem agent có tự phát hiện không.
+M25. DataForSEO: kiểm giá thay vì trả lời theo trí nhớ, và plan bật add-on cho khách chưa mua
+   Agent kiểm lại giá của serper (2.500 lượt miễn phí, khoảng 1 USD cho 1.000 lượt, không có search volume) và của DataForSEO (nạp tối thiểu 50 USD, không hết hạn, SERP từ 0,0006 USD). Ước tính một khách vừa và nhỏ khoảng 2 đến 5 USD mỗi tháng. Đề xuất đổi: bỏ serper, chỉ dùng DataForSEO. Trong lúc làm, plan tạo server DataForSEO cho khách chưa mua, vì nhánh xử lý workspace chưa tồn tại không lọc add-on. Sửa một dòng và kiểm đủ ba trường hợp.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

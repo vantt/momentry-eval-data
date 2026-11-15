@@ -1,0 +1,1162 @@
+{
+  "at": "2026-11-05T10:16:39.211Z",
+  "manifest": "/home/vantt/projects/momentry/.claude/worktrees/agent-a73050abc839225de/docs/_private/eval/manifest.json",
+  "rows": [
+    {
+      "id": "0faf0bb2",
+      "run": 1,
+      "stories": 21,
+      "usd": 0.31795100000000004,
+      "secs": 147.3,
+      "modelSecs": 142.644,
+      "status": "done",
+      "dryRunUsd": 0.36,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 188531,
+          "tokOut": 22304,
+          "usd": 0.1500255,
+          "secs": 100.8,
+          "share": 0.47185100848872935
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 188497,
+          "tokOut": 1746,
+          "usd": 0.09861349999999999,
+          "secs": 13.849,
+          "share": 0.3101531368040987
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 7692,
+          "tokOut": 2644,
+          "usd": 0.041824,
+          "secs": 18.422,
+          "share": 0.13154228167233314
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 7444,
+          "tokOut": 1260,
+          "usd": 0.027488,
+          "secs": 9.573,
+          "share": 0.0864535730348387
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 392164,
+          "tokOut": 27954,
+          "usd": 0.31795100000000004,
+          "secs": 142.644,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 21,
+        "labels": 8,
+        "found": 7,
+        "recall": 0.875,
+        "p5": 1,
+        "p10": 0.7,
+        "tLabels": 4,
+        "tFound": 4,
+        "tMeanRank": 4.25,
+        "half": 11,
+        "tTopHalf": 4,
+        "perLabel": [
+          {
+            "name": "khong-viet-lai-ui",
+            "t": false,
+            "rank": null,
+            "ranks": []
+          },
+          {
+            "name": "bridge-van-can",
+            "t": false,
+            "rank": 1,
+            "ranks": [
+              1
+            ]
+          },
+          {
+            "name": "va-minprotocol",
+            "t": true,
+            "rank": 3,
+            "ranks": [
+              3
+            ]
+          },
+          {
+            "name": "agent-tu-dong-done",
+            "t": true,
+            "rank": 5,
+            "ranks": [
+              5
+            ]
+          },
+          {
+            "name": "paperclip-la-runtime",
+            "t": true,
+            "rank": 7,
+            "ranks": [
+              7,
+              17
+            ]
+          },
+          {
+            "name": "goal-mau-thuan-don-dep",
+            "t": false,
+            "rank": 13,
+            "ranks": [
+              13
+            ]
+          },
+          {
+            "name": "multica-openclaw-cu",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2,
+              6
+            ]
+          },
+          {
+            "name": "multica-claude-5-5",
+            "t": false,
+            "rank": 2,
+            "ranks": [
+              2,
+              4,
+              14
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "2dfb5915",
+      "run": 1,
+      "stories": 33,
+      "usd": 0.30966,
+      "secs": 176.3,
+      "modelSecs": 171.488,
+      "status": "done",
+      "dryRunUsd": 0.31,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 143768,
+          "tokOut": 29113,
+          "usd": 0.1446665,
+          "secs": 123.787,
+          "share": 0.46717851837499197
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 143980,
+          "tokOut": 2139,
+          "usd": 0.0773375,
+          "secs": 14.566,
+          "share": 0.24974972550539304
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 9288,
+          "tokOut": 3279,
+          "usd": 0.051365999999999995,
+          "secs": 20.98,
+          "share": 0.16587870567719434
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 9040,
+          "tokOut": 1821,
+          "usd": 0.03629,
+          "secs": 12.155,
+          "share": 0.11719305044242073
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 306076,
+          "tokOut": 36352,
+          "usd": 0.30966,
+          "secs": 171.488,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 33,
+        "labels": 8,
+        "found": 8,
+        "recall": 1,
+        "p5": 0.2,
+        "p10": 0.3,
+        "tLabels": 4,
+        "tFound": 4,
+        "tMeanRank": 12,
+        "half": 17,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "vcruntime-audit",
+            "t": false,
+            "rank": 11,
+            "ranks": [
+              11
+            ]
+          },
+          {
+            "name": "artifact-can-gh-login",
+            "t": true,
+            "rank": 6,
+            "ranks": [
+              6
+            ]
+          },
+          {
+            "name": "mcp-treo-panic",
+            "t": false,
+            "rank": 15,
+            "ranks": [
+              15
+            ]
+          },
+          {
+            "name": "windows-parity-backslash",
+            "t": false,
+            "rank": 9,
+            "ranks": [
+              9,
+              12,
+              23
+            ]
+          },
+          {
+            "name": "stop-hook-vong-lap",
+            "t": true,
+            "rank": 22,
+            "ranks": [
+              22
+            ]
+          },
+          {
+            "name": "hai-agent-mcp-mot-cua",
+            "t": true,
+            "rank": 14,
+            "ranks": [
+              14
+            ]
+          },
+          {
+            "name": "actions-het-tien",
+            "t": true,
+            "rank": 6,
+            "ranks": [
+              6,
+              26
+            ]
+          },
+          {
+            "name": "ohs-pin-thay-ban-moi",
+            "t": false,
+            "rank": 4,
+            "ranks": [
+              4
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "6a207191",
+      "run": 1,
+      "stories": 26,
+      "usd": 0.12953979999999998,
+      "secs": 278.8,
+      "modelSecs": 274.30400000000003,
+      "status": "done",
+      "dryRunUsd": 0.1,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 89334,
+          "tokOut": 55271,
+          "usd": 0.0365689,
+          "secs": 231.356,
+          "share": 0.2822985676988849
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 88529,
+          "tokOut": 2196,
+          "usd": 0.0099509,
+          "secs": 11.937,
+          "share": 0.07681731792082434
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 9359,
+          "tokOut": 3121,
+          "usd": 0.049928,
+          "secs": 20.473,
+          "share": 0.38542594631148114
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 9111,
+          "tokOut": 1487,
+          "usd": 0.033091999999999996,
+          "secs": 10.538,
+          "share": 0.2554581680688097
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 196333,
+          "tokOut": 62075,
+          "usd": 0.12953979999999998,
+          "secs": 274.30400000000003,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 26,
+        "labels": 8,
+        "found": 8,
+        "recall": 1,
+        "p5": 0.6,
+        "p10": 0.6,
+        "tLabels": 5,
+        "tFound": 5,
+        "tMeanRank": 12.2,
+        "half": 13,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "skill-qua-chi-tiet",
+            "t": false,
+            "rank": 1,
+            "ranks": [
+              1
+            ]
+          },
+          {
+            "name": "first-contact-ban-hang",
+            "t": true,
+            "rank": 26,
+            "ranks": [
+              26
+            ]
+          },
+          {
+            "name": "agent-native-help",
+            "t": false,
+            "rank": 2,
+            "ranks": [
+              2,
+              4,
+              7,
+              20,
+              25,
+              26
+            ]
+          },
+          {
+            "name": "fgos-init-doctor-thuc-te",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2,
+              4,
+              7,
+              25
+            ]
+          },
+          {
+            "name": "dev-tty-khong-mo-duoc",
+            "t": true,
+            "rank": 8,
+            "ranks": [
+              8
+            ]
+          },
+          {
+            "name": "routing-hub-da-co",
+            "t": true,
+            "rank": 9,
+            "ranks": [
+              9,
+              18
+            ]
+          },
+          {
+            "name": "hub-active-chua-duyet",
+            "t": false,
+            "rank": 15,
+            "ranks": [
+              15,
+              17
+            ]
+          },
+          {
+            "name": "nam-loi-go-test-khong-co-lap",
+            "t": true,
+            "rank": 16,
+            "ranks": [
+              16,
+              19
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "9514b261",
+      "run": 1,
+      "stories": 24,
+      "usd": 0.253381,
+      "secs": 164,
+      "modelSecs": 159.72400000000002,
+      "status": "done",
+      "dryRunUsd": 0.24,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 111943,
+          "tokOut": 22978,
+          "usd": 0.1134165,
+          "secs": 107.773,
+          "share": 0.44761248870278364
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 111991,
+          "tokOut": 3562,
+          "usd": 0.0649005,
+          "secs": 23.723,
+          "share": 0.25613798982559866
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 7925,
+          "tokOut": 2862,
+          "usd": 0.044469999999999996,
+          "secs": 17.797,
+          "share": 0.1755064507599228
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 7677,
+          "tokOut": 1524,
+          "usd": 0.030594,
+          "secs": 10.431,
+          "share": 0.12074307071169504
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 239536,
+          "tokOut": 30926,
+          "usd": 0.25338099999999997,
+          "secs": 159.72400000000002,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 24,
+        "labels": 7,
+        "found": 6,
+        "recall": 0.8571428571428571,
+        "p5": 0.8,
+        "p10": 0.9,
+        "tLabels": 4,
+        "tFound": 4,
+        "tMeanRank": 4,
+        "half": 12,
+        "tTopHalf": 4,
+        "perLabel": [
+          {
+            "name": "tsk-1lv-da-co-san",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1
+            ]
+          },
+          {
+            "name": "reducer-trung-projection",
+            "t": false,
+            "rank": 3,
+            "ranks": [
+              3,
+              8
+            ]
+          },
+          {
+            "name": "kde-trung-knowledge-registry",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4
+            ]
+          },
+          {
+            "name": "ba-he-engine",
+            "t": false,
+            "rank": null,
+            "ranks": []
+          },
+          {
+            "name": "kho-tai-khoan-rong",
+            "t": true,
+            "rank": 6,
+            "ranks": [
+              6,
+              7,
+              11,
+              23
+            ]
+          },
+          {
+            "name": "dinh-chinh-maxtier-quarantine",
+            "t": true,
+            "rank": 5,
+            "ranks": [
+              5,
+              7,
+              11
+            ]
+          },
+          {
+            "name": "thehive-khoa-401",
+            "t": false,
+            "rank": 9,
+            "ranks": [
+              9,
+              10,
+              12,
+              13,
+              15,
+              22
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "ab9a1dd8",
+      "run": 1,
+      "stories": 31,
+      "usd": 0.1157151,
+      "secs": 167,
+      "modelSecs": 162.56199999999998,
+      "status": "done",
+      "dryRunUsd": 0.1,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 96250,
+          "tokOut": 26381,
+          "usd": 0.022815500000000002,
+          "secs": 118.127,
+          "share": 0.19716960016454205
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 96681,
+          "tokOut": 1819,
+          "usd": 0.010577600000000001,
+          "secs": 13.595,
+          "share": 0.09141071476410598
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 8042,
+          "tokOut": 3409,
+          "usd": 0.050174,
+          "secs": 20.15,
+          "share": 0.4335994178806396
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 7794,
+          "tokOut": 1656,
+          "usd": 0.032147999999999996,
+          "secs": 10.69,
+          "share": 0.2778202671907123
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 208767,
+          "tokOut": 33265,
+          "usd": 0.11571510000000002,
+          "secs": 162.56199999999998,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 31,
+        "labels": 8,
+        "found": 7,
+        "recall": 0.875,
+        "p5": 0.8,
+        "p10": 0.7,
+        "tLabels": 3,
+        "tFound": 3,
+        "tMeanRank": 6.333333333333333,
+        "half": 16,
+        "tTopHalf": 3,
+        "perLabel": [
+          {
+            "name": "phan-phoi-gan-nhu-chua-co",
+            "t": false,
+            "rank": null,
+            "ranks": []
+          },
+          {
+            "name": "tu-cai-hook",
+            "t": false,
+            "rank": 3,
+            "ranks": [
+              3,
+              11
+            ]
+          },
+          {
+            "name": "review-windows-installer",
+            "t": false,
+            "rank": 2,
+            "ranks": [
+              2,
+              5,
+              6,
+              16
+            ]
+          },
+          {
+            "name": "ci-lan-dau-macos-windows",
+            "t": true,
+            "rank": 5,
+            "ranks": [
+              5,
+              7,
+              9,
+              13
+            ]
+          },
+          {
+            "name": "commit-nham-file-phien-khac",
+            "t": true,
+            "rank": 13,
+            "ranks": [
+              13
+            ]
+          },
+          {
+            "name": "cat-v010",
+            "t": false,
+            "rank": 12,
+            "ranks": [
+              12,
+              25
+            ]
+          },
+          {
+            "name": "ten-su-kien-hook-codex",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              14,
+              15
+            ]
+          },
+          {
+            "name": "host-moi-pi-omp-agy",
+            "t": false,
+            "rank": 20,
+            "ranks": [
+              20,
+              26,
+              27,
+              28
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "c4caee3c",
+      "run": 1,
+      "stories": 18,
+      "usd": 0.24723699999999998,
+      "secs": 71.5,
+      "modelSecs": 67.056,
+      "status": "done",
+      "dryRunUsd": 0.33,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 166753,
+          "tokOut": 7215,
+          "usd": 0.101414,
+          "secs": 30.199,
+          "share": 0.41018941339686216
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 166035,
+          "tokOut": 2231,
+          "usd": 0.088595,
+          "secs": 16.458,
+          "share": 0.3583403778560652
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 7201,
+          "tokOut": 1806,
+          "usd": 0.032462,
+          "secs": 12.418,
+          "share": 0.13129911785048354
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 6953,
+          "tokOut": 1086,
+          "usd": 0.024766,
+          "secs": 7.981,
+          "share": 0.10017109089658911
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 346942,
+          "tokOut": 12338,
+          "usd": 0.24723699999999998,
+          "secs": 67.056,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 18,
+        "labels": 8,
+        "found": 6,
+        "recall": 0.75,
+        "p5": 0.4,
+        "p10": 0.6,
+        "tLabels": 4,
+        "tFound": 4,
+        "tMeanRank": 4.75,
+        "half": 9,
+        "tTopHalf": 4,
+        "perLabel": [
+          {
+            "name": "tmp-het-han-muc",
+            "t": true,
+            "rank": 9,
+            "ranks": [
+              9,
+              12
+            ]
+          },
+          {
+            "name": "actions-fork-workflow-upstream",
+            "t": false,
+            "rank": null,
+            "ranks": []
+          },
+          {
+            "name": "watcher-debounce-5s",
+            "t": false,
+            "rank": null,
+            "ranks": []
+          },
+          {
+            "name": "mac-intel-onnxruntime",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4,
+              6,
+              16,
+              17
+            ]
+          },
+          {
+            "name": "hoi-an-thanh-an",
+            "t": true,
+            "rank": 2,
+            "ranks": [
+              2,
+              4
+            ]
+          },
+          {
+            "name": "onnx-khac-theo-cpu",
+            "t": true,
+            "rank": 4,
+            "ranks": [
+              4,
+              6
+            ]
+          },
+          {
+            "name": "snapshot-bang-diem",
+            "t": false,
+            "rank": 7,
+            "ranks": [
+              7
+            ]
+          },
+          {
+            "name": "npm12-pack-object",
+            "t": false,
+            "rank": 8,
+            "ranks": [
+              8,
+              11
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "cd4449ab",
+      "run": 1,
+      "stories": 28,
+      "usd": 0.358213,
+      "secs": 251.6,
+      "modelSecs": 247.17399999999998,
+      "status": "done",
+      "dryRunUsd": 0.31,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 153330,
+          "tokOut": 49120,
+          "usd": 0.199465,
+          "secs": 201.101,
+          "share": 0.5568335040883496
+        },
+        "outsider": {
+          "calls": 1,
+          "tokIn": 151514,
+          "tokOut": 1798,
+          "usd": 0.080252,
+          "secs": 13.411,
+          "share": 0.22403430361265506
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 8198,
+          "tokOut": 2862,
+          "usd": 0.045016,
+          "secs": 20.677,
+          "share": 0.1256682476627035
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 7950,
+          "tokOut": 1758,
+          "usd": 0.033479999999999996,
+          "secs": 11.985,
+          "share": 0.0934639446362918
+        },
+        "total": {
+          "calls": 4,
+          "tokIn": 320992,
+          "tokOut": 55538,
+          "usd": 0.358213,
+          "secs": 247.17399999999998,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 28,
+        "labels": 5,
+        "found": 5,
+        "recall": 1,
+        "p5": 1,
+        "p10": 0.7,
+        "tLabels": 2,
+        "tFound": 2,
+        "tMeanRank": 1,
+        "half": 14,
+        "tTopHalf": 2,
+        "perLabel": [
+          {
+            "name": "real-hub-migration-fails",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              4,
+              5,
+              9,
+              24
+            ]
+          },
+          {
+            "name": "fixture-missed-regressions",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1,
+              3,
+              13
+            ]
+          },
+          {
+            "name": "report-claim-wrong",
+            "t": false,
+            "rank": 2,
+            "ranks": [
+              2,
+              5
+            ]
+          },
+          {
+            "name": "main-checkout-dirty-stop",
+            "t": false,
+            "rank": 18,
+            "ranks": [
+              18
+            ]
+          },
+          {
+            "name": "fail-closed-migration",
+            "t": false,
+            "rank": 5,
+            "ranks": [
+              5,
+              7,
+              9
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    },
+    {
+      "id": "f0bf048d",
+      "run": 1,
+      "stories": 22,
+      "usd": 0.3217925,
+      "secs": 125.2,
+      "modelSecs": 119.82199999999999,
+      "status": "done",
+      "dryRunUsd": 0.28,
+      "steps": {
+        "harvest": {
+          "calls": 1,
+          "tokIn": 142185,
+          "tokOut": 13401,
+          "usd": 0.104595,
+          "secs": 63.058,
+          "share": 0.32503865068328186
+        },
+        "outsider": {
+          "calls": 2,
+          "tokIn": 283700,
+          "tokOut": 3847,
+          "usd": 0.1514675,
+          "secs": 30.662,
+          "share": 0.4706992860305942
+        },
+        "hook-tension": {
+          "calls": 1,
+          "tokIn": 7099,
+          "tokOut": 2621,
+          "usd": 0.040408,
+          "secs": 17.575,
+          "share": 0.1255716028185865
+        },
+        "stakes": {
+          "calls": 1,
+          "tokIn": 6851,
+          "tokOut": 1162,
+          "usd": 0.025322,
+          "secs": 8.527,
+          "share": 0.0786904604675373
+        },
+        "total": {
+          "calls": 5,
+          "tokIn": 439835,
+          "tokOut": 21031,
+          "usd": 0.32179250000000004,
+          "secs": 119.82199999999999,
+          "share": 1
+        }
+      },
+      "rank": {
+        "stories": 22,
+        "labels": 8,
+        "found": 8,
+        "recall": 1,
+        "p5": 0.6,
+        "p10": 0.4,
+        "tLabels": 4,
+        "tFound": 4,
+        "tMeanRank": 9.25,
+        "half": 11,
+        "tTopHalf": 2,
+        "perLabel": [
+          {
+            "name": "google-chan-gcloud",
+            "t": false,
+            "rank": 13,
+            "ranks": [
+              13,
+              18,
+              19
+            ]
+          },
+          {
+            "name": "em-lam-thay-agent",
+            "t": true,
+            "rank": 13,
+            "ranks": [
+              13
+            ]
+          },
+          {
+            "name": "workspace-va-goi",
+            "t": false,
+            "rank": 4,
+            "ranks": [
+              4,
+              5,
+              21
+            ]
+          },
+          {
+            "name": "plan-tao-dataforseo",
+            "t": false,
+            "rank": 4,
+            "ranks": [
+              4
+            ]
+          },
+          {
+            "name": "red-team-quyen",
+            "t": true,
+            "rank": 1,
+            "ranks": [
+              1
+            ]
+          },
+          {
+            "name": "github-khong-cho-chi-doc",
+            "t": true,
+            "rank": 12,
+            "ranks": [
+              12
+            ]
+          },
+          {
+            "name": "backup-moi-gio",
+            "t": false,
+            "rank": 6,
+            "ranks": [
+              6
+            ]
+          },
+          {
+            "name": "system-operator-offline",
+            "t": true,
+            "rank": 11,
+            "ranks": [
+              11,
+              20
+            ]
+          }
+        ]
+      },
+      "replayStatus": "done",
+      "replayExit": 0,
+      "windowChanged": false,
+      "sameAsCapture": true
+    }
+  ],
+  "diffs": [],
+  "overall": {
+    "sessions": 8,
+    "captures": 8,
+    "usd": 2.0534894,
+    "secs": 1381.7,
+    "recall": 0.9196428571428572,
+    "p5": 0.6749999999999998,
+    "p10": 0.6125,
+    "tMeanRank": 6.722916666666667,
+    "tTopHalf": 25,
+    "tLabels": 30,
+    "steps": {
+      "harvest": {
+        "calls": 8,
+        "tokIn": 1092094,
+        "tokOut": 225783,
+        "usd": 0.8729669,
+        "secs": 976.2009999999999,
+        "share": 0.42511390611512295
+      },
+      "outsider": {
+        "calls": 9,
+        "tokIn": 1230927,
+        "tokOut": 19338,
+        "usd": 0.5816945,
+        "secs": 138.201,
+        "share": 0.2832712455199428
+      },
+      "hook-tension": {
+        "calls": 8,
+        "tokIn": 64804,
+        "tokOut": 22604,
+        "usd": 0.35564799999999996,
+        "secs": 148.492,
+        "share": 0.17319203108620868
+      },
+      "stakes": {
+        "calls": 8,
+        "tokIn": 62820,
+        "tokOut": 11754,
+        "usd": 0.24318,
+        "secs": 81.88000000000001,
+        "share": 0.11842281727872568
+      },
+      "total": {
+        "calls": 33,
+        "tokIn": 2450645,
+        "tokOut": 279479,
+        "usd": 2.0534893999999997,
+        "secs": 1344.7740000000001,
+        "share": 1
+      }
+    }
+  }
+}

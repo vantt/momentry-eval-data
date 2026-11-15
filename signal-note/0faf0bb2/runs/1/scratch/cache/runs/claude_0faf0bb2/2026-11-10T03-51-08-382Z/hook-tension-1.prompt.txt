@@ -1,0 +1,76 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Stop hook giữ goal sống khoảng 20 lượt sau khi chủ bảo bỏ
+   Hook đánh giá điều kiện như một trạng thái phải còn đúng khi kết thúc phiên, nên khoảng 20 lượt phản hồi lặp lại đã chặn việc dừng. Agent không có lệnh để xoá goal, chỉ chờ chủ gõ /goal clear; một feedback loại missing_capability được xếp vào hàng đợi cục bộ.
+M2. Dọn Paperclip: xoá khoảng 2,4 GB và toàn bộ dữ liệu công ty mẫu, không khôi phục được
+   Gỡ CLI bằng paperclipai uninstall (giữ lại dữ liệu), rồi xoá ~/.paperclip gồm instance và database, khoảng 2,4 GB. Sau đó xoá thêm cache npx, 6 file capture và 2 transcript đã vào thùng rác, khiến hai session này không khôi phục được. Runbook §10 có bảng hoàn tác để dựng lại trong khoảng 15 phút.
+M3. gr8r đẹp nhưng không license; đề xuất viết lại bị chủ hỏi lại và Paperclip được tìm thấy
+   Chủ hỏi tại sao phải viết lại vì tốn công. Tìm lại thì Paperclip có giấy phép MIT, khoảng 108k sao, làm gần đúng vision, và mình rút lại đề xuất. Đánh giá sau cùng: gr8r thắng về thiết kế nhưng thua về license, backend, i18n và hệ sinh thái component.
+M4. Kaneo 'nối thật': sửa comment đi qua API chứ không ghi vào localStorage
+   Một comment đi qua hook, fetcher, Hono RPC client có kiểu lấy từ code server, rồi PUT, kiểm tra zod và ghi Postgres, và phát sự kiện qua WebSocket. Với gr8r, sửa comment chỉ ghi cả khối JSON vào localStorage nên người khác không thấy. Kaneo có khoảng 30 nhóm fetcher.
+M5. Paperclip không phải chỉ là điều phối: có runtime riêng và UI giấu adapter OpenClaw
+   Trong adapter-display-registry, openclaw_gateway được gắn comingSoon và hideFromVisualSelection, còn capabilities của nó đều là false. Paperclip còn kèm một Native Runner viết bằng Rust để chạy các CLI agent như Claude Code và Codex. Mình trước đó mô tả Paperclip là 'chỉ điều phối', và câu đó bị sửa.
+M6. Cột workflow: Mai viết, Long trả lại hai vòng, Mai dừng lại hỏi chủ thay vì bịa giá
+   Mai viết xong thì SEN-2 tự giao cho Long. Long trả lại hai lần vì thiếu giá; Mai sửa nhưng để chỗ trống, rồi dừng và hỏi chủ giá và hạn chót thay vì tự điền. Sau khi chủ comment, Long duyệt và thẻ sang in_review cho chủ. Monitor hết giờ 15 phút trước khi chủ trả lời.
+M7. Commit chọn lọc bằng index tạm để không đụng thay đổi đang dở của người khác
+   Mình tạo nhánh docs/opc-research và dùng GIT_INDEX_FILE tạm để commit đúng các file tài liệu của mình, 20 file trong lần đầu. Phần company/ đã stage được giữ nguyên, không reset và không stash. Lần sau (152f378) làm tương tự và quét regex tìm token trước khi commit.
+M8. Paperclip đòi giao thức v4, gateway chỉ có v3: vá bản đã cài và kiểm chứng bằng commit upstream
+   Adapter gửi PROTOCOL_VERSION 4 trong khi gateway AICoworker chỉ nhận 3. Commit upstream ec2d87d chỉ đổi số phiên bản, không đổi ngữ nghĩa khung, nên mình đổi minProtocol về 3 trong bản đã cài (có giữ file .orig), khởi động lại và thấy 'Gateway connect probe succeeded'. Bản vá này mất khi nâng cấp Paperclip.
+M9. Chọn nền UI: Circle đẹp hơn nhưng Kaneo có tiếng Việt và API thật, đổi khỏi đề xuất Circle
+   Kiểm tra cho thấy Circle dùng Next.js, khó xuất tĩnh lên Workers vì có khoảng 60 trang route động, và không có i18n. Kaneo web là SPA Vite, build ra file tĩnh, có vi-VN.json cùng 20 ngôn ngữ, và đã nối API qua Hono RPC. Mình đổi đề xuất sang Kaneo web và mượn màn hình từ Circle.
+M10. Token gateway không được in ra: script đọc từ môi trường của tiến trình đang chạy
+   Lần đầu script lỗi KeyError vì biến môi trường không có trong shell hiện tại. Mình tìm pid của gateway bằng ss rồi đọc /proc/<pid>/environ, token chỉ nằm trong bộ nhớ của script. Cách này được dùng lại cho các lệnh sau và được ghi vào runbook.
+M11. Chủ bác đề xuất Node server; đổi sang schema chuẩn sinh API và MCP trên Workers và D1
+   Chủ phản đối: 'chạy node thì không phù hợp, node server là over rồi', và yêu cầu distill lại theo hướng một schema chuẩn sinh cả API lẫn MCP, D1 đủ cho OPC. Mình chạy phân tích lại với ba agent song song để tách phần nào của Paperclip thật sự cần Node: lõi schema, API và checkout chuyển được sang Workers, phần phụ mới cần Node.
+M12. Đưa một dịch vụ đang chạy trên máy ra mạng riêng (tailnet): đổi chế độ bind và bật đăng nhập, sao lưu cấu hình cũ trước, rồi ghi sẵn cách quay lại. Agent cũng đưa ra hai phương án có ưu nhược rõ ràng và để người dùng chọn.
+   Đưa một dịch vụ đang chạy trên máy ra mạng riêng (tailnet): đổi chế độ bind và bật đăng nhập, sao lưu cấu hình cũ trước, rồi ghi sẵn cách quay lại. Agent cũng đưa ra hai phương án có ưu nhược rõ ràng và để người dùng chọn. Mở cổng hoặc đổi địa chỉ lắng nghe thẳng trong cấu hình, rồi quên không bật xác thực hoặc không lưu bản cũ để hoàn tác.
+M13. Script distill và sửa YAML bằng thay chuỗi: đổi goal làm vỡ domains, sed và node lỗi
+   Có nhiều lỗi lặp lại: dòng why chứa dấu hai chấm làm YAML không hợp lệ, một lệnh Python thay goal khớp nhầm chuỗi 'domains:' trong core_domains, một lệnh sed sai cú pháp, và một lần script Node lỗi khi load ESM. Mỗi lần sửa xong đều chạy lại format, và cuối cùng 30 lesson được ghi đúng.
+M14. Multica + Claude Code đạt 5/5 tiêu chí: đảo kết quả trượt của lần trước
+   SEN-1 của agent Mai: viết 2 câu, comment và chuyển in_review trong khoảng 16 giây. Lượt chạy sau có resume_session=true, hai phiên chat cho hai khách không lẫn ngữ cảnh, và không agent nào tự chuyển done. Điểm rủi ro: agent chạy với bypassPermissions và không có sandbox.
+M15. Cờ 'human_only' không chặn được agent tự đóng việc: reviewPolicy khác executionPolicy
+   Đọc lại execution-semantics thì reviewPolicy chỉ áp dụng khi trả lời một lời xin xác nhận, còn cổng review thật là executionPolicy.stages. Spike trước đó mới chỉ bật cờ đầu, nên kết luận cũ bị đính chính: Paperclip chỉ cứng ở việc đóng task khi có executionPolicy.
+M16. Mã task do server cấp bằng một câu UPDATE RETURNING; bằng chứng tăng khi Kaneo làm giống Paperclip
+   Paperclip đánh mã SEN-1 bằng một câu UPDATE trên bộ đếm của công ty; Kaneo làm giống với KAN-12 trên bộ đếm của project. Điểm bằng chứng của bài học tăng từ e2 lên e3 và đứng đầu bảng. Trong D1, một câu như vậy là atomic nên không cần khoá.
+M17. Budget chặn agent im lặng: 409 'no reliable price' khiến comment của chủ không đánh thức được agent
+   Wake trả 409 vì model thuê bao không có giá nên hệ thống không tính được usage. Mình đặt budget của ba agent về 0, resume Mai, và trạng thái chuyển từ paused (budget) sang running trong khoảng 20 giây. Hệ thống chặn không có thông báo nào trên giao diện.
+M18. Khi dọn dẹp sau một lần thử, agent ghi lại bảng hoàn tác: liệt kê từng thứ đã tạo (tiến trình, cổng, thư mục, file, cache, session trong hệ thống khác), rồi dọn đúng theo bảng và quét lại toàn máy để chắc không sót.
+   Khi dọn dẹp sau một lần thử, agent ghi lại bảng hoàn tác: liệt kê từng thứ đã tạo (tiến trình, cổng, thư mục, file, cache, session trong hệ thống khác), rồi dọn đúng theo bảng và quét lại toàn máy để chắc không sót. Gỡ phần cài đặt chính rồi thôi. Các file tạm, cache và session còn sót lại thường nằm đó cho đến khi gây lỗi lạ.
+M19. Phản hồi về kỹ năng bị API từ chối vì lỗi validation
+   API trả invalid_request với retryable=false, nghĩa là trạng thái đối tượng không khớp yêu cầu. Mình không thử lại và chỉ ghi nhận. Đây là phản hồi từ phía người dùng ngược về nơi cấp kỹ năng.
+M20. Thử trí nhớ agent: hỏi agent mật mã trong MEMORY.md để kiểm tra workspace
+   Mình thêm một mật mã thử vào MEMORY.md và một dòng chữ ký vào SOUL.md, rồi gọi openclaw agent --agent mai. Agent trả đúng mật mã và chữ ký, chứng minh nó đọc được workspace. Các dòng thử sau đó phải được xoá khỏi SOUL và MEMORY trước khi dùng thật.
+M21. Mở Paperclip ra tailnet: từ không đăng nhập sang có đăng nhập, agent tạm ngừng vì địa chỉ đổi
+   Chủ chọn cách A: bind tailnet và chế độ authenticated. Sau khi đổi, loopback không còn trả lời (exit 7, đúng như dự kiến), UI mở được qua hostname và IP. Vì agent vẫn trỏ 127.0.0.1 nên không làm việc được cho tới khi chủ nhận quyền chủ và đổi địa chỉ; link claim và link CLI đều hết hạn sau vài phút.
+M22. Multica + OpenClaw 2026.3.13 trượt: Multica yêu cầu từ 2026.5.5; giả phiên bản vẫn hỏng
+   Lượt đầu bị từ chối: 'openclaw 2026.3.13 is below the minimum supported version 2026.5.5'. Mình viết wrapper báo phiên bản 2026.5.5 để thử, nhưng CLI báo 'Include path escapes config directory' vì bản cũ thiếu OPENCLAW_INCLUDE_ROOTS, và gateway thất bại không có output. Kết luận: trượt vì phiên bản, không phải cấu hình. Chủ yêu cầu dọn Multica và giữ agent mai.
+M23. Trước khi thử nghiệm, agent viết sẵn bộ tiêu chí đạt/trượt đánh số (a, b, c, d...). Sau khi chạy, báo từng tiêu chí đạt hay trượt, kể cả khi cả lần thử đó thất bại, và ghi nguyên nhân gốc vào báo cáo.
+   Trước khi thử nghiệm, agent viết sẵn bộ tiêu chí đạt/trượt đánh số (a, b, c, d...). Sau khi chạy, báo từng tiêu chí đạt hay trượt, kể cả khi cả lần thử đó thất bại, và ghi nguyên nhân gốc vào báo cáo. Thử theo cảm tính, rồi kết luận 'chạy được' hoặc 'không được' mà không có danh sách tiêu chí rõ ràng và không tách nguyên nhân.
+M24. Heartbeat của OpenClaw tốn một lượt LLM mỗi nhịp: 'bridge chỉ còn tuỳ chọn' là nói quá
+   heartbeat-runner chỉ bỏ qua lượt khi HEARTBEAT.md rỗng. Nếu agent phải kiểm tra inbox thì mỗi nhịp là một lần gọi model: 5 agent mỗi 5 phút là khoảng 1.440 lượt mỗi ngày, gần như toàn bộ trả lời 'không có việc'. Mình sửa lesson và đề xuất một waker không dùng LLM, chỉ gọi openclaw agent khi có việc.
+M25. Agent theo dõi việc đang chạy bằng một Monitor nền: mỗi khi trạng thái hoặc comment đổi, agent nhận thông báo, không cần hỏi lại hay chờ bằng sleep.
+   Agent theo dõi việc đang chạy bằng một Monitor nền: mỗi khi trạng thái hoặc comment đổi, agent nhận thông báo, không cần hỏi lại hay chờ bằng sleep. Người dùng thường tự bấm refresh, hoặc bảo AI chạy vòng lặp sleep rồi hỏi lại trạng thái, hoặc chờ đến khi có kết quả cuối mới xem.
+M26. Khi kiểm kê nhiều repo cùng lúc, agent chạy song song các sub-agent, mỗi cái một mảng, rồi agent chính đối chiếu lại các trích dẫn (đường dẫn, số dòng) trước khi ghi vào tài liệu.
+   Khi kiểm kê nhiều repo cùng lúc, agent chạy song song các sub-agent, mỗi cái một mảng, rồi agent chính đối chiếu lại các trích dẫn (đường dẫn, số dòng) trước khi ghi vào tài liệu. Đọc từng repo tuần tự, rồi tóm tắt theo trí nhớ hoặc kết quả tìm kiếm web, ít khi kiểm lại từng trích dẫn trước khi lưu.
+M27. Multica chế độ local thay workspace OpenClaw, mất SOUL và bộ nhớ của agent
+   openclaw_config.go đặt workspace của mọi agent OpenClaw thành thư mục của task, và comment trong code ghi rõ SOUL.md và MEMORY.md bị loại. Chế độ gateway có thể giữ được danh tính, nhưng chưa chạy thử; ở chế độ đó token có thể không tới được agent vì nằm trong tiến trình CLI.
+M28. Paperclip spike: SEN-1 xong sau 53 giây, SEN-3 sau 26 giây, nhưng agent tự đóng việc
+   Ba agent được tạo qua API và hai task đi hết vòng: SEN-1 mất 53 giây để viết 3 bài và xin duyệt, SEN-3 mất 26 giây để lập ngân sách. SEN-3 đặt reviewPolicy human_only nhưng chính agent chuyển nó sang done, và đây là điểm yếu được xác nhận đầu tiên của spike.
+M29. Đăng nhập Multica không có mật khẩu: mã nằm trong log, rồi đặt mã cố định cho bản test
+   Vì chưa cấu hình gửi thư nên mã xác nhận chỉ xuất hiện trong log backend và hết hạn sau vài phút. Chủ hỏi có cách đặt mật khẩu. Multica không có mật khẩu, nên mình dùng cờ MULTICA_DEV_VERIFICATION_CODE cho bản test: cờ này bị bỏ qua khi APP_ENV là production, và chỉ mở trong tailnet.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

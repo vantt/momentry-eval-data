@@ -1,0 +1,88 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian: note nào nối với note nào, đi từ ý này tới ý kia qua đâu, note nào lạc khỏi mạng. Làm cho người làm một mình, freelancer, có tiếng Việt. Dùng dưới dạng một file chạy trên máy, người dùng không phải cài Python; có bộ cài cho Windows, macOS và Linux. Mục tiêu hiện tại: thay bản Python đang dùng bằng lõi viết bằng Rust cho Claude Desktop và chat trong Obsidian.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L2898] USER: bản vá P04 bên fork OHS đã xong nhé
+[L3009] USER: project vantt/browser-worker có một cơ chế code mode đơn giản.
+[L3027] USER: cần bật agent để thảo luận và brainstorm cho tốt về interface của mcp nhé.
+</asks>
+
+<story>
+hook: Index mất 10 phút, trong lúc đó agent không đọc được note nào
+tension: khac (Thiết kế gốc: chuyển việc đọc qua OHS / OHS chỉ đọc note đã index, nên pkm tự đọc file và plan lệch thiết kế)
+stakes: 2/3
+# read: pkm tự đọc file thay vì chuyển qua OHS
+
+**Bối cảnh:** Plan phase 17 ghi read chuyển tiếp sang OHS, nhưng hai agent đều phản đối.
+**Chuyện gì xảy ra:** OHS chỉ đọc được note đã index, nên trong lúc khởi động hoặc index có thể mất khoảng 10 phút mà agent không đọc được note nào. Agent đề nghị pkm tự đọc file trong vault, luôn dùng được. Người dùng đồng ý, và plan lệch khỏi thiết kế ban đầu.
+**Bài học:** Tool không cần index thì đừng để nó phụ thuộc vào index. Ghi rõ lệch khỏi plan khi người duyệt đổi quyết định.
+</story>
+
+<excerpt>
+[L3131] TOOL Bash: grep -rnE '\b(node|nodes|path|paths)\b *:|"(node|nodes|path|paths)"' crates/pkm-core/src/tools* crates/pkm/src | grep -v test | head -15
+[L3132] RESULT: crates/pkm-core/src/tools.rs:23:use std::path::{Path, PathBuf}; | crates/pkm-core/src/tools.rs:50: "paths",
+[L3144] TOOL AskUserQuestion: {"questions":[{"question":"Tool `read` (đọc thân note) nên chạy thế nào? Plan phase 17 ghi chuyển tiếp sang OHS, nhưng cả hai agent đều phản đối: OHS chỉ đọc được note đã index, nên lúc OHS khởi động/index (có thể ~10 phút trên vault lớn) agent không đọc được note nào.","header":"read","multiSelect" …[+1646]
+[L3145] RESULT: The user answered: "Tool `read` (đọc thân note) nên chạy thế nào? Plan phase 17 ghi chuyển tiếp sang OHS, nhưng cả hai agent đều phản đối: OHS chỉ đọc được note đã index, nên lúc OHS khởi động/index (có thể ~10 phút trên vault lớn) agent không đọc đư …[+706]
+[L3160] AGENT: Đúng vậy, "đọc thân note" là đọc nội dung của file note `.md`, không phải đọc index tìm kiếm. Chỗ cần anh chọn là **ai đọc file đó**:
+
+- **`pkm` tự đọc** (cả hai agent đề xuất): `pkm` mở thẳng file `.md` trong vault và trả về nội dung.
+  - Luôn dùng được, kể cả khi OHS còn đang khởi động hay đang index.
+  - Gõ sai tên note thì có `did_you_mean` gợi ý tên gần đúng.
+  - Không mất gì so với OHS. OHS trả thêm danh sách link và backlink, nhưng graph của `pkm` đã có sẵn những thứ đó.
+- **Chuyển sang OHS** (plan đang ghi): `pkm` hỏi OHS, và OHS lấy nội dung từ cơ sở dữ liệu index của nó.
+  - Chỉ có kết quả với những note OHS đã index xong.
+  - Trong lúc OHS khởi động hay đang index, có thể khoảng 10 phút với vault lớn, agent không đọc được note nào và nhận lỗi `ohs_not_ready`.
+  - Note vừa sửa nhưng OHS chưa index lại thì nội dung trả về là bản cũ.
+
+Ba câu còn lại tôi ghi nhận như sau:
+- `pkm mcp install` sẽ cho OHS index vault ngay lúc cài, có cờ để bỏ qua bước này.
+- Ghi vào plan điều kiện xem lại code mode.
+- `search` mở thêm tham số `tag`, tổng cộng 8 tham số.
+
+**Agent phase 17 đã xong phần nền** trên nhánh `phase-17-one-door`:
+- Ghim OHS lên `v0.17.2-vantt.4`, sha256 của cả 4 nền tảng đều khớp.
+- Viết `Ohs::read` ở mức nội bộ, có test chạy với gói OHS thật.
+- CI xanh, bộ so khớp vẫn 0 lệch.
+
+Lỗi `compact()` làm mất 2 trong 5 khoá của `ohs_not_ready` thì cả hai agent đều đã xác nhận. Tôi sẽ sửa lỗi này cùng đợt làm tool.
+
+Anh chốt giúp: **`read` để `pkm` tự đọc file nhé?** Anh đồng ý là tôi giao agent làm bộ 13 tool theo thiết kế đã thống nhất.
+[L3170] USER: đồng ý read.
+[L3175] TOOL SendMessage: {"to":"a5f26bf9917fcfbec","summary":"Implement agreed one-door tool design","message":"The signature design is now agreed with the user. Continue on branch `phase-17-one-door` (still no merge to main, no tag/release). Read both design reports first: /home/vantt/projects/obsidian-pkm/plans/reports/br …[+4191]
+[L3180] RESULT: {"success":true,"message":"Resuming agent a5f26bf","resumedAgentId":"a5f26bf9917fcfbec","pin":{"id":"a5f26bf9917fcfbec","name":"a5f26bf9917fcfbec","ref":"126f32"}}
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

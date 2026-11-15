@@ -1,0 +1,63 @@
+Dưới đây là 26 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Stop hook đòi làm tới khi tốt đẹp: 45/45 việc chưa đủ
+   Ba lần stop hook trả lại việc. Lần đầu là hai việc cần push. Lần hai là release chưa cắt và hook Windows chưa đo. Lần ba là hook Windows chưa đo trong phiên thật. Agent xử lý từng cái: hỏi người trước các việc công khai, mở issue cho phần không làm được ngay.
+M2. Hook Windows: không biết chắc Claude Code và Codex chạy hook bằng shell nào
+   Qua tìm kiếm, agent thấy báo cáo cộng đồng cho rằng Claude Code dùng Git Bash, còn Codex dùng cmd. Lệnh hook được đổi sang đường dẫn có dấu gạch chéo tới momentry.cmd để chạy được ở cả hai. Phần này vẫn chưa được đo trong phiên thật nên được ghi rõ là chưa kiểm.
+M3. CI lần đầu đỏ 9 tổ hợp: macOS và Windows lộ lỗi mà Linux không thấy
+   Lần đầu Windows có 38 test hỏng, chủ yếu do test giả định POSIX như chèn đường dẫn thô vào JSON, kiểm quyền 0600 và tách bằng dấu hai chấm. Sau khi sửa, còn 4 hỏng. macOS hỏng vì repo nằm sau symlink /var sang /private/var. Đến lần chạy cuối, Windows còn lỗi ở bước installer vì PowerShell 5.1 làm hỏng đối số JSON khi truyền cho chương trình ngoài và runner chạy quyền Administrator.
+M4. Reviewer độc lập bắt 16 lỗi, trong đó có installer Windows luôn báo Node quá cũ
+   Reviewer báo 4 lỗi nặng, 5 trung bình và 7 nhẹ. Lỗi nặng nhất: cách quote trong PowerShell 5.1 làm Node đọc split(.) thành lỗi cú pháp, nên version luôn là 0 và installer luôn báo Node quá cũ. Agent sửa hết trong phạm vi và thêm test cho các trường hợp mới.
+M5. Lỗi cài đặt Windows: thư mục cache nằm trong thư mục cài nên gỡ cài sẽ xoá dữ liệu người dùng
+   Reviewer độc lập phát hiện uninstall trên Windows sẽ rmdir cả cache, tức là xoá dữ liệu mà lệnh hứa giữ lại. Agent tách thư mục gốc cài khỏi cache, và thêm kiểm tra tên thư mục cha trước khi xoá. Test lifecycle sau đó xác nhận dữ liệu còn nguyên.
+M6. Agent mới chỉ đọc --help và --json: lần đầu vướng vì lời sửa là câu văn, không phải lệnh
+   Vòng thử đầu tiên hỏng vì thông báo lỗi chỉ ghi câu hướng dẫn chỉnh sửa nguồn chặn riêng tư, không có lệnh chạy được. Agent thêm config privacy-add nhận tên làm đối số, và vòng thử hội tụ ngay lần đầu.
+M7. Hook chặn lệnh bash vì chuỗi trông nguy hiểm: chuyển sang Write và sửa test bằng Edit
+   Lệnh tạo file workflow chứa chuỗi dist bị chặn, nên agent chuyển sang công cụ Write. Lệnh sửa test quarantine chứa .git cũng bị chặn, nên dùng Edit. Cách này tránh được hook nhưng cũng là dấu hiệu đáng ghi về ràng buộc của công cụ.
+M8. Clone sạch qua 205/205 test, bản làm việc chỉ 202/203 vì thư mục chưa đưa vào git
+   Bản clone sạch qua 205/205. Bản làm việc chỉ qua 202/203, lỗi nằm ở test quét thư mục không track. Lỗi chỉ lộ khi so với clone sạch, vì máy của tác giả có nhiều file ngoài git hơn.
+M9. User chốt quyết định kỹ thuật nhanh bằng cách bảo agent giải thích rồi chọn luôn theo khuyến nghị ("tự fix thì làm nhiều lắm đúng không?", "chỉnh lại theo chuẩn", "tự cài luôn"), và agent ghi quyết định vào checklist/plan ngay.
+   User chốt quyết định kỹ thuật nhanh bằng cách bảo agent giải thích rồi chọn luôn theo khuyến nghị ("tự fix thì làm nhiều lắm đúng không?", "chỉnh lại theo chuẩn", "tự cài luôn"), và agent ghi quyết định vào checklist/plan ngay. Thường người dùng chọn một hướng rồi tự đọc tài liệu, hoặc chỉ nói "làm đi" mà không ghi lại lý do; quyết định hay bị quên hoặc phải hỏi lại sau.
+M10. Hook ghi cứng đường dẫn Node tuyệt đối: nâng Node là hook chết mà không ai biết
+   Cấu hình hook in ra đường dẫn node và bin tuyệt đối. Khi nâng Node qua nvm hoặc chuyển thư mục clone, hook hỏng im lặng. Đổi sang gọi qua lệnh momentry đã cài, qua shim, nên đường dẫn Node không còn bị ghi cứng.
+M11. Công cụ an toàn chặn rm -rf với biến shell; agent chạy lại bằng node
+   Lệnh bị chặn vì biến có thể rỗng và biến thành rm -rf trên thư mục gốc. Agent không lặp lại lệnh bị chặn; nó dùng node để tạo thư mục đầu ra mới, không cần xoá.
+M12. Đổi mã thoát theo chuẩn: 205 test xanh, sau đổi thì 204 qua 1 hỏng và phải sửa cả hợp đồng công khai
+   Sau khi đổi, 204 test qua và 1 hỏng. Agent phải sửa nhiều assert mã thoát trong bốn file test. Mã 2 cũ (vi phạm riêng tư) và mã 1 mới thành cùng một mã, nên vi phạm riêng tư phải tách qua đầu ra khác. Bảng mã thoát được ghi vào CHANGELOG như thay đổi phá tương thích.
+M13. --release all: thả hàng loạt chuyện nhưng giữ lại chuyện còn lộ thông tin riêng tư
+   Lệnh mới kiểm lại từng chuyện trước khi thả. Chuyện sạch vào hộp, chuyện còn lộ vẫn bị giữ. Test có một chuyện sạch và một chuyện lộ để kiểm cả hai nhánh. Tham chiếu lệnh được sinh lại từ bảng lệnh.
+M14. Đảo quyết định PRD: để công cụ tự ghi file cấu hình của người dùng
+   Agent đề xuất hai phương án: chỉ in đoạn cấu hình, hoặc tự cài. Tự cài đòi hỏi sao lưu, từ chối file hỏng, ghi qua file tạm, kiểm lại nếu file bị đổi giữa chừng, ước 200 đến 300 dòng. Người dùng chọn tự cài và yêu cầu sửa PRD mục 3.2, 6.4 và 12 cho khớp.
+M15. Thêm ba host mới (pi, omp, agy): máy có 27 profile và agy lưu transcript ở hai định dạng
+   Máy có 9 thư mục profile của pi, 10 của omp, 4 của agy và 4 của Codex. Agent viết hàm tìm mọi profile, và bộ đọc agy đọc được 5 transcript thật. Hook của pi và omp dùng extension TypeScript, còn agy chỉ có SessionStart và Stop, nên agy được gom khi mở phiên sau.
+M16. zsh không tách biến lệnh làm lỗi kiểm thử; phải chạy lại bằng bash
+   Ít nhất năm lần lệnh zsh lỗi: không tách biến, glob không khớp, hoặc hàm shell bọc pi và omp làm lệnh thật bị đổi nghĩa. Mỗi lần agent chuyển sang bash -c hoặc tìm đường dẫn thật bằng type -P trước khi chạy lại.
+M17. Agent tự kiểm chứng kết quả bằng cách chạy lại test và script thay vì tin báo cáo của subagent; khi reviewer hoặc simplify báo "xanh", agent vẫn tự chạy lại toàn bộ.
+   Agent tự kiểm chứng kết quả bằng cách chạy lại test và script thay vì tin báo cáo của subagent; khi reviewer hoặc simplify báo "xanh", agent vẫn tự chạy lại toàn bộ. Nhiều người dev tin báo cáo của trợ lý hoặc chỉ nhìn một dòng "pass", không chạy lại sau khi subagent sửa code.
+M18. Đẩy nhầm file đổi tên của phiên khác lên main: CI đỏ toàn bộ
+   Commit e78f3ab đẩy lên main cả việc đổi tên, nhưng README.md tiếng Anh chưa được commit, nên main thiếu README và CI đỏ. Người dùng chọn commit README song ngữ đang có để sửa. CI xanh lại. Từ đó agent chỉ stage đúng file của mình và kiểm git diff --cached trước khi commit.
+M19. Release v0.1.0: tag chỉ sau khi CI xanh đúng commit, rồi thử lệnh cài một dòng từ GitHub thật
+   Agent kiểm HEAD trùng origin/main, CI xanh trên commit đó, chưa có tag và VERSION khớp CHANGELOG, rồi mới tạo tag v0.1.0. Workflow release chạy qua CI 9 tổ hợp, tạo bản nháp, cài thử trên ba hệ điều hành rồi mới công bố. Sau đó lệnh curl trong README được chạy thật trong HOME tạm và cài đúng phiên bản.
+M20. Ghi plan 8 phase và 45 việc trước khi viết code
+   Plan có 8 phase và 45 việc, ước khoảng 9 ngày công. Lúc lập plan, validate báo hợp lệ ngay lần đầu, và việc được chuyển thành checklist để theo dõi tiến độ. Đến cuối plan đạt 45/45.
+M21. Codex không bao giờ chạy hook: tên sự kiện sai kiểu chữ, CI vẫn xanh
+   Agent đọc mã nguồn Codex trên GitHub để kiểm tên sự kiện và cách tính trusted_hash. Các hook sai tên bị bỏ qua mà không báo lỗi. Sau khi sửa và thêm SessionEnd, test vẫn xanh vì chưa có bài kiểm chạy thật. Hook Codex chưa được chứng minh chạy trong phiên thật.
+M22. Installer Windows sao chép từ dự án khác đã kiểm, nhưng vẫn phải đọc lại và sửa
+   Một đường dẫn install.ps1 không tồn tại, nhưng bản ở dự án khác thì có. Agent đọc nó và viết install.ps1 dựa trên đó, và cảnh báo rằng PowerShell 5.1 đọc sai UTF-8 khi chạy qua irm và iex nên thông báo chỉ dùng ASCII.
+M23. Simplify 8 chỗ sau khi viết xong: tests giữ nguyên 232/232
+   Agent rút gọn 8 chỗ trong 7 file: gộp đoạn lặp ra helper, tính điều kiện một lần, đổi tên biến trung gian. Chạy lại test, lifecycle và vòng agent đều xanh, số test vẫn 232 qua và không fail.
+M24. Đo hook bằng phiên không đăng nhập: omp vẫn gọi mạng thật, phải chặn mạng bằng namespace
+   Phiên Codex trên Windows không gọi hook dù đã bỏ bước duyệt tin cậy. Khi thử omp trên Linux, phiên vẫn gửi yêu cầu tới API thật và nhận lỗi khoá sai, nghĩa là khoá giả không chặn được mạng. Agent chuyển sang unshare -rn để chạy trong namespace mạng rỗng, bảo đảm không có yêu cầu nào ra ngoài.
+M25. Skill kiểm đóng gói báo động: chưa có cài một lệnh, chưa có doctor, init --yes lỗi
+   Audit trả về 4 lỗi tầng trải nghiệm người dùng. README thiếu bước lấy code. Không có --version, release, install.sh, update hay uninstall. Lệnh init --yes báo Unknown option. init chỉ tạo file cấu hình, nên list và check thoát 1 ngay sau quick start.
+M26. Đọc cấu trúc transcript mà không in nội dung
+   Agent viết một script chỉ in kiểu và tên khoá của mỗi bản ghi JSONL, không in giá trị. Lần chạy đầu dùng TypeScript trên Node 24 nên lỗi, chuyển sang script JS và tìm file bằng find. Kết quả: omp có 400 dòng trong một phiên, agy có các file transcript_full.jsonl trong thư mục logs.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

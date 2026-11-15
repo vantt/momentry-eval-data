@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "sessions": {
+    "omp:cd4449ab": {
+      "source": "omp",
+      "transcriptPath": "/home/vantt/.omp/profiles/gemini-tetcu72/agent/sessions/-projects-mcp-skill-hub-simplify/2026-10-09T02-40-10-134Z_01a11e88-4796-7023-a511-4a8dcd4449ab.jsonl",
+      "repoRoot": "/home/vantt/projects/momentry/.claude/worktrees/agent-a73050abc839225de/docs/_private/eval/effort-low/cd4449ab/runs/1/scratch/repo",
+      "lastLine": 4000,
+      "size": 0,
+      "mtimeMs": 0,
+      "status": null,
+      "pending": false,
+      "needsRescore": [],
+      "mainGoals": [
+        {
+          "toLine": 4000,
+          "text": "Di chuyển (migrate) dữ liệu skillhub/hub lên schema v4 và tinh gọn MCP tool, qua các phase có checkpoint của lead. Phải chạy đúng, fail-closed trên dữ liệu hub thật, rồi rebase và merge vào main với make check xanh."
+        }
+      ],
+      "harvests": [
+        {
+          "at": "2026-11-05T10:21:19.571Z",
+          "fromLine": 1,
+          "toLine": 4000,
+          "runs": 1,
+          "runsFailed": 0,
+          "chunks": 1,
+          "hotspots": 143,
+          "hotspotsMissing": 0,
+          "stories": 17,
+          "written": 23,
+          "merged": 0,
+          "privacyBlocked": 0,
+          "privacyUnchecked": 0,
+          "usd": 0.28669500000000003,
+          "secs": 156.4,
+          "status": "done",
+          "explicit": true
+        }
+      ]
+    }
+  },
+  "repos": {}
+}

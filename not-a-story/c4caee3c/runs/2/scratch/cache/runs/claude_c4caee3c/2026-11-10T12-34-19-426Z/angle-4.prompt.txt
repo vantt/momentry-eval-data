@@ -1,0 +1,118 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Obsidian Hybrid Search is a search engine for your local Obsidian vault, offered as a native Obsidian plugin, an MCP server for AI agents, and a command-line tool. It is for people who keep their notes in Obsidian and want to find them by idea, phrase, title, link, or metadata, and for AI agents that need to start from those notes. It runs locally by default on SQLite, and can optionally use OpenAI-compatible embedding APIs.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L3416] USER: Goal check-in: «bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng &gt;=50%.» is still active, and evaluation has been deferred for 120 min because background work is still running: - bitb1p76f · shell · cd /home/vantt/projects/obsidian-hybrid-search; python3 - &lt;&lt;'EOF' p='vantt/patches/0001-language-p… [+2204 chars] Check on their progress (e.g. read their output). If they are progressing, say so briefly and keep waiting; if they  …[+77]
+[L3504] USER: lâu dữ thần he
+[L3596] USER: hinh như máy windows đã đẩy v15 lên main
+</asks>
+
+<story>
+hook: Điểm tổng tăng 0,600 lên 0,698, nhưng có hạng mục tụt 0,260
+tension: hop_ma_tan (Tổng điểm trên vault thật tăng rõ rệt / Vài hạng mục tụt, một câu rơi khỏi top 5 là mất 0,260)
+stakes: 2/3
+# Eval trên vault thật: tổng tăng nhưng cổng hạng mục đỏ, người dùng chọn dùng gói
+
+**Bối cảnh:** Golden set 61 câu của người dùng nằm ngoài repo. Script chỉ in số tổng hợp, không in câu hỏi hay tên note.
+**Chuyện gì xảy ra:** Tổng nDCG@5 trên vault thật tăng từ 0,600 lên 0,698, nhưng vài hạng mục có 2 đến 6 câu bị tụt, có hạng mục tụt 0,260 vì một câu rơi khỏi top 5. Người dùng quyết định dùng gói vi cho bộ cài. Công cụ chi tiết ghi từng câu ra một file ngoài repo và từ chối ghi nếu đường dẫn nằm trong repo.
+**Bài học:** Đánh giá trên dữ liệu thật cần công cụ chi tiết nhưng ghi ra nơi riêng tư. Mẫu nhỏ cho biến động lớn, đừng quyết định theo một hạng mục.
+**Artefact:** Bảng số tổng hợp theo hạng mục, không có câu hỏi.
+</story>
+
+<excerpt>
+[L3610] TOOL Bash: git fetch -q origin vantt/v15-private-eval && git log --oneline master..origin/vantt/v15-private-eval | head; git diff --stat master...origin/vantt/v15-private-eval | tail -15; gh api "repos/vantt/obsidian-pkm-automation/commits?per_page=5" --jq '.[]|.commit.author.date[0:16]+" "+(.commit.message|sp …[+29]
+[L3615] RESULT: b4d30af docs(vantt): record the private vault eval of 0.17.2-vantt.2 (V15) | ad14f0c fix(vantt): compare private golden paths in NFD like upstream's eval
+[L3623] TOOL Bash: git show origin/vantt/v15-private-eval:vantt/reviews/v0.17.2-vantt.2.private.data.json | node -e " let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const o=JSON.parse(s);const keys=new Set();const strs=[];const walk=(x,p)=>{if(Array.isArray(x))x.forEach((v,i)=>walk(v,p+'[]'));else if(x&&typeo …[+211]
+[L3624] RESULT: gate,private,pack,without_pack,queries,summary,ndcg_5,ndcg_k,mrr,hit_1,hit_3,hit_5,recall_k,evidence_coverage_k,all_relevant_k,categories,vi-accented,n,vi-unaccented,vi-partial-accent,vi-tone-placement,vi-iy,vi-dd,vi-tone-precision,vi-compound,vi-mix …[+133]
+[L3632] TOOL Bash: git show origin/vantt/v15-private-eval:vantt/reviews/v0.17.2-vantt.2.private.md | cut -c1-260
+[L3633] RESULT: # V15: eval trên vault thật của user (bản B), fork v0.17.2-vantt.2 | Chạy bằng `node vantt/scripts/quality-gate.mjs --private <golden-set.json> --vault <bản sao vault> --with-lang vi` (PRD 11.5, việc V15), ngày 2026-11-02, linux-x64 (WSL2), Node 26,  …[+65]
+[L3645] TOOL Bash: HUSKY=0 git merge -q --no-ff origin/vantt/v15-private-eval -m "merge(vantt): private vault evaluation (V15) Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && echo MERGED || git diff --name-only --diff-filter=U; /home/vantt/projects/ohs-wt/npm12.sh exec -- vitest run --config vantt/scripts/ …[+46]
+[L3646] RESULT: MERGED | Tests 107 passed (107)
+[L3652] TOOL Bash: git diff HEAD~1 -- vantt/plans/261102-0349-fork-master-roadmap | grep "^[+-]" | grep -v "^+++\|^---" | cut -c1-220
+…
+[L3672] TOOL Bash: HUSKY=0 git push -q origin --delete vantt/v15-private-eval && echo deleted; git ls-remote --heads origin | cut -c42-
+[L3673] RESULT: deleted | refs/heads/master
+[L3680] TOOL AskUserQuestion: {"questions":[{"question":"Trên vault thật (61 câu), gói vi tăng tổng nDCG@5 0,600 → 0,698, nhưng cổng theo hạng mục hỏng: vi-iy −0,260 (1 câu rơi khỏi top 5), vi-accented −0,052 và vi-compound −0,041 (chỉ đổi thứ hạng), vi-synonym −0,167 (vault chưa có lexicon). Mỗi hạng mục chỉ 2–6 câu. Dùng gói v …[+1576]
+[L3682] RESULT: The user answered: "Trên vault thật (61 câu), gói vi tăng tổng nDCG@5 0,600 → 0,698, nhưng cổng theo hạng mục hỏng: vi-iy −0,260 (1 câu rơi khỏi top 5), vi-accented −0,052 và vi-compound −0,041 (chỉ đổi thứ hạng), vi-synonym −0,167 (vault chưa có lex …[+616]
+[L3696] TOOL Bash: cat /tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/bxsm0bvuu.output | tail -6; GH_REPO=vantt/obsidian-hybrid-search gh release list --limit 2
+[L3697] RESULT: failure | catchup: failure; bundles: skipped
+…
+[L3787] TOOL Bash: cd /home/vantt/projects/obsidian-hybrid-search && python3 - <<'EOF' p='vantt/plans/261102-0349-fork-master-roadmap/phase-05-evaluation-quality-gates.md' s=open(p).read() s=s.replace("\n\n## Risk","\n- User chốt sau V15 (2026-11-02): **dùng gói `vi`** cho bộ cài với vault thật (tổng nDCG@5 0,600 → 0, …[+1468]
+[L3792] RESULT: 6009cbe test(vantt): check the packed data without requiring a compiled pack
+[L3797] AGENT: Giờ khởi chạy V15b: thêm chế độ `--private-detail` cho cổng chất lượng.
+[L3798] TOOL Agent: V15b private-detail mode
+[L3799] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: a122d99151e2b27f9 (internal ID - do not mention to user. Use SendMessa …[+86]
+[L3804] TOOL Bash: echo "19:45 CI catchup after snippet merge failed: segment.test npm pack required build/index.js (pack not compiled in lang_vi tier) -> fixed 6009cbe (push triggers catchup). V15 decisions: use pack; V15b = --private-detail (agent a122d99151e2b27f9, may commit) + learn-abbr on user machine + fix dro …[+64]
+[L3805] RESULT: (Bash completed with no output)
+[L3809] AGENT: Tôi đã ghi ba quyết định của anh vào plan và giao việc:
+
+1. **Dùng gói `vi` cho bộ cài:** đã ghi. Thêm việc bắt buộc **V15b** vào plan: tìm và sửa các hạng mục tụt trên vault thật (`vi-iy`, `vi-accented`, `vi-compound`; riêng `vi-synonym` chờ lexicon).
+2. **`--private-detail`:** đã giao agent. Chế độ này ghi kết quả từng câu ra một file **trên máy anh, ngoài repo**: câu tìm, note đúng, thứ hạng khi có và không có gói, cách gói phục hồi dấu. Script từ chối ghi nếu đường dẫn nằm trong repo, và log chỉ in số tổng hợp. Agent cũng viết hướng dẫn điều tra một hạng mục bị tụt.
+3. **Lexicon khởi đầu:** hướng dẫn chạy `ohs-lang-vi learn-abbr --vault <dir>` sẽ nằm cùng tài liệu đó. Lệnh này đề xuất viết tắt vào mục `## Chờ duyệt`; anh duyệt xong thì chạy lại V15.
+
+**Sự cố CI:** lượt catchup sau khi merge `vi-snippet-fix` hỏng vì test đóng gói đòi file `build/index.js`. Ở tầng test trên CI, gói chưa được compile nên file này chưa có. Tôi đã sửa test (`6009cbe`) để chỉ kiểm `package.json` có khai thư mục `build` cho việc đóng gói. Ba file dữ liệu trong `data/` vẫn phải có trong gói. Lượt push này kích hoạt catchup lại.
+
+**Còn lại:**
+- V14: báo cáo review cuối kèm biểu đồ L24.
+- V15b: phần `--private-detail` (agent đang làm). Sau đó anh chạy trên máy mình để tìm nguyên nhân, rồi sửa gói.
+- Lead: cập nhật `vantt/README.md`, đánh dấu PRD mục 14, chuyển plan tổng vào archive.
+[L3822] USER: <task-notification>
+<task-id>a122d99151e2b27f9</task-id>
+<tool-use-id>toolu_01LiZMTg83FhmCQqR5GfGTuZ</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a122d99151e2b27f9.output</output-file>
+<status>completed</status>
+<summary>Agent "V15b private-detail mode" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS
+
+Summary: `--private-detail &lt;file&gt;` now works with `--private`. It writes a local per-query JSON with ranks with and without the pack, per-branch explain ranks and the pack's analysis. The script test suite passes (8 files, 112 tests, 36 in the quality-gate file). I did not run it against a real vault.
+
+Commit: `6cda0fc`, pushed to master.
+
+**What changed**
+- **Detail script:** the new `vantt/scripts/lib/detail-search.mjs` indexes a copy of the vault and searches every query with `explain: true`. `runDetail` in `lib/eval-run.mjs` runs it with output swallowed. `eval/evaluate.ts` can't pass `explain`, so this is a separate run, once without the pack and once with it.
+- **File contents:** each query gets `id`, `category`, `query`, `relevant_paths`, and for both sides `ndcg_5`, `mrr`, `hit_5`, `top_paths`, `relevant_ranks`, `results[]` (score, per-branch `ranks`, `matched_by`, `matched_terms`) and `analysis`. `analysis` is the pack's `explain.debug`: restore candidates, `viewQueries`, `embedQuery`, `rewrite`, `lexicon`.
+- **Path guard:** `detailPathError` refuses, with exit 2 before anything runs, a path inside the repo or `vantt/`, inside any other git work tree, or reaching the repo through a symlink. The file is written with mode 0600, and only its path is printed.
+- **Tests:** the no-content test is extended to cover `--private-detail`. New tests check the file contents, the refused paths, a symlink into the repo, and use without `--private`.
+- **Docs:** `vantt/eval/vi/README.md` has a Vietnamese section with usage, the 4-step "how to investigate a drop" guide, and `learn-abbr` bootstrap steps. The plan is archived as completed at `vantt/plans/archive/261102-1625-v15b-private-detail/plan.md`.
+
+**Command to run** (from a tree that has the P01 patch and the built pack, with master merged in so it contains this commit):
+```
+node vantt/scripts/quality-gate.mjs  …[+1456]
+[L3825] AGENT: Phần đầu của V15b đã xong (`6cda0fc`). Phần tiếp theo phải chạy trên máy anh. Xem lượt catchup sau bản sửa test trước đã.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

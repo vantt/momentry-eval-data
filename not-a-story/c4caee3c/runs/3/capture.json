@@ -1,0 +1,1015 @@
+{
+  "id": "c4caee3c",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "a80efc8267e2088e",
+  "at": "2026-11-10T12:45:55.579Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.092334,
+  "dryRun": {
+    "usd": 0.37,
+    "tokens": 99556,
+    "chunks": 1,
+    "hotspots": 31,
+    "entries": 874,
+    "gitCommits": 30
+  },
+  "report": {
+    "sid": "claude:c4caee3c",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.3934267999999999,
+    "secs": 38.7,
+    "exitCode": 0,
+    "status": "done",
+    "written": 29,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-11-02-bo-eval-tu-dung-qua-de-40f9",
+        "status": "angle",
+        "angle": "Obsidian Hybrid Search là công cụ tìm kiếm chạy cục bộ trên vault Obsidian, và nhóm đang thêm gói tiếng Việt cho nó với mục tiêu Hit@5 ít nhất 0,85 và gấp đôi baseline. Baseline upstream đã đạt 0,93 trên bộ đo tự dựng, nên gấp đôi là không thể, tức bộ đo quá dễ vì mỗi câu tìm trùng tiêu đề note. Nhóm chọn làm khó bộ đo thay vì hạ ngưỡng; baseline xuống 0,27 và 0,40, và gói tiếng Việt đưa cả hai lên 1,00. Ai tự dựng bộ đo để đánh giá search đều có thể rơi vào cùng cái bẫy này.",
+        "audience": "dev làm công cụ tìm kiếm và đánh giá chất lượng bằng bộ đo tự dựng",
+        "evidence": [
+          315,
+          334,
+          1034,
+          1150,
+          2187
+        ],
+        "spine": {
+          "context": {
+            "text": "Nhóm đang thêm gói tiếng Việt cho Obsidian Hybrid Search, công cụ tìm kiếm chạy cục bộ trên vault Obsidian.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Đạt mục tiêu G3: Hit@5 ít nhất 0,85 và gấp tối thiểu 2 lần baseline.",
+            "evidence": [
+              315
+            ]
+          },
+          "obstacle": {
+            "text": "Baseline upstream đã đạt Hit@5 0,93 với vi-unaccented và 0,87 với vi-dd, nên mục tiêu gấp đôi không thể đạt.",
+            "evidence": [
+              315
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bộ đo đủ khó để mục tiêu gấp đôi có ý nghĩa; hoá ra bộ đo quá dễ, vì mỗi câu tìm trùng tiêu đề note nên baseline đã cao sẵn.",
+            "evidence": [
+              315,
+              1034
+            ]
+          },
+          "action": {
+            "text": "Làm khó bộ đo tiếng Việt thay vì hạ ngưỡng, rồi đo lại baseline trên bộ mới.",
+            "evidence": [
+              334,
+              1034
+            ]
+          },
+          "outcome": {
+            "text": "Baseline xuống 0,27 và 0,40; sau gói tiếng Việt cả hai đạt 1,00, nDCG@5 tổng tăng từ 0,666 lên 0,932 và không hạng mục nào tụt.",
+            "evidence": [
+              1034,
+              1150,
+              2187
+            ]
+          },
+          "takeaway": {
+            "text": "Khi mục tiêu không đạt vì bộ đo quá dễ, sửa bộ đo trước khi hạ ngưỡng, rồi đo lại baseline trên bộ mới.",
+            "evidence": [
+              334,
+              1034
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-eval-tren-vault-that-tong-tang-40f9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-2: spine.want: evidence ngoài các dòng đã đưa: 2733; spine.obstacle: evidence ngoài các dòng đã đưa: 2787; spine.turn: evidence ngoài các dòng đã đưa: 2787; spine.action: evidence ngoài các dòng đã đưa: 2787; spine.outcome: evidence ngoài các dòng đã đưa: 2789 (+2) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/c4caee3c/runs/3/llm/angle-2-retry.json"
+      },
+      {
+        "id": "2026-11-02-goi-tieng-duc-chay-qua-diem-40f9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-3: spine.want: evidence ngoài các dòng đã đưa: 3415; spine.obstacle: evidence ngoài các dòng đã đưa: 3312; spine.turn: evidence ngoài các dòng đã đưa: 3312, 3349; spine.action: evidence ngoài các dòng đã đưa: 3349, 3388; spine.outcome: evidence ngoài các dòng đã đưa: 3397, 3415 (+2) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/c4caee3c/runs/3/llm/angle-3-retry.json"
+      },
+      {
+        "id": "2026-11-02-tu-dien-tu-ghep-danh-sach-40f9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-4: spine.want: evidence ngoài các dòng đã đưa: 3680; spine.obstacle: evidence ngoài các dòng đã đưa: 3680; spine.turn: evidence ngoài các dòng đã đưa: 3680, 3787; spine.action: evidence ngoài các dòng đã đưa: 3787, 3822; spine.outcome: evidence ngoài các dòng đã đưa: 3825 (+2) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/c4caee3c/runs/3/llm/angle-4-retry.json"
+      },
+      {
+        "id": "2026-11-02-cau-co-dau-giu-view-tat-40f9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-5: spine.action: evidence ngoài các dòng đã đưa: 816; spine.outcome: evidence ngoài các dòng đã đưa: 816 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/c4caee3c/runs/3/llm/angle-5-retry.json"
+      },
+      {
+        "id": "2026-11-02-diem-eval-lech-theo-loai-cpu-40f9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-6: spine.context: evidence ngoài các dòng đã đưa: 1672; spine.want: evidence ngoài các dòng đã đưa: 1672; spine.obstacle: evidence ngoài các dòng đã đưa: 1672; spine.turn: evidence ngoài các dòng đã đưa: 1672; spine.action: evidence ngoài các dòng đã đưa: 2875 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/c4caee3c/runs/3/llm/angle-6-retry.json"
+      },
+      {
+        "id": "2026-11-02-dieu-phoi-12-agent-song-song-40f9",
+        "status": "angle",
+        "angle": "Dự án là công cụ tìm kiếm cho vault Obsidian, và người làm đang gộp nhiều nhánh tính năng tiếng Việt vào bản fork bằng nhiều agent chạy song song. Sau khi gộp nhánh sửa gõ sai, từ đồng nghĩa tụt Hit@5 từ 0,80 xuống 0,73 vì bộ sửa gõ chạy trước từ điển, nên từ người dùng gõ không còn khớp. Người làm sửa để từ điển xét cả câu gốc, và Hit@5 về 0,80. Người làm công cụ có bước xử lý nối tiếp nên cần chạy eval sau khi gộp, không chỉ test.",
+        "audience": "dev làm công cụ tìm kiếm hoặc pipeline xử lý truy vấn nhiều bước",
+        "evidence": [
+          1470,
+          1478
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án là công cụ tìm kiếm cho vault Obsidian, đang được gộp thành bản fork có gói tiếng Việt, với nhiều agent chạy song song.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất roadmap của fork, gồm gói tiếng Việt và các nhánh tính năng.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Nhiều nhánh cùng sửa query.ts, index.ts và README nên khi gộp thường xung đột.",
+            "evidence": [
+              1354,
+              1426
+            ]
+          },
+          "turn": {
+            "text": "Tưởng gộp hai nhánh xong là ổn; hoá ra bộ sửa gõ sai chạy trước từ điển đồng nghĩa nên từ người dùng gõ bị đổi trước khi từ điển kịp thấy.",
+            "evidence": [
+              1470
+            ]
+          },
+          "action": {
+            "text": "Cho từ điển xét cả câu gốc chưa qua sửa gõ, cho bộ sửa gõ coi từ người dùng gõ là từ đã biết, thêm test rồi chạy lại eval.",
+            "evidence": [
+              1470
+            ]
+          },
+          "outcome": {
+            "text": "vi-synonym Hit@5 về 0,80; nDCG@5 tổng lên 0,909.",
+            "evidence": [
+              1478
+            ]
+          },
+          "takeaway": {
+            "text": "Sau khi gộp nhánh cần chạy eval chứ không chỉ test: lỗi thứ tự giữa hai bước xử lý chỉ lộ qua chất lượng tìm kiếm.",
+            "evidence": [
+              1470
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-hook-pre-push-chan-push-agent-40f9",
+        "status": "angle",
+        "angle": "Một công cụ tìm kiếm cho ghi chú Obsidian, chạy cục bộ, đang được làm tiếp theo một kế hoạch roadmap trên bản fork, với yêu cầu mỗi mục xong thì commit và push. Lần push bị hook pre-push của upstream chặn. Agent tưởng chỉ cần đặt HUSKY=0 cho lệnh đó, rồi giữ cách này cho mọi lần push sau mà không hỏi ai. Chuyện đáng nghe vì tắt một chốt kiểm tra là quyết định của người duyệt, không phải chi tiết kỹ thuật, dù lần đó đúng.",
+        "audience": "dev dùng AI agent để tự động commit và push",
+        "evidence": [
+          11,
+          204,
+          210,
+          220
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ tìm kiếm cho ghi chú Obsidian, chạy cục bộ, đang được làm tiếp theo một kế hoạch roadmap trên bản fork.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất các mục trong plan, làm song song khi được, mỗi mục xong thì commit và push.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Lệnh push bị hook pre-push của upstream chặn.",
+            "evidence": [
+              204
+            ]
+          },
+          "turn": {
+            "text": "Tưởng chỉ cần đặt HUSKY=0 cho lệnh push là xong; hoá ra đó là bỏ qua một chốt kiểm tra, việc cần người duyệt.",
+            "evidence": [
+              204,
+              210,
+              220
+            ]
+          },
+          "action": {
+            "text": "Đặt HUSKY=0 cho lệnh push, rồi giữ cách này cho mọi lần push sau mà không hỏi ai.",
+            "evidence": [
+              210,
+              220
+            ]
+          },
+          "outcome": {
+            "text": "Commit 4029b85 đã lên origin, và các lần push sau cũng bỏ qua hook.",
+            "evidence": [
+              211,
+              220
+            ]
+          },
+          "takeaway": {
+            "text": "Hook là chốt chặn; đặt biến môi trường để bỏ qua nó là quyết định cần người duyệt, kể cả khi lần đó đúng.",
+            "evidence": [
+              204,
+              220
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-mac-intel-onnxruntime-1-30-khong-40f9",
+        "status": "angle",
+        "angle": "Obsidian Hybrid Search là công cụ tìm kiếm cho kho ghi chú Obsidian, chạy cục bộ dưới dạng plugin, server MCP và lệnh dòng lệnh, và người làm đang chuẩn bị bản phát hành đầu tiên cho Windows, Mac chip Apple và Linux. Mac Intel không dựng được vì thư viện onnxruntime-node 1.30 không còn bản cho chip Intel; người làm tưởng dựng qua Rosetta là cứu được, nhưng file đó không có trong gói npm. Thay vì bỏ hẳn Mac Intel, họ ghim bản 1.23.2 chỉ cho gói Intel, đo lệch trên cùng máy, rồi đưa quyết định cho người dùng. Ai phát hành phần mềm đa nền sẽ muốn biết cách tự đo mức lệch khi ghim một thư viện cũ.",
+        "audience": "người làm release phần mềm đa nền",
+        "evidence": [
+          2542,
+          2546,
+          2893,
+          2899
+        ],
+        "spine": {
+          "context": {
+            "text": "Obsidian Hybrid Search là công cụ tìm kiếm cho kho ghi chú Obsidian, chạy cục bộ dưới dạng plugin, server MCP và lệnh dòng lệnh. Người làm đang chuẩn bị bản phát hành đầu tiên cho Windows, Mac chip Apple và Linux.",
+            "evidence": [
+              "profile",
+              2546
+            ]
+          },
+          "want": {
+            "text": "Giữ Mac Intel là nền bắt buộc, để mỗi bản phát hành có đủ 4 gói.",
+            "evidence": [
+              2592
+            ]
+          },
+          "obstacle": {
+            "text": "Thư viện onnxruntime-node 1.30.0 mà upstream dùng không còn bản dựng cho Mac Intel, nên gói Intel không dựng được.",
+            "evidence": [
+              2546
+            ]
+          },
+          "turn": {
+            "text": "Tưởng dựng x64 qua Rosetta trên máy ARM sẽ cứu được Mac Intel; hoá ra file binding không có trong gói npm, nên cách đó không đi được.",
+            "evidence": [
+              2542,
+              2546
+            ]
+          },
+          "action": {
+            "text": "Ghim onnxruntime-node 1.23.2 chỉ cho gói darwin-x64, đo lệch nDCG@5 trên cùng máy so với bản 1.30.0, rồi xin người dùng quyết.",
+            "evidence": [
+              2585,
+              2893
+            ]
+          },
+          "outcome": {
+            "text": "Gói Mac Intel dựng xong, smoke xanh. Người dùng chọn phát hành và chấp nhận hai mức lệch: multilingual +0,063, vi-synonym −0,017.",
+            "evidence": [
+              2890,
+              2899
+            ]
+          },
+          "takeaway": {
+            "text": "Khi upstream bỏ một nền, đo lệch trên cùng máy trước khi ghim bản cũ, và đặt ngưỡng chấp nhận trước khi đo.",
+            "evidence": [
+              2893
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-ranh-gioi-fork-va-repo-du-40f9",
+        "status": "angle",
+        "angle": "Dự án Obsidian Hybrid Search là công cụ tìm kiếm chạy trên máy cho vault Obsidian, và người làm đang dựng một fork chỉ chứa cơ chế dùng chung. Agent đề xuất làm một phần hai mục gợi ý khi viết và sổ câu tìm trong lõi fork, cho rằng việc đó đúng chỗ. PRD thật ra đã ghi cả hai thuộc repo dự án, vì chỉ plugin mới thấy được việc gõ và bấm mở note. Người làm hỏi từng mục rồi cập nhật PRD, để không đưa logic sản phẩm vào fork.",
+        "audience": "dev làm plugin hoặc công cụ có nhiều repo",
+        "evidence": [
+          2228,
+          2250,
+          2394,
+          2411
+        ],
+        "spine": {
+          "context": {
+            "text": "Obsidian Hybrid Search là công cụ tìm kiếm chạy cục bộ cho vault Obsidian; người làm đang dựng một fork chỉ chứa cơ chế dùng chung.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất các mục bắt buộc của roadmap trong plan.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "L13 cần mã chạy trong Obsidian, CLI và MCP không làm được. L22 cần biết người dùng có mở note từ kết quả tìm hay không.",
+            "evidence": [
+              2250
+            ]
+          },
+          "turn": {
+            "text": "Agent tưởng có thể làm một phần L13 và L22 trong lõi fork; PRD đã ghi cả hai thuộc repo dự án.",
+            "evidence": [
+              2228,
+              2250
+            ]
+          },
+          "action": {
+            "text": "Người dùng hỏi từng mục, rồi agent cập nhật PRD mục 14.2: L13 và L22 thuộc repo dự án.",
+            "evidence": [
+              2394,
+              2404
+            ]
+          },
+          "outcome": {
+            "text": "Thay đổi đã commit và push ở a50f7d1; fork không còn việc cho L13 và L22.",
+            "evidence": [
+              2405,
+              2411
+            ]
+          },
+          "takeaway": {
+            "text": "Đọc cột phía làm trong PRD trước khi đề xuất đưa việc vào fork, và quyết ranh giới repo trước khi viết code.",
+            "evidence": [
+              2228,
+              2411
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:c4caee3c L1-L4000: done; 26 chuyện thô, 29 cụm; ghi 29 mới, gộp 0\nđiểm nóng 31 (thiếu 0); 30 commit git; lần chạy 1/1; 0.39 USD\ngóc kể: 5 có, 0 không ra chuyện, 5 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: obsidian-hybrid-search tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-bo-eval-tu-dung-qua-de-40f9",
+      "code": "M-6M4F",
+      "title": "Bộ eval tự dựng quá dễ: baseline 0,93 khiến mục tiêu không thể đạt, nên làm khó bộ đo",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Obsidian Hybrid Search là công cụ tìm kiếm chạy cục bộ trên vault Obsidian, và nhóm đang thêm gói tiếng Việt cho nó với mục tiêu Hit@5 ít nhất 0,85 và gấp đôi baseline. Baseline upstream đã đạt 0,93 trên bộ đo tự dựng, nên gấp đôi là không thể, tức bộ đo quá dễ vì mỗi câu tìm trùng tiêu đề note. Nhóm chọn làm khó bộ đo thay vì hạ ngưỡng; baseline xuống 0,27 và 0,40, và gói tiếng Việt đưa cả hai lên 1,00. Ai tự dựng bộ đo để đánh giá search đều có thể rơi vào cùng cái bẫy này.",
+      "audience": "dev làm công cụ tìm kiếm và đánh giá chất lượng bằng bộ đo tự dựng",
+      "spine": {
+        "context": {
+          "text": "Nhóm đang thêm gói tiếng Việt cho Obsidian Hybrid Search, công cụ tìm kiếm chạy cục bộ trên vault Obsidian.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Đạt mục tiêu G3: Hit@5 ít nhất 0,85 và gấp tối thiểu 2 lần baseline.",
+          "lines": [
+            "claude:c4caee3c#L315"
+          ]
+        },
+        "obstacle": {
+          "text": "Baseline upstream đã đạt Hit@5 0,93 với vi-unaccented và 0,87 với vi-dd, nên mục tiêu gấp đôi không thể đạt.",
+          "lines": [
+            "claude:c4caee3c#L315"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bộ đo đủ khó để mục tiêu gấp đôi có ý nghĩa; hoá ra bộ đo quá dễ, vì mỗi câu tìm trùng tiêu đề note nên baseline đã cao sẵn.",
+          "lines": [
+            "claude:c4caee3c#L315",
+            "claude:c4caee3c#L1034"
+          ]
+        },
+        "action": {
+          "text": "Làm khó bộ đo tiếng Việt thay vì hạ ngưỡng, rồi đo lại baseline trên bộ mới.",
+          "lines": [
+            "claude:c4caee3c#L334",
+            "claude:c4caee3c#L1034"
+          ]
+        },
+        "outcome": {
+          "text": "Baseline xuống 0,27 và 0,40; sau gói tiếng Việt cả hai đạt 1,00, nDCG@5 tổng tăng từ 0,666 lên 0,932 và không hạng mục nào tụt.",
+          "lines": [
+            "claude:c4caee3c#L1034",
+            "claude:c4caee3c#L1150",
+            "claude:c4caee3c#L2187"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi mục tiêu không đạt vì bộ đo quá dễ, sửa bộ đo trước khi hạ ngưỡng, rồi đo lại baseline trên bộ mới.",
+          "lines": [
+            "claude:c4caee3c#L334",
+            "claude:c4caee3c#L1034"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-eval-tren-vault-that-tong-tang-40f9",
+      "code": "M-49A8",
+      "title": "Eval trên vault thật: tổng tăng nhưng cổng hạng mục đỏ, người dùng chọn dùng gói",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-goi-tieng-duc-chay-qua-diem-40f9",
+      "code": "M-MYST",
+      "title": "Gói tiếng Đức chạy qua điểm cắm mà không sửa lõi, nDCG@5 từ 0,57 lên 0,97",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-tu-dien-tu-ghep-danh-sach-40f9",
+      "code": "M-MHZ7",
+      "title": "Từ điển từ ghép: danh sách pyvi không rõ nguồn, dựng lại từ dữ liệu CC BY",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-cau-co-dau-giu-view-tat-40f9",
+      "code": "M-GYSS",
+      "title": "Câu có dấu: giữ view tắt và sửa PRD thay vì làm đúng PRD",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-diem-eval-lech-theo-loai-cpu-40f9",
+      "code": "M-A8R2",
+      "title": "Điểm eval lệch theo loại CPU, cổng chất lượng đỏ vì baseline ghi trên máy khác",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-dieu-phoi-12-agent-song-song-40f9",
+      "code": "M-6TBM",
+      "title": "Điều phối 12 agent song song: xung đột merge và giao lại cho agent tự giải",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là công cụ tìm kiếm cho vault Obsidian, và người làm đang gộp nhiều nhánh tính năng tiếng Việt vào bản fork bằng nhiều agent chạy song song. Sau khi gộp nhánh sửa gõ sai, từ đồng nghĩa tụt Hit@5 từ 0,80 xuống 0,73 vì bộ sửa gõ chạy trước từ điển, nên từ người dùng gõ không còn khớp. Người làm sửa để từ điển xét cả câu gốc, và Hit@5 về 0,80. Người làm công cụ có bước xử lý nối tiếp nên cần chạy eval sau khi gộp, không chỉ test.",
+      "audience": "dev làm công cụ tìm kiếm hoặc pipeline xử lý truy vấn nhiều bước",
+      "spine": {
+        "context": {
+          "text": "Dự án là công cụ tìm kiếm cho vault Obsidian, đang được gộp thành bản fork có gói tiếng Việt, với nhiều agent chạy song song.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất roadmap của fork, gồm gói tiếng Việt và các nhánh tính năng.",
+          "lines": [
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Nhiều nhánh cùng sửa query.ts, index.ts và README nên khi gộp thường xung đột.",
+          "lines": [
+            "claude:c4caee3c#L1354",
+            "claude:c4caee3c#L1426"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng gộp hai nhánh xong là ổn; hoá ra bộ sửa gõ sai chạy trước từ điển đồng nghĩa nên từ người dùng gõ bị đổi trước khi từ điển kịp thấy.",
+          "lines": [
+            "claude:c4caee3c#L1470"
+          ]
+        },
+        "action": {
+          "text": "Cho từ điển xét cả câu gốc chưa qua sửa gõ, cho bộ sửa gõ coi từ người dùng gõ là từ đã biết, thêm test rồi chạy lại eval.",
+          "lines": [
+            "claude:c4caee3c#L1470"
+          ]
+        },
+        "outcome": {
+          "text": "vi-synonym Hit@5 về 0,80; nDCG@5 tổng lên 0,909.",
+          "lines": [
+            "claude:c4caee3c#L1478"
+          ]
+        },
+        "takeaway": {
+          "text": "Sau khi gộp nhánh cần chạy eval chứ không chỉ test: lỗi thứ tự giữa hai bước xử lý chỉ lộ qua chất lượng tìm kiếm.",
+          "lines": [
+            "claude:c4caee3c#L1470"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-hook-pre-push-chan-push-agent-40f9",
+      "code": "M-FR7W",
+      "title": "Hook pre-push chặn push, agent đặt HUSKY=0 để đẩy và giữ cách đó",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ tìm kiếm cho ghi chú Obsidian, chạy cục bộ, đang được làm tiếp theo một kế hoạch roadmap trên bản fork, với yêu cầu mỗi mục xong thì commit và push. Lần push bị hook pre-push của upstream chặn. Agent tưởng chỉ cần đặt HUSKY=0 cho lệnh đó, rồi giữ cách này cho mọi lần push sau mà không hỏi ai. Chuyện đáng nghe vì tắt một chốt kiểm tra là quyết định của người duyệt, không phải chi tiết kỹ thuật, dù lần đó đúng.",
+      "audience": "dev dùng AI agent để tự động commit và push",
+      "spine": {
+        "context": {
+          "text": "Một công cụ tìm kiếm cho ghi chú Obsidian, chạy cục bộ, đang được làm tiếp theo một kế hoạch roadmap trên bản fork.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất các mục trong plan, làm song song khi được, mỗi mục xong thì commit và push.",
+          "lines": [
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Lệnh push bị hook pre-push của upstream chặn.",
+          "lines": [
+            "claude:c4caee3c#L204"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng chỉ cần đặt HUSKY=0 cho lệnh push là xong; hoá ra đó là bỏ qua một chốt kiểm tra, việc cần người duyệt.",
+          "lines": [
+            "claude:c4caee3c#L204",
+            "claude:c4caee3c#L210",
+            "claude:c4caee3c#L220"
+          ]
+        },
+        "action": {
+          "text": "Đặt HUSKY=0 cho lệnh push, rồi giữ cách này cho mọi lần push sau mà không hỏi ai.",
+          "lines": [
+            "claude:c4caee3c#L210",
+            "claude:c4caee3c#L220"
+          ]
+        },
+        "outcome": {
+          "text": "Commit 4029b85 đã lên origin, và các lần push sau cũng bỏ qua hook.",
+          "lines": [
+            "claude:c4caee3c#L211",
+            "claude:c4caee3c#L220"
+          ]
+        },
+        "takeaway": {
+          "text": "Hook là chốt chặn; đặt biến môi trường để bỏ qua nó là quyết định cần người duyệt, kể cả khi lần đó đúng.",
+          "lines": [
+            "claude:c4caee3c#L204",
+            "claude:c4caee3c#L220"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-mac-intel-onnxruntime-1-30-khong-40f9",
+      "code": "M-8SXA",
+      "title": "Mac Intel: onnxruntime 1.30 không còn file cho Intel, ghim 1.23.2 để giữ nền",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Obsidian Hybrid Search là công cụ tìm kiếm cho kho ghi chú Obsidian, chạy cục bộ dưới dạng plugin, server MCP và lệnh dòng lệnh, và người làm đang chuẩn bị bản phát hành đầu tiên cho Windows, Mac chip Apple và Linux. Mac Intel không dựng được vì thư viện onnxruntime-node 1.30 không còn bản cho chip Intel; người làm tưởng dựng qua Rosetta là cứu được, nhưng file đó không có trong gói npm. Thay vì bỏ hẳn Mac Intel, họ ghim bản 1.23.2 chỉ cho gói Intel, đo lệch trên cùng máy, rồi đưa quyết định cho người dùng. Ai phát hành phần mềm đa nền sẽ muốn biết cách tự đo mức lệch khi ghim một thư viện cũ.",
+      "audience": "người làm release phần mềm đa nền",
+      "spine": {
+        "context": {
+          "text": "Obsidian Hybrid Search là công cụ tìm kiếm cho kho ghi chú Obsidian, chạy cục bộ dưới dạng plugin, server MCP và lệnh dòng lệnh. Người làm đang chuẩn bị bản phát hành đầu tiên cho Windows, Mac chip Apple và Linux.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L2546"
+          ]
+        },
+        "want": {
+          "text": "Giữ Mac Intel là nền bắt buộc, để mỗi bản phát hành có đủ 4 gói.",
+          "lines": [
+            "claude:c4caee3c#L2592"
+          ]
+        },
+        "obstacle": {
+          "text": "Thư viện onnxruntime-node 1.30.0 mà upstream dùng không còn bản dựng cho Mac Intel, nên gói Intel không dựng được.",
+          "lines": [
+            "claude:c4caee3c#L2546"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng dựng x64 qua Rosetta trên máy ARM sẽ cứu được Mac Intel; hoá ra file binding không có trong gói npm, nên cách đó không đi được.",
+          "lines": [
+            "claude:c4caee3c#L2542",
+            "claude:c4caee3c#L2546"
+          ]
+        },
+        "action": {
+          "text": "Ghim onnxruntime-node 1.23.2 chỉ cho gói darwin-x64, đo lệch nDCG@5 trên cùng máy so với bản 1.30.0, rồi xin người dùng quyết.",
+          "lines": [
+            "claude:c4caee3c#L2585",
+            "claude:c4caee3c#L2893"
+          ]
+        },
+        "outcome": {
+          "text": "Gói Mac Intel dựng xong, smoke xanh. Người dùng chọn phát hành và chấp nhận hai mức lệch: multilingual +0,063, vi-synonym −0,017.",
+          "lines": [
+            "claude:c4caee3c#L2890",
+            "claude:c4caee3c#L2899"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi upstream bỏ một nền, đo lệch trên cùng máy trước khi ghim bản cũ, và đặt ngưỡng chấp nhận trước khi đo.",
+          "lines": [
+            "claude:c4caee3c#L2893"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-ranh-gioi-fork-va-repo-du-40f9",
+      "code": "M-0AB1",
+      "title": "Ranh giới fork và repo dự án: hai việc L13 và L22 không thuộc fork",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án Obsidian Hybrid Search là công cụ tìm kiếm chạy trên máy cho vault Obsidian, và người làm đang dựng một fork chỉ chứa cơ chế dùng chung. Agent đề xuất làm một phần hai mục gợi ý khi viết và sổ câu tìm trong lõi fork, cho rằng việc đó đúng chỗ. PRD thật ra đã ghi cả hai thuộc repo dự án, vì chỉ plugin mới thấy được việc gõ và bấm mở note. Người làm hỏi từng mục rồi cập nhật PRD, để không đưa logic sản phẩm vào fork.",
+      "audience": "dev làm plugin hoặc công cụ có nhiều repo",
+      "spine": {
+        "context": {
+          "text": "Obsidian Hybrid Search là công cụ tìm kiếm chạy cục bộ cho vault Obsidian; người làm đang dựng một fork chỉ chứa cơ chế dùng chung.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất các mục bắt buộc của roadmap trong plan.",
+          "lines": [
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "L13 cần mã chạy trong Obsidian, CLI và MCP không làm được. L22 cần biết người dùng có mở note từ kết quả tìm hay không.",
+          "lines": [
+            "claude:c4caee3c#L2250"
+          ]
+        },
+        "turn": {
+          "text": "Agent tưởng có thể làm một phần L13 và L22 trong lõi fork; PRD đã ghi cả hai thuộc repo dự án.",
+          "lines": [
+            "claude:c4caee3c#L2228",
+            "claude:c4caee3c#L2250"
+          ]
+        },
+        "action": {
+          "text": "Người dùng hỏi từng mục, rồi agent cập nhật PRD mục 14.2: L13 và L22 thuộc repo dự án.",
+          "lines": [
+            "claude:c4caee3c#L2394",
+            "claude:c4caee3c#L2404"
+          ]
+        },
+        "outcome": {
+          "text": "Thay đổi đã commit và push ở a50f7d1; fork không còn việc cho L13 và L22.",
+          "lines": [
+            "claude:c4caee3c#L2405",
+            "claude:c4caee3c#L2411"
+          ]
+        },
+        "takeaway": {
+          "text": "Đọc cột phía làm trong PRD trước khi đề xuất đưa việc vào fork, và quyết ranh giới repo trước khi viết code.",
+          "lines": [
+            "claude:c4caee3c#L2228",
+            "claude:c4caee3c#L2411"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-ten-rieng-hai-chu-bi-phuc-40f9",
+      "code": "M-MKN7",
+      "title": "Tên riêng hai chữ bị phục hồi dấu thành từ thường, kéo nDCG@5 xuống",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-tieu-chi-client-nhan-su-kien-40f9",
+      "code": "M-X0KF",
+      "title": "Tiêu chí client nhận sự kiện trong 1 giây không được hạ, phải đổi debounce",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-chin-ban-va-phai-ap-dung-40f9",
+      "code": "M-BK44",
+      "title": "Chín bản vá phải áp đúng thứ tự, đảo thứ tự là xung đột",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-chu-bo-khoi-danh-sach-lam-40f9",
+      "code": "M-4XTE",
+      "title": "Chữ 'bỏ khỏi danh sách' làm người dùng hiểu ngược",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-han-muc-tmp-day-moi-agent-40f9",
+      "code": "M-4R9E",
+      "title": "Hạn mức /tmp đầy, mọi agent hỏng lệnh shell cùng lúc",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-hoi-xong-het-chua-plan-con-40f9",
+      "code": "M-F9D5",
+      "title": "Hỏi 'xong hết chưa': plan còn chờ người gán nhãn 60 câu",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-push-merge-khi-test-con-do-40f9",
+      "code": "M-D5SK",
+      "title": "Push merge khi test còn đỏ, rồi chạy lại ba lần mới thấy xanh",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-release-tu-tao-ban-rong-va-40f9",
+      "code": "M-8JB7",
+      "title": "Release tự tạo bản rỗng, và workflow ghim fixture cũ hơn bộ eval",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-agent-ket-luan-prd-muc-3-40f9",
+      "code": "M-Y35G",
+      "title": "Agent kết luận PRD mục 3.5 sai, hoá ra chính agent đọc nhầm",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-hai-ket-qua-cung-diem-doi-40f9",
+      "code": "M-W7VN",
+      "title": "Hai kết quả cùng điểm đổi chỗ, test snapshot chập chờn trên CI",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-hook-chan-lenh-chua-chu-build-40f9",
+      "code": "M-1HJ8",
+      "title": "Hook chặn lệnh chứa chữ build và node_modules, agent phải đổi cách làm",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-luat-danh-sach-muc-lech-cho-40f9",
+      "code": "M-T6E3",
+      "title": "Luật danh sách mức lệch cho phép lỗi thời, đổi thành chỉ chặn khi tụt",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-bat-actions-tren-fork-roi-thu-40f9",
+      "code": "M-8W1R",
+      "title": "Bật Actions trên fork rồi thử tắt workflow upstream và nhận 403",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-bon-loi-git-trong-cay-dung-40f9",
+      "code": "M-DFRS",
+      "title": "Bốn lỗi git trong cây dùng chung: pull, commit rỗng, merge bị huỷ, quoting",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-ci-do-thi-tu-mo-issue-40f9",
+      "code": "M-8PMJ",
+      "title": "CI đỏ thì tự mở issue, đóng kèm nguyên nhân khi xanh",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-don-thu-muc-lam-viec-tu-40f9",
+      "code": "M-YJ1G",
+      "title": "Dọn thư mục làm việc: từ 21 GB xuống 6,4 GB, giữ phần agent còn dùng",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-dung-mot-agent-dieu-phoi-kieu-40f9",
+      "code": "M-R2D5",
+      "title": "Dùng một agent điều phối kiểu lead: tách plan thành nhiều phase, mở nhiều agent con chạy song song trên các git worktree riêng, rồi ghép từng việc khi agent báo xong.",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-viet-khung-do-chat-luong-rieng-40f9",
+      "code": "M-BB1F",
+      "title": "Viết khung đo chất lượng riêng cho từng người dùng (eval trên vault thật) mà không đưa nội dung cá nhân ra ngoài repo.",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-dung-quyet-dinh-cua-nguoi-dung-40f9",
+      "code": "M-ZESR",
+      "title": "Dùng quyết định của người dùng đã ghi thành quy tắc trong plan và PRD, rồi sửa tài liệu theo đúng quyết định đó.",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

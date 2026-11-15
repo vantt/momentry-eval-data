@@ -1,0 +1,39 @@
+Dưới đây là 14 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Đối chiếu trước khi báo: agent kiểm lại từng khẳng định quan trọng của sub-agent (đếm dòng, đọc lại file, chạy lại lệnh) rồi mới báo cho user, thay vì chuyển nguyên kết quả.
+   Đối chiếu trước khi báo: agent kiểm lại từng khẳng định quan trọng của sub-agent (đếm dòng, đọc lại file, chạy lại lệnh) rồi mới báo cho user, thay vì chuyển nguyên kết quả. Phần lớn người dùng AI nhận báo cáo của agent/sub-agent rồi tin luôn, hoặc chỉ đọc lướt.
+M2. Tách rõ 'đã kiểm bằng lệnh/mã' với 'suy luận' trong từng bảng báo cáo, và ghi rõ giới hạn của kết quả (vd: 'đếm thô', 'chưa đọc hết', 'không kiểm token còn hạn').
+   Tách rõ 'đã kiểm bằng lệnh/mã' với 'suy luận' trong từng bảng báo cáo, và ghi rõ giới hạn của kết quả (vd: 'đếm thô', 'chưa đọc hết', 'không kiểm token còn hạn'). Báo cáo AI thường trình bày mọi kết luận với cùng độ chắc chắn, không nói mình chưa kiểm cái gì.
+M3. Chuỗi thay thế quyết định: 36 ADR, 18 quan hệ, và ít nhất 4 quyết định chỉ nói trong câu chữ
+   Trong 4679 sự kiện decision, 37 có scope. Trong 36 ADR có 8 quyết định mang quan hệ supersedes, tổng cộng 18 quan hệ. Với 7 cặp quyết định nền tảng, id khớp được nhưng 5 trên 7 chỉ thay một phần. Ít nhất 4 quyết định thay điều khoản chỉ được ghi trong câu chữ, và có đích thay thế không phải quyết định mà là một mã băm tài liệu. Dữ liệu vì vậy chưa đủ để tính tập hiệu lực.
+M4. Agent nói 'không có chủ', chủ nhớ ra một component đã làm xong: tsk-1lv
+   Agent kết luận cả ba máy kiểm không thuộc component nào. Chủ dự án bác bỏ, nhắc rằng có một component consolidate và làm tươi luật, và yêu cầu tìm lại. Tra work item thấy tsk-1lv (sáu việc con) đã done, với 15 vòng hỏi đáp thiết kế và quyết định D2 'không stored graph, không daemon'. Agent đính chính và viết báo cáo nghiên cứu nối vào plan.
+M5. Hội đồng kiến trúc 11 ghế: bước shaping lỗi ngay lần chạy đầu
+   Agent commit và push 42 dòng .fgos/config.json sau khi quét bí mật, rồi rebase lên 28 commit mới của remote. Workflow architecture-advisory chạy được bước framing, nhưng shaping kết thúc với execution-failure. Lần đầu agent không đọc được status vì lỗi parse, sau đó mới thấy ghế shape-proposals lỗi.
+M6. Khi user yêu cầu mở một việc tốn thời gian hoặc tốn tiền (hội đồng nhiều model, probe ngoài), agent kiểm tra điều kiện an toàn và chi phí trước, báo danh sách cho user, rồi chờ duyệt trước khi chạy.
+   Khi user yêu cầu mở một việc tốn thời gian hoặc tốn tiền (hội đồng nhiều model, probe ngoài), agent kiểm tra điều kiện an toàn và chi phí trước, báo danh sách cho user, rồi chờ duyệt trước khi chạy. Nhiều người để AI tự chạy luôn các lệnh gọi model ngoài, hoặc không biết có những lệnh đó.
+M7. Mô phỏng nói hội đồng đủ 11 ghế, nhưng bảng model đưa ra sai vì mô phỏng thiếu herdr
+   Mô phỏng gán openai qua codex-cli-bwrap, nhưng phiên thật có herdr nên gán khác. Khi chạy explain với herdrPresent true thì kết quả đúng: các capability critical chạy tầng frontier chứ không phải flagship như agent đã nói. Deepseek và glm cũng không nằm trong chuỗi dự phòng vì tierFallback chỉ liệt kê bốn family. Agent đính chính trước khi chủ quyết định.
+M8. Probe sáu nhà cung cấp: 'kho tài khoản rỗng' nghĩa là fgOS không quản lý tài khoản nào
+   Lệnh provider-capacity trả về providers rỗng, nên fgOS không biết quota của ai. Lần probe đầu chỉ claude chạy được. Sau khi chủ copy lại session, kho có hai nhà cung cấp, deepseek và glm chạy được; openai, gemini và xai vẫn lỗi vì hết đăng nhập, hiện no-model, hoặc treo ở khâu giao lệnh. Agent chỉ đọc tên file và ngày sửa, không đọc nội dung credential.
+M9. Ba agent quét song song: Knowledge Registry đã chạy trên 479 tài liệu, đề xuất mới suýt trùng
+   Registry có 479 topic và 479 doc, chỉ phủ tài liệu end-user, khoảng 15% trong 3146 file .md. Có ba index song song với 492, 479 và 0 mục. Trong 479 doc có 332 provisional và 147 active, với 365 role khác nhau. Lỗi gốc nhỏ: check doc-provisional-aged không bao giờ bắn, vì so updatedAt là chuỗi ISO nên ra NaN. Agent kiểm lại từng con số trước khi gộp rồi ghi 25 dòng ghi chú vào proposal.
+M10. Đổi tên tài khoản cho thống nhất: đặt tên theo nhà cung cấp, kiểm đăng nhập trước khi di chuyển
+   Agent tạo rồi bỏ một profile trùng tên. Trước khi đổi tên một profile vừa tạo, agent đếm bảng auth để chắc chưa có đăng nhập, rồi chuyển thư mục đó sang chỗ tạm thay vì xoá. Thư mục tài khoản pi, alias zsh và config được đổi theo. Agent cũng phát hiện bốn alias trỏ tới profile chưa tồn tại và tạo khung cho chúng. Kết quả: 8 tài khoản trong 5 pool.
+M11. Kế hoạch 260925 nằm trên nhánh chưa push: agent không đọc được manifest 331 file
+   Agent dùng git show trên nhánh remote để đọc phase file, nhưng đầu nhánh chỉ có commit ngày 2026-10-13, và hai đầu nhánh được ghi trong board chưa được push. Vì vậy phase 7, phase 8 bước 3 đến 5 và manifest 331 file không đọc được. Agent báo rõ điều này và không suy đoán nội dung.
+M12. Nhập lại khoá TheHive ghi đè khoá cũ không sao lưu, bị 401, rồi lỗi một ký tự thừa
+   Agent đưa lệnh nhập khoá nhưng không có bước sao lưu auth.json, nên ghi đè khoá cũ đang hoạt động. Khoá mới dài 25 ký tự bị API trả 401 cả khi gọi thẳng, trong khi khoá đúng dài 24 ký tự. Sau khi chủ dán lại có loại khoảng trắng và có sao lưu, API trả 200 và pi, omp đều trả OK. Agent thừa nhận đã nói 'không cần nhập lại' trước khi sao lưu.
+M13. Máy kiểm đã viết xong nhưng không chạy ở đâu: 374 vi phạm và một lệnh ghi đè nuốt vi phạm mới
+   check-decision-codes báo 374 vi phạm (tên test nhúng mã quyết định) nhưng chỉ chạy trong test của chính nó, không chạy trong npm test. Cả hai script baseline đều ghi đè vô điều kiện, nên chạy lại lệnh là mọi vi phạm mới thành 'đã biết' mà không ai hay. Agent cũng thấy hai đường dẫn chết trong thông báo của pre-commit. Kế hoạch chia 6 việc: phase 1 đến 4 làm ngay, phase 5 đến 6 chờ xác nhận manifest.
+M14. Commit chỉ file của mình giữa cây bẩn của người khác
+   Agent restore file board rồi pull --rebase --autostash. File mutation-census xung đột, bản của chủ được cất vào stash và lấy bản remote. Lần commit đầu lỗi pathspec vì file chưa được git biết tới. Sau đó agent tách ba commit chỉ chứa file của mình: proposal, plan cùng sáu báo cáo, và board. Board được ghi lại theo cấu trúc mới rồi mới push.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

@@ -1,0 +1,125 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+</asks>
+
+<story>
+hook: Skill 11.900 chữ bị chê dư thừa, cắt còn 6.400 mà vẫn thêm được nhóm UX
+tension: it_ma_nhieu (Cắt 46% số chữ / Vẫn thêm được cả nhóm UX, số rule tăng từ 183 lên 230)
+stakes: 3/3
+# Skill 11.900 chữ bị gọi là dư thừa, cắt còn 6.400 chữ
+
+**Bối cảnh:** Agent soạn bộ quy tắc packaging chung cho nhiều dự án, dựa trên việc đọc song song 4 repo. Người dùng thấy tài liệu quá nhiều chữ.
+**Chuyện gì xảy ra:** Phiên bản đầu có 183 rule, mỗi rule kèm 2–6 dòng giải thích, tổng khoảng 11.900 chữ cùng 4 file case study. Agent đo bằng wc -w (common 5.507 chữ, languages 1.682 chữ), rồi viết lại thành mỗi rule một dòng và thay case study bằng references.md, một bảng đường dẫn tới code mẫu thật. Sau khi viết lại, cả skill còn khoảng 6.400 chữ (giảm 46%) dù đã thêm nhóm UX. Số rule qua các đợt là 183 → 190 → 202 → 212 → 221 → 230.
+**Bài học:** Đo số chữ trước và sau mỗi lần sửa tài liệu cho agent, và thay ví dụ chép lại bằng đường dẫn tới code thật.
+**Artefact:** Bảng trước/sau số chữ theo thư mục (common, languages, channels, templates). Không có nội dung riêng tư cần che.
+</story>
+
+<excerpt>
+[L103] AGENT: Two of four reports are in. While I wait for the rest, I'll write the case-study files for mdview and herdr-go so none of the findings get lost.
+[L104] TOOL Bash: mkdir -p /home/vantt/projects/devops/skills/packaging-distribution-guide/{common,languages,case-studies,templates}; echo done
+[L105] RESULT: done
+[L117] TOOL Write: /home/vantt/projects/devops/skills/packaging-distribution-guide/case-studies/mdview.md
+[L118] RESULT: File created successfully at: /home/vantt/projects/devops/skills/packaging-distribution-guide/case-studies/mdview.md (file state is current in your context — no need to Read it back)
+…
+[L306] TOOL Bash: ln -sfn /home/vantt/projects/devops/skills/packaging-distribution-guide ~/.claude/skills/packaging-distribution-guide && ls -la ~/.claude/skills/ | grep packaging; cd /home/vantt/projects/devops/skills/packaging-distribution-guide && find . -type f | sort && wc -l $(find . -name '*.md') | tail -1 && …[+26]
+[L307] RESULT: lrwxrwxrwx 1 vantt vantt 63 Nov 2 14:18 packaging-distribution-guide -> /home/vantt/projects/devops/skills/packaging-distribution-guide | ./case-studies/forgent.md
+[L317] AGENT: Tôi đã tạo xong skill. Nó đã chạy được ngay vì tôi link nó vào `~/.claude/skills/`. Script kiểm tra cấu trúc chạy qua: 183 rule, ID không trùng. File `templates/install.sh` tôi đã chạy thử với một bản release giả lập: cài đặt, cài lại lần hai, gỡ cài đặt, từ chối khi gặp binary lạ và báo lỗi khi checksum sai đều cho kết quả đúng.
+
+**Vị trí:** `/home/vantt/projects/devops/skills/packaging-distribution-guide` (symlink từ `~/.claude/skills/packaging-distribution-guide`)
+
+## Cấu trúc
+
+```
+SKILL.md                 chỉ chứa quy trình cho agent, không chứa rule
+common/NN-<topic>.md     rule dùng chung cho mọi ngôn ngữ (13 chủ đề)
+  00 principles · 10 versioning · 20 build-release · 25 supply-chain · 30 install
+  40 self-update · 50 config-state · 60 doctor · 70 uninstall · 80 agent-integration
+  85 service-daemon · 90 testing · 95 docs-ux
+languages/               rust · go · node · polyglot · _template
+channels/                agent-host-plugin · _template   (brew/scoop/docker… thêm sau)
+case-studies/            mdview · skillstation · herdr-go · forgent (cái hay + lỗi cần tránh)
+templates/               project-checklist.md (mẫu kết quả) · install.sh (khung POSIX đã test)
+CONTRIBUTING.md          quy tắc mở rộng
+scripts/lint-guides.sh   kiểm tra frontmatter, định dạng rule, ID không trùng
+```
+
+**Mỗi rule có dạng:** `### INS-06 · MUST · <việc cần làm>  [rule chung liên quan]`, kèm lý do và dự án nào đã làm. Rule trong `languages/` chỉ bổ sung chi tiết cụ thể và trỏ lại ID của rule chung (ví dụ `RS-09 [UPD-*]`), không viết lại.
+
+**Dễ mở rộng:** `SKILL.md` không giữ danh sách file cố định. Agent tự liệt kê thư mục rồi đọc frontmatter (`applies_when`, `detect: Cargo.toml`…) để chọn file phù hợp. Vì vậy:
+- Thêm ngôn ngữ mới (Python…): copy `languages/_template.md`.
+- Thêm kênh phân phối (Homebrew, Docker…): copy `channels/_template.md`.
+- Thêm chủ đề mới: tạo `common/NN-x.md`.
+- Thêm dự án đã học: thêm vào `case-studies/`.
+
+Không cần sửa `SKILL.md`. ID rule không bao giờ đánh  …[+2226]
+[L319] USER: nhưng mà cách chúng ta collect database vậy có quá chi tiết không, dẫn đến lượng text quá nhiều. anh cảm thấy hơi dư thừa
+[L328] TOOL Bash: cd /home/vantt/projects/devops/skills/packaging-distribution-guide; for d in common languages channels case-studies templates; do printf "%-14s %5s words\n" $d $(cat $d/* | wc -w); done; wc -w SKILL.md CONTRIBUTING.md; grep -c '^### ' common/*.md languages/*.md channels/*.md | awk -F: '{s+=$2} END{p …[+118]
+[L329] RESULT: common 5507 words | languages 1682 words
+[L337] TOOL Bash: cp -a /home/vantt/projects/devops/skills/packaging-distribution-guide /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/pdg-v1-backup && echo backed up
+…
+[L526] AGENT: Next I'll update the lint script for the new format (one-line rules, `tier`, checking that every referenced ID exists) and group the checklist template by tier.
+[L527] TOOL Bash: cd /home/vantt/projects/devops/skills/packaging-distribution-guide cat > scripts/lint-guides.sh <<'EOF' #!/bin/sh # Validate guide structure: frontmatter, rule format, unique ids, cross-references resolve. set -eu ROOT="$(cd "$(dirname "$0")/.." && pwd)" fail=0 err() { printf 'ERROR %s\n' "$*" >&2;  …[+2995]
+[L528] RESULT: OK: 190 rules, structure valid | exit=0
+[L533] TOOL Bash: cd /home/vantt/projects/devops/skills/packaging-distribution-guide echo "see UPD-99" >> references.md; sh scripts/lint-guides.sh; sed -i '$d' references.md; sh scripts/lint-guides.sh for d in common languages channels templates; do printf "%-10s %5s words\n" $d $(cat $d/* | wc -w); done; wc -w SKILL …[+297]
+[L536] RESULT: ERROR reference to unknown rule id: UPD-99 | OK: 190 rules, structure valid
+[L538] AGENT: Skill đã gọn lại và thứ tự ưu tiên giờ nằm ở đầu SKILL.md. Script kiểm tra cấu trúc chạy qua với 190 rule. Tôi đã thử cài một ID sai vào để chắc nó bắt được lỗi.
+
+**Giảm dư thừa:** các file `.md` từ khoảng 11.900 từ còn khoảng 6.400 từ (−46%), dù đã thêm nhóm UX mới. Những thay đổi chính:
+- **Mỗi rule còn 1 dòng.** Trước đây mỗi rule có tiêu đề riêng và 2–6 dòng giải thích.
+- **Bỏ 4 file case study.** Thay vào đó là `references.md`: một bảng chỉ thẳng từ rule tới file code mẫu trong repo của anh, cuối file có danh sách lỗi cần tránh. Tôi đã kiểm tra mọi đường dẫn trong bảng đều tồn tại.
+- **Bỏ các rule trùng nhau** giữa nhóm UX, config và update.
+- **Trên thực tế agent đọc ít hơn nữa.** Thường nó chỉ đọc SKILL.md, principles, UX và vài file khớp với dự án.
+
+**Thứ tự ưu tiên của anh:**
+- **Đầu SKILL.md, trước mọi nội dung khác,** có mục `⚑ PRIORITY ORDER`: 1 UX → 2 an toàn → 3 đúng đắn → 4 nhanh, nhẹ. Kèm cách xử lý mâu thuẫn: biện pháp an toàn được làm tự động và ẩn sau, không bắt user thêm thao tác. Tầng dưới chỉ thắng UX khi sắp vi phạm một MUST của nó, ví dụ cài binary chưa kiểm tra.
+- **CONTRIBUTING.md mở đầu bằng thứ tự này.** Agent nào thêm kiến thức mới cũng phải xếp nó vào một tầng, và không được làm việc cài, update hay sửa config khó hơn.
+- **File mới `common/05-user-experience.md`** gồm 25 rule, chia đúng theo các ý anh nêu: cài nhanh, update nhanh, ít phụ thuộc, config dễ hiểu, config dễ sửa, docs và thông báo lỗi.
+- **Mỗi file trong `common/` có trường `tier`** cho biết nó thuộc tầng nào.
+- **Checklist mẫu nhóm theo tầng, UX trước.** Kế hoạch triển khai xử lý các thiếu sót ở tầng UX đầu tiên.
+
+Bản cũ tôi để ở `/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/pdg-v1-backup`. Đây là thư mục tạm, nên nếu muốn giữ lâu thì anh nói tôi chép ra chỗ khác.
+[L545] USER: những thư và bài học về syntax của command, bin nên có  lệnh update/upgrade trực tiếp để nâng version. rồi syntax của doctor, lệnh init, .... những thứ đó có ghi nhận chưua
+[L550] AGENT: Hiện các lệnh này đã có nhưng **rải rác ở từng file**: `update` (UPD-01), `doctor` (DOC-02), `init/setup` (DOC-08), `config edit/set` (UX-16), `service` (SVC-02), `connect` (AGT-01), `paths` (CFG-03). Chưa có một chỗ quy định **bộ lệnh chuẩn và cú pháp chung**. Một số bài học về cú pháp cũng chưa được ghi:
+- Nên có `upgrade` làm alias của `update`, vì người dùng gõ cả hai.
+- `fgctl` thiếu `--version`, và subcommand không có `--help`.
+- Nên có cờ chung thống nhất, bảng exit code chuẩn, và các lệnh nội bộ ẩn.
+
+Tôi sẽ thêm `common/07-command-surface.md` (tầng UX) làm nơi duy nhất định nghĩa cú pháp, rồi cho UPD-01 và DOC-02 trỏ về đó để không trùng.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

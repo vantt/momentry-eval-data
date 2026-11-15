@@ -1,0 +1,101 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L3226] USER: còn mấy bước em liệt kê đi và tại sao không bật được
+[L3243] USER: tất cả các bước chúng ta sẽ làm đều cần phải dạy lại cho system-operator nhé. giờ lại bước 2 tách system operrator khỏi vantt
+[L3324] USER: (3) sao không push
+</asks>
+
+<story>
+hook: Bot có quyền ghi thì --no-verify vượt hết hook, nên chỉ cho đọc
+tension: cam_ma_van_lot (Hook pre-push chặn push xấu lên main / Bot có quyền ghi chỉ cần --no-verify là qua)
+stakes: 2/3
+# Bot không có quyền ghi: git fetch thay vì push
+
+**Bối cảnh:** Chủ hỏi tại sao bộ cài đặt của System Operator không được push lên git.
+**Chuyện gì xảy ra:** Repo private của tài khoản cá nhân dùng gói Free không bảo vệ được main. Nếu bot có quyền ghi thì nó ghi được main, và hook pre-push bị bỏ qua bằng --no-verify. Phương án: bộ cài đặt vẫn được push bình thường bằng tài khoản chủ. System Operator chỉ có deploy key đọc, commit vào nhánh ops/ rồi chủ fetch về xem diff và merge. Chặn bằng quyền, không bằng lời dặn.
+**Bài học:** Đừng dựa vào lời dặn để chặn agent push. Không cấp quyền ghi thì nó không thể ghi.
+**Artefact:** Sơ đồ quyền: ai đọc, ai ghi, ai merge.
+</story>
+
+<excerpt>
+[L3320] AGENT: Em đã viết kế hoạch chi tiết cho Giai đoạn 2 vào `plans/2026-11-01-phase2-opc-ops.md`. Kế hoạch đang chờ anh duyệt; em chưa chạy gì trên máy. Em cũng đã ghi vào memory yêu cầu "mọi bước đều phải dạy lại cho System Operator".
+
+**Kết quả sau Giai đoạn 2:** System Operator chạy bằng user `opc-ops`, không có docker và không có sudo. Việc nào cần root thì nó chỉ gọi được qua cổng `opc-priv`, gồm vài lệnh cố định. Nếu nó bị điều khiển, cái mất tối đa là các workspace Multica và key của khách. Nó không còn đường lên root, không đọc được `.env` của Multica, không vào được home của anh.
+
+**7 bước:**
+
+| # | Việc | Anh làm gì |
+|---|---|---|
+| 2.1 | Tạo user `opc-ops` và 2 danh tính Multica: `ops-runtime` (member, chỉ ở `system`, daemon đăng nhập bằng user này) và `ops-bot` (admin, PAT dùng cho `mops.sh` và `opc.mjs`) | Chạy 3 lệnh `sudo`; `/login` Claude cho `opc-ops`; thêm deploy key chỉ đọc trên GitHub |
+| 2.2 | Cổng `opc-priv`: `status`, `restart` daemon agent, `login-code` (chỉ cho email `agents-*`/`ops-*`, không bao giờ cho email của anh) | Cài script và một dòng sudoers |
+| 2.3 | nftables, bảng riêng `inet opc`: `opc-agent` và `opc-ops` chỉ gọi được API Multica và internet; chặn các cổng nội bộ, tailnet, LAN | Cài file rule và unit |
+| 2.4 | Chặn agent cài cửa hậu cho lượt chạy sau: daemon không thấy tiến trình của user khác; khoá các file `~/.claude/settings.json`, `CLAUDE.md`, `.gitconfig` của agent; `npm --ignore-scripts` | Có trong `setup` |
+| 2.5 | Chuyển `~/opc-clients` sang `~opc-ops/clients`; `opc-ops` sở hữu `/opt/opc-agent`. Anh vẫn sửa được nhờ vào nhóm `opc-ops` | Chạy 1 lệnh |
+| 2.6 | Viết lại bảng mức tự quyết theo R0–R3 | Không |
+| 2.7 | Bật daemon `opc-ops`, chạy thử, rồi gỡ daemon cũ | Chạy 1 lệnh |
+
+Mỗi bước đều có phần dạy lại trong skill `multica-ops`. Trong đó có tài liệu mới `references/privileged.md`, ghi những việc nó tự làm qua `opc-priv` và những lệnh `sudo` nó phải soạn sẵn để anh chạy. Sau đó em deploy lại vào `system`.
+
+**Bốn chỗ em đã chọn  …[+780]
+[L3324] USER: (3) sao không push
+[L3327] AGENT: Lý do là repo `fgOPC` chứa chính các script anh chạy bằng `sudo`: `stack/agent-user.sh`, `pi-runtime.sh`, và sắp tới là `opc-priv` cùng rule nftables.
+
+1. Repo này là repo private của tài khoản cá nhân, dùng gói GitHub Free, nên không bảo vệ được nhánh `main`. Đây cũng là vấn đề H10 mà anh đã chọn hoãn.
+2. Muốn push thì bot phải có quyền ghi. Mà có quyền ghi thì bot ghi được vào `main`: GitHub Free không chặn được, còn hook `pre-push` thì bỏ qua được bằng `--no-verify`.
+3. Hậu quả: một System Operator bị điều khiển có thể sửa `stack/*.sh` ngay trên `main`. Lần sau anh `git pull` rồi chạy `sudo bash stack/...` là nó có root. Như vậy chuỗi leo thang mà Giai đoạn 2 vừa cắt sẽ quay lại qua đường git.
+
+Cách `git fetch /home/opc-ops/fgOPC ops/<việc>` cho kết quả giống push lên một nhánh: anh vẫn xem diff rồi merge. Khác ở chỗ bot không cần quyền ghi nào trên GitHub.
+
+Nếu anh muốn bot push thật (để xem diff trên GitHub, mở PR), có hai cách:
+- **GitHub Pro, khoảng 4 USD/tháng.** Bật bảo vệ `main` (bắt buộc qua PR, chỉ anh merge), rồi cho bot push vào nhánh `ops/*`. Cách này giải luôn H10 cho `opc-studio-app`.
+- **Chuyển repo sang một Organization miễn phí (c′).** Bot chỉ có quyền đọc và push lên fork của nó. Nhưng mình chưa chắc gói Free có cho fork repo private và chạy CI từ fork hay không.
+
+Em đề xuất làm cách fetch nội bộ ngay bây giờ, vì không tốn tiền và không phải chờ. Nếu sau này anh mua Pro, em chuyển System Operator sang push nhánh `ops/*` và mở PR; đổi chỉ mất vài phút. Anh có muốn đi thẳng Pro luôn không?
+[L3333] USER: khoan, nó không push là hành vi, hay bộ cài đặt này khong được push lên git
+[L3340] AGENT: Ý em là cơ chế chặn, không phải dặn nó đừng push. Bộ cài đặt vẫn nằm trên git bình thường.
+
+- **Bộ cài đặt** (`stack/ops-user.sh`, `opc-priv`, rule nftables, skill…) vẫn được commit và push lên GitHub `vantt/fgOPC` như mọi thứ khác. Người push là anh, hoặc em trong phiên của anh, bằng tài khoản `vantt`.
+- **System Operator** chỉ có một deploy key chỉ đọc. Nó `git pull` được nhưng không push được: GitHub sẽ từ chối, dù nó có bị điều khiển hay cố tình bỏ qua lời dặn.
+- **Khi System Operator sửa gì đó**, ví dụ nâng `PI_VERSION`, thì nó commit vào nhánh `ops/<việc>` trong bản clone của nó. Anh, hoặc em, `git fetch` nhánh đó về repo của anh, xem diff, merge, rồi push lên GitHub. Thay đổi vẫn lên git, chỉ là phải qua tay anh.
+
+Lý do làm vậy là nguyên tắc 1 của kế hoạch: giới hạn bằng cơ chế, không bằng lời dặn. Lời dặn "đừng push lên `main`" thì một agent bị prompt injection có thể phớt lờ. Không có quyền ghi thì nó không thể push, dù làm cách nào.
+[L3345] USER: ok, làm 2.1 và 2.2 đi
+[L3352] TOOL Bash: cd ~/project/fgOPC/multica; cat stack/login-code.sh; docker ps --format '{{.Names}}\t{{.Status}}\t{{.Label "com.docker.compose.project"}}' | head -20
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,97 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L1140] USER: b,c đồng ý. chưa hiểu a. do ohs của tôi là private?
+[L1160] USER: 3 giữ private, việc này tính sau.
+[L1177] USER: vậy với ohs, khách có gh cũng phải login github
+</asks>
+
+<story>
+hook: Cache CI xoá hết file nhưng giữ lại thư mục rỗng, và thế là đủ làm hỏng
+tension: nho_ma_to (Thư mục rỗng chẳng chứa gì / Nó làm cache hỏng và cả các lần chạy sau đều đỏ)
+stakes: 1/3
+# Lỗi CI đỏ từ cache: rust-cache xoá file ngoài target nhưng giữ thư mục rỗng
+
+**Bối cảnh:** CI đỏ trên cả ba nền sau một lần merge, bước so khớp parity lỗi vì thư mục dump không có manifest.
+**Chuyện gì xảy ra:** Swatinem/rust-cache lưu target/ nhưng xoá mọi file ngoài thư mục build, giữ lại thư mục rỗng. Lần chạy đầu ghi thư mục con vào target/parity rồi lưu cache hỏng; các lần sau khôi phục đúng cache đó và bị từ chối ghi đè. Sửa bằng cách ghi dump ra RUNNER_TEMP, ngoài cache.
+**Bài học:** Đừng ghi kết quả sinh ra vào thư mục mà cache của CI sẽ dọn; ghi ra thư mục tạm.
+**Artefact:** Sơ đồ hai lần chạy CI (cache hỏng → lần sau lỗi); không có dữ liệu nhạy cảm.
+**Góc người ngoài:** cách làm phổ biến là Xoá cache thủ công hoặc chạy lại CI đến khi xanh; khi bị từ chối vì billing thường tưởng code lỗi; ở đây khác ở Agent đọc thông báo lỗi của GitHub, tách lỗi hạ tầng khỏi lỗi code, và đề xuất đúng hành động cho người dùng. Người đọc muốn biết cách phân biệt để khỏi sửa nhầm code.
+</story>
+
+<excerpt>
+[L1257] RESULT: pushed | https://github.com/vantt/obsidian-pkm/actions/runs/41412937710
+[L1263] AGENT: CI has failed on the last two merges. Checking the cause.
+[L1264] TOOL Bash: for r in 41410663494 41412319781; do gh run view $r --json jobs -q '.jobs[]|.name+" "+.conclusion'; done; gh run view 41412319781 --log-failed 2>/dev/null | grep -E "panicked|FAILED|failed|error" | head -20
+[L1265] RESULT: ubuntu-latest failure | macos-latest failure
+[L1271] TOOL Bash: gh run view 41410663494 --log-failed 2>/dev/null | grep -vE "^\S+\s+\S+.*(Compiling|Downloaded|Downloading)" | grep -iE "lệch|error|panicked|FAILED|chưa|exit" | head -25
+[L1272] RESULT: ubuntu-latest So bản Rust với golden 2026-11-02T08:08:24.2358544Z ##[error]Process completed with exit code 2. | macos-latest So bản Rust với golden 2026-11-02T08:07:52.8069630Z ##[error]Process completed with exit code 2.
+[L1282] TOOL Bash: gh run view 41410663494 --log-failed 2>/dev/null | grep "ubuntu-latest" | grep "So bản Rust" | tail -15 | cut -c1-300; gh run list --limit 12 --json conclusion,displayTitle -q '.[]|.conclusion+" "+.displayTitle' | head -12
+[L1283] RESULT: ubuntu-latest So bản Rust với golden 2026-11-02T08:08:24.1529000Z ##[group]Run cargo run -q --locked -p pkm-parity -- check --vault "$RUNNER_TEMP/kg-solo" --report "$RUNNER_TEMP/parity-report.json" | ubuntu-latest So bản Rust với golden 2026-11-02T08 …[+147]
+…
+[L1354] AGENT: All four agents are making progress: the CI fix is editing `main`, and the other three are working in their worktrees. I'm still waiting.
+[L1364] USER: <task-notification>
+<task-id>aa7d3a0c1d71a3790</task-id>
+<tool-use-id>toolu_01Qswi7nRzRni3YtB1i75Q58</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/aa7d3a0c1d71a3790.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix red CI on main" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I've fixed all three causes of the red CI and committed them on `main`, but nothing is pushed. Please push `cc8af51`, `c7bf21e` and `2f83462` (they sit on top of `0054429`) so CI runs again. The Windows fix has not run on a Windows machine yet.
+
+**1. Parity step failing on all 3 OS (since run 41408080051).**
+- **Cause:** `Swatinem/rust-cache` saves `target/` but deletes every file outside cargo's build folders, and keeps the empty folders. Run 41406769089 (commit `8f64929`) was the first time the Rust dump wrote subfolders (`tables/`, `cli/`, `mcp/`). That run saved a cache in which `target/parity/rust-dump` held only those empty folders and no `manifest.json`.
+- **Why everything after that failed:** from the next run (41408080051) on, the cache was restored as an exact match, so the check found a non-empty dump folder with no manifest and refused to overwrite it. The `2661aa0` commit doesn't touch `parity/`; it was just the first run to use the bad cache. Locally the check passes because nothing ever cleans your `target/`.
+- **Proof:** I created those empty folders and ran `check --dump-out` on them locally. It gives exactly the CI message and exit code 2.
+- **Fix (`cc8af51`):** `ci.yml` now passes `--dump-out "$RUNNER_TEMP/rust-dump"`, so the dump is written outside the cache. The check's "don't delete a folder that isn't a dump" safeguard stays as it was.
+
+**2. Windows: `mcp::tests::handshake` and `tools_list_comes_from_the_tool_layer`.**
+- **Cause:** a real product bug, not a test problem. `instructions::basename` only split paths on `/`, so on Windows the vault name became the whole path (`C:\Users\...\Vault thử`). That wrong name went into the MCP instructions and the `obsidian://` link.
+- **Python reference:** the Python spec (`mcp_server.py:89,93,200`) uses `ntpath.basename`, which splits on both `\` and `/` and drops the drive letter. I checked its behaviour on several Windows paths.
+- **Fix (`c7b …[+3142]
+[L1372] TOOL Bash: grep -n "cargo test --workspace --locked" .github/workflows/ci.yml && sed -i 's/cargo test --workspace --locked$/cargo test --workspace --locked --no-fail-fast/' .github/workflows/ci.yml && grep -n "no-fail-fast" .github/workflows/ci.yml && git add .github/workflows/ci.yml plans/reports/debugger-261 …[+251]
+[L1373] RESULT: 38: - run: cargo test --workspace --locked | 38: - run: cargo test --workspace --locked --no-fail-fast
+[L1379] TOOL Bash: git diff parity/src/rust_side.rs parity/src/rust_side/index_tables.rs | head -150
+…
+[L1445] RESULT: Tổng: 64 mục, 0 lệch chưa có tên, 15 mục chưa có. | Báo cáo: /tmp/claude-1000/-home-vantt-projects-obsidian-pkm/2dfb5915-3011-441f-a6fb-2c7cb5abd60b/scratchpad/lead/report.json
+[L1451] TOOL Bash: git add -A parity spec/PORTING.md && git commit -q --no-edit && git commit -q --amend -m "Merge query and tool layers Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && git status --short | grep -v '^??'; git push -q origin main && echo pushed
+[L1452] RESULT: pushed
+[L1459] TOOL Bash: sleep 30; id=$(gh run list --workflow CI --limit 1 --json databaseId -q '.[0].databaseId'); gh run watch $id --exit-status >/dev/null 2>&1; gh run view $id --json jobs,displayTitle -q '.displayTitle, (.jobs[]|.name+" "+.conclusion)'
+[L1460] RESULT (bị chặn): <tool_use_error>Blocked: sleep 30 followed by: id=$(gh run list --workflow CI --limit 1 --json databaseId -q '.[0].databaseId') gh run watch $id --exit-status gh run view $id --json jobs,displayTitle -q '.displayTitle, (.jobs[]|.name+" "+.conclusion)'. To wait for a condition, use Monitor with an until-loop (e.g. `until <check>; do sleep 2; done`). To wait for a command you started, use run_in_background: true. Do not chain shorter sleeps to work around this block.</tool_use_error>
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

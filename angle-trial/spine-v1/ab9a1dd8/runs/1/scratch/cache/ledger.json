@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "sessions": {
+    "claude:ab9a1dd8": {
+      "source": "claude",
+      "transcriptPath": "/home/vantt/.claude/projects/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413.jsonl",
+      "repoRoot": "/home/vantt/projects/momentry/.claude/worktrees/agent-a5afe411c17ff57d1/docs/_private/eval/angle-trial/replay/ab9a1dd8/runs/1/replay/repo",
+      "lastLine": 4000,
+      "size": 0,
+      "mtimeMs": 0,
+      "status": null,
+      "pending": false,
+      "needsRescore": [],
+      "mainGoals": [
+        {
+          "toLine": 4000,
+          "text": "Đưa công cụ momentry (CLI cài hook, thu thập chuyện từ phiên của nhiều coding agent) từ trạng thái test xanh nhưng người mới không cài nổi tới bản phát hành v0.1.0 thật, chạy được trên Windows/macOS/Linux và cài được bằng lệnh một dòng."
+        }
+      ],
+      "harvests": [
+        {
+          "at": "2026-11-05T12:10:03.066Z",
+          "fromLine": 1,
+          "toLine": 4000,
+          "runs": 1,
+          "runsFailed": 0,
+          "chunks": 1,
+          "hotspots": 9,
+          "hotspotsMissing": 0,
+          "stories": 23,
+          "written": 27,
+          "merged": 0,
+          "privacyBlocked": 0,
+          "privacyUnchecked": 0,
+          "usd": 0.10827400000000001,
+          "secs": 0.1,
+          "status": "done",
+          "explicit": true
+        }
+      ],
+      "spend": [
+        {
+          "at": "2026-11-05T15:30:08.764Z",
+          "step": "profile",
+          "usd": 0.0009803000000000001
+        },
+        {
+          "at": "2026-11-05T15:30:08.764Z",
+          "step": "angle",
+          "usd": 0.027152800000000005
+        }
+      ]
+    }
+  },
+  "repos": {}
+}

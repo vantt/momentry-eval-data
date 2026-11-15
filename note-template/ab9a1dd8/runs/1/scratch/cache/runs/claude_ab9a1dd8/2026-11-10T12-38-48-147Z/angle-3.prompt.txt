@@ -1,0 +1,85 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+momentry là công cụ đọc transcript các phiên làm việc với coding agent (Claude Code, Codex và một số agent khác), rồi nhặt ra những chuyện đáng kể để kể ra ngoài, như một con số đổi, một lỗi có gốc bất ngờ hay một quyết định bị đảo. Mỗi chuyện được ghi thành một file markdown trong repo và xếp hạng theo độ hấp dẫn, độ căng và mức quan trọng. Làm cho người làm một mình, người build in public, viết blog kỹ thuật hoặc báo cáo tuần, không muốn để mất chất liệu. Chạy trên máy của người dùng, đọc transcript cục bộ, có danh sách tên riêng để chặn không cho lộ vào repo, và giao diện web chỉ mở trên máy đó hoặc qua mạng riêng của người dùng. Mục tiêu v2: không bỏ sót chuyện đáng kể, không làm chậm hay lệch phiên làm việc chính, và không để lọt dữ liệu riêng vào repo.
+</project>
+
+<asks>
+[L9] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-research # Research ## Research Methodology Always honoring **KISS** and **DRY** principles. Deliver the full requested scope — never trim or defer what the user explicitly asked for. Add nothing unrequested. With `--yagni`, additionally challenge and cut any scope not needed for the stated outcome. **Be honest, be brutal, straight to the point, and be concise.** ### Phase 1: Scope Definition First, you will clearly define the research scope by: - Identifying key terms and concepts to investigate - Determining the r …[+5899]
+[L2233] USER: Stop hook feedback: [dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: Plan có 45 việc, mới xong 43/45. Hai việc còn lại là push lên GitHub để CI chạy lần đầu và kiểm nhánh Windows trên máy thật; cả hai chưa thực hiện, và assistant đã hỏi user có cho phép push không mà chưa có phản hồi.
+[L2948] USER: Stop hook feedback: [dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: Plan 45/45 tasks are checked and CI is green on the latest commit, but the condition requires the work to be complete 'tốt đẹp' (done well). The transcript shows an open item the assistant itself lists: v0.1.0 is not cut, so release.yml has never run and the README install command does not work yet, and the Windows hook shell behavior is unverified against a real Claude Code/Codex session. The plan was marked completed while these remain outstanding.
+[L3047] USER: Stop hook feedback: [dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: The plan is 45/45 and v0.1.0 is published with CI green, but the Windows hook behavior in a real Claude Code/Codex session is unverified and was only moved to issue #1, so the work is not fully complete 'tốt đẹp'.
+</asks>
+
+<story>
+hook: Chứng minh hook chạy trên Windows bằng lỗi đăng nhập, không cần khoá API
+tension: it_ma_nhieu (Không có khoá API, phiên không chạy được / Chính lỗi đăng nhập chứng minh hook đã được gọi trước đó)
+stakes: 2/3
+# Đo hook Claude Code trên Windows mà không dùng khoá API của ai
+
+**Bối cảnh:** Máy làm việc không có Windows, và agent không được dùng khoá hay tài khoản của chủ.
+**Chuyện gì xảy ra:** Agent viết workflow chạy tay trên runner windows-2025: cài Claude Code, cài momentry, init, rồi mở claude -p không đăng nhập. Hook SessionStart chạy lúc mở phiên, nên dòng hook.spawned trong hook.log chứng minh hook được gọi trước khi phiên báo lỗi đăng nhập. Kết quả: Claude Code gọi được hook trên Windows, Codex còn mở. Tài liệu và issue được cập nhật theo đúng phạm vi đã đo.
+**Bài học:** Khi thiếu môi trường thật, tìm một điểm trong vòng đời công cụ xảy ra trước điểm cần khoá; đo được phần nào thì ghi phần đó, và ghi rõ phần còn lại.
+**Artefact:** Dòng sự kiện trong hook.log, đã che mọi đường dẫn và thông tin đăng nhập.
+**Góc người ngoài:** cách làm phổ biến là Chỉ tin tài liệu của host, hoặc không kiểm được gì và ghi 'chưa xác minh'; ở đây khác ở Có cách kiểm hành vi thật của công cụ bên thứ ba mà không cần thông tin đăng nhập. Người đọc sẽ muốn biết trick 'hook được gọi trước khi phiên báo lỗi đăng nhập'.
+</story>
+
+<excerpt>
+[L3042] AGENT: momentry v0.1.0 đã phát hành công khai, và lệnh cài một dòng trong README chạy được thật với bản này.
+
+- **Phát hành:** workflow phát hành chạy xanh từ đầu đến cuối: CI 9/9 tổ hợp, tạo bản nháp, cài thử bản nháp trên Linux, macOS và Windows, rồi công bố. Bản phát hành có tarball, `install.sh`, `install.ps1` và `checksums.txt`: https://github.com/vantt/momentry/releases/tag/v0.1.0
+- **Thử từ GitHub thật:** trong một HOME tạm, tôi chạy `curl -fsSL …/install.sh | sh`. Kết quả: cài được v0.1.0 (đúng commit `a2fcfcb`), `init --yes` báo "✓ Sẵn sàng", `update --check` báo đã mới nhất, `uninstall` gỡ sạch và giữ dữ liệu.
+- **Hook trên Windows:** việc đo bằng một phiên Claude Code hay Codex thật đã thành issue #1, kèm các bước kiểm cụ thể: https://github.com/vantt/momentry/issues/1. Các bước còn lại trên Windows (cài, ghi hook, `doctor`, `update`, `uninstall`) đã chạy qua trên runner Windows của CI.
+
+Plan đã đóng ở 45/45 việc. Checklist đóng gói không còn MUST nào ở trạng thái thiếu. Những SHOULD còn để sau: completions, ký số cosign, gợi ý bản mới định kỳ, `config edit`.
+
+`README.md` và `README.vi.md` hiện vẫn có thay đổi chưa commit của phiên làm README song ngữ; tôi để nguyên, không đụng tới.
+
+Files:
+- /home/vantt/projects/momentry/docs/packaging-checklist.md
+- /home/vantt/projects/momentry/plans/261103-0921-packaging-distribution/plan.md
+[L3047] USER: Stop hook feedback:
+[dùng `/ak-cook --auto plans/261103-0921-packaging-distribution/plan.md` làm cho tới khi hoàn tất tốt đẹp]: The plan is 45/45 and v0.1.0 is published with CI green, but the Windows hook behavior in a real Claude Code/Codex session is unverified and was only moved to issue #1, so the work is not fully complete 'tốt đẹp'.
+[L3052] AGENT: Không có máy Windows với Claude Code đã đăng nhập, nhưng vẫn đo được phần quan trọng nhất của issue #1: Claude Code trên Windows có gọi được lệnh hook của momentry không và qua shell nào. Hook `SessionStart` chạy lúc mở phiên. Tôi sẽ thêm một workflow chỉ chạy tay trên runner Windows: cài Claude Code và Codex thật, cài momentry, `init`, rồi mở một phiên `claude -p` không có khoá API. Nếu `hook.log` có dòng `hook.spawned`, tức là hook đã được gọi trước khi phiên báo lỗi đăng nhập. Không dùng bí mật hay tài khoản nào của bạn.
+[L3053] TOOL Write: /home/vantt/projects/momentry/.github/workflows/windows-hook-probe.yml
+[L3056] RESULT: File created successfully at: /home/vantt/projects/momentry/.github/workflows/windows-hook-probe.yml (file state is current in your context — no need to Read it back)
+…
+[L3071] RESULT: .github/workflows/windows-hook-probe.yml | 67 ++++++++++++++++++++++++++++++++ | 1 file changed, 67 insertions(+)
+[L3074] TOOL Bash: cd /home/vantt/projects/momentry; gh run watch 41621636580 --interval 20 >/dev/null 2>&1; gh run view 41621636580 --json conclusion --jq .conclusion; gh run view 41621636580 --log 2>/dev/null | cut -f2,3 | grep -E "^(open a|report|install Claude)" | cut -c1-40,60-300 | grep -vE "npm (warn|notice)|^\ …[+15]
+[L3077] RESULT: success | open a Claude Code session (no credentia4:25.5418776Z ^[[36;1mStart-Sleep -Seconds 5^[[0m
+[L3082] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' p='docs/installation.md'; s=open(p).read() a="Đã kiểm trên Windows thật (runner CI `windows-2025`, PowerShell 5.1): cài, `init` ghi hook, `doctor`, `update`, `uninstall`. Chưa kiểm: một phiên Claude Code hay Codex thật gọi hook trên Windows, vì các …[+2005]
+[L3091] RESULT: pushed | https://github.com/vantt/momentry/issues/1#issuecomment-6601574629
+[L3096] TOOL Bash: for f in ~/.codex/config.toml ~/.codex*/config.toml; do [ -f "$f" ] && grep -n -A6 "hooks" "$f" | grep -viE "key|token|secret|password" | head -20 && echo "== $f"; done 2>/dev/null | head -40
+[L3099] RESULT: 12:hooks = true | 13-
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

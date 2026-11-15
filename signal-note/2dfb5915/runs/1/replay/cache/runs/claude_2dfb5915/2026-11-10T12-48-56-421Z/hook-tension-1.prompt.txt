@@ -1,0 +1,68 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Từ bản rc.1 tới rc.3: mỗi bản có checksums, và một lần job bị huỷ vì chờ runner quá lâu
+   rc.1 phát hành có đủ 7 file, sha256 khớp. rc.2 bị job macOS Intel bị huỷ vì chờ runner 15 phút, rerun thì được; API rerun trả HTTP 500 lần đầu. rc.3 ra từ nhánh phase 17, 6 file trong checksum đều khớp.
+M2. Harness chặn cargo build, thư mục target và lệnh sleep chuỗi: audit đóng gói phải suy từ đọc code
+   Agent audit đóng gói không dựng được binary, nên các phát hiện về binary (phụ thuộc DLL vcruntime140, thiếu installer) suy ra từ mã nguồn và được ghi là chưa chạy thật. Lệnh chờ sleep 30 nối với lệnh watch bị chặn, phải chuyển sang vòng until hoặc chạy nền.
+M3. Python liệt kê file theo thứ tự của hệ điều hành: đổi thứ tự là 593 trên 726 edges.id đổi theo
+   Khi đảo thứ tự liệt kê, 593 trên 726 edges.id đổi theo và điểm related lệch cỡ 1e-5, trong khi PRD cho phép 1e-6. Lựa chọn là ghim thứ tự theo đường dẫn đã sắp và ghi vào quyết định, các phase sau phải giữ đúng thứ tự này.
+M4. Chạy thử tool MCP: compact() xoá khoá null làm lỗi ohs_not_ready chỉ còn 3 khoá, test cũ không bắt được vì kiểm trước khi compact
+   Hàm compact bỏ mọi khoá có giá trị null trên mọi kết quả. Khi OHS đang starting thì progress và eta_s là null, nên agent nhận 3 khoá. Test 5 khoá kiểm trước compact nên luôn qua. Sửa: miễn compact cho lỗi này và thêm test ở tầng MCP.
+M5. Hàm sum của Python có bù sai số: copy đúng thuật toán để điểm related khớp đến từng bit
+   Python 3.14 dùng thuật toán cộng có bù sai số, nên bản Rust phải copy đúng thuật toán của CPython. Kết quả 15 lời gọi golden và 400 lời gọi sinh ngẫu nhiên khớp hoàn toàn, chênh lệch điểm bằng 0.
+M6. Chỉ mục đang build thì lỗi giữa chừng để lại cạnh cũ mãi: lỗi này cả bản Python cũng có và bộ so khớp không bắt được
+   Nếu adapter lỗi sau transaction đầu tiên, lần build sau không thấy note nào đổi nên cạnh cũ được giữ. Bản Python có đúng cấu trúc này nên parity test không phát hiện. Fix thêm cờ dirty vào meta, buộc tính lại cạnh khi cờ còn; thêm khoá file và IMMEDIATE transaction cho build đồng thời.
+M7. Máy Windows thử bản rc: ba lỗi từ môi trường thật, trong đó -I ẩn luôn thư viện cài theo user
+   Ba lỗi: bộ che đường dẫn không che dạng backslash trong JSON nên lộ đường dẫn; in tiếng Việt qua pipe với cp1252 làm sập script; probe chạy python -I nên không thấy PyYAML cài bằng pip --user. Fix đổi sang -E -P: vẫn bỏ biến PYTHON* và không nạp code từ vault, nhưng vẫn thấy site của user.
+M8. Cài đặt và dùng thử từ một lệnh tải về, không cần đăng nhập: bộ cài kiểm sha256 trước khi thay file, tự thêm vào PATH, và có chế độ cập nhật, gỡ, thử trước.
+   Cài đặt và dùng thử từ một lệnh tải về, không cần đăng nhập: bộ cài kiểm sha256 trước khi thay file, tự thêm vào PATH, và có chế độ cập nhật, gỡ, thử trước. Hướng dẫn người dùng tải file thủ công, chạy lệnh cài rồi tự sửa cấu hình, hoặc yêu cầu đăng nhập bằng công cụ dòng lệnh của nền tảng.
+M9. Hai MCP chung một chỉ mục, khác cấu hình gói ngôn ngữ thì OHS dựng lại index liên tục
+   Nếu pkm không đặt cùng biến, hai bên dùng cấu hình gói khác nhau và OHS liên tục dựng lại các view gói. Đây là một commit Python cần chuyển sang Rust, kèm việc nâng ghim và dựng lại golden.
+M10. Pin OHS: review bắt được lỗi hạ cấp, gói mới vantt.4 sẽ bị ghi đè về vantt.3
+   Máy người dùng đã chạy vantt.4 nên bị hạ về vantt.3 khi cài. Fix chỉ nâng khi gói cũ hơn hoặc không xác định được phiên bản; gói được đưa vào bằng cờ --ohs không bao giờ bị ghi đè. Có test cho cả hai.
+M11. CI đỏ trên cả 3 nền vì cache Rust xoá thư mục rỗng: dump không ghi ra ngoài cache thì hết
+   Action cache chỉ giữ target và xoá mọi file ngoài thư mục build, chỉ để lại các thư mục rỗng. Run đầu tiên lưu cache trong trạng thái đó, các run sau khôi phục lại đúng trạng thái rỗng và bộ so khớp từ chối ghi đè thư mục không phải dump. Chạy cục bộ thì luôn đúng vì không ai xoá target của máy.
+M12. Thử 5 thư viện YAML: libyaml cũ khớp Python đến từng ca, bản an toàn hơn lại panic trên 242 note
+   Thử 5 phương án trên 746 note kg-solo, 58 ca biên và 25.000 note sinh ngẫu nhiên. unsafe-libyaml cho 0 lệch ở cả ba bộ; libyaml-safer panic 242 note khi khối | hoặc > nằm cuối frontmatter; serde_norway lệch 20.916 note. Chọn unsafe-libyaml kèm lớp tương thích PyYAML.
+M13. Bộ so khớp với bản Python: 0 trên 64 mục là một con số có ý nghĩa
+   Tới khi phase 10 xong, bộ so khớp chạy trên vault thử kg-solo cho ra 64 mục khớp, 0 lệch chưa có tên, 0 mục chưa có. Số này được chạy lại trên CI cả ba nền tảng.
+M14. Stop hook giữ agent không dừng suốt nhiều vòng: điều kiện 'xong toàn bộ plan' không thể đạt khi còn cổng của người
+   Hook chặn dừng gần 30 lần, mỗi lần agent trả lời là chưa thể làm gì thêm và đang chờ. Người dùng thu hẹp phạm vi xuống 'tới khi cài được', nhưng hook vẫn đòi toàn bộ plan. Agent có soạn một báo cáo lỗi cho hook nhưng không gửi. Lối thoát duy nhất là người dùng xoá goal.
+M15. Review OHS tìm ra treo máy: stderr có byte không phải UTF-8 làm reader thoát, còn stdin đầy thì khoá cả supervisor
+   Review chỉ ra hai lỗi nghiêm trọng: đọc stderr dừng khi gặp UTF-8 lỗi, pipe đầy 4 KB trên Windows thì console.error của OHS chặn luôn event loop; ghi stdin giữ mutex không có giới hạn thời gian nên close() và Drop bị treo. Agent sửa bằng một luồng ghi riêng, đọc tới EOF, và kill process khi quá hạn.
+M16. Đo khả năng thật của công cụ bằng số đo cụ thể và có kiểm chứng: đếm số lượt gọi tool và token định nghĩa cho từng câu hỏi, lấy số nền từ golden, và đặt điều kiện để quyết định lại trong tương lai.
+   Đo khả năng thật của công cụ bằng số đo cụ thể và có kiểm chứng: đếm số lượt gọi tool và token định nghĩa cho từng câu hỏi, lấy số nền từ golden, và đặt điều kiện để quyết định lại trong tương lai. Chọn thiết kế bằng cảm tính hoặc ước lượng sơ bộ, rồi chỉ đo sau khi đã triển khai.
+M17. MCP có thể treo cả server: một lượt paths với max_len 8 đến 10 có thể làm bùng nổ tổ hợp
+   Review chỉ ra một lần gọi có thể làm CPU 100% và RAM tăng cho tới khi bị kill, và cả ping cũng bị kẹt. Fix đặt trần max_len là 12 và thời gian tối đa 10 giây, dùng progress handler của SQLite để ngắt. Các ca parity dùng tối đa 4 và answer key tối đa 10, nên không ảnh hưởng.
+M18. Tách việc không cần chờ ai khỏi việc phải chờ: khi một phase bị chặn bởi người dùng hoặc máy Windows, agent vẫn đi tiếp những phần không phụ thuộc, rồi báo rõ việc nào đang chờ ai.
+   Tách việc không cần chờ ai khỏi việc phải chờ: khi một phase bị chặn bởi người dùng hoặc máy Windows, agent vẫn đi tiếp những phần không phụ thuộc, rồi báo rõ việc nào đang chờ ai. Hoặc làm tuần tự và dừng hẳn khi bị chặn, hoặc bỏ qua chỗ chặn và tự quyết mà không báo.
+M19. Repo private nghĩa là mọi máy khách phải gh login để cài, và quyết định giữ private rồi đổi sau
+   Artifact của Actions yêu cầu đăng nhập ngay cả khi repo fork là public, nên khách không có gh không tải được OHS. Lúc đó repo chính còn private nên cả pkm cũng cần đăng nhập. Người dùng chọn giữ private, bộ cài có đường dự phòng bằng gh. Khi OHS có Release public, và repo sau đó đổi public, đường tải thẳng không cần đăng nhập nữa.
+M20. Vòng review có thật: agent review tìm được 'bom alias' làm hết RAM, chỉ 338 byte đã thành 1.45 GB
+   Một note 338 byte với 7 tầng alias tạo ra 11.1 triệu props và 1.45 GB RSS trong Rust, tầng thứ 8 cần khoảng 14 GB. Python cũng bị như vậy nhưng đây vẫn là lỗ hổng từ chối dịch vụ. Agent gốc được giao sửa: mỗi note có ngân sách 1 triệu props và 64 MiB văn bản, vượt thì báo MemoryError và ghi như một lệch có chủ ý.
+M21. Trước khi repo public: quét lịch sử git tìm khoá và private key, không thấy khớp nào
+   Agent thử công cụ quét bí mật chuyên dụng nhưng không có sẵn, nên quét bằng regex trên toàn bộ lịch sử: mẫu token GitHub, khoá Anthropic, khoá AWS và private key. Kết quả 0 khớp. Một lệnh liệt kê file nhạy cảm bị chặn bởi hook truy cập file.
+M22. Dùng một agent đóng vai người phản biện: sau khi agent A và agent B làm độc lập cùng một thiết kế, chúng được yêu cầu đọc bản của nhau và viết mục 'Phản biện chéo' rồi chốt một danh sách gộp, còn người dùng chỉ quyết các điểm còn bất đồng.
+   Dùng một agent đóng vai người phản biện: sau khi agent A và agent B làm độc lập cùng một thiết kế, chúng được yêu cầu đọc bản của nhau và viết mục 'Phản biện chéo' rồi chốt một danh sách gộp, còn người dùng chỉ quyết các điểm còn bất đồng. Thường một người hoặc một agent viết thiết kế rồi tự xem lại, hoặc hội đồng chỉ họp một lần rồi chốt.
+M23. GitHub Actions từ chối chạy mọi job vì thanh toán lỗi: không dựng được rc.3 cho tới khi người dùng sửa
+   Thông báo: job không khởi động vì thanh toán gần đây thất bại hoặc hết hạn mức. Agent không cross-compile được binary Windows và macOS trên máy Linux, nên không thay thế được. Người dùng đổi repo sang public, CI chạy lại xanh trên nhánh phase 17 và rc.3 được phát hành.
+M24. Bật 7 agent song song cho một plan port Rust: phase 01 chạy trước một mình, sau đó dựng 7 phase còn lại cùng lúc
+   Phase 01 (khung workspace) xong và CI xanh trên 3 nền tảng. Sau đó 7 agent chạy song song, mỗi agent một worktree. Tới lúc báo tiến độ, 5 phase đã merge và push, bộ so khớp với bản Python đạt 17 trên 64 mục, không có lệch nào chưa có tên.
+M25. Thiết kế MCP một cửa: hai agent độc lập ra kết luận gần như giống nhau, người dùng chọn đọc note trực tiếp thay vì qua OHS
+   Hai agent độc lập đề xuất 13 tool, bỏ chế độ code mode, và đề nghị pkm tự đọc file. Ước lượng token định nghĩa giảm từ khoảng 6.0k xuống 4.4k, theo độ dài chuỗi chứ chưa đo bằng tokenizer. Sau phản biện chéo, người dùng đồng ý read tự đọc file vì OHS không đọc được note chưa index, lệch khỏi plan.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

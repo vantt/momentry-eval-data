@@ -1,0 +1,229 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L545] USER: những thư và bài học về syntax của command, bin nên có lệnh update/upgrade trực tiếp để nâng version. rồi syntax của doctor, lệnh init, .... những thứ đó có ghi nhận chưua
+[L578] USER: em hiểu ý đúng không. để bán được phần mềm hoặc promote phần mềm tốt. điểm chạm và friction đầu tiên là chổ cài đặt và đoạn giới thiệu cũng như quick start.
+[L636] USER: à đúng, cái ý của em là agent native cũng rất hay nha. ví dụ file init --help và doctor --help cần có để chỉ cần kêu agent cài đặt, agent vào xem init doctor help là ra
+</asks>
+
+<story>
+hook: Agent đề xuất 25 check bằng script, một câu hỏi cắt còn 0 script
+tension: it_ma_nhieu (Kế hoạch 25–30 check bằng script / Chỉ cần 12 bước trong SKILL.md và một agent mới không đọc README)
+stakes: 2/3
+# Skill phải tự chứng minh bằng agent mới: test 'cài X giúp tôi' chỉ bằng --help
+
+**Bối cảnh:** Người dùng muốn 'agent-native': chỉ cần nói 'cài X giúp tôi' là agent tự làm được, không cần README. Skill được bổ sung tiêu chí này làm bước verify số 12.
+**Chuyện gì xảy ra:** Ban đầu agent đề xuất ~25–30 check bằng script. Người dùng hỏi 'không có script thì agent vẫn làm được?', và câu trả lời là có. Quyết định cuối: không viết script, thay bằng 12 bước verify trong SKILL.md, trong đó bước quan trọng nhất là bật một agent mới không cho đọc README.
+**Bài học:** Đo UX của công cụ CLI bằng một agent mới chỉ đọc --help, thay vì chỉ kiểm tra bằng script; script chỉ nên được viết khi tiêu chí đã ổn định.
+**Artefact:** Danh sách 12 bước verify trong SKILL.md; không có ảnh nhạy cảm.
+</story>
+
+<excerpt>
+[L626] RESULT: OK: 221 rules, structure valid | words: 7851
+[L633] AGENT: Anh hiểu đúng, và tôi đã đưa cả ba ý vào skill. Script kiểm tra cấu trúc chạy qua với 221 rule.
+
+**1. Điểm chạm đầu tiên là "cửa hàng"**, nằm trong file mới `common/03-first-contact.md` (16 rule):
+- **Màn hình đầu README:** tên, tagline 1 câu nói về **nỗi đau hoặc lợi ích của người dùng** (không nói về công nghệ), 2–3 câu "là gì, cho ai, vì sao", một GIF ≤40 giây, và vài badge niềm tin.
+- **Quick start mở bằng một lời hứa:** "From nothing to X in about N minutes. You need Y." Nếu không cần gì thì ghi "no dependencies" như một điểm bán hàng.
+- **Thời gian đến kết quả đầu tiên:** tối đa 3 lệnh sau khi cài, khoảng 2 phút. Nếu lâu hơn thì sửa sản phẩm (giá trị mặc định, `init`, chế độ demo), không sửa docs.
+- **Quick start được chạy thật trong CI** để chắc nó luôn đúng như README.
+- **`init` kết thúc bằng "✓ Ready"** và đúng một việc để thử. Với công cụ cho agent, ghi luôn câu nói mẫu cho agent.
+- **Ba nơi hiển thị cùng các bước:** dòng "Next:" của installer, kết quả `init` và quick start trong README.
+- **Mẫu tham chiếu:** README của skillstation và mdview.
+
+**2. Cú pháp và UX của packaging/distribution là tối quan trọng.**
+- **Đầu SKILL.md:** tầng 1 giờ ghi rõ hai trụ là *first contact* và *packaging/distribution syntax*, trước cả "cài nhanh, ít phụ thuộc, config dễ".
+- **Principles:** PRN-01 và PRN-02 là hai rule mở đầu.
+- **Agent luôn đọc 4 file:** `00-principles`, `03-first-contact`, `05-user-experience`, `07-command-surface`.
+
+**3. Đã có cách tốt thì theo đó mà làm.**
+- **Đầu SKILL.md có mục "Proven ways first".** Rule nào có code mẫu trong `references.md` thì agent phải lấy code đó ra chỉnh lại cho dự án mới, không tự thiết kế lại. Làm khác thì phải ghi lý do.
+- **Principles có thêm PRN-17** với cùng nội dung.
+- **Lúc triển khai:** bước 7 của quy trình bắt agent mở `references.md` trước khi viết code.
+- **Checklist:** có cột ghi "đã dùng lại code mẫu nào, hoặc lý do làm khác".
+- **CONTRIBUTING có mục "Record what works":** cách mới đã chạy tốt thì ghi vào `refere …[+201]
+[L636] USER: à đúng, cái ý của em là agent native cũng rất hay nha. ví dụ file init --help và doctor --help cần có để chỉ cần kêu agent cài đặt, agent vào xem init doctor help là ra
+[L639] AGENT: Vâng, ý đó rất đáng giữ. Gọi là **agent-native**: người dùng chỉ cần nói "cài X giúp tôi", agent đọc `x --help`, `x init --help` và `x doctor --help` là tự làm được hết, không cần người hướng dẫn. Trong skill hiện chỉ có một mẩu nhỏ (CMD-03 nói "subcommand có `--help`"). Chưa có yêu cầu help phải **đủ để agent tự làm từ đầu đến cuối**. Tôi sẽ bổ sung.
+[L640] TOOL Bash: cd /home/vantt/projects/devops/skills/packaging-distribution-guide python3 - <<'EOF' def sub(p,a,b): s=open(p).read(); assert a in s,(p,a); open(p,'w').write(s.replace(a,b,1)) p='common/07-command-surface.md' s=open(p).read() s+=''' ## Agent-native: an agent can install, set up and repair using only …[+3182]
+[L641] RESULT: OK: 230 rules, structure valid | [This command modified 6 files you've previously read: CONTRIBUTING.md, common/00-principles.md, common/03-first-contact.md, templates/project-checklist.md, common/07-command-surface.md and 1 more. Call Read before ed …[+7]
+[L652] TOOL Bash: python3 -c " p='common/03-first-contact.md';s=open(p).read();s=s.replace('one script, three surfaces.\n\n- **ONB-17**','one script, three surfaces.\n- **ONB-17**');open(p,'w').write(s)" && sh scripts/lint-guides.sh
+[L653] RESULT: OK: 230 rules, structure valid
+[L657] AGENT: Tôi đã thêm phần **agent-native**. Script kiểm tra cấu trúc chạy qua với 230 rule.
+
+**Tiêu chí kiểm tra:** người dùng nói "cài X giúp tôi". Agent chỉ chạy `x --help`, `x init --help`, `x doctor --help` mà vẫn cài và cấu hình xong, không cần đọc README hay hỏi lại người dùng.
+
+**Rule mới trong `common/07-command-surface.md`:**
+- **CMD-13 (MUST):** `--help` của `init`, `doctor`, `update`, `config`, `uninstall` phải tự đủ dùng. Mỗi cái có:
+  - lệnh làm gì và thay đổi gì trên đĩa;
+  - cần gì trước khi chạy;
+  - mọi cờ kèm giá trị mặc định;
+  - 2–4 ví dụ copy được, trong đó có cách chạy không cần hỏi đáp;
+  - các exit code;
+  - bước tiếp theo.
+- **CMD-14 (MUST):** bước nào cũng chạy được không cần hỏi đáp (`--yes`, `--json`, có cờ cho mọi câu hỏi). Không có terminal thì không bao giờ đứng chờ, mà báo lỗi kèm cờ cần thêm.
+- **CMD-15 (MUST):** kết quả luôn chỉ bước tiếp. Bản cho người đọc kết thúc bằng `Next: …`; bản JSON có trường `next` và `fix` chứa lệnh chính xác. Nhờ vậy agent tự chạy vòng `doctor --json` → chạy từng `fix` → `doctor` cho đến khi ổn.
+- **CMD-16:** `--help` cấp cao nhất có mục "Agents / automation" ghi một dòng cài đặt không cần hỏi đáp, ví dụ `x init --yes && x doctor --fix --yes`.
+- **CMD-17:** khóa JSON và mã lỗi giữ ổn định giữa các phiên bản. Có `help --json` liệt kê lệnh và cờ.
+- **CMD-18:** mọi lệnh cài đặt chạy lại an toàn, nên agent thử lại sau lỗi cũng không gây hại.
+- **CMD-19 (MAY):** có `llms.txt` hoặc `docs/agents.md`, sinh ra từ chính `--help`.
+
+**Cập nhật ở các chỗ khác:**
+- **`03-first-contact.md`, ONB-17:** README có sẵn một câu lệnh mẫu "Install with your agent" cho người dùng copy, ví dụ "Cài X từ <url>, rồi làm theo `x init --help` và `x doctor --help` cho đến khi doctor báo ổn". Rule này yêu cầu thử bằng agent thật trên máy sạch.
+- **Đầu SKILL.md:** tầng 1 có thêm gạch đầu dòng *agent-native*, ngay sau *first contact* và *syntax*.
+- **Principles:** thêm PRN-18.
+- **Checklist mẫu:** thêm dòng "Agent có tự cài được chỉ bằng `--help`  …[+7]
+[L661] USER: bật một agent xịn nhờ nó đánh giá xem có ổn không. nó phải hiểu mục tiêu của việc mình đang làm là gì. ưu tiên ux, dễ hiểu, agent native. đây giống như là bộ bí kiếp sẽ được tích lũy dài lâu theo quá trình làm.
+[L673] TOOL Agent: Review packaging guide skill
+…
+[L892] RESULT: OK: 212 rules, structure valid | common/07-command-surface.md:43:- **CMD-01** MUST · `doctor` is the only engine that reaches the desired state. Every d
+[L897] AGENT: Xong cả ba phần: đổi tên, chuẩn hóa init/doctor, và sửa theo review. Script kiểm tra cấu trúc chạy qua với 212 rule. Script mới `check-references.sh` xác nhận mọi đường dẫn code mẫu đều có thật trên GitHub. `install.sh` mẫu đã được test lại bằng `dash`.
+
+**1. Đổi tên thành `cs-packaging-distribution`**
+- Thư mục và symlink `~/.claude/skills/cs-packaging-distribution` đều đã đổi.
+- Description mở đầu bằng "Code standard (cs-*)", sẵn cho cả họ `cs-` sau này.
+
+**2. Chuẩn hóa init / doctor / setup** (`common/07-command-surface.md`)
+- **Doctor là bộ máy duy nhất.** Mọi trạng thái mong muốn đều là một check có fix. Không lệnh nào được ghi file thiết lập ngoài doctor.
+- **`doctor`** chỉ đọc. **`doctor --fix`** chỉ sửa những gì đã có, không bao giờ biến một thư mục bất kỳ thành dự án.
+- **`init` = `doctor --fix` + được phép tạo mới,** rồi in "✓ Ready". Với công cụ cho agent, `init` tự kết nối các agent đã cài, nên chỉ `init --yes` là xong.
+- **Không có `setup`.** Lệnh cũ chỉ được giữ làm alias ẩn của `init`.
+- **Bảng hai kiểu phân phối:**
+  - **A, một binary:** `<app> update`, gõ `upgrade` cũng được.
+  - **B, bộ cài + runtime:** `<ctl> init`, `upgrade`, `repair`, `verify`, `self-update`. Còn `<app> update` chỉ chuyển sang `<ctl> upgrade`.
+- Agent chỉ cần nhớ: **`init` lần đầu, `doctor` khi có vấn đề, `update` khi muốn bản mới.**
+
+**3. Đã sửa theo review**
+- **Các mâu thuẫn về lệnh:** INS-13 giờ dùng `init`. `install.sh` in ra `Next: <đường-dẫn-tuyệt-đối> init`.
+- **MCP:** thêm lệnh `mcp`. Thêm rule CMD-09: stdout chỉ chứa kết quả, mọi thông báo đi ra stderr.
+- **Khuôn `--json` chung** cho mọi dự án: `{schema, ok, data, error:{code,why,fix}, next}`.
+- **`references.md`** có bảng "Start from" theo loại dự án, cột ngôn ngữ, và trỏ tới MCP proxy của skillstation. GO-03 giờ bảo bắt đầu từ pipeline của skillstation.
+- **Bỏ trùng lặp:**
+  - Principles chỉ còn định nghĩa các tầng và 8 rule dùng chung.
+  - Cú pháp lệnh chỉ nằm trong file CMD.
+  - Thứ tự ưu tiên chỉ viết một lần, ở đ …[+1515]
+[L900] USER: skill này có nên tự nó verify việc hiện tại không?
+[L910] AGENT: Có, nhưng chỉ ở mức vừa đủ. Skill hiện chỉ tự kiểm tra **chính nó** (`lint-guides.sh`, `check-references.sh`). Còn với **dự án đang làm**, agent phải tự đọc từng rule rồi tự đánh `done`/`gap`. Cách này dễ sai và mỗi lần lại ra một kiểu. Tôi đề xuất kiểm tra theo hai lớp:
+
+**Lớp 1: script tự động cho những gì kiểm được bằng máy**
+
+Thêm `scripts/audit-project.sh <repo-dir> [<binary>]`. Mỗi kết quả gắn với ID rule và có trạng thái `PASS` / `FAIL` / `MANUAL`. Agent điền thẳng kết quả vào checklist. Ví dụ những thứ kiểm được:
+
+| Nhóm | Kiểm tra |
+|---|---|
+| First contact | README có one-liner `releases/latest/download/install.sh`, có mục Quick start nằm trước phần kiến trúc (ONB-04/07) |
+| install.sh | có `set -eu`, dòng cuối là `main "$@"`, có `--help`, `--version`, `--uninstall`, chạy được `sh -n` (INS-02/04) |
+| Bộ lệnh | `--version` và `version` đều chạy; `init`, `doctor`, `update`, `uninstall` đều có `--help` (CMD-06/16) |
+| Agent-native | `--help` có ví dụ và exit code; cờ sai trả exit 2; `doctor --json` đúng khuôn `{schema,ok,data,error,next}`; stdout với `--json` không lẫn dòng thừa (CMD-08/09/11) |
+| Không hỏi khi không có terminal | `init` chạy với stdin `/dev/null` thì không treo (CMD-17) |
+| Release | workflow có tạo checksums, action pin theo SHA, có job kiểm tra tag khớp version (REL-06/10, VER-02) |
+
+Nên giới hạn khoảng 25–30 check, chỉ cho các MUST thật sự đo được. Script này cũng có thể chép sang CI của từng dự án để giữ chuẩn về sau.
+
+**Lớp 2: agent kiểm tra những gì cần phán đoán**
+
+Script không đánh giá được tagline có hay không, quick start có thật sự xong trong 2 phút không, hay `--help` có đủ để tự làm không. Phần này cần agent:
+- **Agent-native test (TST-04) làm thật:** bật một agent mới, không cho đọc README, chỉ giao "cài X giúp tôi" trong thư mục tạm. Agent phải tự đi qua `--help` → `init` → `doctor` đến khi ổn. Kiểm tra này đáng giá nhất, vì nó đo đúng điều anh muốn.
+- **Review first contact:** agent đọc màn hình đầu README như một người dùng …[+542]
+[L915] USER: cách dùng skill này là sao
+[L917] AGENT: ## Cách dùng `cs-packaging-distribution`
+
+Skill đã nằm ở `~/.claude/skills/`, nên mọi phiên Claude Code trên máy anh, ở bất kỳ dự án nào, đều dùng được.
+
+### 1. Gọi skill trong dự án
+Mở Claude Code trong thư mục dự án, rồi gõ một trong hai cách:
+```
+/cs-packaging-distribution
+```
+hoặc nói tự nhiên, agent sẽ tự chọn skill dựa vào description:
+```
+Dùng cs-packaging-distribution để làm phần cài đặt, update và release cho dự án này
+```
+
+Một số câu lệnh mẫu theo tình huống:
+
+| Tình huống | Câu lệnh |
+|---|---|
+| Dự án mới, chưa có gì | "Dùng cs-packaging-distribution lập kế hoạch packaging cho dự án này, rồi triển khai" |
+| Dự án có sẵn, muốn kiểm tra | "Dùng cs-packaging-distribution audit dự án này, chỉ báo cáo, chưa sửa" |
+| Chỉ một phần | "Theo cs-packaging-distribution, làm lệnh `init` và `doctor` cho tool này" |
+| Viết README | "Theo cs-packaging-distribution, viết lại phần intro và quick start trong README" |
+
+### 2. Agent sẽ làm gì
+1. **Xem dự án:** ngôn ngữ, loại tool (CLI, daemon, MCP…), có config hay service không.
+2. **Chọn kiểu phân phối:** A là một binary có `update`; B là bộ cài + runtime như fgctl.
+3. **Chọn dự án mẫu gần nhất** để lấy code, ví dụ Go → skillstation, Rust → mdview.
+4. **Chỉ đọc những rule liên quan,** luôn bắt đầu từ UX: first contact, bộ lệnh, agent-native.
+5. **Chốt các quyết định,** chỉ hỏi anh những gì nó không tự suy ra được.
+6. **Ghi kết quả** vào `docs/packaging-checklist.md` của dự án: quyết định, trạng thái từng rule, kế hoạch làm phần UX trước.
+7. **Triển khai nếu anh yêu cầu,** chép và chỉnh từ code mẫu, không viết lại từ đầu.
+
+Anh chỉ cần duyệt checklist, trả lời vài câu hỏi nếu có, rồi bảo "làm đi".
+
+### 3. Bổ sung kiến thức về sau
+Sau mỗi dự án, nếu có bài học mới, nói với agent:
+```
+Cập nhật cs-packaging-distribution: <bài học hoặc cách làm mới đã chạy tốt ở dự án X>
+```
+Agent sẽ làm theo `CONTRIBUTING.md`:
+- Xếp bài học vào đúng tầng ưu tiên và đúng file.
+- Nếu có code đã chạy tốt, thêm vào `references.md`.
+- Chạy `scripts/ …[+482]
+[L922] USER: vậy thực chât không có script thì agent vẫn làm được?
+[L929] AGENT: Đúng vậy. Không có script, agent vẫn làm được. Nó tự đọc rule, tự chạy `x --help`, `x doctor --json`, đọc README và `install.sh`, rồi đánh `done`/`gap`. Skill hiện đã đủ để làm việc đó.
+
+Script chỉ thêm ba thứ:
+- **Nhất quán:** lần nào chạy cũng kiểm đúng một danh sách, không bỏ sót. Agent đôi khi quên một check hoặc mỗi lần làm một kiểu.
+- **Nhanh và rẻ hơn:** một lệnh thay vì vài chục lượt agent tự chạy rồi đọc kết quả.
+- **Chạy được không cần agent,** ví dụ trong CI của từng dự án để giữ chuẩn lâu dài.
+
+Đổi lại, script là thêm code phải bảo trì: rule đổi thì script phải đổi theo. Điều này đi ngược ý anh muốn skill gọn.
+
+**Đề xuất của tôi: chưa viết script.** Thay vào đó, thêm vào SKILL.md một bước "Verify" ngắn, gồm khoảng 10 lệnh cụ thể agent phải chạy. Ví dụ:
+- `x --help`, `x init --help`, `x doctor --help`
+- `x doctor --json`, kiểm tra đúng khuôn JSON chung
+- `x --bogus`, phải trả exit 2
+- `init </dev/null`, không được treo
+- `tail -1 install.sh`, phải là `main "$@"`
+
+Như vậy agent kiểm có hệ thống mà không có code để bảo trì. Kèm theo đó là bước mạnh nhất: **bật một agent mới, chỉ giao "cài X giúp tôi"** và xem nó có tự làm xong chỉ bằng `--help` không. Bước này không cần script nào.
+
+Khi nào chuẩn ổn định và anh muốn khóa nó vào CI của các dự án, lúc đó hãy chuyển danh sách lệnh thành script. Anh muốn tôi thêm bước Verify này vào SKILL.md luôn không?
+[L934] USER: ok, thêm bước verify vào SKILL.md luôn
+[L937] TOOL Edit: /home/vantt/projects/devops/skills/cs-packaging-distribution/SKILL.md
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

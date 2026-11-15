@@ -1,0 +1,646 @@
+{
+  "id": "5a1e7c04",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/projects/momentry/.claude/worktrees/agent-a16218d210d5a04c4/scripts/eval/synthetic/5a1e7c04-71b3-4f0d-9e52-a8c9d0e1f344.jsonl",
+  "fromLine": 1,
+  "toLine": 48,
+  "windowSha": "1201019219071119",
+  "at": "2026-11-10T12:45:34.801Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.049578,
+  "dryRun": {
+    "usd": 0.11,
+    "tokens": 2963,
+    "chunks": 1,
+    "hotspots": 0,
+    "entries": 48,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:5a1e7c04",
+    "fromLine": 1,
+    "toLine": 48,
+    "usd": 0.0868921,
+    "secs": 18,
+    "exitCode": 0,
+    "status": "done",
+    "written": 10,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-30-ma-test-noi-bo-chua-xoa-87d9",
+        "status": "angle",
+        "angle": "Chiến dịch ra mắt serum vitamin C, có mã giảm giá cho người theo dõi influencer, đến đêm ra mắt thì mã sai xuất hiện công khai. Người làm tin mã test nội bộ 30% đã tạo cho nhân viên tuần trước là vô hại vì không ai biết đến; hoá ra nó vẫn còn sống và đã được dùng 400 lần trước 20:25. Ai chạy mã giảm giá cho chiến dịch nên để ý: mã test không có trần lượt dùng có thể làm mất tiền trong đêm mà không ai nhìn thấy.",
+        "audience": "người chạy chiến dịch giảm giá qua influencer",
+        "evidence": [
+          1,
+          35
+        ],
+        "spine": {
+          "context": {
+            "text": "Chiến dịch ra mắt serum vitamin C tối mai lúc 20:00, có mã giảm giá cho người theo dõi influencer.",
+            "evidence": [
+              1,
+              35
+            ]
+          },
+          "want": {
+            "text": "Ra mắt đúng kế hoạch với mã GLOW15 giảm 15%.",
+            "evidence": [
+              35
+            ]
+          },
+          "obstacle": {
+            "text": "Influencer đăng GLOW30 thay vì GLOW15, và GLOW30 là mã test nội bộ chưa xoá.",
+            "evidence": [
+              35
+            ]
+          },
+          "turn": {
+            "text": "Tưởng mã test nội bộ không ai thấy nên để sống không sao; hoá ra nó đang chạy công khai và đã có 400 lượt dùng lúc 20:25.",
+            "evidence": [
+              35
+            ]
+          },
+          "action": {
+            "text": "Đặt trần 500 lượt cho GLOW30, tắt mã STAFFTEST 50%, rồi ghim bình luận giải thích.",
+            "evidence": [
+              41,
+              44
+            ]
+          },
+          "outcome": {
+            "text": "GLOW30 còn 69 lượt (431/500) sau khi đặt trần; bình luận được ghim lúc 20:41.",
+            "evidence": [
+              40,
+              42,
+              44
+            ]
+          },
+          "takeaway": {
+            "text": "Mã test hoặc mã nội bộ phải có trần lượt dùng, hoặc bị xoá ngay sau khi test.",
+            "evidence": [
+              38
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-doi-tin-tiktok-keo-don-nhung-87d9",
+        "status": "angle",
+        "angle": "Người làm đang chuẩn bị ra mắt serum vitamin C, và sếp muốn nhân đôi ngân sách TikTok tuần 2 vì video creator đạt 380k view. Cả đội tin TikTok là kênh kéo đơn, nhưng khi chia 614 pre-order theo mã giảm giá, 61% (376 đơn) đến từ một bản tin đối tác gửi ngày 20, không tốn tiền và suýt bị quên. TikTok có 12.210 phiên mà chỉ 0,4% chuyển đổi, còn bản tin đạt 9,0%. Ai quyết định chi tiêu theo lượt xem nên chia đơn theo nguồn trước khi nhân đôi.",
+        "audience": "người làm chiến dịch ra mắt sản phẩm tiêu dùng cần quyết định ngân sách",
+        "evidence": [
+          14,
+          20,
+          21
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm đang chuẩn bị ra mắt serum vitamin C vào tối mai lúc 8 giờ, cùng banner, bảng UTM và ngân sách tuần 2.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Sếp muốn nhân đôi ngân sách TikTok; người làm cần bản nháp kế hoạch tuần 2 có số liệu để kiểm chứng.",
+            "evidence": [
+              14,
+              15
+            ]
+          },
+          "obstacle": {
+            "text": "Video creator đạt 380k view nên đề nghị nhân đôi TikTok nghe hợp lý.",
+            "evidence": [
+              14
+            ]
+          },
+          "turn": {
+            "text": "Cả đội tin TikTok kéo đơn; hoá ra 61% pre-order đến từ bản tin đối tác gửi ngày 20, còn TikTok chuyển đổi 0,4%.",
+            "evidence": [
+              20,
+              21
+            ]
+          },
+          "action": {
+            "text": "Đối chiếu pre-order theo mã giảm giá và nguồn trước khi điền số, rồi viết lại kế hoạch tuần 2 cùng ghi chú cho sếp.",
+            "evidence": [
+              15,
+              16,
+              18,
+              23,
+              24
+            ]
+          },
+          "outcome": {
+            "text": "Đã viết kế hoạch tuần 2: TikTok giữ phẳng, thêm một slot bản tin có trả phí. Slot này chưa xác nhận, người làm sẽ hỏi đối tác. Bản tin đạt 9,0% so với 0,4% của TikTok.",
+            "evidence": [
+              20,
+              23,
+              25
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi nhân đôi chi tiêu cho kênh được khen nhiều nhất, hãy chia đơn theo nguồn và xem tỉ lệ chuyển đổi, đừng chỉ nhìn lượt xem.",
+            "evidence": [
+              14,
+              20
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-subject-sap-het-han-lam-ti-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-3: spine.want: evidence ngoài các dòng đã đưa: 36; spine.turn: evidence ngoài các dòng đã đưa: 36; spine.action: evidence ngoài các dòng đã đưa: 37, 38; spine.outcome: evidence ngoài các dòng đã đưa: 38, 40; spine.takeaway: evidence ngoài các dòng đã đưa: 36, 38 (+1) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c04/runs/3/llm/angle-3-retry.json"
+      },
+      {
+        "id": "2026-10-30-agent-tinh-sai-chenh-lech-giam-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-4: spine.want: evidence ngoài các dòng đã đưa: 26; spine.obstacle: evidence ngoài các dòng đã đưa: 29; spine.turn: evidence ngoài các dòng đã đưa: 26, 29; spine.action: evidence ngoài các dòng đã đưa: 33; spine.takeaway: evidence ngoài các dòng đã đưa: 29 (+1) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c04/runs/3/llm/angle-4-retry.json"
+      },
+      {
+        "id": "2026-10-29-agent-noi-chac-ve-moc-thoi-87d9",
+        "status": "angle",
+        "angle": "Một người làm marketing đang chuẩn bị tuần ra mắt serum vitamin C, và cả đội tin video TikTok kéo phần lớn đơn đặt trước. Khi đối chiếu mã giảm giá với dữ liệu đơn, 61% đơn đến từ bản tin của một nhà thuốc đối tác, còn TikTok chỉ chuyển đổi 0.4% trong khi bản tin đạt 9.0%. Người nghe nên quan tâm vì kế hoạch nhân đôi ngân sách TikTok sẽ rót thêm tiền vào kênh chuyển đổi kém nhất.",
+        "audience": "người làm marketing và founder đang phân bổ ngân sách cho chiến dịch ra mắt sản phẩm",
+        "evidence": [
+          14,
+          20,
+          21
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm marketing đang chuẩn bị tuần ra mắt serum vitamin C, cần kế hoạch ngân sách cho tuần 2.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn có kế hoạch ngân sách tuần 2 mà sếp chấp nhận.",
+            "evidence": [
+              14
+            ]
+          },
+          "obstacle": {
+            "text": "Sếp muốn nhân đôi TikTok vì video creator đạt 380k lượt xem.",
+            "evidence": [
+              14
+            ]
+          },
+          "turn": {
+            "text": "Cả đội tin video TikTok kéo phần lớn đơn đặt trước; hoá ra 61% đơn dùng mã giảm giá của bản tin nhà thuốc đối tác, còn TikTok chỉ chuyển đổi 0.4%.",
+            "evidence": [
+              20,
+              21
+            ]
+          },
+          "action": {
+            "text": "Đối chiếu đơn đặt trước với mã giảm giá và nguồn truy cập, rồi viết lại kế hoạch: giữ TikTok ổn định và xin thêm suất trên bản tin đối tác.",
+            "evidence": [
+              18,
+              20,
+              23,
+              24
+            ]
+          },
+          "outcome": {
+            "text": "Kế hoạch tuần 2 đã được viết lại; kết quả đàm phán với đối tác chưa có trong transcript.",
+            "evidence": [
+              24
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi rót thêm tiền vào kênh được cho là hiệu quả, đối chiếu mã giảm giá và nguồn đơn với dữ liệu đơn hàng.",
+            "evidence": [
+              20
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-29-don-ten-chien-dich-utm-4-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-6: spine.action: evidence ngoài các dòng đã đưa: 4 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c04/runs/3/llm/angle-6-retry.json"
+      },
+      {
+        "id": "2026-10-29-banner-ba-kich-thuoc-mot-headline-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-7: spine.action: evidence ngoài các dòng đã đưa: 11; spine.outcome: evidence ngoài các dòng đã đưa: 12, 13 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c04/runs/3/llm/angle-7-retry.json"
+      },
+      {
+        "id": "2026-10-30-khi-su-co-xay-ra-gan-87d9",
+        "status": "angle",
+        "angle": "Một người làm marketing cho đợt ra mắt serum vitamin C thì một influencer đăng mã giảm 30% thay vì 15%. Người làm tin đó chỉ là mã test nội bộ đã quên xoá, nhưng Shopify cho thấy nó đã dùng 400 lần. Thay vì tắt ngay và để người theo dõi thấy lỗi công khai, họ tính chi phí khoảng 35 triệu đồng, xem trạng thái thật rồi chỉ giới hạn mã còn 500 lượt. Ai chạy chiến dịch có influencer hay mã test nội bộ nên học cách quyết định dưới áp lực thời gian: đặt trên con số và kiểm tra trạng thái thật trước khi đổi.",
+        "audience": "người làm marketing hoặc vận hành chiến dịch có mã giảm giá",
+        "evidence": [
+          35,
+          38,
+          42
+        ],
+        "spine": {
+          "context": {
+            "text": "Một người làm marketing cho đợt ra mắt serum vitamin C, đang chuẩn bị banner, bảng UTM và ngân sách tuần 2.",
+            "evidence": [
+              1
+            ]
+          },
+          "want": {
+            "text": "Muốn xử lý mã giảm giá nhầm mà không làm mất thêm tiền hay niềm tin trước giờ ra mắt.",
+            "evidence": [
+              35
+            ]
+          },
+          "obstacle": {
+            "text": "Một influencer đăng công khai mã GLOW30 (30%) thay vì GLOW15 (15%), và chủ phiên không liên lạc được người có quyền quyết định.",
+            "evidence": [
+              35
+            ]
+          },
+          "turn": {
+            "text": "Tưởng GLOW30 chỉ là mã test nội bộ đã quên xoá, vô hại; hoá ra đã được dùng 400 lần và đang được đăng công khai.",
+            "evidence": [
+              35
+            ]
+          },
+          "action": {
+            "text": "Tính chi phí khoảng 35 triệu đồng nếu giới hạn 500 lượt, đưa hai phương án, rồi đặt GLOW30 giới hạn 500 lượt và tắt mã STAFFTEST sau khi xem trạng thái thật.",
+            "evidence": [
+              38,
+              41
+            ]
+          },
+          "outcome": {
+            "text": "GLOW30 đã đặt giới hạn 500 lượt, đang dùng 431; STAFFTEST đã tắt.",
+            "evidence": [
+              42
+            ]
+          },
+          "takeaway": {
+            "text": "Mã test nội bộ không xoá có thể bị đăng công khai; trước khi đổi, xem trạng thái thật và tính chi phí bằng tiền.",
+            "evidence": [
+              35,
+              40
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-30-ngay-trong-dem-ra-mat-khi-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-9: spine.want: evidence ngoài các dòng đã đưa: 26; spine.obstacle: evidence ngoài các dòng đã đưa: 30; spine.turn: evidence ngoài các dòng đã đưa: 26, 30, 31; spine.action: evidence ngoài các dòng đã đưa: 32, 34; spine.outcome: evidence ngoài các dòng đã đưa: 34 (+2) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c04/runs/3/llm/angle-9-retry.json"
+      },
+      {
+        "id": "2026-10-29-bai-hoc-tu-lan-sai-duoc-87d9",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-10: spine.action: evidence ngoài các dòng đã đưa: 37, 42, 43, 44; spine.outcome: evidence ngoài các dòng đã đưa: 42, 44; spine.takeaway: evidence ngoài các dòng đã đưa: 42; evidence ngoài các dòng đã đưa: 42, 44 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/synthetic-not-a-story/5a1e7c04/runs/3/llm/angle-10-retry.json"
+      }
+    ],
+    "message": "claude:5a1e7c04 L1-L48: done; 7 chuyện thô, 10 cụm; ghi 10 mới, gộp 0\nđiểm nóng 0 (thiếu 0); lần chạy 1/1; 0.09 USD\ngóc kể: 4 có, 0 không ra chuyện, 6 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: repo không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-30-ma-test-noi-bo-chua-xoa-87d9",
+      "code": "M-26C9",
+      "title": "Mã test nội bộ chưa xoá bị dùng 400 lần ngay đêm ra mắt",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Chiến dịch ra mắt serum vitamin C, có mã giảm giá cho người theo dõi influencer, đến đêm ra mắt thì mã sai xuất hiện công khai. Người làm tin mã test nội bộ 30% đã tạo cho nhân viên tuần trước là vô hại vì không ai biết đến; hoá ra nó vẫn còn sống và đã được dùng 400 lần trước 20:25. Ai chạy mã giảm giá cho chiến dịch nên để ý: mã test không có trần lượt dùng có thể làm mất tiền trong đêm mà không ai nhìn thấy.",
+      "audience": "người chạy chiến dịch giảm giá qua influencer",
+      "spine": {
+        "context": {
+          "text": "Chiến dịch ra mắt serum vitamin C tối mai lúc 20:00, có mã giảm giá cho người theo dõi influencer.",
+          "lines": [
+            "claude:5a1e7c04#L1",
+            "claude:5a1e7c04#L35"
+          ]
+        },
+        "want": {
+          "text": "Ra mắt đúng kế hoạch với mã GLOW15 giảm 15%.",
+          "lines": [
+            "claude:5a1e7c04#L35"
+          ]
+        },
+        "obstacle": {
+          "text": "Influencer đăng GLOW30 thay vì GLOW15, và GLOW30 là mã test nội bộ chưa xoá.",
+          "lines": [
+            "claude:5a1e7c04#L35"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng mã test nội bộ không ai thấy nên để sống không sao; hoá ra nó đang chạy công khai và đã có 400 lượt dùng lúc 20:25.",
+          "lines": [
+            "claude:5a1e7c04#L35"
+          ]
+        },
+        "action": {
+          "text": "Đặt trần 500 lượt cho GLOW30, tắt mã STAFFTEST 50%, rồi ghim bình luận giải thích.",
+          "lines": [
+            "claude:5a1e7c04#L41",
+            "claude:5a1e7c04#L44"
+          ]
+        },
+        "outcome": {
+          "text": "GLOW30 còn 69 lượt (431/500) sau khi đặt trần; bình luận được ghim lúc 20:41.",
+          "lines": [
+            "claude:5a1e7c04#L40",
+            "claude:5a1e7c04#L42",
+            "claude:5a1e7c04#L44"
+          ]
+        },
+        "takeaway": {
+          "text": "Mã test hoặc mã nội bộ phải có trần lượt dùng, hoặc bị xoá ngay sau khi test.",
+          "lines": [
+            "claude:5a1e7c04#L38"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-doi-tin-tiktok-keo-don-nhung-87d9",
+      "code": "M-4V8Y",
+      "title": "Đội tin TikTok kéo đơn, nhưng 61% pre-order đến từ một bản tin đối tác gần như bị quên",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm đang chuẩn bị ra mắt serum vitamin C, và sếp muốn nhân đôi ngân sách TikTok tuần 2 vì video creator đạt 380k view. Cả đội tin TikTok là kênh kéo đơn, nhưng khi chia 614 pre-order theo mã giảm giá, 61% (376 đơn) đến từ một bản tin đối tác gửi ngày 20, không tốn tiền và suýt bị quên. TikTok có 12.210 phiên mà chỉ 0,4% chuyển đổi, còn bản tin đạt 9,0%. Ai quyết định chi tiêu theo lượt xem nên chia đơn theo nguồn trước khi nhân đôi.",
+      "audience": "người làm chiến dịch ra mắt sản phẩm tiêu dùng cần quyết định ngân sách",
+      "spine": {
+        "context": {
+          "text": "Người làm đang chuẩn bị ra mắt serum vitamin C vào tối mai lúc 8 giờ, cùng banner, bảng UTM và ngân sách tuần 2.",
+          "lines": [
+            "claude:5a1e7c04#L1"
+          ]
+        },
+        "want": {
+          "text": "Sếp muốn nhân đôi ngân sách TikTok; người làm cần bản nháp kế hoạch tuần 2 có số liệu để kiểm chứng.",
+          "lines": [
+            "claude:5a1e7c04#L14",
+            "claude:5a1e7c04#L15"
+          ]
+        },
+        "obstacle": {
+          "text": "Video creator đạt 380k view nên đề nghị nhân đôi TikTok nghe hợp lý.",
+          "lines": [
+            "claude:5a1e7c04#L14"
+          ]
+        },
+        "turn": {
+          "text": "Cả đội tin TikTok kéo đơn; hoá ra 61% pre-order đến từ bản tin đối tác gửi ngày 20, còn TikTok chuyển đổi 0,4%.",
+          "lines": [
+            "claude:5a1e7c04#L20",
+            "claude:5a1e7c04#L21"
+          ]
+        },
+        "action": {
+          "text": "Đối chiếu pre-order theo mã giảm giá và nguồn trước khi điền số, rồi viết lại kế hoạch tuần 2 cùng ghi chú cho sếp.",
+          "lines": [
+            "claude:5a1e7c04#L15",
+            "claude:5a1e7c04#L16",
+            "claude:5a1e7c04#L18",
+            "claude:5a1e7c04#L23",
+            "claude:5a1e7c04#L24"
+          ]
+        },
+        "outcome": {
+          "text": "Đã viết kế hoạch tuần 2: TikTok giữ phẳng, thêm một slot bản tin có trả phí. Slot này chưa xác nhận, người làm sẽ hỏi đối tác. Bản tin đạt 9,0% so với 0,4% của TikTok.",
+          "lines": [
+            "claude:5a1e7c04#L20",
+            "claude:5a1e7c04#L23",
+            "claude:5a1e7c04#L25"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi nhân đôi chi tiêu cho kênh được khen nhiều nhất, hãy chia đơn theo nguồn và xem tỉ lệ chuyển đổi, đừng chỉ nhìn lượt xem.",
+          "lines": [
+            "claude:5a1e7c04#L14",
+            "claude:5a1e7c04#L20"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-subject-sap-het-han-lam-ti-87d9",
+      "code": "M-XZX0",
+      "title": "Subject 'sắp hết hạn' làm tỉ lệ mở tăng, nhưng hủy đăng ký tăng 5 lần và bị khiếu nại",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-agent-tinh-sai-chenh-lech-giam-87d9",
+      "code": "M-80HA",
+      "title": "Agent tính sai chênh lệch giảm giá, khiến thiệt hại bị đánh giá thấp khoảng một phần ba",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-agent-noi-chac-ve-moc-thoi-87d9",
+      "code": "M-PT3Q",
+      "title": "Agent nói chắc về mốc thời gian mà chưa đưa truy vấn ra",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một người làm marketing đang chuẩn bị tuần ra mắt serum vitamin C, và cả đội tin video TikTok kéo phần lớn đơn đặt trước. Khi đối chiếu mã giảm giá với dữ liệu đơn, 61% đơn đến từ bản tin của một nhà thuốc đối tác, còn TikTok chỉ chuyển đổi 0.4% trong khi bản tin đạt 9.0%. Người nghe nên quan tâm vì kế hoạch nhân đôi ngân sách TikTok sẽ rót thêm tiền vào kênh chuyển đổi kém nhất.",
+      "audience": "người làm marketing và founder đang phân bổ ngân sách cho chiến dịch ra mắt sản phẩm",
+      "spine": {
+        "context": {
+          "text": "Người làm marketing đang chuẩn bị tuần ra mắt serum vitamin C, cần kế hoạch ngân sách cho tuần 2.",
+          "lines": [
+            "claude:5a1e7c04#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn có kế hoạch ngân sách tuần 2 mà sếp chấp nhận.",
+          "lines": [
+            "claude:5a1e7c04#L14"
+          ]
+        },
+        "obstacle": {
+          "text": "Sếp muốn nhân đôi TikTok vì video creator đạt 380k lượt xem.",
+          "lines": [
+            "claude:5a1e7c04#L14"
+          ]
+        },
+        "turn": {
+          "text": "Cả đội tin video TikTok kéo phần lớn đơn đặt trước; hoá ra 61% đơn dùng mã giảm giá của bản tin nhà thuốc đối tác, còn TikTok chỉ chuyển đổi 0.4%.",
+          "lines": [
+            "claude:5a1e7c04#L20",
+            "claude:5a1e7c04#L21"
+          ]
+        },
+        "action": {
+          "text": "Đối chiếu đơn đặt trước với mã giảm giá và nguồn truy cập, rồi viết lại kế hoạch: giữ TikTok ổn định và xin thêm suất trên bản tin đối tác.",
+          "lines": [
+            "claude:5a1e7c04#L18",
+            "claude:5a1e7c04#L20",
+            "claude:5a1e7c04#L23",
+            "claude:5a1e7c04#L24"
+          ]
+        },
+        "outcome": {
+          "text": "Kế hoạch tuần 2 đã được viết lại; kết quả đàm phán với đối tác chưa có trong transcript.",
+          "lines": [
+            "claude:5a1e7c04#L24"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi rót thêm tiền vào kênh được cho là hiệu quả, đối chiếu mã giảm giá và nguồn đơn với dữ liệu đơn hàng.",
+          "lines": [
+            "claude:5a1e7c04#L20"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-29-don-ten-chien-dich-utm-4-87d9",
+      "code": "M-ZMWS",
+      "title": "Dọn tên chiến dịch UTM: 4 tên viết hoa lẫn 6 tên thường, và script ghi đè thẳng file gốc",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-banner-ba-kich-thuoc-mot-headline-87d9",
+      "code": "M-ENAF",
+      "title": "Banner ba kích thước: một headline, cắt phụ đề theo khung",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-khi-su-co-xay-ra-gan-87d9",
+      "code": "M-NB5P",
+      "title": "Khi sự cố xảy ra gần giờ ra mắt, agent tính chi phí bằng tiền thật, đưa hai phương án có đánh đổi rõ ràng, rồi kiểm tra trạng thái thật trước khi đổi. User chọn phương án.",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": "Một người làm marketing cho đợt ra mắt serum vitamin C thì một influencer đăng mã giảm 30% thay vì 15%. Người làm tin đó chỉ là mã test nội bộ đã quên xoá, nhưng Shopify cho thấy nó đã dùng 400 lần. Thay vì tắt ngay và để người theo dõi thấy lỗi công khai, họ tính chi phí khoảng 35 triệu đồng, xem trạng thái thật rồi chỉ giới hạn mã còn 500 lượt. Ai chạy chiến dịch có influencer hay mã test nội bộ nên học cách quyết định dưới áp lực thời gian: đặt trên con số và kiểm tra trạng thái thật trước khi đổi.",
+      "audience": "người làm marketing hoặc vận hành chiến dịch có mã giảm giá",
+      "spine": {
+        "context": {
+          "text": "Một người làm marketing cho đợt ra mắt serum vitamin C, đang chuẩn bị banner, bảng UTM và ngân sách tuần 2.",
+          "lines": [
+            "claude:5a1e7c04#L1"
+          ]
+        },
+        "want": {
+          "text": "Muốn xử lý mã giảm giá nhầm mà không làm mất thêm tiền hay niềm tin trước giờ ra mắt.",
+          "lines": [
+            "claude:5a1e7c04#L35"
+          ]
+        },
+        "obstacle": {
+          "text": "Một influencer đăng công khai mã GLOW30 (30%) thay vì GLOW15 (15%), và chủ phiên không liên lạc được người có quyền quyết định.",
+          "lines": [
+            "claude:5a1e7c04#L35"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng GLOW30 chỉ là mã test nội bộ đã quên xoá, vô hại; hoá ra đã được dùng 400 lần và đang được đăng công khai.",
+          "lines": [
+            "claude:5a1e7c04#L35"
+          ]
+        },
+        "action": {
+          "text": "Tính chi phí khoảng 35 triệu đồng nếu giới hạn 500 lượt, đưa hai phương án, rồi đặt GLOW30 giới hạn 500 lượt và tắt mã STAFFTEST sau khi xem trạng thái thật.",
+          "lines": [
+            "claude:5a1e7c04#L38",
+            "claude:5a1e7c04#L41"
+          ]
+        },
+        "outcome": {
+          "text": "GLOW30 đã đặt giới hạn 500 lượt, đang dùng 431; STAFFTEST đã tắt.",
+          "lines": [
+            "claude:5a1e7c04#L42"
+          ]
+        },
+        "takeaway": {
+          "text": "Mã test nội bộ không xoá có thể bị đăng công khai; trước khi đổi, xem trạng thái thật và tính chi phí bằng tiền.",
+          "lines": [
+            "claude:5a1e7c04#L35",
+            "claude:5a1e7c04#L40"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-30-ngay-trong-dem-ra-mat-khi-87d9",
+      "code": "M-HSJX",
+      "title": "Ngay trong đêm ra mắt, khi sự cố còn tươi, user yêu cầu ghi retro theo khung sự cố, quyết định và chi phí. Agent ghi xong và hẹn lấy số liệu theo mã vào hôm sau.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-29-bai-hoc-tu-lan-sai-duoc-87d9",
+      "code": "M-FZ2K",
+      "title": "Bài học từ lần sai được ghi thành quy tắc trong tài liệu chung của dự án, với hai điều kiện đo lường cụ thể: không dùng từ hạn chót giả, và theo dõi hủy đăng ký cùng khiếu nại chứ không chỉ tỉ lệ mở.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

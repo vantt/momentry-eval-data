@@ -1,0 +1,30 @@
+Dưới đây là 6 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+Thường là 0, ở mọi nghề, vì không đổi kết quả việc chính:
+- việc dọn dẹp, đổi tên, định dạng lại, chuyển sang mẫu khác (đổi tên loạt file, kẻ lại một bảng, sửa lỗi chính tả, dọn nhánh git);
+- trục trặc do cài đặt hay môi trường, chỉnh xong là chạy (thiếu phần mềm, chưa đăng nhập, file chưa gửi lên, đường dẫn đổi chỗ);
+- lỗi tự hết khi làm lại, công cụ trục trặc rồi chạy lại được;
+- việc một lần trơn tru, không có gì bất ngờ (xuất báo cáo ra PDF, lên lịch gửi thư, nhập danh sách khách);
+- bước kiểm tra thường lệ không tìm ra gì đáng kể.
+Ngoại lệ: việc vặt mà lộ ra một điều bất ngờ, gây mất dữ liệu, tiền, khách hay thời gian, hoặc buộc phải quyết định, thì chấm theo đúng mức nó làm đổi kết quả.
+
+M1. Thêm quy tắc config một cửa vào skill sau khi đọc thay đổi của momentry
+   Quy tắc mới của momentry (commit de173ef, một ngày trước) gồm 6 điểm: một cửa config, cờ --project, khoá chỉ máy không ghi vào file repo, không tự bật dự án, giao diện web gọi đúng hàm ghi CLI. Skill được thêm CMD-22..24, nâng CFG-12 lên MUST. Lint và kiểm tra đường dẫn đều qua (215 rule), rồi gửi lên hub.
+M2. fgos tưởng là alias của doctor, hoá ra setup làm thêm 5 việc doctor không làm
+   fgos có ba lệnh chồng chéo: init, setup và doctor --fix. Lệnh setup ghi dòng source vào rc, tạo config, cài git hook, cài Claude hook và copy skill, trong khi doctor --fix chỉ chạy các fix đã đăng ký. Mô tả của chính lệnh setup thừa nhận điều này. Quyết định chuẩn hoá: doctor là bộ máy duy nhất, init = doctor --fix cộng quyền tạo mới, setup bỏ.
+M3. Người dùng chỉ cần nói ngắn 'đẩy lên hub đi' hay 'merge và push luôn', agent tự làm đủ chuỗi: kiểm tra, chạy lệnh kiểm tra của dự án, gửi, rồi theo dõi CI đến khi xong và báo kết quả, mà không hỏi lại từng bước
+   Người dùng chỉ cần nói ngắn 'đẩy lên hub đi' hay 'merge và push luôn', agent tự làm đủ chuỗi: kiểm tra, chạy lệnh kiểm tra của dự án, gửi, rồi theo dõi CI đến khi xong và báo kết quả, mà không hỏi lại từng bước Nhiều dev làm tay từng bước và phải tự nhớ quy trình; ngược lại, nếu giao cho AI thì hay bị hỏi lại liên tục, hoặc AI làm mà không đợi CI xong
+M4. Lỗi UX từ chính công cụ của mình: gợi ý cờ --user không tồn tại, và hub 'active' không phải bản vừa gửi
+   Thông báo lỗi gợi ý cờ --user, nhưng connect không có cờ đó (skillstation 0.8.0 trên máy, hub 0.12.0). Sau khi kết nối toàn cục và đẩy bản gửi, trang skill vẫn hiện bản cũ là 'active' mà không báo có bản chờ duyệt. Ba bản gửi cùng một skill cùng nằm trong hàng chờ. Agent đã viết một thay đổi UI cho trang chi tiết và danh sách skill (229 test web qua), merge và push lên main, CI xanh.
+M5. Một skill packaging ban đầu 212 rule, dư thừa 46% chữ, và phải viết lại theo tầng ưu tiên UX
+   Bản đầu có khoảng 11.900 từ và 183 rule. Sau lần rút gọn đầu, còn khoảng 6.400 từ (−46%), rule chuyển sang một dòng. Qua các vòng chủ góp ý, số rule lên 230 rồi chuốt về 212, và tầng ưu tiên UX → an toàn → đúng đắn → nhanh được đưa lên đầu. Một agent review độc lập chỉ ra các lệnh mâu thuẫn nhau (setup vs init) và installer mẫu vi phạm chính rule của nó.
+M6. 5 test Go lỗi chỉ trên máy chủ vì HOME đổi mà thư mục làm việc vẫn là HOME thật
+   Test đổi HOME sang thư mục tạm nhưng không đổi thư mục làm việc. Lệnh status và doctor đi ngược lên thư mục cha, gặp ~/.codex/config.toml và ~/.gemini/settings.json đã trỏ tới hub vừa kết nối lúc 14:46. Code coi /home/vantt là một dự án, so sánh binary đăng ký với binary test, thấy khác nhau và báo FAILED. Các test chỉ lỗi trên máy có cấu hình thật, nên 5 lỗi không xuất hiện trên CI.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

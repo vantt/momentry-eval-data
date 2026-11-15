@@ -1,0 +1,330 @@
+{
+  "id": "2dfb5915",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-pkm/2dfb5915-3011-441f-a6fb-2c7cb5abd60b.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "eef608eecc0bbb60",
+  "at": "2026-11-05T10:11:43.554Z",
+  "dryRun": {
+    "usd": 0.31,
+    "tokens": 91394,
+    "chunks": 1,
+    "hotspots": 9,
+    "entries": 772
+  },
+  "report": {
+    "sid": "claude:2dfb5915",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.30966,
+    "secs": 176.3,
+    "exitCode": 0,
+    "status": "done",
+    "written": 33,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:2dfb5915 L1-L4000: done; 28 chuyện thô, 33 cụm; ghi 33 mới, gộp 0\nđiểm nóng 9 (thiếu 0); lần chạy 1/1; 0.31 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-build-index-loi-giua-chung-thi",
+      "title": "Build index lỗi giữa chừng thì link cũ ở lại mãi",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-chon-thu-vien-yaml-bang-bang",
+      "title": "Chọn thư viện YAML bằng bảng lệch trên 25.000 note sinh ngẫu nhiên",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-compact-xoa-khoa-null-lam-ohs",
+      "title": "compact() xoá khoá null làm ohs_not_ready còn 3 trên 5 khoá",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-nhanh-installer-ha-cap-ohs-tu",
+      "title": "Nhánh installer hạ cấp OHS từ vantt.4 xuống vantt.3",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-note-338-byte-lam-no-11",
+      "title": "Note 338 byte làm nổ 11 triệu prop",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-repo-private-lam-installer-can-gh",
+      "title": "Repo private làm installer cần gh; rồi chuyển public vì CI bị chặn billing",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-review-tim-hai-loi-treo-ohs",
+      "title": "Review tìm hai lỗi treo OHS: stderr dừng khi gặp byte lạ",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-viet-tay-json-rpc-thay-vi",
+      "title": "Viết tay JSON-RPC thay vì rmcp: nhị phân nhỏ hơn 4 lần",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-basename-chi-tach-dau-nen-tren",
+      "title": "basename chỉ tách dấu / nên trên Windows tên vault thành cả đường dẫn",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-commit-python-223c9c3-thieu-goi-ngon",
+      "title": "Commit Python 223c9c3: thiếu gói ngôn ngữ thì OHS dựng lại index liên tục",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-hook-chan-cargo-build-audit-phai",
+      "title": "Hook chặn cargo build, audit phải suy luận từ mã nguồn",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-may-windows-tim-2-lech-cli",
+      "title": "Máy Windows tìm 2 lệch CLI mà CI không thấy: đường dẫn escape trong JSON",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-ci-do-vi-rust-cache-xoa",
+      "title": "CI đỏ vì rust-cache xoá file: dump đặt trong thư mục cache",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-phan-bien-cheo-hai-thiet-ke",
+      "title": "Phản biện chéo hai thiết kế MCP: 13 tool, không code mode",
+      "tension": "khac",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-do-nguong-de-quy-python-chiu",
+      "title": "Đo ngưỡng đệ quy: Python chịu dict 3000 tầng, list chỉ tới 996",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-dry-run-release-bang-workflow-dispatch",
+      "title": "Dry-run release bằng workflow_dispatch trước khi gắn tag",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-mcp-install-ghi-duong-dan-exe",
+      "title": "mcp install ghi đường dẫn exe đang chạy, nên cần cờ riêng cho vị trí lạ",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-full-build-rust-21-2-ms",
+      "title": "Full build: Rust 21,2 ms so với Python 58,6 ms",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-mot-phase-nen-chay-mot-minh",
+      "title": "Một phase nền chạy một mình, rồi bảy phase song song trong worktree",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-script-cai-dung-ascii-vi-powershell",
+      "title": "Script cài dùng ASCII vì PowerShell 5.1 làm hỏng dấu tiếng Việt",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-hook-chan-ghi-decisions-md-vi",
+      "title": "Hook chặn ghi DECISIONS.md vì pattern ckignore có chữ build",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-stop-hook-giu-agent-lai-hon",
+      "title": "Stop hook giữ agent lại hơn 20 lượt vì điều kiện cần cổng người",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-python-lam-oracle-64-muc-so",
+      "title": "Python làm oracle: 64 mục so khớp, 0 lệch",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-mcp-tra-phien-ban-giao-thuc",
+      "title": "MCP trả phiên bản giao thức cũ hơn Claude Code yêu cầu",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-merge-song-song-porting-md-trung",
+      "title": "Merge song song: PORTING.md trùng section, Cargo.lock xung đột",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-quet-lich-su-git-tim-khoa",
+      "title": "Quét lịch sử git tìm khoá trước khi chuyển repo sang public",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-harness-chan-sleep-noi-lenh-chuyen",
+      "title": "Harness chặn sleep nối lệnh, chuyển sang watch nền",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-python-khong-truyen-seed-seed-11",
+      "title": "Python không truyền --seed: seed 11 nằm trong preset của fixture",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-05-ton-trong-ranh-gioi-nguoi-dung",
+      "title": "Tôn trọng ranh giới người dùng về việc cần làm trên máy khác: không tự làm phần chỉ máy đó làm được, mà viết bản bàn giao đủ để người khác làm theo mà không cần thêm ngữ cảnh",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-de-agent-ghi-quyet-dinh-ky",
+      "title": "Để agent ghi quyết định kỹ thuật và điều kiện xem lại vào nhật ký dự án khi có sự đánh đổi, kèm lý do và nguồn",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-dung-mot-agent-chay-nen-de",
+      "title": "Dùng một agent chạy nền để kiểm tra hàng loạt phiên bản và quyết định chọn bên nào khi hai agent đưa kết quả trái nhau, thay vì hỏi người dùng từng câu",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-khi-bi-chan-boi-ha-tang",
+      "title": "Khi bị chặn bởi hạ tầng bên ngoài (hết billing, hook chặn lệnh, trạng thái runner), giải thích nguyên nhân cụ thể và đưa việc người dùng cần làm, thay vì thử lại mù quáng hoặc đổ lỗi chung chung",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-khi-mot-agent-bao-loi-khong",
+      "title": "Khi một agent báo lỗi, không tự sửa mà gửi báo cáo review cho chính agent viết code, rồi chạy lại vòng kiểm tra trên cùng nhánh",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

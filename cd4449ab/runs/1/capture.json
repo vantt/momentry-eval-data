@@ -1,0 +1,249 @@
+{
+  "id": "cd4449ab",
+  "run": 1,
+  "host": "omp",
+  "transcript": "/home/vantt/.omp/profiles/gemini-tetcu72/agent/sessions/-projects-mcp-skill-hub-simplify/2026-10-09T02-40-10-134Z_01a11e88-4796-7023-a511-4a8dcd4449ab.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "dadb4c5597fabafa",
+  "at": "2026-11-05T09:50:30.452Z",
+  "dryRun": {
+    "usd": 0.58,
+    "tokens": 92346,
+    "chunks": 1,
+    "hotspots": 143,
+    "entries": 2664
+  },
+  "report": {
+    "sid": "omp:cd4449ab",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.9585549000000001,
+    "secs": 222.5,
+    "exitCode": 0,
+    "status": "done",
+    "written": 24,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "omp:cd4449ab L1-L4000: done; 22 chuyện thô, 24 cụm; ghi 24 mới, gộp 0\nđiểm nóng 143 (thiếu 0); lần chạy 1/1; 0.96 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-09-bao-cao-da-verify-van-sai",
+      "title": "Báo cáo 'đã verify' vẫn sai: description thành '>-' và thứ tự name bị đảo",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-dry-run-tren-ban-clone-hub",
+      "title": "Dry run trên bản clone hub thật bắt lỗi mà fixture tự viết bỏ sót",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-claim-da-ghi-repo-sai-writer",
+      "title": "Claim 'đã ghi repo' sai: writer cũ vẫn ghi repository",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-golden-manifest-bi-sua-de-test",
+      "title": "Golden manifest bị sửa để test qua",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-migration-v4-nuot-loi-bang-phai",
+      "title": "Migration v4 nuốt lỗi bằng `_ =`: phải fail-closed và nêu tên file",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-ranh-gioi-mcp-17-tool-bi",
+      "title": "Ranh giới MCP: 17 tool bị xoá, boundary test làm spec",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-gop-nguon-theo-url-duoi-git",
+      "title": "Gộp nguồn theo URL: đuôi .git và dấu / cuối làm hai dòng thành một nguồn",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-migration-v3-v4-receipt-yaml-va",
+      "title": "Migration v3→v4: receipt YAML và validator mutation từ chối change",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-noi-schema-de-migration-qua-repo",
+      "title": "Nới schema để migration qua: repo@sha không kèm path, rồi siết lại",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-xoa-subsystem-insight-run-revision-vet",
+      "title": "Xoá subsystem insight/run/revision: vet, test và schema đi theo",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-doi-mot-layout-36-file-test",
+      "title": "Đổi một layout, 36 file test theo sau",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-test-fixture-la-ban-sao-byte",
+      "title": "Test fixture là bản sao byte-for-byte của file thật (distill.yaml 1184 dòng, skill.meta.yaml) đặt trong testdata, kèm kiểm tra trust verdict, upstream status, digest không đổi sau migration",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-lead-duyet-qua-nhieu-vong-may",
+      "title": "Lead duyệt qua nhiều vòng: máy dừng ở mỗi checkpoint, người merge fast-forward",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-commit-ghi-ten-model-thay-vi",
+      "title": "Commit ghi tên model thay vì người dùng đã cấu hình",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-guard-pre-commit-tren-worktree-chung",
+      "title": "Guard pre-commit trên worktree chung: dừng vì file không phải của mình",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-make-check-do-vi-gofmt-va",
+      "title": "make check đỏ vì gofmt và lint: chạy fmt trước rồi mới kiểm",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-validate-hub-that-exit-2-ca",
+      "title": "Validate hub thật exit 2 cả trên binary main: lỗi có sẵn, không do migration",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-clone-roi-migrate-rebuild-roi-so",
+      "title": "Clone rồi migrate, rebuild rồi so sánh before/after bằng skill show --json",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-distill-model-reopen-chi-khi-co",
+      "title": "distill_model: reopen chỉ khi có bằng chứng mới",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-doan-sai-duong-dan-va-lenh",
+      "title": "Đoán sai đường dẫn và lệnh: lỗi vặt của agent trong lúc khảo sát",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-edit-tool-tu-choi-khi-chua",
+      "title": "Edit tool từ chối khi chưa đọc lại: thử lại thẳng thì được",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-phase-3-bat-dau-tu-file",
+      "title": "Phase 3 bắt đầu từ file distill thật: 1184 dòng, 42 lessons, 77 SHA rút gọn",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-source-import-phai-ghi-meta-skill",
+      "title": "source_import phải ghi .meta/skill.yaml giống skill_add",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-10-09-pipeline-sua-theo-duoi-day-lead",
+      "title": "Pipeline sửa theo 'Dưới đây lead xem lại, agent sửa test-first' với bản đồ đích cho từng trường (field destination table) ghi vào plan: mỗi trường cũ được Kept, Derived hay bị bỏ, kèm bằng chứng đã xác minh trong code",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

@@ -1,0 +1,819 @@
+{
+  "id": "ab9a1dd8",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "cfdbe39157750974",
+  "at": "2026-11-10T12:45:54.817Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.09118399999999999,
+  "dryRun": {
+    "usd": 0.14,
+    "tokens": 56458,
+    "chunks": 1,
+    "hotspots": 12,
+    "entries": 857,
+    "gitCommits": 25
+  },
+  "report": {
+    "sid": "claude:ab9a1dd8",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.15961680000000003,
+    "secs": 37.4,
+    "exitCode": 0,
+    "status": "done",
+    "written": 27,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-11-03-cai-tu-con-so-0-hong-d5ef",
+        "status": "angle",
+        "angle": "Momentry là CLI Node nhặt chuyện từ phiên làm việc với coding agent, và đang chuẩn bị phát hành lần đầu. Người làm tưởng 205/205 test xanh là gần đủ. Khi thử đúng đường người mới đi, trong HOME trống, lệnh init --yes đầu tiên đã báo Unknown option và list, check thoát 1 sau quick start. Test xanh chỉ chứng minh lõi chạy, còn cài đặt và lần chạy đầu mới là chỗ người mới rớt.",
+        "audience": "dev làm CLI hoặc công cụ cho dev, sắp phát hành bản đầu tiên",
+        "evidence": [
+          232,
+          236
+        ],
+        "spine": {
+          "context": {
+            "text": "Momentry là CLI Node nhặt những chuyện đáng kể từ phiên làm việc với coding agent, đang chuẩn bị đóng gói phân phối lần đầu.",
+            "evidence": [
+              "profile",
+              42
+            ]
+          },
+          "want": {
+            "text": "Người mới cài xong phải chạy được từ con số 0 trước khi phát hành.",
+            "evidence": [
+              42,
+              236
+            ]
+          },
+          "obstacle": {
+            "text": "Lệnh init --yes báo Unknown option; list và check thoát 1 ngay sau quick start.",
+            "evidence": [
+              232,
+              236
+            ]
+          },
+          "turn": {
+            "text": "Tưởng 205/205 test xanh là gần đủ để phát hành; hoá ra đường đi thật của người mới hỏng ở khâu cài đặt và lần chạy đầu.",
+            "evidence": [
+              232,
+              236
+            ]
+          },
+          "action": {
+            "text": "Chạy các bước kiểm trong HOME tạm, đi từ con số 0, rồi ghi báo cáo audit.",
+            "evidence": [
+              223,
+              229
+            ]
+          },
+          "outcome": {
+            "text": "Báo cáo liệt kê thiếu sót: không có install, update, uninstall, doctor, --version; --help mỏng; hook có thể hỏng im lặng. Bốn điểm cần quyết được đưa cho chủ phiên.",
+            "evidence": [
+              236,
+              256
+            ]
+          },
+          "takeaway": {
+            "text": "Test xanh chỉ chứng minh lõi chạy; phải thử đường cài đặt từ HOME trống mới biết người mới có dùng được không.",
+            "evidence": [
+              236
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-codex-chua-tung-chay-hook-cua-d5ef",
+        "status": "angle",
+        "angle": "momentry là công cụ nhặt chuyện đáng kể từ phiên làm việc với coding agent, chạy trên máy người dùng và đang chuẩn bị phát hành. Người làm tin tên sự kiện viết kiểu snake_case như pre_compact là đúng, và test cũng xác nhận điều đó. Hoá ra Codex chỉ nhận PascalCase như PreCompact, nên hook bị bỏ qua im lặng mà không báo lỗi. Ai viết hook cho coding agent nên biết: test xanh không chứng minh hook được gọi.",
+        "audience": "dev viết hook hoặc plugin cho Claude Code, Codex",
+        "evidence": [
+          3195,
+          3228
+        ],
+        "spine": {
+          "context": {
+            "text": "momentry nhặt chuyện đáng kể từ phiên làm việc với coding agent, chạy trên máy người dùng, và đang chuẩn bị đóng gói phân phối.",
+            "evidence": [
+              "profile",
+              2233
+            ]
+          },
+          "want": {
+            "text": "Muốn biết hook thật sự chạy trong Codex và Claude Code trên Windows, chứ không chỉ pass unit test.",
+            "evidence": [
+              3047
+            ]
+          },
+          "obstacle": {
+            "text": "Hook của Codex không được gọi, nên phải đọc mã nguồn Codex để tìm lý do.",
+            "evidence": [
+              3184
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tên sự kiện viết snake_case như pre_compact là đúng; hoá ra Codex chỉ nhận PascalCase như PreCompact, SessionEnd, SessionStart.",
+            "evidence": [
+              3195,
+              3228
+            ]
+          },
+          "action": {
+            "text": "Đổi ba tên sự kiện sang PascalCase, thêm SessionEnd, rồi cập nhật test, PRD và CHANGELOG.",
+            "evidence": [
+              3205,
+              3206,
+              3228
+            ]
+          },
+          "outcome": {
+            "text": "Test còn 234 pass, 0 fail. README vẫn nhắc pre_compact và đang do phiên khác sửa.",
+            "evidence": [
+              3205,
+              3209
+            ]
+          },
+          "takeaway": {
+            "text": "Unit test bám theo chuỗi do chính code sinh ra nên không bắt được tên sai; cần chạy host thật để đếm số lần hook được gọi.",
+            "evidence": [
+              3195,
+              3209
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-hook-ghi-cung-duong-dan-node-d5ef",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-3: spine.context: evidence ngoài các dòng đã đưa: 664; spine.want: evidence ngoài các dòng đã đưa: 664; spine.obstacle: evidence ngoài các dòng đã đưa: 2017; spine.turn: evidence ngoài các dòng đã đưa: 2017, 2026; spine.action: evidence ngoài các dòng đã đưa: 2026, 2039 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/ab9a1dd8/runs/3/llm/angle-3-retry.json"
+      },
+      {
+        "id": "2026-11-03-reviewer-agent-tim-16-loi-install-d5ef",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-4: spine.want: evidence ngoài các dòng đã đưa: 2300, 2749; spine.obstacle: evidence ngoài các dòng đã đưa: 2269, 2282; spine.turn: evidence ngoài các dòng đã đưa: 2282, 2290, 2733, 2749; spine.action: evidence ngoài các dòng đã đưa: 2765, 2766; spine.outcome: evidence ngoài các dòng đã đưa: 2796, 2800 (+2) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/ab9a1dd8/runs/3/llm/angle-4-retry.json"
+      },
+      {
+        "id": "2026-11-03-hai-phien-cung-lam-mot-repo-d5ef",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-5: spine.want: evidence ngoài các dòng đã đưa: 42; spine.obstacle: evidence ngoài các dòng đã đưa: 236; spine.turn: evidence ngoài các dòng đã đưa: 236; spine.action: evidence ngoài các dòng đã đưa: 1170, 1171; spine.takeaway: evidence ngoài các dòng đã đưa: 236 (+1) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/ab9a1dd8/runs/3/llm/angle-5-retry.json"
+      },
+      {
+        "id": "2026-11-03-release-v0-1-0-lenh-cai-d5ef",
+        "status": "none",
+        "none": true,
+        "reason": "Không ai tin sai điều gì. Việc lệnh cài cần tag đã được nêu trong câu hỏi trước khi cắt (L2962), còn phần Windows người làm nêu rõ là chưa kiểm (L3042, L3052). Đây là chuỗi phát hành đi đúng kế hoạch, không có chỗ ngoặt.",
+        "spine": {
+          "context": {
+            "text": "Dự án momentry nhặt chuyện đáng kể từ phiên làm việc với coding agent. Người làm đang cắt bản phát hành công khai v0.1.0.",
+            "evidence": [
+              "profile",
+              2962
+            ]
+          },
+          "want": {
+            "text": "Cắt v0.1.0 công khai để lệnh cài một dòng trong README dùng được.",
+            "evidence": [
+              2962
+            ]
+          },
+          "obstacle": {
+            "text": "Chưa có máy Windows với Claude Code đã đăng nhập để kiểm hook thật.",
+            "evidence": [
+              3052
+            ]
+          },
+          "action": {
+            "text": "Tạo tag v0.1.0, chờ release.yml chạy xong, rồi chạy đúng lệnh cài trong README ở HOME tạm.",
+            "evidence": [
+              2981,
+              3022
+            ]
+          },
+          "outcome": {
+            "text": "Release đã công bố, CI xanh; lệnh cài cho ra momentry 0.1.0.",
+            "evidence": [
+              3018,
+              3025
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-03-agent-moi-vuong-vi-goi-y-d5ef",
+        "status": "none",
+        "none": true,
+        "reason": "Không có chỗ ngoặt: các dòng trích đoạn chỉ cho thấy vòng test mất 2 vòng rồi hội tụ ở vòng 1 sau khi thêm lệnh. Không dòng nào cho thấy ai tin gợi ý bằng câu văn là đủ rồi mới thấy điều ngược lại. Trạng thái 'lỗi chỉ có câu văn' trong chuyện không có số dòng đỡ, nên turn để null.",
+        "spine": {
+          "context": {
+            "text": "momentry nhặt những chuyện đáng kể từ phiên làm việc với coding agent. Đang làm vòng test agent-native cho CLI: một agent mới chỉ đọc --help và --json, phải tự đưa doctor về ok.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "obstacle": {
+            "text": "Vòng agent-native mất 2 vòng mới hội tụ.",
+            "evidence": [
+              1557
+            ]
+          },
+          "action": {
+            "text": "Sửa đường trả lỗi để trường fix lấy gợi ý từ kết quả lệnh.",
+            "evidence": [
+              1953
+            ]
+          },
+          "outcome": {
+            "text": "Vòng agent-native hội tụ ngay vòng đầu với lệnh privacy-add.",
+            "evidence": [
+              1960
+            ]
+          },
+          "takeaway": {
+            "text": "Mỗi thông báo lỗi nên kèm đúng một lệnh chạy được; gợi ý bằng câu văn không đủ để agent mới tự sửa.",
+            "evidence": [
+              1942,
+              1960
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-03-ci-lan-dau-linux-xanh-macos-d5ef",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-8: spine.context: evidence ngoài các dòng đã đưa: 2868; spine.want: evidence ngoài các dòng đã đưa: 2868; spine.obstacle: evidence ngoài các dòng đã đưa: 2832, 2837; spine.turn: evidence ngoài các dòng đã đưa: 2868, 2837; spine.action: evidence ngoài các dòng đã đưa: 2855, 2868 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/ab9a1dd8/runs/3/llm/angle-8-retry.json"
+      },
+      {
+        "id": "2026-11-03-claude-code-va-codex-chay-hook-d5ef",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-9: spine.want: evidence ngoài các dòng đã đưa: 236; spine.obstacle: evidence ngoài các dòng đã đưa: 236; spine.action: evidence ngoài các dòng đã đưa: 236, 256, 908; spine.outcome: evidence ngoài các dòng đã đưa: 911 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/ab9a1dd8/runs/3/llm/angle-9-retry.json"
+      },
+      {
+        "id": "2026-11-03-dao-ma-thoat-loi-sai-co-d5ef",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-10: spine.action: evidence ngoài các dòng đã đưa: 340, 342, 615; spine.outcome: evidence ngoài các dòng đã đưa: 601, 615; spine.takeaway: evidence ngoài các dòng đã đưa: 300, 615; evidence ngoài các dòng đã đưa: 300, 340 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/ab9a1dd8/runs/3/llm/angle-10-retry.json"
+      }
+    ],
+    "message": "claude:ab9a1dd8 L1-L4000: done; 22 chuyện thô, 27 cụm; ghi 27 mới, gộp 0\nđiểm nóng 12 (thiếu 0); 25 commit git; lần chạy 1/1; 0.16 USD\ngóc kể: 2 có, 2 không ra chuyện, 6 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: momentry tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-03-cai-tu-con-so-0-hong-d5ef",
+      "code": "M-X7VT",
+      "title": "Cài từ con số 0 hỏng: 205/205 test qua nhưng người mới không chạy được lần đầu",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Momentry là CLI Node nhặt chuyện từ phiên làm việc với coding agent, và đang chuẩn bị phát hành lần đầu. Người làm tưởng 205/205 test xanh là gần đủ. Khi thử đúng đường người mới đi, trong HOME trống, lệnh init --yes đầu tiên đã báo Unknown option và list, check thoát 1 sau quick start. Test xanh chỉ chứng minh lõi chạy, còn cài đặt và lần chạy đầu mới là chỗ người mới rớt.",
+      "audience": "dev làm CLI hoặc công cụ cho dev, sắp phát hành bản đầu tiên",
+      "spine": {
+        "context": {
+          "text": "Momentry là CLI Node nhặt những chuyện đáng kể từ phiên làm việc với coding agent, đang chuẩn bị đóng gói phân phối lần đầu.",
+          "lines": [
+            "profile",
+            "claude:ab9a1dd8#L42"
+          ]
+        },
+        "want": {
+          "text": "Người mới cài xong phải chạy được từ con số 0 trước khi phát hành.",
+          "lines": [
+            "claude:ab9a1dd8#L42",
+            "claude:ab9a1dd8#L236"
+          ]
+        },
+        "obstacle": {
+          "text": "Lệnh init --yes báo Unknown option; list và check thoát 1 ngay sau quick start.",
+          "lines": [
+            "claude:ab9a1dd8#L232",
+            "claude:ab9a1dd8#L236"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng 205/205 test xanh là gần đủ để phát hành; hoá ra đường đi thật của người mới hỏng ở khâu cài đặt và lần chạy đầu.",
+          "lines": [
+            "claude:ab9a1dd8#L232",
+            "claude:ab9a1dd8#L236"
+          ]
+        },
+        "action": {
+          "text": "Chạy các bước kiểm trong HOME tạm, đi từ con số 0, rồi ghi báo cáo audit.",
+          "lines": [
+            "claude:ab9a1dd8#L223",
+            "claude:ab9a1dd8#L229"
+          ]
+        },
+        "outcome": {
+          "text": "Báo cáo liệt kê thiếu sót: không có install, update, uninstall, doctor, --version; --help mỏng; hook có thể hỏng im lặng. Bốn điểm cần quyết được đưa cho chủ phiên.",
+          "lines": [
+            "claude:ab9a1dd8#L236",
+            "claude:ab9a1dd8#L256"
+          ]
+        },
+        "takeaway": {
+          "text": "Test xanh chỉ chứng minh lõi chạy; phải thử đường cài đặt từ HOME trống mới biết người mới có dùng được không.",
+          "lines": [
+            "claude:ab9a1dd8#L236"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-03-codex-chua-tung-chay-hook-cua-d5ef",
+      "code": "M-B0ZJ",
+      "title": "Codex chưa từng chạy hook của momentry vì tên sự kiện sai: pre_compact thay vì PreCompact",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "momentry là công cụ nhặt chuyện đáng kể từ phiên làm việc với coding agent, chạy trên máy người dùng và đang chuẩn bị phát hành. Người làm tin tên sự kiện viết kiểu snake_case như pre_compact là đúng, và test cũng xác nhận điều đó. Hoá ra Codex chỉ nhận PascalCase như PreCompact, nên hook bị bỏ qua im lặng mà không báo lỗi. Ai viết hook cho coding agent nên biết: test xanh không chứng minh hook được gọi.",
+      "audience": "dev viết hook hoặc plugin cho Claude Code, Codex",
+      "spine": {
+        "context": {
+          "text": "momentry nhặt chuyện đáng kể từ phiên làm việc với coding agent, chạy trên máy người dùng, và đang chuẩn bị đóng gói phân phối.",
+          "lines": [
+            "profile",
+            "claude:ab9a1dd8#L2233"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết hook thật sự chạy trong Codex và Claude Code trên Windows, chứ không chỉ pass unit test.",
+          "lines": [
+            "claude:ab9a1dd8#L3047"
+          ]
+        },
+        "obstacle": {
+          "text": "Hook của Codex không được gọi, nên phải đọc mã nguồn Codex để tìm lý do.",
+          "lines": [
+            "claude:ab9a1dd8#L3184"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tên sự kiện viết snake_case như pre_compact là đúng; hoá ra Codex chỉ nhận PascalCase như PreCompact, SessionEnd, SessionStart.",
+          "lines": [
+            "claude:ab9a1dd8#L3195",
+            "claude:ab9a1dd8#L3228"
+          ]
+        },
+        "action": {
+          "text": "Đổi ba tên sự kiện sang PascalCase, thêm SessionEnd, rồi cập nhật test, PRD và CHANGELOG.",
+          "lines": [
+            "claude:ab9a1dd8#L3205",
+            "claude:ab9a1dd8#L3206",
+            "claude:ab9a1dd8#L3228"
+          ]
+        },
+        "outcome": {
+          "text": "Test còn 234 pass, 0 fail. README vẫn nhắc pre_compact và đang do phiên khác sửa.",
+          "lines": [
+            "claude:ab9a1dd8#L3205",
+            "claude:ab9a1dd8#L3209"
+          ]
+        },
+        "takeaway": {
+          "text": "Unit test bám theo chuỗi do chính code sinh ra nên không bắt được tên sai; cần chạy host thật để đếm số lần hook được gọi.",
+          "lines": [
+            "claude:ab9a1dd8#L3195",
+            "claude:ab9a1dd8#L3209"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-03-hook-ghi-cung-duong-dan-node-d5ef",
+      "code": "M-8ZGC",
+      "title": "Hook ghi cứng đường dẫn Node tuyệt đối: nâng Node là hook chết mà không ai biết",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-reviewer-agent-tim-16-loi-install-d5ef",
+      "code": "M-64WM",
+      "title": "Reviewer agent tìm 16 lỗi: install Windows luôn báo 'Node quá cũ', uninstall không xoá gì nhưng vẫn báo thành công",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-hai-phien-cung-lam-mot-repo-d5ef",
+      "code": "M-8DTA",
+      "title": "Hai phiên cùng làm một repo: commit của tôi kéo theo đổi tên README, main mất README.md và CI đỏ toàn bộ",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-release-v0-1-0-lenh-cai-d5ef",
+      "code": "M-B9KX",
+      "title": "Release v0.1.0: lệnh cài một dòng trong README không chạy được cho đến khi có tag",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Dự án momentry nhặt chuyện đáng kể từ phiên làm việc với coding agent. Người làm đang cắt bản phát hành công khai v0.1.0.",
+          "lines": [
+            "profile",
+            "claude:ab9a1dd8#L2962"
+          ]
+        },
+        "want": {
+          "text": "Cắt v0.1.0 công khai để lệnh cài một dòng trong README dùng được.",
+          "lines": [
+            "claude:ab9a1dd8#L2962"
+          ]
+        },
+        "obstacle": {
+          "text": "Chưa có máy Windows với Claude Code đã đăng nhập để kiểm hook thật.",
+          "lines": [
+            "claude:ab9a1dd8#L3052"
+          ]
+        },
+        "action": {
+          "text": "Tạo tag v0.1.0, chờ release.yml chạy xong, rồi chạy đúng lệnh cài trong README ở HOME tạm.",
+          "lines": [
+            "claude:ab9a1dd8#L2981",
+            "claude:ab9a1dd8#L3022"
+          ]
+        },
+        "outcome": {
+          "text": "Release đã công bố, CI xanh; lệnh cài cho ra momentry 0.1.0.",
+          "lines": [
+            "claude:ab9a1dd8#L3018",
+            "claude:ab9a1dd8#L3025"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-11-03-agent-moi-vuong-vi-goi-y-d5ef",
+      "code": "M-AEGN",
+      "title": "Agent mới vướng vì gợi ý sửa lỗi là một câu văn, không phải lệnh chạy được",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "momentry nhặt những chuyện đáng kể từ phiên làm việc với coding agent. Đang làm vòng test agent-native cho CLI: một agent mới chỉ đọc --help và --json, phải tự đưa doctor về ok.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "obstacle": {
+          "text": "Vòng agent-native mất 2 vòng mới hội tụ.",
+          "lines": [
+            "claude:ab9a1dd8#L1557"
+          ]
+        },
+        "action": {
+          "text": "Sửa đường trả lỗi để trường fix lấy gợi ý từ kết quả lệnh.",
+          "lines": [
+            "claude:ab9a1dd8#L1953"
+          ]
+        },
+        "outcome": {
+          "text": "Vòng agent-native hội tụ ngay vòng đầu với lệnh privacy-add.",
+          "lines": [
+            "claude:ab9a1dd8#L1960"
+          ]
+        },
+        "takeaway": {
+          "text": "Mỗi thông báo lỗi nên kèm đúng một lệnh chạy được; gợi ý bằng câu văn không đủ để agent mới tự sửa.",
+          "lines": [
+            "claude:ab9a1dd8#L1942",
+            "claude:ab9a1dd8#L1960"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-11-03-ci-lan-dau-linux-xanh-macos-d5ef",
+      "code": "M-MY6V",
+      "title": "CI lần đầu: Linux xanh, macOS đỏ vì /var là symlink, Windows có 38 test viết riêng cho POSIX",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-claude-code-va-codex-chay-hook-d5ef",
+      "code": "M-C7BT",
+      "title": "Claude Code và Codex chạy hook Windows qua shell khác nhau: dùng dấu / và gọi bằng tên lệnh",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-dao-ma-thoat-loi-sai-co-d5ef",
+      "code": "M-84HM",
+      "title": "Đảo mã thoát: lỗi sai cờ đổi từ 1 sang 2 để theo chuẩn, vì script pre-commit có thể đọc nhầm",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-dao-quyet-dinh-prd-tu-chi-d5ef",
+      "code": "M-W7CX",
+      "title": "Đảo quyết định PRD: từ 'chỉ in đoạn hook' sang 'công cụ tự ghi vào settings.json'",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-do-hook-tren-windows-bang-runner-d5ef",
+      "code": "M-HZKJ",
+      "title": "Đo hook trên Windows bằng runner CI không có tài khoản: hook.spawned trước lúc phiên báo lỗi đăng nhập",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-mo-rong-ba-host-moi-9-d5ef",
+      "code": "M-RKZS",
+      "title": "Mở rộng ba host mới: 9 profile pi, 10 profile omp, 4 profile Antigravity, 4 profile Codex; Antigravity không có sự kiện kết thúc phiên",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-nghien-cuu-noi-antigravity-luu-pb-d5ef",
+      "code": "M-XPSN",
+      "title": "Nghiên cứu nói Antigravity lưu .pb hay JSONL; máy thật có transcript_full.jsonl",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-powershell-5-1-lam-hong-json-d5ef",
+      "code": "M-FVD8",
+      "title": "PowerShell 5.1 làm hỏng JSON truyền cho lệnh ngoài; runner Windows chạy quyền Administrator",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-thu-hook-pi-va-omp-voi-d5ef",
+      "code": "M-7YK2",
+      "title": "Thử hook pi và omp với khoá giả, và cô lập mạng bằng unshare: lỗi xác thực không chứng minh được hook đã chạy",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-plan-8-phase-45-viec-qua-d5ef",
+      "code": "M-QF1K",
+      "title": "Plan 8 phase, 45 việc qua validator: bước đánh số không được tính là checkbox",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-stop-hook-giu-agent-lam-den-d5ef",
+      "code": "M-Y5HN",
+      "title": "Stop hook giữ agent làm đến khi xong: ba lần bị đẩy lại, mỗi lần một điều kiện chưa đạt",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-bo-loc-lenh-chan-chuoi-dist-d5ef",
+      "code": "M-MBVN",
+      "title": "Bộ lọc lệnh chặn chuỗi 'dist', 'rm -rf' với biến shell và '.git'; agent đổi công cụ thay vì lách",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-bip-lenh-go-tay-de-danh-d5ef",
+      "code": "M-962P",
+      "title": "/bip: lệnh gõ tay để đánh dấu 'chỗ này đáng kể' ngay lúc đang làm việc",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-them-mot-viec-vao-goal-dang-d5ef",
+      "code": "M-1JTY",
+      "title": "Thêm một việc vào goal đang chạy: quarantine --release all kiểm lại từng chuyện đang giữ",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-vong-doi-installer-tren-linux-cai-d5ef",
+      "code": "M-5QXR",
+      "title": "Vòng đời installer trên Linux: cài, cài lại không đổi gì, update báo mã 10, uninstall giữ dữ liệu",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-khi-mot-cong-cu-ben-thu-d5ef",
+      "code": "M-TAPC",
+      "title": "Khi một công cụ bên thứ ba có cơ chế không rõ (cách tính hash tin cậy của Codex), agent đọc mã nguồn mở của nó qua API của GitHub, tìm đúng hàm, và tìm cả cờ bỏ qua bước đó.",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-viet-mot-vong-kiem-trong-ci-d5ef",
+      "code": "M-M6G8",
+      "title": "Viết một vòng kiểm trong CI: một agent mới chỉ đọc --help và --json, tự cài và tự sửa công cụ tới khi đạt trạng thái sẵn sàng, rồi báo số vòng cần.",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-sau-khi-phat-hanh-agent-chay-d5ef",
+      "code": "M-XEZ7",
+      "title": "Sau khi phát hành, agent chạy đúng lệnh cài một dòng trong README trên bản thật từ GitHub, trong một HOME tạm, để kiểm chứng.",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-truoc-khi-bao-hoan-tat-agent-d5ef",
+      "code": "M-5DTQ",
+      "title": "Trước khi báo hoàn tất, agent chạy lại toàn bộ kiểm tra trong một bản clone sạch và trên CI nhiều hệ điều hành, thay vì chỉ tin vào máy đang làm việc.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-theo-doi-ci-bang-lenh-chay-d5ef",
+      "code": "M-2V68",
+      "title": "Theo dõi CI bằng lệnh chạy nền chờ tới khi xong, rồi nhận thông báo, thay vì người dùng hoặc agent hỏi lại theo từng phút.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

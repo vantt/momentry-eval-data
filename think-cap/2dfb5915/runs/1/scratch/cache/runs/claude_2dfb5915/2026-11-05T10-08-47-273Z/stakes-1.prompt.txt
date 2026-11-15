@@ -1,0 +1,77 @@
+Dưới đây là 33 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Dry-run release bằng workflow_dispatch trước khi gắn tag
+   Trước khi tag, dry-run ra 4 binary, install.ps1, install.sh và checksums; mọi sha256 đúng, không tạo Release. Sau rc.1, rc.2, rc.3 đều tải về kiểm 6 file trong checksums. Lỗi thật: job macOS bị GitHub huỷ vì chờ máy runner quá 15 phút; chạy lại đúng job lỗi thì qua.
+M2. Máy Windows tìm 2 lệch CLI mà CI không thấy: đường dẫn escape trong JSON
+   Máy Windows chạy bộ so khớp trên vault thật và thấy 2 lệch ở CLI: Scrub không che dạng đường dẫn có backslash escape trong JSON. Sửa để che cả hai dạng, dài nhất trước. Trên Linux hai dạng giống nhau nên golden không đổi. Lệch này chỉ lộ trên vault thật.
+M3. Script cài dùng ASCII vì PowerShell 5.1 làm hỏng dấu tiếng Việt
+   PowerShell 5.1 đọc script qua irm làm hỏng dấu tiếng Việt trong thông báo. Vì vậy script cài chỉ dùng ASCII, thông báo bằng tiếng Anh; README tiếng Việt vẫn giữ cho người đọc.
+M4. mcp install ghi đường dẫn exe đang chạy, nên cần cờ riêng cho vị trí lạ
+   Nếu user chạy từ thư mục Downloads, config trỏ vào đó. Sửa: cảnh báo và yêu cầu cờ --allow-any-location để vượt. Cờ --force chỉ bỏ qua kiểm tra Claude Desktop đang chạy. Tách hai cờ để một cờ không tắt cả hai bảo vệ.
+M5. basename chỉ tách dấu / nên trên Windows tên vault thành cả đường dẫn
+   Python dùng ntpath.basename, tách cả backslash và bỏ ổ đĩa. Rust chỉ tách dấu slash nên trên Windows tên vault thành cả đường dẫn. Hai test Windows fail, và chỉ CI Windows bắt được. Sửa để tách theo cả hai dấu.
+M6. Nhánh installer hạ cấp OHS từ vantt.4 xuống vantt.3
+   Nhánh gốc thay gói khi phiên bản khác, nên gói mới hơn cũng bị đưa về bản ghim. Review phát hiện trước khi merge. Sửa: so phiên bản dạng X.Y.Z-vantt.N, chỉ nâng khi gói cũ hơn hoặc không rõ phiên bản; gói đưa vào bằng --ohs không bao giờ bị ghi đè. Có test cho cả hai.
+M7. CI đỏ vì rust-cache xoá file: dump đặt trong thư mục cache
+   Swatinem/rust-cache xoá mọi file ngoài thư mục build và giữ lại thư mục rỗng. Lần chạy đầu ghi thư mục con, cache lưu thư mục rỗng không có manifest. Các lần sau cache khôi phục khớp chính xác, check thấy thư mục không rỗng nhưng không có manifest nên từ chối. Ba OS đỏ trong khi mã không đổi. Sửa: ghi dump ra RUNNER_TEMP. Chạy local không tái hiện vì không ai xoá target.
+M8. Đo ngưỡng đệ quy: Python chịu dict 3000 tầng, list chỉ tới 996
+   Sau sửa, in dict bằng vòng lặp thay vì đệ quy và bỏ giới hạn parser. Ranh giới đo trực tiếp bằng Python 3.14 với PyYAML: list 996 chạy, 997 lỗi RecursionError; dict tới 3000 khớp output. Qua build index đầy đủ, Python lỗi sớm hơn vài tầng, nên ranh giới khác khi gọi thẳng.
+M9. Stop hook giữ agent lại hơn 20 lượt vì điều kiện cần cổng người
+   Hook chặn dừng lặp lại với cùng lý do hơn 20 lần. User đã thu hẹp phạm vi tới bản cài được, nhưng điều kiện vẫn chưa thoả. Agent lặp đi lặp lại việc nói rõ không còn việc làm được trên máy này. Phiên dừng khi user xoá goal.
+M10. Full build: Rust 21,2 ms so với Python 58,6 ms
+   Full build Rust 21,2 ms, Python 58,6 ms. Build không đổi: Rust 2,1 ms, Python 2,4 ms. Các bảng SQL và rowid khớp, trừ thứ tự rowid của schema_field và schema_link do Python dùng set nên đổi mỗi lần chạy.
+M11. Khi bị chặn bởi hạ tầng bên ngoài (hết billing, hook chặn lệnh, trạng thái runner), giải thích nguyên nhân cụ thể và đưa việc người dùng cần làm, thay vì thử lại mù quáng hoặc đổ lỗi chung chung
+   Khi bị chặn bởi hạ tầng bên ngoài (hết billing, hook chặn lệnh, trạng thái runner), giải thích nguyên nhân cụ thể và đưa việc người dùng cần làm, thay vì thử lại mù quáng hoặc đổ lỗi chung chung Người làm thường thử lại nhiều lần, hoặc báo 'CI lỗi' rồi chờ, không kiểm nguyên nhân
+M12. compact() xoá khoá null làm ohs_not_ready còn 3 trên 5 khoá
+   Ở trạng thái starting, progress và eta_s là null nên bị xoá; agent chỉ thấy 3 khoá trong khi hợp đồng là 5. Test 5 khoá chạy trước compact nên không bắt được lỗi. Hai agent độc lập cùng xác nhận. Sửa: miễn compact cho lỗi ohs_not_ready và thêm test ở tầng MCP.
+M13. Phản biện chéo hai thiết kế MCP: 13 tool, không code mode
+   Hai agent làm độc lập rồi phản biện chéo, hội tụ về 13 tool. Ước lượng định nghĩa tool mỗi phiên giảm từ khoảng 6,0 nghìn xuống khoảng 4,4 nghìn token, tính theo độ dài chuỗi, chưa đo bằng tokenizer. Code mode bị loại vì Claude Desktop không có shell. User chốt read do pkm tự đọc file, không chuyển sang OHS, vì OHS không đọc được note khi đang index.
+M14. Quét lịch sử git tìm khoá trước khi chuyển repo sang public
+   Agent tìm các mẫu token GitHub, khoá Anthropic, khoá AWS và private key trong toàn bộ lịch sử. Lệnh đầu bị từ chối quyền đọc một tệp; lệnh thứ hai dùng mẫu chính xác và cho kết quả 0. Không có gitleaks trên máy, nên chỉ quét bằng grep.
+M15. Note 338 byte làm nổ 11 triệu prop
+   Một note 338 byte với 7 tầng alias tạo 11,1 triệu prop và 1,45 GB RSS trong Rust. Thêm một tầng, vẫn dưới 400 byte, cần khoảng 14 GB. Python cũng nổ (877 MB ở 7 tầng), nên đây là lỗi chung với spec nhưng vẫn là DoS. Sửa: ngân sách 1 triệu prop và 64 MiB text mỗi note; vượt thì ghi MemoryError và bỏ frontmatter, body vẫn đọc; ghi là lệch có chủ ý.
+M16. Chọn thư viện YAML bằng bảng lệch trên 25.000 note sinh ngẫu nhiên
+   Năm ứng viên được đo: unsafe-libyaml 0 lệch; libyaml-safer panic trên 242 note; saphyr-parser 6.510 lệch; serde_norway 20.916; saphyr 21.317. libyaml-safer panic khi khối block nằm cuối frontmatter, một dạng khá phổ biến. Chọn unsafe-libyaml cộng lớp tương thích PyYAML.
+M17. Harness chặn sleep nối lệnh, chuyển sang watch nền
+   Harness chặn lệnh ghép sleep với lệnh khác và yêu cầu dùng vòng lặp hoặc chạy nền. Agent chuyển sang chạy watch nền và được báo khi xong.
+M18. Để agent ghi quyết định kỹ thuật và điều kiện xem lại vào nhật ký dự án khi có sự đánh đổi, kèm lý do và nguồn
+   Để agent ghi quyết định kỹ thuật và điều kiện xem lại vào nhật ký dự án khi có sự đánh đổi, kèm lý do và nguồn Thường quyết định chỉ nằm trong đầu người làm hoặc trong tin nhắn chat rồi trôi mất
+M19. Review tìm hai lỗi treo OHS: stderr dừng khi gặp byte lạ
+   Reviewer đọc mã (không chạy) và thấy: stderr reader thoát khi gặp byte không phải UTF-8, ví dụ code page tiếng Việt trên Windows. Pipe đầy làm mọi console.error của OHS bị chặn, search timeout 60 s, trạng thái kẹt ở starting. Lỗi thứ hai: stdin giữ mutex không timeout, close() chờ cùng mutex nên pkm không thoát. Sửa bằng luồng ghi riêng, đọc tới EOF, và test fake server phát 0xFF rồi hơn 64 KB.
+M20. Hook chặn cargo build, audit phải suy luận từ mã nguồn
+   Audit không chạy được binary nên mọi phát hiện về binary đều suy từ mã. Phát hiện chặn: pkm.exe cần vcruntime140.dll mà nhiều máy Windows sạch không có. Sửa bằng CRT tĩnh và bước CI dùng dumpbin kiểm DLL còn lại. Kết quả audit: 3 lỗi chặn, 9 quan trọng, 8 nên có.
+M21. Viết tay JSON-RPC thay vì rmcp: nhị phân nhỏ hơn 4 lần
+   rmcp 3.8.0 cho binary 2,79 MB, 56 crate, build sạch 16,5 s và kéo tokio. Viết tay: 0,68 MB, 12 crate, 2,5 s, không runtime. rmcp còn lệch Python ở 5 điểm tầng giao thức, ví dụ thông báo method không tồn tại và dòng không phải JSON không có phản hồi.
+M22. MCP trả phiên bản giao thức cũ hơn Claude Code yêu cầu
+   Claude Code thử server/discover của giao thức mới trước, lỗi thì rơi về initialize. Python chỉ hỗ trợ đường fallback này. Nếu bản Claude Code sau bỏ fallback, server Python gãy trước, nên ghi điều đó thành điều kiện xem lại quyết định.
+M23. Python không truyền --seed: seed 11 nằm trong preset của fixture
+   Test Python không truyền --seed. Giá trị mặc định của preset fixture là 11, và tài liệu benchmark cũng ghi 11. Agent đọc preset rồi ghim 11 trong spec.lock.
+M24. Một phase nền chạy một mình, rồi bảy phase song song trong worktree
+   Phase 01 chạy một mình, CI xanh trên ba nền. Sau đó bảy phase W1 chạy song song trong worktree riêng, mỗi kết quả được merge khi xong. Trong một phiên đã xong 5 phase.
+M25. Repo private làm installer cần gh; rồi chuyển public vì CI bị chặn billing
+   Installer thử URL công khai trước, không được thì dùng gh release download. User chọn giữ private. Sau đó GitHub Actions từ chối chạy mọi job với thông báo lỗi thanh toán hoặc hết hạn mức. User tự chuyển repo sang public; Actions miễn phí, CI chạy lại, rc.3 được phát hành.
+M26. Merge song song: PORTING.md trùng section, Cargo.lock xung đột
+   Xung đột lặp lại ở Cargo.lock và spec/PORTING.md. Cách xử lý: lấy bản một bên, chạy lại generate-lockfile, giữ cả hai đoạn Markdown. Có lần section MCP bị lặp hai lần do merge, phải xoá bản cũ. Không mất code nào.
+M27. Tôn trọng ranh giới người dùng về việc cần làm trên máy khác: không tự làm phần chỉ máy đó làm được, mà viết bản bàn giao đủ để người khác làm theo mà không cần thêm ngữ cảnh
+   Tôn trọng ranh giới người dùng về việc cần làm trên máy khác: không tự làm phần chỉ máy đó làm được, mà viết bản bàn giao đủ để người khác làm theo mà không cần thêm ngữ cảnh Thường người làm phần mềm sẽ hoặc tự giả định kết quả, hoặc gửi một ghi chú ngắn kiểu 'nhớ test trên Windows nhé' mà người nhận không biết làm thế nào
+M28. Build index lỗi giữa chừng thì link cũ ở lại mãi
+   Review thấy: nếu derive lỗi sau transaction đầu, lần build sau không thấy note đổi nên không tính lại edge, link cũ ở mãi. Lỗi này nằm trong spec Python nên parity không bắt được. Sửa bằng cờ dirty trong meta. Thêm lock file, transaction IMMEDIATE, busy timeout 30 s, chờ tối đa 5 phút. Build song song còn có thể tranh khoá ghi, nên đọc file trước khi mở transaction.
+M29. Dùng một agent chạy nền để kiểm tra hàng loạt phiên bản và quyết định chọn bên nào khi hai agent đưa kết quả trái nhau, thay vì hỏi người dùng từng câu
+   Dùng một agent chạy nền để kiểm tra hàng loạt phiên bản và quyết định chọn bên nào khi hai agent đưa kết quả trái nhau, thay vì hỏi người dùng từng câu Thông thường người dùng tự mở nhiều cửa sổ AI, tự đọc từng kết quả, tự so sánh và tự quyết, hoặc chỉ chạy một agent duy nhất trong một luồng tuyến tính
+M30. Khi một agent báo lỗi, không tự sửa mà gửi báo cáo review cho chính agent viết code, rồi chạy lại vòng kiểm tra trên cùng nhánh
+   Khi một agent báo lỗi, không tự sửa mà gửi báo cáo review cho chính agent viết code, rồi chạy lại vòng kiểm tra trên cùng nhánh Người dùng thường tự đọc lỗi, tự sửa, hoặc mở một phiên mới và dán lại toàn bộ ngữ cảnh
+M31. Commit Python 223c9c3: thiếu gói ngôn ngữ thì OHS dựng lại index liên tục
+   Bản Python thêm biến OHS_LANGUAGE_PACK trỏ tới gói tiếng Việt trong bundle. Nếu pkm không đặt biến này, hai bên đọc chung index nhưng khác cấu hình nên OHS dựng lại view liên tục. Port vào mọi lần khởi OHS trong pkm: MCP, related và doctor --deep. Chạy thật trên bundle báo language_pack loaded là true.
+M32. Python làm oracle: 64 mục so khớp, 0 lệch
+   Bộ so khớp có 64 mục: 17 bảng index, 81 câu đáp án, 712 lời gọi tool, 21 lệnh CLI. Sau khi nối đủ lớp tool và related, kết quả là 64/64 khớp, 0 lệch chưa đặt tên, 0 mục thiếu. CI chạy cùng bộ kiểm trên Linux, macOS và Windows.
+M33. Hook chặn ghi DECISIONS.md vì pattern ckignore có chữ build
+   Lệnh nối vào file bị chặn kèm thông báo thêm !build vào ckignore. Agent không sửa cấu hình hook mà ghi nội dung vào file tạm rồi nối vào; kết quả giống nhau.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

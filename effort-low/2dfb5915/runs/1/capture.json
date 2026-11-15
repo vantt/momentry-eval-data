@@ -1,0 +1,141 @@
+{
+  "id": "2dfb5915",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-pkm/2dfb5915-3011-441f-a6fb-2c7cb5abd60b.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "eef608eecc0bbb60",
+  "at": "2026-11-05T10:20:18.563Z",
+  "dryRun": {
+    "usd": 0.25,
+    "tokens": 91394,
+    "chunks": 1,
+    "hotspots": 9,
+    "entries": 772
+  },
+  "report": {
+    "sid": "claude:2dfb5915",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.2046145,
+    "secs": 54.1,
+    "exitCode": 0,
+    "status": "done",
+    "written": 12,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:2dfb5915 L1-L4000: done; 7 chuyện thô, 12 cụm; ghi 12 mới, gộp 0\nđiểm nóng 9 (thiếu 0); lần chạy 1/1; 0.20 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-alias-bomb-yaml-lam-tran-bo",
+      "title": "Alias bomb YAML làm tràn bộ nhớ, reviewer agent phát hiện trước khi chạy thật",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-phat-hien-python-phu-thuoc-thu",
+      "title": "Phát hiện Python phụ thuộc thứ tự liệt kê file của hệ điều hành",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-agent-tu-dung-pipeline-17-phase",
+      "title": "Agent tự dựng pipeline 17 phase Rust cho bản Python, chạy song song bằng nhiều agent",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-agent-tu-chay-doi-chieu-voi",
+      "title": "Agent tự chạy đối chiếu với bản gốc (Python) và coi kết quả so khớp là bằng chứng: so sánh từng bảng, từng câu trả lời, từng lệnh CLI, đến cấp byte, và dùng golden file đã ghim theo commit để so.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-ban-phat-hanh-thu-bi-github",
+      "title": "Bản phát hành thử bị GitHub Actions chặn vì thanh toán, phải đổi repo sang public",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-doi-co-che-tim-kiem-mcp",
+      "title": "Đổi cơ chế tìm kiếm MCP: hai agent độc lập đi đến cùng một thiết kế và từ chối code mode",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-loi-cache-lam-ci-do-target",
+      "title": "Lỗi cache làm CI đỏ: target/ bị rust-cache xoá file ngoài thư mục build",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-truoc-khi-phat-hanh-ban-thu",
+      "title": "Trước khi phát hành bản thử, agent đưa bản đó qua một vòng kiểm tra độc lập: tải file phát hành về, kiểm sha256 từng file, chạy thử binary, rồi mới báo xong.",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-job-macos-build-bi-huy-vi",
+      "title": "Job macOS build bị huỷ vì chờ runner quá lâu, không phải lỗi code",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-dua-moi-quyet-dinh-bi-chan",
+      "title": "Đưa mọi quyết định bị chặn (cổng người dùng, câu hỏi thiết kế, lựa chọn kỹ thuật) vào một lần hỏi có cấu trúc, gom nhiều câu, và tiếp tục làm mọi việc không phụ thuộc vào câu trả lời đó.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-ghi-lai-quyet-dinh-ky-thuat",
+      "title": "Ghi lại quyết định kỹ thuật vào một file nhật ký riêng (DECISIONS) và ghi cả ngày, lý do, phương án bị bỏ, để agent và người đọc sau này không phải hỏi lại.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-viet-ghi-chu-tien-do-cho",
+      "title": "Viết ghi chú tiến độ cho người dùng theo kiểu nêu rõ đã xong gì, đã kiểm bằng cách nào, còn chờ ai, và lệnh cụ thể để người dùng tự chạy trên máy của họ.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

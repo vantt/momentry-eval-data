@@ -1,0 +1,114 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L1239] USER: có skill skillstation-send chưa
+[L1271] USER: tôi vừa chỉnh xong skill cs-packaging-distribution, hãy đẩy lên hub
+[L1281] USER: Base directory for this skill: /home/vantt/.claude/skills/skillstation-send <!-- Written by Skillstation (wrapper v1). Edit the skill in .agents/skills/skillstation-send/, not here. --> This skill lives in the shared Agent Skills folder. Read `/home/vantt/.claude/skills/skillstation-send/../../../.agents/skills/skillstation-send/SKILL.md` now and follow it as this skill. Wherever it mentions this skill's folder or its scripts, use `/home/vantt/.claude/skills/skillstation-send/../../../.agents/skills/skillstation-send/`. ARGUMENTS: send ./skills/cs-packaging-distribution to the hub (user just e …[+87]
+</asks>
+
+<story>
+hook: Scanner báo 11 lỗi, nhưng cả 11 chỉ là chữ trong tài liệu
+tension: tuong_ma_hoa_ra (Scanner báo 7 lỗi critical về curl | sh / Tất cả chỉ là mô tả trong tài liệu, không phải lệnh được chạy)
+stakes: 1/3
+# Scanner báo 11 finding, toàn là chữ trong tài liệu về curl | sh
+
+**Bối cảnh:** Trước khi gửi lên hub, skillstation scan đã chạy và chặn việc gửi với 7 finding critical.
+**Chuyện gì xảy ra:** Scanner báo rce.pipe-to-shell 7 lần (critical), persist.autostart 1 lần (high) và privesc.command 3 lần (medium). Agent đọc lại từng vị trí và xác nhận đó là mô tả installer, chú thích và ví dụ mẫu, không phải lệnh skill tự chạy; các chỗ sudo đều khuyên tránh. Người dùng chọn gửi dù còn 11 finding, và các lần gửi sau vẫn báo đúng 11 finding.
+**Bài học:** Skill viết về cài đặt bằng curl | sh sẽ luôn bị scanner RCE bắt; cần có ghi chú để người duyệt biết đó là tài liệu, không phải lệnh.
+**Artefact:** Bảng 3 nhóm rule, vị trí và đánh giá (L1304-L1324). Cần che đường dẫn cá nhân nếu có.
+</story>
+
+<excerpt>
+[L1299] RESULT: {"schema_version":"1","status":"action_required","summary":"cs-packaging-distribution was not checked out from the hub at http://100.93.158.78:7420: this submits it for review as a new skill, or as a replacement when the hub has one.","items":[],"sug …[+1873]
+[L1300] TOOL Bash: skillstation skill scan ./skills/cs-packaging-distribution --json
+[L1304] RESULT (exit 1): Exit code 1 | {"schema_version":"1","status":"ok","summary":"Scanned 1 folder with 26 rules: 11 findings.","items":[],"suggested_actions":[],"warnings":[],"error":null,"rules":26,"rules_digest":"sha256:8676249dde4ee778e1fccc6aaeccd5b3fe3cd2f228bf4b29848396745f3ebaf4","fail_on":"high","scans":[{"id":"cs-packaging-distribution","folder":"/home/vantt/projects/devops/skills/cs-packaging-distribution","verdict":"critical","files":["channels/_template.md","channels/agent-host-plugin.md","common/00-pri …[+5300]
+[L1311] TOOL Bash: skillstation skill lint ./skills/cs-packaging-distribution --json
+[L1315] RESULT (exit 2): Exit code 2 | {"schema_version":"1","status":"error","summary":"The request cannot be accepted.","items":[],"suggested_actions":[],"warnings":[],"error":{"code":"invalid_request","render":{"ERROR":"The request cannot be accepted.","WHY":"the hub at http://100.93.158.78:7420 does not check routing","FIX":"Update skillstation on the hub machine, then restart `skillstation serve` there."}},"skill_id":"","hub":"http://100.93.158.78:7420","folder":"","description":"","routing":{"triggers":null,"examp …[+64]
+[L1318] AGENT: Tôi **chưa gửi**. Lượt quét bảo mật chặn lại với 11 cảnh báo, nên cần anh quyết định trước.
+
+**Bản xem trước:** sẽ gửi 29 file (72 KB), không bỏ file nào. Hub đã có sẵn một skill tên `cs-packaging-distribution`, có vẻ bản gửi trước đã được duyệt. Vì vậy lần này sẽ là **đề xuất thay thế** bản trên hub, người duyệt trên máy hub phải chấp nhận thì mới có hiệu lực.
+
+**Quét bảo mật:** 7 cảnh báo critical, 1 high, 3 medium.
+
+| Quy tắc | Nằm ở đâu | Đánh giá |
+|---|---|---|
+| `rce.pipe-to-shell` ×7 (critical) | `common/03-first-contact.md:33`, `common/30-install.md:12-13`, `templates/install.sh:4,18,19,149` | Đây là chữ trong tài liệu, không phải lệnh skill tự chạy. Skill dạy cách viết installer để người dùng chạy theo kiểu `curl … \| sh`, nên cụm này xuất hiện trong mô tả quy tắc, chú thích và đoạn usage của mẫu. |
+| `persist.autostart` (high) | `common/10-versioning.md:15` | VER-06 chỉ khuyên dự án *dùng* pre-commit hook; skill không cài hook nào. |
+| `privesc.command` ×3 (medium) | UPD-09, UNI-07, `references.md:33` | Các chỗ này đều nói *tránh hoặc từ chối* chạy bằng sudo. Mức medium nên không chặn. |
+
+Tôi tự đọc lại cả hai script: `check-references.sh` chỉ đọc qua `gh api`, còn `lint-guides.sh` chỉ đọc các file trong thư mục skill. Không có chỗ nào tự tải hay chạy thứ gì.
+
+Nói thẳng: tôi cho rằng không quy tắc nào khớp với hành vi nguy hiểm thật. Nhưng người duyệt trên hub sẽ quét lại và thấy đúng 11 cảnh báo này.
+
+**Kiểm tra routing:** không chạy được, vì hub vẫn đang chạy bản skillstation cũ chưa có tính năng này.
+```
+ERROR: The request cannot be accepted.
+WHY: the hub at http://100.93.158.78:7420 does not check routing
+FIX: Update skillstation on the hub machine, then restart `skillstation serve` there.
+```
+
+**Anh chọn một trong hai:**
+1. **Gửi luôn** dù còn các cảnh báo: anh nói "gửi" thì tôi chạy `skillstation skill commit ./skills/cs-packaging-distribution --yes --json`.
+2. **Sửa trước để quét sạch:** viết lại các chỗ đó cho máy quét không bắt, ví dụ ghi "pipe t …[+367]
+[L1324] USER: ok, vậy em đẩy lên hub đi
+[L1331] TOOL Bash: skillstation skill commit ./skills/cs-packaging-distribution --yes --json
+[L1334] RESULT: {"schema_version":"1","summary":"Sent cs-packaging-distribution as SUB-01M6NAX34J7THX6HNF2M584W8V.","items":[],"suggested_actions":[],"warnings":[],"error":null,"skill_id":"cs-packaging-distribution","hub":"http://100.93.158.78:7420","submission_id": …[+52]
+…
+[L2364] TOOL Bash: sh scripts/check-references.sh 2>&1 | tail -5
+[L2368] RESULT: OK: all reference paths exist
+[L2372] TOOL Bash: cd /home/vantt/projects/devops && skillstation skill scan ./skills/cs-packaging-distribution --json 2>/dev/null | python3 -I -c "import json,sys;d=json.load(sys.stdin);f=d['scans'][0]['findings'];print(len(f),'findings');[print(x['severity'],x['rule'],x['file'],x['line']) for x in f]"; skillstation  …[+189]
+[L2375] RESULT: 11 findings | critical rce.pipe-to-shell common/03-first-contact.md 33
+[L2385] AGENT: Tôi đã thêm quy tắc vào skill `cs-packaging-distribution` và đã kiểm tra:
+- `lint-guides.sh` qua: 215 quy tắc, nhiều hơn trước 3 quy tắc.
+- `check-references.sh` xác nhận mọi đường dẫn tham chiếu, kể cả 3 file mới bên momentry, đều có trên GitHub.
+
+**Những gì đã đổi**
+- **`common/07-command-surface.md`:**
+  - Dòng `config` trong khối lệnh chuẩn có thêm `[--project [--repo DIR]]`.
+  - Thêm mục mới **"6. Config — one door for every setting"**, gồm 3 quy tắc:
+    - **CMD-22 MUST:** mọi cài đặt, kể cả cài đặt riêng dự án, đều đổi qua `config show|get|set|unset`. Các lệnh khác không nhận cờ cài đặt, ví dụ không có `init --box`; cài đặt mới thêm thành một khoá trong schema. Lệnh tắt như `pause`/`resume` phải gọi đúng hàm ghi của khoá tương ứng, và help phải ghi rõ khoá đó. Giao diện web cũng gọi đúng các hàm ghi này.
+    - **CMD-23 SHOULD:** phạm vi dự án dùng cùng các lệnh trên, thêm `--project` hoặc `--repo DIR`. `show --project` in nguồn của từng giá trị. Dùng sai phạm vi thì báo lỗi kèm cách sửa. `--dry-run` cho biết file nào sẽ bị ghi.
+    - **CMD-24 MUST:** `config` không tự bật dự án. Lệnh ghi cần dự án đã init thì bị từ chối, kèm gợi ý `<app> init`.
+- **`common/50-config-state.md`, CFG-12:** nâng từ MAY lên **MUST** và mở rộng. File của repo không được đặt khoá của máy, khoá bí mật hay khoá giới hạn chi tiêu; hàm ghi không bao giờ ghi các khoá đó vào file repo; khi đọc file repo thì bỏ qua và báo từng khoá bị bỏ. Repo clone về không được nâng ngân sách hay tắt chế độ riêng tư.
+- **`common/05-user-experience.md`, UX-17:** trang cài đặt trên giao diện phải gọi *đúng hàm ghi* của `config set`, không chỉ ghi cùng file.
+- **`references.md`:** thêm dòng momentry trỏ tới `lib/config-cmd.mjs`, `lib/ui-api.mjs` và `test/config-project.test.mjs`.
+
+Theo `CONTRIBUTING.md`, cách làm chỉ được coi là "đã chứng minh" khi đã chạy thật với người dùng. Commit `de173ef` của momentry chưa nằm trong bản phát hành nào. Tôi vẫn đưa nó vào `references.md` vì đã có test đầy đủ, nhưng nên g …[+312]
+[L2393] USER: ok, đẩy lên hub đi
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

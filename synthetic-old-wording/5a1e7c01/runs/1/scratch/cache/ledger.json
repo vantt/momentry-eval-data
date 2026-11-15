@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "sessions": {
+    "claude:5a1e7c01": {
+      "source": "claude",
+      "transcriptPath": "/home/vantt/projects/momentry/scripts/eval/synthetic/5a1e7c01-3b2d-4e8a-9f10-2c4d6e8a0b11.jsonl",
+      "repoRoot": "/home/vantt/projects/momentry/docs/_private/eval/synthetic/5a1e7c01/runs/1/scratch/repo",
+      "lastLine": 78,
+      "size": 57295,
+      "mtimeMs": 1794121245725.5032,
+      "status": "done",
+      "pending": false,
+      "needsRescore": [],
+      "mainGoals": [
+        {
+          "toLine": 78,
+          "text": "Chẩn đoán vì sao tỉ lệ mở bản tin tụt từ 52% xuống 31% (do 840 địa chỉ nhập tay từ workshop chứ không phải tiêu đề), xử lý nhóm đó, và hoàn thiện bản thảo bài mới về quỹ khẩn cấp theo giọng văn của chủ bản tin."
+        }
+      ],
+      "harvests": [
+        {
+          "at": "2026-11-08T07:01:00.562Z",
+          "fromLine": 1,
+          "toLine": 78,
+          "runs": 1,
+          "runsFailed": 0,
+          "chunks": 1,
+          "hotspots": 2,
+          "hotspotsMissing": 0,
+          "stories": 8,
+          "written": 12,
+          "merged": 0,
+          "privacyBlocked": 0,
+          "privacyUnchecked": 0,
+          "usd": 0.08473609999999998,
+          "secs": 258.7,
+          "status": "done",
+          "explicit": true
+        }
+      ],
+      "lines": 78,
+      "failedCount": 0
+    }
+  },
+  "repos": {}
+}

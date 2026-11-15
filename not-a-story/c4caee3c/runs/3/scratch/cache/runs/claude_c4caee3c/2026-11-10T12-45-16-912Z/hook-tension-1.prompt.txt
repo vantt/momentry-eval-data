@@ -1,0 +1,83 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+Thường KHÔNG phải chuyện, ở mọi nghề (tension none, strength 0):
+- việc dọn dẹp, đổi tên, định dạng lại, chuyển sang mẫu khác (đổi tên loạt file, kẻ lại một bảng, sửa lỗi chính tả, dọn nhánh git);
+- trục trặc do cài đặt hay môi trường, chỉnh xong là chạy (thiếu phần mềm, chưa đăng nhập, file chưa gửi lên, đường dẫn đổi chỗ);
+- lỗi tự hết khi làm lại, công cụ trục trặc rồi chạy lại được: điều đáng nhớ là làm lại, không phải cái lỗi;
+- việc một lần trơn tru, không có gì bất ngờ (xuất báo cáo ra PDF, lên lịch gửi thư, nhập danh sách khách);
+- bước kiểm tra thường lệ không tìm ra gì đáng kể.
+Ngoại lệ: việc vặt mà lộ ra một điều bất ngờ cụ thể, một cái giá thật (mất dữ liệu, tiền, khách, thời gian) hay một quyết định phải chọn thì vẫn là chuyện, chấm như thường; khi đó side_a và side_b phải nêu đúng chỗ bất ngờ ấy.
+
+M1. Chín bản vá phải áp đúng thứ tự, đảo thứ tự là xung đột
+   Bản P03 xung đột khi đứng sau P00, vì cả hai cùng sửa dòng import của cli.ts. Lead dựng lại nhánh ghép theo thứ tự P00, P01, P02, P03, P09 bằng git reset rồi git am, và chạy full test: 2049 test xanh. Các bản vá xuất lại từ nhánh ghép được chèn đúng vị trí trong series.toml.
+M2. Hai kết quả cùng điểm đổi chỗ, test snapshot chập chờn trên CI
+   CI catchup đỏ hai lần ở cùng một test. Agent sửa phép so sánh: các kết quả cùng điểm được coi là một nhóm không có thứ tự, phần còn lại vẫn so khớp tuyệt đối, và mã tìm kiếm không đổi. Một test khác cũng được sửa vì nó phụ thuộc biến môi trường do file test khác để lại.
+M3. Mac Intel: onnxruntime 1.30 không còn file cho Intel, ghim 1.23.2 để giữ nền
+   Lead hỏi người dùng: bỏ Mac Intel hay ghim bản cũ. Người dùng chọn ghim, với điều kiện smoke xanh trên runner Intel và lệch nDCG@5 không quá 0,01. Gói được phát hành với hai mức lệch đã chấp nhận: multilingual +0,063 và vi-synonym −0,017. Lead cũng xác định đời máy: Mac từ M1 (2020) trở đi dùng được, Mac Intel thì không.
+M4. Dọn thư mục làm việc: từ 21 GB xuống 6,4 GB, giữ phần agent còn dùng
+   Lead xoá 5 worktree đã merge, 20 nhánh nháp (nội dung đã nằm trong master), dữ liệu eval tạm và artifact CI đã đọc xong. Giữ lại worktree của agent còn chạy cho đến khi agent xong. Không động vào thư mục của một phiên Claude khác trên cùng máy.
+M5. Bộ eval tự dựng quá dễ: baseline 0,93 khiến mục tiêu không thể đạt, nên làm khó bộ đo
+   Baseline upstream đạt Hit@5 0,93 với vi-unaccented và 0,87 với vi-dd, nên điều kiện gấp đôi baseline không thể đạt. Người dùng chọn làm khó corpus chứ không hạ ngưỡng, và baseline xuống 0,27 và 0,40. Sau gói tiếng Việt, cả hai lên 1,00, và nDCG@5 tổng từ 0,666 lên 0,932 mà không hạng mục nào tụt.
+M6. Tiêu chí client nhận sự kiện trong 1 giây không được hạ, phải đổi debounce
+   Agent báo chưa đạt và đề nghị nới tiêu chí. Lead từ chối hạ tiêu chí và giao đổi debounce thành biến môi trường, mặc định vẫn 5000 ms. Với 250 ms, test thấy sự kiện đến trong dưới 1 giây. Probe cho 1 trên upstream và 0 trên fork.
+M7. Điểm eval lệch theo loại CPU, cổng chất lượng đỏ vì baseline ghi trên máy khác
+   Mục upstream-no-pack đo được 0,728 trên runner, baseline ghi là 0,735, chênh vượt tolerance 0,005. Lead không hạ baseline mà đổi cổng sang so với upstream được đo trong cùng lần chạy, còn baseline chỉ còn báo trôi. Khi đo chênh lệch của gói Mac Intel, ba runner EPYC cho số giống hệt nhau nhưng runner loại khác cho số lệch, nên cổng chỉ đếm kết quả trên EPYC.
+M8. Hook chặn lệnh chứa chữ build và node_modules, agent phải đổi cách làm
+   Ít nhất bốn lần lệnh bị chặn: hai lần vì có node_modules, một lần vì có chữ build trong lệnh kiểm tra, một lần vì có chữ build trong đường dẫn sửa file. Agent phải chuyển sang công cụ Edit hoặc đổi cách gọi lệnh, thay vì xin mở quyền cho từng từ.
+M9. Chữ 'bỏ khỏi danh sách' làm người dùng hiểu ngược
+   Người dùng ngắt agent đang giao việc, rồi nói chưa hiểu câu 'tôi đề nghị bỏ khỏi danh sách nền bắt buộc', vì trông như đang đề xuất phương án đã bị bác. Agent giải thích từng phần bằng ngôn ngữ thường, rồi chỉ giao việc sau khi người dùng xác nhận.
+M10. Tên riêng hai chữ bị phục hồi dấu thành từ thường, kéo nDCG@5 xuống
+   Model eval phát hiện một tên riêng hai chữ bị đổi sang từ thường. Ngưỡng 50% của PRD không sai, lỗi nằm ở cách dựng câu gửi cho embedder. Agent viết test thất bại trên mã cũ trước, rồi sửa để chỉ phục hồi chữ không dấu khi vault không bao giờ viết nó trần và độ tin cậy đủ. nDCG@5 tổng tăng từ 0,932 lên 0,954, không hạng mục nào tụt, và tuỳ chọn được bật mặc định.
+M11. Agent kết luận PRD mục 3.5 sai, hoá ra chính agent đọc nhầm
+   Khi lead đọc lại PRD, nội dung đã đúng: FTS5 chỉ bỏ dấu được chữ có một dấu, còn chữ hai dấu và chữ đ thì không. Lead chỉ sửa ghi chú trong plan cho khớp và không sửa PRD.
+M12. Dùng quyết định của người dùng đã ghi thành quy tắc trong plan và PRD, rồi sửa tài liệu theo đúng quyết định đó.
+   Dùng quyết định của người dùng đã ghi thành quy tắc trong plan và PRD, rồi sửa tài liệu theo đúng quyết định đó. Quyết định thường nằm trong chat, rồi bị quên hoặc sửa không đồng bộ với tài liệu.
+M13. Bốn lỗi git trong cây dùng chung: pull, commit rỗng, merge bị huỷ, quoting
+   Pull --rebase bị từ chối vì còn thay đổi chưa commit. Một commit chỉ có file untracked nên thất bại. Merge bị huỷ vì cây còn thay đổi. Một lệnh git diff nhận chuỗi đường dẫn gộp làm 'pathspec không tồn tại'. Mỗi lần lead sửa bằng --autostash hoặc tách lệnh, nhưng chưa có bước kiểm git status trước mỗi lệnh đổi lịch sử.
+M14. Eval trên vault thật: tổng tăng nhưng cổng hạng mục đỏ, người dùng chọn dùng gói
+   Tổng nDCG@5 trên vault thật tăng từ 0,600 lên 0,698, nhưng vài hạng mục có 2 đến 6 câu bị tụt, có hạng mục tụt 0,260 vì một câu rơi khỏi top 5. Người dùng quyết định dùng gói vi cho bộ cài. Công cụ chi tiết ghi từng câu ra một file ngoài repo và từ chối ghi nếu đường dẫn nằm trong repo.
+M15. Bật Actions trên fork rồi thử tắt workflow upstream và nhận 403
+   Agent bật Actions với allowed_actions=all rồi gọi disable cho bốn workflow upstream. Lệnh tắt báo 403 'không active', nhưng khi liệt kê thì các workflow đã ở trạng thái disabled_manually sẵn.
+M16. CI đỏ thì tự mở issue, đóng kèm nguyên nhân khi xanh
+   Issue đầu được dùng để kiểm chỗ hỏng cố ý. Sau đó mỗi lần CI đỏ thêm một issue, tổng ba issue (#2, #3, #5). Khi run xanh, agent đóng từng issue kèm bình luận ghi nguyên nhân và commit sửa.
+M17. Hook pre-push chặn push, agent đặt HUSKY=0 để đẩy và giữ cách đó
+   Lần push đầu thất bại vì hook. Agent tự đặt HUSKY=0 cho lệnh push và giữ biến này cho mọi lần push sau. Commit đã vào local nhưng chưa lên origin, và không ai được hỏi trước khi bỏ qua hook.
+M18. Viết khung đo chất lượng riêng cho từng người dùng (eval trên vault thật) mà không đưa nội dung cá nhân ra ngoài repo.
+   Viết khung đo chất lượng riêng cho từng người dùng (eval trên vault thật) mà không đưa nội dung cá nhân ra ngoài repo. Người ta thường đưa dữ liệu thật vào repo hoặc CI để dễ chia sẻ, hoặc không đo gì cả.
+M19. Điều phối 12 agent song song: xung đột merge và giao lại cho agent tự giải
+   Merge V19 trước vì diff nhỏ, vi-alias Hit@1 tăng từ 0,60 lên 0,93. Sau đó V17 hỏng test vì thiếu trường mới. V18 xung đột ở bốn file, lead huỷ merge và giao chính agent V18 merge master vào nhánh của nó, rồi chạy lại eval. Khi người dùng hỏi 'push chưa', lead trả lời master đã bằng origin, phần còn lại thuộc agent đang chạy. Khi người dùng bảo bật agent làm việc không cần đợi, lead mở thêm các việc không phụ thuộc.
+M20. Gói tiếng Đức chạy qua điểm cắm mà không sửa lõi, nDCG@5 từ 0,57 lên 0,97
+   Gói ohs-lang-de có tách từ ghép bằng quy hoạch động, bỏ dấu và danh sách từ dừng, và chạy qua P01 không cần đổi lõi. nDCG@5 tăng từ 0,57 lên 0,97, không hạng mục nào tụt. Lead dùng kết quả này làm bằng chứng điểm cắm đã tổng quát.
+M21. Push merge khi test còn đỏ, rồi chạy lại ba lần mới thấy xanh
+   Merge được đẩy khi gói vẫn còn một test hỏng. Chạy lại ba lần đều 459/459 xanh, nên lead kết luận test chạy chậm lúc máy tải nặng. Lead thừa nhận đáng lẽ phải dừng trước khi push.
+M22. Từ điển từ ghép: danh sách pyvi không rõ nguồn, dựng lại từ dữ liệu CC BY
+   Người dùng chọn học thống kê cặp âm tiết từ ba bộ dữ liệu CC BY 4.0 (câu dịch Wikinews, văn bản pháp luật và một bộ sinh bằng model), không chép mục nào từ pyvi. Kết quả là 20.523 từ, và vi-compound trên fixture khó tăng từ 0,632 lên 0,983. Tách từ được bật mặc định dựa trên bộ câu do agent tự dựng, nên người duyệt phải đồng ý với cách đọc quy tắc eval.
+M23. Dùng một agent điều phối kiểu lead: tách plan thành nhiều phase, mở nhiều agent con chạy song song trên các git worktree riêng, rồi ghép từng việc khi agent báo xong.
+   Dùng một agent điều phối kiểu lead: tách plan thành nhiều phase, mở nhiều agent con chạy song song trên các git worktree riêng, rồi ghép từng việc khi agent báo xong. Hầu hết người làm một mình chạy một phiên AI tuần tự trong một thư mục, mỗi lần một việc, và tự merge bằng tay khi xong.
+M24. Câu có dấu: giữ view tắt và sửa PRD thay vì làm đúng PRD
+   Lead đề xuất giữ cách của V13 và sửa PRD 10.3 cho khớp. Người dùng chọn đúng phương án này sau một câu hỏi lựa chọn. Hai tuỳ chọn accentedNorm và accentedFold vẫn còn để bật lại khi cần.
+M25. Release tự tạo bản rỗng, và workflow ghim fixture cũ hơn bộ eval
+   Release vantt.2 xuất hiện với mô tả đang dựng nhưng chưa có file, vì run dựng gói bắt đầu trước khi sửa điều kiện so sánh. Lead phải chạy lại bước dựng. Sau đó eval hai workflow hỏng vì fixture ghim v0.10.0 trong khi golden set đã sang v0.11.0. Đọc tag từ một nguồn duy nhất đã sửa lỗi.
+M26. Hỏi 'xong hết chưa': plan còn chờ người gán nhãn 60 câu
+   Lead trả lời: phần lớn đã xong, bốn việc còn chạy, và V15 cần khoảng 60 câu gán nhãn trên vault thật. Plan không đóng được nếu thiếu V15. Sau đó một agent phía dự án được giao chuẩn bị file.
+M27. Luật danh sách mức lệch cho phép lỗi thời, đổi thành chỉ chặn khi tụt
+   Lead hỏi người dùng và được chọn quy tắc chỉ chặn khi tụt quá 0,01, cải thiện thì luôn qua, và cho vi-synonym tụt tới 0,03. Quy tắc này không cần duyệt lại mỗi lần gói vi thay đổi.
+M28. Hạn mức /tmp đầy, mọi agent hỏng lệnh shell cùng lúc
+   Một lệnh ghi báo EDQUOT. Lệnh kiểm tra dung lượng cũng hỏng vì không ghi được file đầu ra của chính nó. Lead dừng hết agent, chuyển các worktree sang ổ chính, chạy git worktree repair cho từng cái rồi gửi lệnh tiếp tục cho từng agent. Không mất việc dở nào, và /tmp giảm từ đầy xuống 26%.
+M29. Ranh giới fork và repo dự án: hai việc L13 và L22 không thuộc fork
+   Agent ban đầu đề xuất làm một phần của hai việc gợi ý khi viết và sổ câu tìm trong lõi. Người dùng hỏi lại từng mục (plugin hay lõi, thuộc repo nào), rồi quyết định cả hai thuộc repo dự án. PRD mục 14.2 được cập nhật đúng như vậy.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

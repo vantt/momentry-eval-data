@@ -1,0 +1,1581 @@
+{
+  "id": "c4caee3c",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "a80efc8267e2088e",
+  "at": "2026-11-10T12:39:16.000Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.37,
+    "tokens": 99556,
+    "chunks": 1,
+    "hotspots": 31,
+    "entries": 874,
+    "gitCommits": 30
+  },
+  "report": {
+    "sid": "claude:c4caee3c",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.4124729999999999,
+    "secs": 443.6,
+    "exitCode": 0,
+    "status": "done",
+    "written": 41,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-11-02-de-nghi-lam-bai-kiem-kho-40f9",
+        "status": "angle",
+        "angle": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, đang cố đạt Hit@5 ít nhất 0,85 và gấp đôi baseline cho tiếng Việt. Người làm tin baseline đã xử lý được dấu, vì bộ đo cho 0,93, nhưng mỗi câu hỏi trùng tên note nên nhánh tiêu đề che lỗi: FTS5 không bỏ được âm tiết có hai dấu và chữ đ. Khi làm bộ đo tách tiêu đề khỏi câu hỏi, baseline rơi còn 0,27 và 0,40, và gói tiếng Việt đưa cả hai lên 1,00. Ai viết bộ đo tìm kiếm bằng ghi chú có tên trùng câu hỏi nên kiểm tra lại điểm của mình.",
+        "audience": "dev làm công cụ tìm kiếm hoặc viết bộ đo cho tìm kiếm",
+        "evidence": [
+          315,
+          1034,
+          1150
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, đang làm bộ đo chất lượng cho phần tiếng Việt.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn Hit@5 ít nhất 0,85 và gấp đôi baseline ở phần tiếng Việt.",
+            "evidence": [
+              315
+            ]
+          },
+          "obstacle": {
+            "text": "Baseline upstream đã đạt 0,93 và 0,87 trên bộ eval sinh, nên mục tiêu không đạt được.",
+            "evidence": [
+              315
+            ]
+          },
+          "turn": {
+            "text": "Tưởng baseline đã xử lý được dấu tiếng Việt; hoá ra điểm cao là do câu hỏi trùng tên note, nhánh tiêu đề che lỗi FTS5 không bỏ được âm tiết có hai dấu và chữ đ.",
+            "evidence": [
+              1034
+            ]
+          },
+          "action": {
+            "text": "Làm bộ eval khó hơn, tách tiêu đề khỏi câu hỏi và thêm ca khó về dấu, thay vì hạ ngưỡng.",
+            "evidence": [
+              334,
+              1044
+            ]
+          },
+          "outcome": {
+            "text": "Baseline vi-unaccented còn 0,27 và vi-dd còn 0,40; sau gói tiếng Việt cả hai đạt 1,00.",
+            "evidence": [
+              1034,
+              1150
+            ]
+          },
+          "takeaway": {
+            "text": "Bộ đo cần tách tiêu đề khỏi câu hỏi và có ca khó về dấu, nếu không điểm cao có thể che lỗi.",
+            "evidence": [
+              1034
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-vault-that-tong-tang-nhung-hang-40f9",
+        "status": "angle",
+        "angle": "Một công cụ tìm kiếm cục bộ cho kho ghi chú Obsidian đang được đo chất lượng trên vault thật của chủ dự án. Điểm tổng nDCG@5 tăng từ 0,600 lên 0,698 sau khi thêm gói tiếng Việt, tưởng là tin tốt. Nhưng khi xem từng hạng mục, vi-iy rớt 0,260 và vi-synonym rớt 0,167, vì bộ đo chỉ có 2 đến 6 câu mỗi nhóm. Với bộ đo nhỏ, điểm tổng có thể che mất những nhóm đang giảm mạnh.",
+        "audience": "dev dùng AI hằng ngày và làm đo lường chất lượng tìm kiếm",
+        "evidence": [
+          3653,
+          3682
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, đang làm bộ đo chất lượng tìm kiếm trên vault thật của chủ dự án.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn biết gói tiếng Việt có làm tìm kiếm tốt hơn trên vault thật hay không.",
+            "evidence": [
+              3504
+            ]
+          },
+          "obstacle": {
+            "text": "Tổng điểm tăng nhưng cổng theo hạng mục báo hỏng: vi-iy rớt 0,260, vi-synonym rớt 0,167.",
+            "evidence": [
+              3653,
+              3682
+            ]
+          },
+          "turn": {
+            "text": "Tưởng tổng tăng là đủ để kết luận gói tiếng Việt tốt; hoá ra với bộ đo chỉ 2–6 câu mỗi hạng mục, tổng có thể tăng trong khi từng nhóm giảm mạnh.",
+            "evidence": [
+              3682
+            ]
+          },
+          "action": {
+            "text": "Chủ dự án chọn dùng gói tiếng Việt và giao việc tìm nguyên nhân từng hạng mục.",
+            "evidence": [
+              3682
+            ]
+          },
+          "outcome": {
+            "text": "Tổng nDCG@5 từ 0,600 lên 0,698; vi-iy −0,260, vi-accented −0,052, vi-compound −0,041, vi-synonym −0,167; lượt catchup sau đó hỏng.",
+            "evidence": [
+              3682,
+              3697
+            ]
+          },
+          "takeaway": {
+            "text": "Với bộ đo nhỏ, xem từng hạng mục trước khi kết luận dựa vào điểm tổng.",
+            "evidence": [
+              3682
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-goi-tieng-viet-ndcg-5-tu-40f9",
+        "status": "angle",
+        "angle": "Một công cụ tìm kiếm cục bộ cho ghi chú Obsidian đang thêm gói tiếng Việt, và các agent AI làm việc song song trên đó. Một agent đã cho rằng mục 3.5 của PRD sai, rồi ghi nhận định đó vào plan. Đọc lại thì PRD đúng: bỏ dấu được với chữ một dấu, còn chữ hai dấu và đ thì không. Ai dùng AI để kiểm tra tài liệu nên đọc lại nguồn trước khi tin một lỗi do AI báo.",
+        "audience": "dev dùng AI agent để viết và kiểm tra tài liệu thiết kế",
+        "evidence": [
+          1264
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ tìm kiếm cục bộ cho ghi chú Obsidian, đang thêm gói tiếng Việt do các agent AI làm song song.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "turn": {
+            "text": "Agent cho rằng mục 3.5 của PRD sai; đọc lại thì PRD đúng: bỏ dấu được với chữ một dấu, còn chữ hai dấu và đ thì không.",
+            "evidence": [
+              1264
+            ]
+          },
+          "action": {
+            "text": "Sửa ghi chú trong plan cho khớp với PRD, không sửa PRD.",
+            "evidence": [
+              1264
+            ]
+          },
+          "outcome": {
+            "text": "PRD giữ nguyên; nhận định sai đã được rút lại.",
+            "evidence": [
+              1264
+            ]
+          },
+          "takeaway": {
+            "text": "Khi agent báo tài liệu sai, đọc lại đoạn gốc trước khi sửa theo nhận định đó.",
+            "evidence": [
+              1264
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-02-mot-ten-rieng-hai-am-tiet-40f9",
+        "status": "angle",
+        "angle": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, có tìm theo nghĩa và hỗ trợ tiếng Việt, đang chuẩn bị bản phát hành. Người làm tưởng ngưỡng 'quá nửa chữ có dấu' là chỗ sai, vì tên riêng 'Hội An' bị đổi thành 'hội ăn'. Hoá ra ngưỡng đúng, lỗi nằm ở cách ghép câu gửi cho model nhúng: tên riêng phải được bảo vệ khỏi mọi bước tự động sửa. Ai xây pipeline tiền xử lý văn bản trước khi nhúng nên để ý, vì lỗi kiểu này im lặng làm sai kết quả tìm kiếm mà không báo gì.",
+        "audience": "dev xây tìm kiếm hoặc xử lý văn bản tiếng Việt trước khi nhúng",
+        "evidence": [
+          2776,
+          2787,
+          2789
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, kết hợp tìm theo nghĩa và từ khoá, có hỗ trợ tiếng Việt.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Tìm tiếng Việt đúng cả khi câu tìm có dấu, không dấu hoặc chỉ có dấu một phần.",
+            "evidence": [
+              2776
+            ]
+          },
+          "obstacle": {
+            "text": "Câu tìm có một phần chữ có dấu bị phục hồi dấu sai: tên riêng 'Hội An' thành 'hội ăn'.",
+            "evidence": [
+              2787
+            ]
+          },
+          "turn": {
+            "text": "Tưởng ngưỡng 50% chữ có dấu là lỗi; hoá ra ngưỡng đúng theo đặc tả, lỗi nằm ở cách ghép câu gửi cho model nhúng.",
+            "evidence": [
+              2776,
+              2787
+            ]
+          },
+          "action": {
+            "text": "Thêm test chứng minh lỗi, rồi sửa cách ghép: từ có dấu giữ nguyên, từ không dấu chỉ được phục hồi khi vault không bao giờ viết nó trần và độ tin cậy đủ cao.",
+            "evidence": [
+              2787
+            ]
+          },
+          "outcome": {
+            "text": "nDCG@5 tổng tăng từ 0,932 lên 0,954, không hạng mục nào tụt; tuỳ chọn này được bật mặc định.",
+            "evidence": [
+              2789
+            ]
+          },
+          "takeaway": {
+            "text": "Ngưỡng tỷ lệ không phải lỗi; tên riêng cần được bảo vệ khỏi mọi bước tự động sửa trước khi đưa vào model.",
+            "evidence": [
+              2787
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-onnx-cho-so-khac-nhau-theo-40f9",
+        "status": "angle",
+        "angle": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian đang đưa gói cài cho macOS Intel lên bản phát hành, nhưng bản onnxruntime mới không có gói cho Intel nên phải ghim bản cũ. Người làm tin kết quả đo của bản ghim là cố định, rồi thấy số đổi theo loại CPU: multilingual lệch +0,063 trên EPYC nhưng +0,054 trên máy khác, còn vi-synonym lúc −0,017 lúc +0,023. Ai làm công cụ có model lượng tử nên đo lại trên đúng loại máy và ghi rõ loại CPU trong kết quả.",
+        "audience": "dev làm công cụ chạy model lượng tử trên máy người dùng",
+        "evidence": [
+          2553,
+          2890,
+          3361
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, đang đưa gói cài có model lên bản phát hành cho Windows, Mac và Linux.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn có gói chạy được trên macOS Intel, nên ghim onnxruntime-node 1.23.2 chỉ cho gói này.",
+            "evidence": [
+              2579
+            ]
+          },
+          "obstacle": {
+            "text": "onnxruntime-node 1.30.0 mà upstream dùng không có bản dựng sẵn cho darwin-x64.",
+            "evidence": [
+              2553
+            ]
+          },
+          "turn": {
+            "text": "Tưởng kết quả đo của bản ghim là xác định; hoá ra số đổi theo loại CPU, chỉ lặp lại được trên cùng một loại máy.",
+            "evidence": [
+              2890,
+              3361
+            ]
+          },
+          "action": {
+            "text": "Tách phép kiểm lệch sang cùng một loại CPU (AMD EPYC), thử lại trên runner khác khi gặp máy khác, và đổi tiêu chí sang chỉ chặn khi có hạng mục tụt quá 0,01.",
+            "evidence": [
+              3370,
+              3919
+            ]
+          },
+          "outcome": {
+            "text": "Release vantt.2 có đủ 4 gói. Ở vantt.4, gói Mac Intel vẫn chưa lên vì vi-snippet lệch mới +0,024 và đang chờ quyết định.",
+            "evidence": [
+              3370,
+              3912
+            ]
+          },
+          "takeaway": {
+            "text": "Kết quả model lượng tử phụ thuộc phần cứng: đo lại trên cùng loại máy và ghi rõ loại CPU cùng tiêu chí đã đổi bao nhiêu lần.",
+            "evidence": [
+              3361
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-vi-snippet-tu-14-15-len-40f9",
+        "status": "angle",
+        "angle": "Một công cụ tìm ghi chú Obsidian chạy trên máy, đang đưa bộ thử tiếng Việt lên 100% trước khi merge. Ban đầu người làm tin phải sửa thứ hạng trong gói, nhưng hoá ra không cần sửa mã nào: một cờ mặc định đã bật ở nhánh khác đã đưa note đích lên hạng 1. Ai đo chất lượng tìm kiếm nên kiểm cờ mặc định trước, vì số đo cũ có thể sai với cấu hình mới.",
+        "audience": "dev làm công cụ tìm kiếm hoặc đo chất lượng tìm kiếm",
+        "evidence": [
+          2919,
+          2927
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ tìm kiếm ghi chú Obsidian chạy trên máy, đang đưa bộ thử tiếng Việt lên 100% trước khi merge.",
+            "evidence": [
+              "profile",
+              2862
+            ]
+          },
+          "want": {
+            "text": "Đưa vi-snippet lên 100% để merge mà CI không đỏ.",
+            "evidence": [
+              2862
+            ]
+          },
+          "obstacle": {
+            "text": "vi-snippet còn 14/15; câu 'quen ngủ' rơi khỏi top 10.",
+            "evidence": [
+              2862
+            ]
+          },
+          "turn": {
+            "text": "Tưởng phải sửa thứ hạng trong gói; hoá ra cờ restoreForEmbedding đã bật mặc định ở một merge khác, và note đích tự lên hạng 1.",
+            "evidence": [
+              2919,
+              2927
+            ]
+          },
+          "action": {
+            "text": "Gộp master vào nhánh và đo lại, không sửa mã thứ hạng nào.",
+            "evidence": [
+              2919,
+              2928
+            ]
+          },
+          "outcome": {
+            "text": "vi-snippet 15/15; nDCG@5 tổng 0,944; vi-alias giảm 0,016 nhưng vẫn trong ngưỡng 0,02.",
+            "evidence": [
+              2927
+            ]
+          },
+          "takeaway": {
+            "text": "Khi đo một tính năng, kiểm cờ mặc định trước; số đo đúng cho cấu hình cũ có thể sai cho cấu hình mới.",
+            "evidence": [
+              2919
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-bieu-do-xu-huong-qua-cac-40f9",
+        "status": "none",
+        "none": true,
+        "reason": "Chưa có chỗ ngoặt: không ai được ghi lại là tin sai điều gì. Mức tụt 0,025 sau 5 bản là ước tính cho tương lai, chưa xảy ra trong dữ liệu. Biểu đồ cũng chưa được tạo.",
+        "spine": {
+          "context": {
+            "text": "Một công cụ tìm kiếm cục bộ trên kho ghi chú Obsidian; người làm đang giữ bản fork của dự án này và đang làm báo cáo review so các bản phát hành.",
+            "evidence": [
+              "profile",
+              2476
+            ]
+          },
+          "want": {
+            "text": "Muốn thấy xu hướng chất lượng qua nhiều bản, không chỉ so hai bản liền nhau.",
+            "evidence": [
+              2476
+            ]
+          },
+          "obstacle": {
+            "text": "Mỗi báo cáo review chỉ so hai bản, nên không thấy điểm trôi dần.",
+            "evidence": [
+              2476
+            ]
+          },
+          "action": {
+            "text": "Người làm xác nhận làm biểu đồ xu hướng chỉ số qua các bản; V14 đã viết mã và 34 test đã xanh.",
+            "evidence": [
+              2491,
+              2965
+            ]
+          },
+          "outcome": {
+            "text": "Biểu đồ chưa được tạo; báo cáo cuối vẫn đang chạy.",
+            "evidence": [
+              2965
+            ]
+          },
+          "takeaway": {
+            "text": "So hai bản liền nhau có thể không lộ ra xu hướng; vẽ điểm qua nhiều bản để thấy.",
+            "evidence": [
+              2476
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-11-02-chon-model-nhung-khi-chenh-lech-40f9",
+        "status": "angle",
+        "angle": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian đang hoàn tất roadmap và sửa lỗi gói tiếng Việt. Người làm tưởng ngưỡng 50% khi phục hồi dấu gây ra việc 'Hội An' bị đổi thành 'hội ăn'. Hoá ra ngưỡng đúng theo PRD, lỗi nằm ở cách dựng câu truy vấn gửi cho model nhúng. Ai làm tìm kiếm tiếng Việt nên biết: test tái hiện trước khi đổi ngưỡng tránh được sửa nhầm chỗ.",
+        "audience": "dev làm tìm kiếm hoặc xử lý văn bản tiếng Việt",
+        "evidence": [
+          2776,
+          2787,
+          2789
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, đang hoàn tất roadmap và sửa lỗi gói tiếng Việt.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Muốn hoàn tất plan roadmap bằng các agent chạy song song, và chốt cấu hình tìm kiếm tiếng Việt.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Tìm theo câu có dấu một phần, ví dụ 'Hội An', trả về kết quả sai vì câu truy vấn bị đổi chữ.",
+            "evidence": [
+              2776
+            ]
+          },
+          "turn": {
+            "text": "Tưởng ngưỡng 50% khi phục hồi dấu là nguyên nhân; hoá ra ngưỡng đúng theo PRD, lỗi nằm ở cách dựng câu truy vấn gửi cho model nhúng.",
+            "evidence": [
+              2776,
+              2787
+            ]
+          },
+          "action": {
+            "text": "Viết test tái hiện lỗi trên code cũ, rồi sửa cách dựng truy vấn: từ đã có dấu không bị đổi, từ không dấu chỉ được phục hồi khi chắc chắn.",
+            "evidence": [
+              2787
+            ]
+          },
+          "outcome": {
+            "text": "nDCG@5 tổng tăng từ 0,932 lên 0,954, không hạng mục nào tụt; tuỳ chọn phục hồi dấu giờ bật mặc định.",
+            "evidence": [
+              2787,
+              2789
+            ]
+          },
+          "takeaway": {
+            "text": "Khi lỗi có vẻ nằm ở một ngưỡng, hãy tái hiện bằng test trước: ngưỡng có thể đúng và lỗi nằm ở chỗ khác.",
+            "evidence": [
+              2787
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-ghep-chuoi-9-ban-va-thu-40f9",
+        "status": "angle",
+        "angle": "Một fork của công cụ tìm kiếm Obsidian chạy cục bộ giữ tính năng riêng dưới dạng chuỗi bản vá trên các phiên bản upstream. Bản vá P03 áp sạch khi đứng trước P00 nên người làm tưởng nó đứng đâu trong chuỗi cũng được. Hoá ra cả hai cùng sửa cli.ts, nên P03 xung đột khi đứng sau P00 và còn phải đứng sau P02. Ai ghép nhiều bản vá vào cùng một file dễ mắc đúng bẫy này: áp được riêng chưa có nghĩa là áp được cả chuỗi.",
+        "audience": "dev duy trì fork hoặc nhiều bản vá trên cùng một upstream",
+        "evidence": [
+          902,
+          920,
+          944
+        ],
+        "spine": {
+          "context": {
+            "text": "Một fork của công cụ tìm kiếm Obsidian chạy cục bộ, giữ tính năng riêng dưới dạng chuỗi bản vá trên các phiên bản upstream.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Muốn chuỗi bản vá của fork áp sạch lên upstream và test xanh.",
+            "evidence": [
+              1075
+            ]
+          },
+          "obstacle": {
+            "text": "P03 áp sạch khi đứng trước P00 nhưng xung đột khi đứng sau, vì cả hai cùng sửa cli.ts.",
+            "evidence": [
+              920
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bản vá đã áp sạch thì đứng đâu trong chuỗi cũng được; hoá ra P03 xung đột khi đứng sau P00 và phải đứng sau P02.",
+            "evidence": [
+              902,
+              920,
+              944
+            ]
+          },
+          "action": {
+            "text": "Giữ cả hai dòng import rồi dựng lại nhánh ghép theo thứ tự P00, P01, P02, P03, P09.",
+            "evidence": [
+              933,
+              944
+            ]
+          },
+          "outcome": {
+            "text": "Nhánh ghép xanh: 117 file, 2049 test, lint đạt.",
+            "evidence": [
+              1075
+            ]
+          },
+          "takeaway": {
+            "text": "Với nhiều bản vá cùng sửa một file, đừng chỉ nối vào cuối: giữ một nhánh ghép duy nhất và chạy lại toàn chuỗi mỗi khi thêm bản vá.",
+            "evidence": [
+              920
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-goi-tieng-duc-chay-qua-diem-40f9",
+        "status": "none",
+        "none": true,
+        "reason": "Đây là sửa lỗi hạ tầng thường: chuyển thư mục worktree khi /tmp đầy. Trích đoạn không cho thấy ai tin sai điều gì. Gói tiếng Đức chỉ là kết quả thử nghiệm, không có niềm tin nào bị lật.",
+        "spine": {
+          "context": {
+            "text": "Một công cụ tìm kiếm cục bộ cho ghi chú Obsidian, đang chạy lộ trình fork với nhiều agent làm song song.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất lộ trình fork bằng cách điều phối các agent theo đợt.",
+            "evidence": [
+              748
+            ]
+          },
+          "obstacle": {
+            "text": "/tmp đầy hạn mức vì các worktree đặt trong đó, làm mọi agent hỏng lệnh shell.",
+            "evidence": [
+              1114
+            ]
+          },
+          "action": {
+            "text": "Chuyển toàn bộ worktree sang thư mục khác rồi cho các agent chạy lại.",
+            "evidence": [
+              1114
+            ]
+          },
+          "outcome": {
+            "text": "Không mất phần việc nào; các agent chạy lại được.",
+            "evidence": [
+              1114
+            ]
+          },
+          "takeaway": {
+            "text": "Đặt worktree của agent ngoài /tmp.",
+            "evidence": [
+              1114
+            ]
+          }
+        },
+        "completeness": 6
+      }
+    ],
+    "message": "claude:c4caee3c L1-L4000: done; 35 chuyện thô, 41 cụm; ghi 41 mới, gộp 0\nđiểm nóng 31 (thiếu 0); 30 commit git; lần chạy 1/1; 0.41 USD\ngóc kể: 8 có, 2 không ra chuyện\nhồ sơ dự án: obsidian-hybrid-search tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-de-nghi-lam-bai-kiem-kho-40f9",
+      "code": "M-7VEC",
+      "title": "Đề nghị làm bài kiểm khó hơn để baseline không đạt",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, đang cố đạt Hit@5 ít nhất 0,85 và gấp đôi baseline cho tiếng Việt. Người làm tin baseline đã xử lý được dấu, vì bộ đo cho 0,93, nhưng mỗi câu hỏi trùng tên note nên nhánh tiêu đề che lỗi: FTS5 không bỏ được âm tiết có hai dấu và chữ đ. Khi làm bộ đo tách tiêu đề khỏi câu hỏi, baseline rơi còn 0,27 và 0,40, và gói tiếng Việt đưa cả hai lên 1,00. Ai viết bộ đo tìm kiếm bằng ghi chú có tên trùng câu hỏi nên kiểm tra lại điểm của mình.",
+      "audience": "dev làm công cụ tìm kiếm hoặc viết bộ đo cho tìm kiếm",
+      "spine": {
+        "context": {
+          "text": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, đang làm bộ đo chất lượng cho phần tiếng Việt.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn Hit@5 ít nhất 0,85 và gấp đôi baseline ở phần tiếng Việt.",
+          "lines": [
+            "claude:c4caee3c#L315"
+          ]
+        },
+        "obstacle": {
+          "text": "Baseline upstream đã đạt 0,93 và 0,87 trên bộ eval sinh, nên mục tiêu không đạt được.",
+          "lines": [
+            "claude:c4caee3c#L315"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng baseline đã xử lý được dấu tiếng Việt; hoá ra điểm cao là do câu hỏi trùng tên note, nhánh tiêu đề che lỗi FTS5 không bỏ được âm tiết có hai dấu và chữ đ.",
+          "lines": [
+            "claude:c4caee3c#L1034"
+          ]
+        },
+        "action": {
+          "text": "Làm bộ eval khó hơn, tách tiêu đề khỏi câu hỏi và thêm ca khó về dấu, thay vì hạ ngưỡng.",
+          "lines": [
+            "claude:c4caee3c#L334",
+            "claude:c4caee3c#L1044"
+          ]
+        },
+        "outcome": {
+          "text": "Baseline vi-unaccented còn 0,27 và vi-dd còn 0,40; sau gói tiếng Việt cả hai đạt 1,00.",
+          "lines": [
+            "claude:c4caee3c#L1034",
+            "claude:c4caee3c#L1150"
+          ]
+        },
+        "takeaway": {
+          "text": "Bộ đo cần tách tiêu đề khỏi câu hỏi và có ca khó về dấu, nếu không điểm cao có thể che lỗi.",
+          "lines": [
+            "claude:c4caee3c#L1034"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-vault-that-tong-tang-nhung-hang-40f9",
+      "code": "M-32CA",
+      "title": "Vault thật: tổng tăng nhưng hạng mục rơi",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ tìm kiếm cục bộ cho kho ghi chú Obsidian đang được đo chất lượng trên vault thật của chủ dự án. Điểm tổng nDCG@5 tăng từ 0,600 lên 0,698 sau khi thêm gói tiếng Việt, tưởng là tin tốt. Nhưng khi xem từng hạng mục, vi-iy rớt 0,260 và vi-synonym rớt 0,167, vì bộ đo chỉ có 2 đến 6 câu mỗi nhóm. Với bộ đo nhỏ, điểm tổng có thể che mất những nhóm đang giảm mạnh.",
+      "audience": "dev dùng AI hằng ngày và làm đo lường chất lượng tìm kiếm",
+      "spine": {
+        "context": {
+          "text": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, đang làm bộ đo chất lượng tìm kiếm trên vault thật của chủ dự án.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết gói tiếng Việt có làm tìm kiếm tốt hơn trên vault thật hay không.",
+          "lines": [
+            "claude:c4caee3c#L3504"
+          ]
+        },
+        "obstacle": {
+          "text": "Tổng điểm tăng nhưng cổng theo hạng mục báo hỏng: vi-iy rớt 0,260, vi-synonym rớt 0,167.",
+          "lines": [
+            "claude:c4caee3c#L3653",
+            "claude:c4caee3c#L3682"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng tổng tăng là đủ để kết luận gói tiếng Việt tốt; hoá ra với bộ đo chỉ 2–6 câu mỗi hạng mục, tổng có thể tăng trong khi từng nhóm giảm mạnh.",
+          "lines": [
+            "claude:c4caee3c#L3682"
+          ]
+        },
+        "action": {
+          "text": "Chủ dự án chọn dùng gói tiếng Việt và giao việc tìm nguyên nhân từng hạng mục.",
+          "lines": [
+            "claude:c4caee3c#L3682"
+          ]
+        },
+        "outcome": {
+          "text": "Tổng nDCG@5 từ 0,600 lên 0,698; vi-iy −0,260, vi-accented −0,052, vi-compound −0,041, vi-synonym −0,167; lượt catchup sau đó hỏng.",
+          "lines": [
+            "claude:c4caee3c#L3682",
+            "claude:c4caee3c#L3697"
+          ]
+        },
+        "takeaway": {
+          "text": "Với bộ đo nhỏ, xem từng hạng mục trước khi kết luận dựa vào điểm tổng.",
+          "lines": [
+            "claude:c4caee3c#L3682"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-goi-tieng-viet-ndcg-5-tu-40f9",
+      "code": "M-5SVF",
+      "title": "Gói tiếng Việt: nDCG@5 từ 0,666 lên 0,932 qua từng module",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ tìm kiếm cục bộ cho ghi chú Obsidian đang thêm gói tiếng Việt, và các agent AI làm việc song song trên đó. Một agent đã cho rằng mục 3.5 của PRD sai, rồi ghi nhận định đó vào plan. Đọc lại thì PRD đúng: bỏ dấu được với chữ một dấu, còn chữ hai dấu và đ thì không. Ai dùng AI để kiểm tra tài liệu nên đọc lại nguồn trước khi tin một lỗi do AI báo.",
+      "audience": "dev dùng AI agent để viết và kiểm tra tài liệu thiết kế",
+      "spine": {
+        "context": {
+          "text": "Một công cụ tìm kiếm cục bộ cho ghi chú Obsidian, đang thêm gói tiếng Việt do các agent AI làm song song.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "turn": {
+          "text": "Agent cho rằng mục 3.5 của PRD sai; đọc lại thì PRD đúng: bỏ dấu được với chữ một dấu, còn chữ hai dấu và đ thì không.",
+          "lines": [
+            "claude:c4caee3c#L1264"
+          ]
+        },
+        "action": {
+          "text": "Sửa ghi chú trong plan cho khớp với PRD, không sửa PRD.",
+          "lines": [
+            "claude:c4caee3c#L1264"
+          ]
+        },
+        "outcome": {
+          "text": "PRD giữ nguyên; nhận định sai đã được rút lại.",
+          "lines": [
+            "claude:c4caee3c#L1264"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi agent báo tài liệu sai, đọc lại đoạn gốc trước khi sửa theo nhận định đó.",
+          "lines": [
+            "claude:c4caee3c#L1264"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-11-02-mot-ten-rieng-hai-am-tiet-40f9",
+      "code": "M-7KC9",
+      "title": "Một tên riêng hai âm tiết bị phục hồi sai dấu",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, có tìm theo nghĩa và hỗ trợ tiếng Việt, đang chuẩn bị bản phát hành. Người làm tưởng ngưỡng 'quá nửa chữ có dấu' là chỗ sai, vì tên riêng 'Hội An' bị đổi thành 'hội ăn'. Hoá ra ngưỡng đúng, lỗi nằm ở cách ghép câu gửi cho model nhúng: tên riêng phải được bảo vệ khỏi mọi bước tự động sửa. Ai xây pipeline tiền xử lý văn bản trước khi nhúng nên để ý, vì lỗi kiểu này im lặng làm sai kết quả tìm kiếm mà không báo gì.",
+      "audience": "dev xây tìm kiếm hoặc xử lý văn bản tiếng Việt trước khi nhúng",
+      "spine": {
+        "context": {
+          "text": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, kết hợp tìm theo nghĩa và từ khoá, có hỗ trợ tiếng Việt.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Tìm tiếng Việt đúng cả khi câu tìm có dấu, không dấu hoặc chỉ có dấu một phần.",
+          "lines": [
+            "claude:c4caee3c#L2776"
+          ]
+        },
+        "obstacle": {
+          "text": "Câu tìm có một phần chữ có dấu bị phục hồi dấu sai: tên riêng 'Hội An' thành 'hội ăn'.",
+          "lines": [
+            "claude:c4caee3c#L2787"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng ngưỡng 50% chữ có dấu là lỗi; hoá ra ngưỡng đúng theo đặc tả, lỗi nằm ở cách ghép câu gửi cho model nhúng.",
+          "lines": [
+            "claude:c4caee3c#L2776",
+            "claude:c4caee3c#L2787"
+          ]
+        },
+        "action": {
+          "text": "Thêm test chứng minh lỗi, rồi sửa cách ghép: từ có dấu giữ nguyên, từ không dấu chỉ được phục hồi khi vault không bao giờ viết nó trần và độ tin cậy đủ cao.",
+          "lines": [
+            "claude:c4caee3c#L2787"
+          ]
+        },
+        "outcome": {
+          "text": "nDCG@5 tổng tăng từ 0,932 lên 0,954, không hạng mục nào tụt; tuỳ chọn này được bật mặc định.",
+          "lines": [
+            "claude:c4caee3c#L2789"
+          ]
+        },
+        "takeaway": {
+          "text": "Ngưỡng tỷ lệ không phải lỗi; tên riêng cần được bảo vệ khỏi mọi bước tự động sửa trước khi đưa vào model.",
+          "lines": [
+            "claude:c4caee3c#L2787"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-onnx-cho-so-khac-nhau-theo-40f9",
+      "code": "M-YF2B",
+      "title": "ONNX cho số khác nhau theo CPU, tiêu chí Mac Intel đổi ba lần",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian đang đưa gói cài cho macOS Intel lên bản phát hành, nhưng bản onnxruntime mới không có gói cho Intel nên phải ghim bản cũ. Người làm tin kết quả đo của bản ghim là cố định, rồi thấy số đổi theo loại CPU: multilingual lệch +0,063 trên EPYC nhưng +0,054 trên máy khác, còn vi-synonym lúc −0,017 lúc +0,023. Ai làm công cụ có model lượng tử nên đo lại trên đúng loại máy và ghi rõ loại CPU trong kết quả.",
+      "audience": "dev làm công cụ chạy model lượng tử trên máy người dùng",
+      "spine": {
+        "context": {
+          "text": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, đang đưa gói cài có model lên bản phát hành cho Windows, Mac và Linux.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn có gói chạy được trên macOS Intel, nên ghim onnxruntime-node 1.23.2 chỉ cho gói này.",
+          "lines": [
+            "claude:c4caee3c#L2579"
+          ]
+        },
+        "obstacle": {
+          "text": "onnxruntime-node 1.30.0 mà upstream dùng không có bản dựng sẵn cho darwin-x64.",
+          "lines": [
+            "claude:c4caee3c#L2553"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng kết quả đo của bản ghim là xác định; hoá ra số đổi theo loại CPU, chỉ lặp lại được trên cùng một loại máy.",
+          "lines": [
+            "claude:c4caee3c#L2890",
+            "claude:c4caee3c#L3361"
+          ]
+        },
+        "action": {
+          "text": "Tách phép kiểm lệch sang cùng một loại CPU (AMD EPYC), thử lại trên runner khác khi gặp máy khác, và đổi tiêu chí sang chỉ chặn khi có hạng mục tụt quá 0,01.",
+          "lines": [
+            "claude:c4caee3c#L3370",
+            "claude:c4caee3c#L3919"
+          ]
+        },
+        "outcome": {
+          "text": "Release vantt.2 có đủ 4 gói. Ở vantt.4, gói Mac Intel vẫn chưa lên vì vi-snippet lệch mới +0,024 và đang chờ quyết định.",
+          "lines": [
+            "claude:c4caee3c#L3370",
+            "claude:c4caee3c#L3912"
+          ]
+        },
+        "takeaway": {
+          "text": "Kết quả model lượng tử phụ thuộc phần cứng: đo lại trên cùng loại máy và ghi rõ loại CPU cùng tiêu chí đã đổi bao nhiêu lần.",
+          "lines": [
+            "claude:c4caee3c#L3361"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-vi-snippet-tu-14-15-len-40f9",
+      "code": "M-KD71",
+      "title": "vi-snippet từ 14/15 lên 15/15 mà không đổi mã: chỉ vì bật một cờ",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ tìm ghi chú Obsidian chạy trên máy, đang đưa bộ thử tiếng Việt lên 100% trước khi merge. Ban đầu người làm tin phải sửa thứ hạng trong gói, nhưng hoá ra không cần sửa mã nào: một cờ mặc định đã bật ở nhánh khác đã đưa note đích lên hạng 1. Ai đo chất lượng tìm kiếm nên kiểm cờ mặc định trước, vì số đo cũ có thể sai với cấu hình mới.",
+      "audience": "dev làm công cụ tìm kiếm hoặc đo chất lượng tìm kiếm",
+      "spine": {
+        "context": {
+          "text": "Một công cụ tìm kiếm ghi chú Obsidian chạy trên máy, đang đưa bộ thử tiếng Việt lên 100% trước khi merge.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L2862"
+          ]
+        },
+        "want": {
+          "text": "Đưa vi-snippet lên 100% để merge mà CI không đỏ.",
+          "lines": [
+            "claude:c4caee3c#L2862"
+          ]
+        },
+        "obstacle": {
+          "text": "vi-snippet còn 14/15; câu 'quen ngủ' rơi khỏi top 10.",
+          "lines": [
+            "claude:c4caee3c#L2862"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng phải sửa thứ hạng trong gói; hoá ra cờ restoreForEmbedding đã bật mặc định ở một merge khác, và note đích tự lên hạng 1.",
+          "lines": [
+            "claude:c4caee3c#L2919",
+            "claude:c4caee3c#L2927"
+          ]
+        },
+        "action": {
+          "text": "Gộp master vào nhánh và đo lại, không sửa mã thứ hạng nào.",
+          "lines": [
+            "claude:c4caee3c#L2919",
+            "claude:c4caee3c#L2928"
+          ]
+        },
+        "outcome": {
+          "text": "vi-snippet 15/15; nDCG@5 tổng 0,944; vi-alias giảm 0,016 nhưng vẫn trong ngưỡng 0,02.",
+          "lines": [
+            "claude:c4caee3c#L2927"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi đo một tính năng, kiểm cờ mặc định trước; số đo đúng cho cấu hình cũ có thể sai cho cấu hình mới.",
+          "lines": [
+            "claude:c4caee3c#L2919"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-bieu-do-xu-huong-qua-cac-40f9",
+      "code": "M-HPT9",
+      "title": "Biểu đồ xu hướng qua các bản phát hành (đang làm)",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một công cụ tìm kiếm cục bộ trên kho ghi chú Obsidian; người làm đang giữ bản fork của dự án này và đang làm báo cáo review so các bản phát hành.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L2476"
+          ]
+        },
+        "want": {
+          "text": "Muốn thấy xu hướng chất lượng qua nhiều bản, không chỉ so hai bản liền nhau.",
+          "lines": [
+            "claude:c4caee3c#L2476"
+          ]
+        },
+        "obstacle": {
+          "text": "Mỗi báo cáo review chỉ so hai bản, nên không thấy điểm trôi dần.",
+          "lines": [
+            "claude:c4caee3c#L2476"
+          ]
+        },
+        "action": {
+          "text": "Người làm xác nhận làm biểu đồ xu hướng chỉ số qua các bản; V14 đã viết mã và 34 test đã xanh.",
+          "lines": [
+            "claude:c4caee3c#L2491",
+            "claude:c4caee3c#L2965"
+          ]
+        },
+        "outcome": {
+          "text": "Biểu đồ chưa được tạo; báo cáo cuối vẫn đang chạy.",
+          "lines": [
+            "claude:c4caee3c#L2965"
+          ]
+        },
+        "takeaway": {
+          "text": "So hai bản liền nhau có thể không lộ ra xu hướng; vẽ điểm qua nhiều bản để thấy.",
+          "lines": [
+            "claude:c4caee3c#L2476"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-11-02-chon-model-nhung-khi-chenh-lech-40f9",
+      "code": "M-5XWE",
+      "title": "Chọn model nhúng khi chênh lệch nhỏ hơn nhiễu",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian đang hoàn tất roadmap và sửa lỗi gói tiếng Việt. Người làm tưởng ngưỡng 50% khi phục hồi dấu gây ra việc 'Hội An' bị đổi thành 'hội ăn'. Hoá ra ngưỡng đúng theo PRD, lỗi nằm ở cách dựng câu truy vấn gửi cho model nhúng. Ai làm tìm kiếm tiếng Việt nên biết: test tái hiện trước khi đổi ngưỡng tránh được sửa nhầm chỗ.",
+      "audience": "dev làm tìm kiếm hoặc xử lý văn bản tiếng Việt",
+      "spine": {
+        "context": {
+          "text": "Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, đang hoàn tất roadmap và sửa lỗi gói tiếng Việt.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Muốn hoàn tất plan roadmap bằng các agent chạy song song, và chốt cấu hình tìm kiếm tiếng Việt.",
+          "lines": [
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Tìm theo câu có dấu một phần, ví dụ 'Hội An', trả về kết quả sai vì câu truy vấn bị đổi chữ.",
+          "lines": [
+            "claude:c4caee3c#L2776"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng ngưỡng 50% khi phục hồi dấu là nguyên nhân; hoá ra ngưỡng đúng theo PRD, lỗi nằm ở cách dựng câu truy vấn gửi cho model nhúng.",
+          "lines": [
+            "claude:c4caee3c#L2776",
+            "claude:c4caee3c#L2787"
+          ]
+        },
+        "action": {
+          "text": "Viết test tái hiện lỗi trên code cũ, rồi sửa cách dựng truy vấn: từ đã có dấu không bị đổi, từ không dấu chỉ được phục hồi khi chắc chắn.",
+          "lines": [
+            "claude:c4caee3c#L2787"
+          ]
+        },
+        "outcome": {
+          "text": "nDCG@5 tổng tăng từ 0,932 lên 0,954, không hạng mục nào tụt; tuỳ chọn phục hồi dấu giờ bật mặc định.",
+          "lines": [
+            "claude:c4caee3c#L2787",
+            "claude:c4caee3c#L2789"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi lỗi có vẻ nằm ở một ngưỡng, hãy tái hiện bằng test trước: ngưỡng có thể đúng và lỗi nằm ở chỗ khác.",
+          "lines": [
+            "claude:c4caee3c#L2787"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-ghep-chuoi-9-ban-va-thu-40f9",
+      "code": "M-DBBE",
+      "title": "Ghép chuỗi 9 bản vá: thứ tự quyết định có áp được không",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một fork của công cụ tìm kiếm Obsidian chạy cục bộ giữ tính năng riêng dưới dạng chuỗi bản vá trên các phiên bản upstream. Bản vá P03 áp sạch khi đứng trước P00 nên người làm tưởng nó đứng đâu trong chuỗi cũng được. Hoá ra cả hai cùng sửa cli.ts, nên P03 xung đột khi đứng sau P00 và còn phải đứng sau P02. Ai ghép nhiều bản vá vào cùng một file dễ mắc đúng bẫy này: áp được riêng chưa có nghĩa là áp được cả chuỗi.",
+      "audience": "dev duy trì fork hoặc nhiều bản vá trên cùng một upstream",
+      "spine": {
+        "context": {
+          "text": "Một fork của công cụ tìm kiếm Obsidian chạy cục bộ, giữ tính năng riêng dưới dạng chuỗi bản vá trên các phiên bản upstream.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Muốn chuỗi bản vá của fork áp sạch lên upstream và test xanh.",
+          "lines": [
+            "claude:c4caee3c#L1075"
+          ]
+        },
+        "obstacle": {
+          "text": "P03 áp sạch khi đứng trước P00 nhưng xung đột khi đứng sau, vì cả hai cùng sửa cli.ts.",
+          "lines": [
+            "claude:c4caee3c#L920"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bản vá đã áp sạch thì đứng đâu trong chuỗi cũng được; hoá ra P03 xung đột khi đứng sau P00 và phải đứng sau P02.",
+          "lines": [
+            "claude:c4caee3c#L902",
+            "claude:c4caee3c#L920",
+            "claude:c4caee3c#L944"
+          ]
+        },
+        "action": {
+          "text": "Giữ cả hai dòng import rồi dựng lại nhánh ghép theo thứ tự P00, P01, P02, P03, P09.",
+          "lines": [
+            "claude:c4caee3c#L933",
+            "claude:c4caee3c#L944"
+          ]
+        },
+        "outcome": {
+          "text": "Nhánh ghép xanh: 117 file, 2049 test, lint đạt.",
+          "lines": [
+            "claude:c4caee3c#L1075"
+          ]
+        },
+        "takeaway": {
+          "text": "Với nhiều bản vá cùng sửa một file, đừng chỉ nối vào cuối: giữ một nhánh ghép duy nhất và chạy lại toàn chuỗi mỗi khi thêm bản vá.",
+          "lines": [
+            "claude:c4caee3c#L920"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-goi-tieng-duc-chay-qua-diem-40f9",
+      "code": "M-MYST",
+      "title": "Gói tiếng Đức chạy qua điểm cắm mà không sửa lõi",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một công cụ tìm kiếm cục bộ cho ghi chú Obsidian, đang chạy lộ trình fork với nhiều agent làm song song.",
+          "lines": [
+            "profile",
+            "claude:c4caee3c#L11"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất lộ trình fork bằng cách điều phối các agent theo đợt.",
+          "lines": [
+            "claude:c4caee3c#L748"
+          ]
+        },
+        "obstacle": {
+          "text": "/tmp đầy hạn mức vì các worktree đặt trong đó, làm mọi agent hỏng lệnh shell.",
+          "lines": [
+            "claude:c4caee3c#L1114"
+          ]
+        },
+        "action": {
+          "text": "Chuyển toàn bộ worktree sang thư mục khác rồi cho các agent chạy lại.",
+          "lines": [
+            "claude:c4caee3c#L1114"
+          ]
+        },
+        "outcome": {
+          "text": "Không mất phần việc nào; các agent chạy lại được.",
+          "lines": [
+            "claude:c4caee3c#L1114"
+          ]
+        },
+        "takeaway": {
+          "text": "Đặt worktree của agent ngoài /tmp.",
+          "lines": [
+            "claude:c4caee3c#L1114"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-11-02-merge-xong-moi-thay-hong-typo-40f9",
+      "code": "M-06ZE",
+      "title": "Merge xong mới thấy hỏng: typo sửa nhầm từ điển đồng nghĩa",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-tu-dien-tu-ghep-bo-nguon-40f9",
+      "code": "M-A7B4",
+      "title": "Từ điển từ ghép: bỏ nguồn không rõ, học lại từ dữ liệu CC BY",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-agent-cho-rang-prd-sai-doc-40f9",
+      "code": "M-VTNQ",
+      "title": "Agent cho rằng PRD sai, đọc lại thì PRD đúng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-agent-dung-giua-chung-khong-bao-40f9",
+      "code": "M-JZ5Z",
+      "title": "Agent dừng giữa chừng không báo",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-cham-mu-nguoi-cham-may-khong-40f9",
+      "code": "M-GWJ2",
+      "title": "Chấm mù: người chấm máy không xem đáp án",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-ci-cham-hon-may-that-nguong-40f9",
+      "code": "M-Z7TC",
+      "title": "CI chậm hơn máy thật: ngưỡng 200 ms thành 318 ms",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-ci-do-lien-tiep-vi-ba-40f9",
+      "code": "M-8NZ2",
+      "title": "CI đỏ liên tiếp vì ba nguồn khác nhau cùng trôi",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-day-merge-khi-con-mot-test-40f9",
+      "code": "M-S7GC",
+      "title": "Đẩy merge khi còn một test đỏ",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-goi-windows-mac-va-linux-dau-40f9",
+      "code": "M-3N2B",
+      "title": "Gói Windows, Mac và Linux đầu tiên: 632 MB rút còn 279 MB",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-o-dia-day-vi-worktree-cua-40f9",
+      "code": "M-13S0",
+      "title": "Ổ đĩa đầy vì worktree của agent nằm trong /tmp",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 0,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-release-rong-do-workflow-tu-tao-40f9",
+      "code": "M-Y5E9",
+      "title": "Release rỗng do workflow tự tạo trước khi có gói",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-snapshot-test-hong-khi-hai-ket-40f9",
+      "code": "M-DW5Z",
+      "title": "Snapshot test hỏng khi hai kết quả cùng điểm đổi chỗ",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-tu-theo-upstream-roi-chuyen-sang-40f9",
+      "code": "M-ZCWF",
+      "title": "Tự theo upstream rồi chuyển sang ghim tag bằng tay",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-commit-nham-ban-nhap-cua-agent-40f9",
+      "code": "M-MVD5",
+      "title": "Commit nhầm bản nháp của agent khác vào bản vá P01",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-danh-gia-tren-du-lieu-rieng-40f9",
+      "code": "M-RZWX",
+      "title": "Đánh giá trên dữ liệu riêng: chỉ in số tổng hợp, không để lộ nội dung",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-day-code-bang-husky-0-de-40f9",
+      "code": "M-MKP0",
+      "title": "Đẩy code bằng HUSKY=0 để qua hook pre-push",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-hook-chan-lenh-vi-chua-chu-40f9",
+      "code": "M-68FB",
+      "title": "Hook chặn lệnh vì chứa chữ build hoặc node_modules",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-test-tinh-chat-bao-do-vi-40f9",
+      "code": "M-XZGY",
+      "title": "Test tính chất báo đỏ vì chính hàm đếm của test",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-cho-ci-va-cho-nguoi-la-40f9",
+      "code": "M-HSY6",
+      "title": "Chờ CI và chờ người là điểm nghẽn chính",
+      "tension": "khac",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-don-21-gb-worktree-sau-khi-40f9",
+      "code": "M-09YV",
+      "title": "Dọn 21 GB worktree sau khi các nhánh đã merge",
+      "tension": "it_ma_nhieu",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-dong-dong-tac-gia-tren-repo-40f9",
+      "code": "M-8PG4",
+      "title": "Dòng đồng tác giả trên repo fixture được giữ lại",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-loi-giai-thich-mac-intel-bi-40f9",
+      "code": "M-A4P2",
+      "title": "Lời giải thích Mac Intel bị hiểu ngược",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-luu-tru-plan-va-duong-dan-40f9",
+      "code": "M-PW8P",
+      "title": "Lưu trữ plan và đường dẫn cũ",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-prd-ghi-viet-lai-bang-rust-40f9",
+      "code": "M-BENG",
+      "title": "PRD ghi 'viết lại bằng Rust' và 'chạy script Python' dễ đọc nhầm",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-sua-prd-10-3-cho-khop-40f9",
+      "code": "M-V53P",
+      "title": "Sửa PRD 10.3 cho khớp code: câu có dấu không dùng view",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-agent-tu-nhan-va-sua-loi-40f9",
+      "code": "M-PMK7",
+      "title": "Agent tự nhận và sửa lỗi của chính mình khi phát hiện: ví dụ agent V13 để hỏng test rồi push, khi phát hiện thì dừng lại kiểm tra và báo; agent V20 đọc sai đầu ra npm 12 và tự sửa trên nhánh; agent V12 báo cổng chất lượng so sai baseline và tự đổi cách so.",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-nguoi-dung-bo-sung-rang-buoc-40f9",
+      "code": "M-T4WP",
+      "title": "Người dùng bổ sung ràng buộc mới giữa chừng (ví dụ 'không được đưa vault thật lên remote', 'bỏ tự động đuổi theo upstream', 'chỉ chặn khi tụt') và agent cập nhật cả PRD, plan và mã trong cùng một lượt commit.",
+      "tension": "khac",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-nguoi-dung-don-dep-theo-tung-40f9",
+      "code": "M-SKAE",
+      "title": "Người dùng dọn dẹp theo từng phần: xoá ngay những gì đã xong (worktree đã merge, nhánh nháp, log, dữ liệu tạm) và giữ lại đúng những gì agent còn đang dùng, rồi ghi rõ đã xoá gì.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-nguoi-dung-giao-viec-cho-nhieu-40f9",
+      "code": "M-C5VQ",
+      "title": "Người dùng giao việc cho nhiều agent chạy song song trên cùng một repo, mỗi agent có worktree riêng, rồi lead ghép các nhánh về chuỗi bản vá theo thứ tự phụ thuộc và kiểm lại toàn chuỗi sau mỗi lần ghép.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-nguoi-dung-ra-quyet-dinh-bang-40f9",
+      "code": "M-2BMB",
+      "title": "Người dùng ra quyết định bằng bảng câu hỏi ngắn (AskUserQuestion) với các lựa chọn có sẵn kèm khuyến nghị, thay vì mô tả dài dòng.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-nguoi-dung-yeu-cau-luu-trang-40f9",
+      "code": "M-0575",
+      "title": "Người dùng yêu cầu lưu trạng thái điều phối ra file ngoài repo (lead-state.txt) và agent ghi nhật ký theo giờ sau mỗi bước.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

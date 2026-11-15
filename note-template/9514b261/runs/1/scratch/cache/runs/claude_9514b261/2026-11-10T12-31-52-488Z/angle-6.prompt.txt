@@ -1,0 +1,119 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) is a platform layer for building and running agent applications, providing the infrastructure, skills, and automation beneath each agent app so developers can build new agents without starting from scratch. It is in alpha and is installed as one small command-line binary, then set up inside an existing git repository. The alpha runs only on Linux (x86_64, glibc 2.35 or later) and Windows 10 or later (x86_64), since macOS and Windows on ARM are not supported yet.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L1325] USER: cũng cần bật agents để dò vì có thể có sự trùng lắp giữa `Knowledge and Documentation Engine` và Knowledge Registry. Đâu đó chúng ta đã từng xây dựng phần quản lý document một cách sơ khai rồi. cấn scan plans, reports và work items, history
+[L1582] USER: em update proposal đi nhé
+[L1798] USER: như vậy nhìn tổng quan sẽ có 3 hệ : decision engine, document engine và context engine. và 3 hệ là liên quan sử dụng lẫn nhau
+</asks>
+
+<story>
+hook: Hai hệ quyết định và tài liệu trích dẫn nhau thành vòng lặp
+tension: hop_ma_tan (Ba hệ decision, document, context đều hữu ích / Dùng lẫn nhau tạo vòng phụ thuộc, phải chia lớp)
+stakes: 3/3
+# Ba hệ decision, document, context: chia lớp để dùng lẫn nhau không thành vòng phụ thuộc
+
+**Bối cảnh:** Chủ dự án nhìn tổng quan thấy ba hệ, còn proposal chỉ có hai engine. Ba hệ đều dùng dữ liệu của nhau.
+**Chuyện gì xảy ra:** Agent lập bảng ba hệ với trạng thái hiện có và vị trí trong proposal, kèm ma trận ai dùng ai. Cột decision và document trích dẫn nhau, nên có vòng phụ thuộc. Đề xuất là chia theo lớp, context chỉ đọc qua port, decision là lớp ghi và chiếu, document đọc và dùng chuỗi đó.
+**Bài học:** Khi vẽ kiến trúc cho người ngoài, cần tách vai trò đọc và ghi và chỉ ra hướng phụ thuộc, không chỉ liệt kê hệ thống.
+**Artefact:** Sơ đồ phân lớp và ma trận ai dùng ai, dạng bảng văn bản.
+</story>
+
+<excerpt>
+[L1778] RESULT: 0 | To https://github.com/vantt/forgent.git
+[L1789] AGENT: Em đã update proposal, commit và push xong. `main` giờ khớp `origin/main` ở `8b59569e9`, kéo thêm 30 commit của remote trước khi đẩy.
+
+## Đã update proposal
+
+Em thêm khối ghi chú "Starting point, not a new build" vào §4.7.1 của `documentation-system-unification.md`. Chỉ thêm 25 dòng, không sửa hay xoá dòng nào có sẵn. Nội dung:
+- KDE bắt đầu từ Knowledge Registry đang chạy (479 topic, 479 doc end-user, khoảng 15% `docs/`, chưa phủ `docs/platform`, `docs/architect`, `docs/specs`).
+- Những thứ KDE thật sự thêm mà mã chưa có: claim identity, typed graph, vocabulary đóng, supersession cấp điều khoản, phủ tài liệu nền tảng, hiến pháp đọc được bằng máy.
+- Hai ràng buộc từ `tsk-1lv` mà KDE phải giữ: không stored graph (D2) và không decision-store thứ hai (D3).
+- Các lỗi cần sửa trước khi mở rộng, kèm link tới báo cáo tổng hợp.
+
+## Ba commit đã push
+
+| Commit | Nội dung |
+|---|---|
+| `23359f843` | `docs(platform)`: hai khối ghi chú trong proposal (reducer và KDE) |
+| `537cb083a` | `docs(plans)`: plan nhóm 1A và sáu báo cáo nghiên cứu |
+| `8b59569e9` | `docs(board)`: nhận lane RULE và ba dòng log |
+
+Không commit nào có dòng ghi công AI, theo quy tắc phát triển của repo. Em chỉ stage đúng file của em, nên `AGENTS.md`, `.claude/settings.json`, `.fgos/distribution.json` và `engineer/` của anh vẫn nguyên, chưa commit.
+
+## Điều cần biết
+
+- **Board phải ghi lại.** Remote đã sửa `log.md` và `plan.md` trong lúc em làm, nên em hoàn lại bản cũ, pull, rồi ghi lại các mục lên đầu log mới (đúng thứ tự giờ) và đổi hàng RULE sang `running`.
+- **`stash@{0}` còn một autostash cũ** từ lần pull đầu. Nó chứa bản `mutation-census.v1.json` của anh (bản em đã bỏ vì remote sinh lại). Anh hết cần thì `git stash drop`.
+- **Cả hai file proposal và board đều khác nhánh DOC.** Nếu `forgentx-5f` báo proposal nằm trong manifest Phase 8 và ghi chú làm lệch bản vá, ghi chú cần chuyển sang sau cutover (điều kiện đảo lại đã ghi ở board).
+- **Chưa chạy test hay `npm test`** vì chỉ có thay đổi tài liệu.
+
+Việc c …[+243]
+[L1798] USER: như vậy nhìn tổng quan sẽ có 3 hệ : decision engine, document engine và context engine. và 3 hệ là liên quan sử dụng lẫn nhau
+[L1801] AGENT: Cách nhìn ba hệ đúng về mặt chức năng, nhưng proposal hiện chỉ có hai engine, và có một chỗ cần chốt để ba hệ dùng lẫn nhau mà không thành vòng phụ thuộc.
+
+## Ba hệ hôm nay ở đâu
+
+| Hệ | Bản chất | Đã có gì (đo trên main) | Trong proposal |
+|---|---|---|---|
+| **Decision** | Ghi quyết định và quan hệ thay thế, theo sự kiện (event-sourced) | `tsk-1lv` đã xong: `--relation`, `state.decisions`, index sinh ra. Chưa có thay một phần, chưa tính tập hiệu lực | Không phải engine riêng. Là subcomponent "Claim and Decision Registry" của KDE |
+| **Document** | Danh tính, lifecycle, alias, claim của tài liệu | Knowledge Registry chạy thật nhưng chỉ cho tài liệu end-user, đang dừng và có lỗi | Knowledge and Documentation Engine (H2) |
+| **Context** | Chọn và giao đúng luật, quyết định, tài liệu tới agent theo việc, vai, ngân sách | Chỉ có hạt giống `instruction-registry`, `instruction-composition`, `instruction-projections`; chỉ giao 3 đơn vị luật lõi | Agent Context Engine (H3), "preserved future" |
+
+Vậy "decision engine" anh nói chính là `tsk-1lv`, và proposal đang xếp nó **vào trong** document engine.
+
+## Ai dùng ai (chiều dữ liệu)
+
+| | Decision | Document | Context |
+|---|---|---|---|
+| **Decision** | — | Quét tài liệu tìm chỗ còn trích quyết định cũ (lúc ghi) | Không |
+| **Document** | Hiến pháp tài liệu cần "quyết định mới thay quyết định cũ" để xử lý xung đột chủ | — | Không |
+| **Context** | Đọc chuỗi supersession để tính tập hiệu lực (Effective Decision Reducer) | Đọc để dựng kế hoạch đọc L1–L4 | — |
+
+Hai cột đầu dùng nhau thật ở mức dữ liệu: quyết định trích tài liệu, tài liệu trích quyết định. Context chỉ đọc, không ghi sự thật, đúng như báo cáo kongming vẽ.
+
+## Chỗ cần chốt: dùng lẫn nhau, nhưng không được phụ thuộc vòng
+
+Hôm nay quyết định và tài liệu **đang phụ thuộc vòng**: bước quét lúc ghi quyết định đọc tài liệu, còn hiến pháp tài liệu cần chuỗi quyết định. Một cách tách là chia theo lớp:
+
+```text
+Context  (đọc, giao)        ← tầng trên, chỉ đọc qua port
+   ↑ đ …[+2039]
+[L1815] USER: em commit push đi. sau đó bật một hội đồng cấp cao để phân component authority/boundary như thế nào cho hợp lý. trước khi mở hội đồng cho anh biết các family/model sẽ tham gia
+[L1818] AGENT: Trước hết em kiểm xem còn gì chưa commit của em không, rồi tìm cách mở hội đồng và danh sách family/model sẽ tham gia, để báo anh trước khi chạy.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

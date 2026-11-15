@@ -1,0 +1,47 @@
+Dưới đây là 18 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Ba agent quét trùng lắp, và một check quá hạn không bao giờ bắn vì so sánh chuỗi thời gian
+   Agent tổng hợp ghi '332 doc đã migrate vẫn provisional'. Khi tự đếm lại, agent thấy đúng 479 doc, 365 role khác nhau, 332 provisional và 147 active, nên sửa lại cách nói. Đối chiếu code cho thấy check doc-provisional-aged trừ chuỗi ISO từ số, kết quả NaN, nên không bao giờ bắn. Có 332 doc đã quá hạn khoảng 47 đến 55 ngày mà không ai hay. Registry chỉ phủ khoảng 15% trong 3146 file md của docs.
+M2. Board và file sinh tự động bị ba phiên cùng sửa: pull, restore, ghi lại log theo cấu trúc mới
+   Lúc pull, file mutation-census sinh tự động có xung đột năm đoạn; agent lấy bản remote vì remote đã sinh lại, và cất bản của chủ dự án trong stash. Khi chủ dự án yêu cầu cập nhật proposal, remote đã sửa board, nên agent hoàn lại bản cũ, pull, rồi ghi lại ba mục log theo cấu trúc mới. Agent commit chỉ file của mình và push ba commit.
+M3. Không có tài liệu, agent dò định dạng cấu hình omp từ chuỗi trong binary
+   Hook chặn lệnh tìm trong node_modules nên agent đổi cách tìm. Dùng strings trên binary, agent tìm thấy tên file models.yml xuất hiện 25 lần và một chuỗi lỗi nói khoá apiKey không được gửi qua tài khoản OAuth pool. Từ đó agent viết models.yml với khoá lấy bằng lệnh jq lúc chạy, rồi gọi thử và nhận OK.
+M4. Lệnh nhập khoá TheHive ghi đè khoá đang chạy không sao lưu, khoá dán thừa một ký tự cho 401
+   Agent đưa lệnh ghi khoá mới nhưng không sao lưu auth.json trước, nên khoá cũ đang chạy bị ghi đè. Khoá mới dài 25 ký tự bị API trả 401 Invalid or expired token, còn khoá cũ dài 24. Agent đã đoán khoá dán thừa một ký tự và tự nhận lỗi vì không đưa lệnh có sao lưu. Sau khi chủ dự án nhập lại với sao lưu và loại khoảng trắng, API trả 200 và pi, omp cho cả deepseek lẫn glm đều OK.
+M5. Bộ probe sáu họ mô hình: từ một họ chạy được lên đủ họ, nhờ sửa kho tài khoản chứ không nhờ đổi code
+   Lần probe đầu chỉ có claude chạy được, còn openai, gemini, xai, deepseek và glm đều lỗi. Sau khi chủ dự án copy lại session, deepseek và glm chạy được vì kho tài khoản có dữ liệu. Sau khi khai thêm tài khoản, openai chạy qua đường pi, xai qua omp sau 23 giây, và hai tài khoản dự phòng openai cũng chạy. Gemini chạy được nhưng run bị gắn inconclusive vì agent không trả đúng định dạng. Nguyên nhân gốc là fgOS không khai tài khoản nào, nên không biết quota và không tự chuyển.
+M6. Đưa việc chạy lâu (sub-agent, probe, hội đồng) xuống nền rồi chờ thông báo hoàn thành, thay vì chờ đồng bộ hoặc hỏi liên tục
+   Đưa việc chạy lâu (sub-agent, probe, hội đồng) xuống nền rồi chờ thông báo hoàn thành, thay vì chờ đồng bộ hoặc hỏi liên tục Chờ đồng bộ, hoặc poll file kết quả liên tục
+M7. Chỉ 8 trên 36 quyết định ADR có quan hệ thay thế, nên reducer không có dữ liệu để tính hiệu lực
+   Đếm cho thấy 36 quyết định D-ADR, 8 có quan hệ supersedes, tổng 18 quan hệ supersedes. Trong 4679 sự kiện decision chỉ 37 có scope. Ít nhất bốn quyết định chỉ nêu thay thế trong câu chữ mà không có quan hệ. Agent cũng tự đính chính lời nói trước rằng proposal không nhắc state.decisions, vì proposal có nói đến điều đó.
+M8. Ba hệ decision, document, context: chia lớp để dùng lẫn nhau không thành vòng phụ thuộc
+   Agent lập bảng ba hệ với trạng thái hiện có và vị trí trong proposal, kèm ma trận ai dùng ai. Cột decision và document trích dẫn nhau, nên có vòng phụ thuộc. Đề xuất là chia theo lớp, context chỉ đọc qua port, decision là lớp ghi và chiếu, document đọc và dùng chuỗi đó.
+M9. Dừng lại hỏi user trước khi làm việc có tác động ra ngoài hoặc không đảo ngược được (push, khai tài khoản, xoá, nhập khoá), và đưa 2-3 lựa chọn đánh số để user chỉ cần trả một chữ
+   Dừng lại hỏi user trước khi làm việc có tác động ra ngoài hoặc không đảo ngược được (push, khai tài khoản, xoá, nhập khoá), và đưa 2-3 lựa chọn đánh số để user chỉ cần trả một chữ Hoặc làm luôn cho nhanh, hoặc hỏi dài dòng mở ngỏ
+M10. Probe vào kho omp trống làm xai treo 300 giây và bị quarantine, phải gỡ và tắt tài khoản
+   Probe chạy đến timeout 200 đến 300 giây, stderr báo refresh-ahead skipped vì missing-file. Lỗi này khiến tài khoản bị quarantine. Agent gỡ quarantine bằng lệnh reconcile, rồi đặt disabled cho tài khoản để ghế không bị treo. Agent nói rõ khai thêm làm xai tệ hơn vì treo thay vì lỗi nhanh.
+M11. Tách phần việc chỉ đọc (kiểm tra, dò, so sánh) khỏi phần ghi, và đưa cho sub-agent chỉ được ghi một file báo cáo riêng
+   Tách phần việc chỉ đọc (kiểm tra, dò, so sánh) khỏi phần ghi, và đưa cho sub-agent chỉ được ghi một file báo cáo riêng Giao cho agent con toàn quyền, hoặc làm hết trong một luồng chung
+M12. Hội đồng kiến trúc chạy đầu tiên thất bại ở bước shaping sau khi framing đã đạt
+   Agent commit và push config, rồi mở workflow. Framing pass. Shaping thất bại với execution-failure ở shape-proposals, các ghế khác chưa kết luận. Agent đọc trạng thái bước để tìm ghế hỏng và lý do.
+M13. Mô phỏng ghế hội đồng sai vì thiếu herdr, và trần flagship không chặn như agent tưởng
+   Chủ dự án chưa đồng ý ngay. Agent chạy fgos dispatch explain thật và thấy capability mức critical nâng tầng lên frontier, nên shape, synthesize và explain chạy fable. Mô phỏng chạy không có herdr nên chọn openai qua codex, trong khi phiên thật có herdr thì openai chỉ có codex-herdr. Deepseek và glm không bao giờ vào chuỗi dự phòng vì walk chỉ được thu hẹp trong danh sách tierFallback. Agent tự đính chính bảng cũ rồi chủ dự án đồng ý đề xuất sửa.
+M14. Sửa config toàn cục dùng chung mà chưa kiểm các workspace cũ, theo cảnh báo trong hướng dẫn
+   Agent đã ghi khoá llmAccounts vào config toàn cục, có sao lưu và kiểm định dạng. Đến cuối, agent nói rõ việc chạy fgos doctor ở các workspace khác để kiểm vẫn chưa làm, nên rủi ro còn mở.
+M15. Phân biệt rõ 'đã kiểm bằng lệnh' với 'chỉ suy ra từ tài liệu hoặc cấu hình', và dùng các nhãn như 'chưa kết luận', 'đã kiểm chứng', 'chưa kiểm' trong báo cáo
+   Phân biệt rõ 'đã kiểm bằng lệnh' với 'chỉ suy ra từ tài liệu hoặc cấu hình', và dùng các nhãn như 'chưa kết luận', 'đã kiểm chứng', 'chưa kiểm' trong báo cáo Viết báo cáo như mọi thứ đều đã chắc chắn, hoặc gộp suy đoán vào kết luận
+M16. Đổi tên profile và alias theo họ nhà cung cấp: tạo, xoá, rồi đổi lại theo lệnh chủ dự án
+   Agent tạo profile xai-grok và alias, rồi chủ dự án yêu cầu thống nhất tên. Agent kiểm profile grok-vantt có 0 dòng đăng nhập trước khi đổi, xoá xai-grok, đổi tên thư mục pi và cập nhật config. Sau đó chủ dự án chọn tạo bốn profile omp còn thiếu, và agent tạo khung config không chứa đăng nhập.
+M17. Agent khai ba máy kiểm 'không thuộc component nào', chủ dự án chỉ ra đã có tsk-1lv
+   Chủ dự án hỏi lại 'vậy kiểm là kiểm gì', nhắc có một component gom và làm tươi luật. Agent tìm trong plan, lịch sử quyết định và work item, và thấy đó là canonical-decision-projection (tsk-1lv), đã xong với 6 việc con. Hai trong ba máy kiểm thuộc dòng việc này. Kết luận sai ban đầu đến từ việc chỉ tra bản đồ kiến trúc, không tra work item. Plan 1A ghi 374 vi phạm và bảng 161 vấn đề về cưỡng chế rải ở năm cửa.
+M18. Đếm lại bản đồ ranh giới: ba tên component không xuất hiện lần nào
+   Agent grep năm tên trong ba file bản đồ và một bản nháp, đều ra 0. Bản đồ chỉ có một hàng gần nghĩa là Knowledge, Learning and Documentation Registry và không nhắc quyết định.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

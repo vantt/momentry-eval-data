@@ -1,0 +1,223 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, kết hợp tìm theo nghĩa, tìm từ khoá, tên, thẻ, thư mục và liên kết giữa các ghi chú. Có ba cách dùng: plugin Obsidian để tìm khi đang viết, máy chủ MCP để tác tử AI tìm và đọc ghi chú, và công cụ dòng lệnh cho việc lập chỉ mục và viết script. Dữ liệu lưu cục bộ bằng SQLite, mô hình nhúng mặc định chạy trên máy, và có thể tuỳ chọn dùng API embedding tương thích OpenAI.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L232] USER: Issues đang tắt trên fork (fork mặc định tắt). PRD dựa vào issue để báo khi catchup hỏng và để ghi báo cáo review. Cần bật lại bằng gh repo edit vantt/obsidian-hybrid-search --enable-issues; nên để agent kia làm. Actions trên fork vẫn tắt, đúng như PRD.
+[L264] USER: action là dùng để tự chạy ci catchup khi upstream thay đổi đúng không. cái này bật luôn nếu đúng
+</asks>
+
+<story>
+hook: Bộ kiểm tra dễ khiến lỗi dấu tiếng Việt bị che mất
+tension: tuong_ma_hoa_ra (Baseline tưởng đã xử lý được dấu / Câu hỏi trùng tên note nên che lỗi; bộ khó còn 0,27)
+stakes: 3/3
+# Đề nghị làm bài kiểm khó hơn để baseline không đạt
+
+**Bối cảnh:** Mục tiêu G3 yêu cầu Hit@5 ít nhất 0,85 và gấp đôi baseline. Trên bộ eval sinh, baseline upstream đã đạt 0,93 và 0,87, nên mục tiêu không thể đạt.
+**Chuyện gì xảy ra:** Chủ dự án chọn làm bộ eval khó hơn thay vì hạ ngưỡng. Nguyên nhân: mỗi câu tìm trùng tên note, nên nhánh tiêu đề tìm được dù FTS5 không bỏ dấu. Đo trực tiếp cho thấy unicode61 chỉ bỏ dấu được âm tiết có một dấu, không bỏ được âm tiết có hai dấu như ế, ữ, ợ, ặ, cũng không bỏ được đ. Bộ mới đưa baseline xuống 0,27 và 0,40. Sau gói tiếng Việt, cả hai đạt 1,00.
+**Bài học:** Bộ đo có thể che điểm yếu khi tiêu đề trùng câu trả lời. Muốn đo đúng, bộ đo phải tách tiêu đề khỏi câu hỏi và có các ca khó về dấu.
+**Artefact:** Bảng Hit@5 baseline theo hạng mục trước và sau khi làm khó hơn (chỉ có tên hạng mục).
+</story>
+
+<excerpt>
+[L314] AGENT: Đã commit và push V10 (`9f62f0d`). Có một quyết định thuộc về bạn mà V13 sẽ cần.
+[L315] TOOL AskUserQuestion: {"questions":[{"question":"Trên corpus sinh, baseline upstream (chưa có gói) đã đạt Hit@5 0,93 ở vi-unaccented và 0,87 ở vi-dd. Vì vậy điều kiện G3 \"Hit@5 ≥ 0,85 và gấp tối thiểu 2 lần baseline\" không thể đạt. Xử lý thế nào?","header":"Ngưỡng G3","multiSelect":false,"options":[{"label":"Làm corpus …[+584]
+[L334] RESULT: Your questions have been answered: "Trên corpus sinh, baseline upstream (chưa có gói) đã đạt Hit@5 0,93 ở vi-unaccented và 0,87 ở vi-dd. Vì vậy điều kiện G3 "Hit@5 ≥ 0,85 và gấp tối thiểu 2 lần baseline" không thể đạt. Xử lý thế nào?"="Làm corpus khó …[+69]
+[L352] AGENT: V01 và V11 đều xong. Tôi commit từng việc, ghép mục P01 vào `series.toml`, rồi mở đợt Đ2.
+[L353] TOOL Bash: cat vantt/patches/series.toml | head -60 && git status --short
+…
+[L1023] AGENT: V23 (P05) cũng đã xong. P05 và P06 sẽ được ghép sau P09 khi lượt test của nhánh ghép hiện tại kết thúc. P04 (V08) vẫn đang làm, nên tôi ghép tạm P05 và P06 lên trước, rồi dựng lại đúng thứ tự khi P04 xong.
+[L1034] USER: <task-notification>
+<task-id>ae4d32f97fb5a5e47</task-id>
+<tool-use-id>toolu_01FmBVqTovj3kTKUxCD54DkW</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ae4d32f97fb5a5e47.output</output-file>
+<status>completed</status>
+<summary>Agent "V10b harder vi corpus" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS
+
+**Summary:** Both tasks are done. On the new corpus, upstream Hit@5 is 0.27 for `vi-unaccented` and 0.40 for `vi-dd`, so G3 is reachable.
+
+**Diagnosis.** Each query phrase was also the note title, so title matching and the vector branch found the note even though FTS5 cannot fold the diacritics. I measured SQLite `unicode61` directly on NFC text, which is how upstream stores content. It folds a syllable only when it has a single mark (`ú`, `ê`). It never folds syllables with two marks (`ế`, `ữ`, `ợ`, `ặ`) or `đ`. The new notes are built around that.
+
+**Fixture.** Tag `v0.10.0`, commit `5d18b8b`, on `vantt/obsidian-test-fixture`. I pushed `main`, the tag and branch `feat/vi-search-hard-fold`. Its 65 tests pass.
+- `vi-unaccented` and `vi-dd` are now clusters of 25 notes each, with the same body text and one different key term. Titles are numbered only.
+- Unaccented terms are dishes made only of two-mark syllables (`nước mắm`). dd terms are street names with `đ` (`Đồng Khởi`).
+- Each category queries 15 of its 25 terms; the other 10 are only distractors.
+- Golden entries for both categories carry a new `query_accented` field. The self-check also verifies that the folded query matches only the target note.
+- I updated the fixture README, CHANGELOG, `package.json` and the parity hash.
+
+**Baseline.** 363 notes, Hit@5 0.761 overall, and a second run gave identical `top_paths`. Hit@5 per category:
+
+| Category | Hit@5 |
+|---|---|
+| `vi-unaccented` | 0.27 (was 0.93) |
+| `vi-dd` | 0.40 (was 0.87) |
+| `vi-accented`, `vi-partial-accent`, `vi-iy`, `vi-tone-placement`, `vi-tone-precision`, `vi-compound`, `vi-mixed-en` | 1.00 |
+| `vi-names`, `vi-abbr` | 0.93 |
+| `vi-typo`, `vi-semantic`, `vi-alias` | 0.73 |
+| `vi-snippet` | 0.60 |
+| `vi-telex` | 0.47 (was 0.53) |
+| `vi-synonym` | 0.13 |
+
+With the accents restored on those two categories (`--accented-sanity`), Hit@5 is 1.00 for both …[+2506]
+[L1044] AGENT: Corpus khó hơn đã xong: baseline upstream `vi-unaccented` giảm còn 0,27, `vi-dd` còn 0,40, nên G3 đạt được mà giữ nguyên ngưỡng. Commit phần eval rồi báo V13 và V12.
+[L1045] TOOL Bash: P=vantt/plans/261102-0349-fork-master-roadmap && python3 - <<'EOF' p='vantt/plans/261102-0349-fork-master-roadmap/phase-05-evaluation-quality-gates.md' s=open(p).read() old=s[s.index("- Baseline upstream linux-x64: Hit@5 `vi-unaccented` 0,93"):] old=old[:old.index("\n")+1] s=s.replace(old,"- User ch …[+842]
+[L1046] RESULT: M vantt/eval/baselines/linux-x64/0.17.2.vi-search.json | M vantt/eval/vi/README.md
+…
+[L1114] AGENT: ## Tiến độ lộ trình fork (12:35)
+
+Đã xong và đã push lên `master` 11 trên 25 việc. Hai việc nữa (P05, P06) đã xong, đang chờ test toàn chuỗi xanh rồi mới commit.
+
+| Phase | Đã xong | Đang làm | Chưa bắt đầu |
+|---|---|---|---|
+| 1. Hạ tầng fork | V00, V01 | V02 (CI catchup, bật Issues) | V03 (gói dựng sẵn 4 nền) |
+| 2. Bản vá lõi | V04 (P00), V05 (P09), V06 (P02), V07 (P03) | V08 (P04 stdio); V23 (P05), V24 (P06) chờ test chuỗi | V25 (P07, chờ V08) |
+| 3. Điểm cắm gói ngôn ngữ | V11 (P01), V21 (gói tiếng Đức) | — | — |
+| 4. Gói tiếng Việt | V09 (M1) | V13 (M2/M3, đường găng) | V17–V20 (chờ V13) |
+| 5. Đo lường | V10 (bộ eval, corpus đã làm khó hơn) | V12 (bất biến, cổng chất lượng) | V15 (cần bạn gán nhãn), V22 (chờ V13) |
+| 6. Review upstream | — | — | V14 (chờ V08, V12) |
+
+**Kết quả đáng chú ý:**
+- Nhánh `vantt/v0.17.2` đã dựng bằng catchup và push lên origin. Trên nhánh này 1972 test của upstream đều qua.
+- Chuỗi bản vá P00, P01, P02, P03, P09 ghép tuần tự đã chạy đủ test: 2049 test và lint đều qua.
+- P01 đủ tổng quát: gói tiếng Đức chạy qua nó mà không phải sửa lõi. Với gói này, nDCG@5 trên eval tiếng Đức tăng từ 0,57 lên 0,97.
+- Theo lựa chọn của bạn, corpus tiếng Việt đã làm khó hơn: baseline upstream giờ chỉ đạt Hit@5 0,27 với `vi-unaccented` và 0,40 với `vi-dd`. Nhờ vậy G3 (gấp đôi baseline, tối thiểu 0,85) giờ đạt được.
+- Actions đã bật trên fork. Bốn workflow của upstream đều đang tắt.
+
+**Sự cố đã xử lý:** `/tmp` đầy hạn mức vì các worktree đặt trong đó, làm mọi agent hỏng lệnh shell. Tôi đã chuyển tất cả sang `/home/vantt/projects/ohs-wt/`, không mất phần việc nào, rồi cho các agent chạy lại.
+
+**Đang chạy:** V02, V08, V12, V13 và test toàn chuỗi có P05, P06.
+
+**Việc sắp tới cần bạn:**
+- **Release GitHub đầu tiên (V03):** tôi sẽ hỏi bạn trước khi tạo.
+- **V15:** bạn cần gán nhãn khoảng 60 câu trên vault thật, mất khoảng 2 giờ.
+- **Commit trên repo fixture:** commit agent đẩy lên `vantt/obsidian-test-fixture` có dòng đồng tác giả Claude. Muốn bỏ dòng đó thì …[+271]
+[L1138] USER: <task-notification>
+<task-id>a1a591c6c9016085b</task-id>
+<tool-use-id>toolu_016GjGCivhNak9gSFavFLr4R</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a1a591c6c9016085b.output</output-file>
+<status>completed</status>
+<summary>Agent "V13 vi pack M2 M3" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I've finished V13 — the pack plugs into P01 and meets every G3 target, and no category of the Vietnamese eval regresses.
+
+**Status: DONE_WITH_CONCERNS**
+
+**Summary:** I added the `norm`/`fold` views, `analyzeQuery`, diacritic restoration from the vault vocabulary (k-best Viterbi), `rescore`, and a `createPack` default export. Weights and parameters were tuned with the eval, and the final defaults were measured with the official `run-eval.mjs` on your harder corpus (vi-search@v0.10.0). Package tests pass (8 files, 383 tests), the type check is clean and the package builds.
+
+**Eval with the pack** (linux-x64, compared with `0.17.2.vi-search.json`):
+
+| Category | nDCG@5 baseline → pack | MRR | Hit@5 |
+|---|---|---|---|
+| ALL | 0.666 → 0.813 | 0.643 → 0.795 | 0.761 → 0.886 |
+| vi-accented | 1.000 → 1.000 | 1.000 → 1.000 | 1.00 → 1.00 |
+| vi-partial-accent | 0.872 → 0.933 | 0.830 → 0.911 | 1.00 → 1.00 |
+| **vi-unaccented** | 0.133 → 0.951 | 0.089 → 0.933 | **0.27 → 1.00** |
+| **vi-dd** | 0.263 → 0.888 | 0.240 → 0.850 | **0.40 → 1.00** |
+| **vi-tone-precision** | 0.951 → 1.000 | **0.933 → 1.000** | 1.00 → 1.00 |
+| vi-compound | 0.844 → 1.000 | 0.789 → 1.000 | 1.00 → 1.00 |
+| vi-typo | 0.488 → 0.661 | 0.426 → 0.578 | 0.73 → 0.93 |
+| vi-snippet | 0.463 → 0.743 | 0.437 → 0.719 | 0.60 → 0.87 |
+| vi-alias | 0.535 → 0.814 | 0.478 → 0.752 | 0.73 → 1.00 |
+| vi-names | 0.909 → 0.975 | 0.911 → 0.967 | 0.93 → 1.00 |
+| telex, mixed-en, semantic, synonym, abbr, iy, tone-placement | unchanged | ≥ 0 | unchanged |
+
+- **G3:** vi-unaccented and vi-dd reach Hit@5 1.00 (3.7× and 2.5× baseline), vi-accented doesn't drop, and vi-tone-precision MRR is 1.00.
+- **Upstream English eval (obsidian-help):** nDCG@5 is 0.735 both with and without the pack.
+- **Smoke vault:** ALL nDCG@5 +0.077, no category drops.
+
+**Performance:** `project` on 1 MB takes about 40 ms per view (budget 200 ms). `analyzeQuery` on 12 syllables with a 50,00 …[+3703]
+[L1150] AGENT: V13 xong và đạt mọi mục tiêu G3: `vi-unaccented` từ 0,27 lên 1,00, `vi-dd` từ 0,40 lên 1,00, MRR của `vi-tone-precision` đạt 1,00. Không hạng mục nào tụt, eval tiếng Anh của upstream giữ nguyên. Kiểm test của gói rồi commit.
+[L1151] TOOL Bash: cd /home/vantt/projects/obsidian-hybrid-search/vantt/packages/ohs-lang-vi && (npx vitest run 2>&1 | grep -E "Test Files|Tests ") ; cd ../../.. && P=vantt/plans/261102-0349-fork-master-roadmap && python3 - <<'EOF' p='vantt/plans/261102-0349-fork-master-roadmap/phase-04-vietnamese-pack.md' s=open(p).r …[+1390]
+[L1153] RESULT: Test Files 8 passed (8) | Tests 383 passed (383)
+…
+[L1255] TOOL Bash: cat >> /home/vantt/projects/ohs-wt/lead-state.txt <<'EOF' 12:50 Pushed: V13 570e77b (G3 met; open user decision: accented queries skip views vs PRD 10.3), b5acbaf (user OK: first GitHub release for V03; fixture co-author OK; PRD 3.5 was already correct). V08/P04 DONE (branch vantt/work/stdio-parity, …[+752]
+[L1256] RESULT: (Bash completed with no output)
+[L1264] AGENT: Đã ghi nhận ba ý của bạn:
+- **Release GitHub đầu tiên (V03):** bạn đã đồng ý, tôi đã ghi vào plan. V03 sẽ chạy ngay khi V02 (CI) xong.
+- **Đồng tác giả trên repo fixture:** giữ nguyên, không force-push.
+- **PRD:** đọc lại thì PRD mục 3.5 đã đúng: bỏ dấu được với chữ một dấu, còn chữ hai dấu và `đ` thì không. Nhận định PRD sai của agent là nhầm, nên tôi sửa ghi chú trong plan cho khớp, không sửa PRD.
+
+**V13 (gói tiếng Việt M2/M3) đã commit (`570e77b`).** G3 đạt:
+- `vi-unaccented`: Hit@5 từ 0,27 lên 1,00.
+- `vi-dd`: từ 0,40 lên 1,00.
+- `vi-tone-precision`: MRR đạt 1,00.
+- Không hạng mục nào tụt.
+
+**V08 (P04) đã xong.** Khi lượt test P05 và P06 kết thúc, tôi sẽ dựng lại chuỗi đúng thứ tự P00, P01, P02, P03, P04, P09, P05, P06, chạy test rồi commit cả ba bản vá.
+
+**Đang chạy song song:**
+- V17, V18, V19, V20: mỗi việc một worktree riêng, tôi sẽ merge lần lượt.
+- V22: eval nhánh nghĩa.
+- V25: P07.
+- V02: CI.
+- V12: cổng chất lượng.
+
+**Cần bạn chốt:** V13 làm lệch PRD 10.3 ở một điểm. Câu tìm có dấu mặc định không đi qua view `norm` và `fold`. Lý do là khi bật hai view này cho câu có dấu, `vi-semantic` tụt 0,083 nDCG@5. View `fold` vẫn tự bật khi vault có từ viết không dấu. Nếu bạn muốn giữ đúng PRD, chỉ cần đặt hai tuỳ chọn `accentedNorm: true` và `accentedFold: "always"`. Tôi đề nghị giữ cách của V13 và sửa PRD 10.3 cho khớp. Bạn chọn bên nào?
+[L1274] USER: <task-notification>
+<task-id>ad7f5ec0a87486737</task-id>
+<tool-use-id>toolu_01TuT8zuD7vpSAxpKaXANuPS</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ad7f5ec0a87486737.output</output-file>
+<status>completed</status>
+<summary>Agent "V19 alias views and snippets" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+**Summary:** The pack now declares `aliasViews: ['fold']`, and `analyzeQuery` returns `aliasKeys.fold`. The core already does the snippet and `matchedTerms` work, so no P01 change was needed. `vi-alias` Hit@5 stays at 1.00 and `vi-snippet` is 15/15 through real OHS.
+
+**Branch and commit:** `vantt/work/v19`, commit `ce2e408`, in `/home/vantt/projects/ohs-wt/m-v19`.
+
+**What changed:**
+- **Alias key:** `src/alias.ts` is new. The key is the `fold` projection of the query with whitespace trimmed and collapsed. It matches the key the core stores for each alias and title. The only hook-point edits are in `buildAnalysis` in `query.ts` and in `index.ts`.
+- **Check script:** `vantt/eval/vi/check-snippets.mjs` runs all 15 `vi-snippet` queries through real OHS with the pack. It checks that the target note's snippet is a verbatim piece of the note, diacritics intact, and contains `snippet_contains`. It also checks that each `matchedTerms` entry is a word from the note whose fold starts with a query word. It exits 0 only at 100%.
+- **Docs and plan:** the sub-plan is `vantt/plans/261102-1330-v19-alias-snippet/plan.md`. I added a short section to `vantt/eval/vi/README.md` and updated the pack README's V19 mention.
+
+**Eval (full vi-search corpus, against `chk-series`, saved at `/home/vantt/projects/ohs-wt/tmp/v19/vi-pack.json`):**
+
+| | V13 | V19 |
+|---|---|---|
+| `vi-alias` Hit@5 | 1.00 | 1.00 |
+| `vi-alias` Hit@1 | 0.60 | 0.93 |
+| `vi-partial-accent` Hit@1 | 0.87 | 1.00 |
+| `vi-names` Hit@1 | 0.93 | 1.00 |
+
+- **All 17 categories against V13:** Hit@5 is unchanged and nothing dropped. Overall nDCG@5 is +0.015. The gains are in `vi-alias` (+0.161), `vi-partial-accent` (+0.067) and `vi-names` (+0.025). There are 0 Hit@5 query changes.
+- **Against the baseline:** the gains match the V13 table. `vi-alias` goes from 0.73 to 1.00 Hit@5, and overall nDCG@5 is +0.162.
+- **Unaccented query on an acc …[+1332]
+[L1283] AGENT: V19 xong và không phải sửa P01. `vi-snippet` đạt 15/15 đoạn trích là chữ gốc và chứa chỗ khớp. Hit@1 của `vi-alias` tăng từ 0,60 lên 0,93. Thay đổi trong `query.ts` rất nhỏ, nên tôi merge V19 ngay thay vì đợi V17 và V18; các việc merge sau sẽ tự giải xung đột nếu có.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

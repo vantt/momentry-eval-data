@@ -1,0 +1,84 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: Chào em, chị là Thảo, chủ tiệm bánh Bếp Nhà Thảo ở Đà Lạt. Chị muốn xem lại cả năm bán hàng để tính chuyện năm sau. Chị xuất từ KiotViet được hai file trong thư mục này. Chị không rành Excel lắm nên em làm giúp chị nhé.
+[L5] USER: Ừ em gộp đi.
+[L9] USER: Giờ em xem giúp chị doanh thu từng tháng.
+</asks>
+
+<story>
+hook: Agent khuyên nghỉ Tết, nhưng tháng Tết lại lãi cao nhất năm
+tension: nguoi_dung_may_sai (Bảng sai báo tháng 2 chỉ 18,9 triệu, agent khuyên nghỉ hai tuần / Chủ tiệm phản đối, đọc đúng ngày thì tháng 2 đạt 168,3 triệu)
+stakes: 3/3
+# Một dòng định dạng ngày làm mất nửa số hoá đơn và suýt khuyên nghỉ đúng mùa Tết
+
+**Bối cảnh:** Chủ tiệm bánh xuất dữ liệu bán hàng cả năm từ phần mềm KiotViet để lên kế hoạch năm sau. Agent gộp hai file và tính doanh thu theo tháng.
+**Chuyện gì xảy ra:** Agent đọc cột ngày theo kiểu tháng/ngày trong khi KiotViet ghi ngày/tháng, nên 15.240 trên 28.197 hoá đơn (hơn một nửa) không đọc được và bị bỏ, còn ngày 03/11 bị đọc thành tháng 3. Bảng sai cho tháng 2 chỉ 18,9 triệu, thấp nhất năm, và agent khuyên nghỉ hai tuần quanh Tết. Chủ tiệm phản đối vì tháng Tết bán nhiều nhất; khi đọc đúng định dạng, tháng 2 đạt 168,3 triệu, cao nhất năm, còn các tháng thường là 70-95 triệu. Agent ghi quy tắc định dạng ngày vào file ghi chú.
+**Bài học:** Trước khi tin một bảng tổng hợp, hãy đếm số dòng bị bỏ khi parse ngày; số lượng lớn không đọc được là dấu hiệu sai định dạng, không phải dữ liệu thiếu.
+**Artefact:** Bảng doanh thu theo tháng trước và sau khi sửa định dạng ngày, đã che tên file, đường dẫn và tên tiệm.
+**Góc người ngoài:** cách làm phổ biến là Nhiều agent hoặc người làm phân tích sẽ giải thích thêm, hoặc chỉ sửa câu chữ mà không xem lại dữ liệu gốc; ở đây khác ở Agent kiểm tra nguyên nhân bằng dữ liệu cụ thể trước khi đổi kết luận, và nói rõ hậu quả nếu làm theo lời khuyên sai. Người đọc sẽ muốn biết cách làm này.
+</story>
+
+<excerpt>
+[L8] AGENT: Đã gộp: 14.820 + 13.377 = 28.197 hoá đơn, từ tháng 11/2025 đến tháng 10/2026.
+[L9] USER: Giờ em xem giúp chị doanh thu từng tháng.
+[L10] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 -c "import pandas as pd;d=pd.read_csv('hoadon_ca_nam.csv');d['t']=pd.to_datetime(d['Thời gian'],errors='coerce');print(d['t'].isna().sum());print(d.groupby(d['t'].dt.to_period('M'))['Khách cần trả'].sum())"
+[L11] RESULT: 15240 | t
+[L12] AGENT: Doanh thu theo tháng (triệu đồng): T11/2025 41,3; T12 39,9; T1/2026 44,1; **T2 18,9**; T3 52,3; ... Tháng 2 thấp nhất năm, chưa bằng một nửa các tháng khác. Có lẽ vì nghỉ Tết. Nếu tháng Tết bán kém như vậy, chị có thể cân nhắc nghỉ hẳn hai tuần quanh Tết để tiết kiệm chi phí nhân công và nguyên liệu.
+[L13] USER: Không đúng em ơi. Tháng Tết là tháng chị bán nhiều nhất năm. Hai tuần trước Tết khách đặt bánh biếu, hộp quà, chị với hai bạn làm tới 1 giờ sáng. Tết năm nay là 17/2, chị chỉ nghỉ từ 16 đến mùng 6 thôi. Tháng 2 sao thấp được.
+[L14] AGENT: Chị nói đúng, để em kiểm tra lại cách em đọc dữ liệu. Có một dấu hiệu em đã bỏ qua: dòng đầu kết quả là 15.240, tức là hơn một nửa số hoá đơn không đọc được ngày.
+[L15] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 -c "import pandas as pd;d=pd.read_csv('hoadon_ca_nam.csv');t=pd.to_datetime(d['Thời gian'],errors='coerce');print(d['Thời gian'].iloc[[0,5000]].tolist(),t.iloc[[0,5000]].tolist())"
+[L16] RESULT: ['03/11/2025 07:12', '24/01/2026 10:40'] [Timestamp('2025-03-11 07:12:00'), NaT]
+[L17] AGENT: Đúng là lỗi của em. KiotViet ghi ngày kiểu Việt Nam (ngày/tháng/năm), nhưng em để máy đọc mặc định kiểu Mỹ (tháng/ngày). Kết quả:
+
+- "03/11/2025" bị đọc thành 11 tháng 3 thay vì 3 tháng 11.
+- Ngày nào lớn hơn 12, như "24/01/2026", không đọc được và bị bỏ hẳn. Đó là 15.240 hoá đơn, hơn một nửa.
+
+Nên bảng lúc nãy vừa thiếu hơn nửa số liệu vừa dồn doanh thu sai tháng. Mùa cao điểm trước Tết rơi đúng vào những ngày 20–31/1 và 1–15/2, phần lớn có ngày > 12 nên bị bỏ. Em tính lại với định dạng ngày/tháng.
+[L18] TOOL Bash: cd /Users/thao/Desktop/bep-nha-thao/so-lieu && python3 -c "import pandas as pd;d=pd.read_csv('hoadon_ca_nam.csv');d['t']=pd.to_datetime(d['Thời gian'],format='%d/%m/%Y %H:%M');print(d['t'].isna().sum());print((d.groupby(d['t'].dt.to_period('M'))['Khách cần trả'].sum()/1e6).round(1))"
+[L19] RESULT: 0 | t
+[L20] AGENT: Giờ không còn hoá đơn nào bị bỏ. Doanh thu thật (triệu đồng):
+
+- **T2/2026: 168,3, cao nhất năm**, dù tiệm nghỉ hơn 10 ngày.
+- T1/2026: 142,6, đứng thứ hai.
+- Các tháng thường: 70–95.
+
+Chị đúng hoàn toàn. Lời khuyên nghỉ hai tuần quanh Tết của em là sai và nếu làm theo thì chị mất đúng mùa bán tốt nhất. Từ giờ em sẽ luôn khai báo định dạng ngày/tháng khi đọc file KiotViet và kiểm tra số dòng bị bỏ trước khi kết luận.
+[L21] USER: Đó, chị biết mà. Em ghi chú lại giùm chị ở file ghi-chu.txt: file KiotViet ngày là ngày/tháng, lần sau ai làm số liệu cũng phải để ý.
+[L22] TOOL Edit: /Users/thao/Desktop/bep-nha-thao/so-lieu/ghi-chu.txt
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

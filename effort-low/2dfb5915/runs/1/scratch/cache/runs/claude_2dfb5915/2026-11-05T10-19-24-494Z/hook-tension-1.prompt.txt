@@ -1,0 +1,39 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Đổi cơ chế tìm kiếm MCP: hai agent độc lập đi đến cùng một thiết kế và từ chối code mode
+   Cả hai đề xuất bộ 13 tool và đều từ chối code mode vì Claude Desktop không có shell và không có sandbox. Ước tính token định nghĩa giảm từ khoảng 6 nghìn xuống 4,4 nghìn. Hai bên khác nhau ở chỗ read: một bên chuyển sang OHS, một bên tự đọc file; người dùng chọn tự đọc.
+M2. Ghi lại quyết định kỹ thuật vào một file nhật ký riêng (DECISIONS) và ghi cả ngày, lý do, phương án bị bỏ, để agent và người đọc sau này không phải hỏi lại.
+   Ghi lại quyết định kỹ thuật vào một file nhật ký riêng (DECISIONS) và ghi cả ngày, lý do, phương án bị bỏ, để agent và người đọc sau này không phải hỏi lại. Dev thường quyết định trong đầu hoặc trong tin nhắn chat, rồi quên. Ít khi có nhật ký có cấu trúc cho từng lựa chọn.
+M3. Phát hiện Python phụ thuộc thứ tự liệt kê file của hệ điều hành
+   Python liệt kê note theo thứ tự NTFS hoặc APFS trả về. Đảo thứ tự làm 593 trên 726 edges.id đổi, điểm related lệch khoảng 1e-5, vượt ngưỡng 1e-6 của đặc tả. Quyết định ghim thứ tự theo đường dẫn đã sắp và ghi vào DECISIONS.
+M4. Job macOS build bị huỷ vì chờ runner quá lâu, không phải lỗi code
+   GitHub huỷ job sau khoảng 15 phút chờ runner. Agent chạy lại đúng job lỗi và qua. Một lần rerun trả HTTP 500 và phải thử lại.
+M5. Viết ghi chú tiến độ cho người dùng theo kiểu nêu rõ đã xong gì, đã kiểm bằng cách nào, còn chờ ai, và lệnh cụ thể để người dùng tự chạy trên máy của họ.
+   Viết ghi chú tiến độ cho người dùng theo kiểu nêu rõ đã xong gì, đã kiểm bằng cách nào, còn chờ ai, và lệnh cụ thể để người dùng tự chạy trên máy của họ. Báo cáo tiến độ thường chung chung, hoặc liệt kê việc đã làm mà không nói đã kiểm chưa, và thiếu lệnh để người đọc chạy lại.
+M6. Alias bomb YAML làm tràn bộ nhớ, reviewer agent phát hiện trước khi chạy thật
+   Note 338 byte với 7 tầng alias tạo 11,1 triệu props và 1,45 GB RSS trong Rust; tầng thứ 8 cần khoảng 14 GB. Python cũng bị như vậy nên khớp đặc tả, nhưng vẫn là lỗ hổng từ chối dịch vụ. Sửa bằng ngân sách 1 triệu props và 64 MiB mỗi note.
+M7. Lỗi cache làm CI đỏ: target/ bị rust-cache xoá file ngoài thư mục build
+   Swatinem/rust-cache chỉ giữ thư mục build của cargo, xoá file khác và giữ lại thư mục rỗng. Lần chạy đầu ghi cache với thư mục dump rỗng, các lần sau khôi phục đúng cache đó và kiểm tra thấy thư mục không có manifest. Sửa bằng cách ghi dump ra ngoài target/.
+M8. Trước khi phát hành bản thử, agent đưa bản đó qua một vòng kiểm tra độc lập: tải file phát hành về, kiểm sha256 từng file, chạy thử binary, rồi mới báo xong.
+   Trước khi phát hành bản thử, agent đưa bản đó qua một vòng kiểm tra độc lập: tải file phát hành về, kiểm sha256 từng file, chạy thử binary, rồi mới báo xong. Dev thường đẩy tag rồi tin CI là đủ, ít khi tự tải file về để kiểm lại checksum.
+M9. Đưa mọi quyết định bị chặn (cổng người dùng, câu hỏi thiết kế, lựa chọn kỹ thuật) vào một lần hỏi có cấu trúc, gom nhiều câu, và tiếp tục làm mọi việc không phụ thuộc vào câu trả lời đó.
+   Đưa mọi quyết định bị chặn (cổng người dùng, câu hỏi thiết kế, lựa chọn kỹ thuật) vào một lần hỏi có cấu trúc, gom nhiều câu, và tiếp tục làm mọi việc không phụ thuộc vào câu trả lời đó. Dev thường hỏi từng câu khi gặp, hoặc dừng hẳn cả việc chờ trả lời. Khi việc dài, người ta hay quên câu hỏi đã hỏi hay nhầm ngữ cảnh.
+M10. Bản phát hành thử bị GitHub Actions chặn vì thanh toán, phải đổi repo sang public
+   Thông báo báo lỗi thanh toán hoặc hết hạn mức. Người dùng đổi repo sang public, Actions miễn phí, CI chạy lại xanh rồi phát hành rc.3 với 7 file có checksum khớp.
+M11. Agent tự dựng pipeline 17 phase Rust cho bản Python, chạy song song bằng nhiều agent
+   Wave đầu gồm 7 phase chạy đồng thời; CI xanh trên Linux, macOS và Windows sau mỗi lần merge. Bộ so khớp với Python ra 64 mục, 0 lệch. Nhiều lần merge xung đột ở spec/PORTING.md và Cargo.lock, phải gỡ tay và merge lại.
+M12. Agent tự chạy đối chiếu với bản gốc (Python) và coi kết quả so khớp là bằng chứng: so sánh từng bảng, từng câu trả lời, từng lệnh CLI, đến cấp byte, và dùng golden file đã ghim theo commit để so.
+   Agent tự chạy đối chiếu với bản gốc (Python) và coi kết quả so khớp là bằng chứng: so sánh từng bảng, từng câu trả lời, từng lệnh CLI, đến cấp byte, và dùng golden file đã ghim theo commit để so. Dev thường viết vài unit test rồi tin kết quả. Khi chuyển ngôn ngữ, phần lớn chỉ kiểm vài ví dụ tay, không có bộ so khớp tự động trên dữ liệu thật ở cấp từng byte.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

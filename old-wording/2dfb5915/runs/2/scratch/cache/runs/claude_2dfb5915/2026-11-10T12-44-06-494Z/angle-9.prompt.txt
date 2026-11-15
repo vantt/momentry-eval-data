@@ -1,0 +1,189 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ dòng lệnh để hỏi Claude Desktop về graph của vault Obsidian: note nào nối với note nào, đi từ ý này tới ý kia qua đâu, note nào lạc khỏi mạng. Làm cho người làm một mình, freelancer, có tiếng Việt. Dùng dưới dạng một file chạy trên máy, người dùng không phải cài Python; có bộ cài cho Windows, macOS và Linux. Mục tiêu hiện tại: thay bản Python đang dùng bằng lõi viết bằng Rust cho Claude Desktop và chat trong Obsidian.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L2898] USER: bản vá P04 bên fork OHS đã xong nhé
+[L3009] USER: project vantt/browser-worker có một cơ chế code mode đơn giản.
+[L3027] USER: cần bật agent để thảo luận và brainstorm cho tốt về interface của mcp nhé.
+</asks>
+
+<story>
+hook: Hai agent làm riêng ra cùng kết luận, nhưng tính sai token
+tension: nguoi_dung_may_sai (Hai agent đồng ý, con số 1,9 nghìn token có vẻ đúng / Phản biện chéo cho thấy file thật tốn 3,3 đến 3,8 nghìn)
+stakes: 2/3
+# Hai agent thiết kế MCP độc lập, phản biện chéo và sửa con số token
+
+**Bối cảnh:** Cần chốt bộ tool MCP một cửa, gồm search, read và related.
+**Chuyện gì xảy ra:** Hai agent làm độc lập và đi tới kết luận gần như trùng: giữ tool rời, không làm code mode, read do pkm tự đọc. Số token định nghĩa giảm từ khoảng 6,0 nghìn xuống 4,4 nghìn. Khi phản biện chéo, một agent chỉ ra bản kia tính thấp số token danh sách tool: 7 KB là khoảng 1,9 nghìn token, nhưng file thật 13.381 ký tự cho ra khoảng 3,3 đến 3,8 nghìn.
+**Bài học:** Ước lượng token theo số ký tự dễ lệch. Hai thiết kế độc lập rồi phản biện chéo bắt được lỗi mà một agent đơn lẻ bỏ sót.
+**Artefact:** Bảng so sánh các phương án (chụp báo cáo, không lộ đường dẫn).
+**Góc người ngoài:** cách làm phổ biến là Một người viết spec rồi tự quyết, hoặc hỏi nhiều câu nhỏ rời rạc; ở đây khác ở Hai thiết kế gần như trùng nhau; phản biện chéo sửa được số token ước lượng và bắt lỗi compact() mà cả hai không nêu lúc đầu. Người đọc muốn biết cách tổ chức để ra quyết định nhanh mà không phải đoán.
+</story>
+
+<excerpt>
+[L3030] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: a1e4cdc7ead3d9d59 (internal ID - do not mention to user. Use SendMessa …[+86]
+[L3039] AGENT: Tôi vừa bật thêm agent thứ hai, chạy trên model mạnh nhất. Nó thiết kế interface MCP độc lập, không xem bài của agent kia. Giờ có hai agent:
+
+1. **Brainstormer:** đang so các phương án, đã nhận thêm `vantt/browser-worker` để đánh giá cơ chế code mode.
+2. **Kongming:** thiết kế từ đầu theo góc nhìn của Claude khi dùng tool: ít lượt gọi, ít token, dễ chọn đúng tool, lỗi rõ ràng. Nó cũng đánh giá cơ chế code mode của `browser-worker`.
+
+Cả hai xong thì tôi so hai bản thiết kế, rồi cho mỗi bên phản biện bản của bên kia. Sau đó tôi gom lại một đề xuất cuối kèm các câu anh cần chốt. Agent phase 17 vẫn chỉ làm phần nội bộ, chưa đụng vào interface.
+[L3051] USER: <task-notification>
+<task-id>a29d11870b6e13c39</task-id>
+<tool-use-id>toolu_01Gz4V7EXJjo1qq9gQKKWDRV</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a29d11870b6e13c39.output</output-file>
+<status>completed</status>
+<summary>Agent "Brainstorm one-door MCP signature" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Mình khuyên dùng phương án B, "một cửa gọn": giữ các tool rời như hiện nay, thêm `search` và `read`, cho `related` nhận câu hỏi làm đường chính, và không làm code mode ở phase 17. Báo cáo đã ghi tại `/home/vantt/projects/obsidian-pkm/plans/reports/brainstormer-261102-1826-one-door-mcp-signature.md`. Đây là phân tích chỉ đọc, không có mã nào bị sửa. Mọi số token là ước lượng theo số ký tự, chưa đo bằng tokenizer; nhóm A–D chưa chạy thật.
+
+**Hiện trạng tool**
+- MCP `kg` có 11 tool, khoảng 13,4 nghìn ký tự, tức khoảng 3,3 nghìn token. Phần `instructions` khoảng 1,2 nghìn token trên kg-solo.
+- MCP `ohs` có 4 tool, khoảng 2,7 nghìn token; riêng `search` chiếm phần lớn.
+- Cộng lại, hai cửa tốn khoảng 6,0 nghìn token định nghĩa cho mỗi request.
+
+**So sánh các phương án**
+
+| | Token định nghĩa | Lượt gọi nhóm D | Công |
+|---|---|---|---|
+| Hai cửa hiện nay | khoảng 6,0 nghìn | 3 | — |
+| A: thêm tối thiểu, chuyển tiếp nguyên | khoảng 5,8 nghìn | 2–3 | khoảng 1,5 ngày |
+| **B: một cửa gọn (khuyên dùng)** | **khoảng 4,4 nghìn** | **2** | **khoảng 2 ngày** |
+| C: thêm tool `run` (QuickJS nhúng) | khoảng 4,8 nghìn | 1–2 | 4–6 ngày sau B |
+| D: chép cơ chế của browser-worker | như B | không đổi | 1–4 ngày |
+
+Phương án B chi tiết:
+- **`search`:** chỉ phơi một nhóm tham số đã chọn, giữ đúng tên mà MCP của OHS dùng (`snippet_length`, `path`), và `pkm` tự đổi sang tên của giao thức stdio. Kết quả bỏ các mảng link và thêm `type` lấy từ index.
+- **`read`:** `pkm` tự đọc file, dạng kết quả giống OHS.
+- **`related`:** nhận `query`, `queries`, `path` làm đường chính, vẫn nhận `hits`. Câu D1 còn 2 lượt thay 3 và bớt khoảng 2,5 nghìn token; câu D3 cũng còn 2 lượt.
+
+**Về code mode:**
+- **Cơ chế của browser-worker:** không chạy mã agent ở server. Nó có ba cửa: một CLI trả JSON, một client JS sinh tự động, và một profile MCP gồm 3 meta-tool. Mã chạy trên shell của chính agent, nên Claude Desktop không dùng được.
+- **Ph …[+2987]
+[L3060] AGENT: Brainstormer đã xong. Agent thứ hai (kongming) vẫn đang chạy. Tóm tắt kết quả của brainstormer:
+
+- **Đề xuất: phương án B, "một cửa gọn".**
+  - Giữ các tool rời như hiện nay.
+  - Thêm `search`, chỉ phơi một nhóm tham số đã chọn, theo tên mà agent đã quen từ MCP của OHS.
+  - Thêm `read`, nhưng `pkm` tự đọc file chứ không chuyển sang OHS. Lý do: OHS chỉ đọc được note đã index, nên lúc OHS đang khởi động hay đang index thì đọc một file cũng báo lỗi.
+  - `related` nhận câu hỏi làm đường chính.
+  - Kết quả ước lượng: tốn khoảng 4,4 nghìn token định nghĩa tool thay vì khoảng 6,0 nghìn, và câu nhóm D cần 2 lượt gọi thay vì 3. Đây là số tính theo số ký tự, chưa đo bằng tokenizer.
+- **Code mode:** không làm ở phase 17.
+  - Cơ chế của `browser-worker` chạy code trên shell của chính agent, nên Claude Desktop không dùng được.
+  - Code mode thật cần nhúng một bộ chạy JS vào binary, tốn thêm 4–6 ngày, và chỉ lợi ở vài câu cần lọc hay giao tập hợp.
+  - Brainstormer đề xuất ghi một điều kiện để xem lại sau: nếu khi đo có từ 2 câu trở lên vượt giới hạn lượt gọi của playbook thì mở một phase riêng cho tool `run`.
+- **Một lỗi có thật trên main:** `compact()` trong `crates/pkm/src/mcp.rs` xoá các khoá có giá trị `null`. Vì vậy khi OHS ở trạng thái `starting`, `model_missing` hay `broken`, lỗi `ohs_not_ready` chỉ còn 3 khoá thay vì đủ 5 khoá theo hợp đồng. Tôi sẽ kiểm lại rồi sửa riêng.
+
+Chờ kongming xong, tôi sẽ cho hai bên phản biện chéo rồi gửi anh đề xuất cuối. Ba câu anh cần chốt: `read` do `pkm` tự đọc hay chuyển sang OHS, `search` chọn lọc tham số hay chuyển nguyên, và có ghi điều kiện xem lại code mode vào plan không.
+
+Báo cáo đầy đủ: `plans/reports/brainstormer-261102-1826-one-door-mcp-signature.md`.
+[L3070] USER: <task-notification>
+<task-id>a1e4cdc7ead3d9d59</task-id>
+<tool-use-id>toolu_01TAMN5rfbJpEiD69F7DQEou</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a1e4cdc7ead3d9d59.output</output-file>
+<status>completed</status>
+<summary>Agent "Independent MCP interface design" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Báo cáo đã ghi tại `/home/vantt/projects/obsidian-pkm/plans/reports/kongming-261102-1826-one-door-mcp-interface.md` (tiếng Việt, đủ schema, mô tả, hợp đồng lỗi, `instructions`, đi qua A–D, kết luận code mode, rủi ro, câu hỏi cho user).
+
+**TL;DR**
+
+- **Bộ tool: 13.** 11 tool graph giữ nguyên câu chữ; thêm `search` (chuyển tiếp mỏng sang OHS nhưng chỉ lộ 7 tham số `query, queries, path, mode, scope, limit, snippet_length`, trả 5 trường `id, title, type, score, snippet`, lọc trang hệ thống như các tool khác); thêm `read` (**đọc thẳng file trong vault, không qua OHS**); `related` nhận `query` | `node` | `hits`, kèm `snippet` và `title`. Không thêm `status`.
+- **Lệch với plan cần user chốt:** phase 17 nói `read` chuyển tiếp sang OHS. Tôi đề nghị đọc thẳng vì `read` không cần index nghĩa (D7: tool không cần OHS phải chạy bình thường), `pkm` đã có vault path, `did_you_mean` (`tools.rs:566–598`), `url`, `title`/`type`; qua OHS thì agent không đọc được note nào trong 10 phút OHS index bản B.
+- **Số đo ước lượng:** nạp mỗi phiên giảm từ ≈5,7 k xuống ≈3,8 k token (danh sách 4 tool của OHS nặng ≈11 KB, riêng `search` có 15 đoạn mô tả tham số). Mỗi câu có bước tìm bớt 2–3 k token vì kết quả OHS thô 400–900 byte/hit so với 150–250 byte sau cắt. D1 và D3 từ 3 lượt xuống 2; không câu A–D nào tăng lượt.
+- **Code mode: từ chối.** browser-worker dùng ba meta tool `tools_search/tool_describe/tool_call` (tìm tool lười cho 57–69 tool, 863 B thay 28 KB) cộng CLI + client JS cho agent có shell; không phải thực thi script. Với 13 tool trong Claude Desktop (không shell, không sandbox) nó thêm 2 lượt mỗi phiên và che mất cặp `find`/`search` mà model phải chọn đúng. Giữ "hybrid" là hợp phần hoá phía server (`related(query)` = search + graph một lượt; nấc sau là `read_top` nếu đo D1 vẫn 3 lượt), thêm CLI `pkm VAULT search|read|related` cho Claude Code, và mượn bài test ngân sách kích thước `tools/list`.
+- **Phải sửa khi  …[+1215]
+[L3073] TOOL SendMessage: {"to":"a29d11870b6e13c39","summary":"Cross-critique kongming's design","message":"Cross-review round. Read the independent design at /home/vantt/projects/obsidian-pkm/plans/reports/kongming-261102-1826-one-door-mcp-interface.md and compare with yours. Reply (no new file; append a section \"Phản biện …[+409]
+[L3074] RESULT: {"success":true,"message":"Resuming agent a29d118","resumedAgentId":"a29d11870b6e13c39","pin":{"id":"a29d11870b6e13c39","name":"a29d11870b6e13c39","ref":"6d1f6e"}}
+[L3077] TOOL SendMessage: {"to":"a1e4cdc7ead3d9d59","summary":"Cross-critique brainstormer's design","message":"Cross-review round. Read the other design at /home/vantt/projects/obsidian-pkm/plans/reports/brainstormer-261102-1826-one-door-mcp-signature.md and compare with yours. Append a section \"Phản biện chéo\" to your ow …[+520]
+[L3078] RESULT: {"success":true,"message":"Resuming agent a1e4cdc","resumedAgentId":"a1e4cdc7ead3d9d59","pin":{"id":"a1e4cdc7ead3d9d59","name":"a1e4cdc7ead3d9d59","ref":"54b0a4"}}
+[L3088] AGENT: Kongming cũng đã xong. Hai agent làm độc lập nhưng ra kết luận gần như trùng nhau:
+
+- **Giữ tool rời, không làm code mode.** Cơ chế của `browser-worker` là 3 meta-tool (tìm tool, mô tả tool, gọi tool), hợp với bộ 57–69 tool. Với khoảng 13 tool trên Claude Desktop thì nó làm mỗi phiên tốn thêm lượt gọi, và che mất bước chọn giữa `find` và `search`.
+- **`read` do `pkm` tự đọc file, không chuyển sang OHS.** Cả hai đều đề xuất điều này. Nó lệch với plan, nên cần anh chốt.
+- **`search` chỉ phơi khoảng 7 tham số và trả ít trường.** Mỗi câu có bước tìm sẽ bớt khoảng 2–3 nghìn token.
+- **`related` nhận thẳng câu hỏi.** Câu D1 và D3 còn 2 lượt gọi thay vì 3, và không câu A–D nào tăng lượt.
+- **Token định nghĩa tool mỗi phiên giảm từ khoảng 5,7–6,0 nghìn xuống khoảng 3,8–4,4 nghìn.** Số này ước lượng theo độ dài chuỗi, chưa đo thật.
+
+Kongming chỉ ra thêm vài chỗ phải sửa khi làm. Có hai thông báo lỗi đang bảo agent "gọi tool search của OHS trước", không còn đúng khi chỉ còn một cửa. `read` cũng phải tự giữ giới hạn độ dài để bộ cắt không chặt đứt JSON.
+
+Giờ hai agent đang phản biện chéo bản của nhau và mỗi bên đưa ra một danh sách tool gộp. Xong vòng này tôi gửi anh bản cuối cùng kèm các câu cần chốt.
+[L3098] USER: <task-notification>
+<task-id>a29d11870b6e13c39</task-id>
+<tool-use-id>toolu_01GMfFQc7n8j7NXbX87X9qEc</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a29d11870b6e13c39.output</output-file>
+<status>completed</status>
+<summary>Agent "Brainstorm one-door MCP signature" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Kongming và mình thống nhất ở các ý chính: 13 tool, `read` do `pkm` tự đọc, `search` cắt gọn, `related` nhận câu hỏi làm đường chính, không làm code mode, không thêm tool `status`. Mình đã thêm mục "7. Phản biện chéo" (khoảng 50 dòng) vào cuối `/home/vantt/projects/obsidian-pkm/plans/reports/brainstormer-261102-1826-one-door-mcp-signature.md`, không tạo file mới.
+
+**Chỗ Kongming tốt hơn, mình nhận:**
+- Kết quả dùng khoá `id` thay cho `path`, đúng với cách các tool cũ gọi note.
+- Thiết kế `read`:
+  - Tham số là `nodes`, `max_chars` (mặc định 4000), `offset`.
+  - Note sai id thì báo lỗi trong đúng mục đó kèm `did_you_mean`, các note khác vẫn trả về.
+  - `read` tự cắt đều các thân note, để bộ cắt `--max-chars` không chặt giữa JSON. Bản của mình chép dạng của OHS nên dính đúng lỗi này.
+- `related` dùng tên `node` thay cho `path`.
+- `search` có thêm `system` (mặc định ẩn trang hệ thống), có `title`, và chỉ giữ 7 tham số.
+- `search` chờ tối đa 8 giây khi OHS đang khởi động; mã lỗi `ohs_error`; test ghim kích thước danh sách tool.
+- Đặt `search` cạnh `find` và `read` cạnh `note`. Việc này không tốn thêm ở bộ so khớp, vì `parity/src/compare.rs` so cả file `tools_list.json`: thêm tool ở đâu cũng phải ghi ngoại lệ.
+
+**Chỗ mình không đồng ý:**
+- **Số token của danh sách tool bị tính thấp.** Kongming tính khoảng 7 KB, tức khoảng 1,9 nghìn token. File golden ở dạng JSON gọn dài 13.381 ký tự, tức khoảng 3,3 đến 3,8 nghìn token. Thứ hạng các phương án không đổi, nhưng ngưỡng cho test kích thước phải là khoảng 17 KB chứ không phải 11 KB.
+- **Lỗi `ohs_not_ready` không phải "đã đủ 5 khoá".** Mọi kết quả qua `compact()` trong `mcp.rs` (dòng 692), hàm này bỏ khoá rỗng. Ngoài trạng thái `indexing`, `progress` và `eta_s` rỗng nên agent chỉ thấy 3 khoá. Cần sửa và test ở tầng MCP.
+- **`related`:** không thêm `title` vào mọi dòng, vì id đã chứa tên file. Mình nhận `snippet` 160 ký tự, nhưng chỉ cho các note hạt giố …[+1857]
+[L3100] AGENT: Brainstormer đã phản biện xong. Hai bên đã gần như thống nhất được bộ 13 tool. Tôi đang chờ kongming phản biện ngược lại, sau đó gửi anh bản chốt kèm các câu cần quyết.
+[L3110] USER: <task-notification>
+<task-id>a1e4cdc7ead3d9d59</task-id>
+<tool-use-id>toolu_016trXBxnNQY4KHaY6eCJChh</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a1e4cdc7ead3d9d59.output</output-file>
+<status>completed</status>
+<summary>Agent "Independent MCP interface design" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Đã nối mục "11. Phản biện chéo" vào `/home/vantt/projects/obsidian-pkm/plans/reports/kongming-261102-1826-one-door-mcp-interface.md`. Tóm tắt cho coordinator:
+
+**Xác nhận phát hiện `compact()`:** đúng. `compact()` (`crates/pkm/src/mcp.rs:227–238`) lọc mọi khoá `null`; `tools_call` áp nó lên mọi kết quả (`mcp.rs:692`). Ở `starting`/`model_missing`/`broken`, `progress` và `eta_s` là `null` (`ohs/state.rs:59–65`) nên agent chỉ nhận 3 khoá; test 5 khoá ở `state.rs:326` kiểm trước `compact` nên không bắt được. Sửa: miễn `compact` cho object `error == "ohs_not_ready"` (chỗ `is_error` đã có ngoại lệ tương tự) và thêm test ở tầng `mcp`.
+
+**Nhận từ bản brainstormer (7 điểm):** sửa `compact`; quy tắc ánh xạ hai bộ tên tham số OHS (MCP `snippet_length`/`path` → stdio `snippetLength`/`notePath`, gộp `queries`); đổi `SERVER_NAME = "kg"` (`mcp.rs:37`) và dòng đầu `instructions`; `path` mơ hồ → `did_you_mean` từ `find`; chặn `..`/ngoài vault ở `read`, `doctor` cảnh báo MCP `ohs` song song, khung changelog, 4 tiêu chí nghiệm thu; lấy số token nền đo từ golden (11 tool ≈ 3,3 k, hai cửa ≈ 6,0 k + 1,2 k); `related` nhận `queries`.
+
+**Giữ quan điểm (6 điểm, có bằng chứng):** `search` trả 5 trường (bỏ `rank/tags/aliases/matchedBy`; `compact` giữ mảng rỗng, `mcp.rs:226`); 7 tham số không có `frontmatter` (trùng `select`, `defs.rs:214`), `paths`, `threshold`; `read` dạng riêng với `max_chars` 4000 + `offset` + ngân sách tổng (mặc định trọn note sẽ bị bộ cắt `--max-chars` chặt giữa JSON, `mcp.rs:700–709`) và lỗi `error + did_you_mean` như `note` (`tools.rs:593`), nhượng tên tham số `paths`; vẫn ưu tiên chèn `search`/`read` cạnh `find`/`note`; không ghim QuickJS vào điều kiện xem lại code mode; giữ `title`/`snippet` trong `related`.
+
+**Bộ gộp 13 tool:** 10 tool cũ nguyên; `search(query, queries, path, mode, scope, limit, snippet_length, system)` → `{count, mode, items[{id,title,type,score,snippet}]}`; `read(paths, ma …[+799]
+[L3117] TOOL Bash: grep -o '"name": *"[a-z_]*"\|^ *"[a-z_]*": *{ *"type"' crates/pkm/src/mcp/defs.rs 2>/dev/null | head -60 || ls crates/pkm/src
+[L3118] RESULT: (Bash completed with no output)
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,83 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+momentry là công cụ đọc transcript của các phiên làm việc với coding agent như Claude Code, Codex, pi, omp và Antigravity, rồi nhặt ra những chuyện đáng kể để kể ra ngoài. Mỗi chuyện được ghi thành một file markdown trong repo và xếp hạng theo độ hấp dẫn, độ căng thẳng và mức quan trọng. Làm cho người làm một mình, build in public, viết blog kỹ thuật hoặc báo cáo tuần, không muốn đánh mất chất liệu. Công cụ chạy trên máy của người dùng và dùng claude CLI đã đăng nhập để đọc phiên, mỗi phiên khoảng 150k token tốn khoảng 1 USD; bộ kiểm riêng tư chặn những tên người dùng khai báo trước khi ghi vào repo. Giao diện dòng lệnh và tài liệu hiện viết bằng tiếng Việt. Mục tiêu v2 hiện tại: nhặt, ghi và xếp hạng chuyện; biên tập và viết bản nháp bài để sau.
+</project>
+
+<asks>
+[L9] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-research # Research ## Research Methodology Always honoring **KISS** and **DRY** principles. Deliver the full requested scope — never trim or defer what the user explicitly asked for. Add nothing unrequested. With `--yagni`, additionally challenge and cut any scope not needed for the stated outcome. **Be honest, be brutal, straight to the point, and be concise.** ### Phase 1: Scope Definition First, you will clearly define the research scope by: - Identifying key terms and concepts to investigate - Determining the r …[+5899]
+[L315] USER: `/bip` là làm gì vậy
+[L340] USER: 1) tự cài luôn, dùng '/ak-plan' lập plan đi.
+[L348] USER: Base directory for this skill: /home/vantt/projects/momentry/.claude/skills/ak-plan # Plan (`ak-plan`) Create structured, verifiable implementation plans with phased execution roadmaps, architecture diagrams, and testing strategies. ## Plan Location & Invariants - **Location**: All plans live under `plans/<timestamp>-<descriptive-slug>/`. - **Primary Files**: `plan.md` (index/summary) and `phase-NN-<name>.md` (execution details). - **HTML Artifact**: When `--html` is passed, `plan.html` is the authoritative user-facing plan deliverable. - **Task Hydration**: Phases hydrate into project task ma …[+9206]
+</asks>
+
+<story>
+hook: Công cụ chỉ đọc 2 thư mục, trong khi máy có 27 thư mục profile
+tension: tuong_ma_hoa_ra (Công cụ tưởng mỗi host chỉ có một thư mục / Máy có 27 thư mục profile ngoài Claude)
+stakes: 2/3
+# momentry chỉ đọc một thư mục mặc định, máy có 27 thư mục profile của các host
+
+**Bối cảnh:** Trên máy này, mỗi host có nhiều profile tài khoản.
+**Chuyện gì xảy ra:** Trước đây momentry chỉ quét ~/.claude và ~/.codex mặc định. Máy có 4 thư mục Codex, 9 pi, 10 omp và 4 agy. Agent viết hostRoots để tìm tất cả, và scan, doctor, connect dùng chung. Tổng 27 thư mục profile ngoài Claude.
+**Bài học:** Đếm profile thật trên máy trước khi chốt đường dẫn mặc định. Một đường dẫn cố định sẽ bỏ sót phần lớn dữ liệu.
+**Artefact:** Bảng số profile theo host, không ghi tên profile.
+</story>
+
+<excerpt>
+[L386] TOOL Bash: cd /home/vantt/projects/momentry; grep -rn "EXIT\.\|exitCode: [0-9]\|exitCode, [0-9]\|, 1)\b" lib bin | grep -v "^lib/config.mjs:8" | wc -l; grep -rln "EXIT\|exitCode" lib bin test; grep -rn "spawn\|execFile" lib | grep -v "^lib/hook"
+[L392] RESULT: 49 | lib/llm.mjs
+[L402] TOOL Bash: cd /home/vantt/projects/momentry; grep -n "projects\|replace(\|sessions\|homedir\|HOME" lib/sources/claude.mjs lib/sources/codex.mjs | head -20
+[L405] RESULT: lib/sources/claude.mjs:44: return path.resolve(root).replace(/[^A-Za-z0-9]/g, '-'); | lib/sources/claude.mjs:48: * Transcripts of a repo: dirs under `<projectsDir>` whose name starts with the encoded git root,
+[L410] AGENT: Đã đủ bối cảnh; đang tạo khung plan bằng `ak plan create` rồi viết các phase.
+…
+[L837] RESULT: File created successfully at: /home/vantt/projects/momentry/lib/proc.mjs (file state is current in your context — no need to Read it back)
+[L843] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' p='lib/llm.mjs' s=open(p).read() a=""" child = spawn(bin, args, { env, stdio: ['pipe', 'pipe', 'pipe'], detached: process.platform !== 'win32' });""" b=""" const c = commandFor(bin, args, { env }); child = spawn(c.file, c.args, { env, stdio: ['pipe …[+647]
+[L846] RESULT: lib/sources/codex.mjs:42: const root = opts.sessionsDir ?? path.join(os.homedir(), '.codex', 'sessions'); | lib/sources/claude.mjs:54: const projectsDir = opts.projectsDir ?? path.join(os.homedir(), '.claude', 'projects');
+[L849] TOOL Bash: cd /home/vantt/projects/momentry; sed -n 55,75p lib/pipeline.mjs; grep -n "projectsDir\|sessionsDir" lib/pipeline.mjs lib/*.mjs | head
+[L852] RESULT: const safeName = (s) => String(s).replace(/[^A-Za-z0-9._-]+/g, '_'); | const stamp = () => new Date().toISOString().replace(/[:.]/g, '-');
+…
+[L3428] RESULT: Your questions have been answered: "Antigravity (agy) không có sự kiện kết thúc phiên hay trước compact; chỉ có SessionStart và Stop (Stop chạy sau MỖI lượt và chặn agent trong lúc chạy). Gom chuyện agy lúc nào?"="Khi mở phiên sau (Recommended)", "Má …[+283]
+[L3433] AGENT: Bạn chọn: agy gom khi mở phiên sau, và tự tìm mọi profile. Xem cấu trúc thư mục profile trên máy (chỉ tên thư mục) để thiết kế phần tự tìm cho đúng.
+[L3434] TOOL Bash: ls -d ~/.pi/accounts/* ~/.omp/profiles/*/agent ~/.agy-homes/* 2>/dev/null | sed "s|$HOME|~|"; ls ~/.pi/accounts/* 2>/dev/null | head -12; ls ~/.agy-homes/*/.gemini 2>/dev/null | head; ls ~/.agents 2>/dev/null; grep -n "PI_CODING_AGENT_DIR\|HOME=\|--profile" ~/.zshrc ~/.zsh* 2>/dev/null | head -8
+[L3437] RESULT: ~/.agy-homes/mucdong | ~/.agy-homes/tetcu72
+[L3447] TOOL Bash: ls -d ~/.codex* ~/.claude* 2>/dev/null | sed "s|$HOME|~|"; sed -n 220,240p ~/.zshrc | grep -v -i "key\|token"
+[L3450] RESULT: ~/.claude | ~/.claude.json
+[L3454] AGENT: Đã đủ dữ kiện. Ngoài ba host mới, Codex cũng có nhiều tài khoản (`~/.codex-*`), nên phần tự tìm profile áp dụng cho cả Codex. Lập plan bổ sung.
+…
+[L3565] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' def edit(p, pairs): s=open(p).read() for a,b in pairs: assert a in s, (p, a[:80]); s=s.replace(a,b) open(p,'w').write(s) edit('lib/paths.mjs', [ ("""/** * @param {NodeJS.ProcessEnv} [env] @param {{platform?: string, homedir?: string}} [opts] * @ret …[+1165]
+[L3566] RESULT: claude ~/.claude | codex ~/.codex ~/.codex-fgovn ~/.codex-tetcu72 ~/.codex-tetnu
+[L3574] AGENT: `hostRoots` tìm đúng mọi profile trên máy: 4 thư mục Codex, 9 pi, 10 omp, 4 agy. Giờ viết bộ đọc pi/omp.
+[L3575] TOOL Write: /home/vantt/projects/momentry/lib/sources/pi.mjs
+[L3578] RESULT: File created successfully at: /home/vantt/projects/momentry/lib/sources/pi.mjs (file state is current in your context — no need to Read it back)
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

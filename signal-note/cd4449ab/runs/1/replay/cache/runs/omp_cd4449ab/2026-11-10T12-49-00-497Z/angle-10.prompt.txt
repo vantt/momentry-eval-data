@@ -1,0 +1,102 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L6] USER: You are worktree C. Your worktree is /home/vantt/projects/mcp-skill-hub-simplify (branch wave2/simplify-p4-p3). It already holds your earlier uncommitted work: internal/workspace/workspace.go, internal/migration/migration.go, internal/migration/v3.go, and the phase-03 and phase-04 files. Rules before anything else: - Every read, edit and write call uses an absolute path that starts with /home/vantt/projects/mcp-skill-hub-simplify/. Every bash call runs there. - Never write to /home/vantt/projects/mcp-skill-hub (the lead's main checkout) or to /home/vantt/skill-hub (the live hub). That means no …[+798]
+[L2345] USER: Lead: the untracked file in the main checkout is docs/plans/prompt-wave3-E.md, the lead's own prompt file. That is expected; proceed. In /home/vantt/projects/mcp-skill-hub-simplify (absolute paths only): 1. Commit your current changes (one commit, conventional message), with make check green. 2. Main has moved: worktree D merged, main is at b32d678. Run `git -C /home/vantt/projects/mcp-skill-hub-simplify rebase main`. The lead checked with merge-tree: no conflicts are expected. If any appear, resolve only in your owned paths. 3. Run make check again on the rebased branch. 4. Report: the new co …[+362]
+[L2374] USER: Lead: your Phase 4 checkpoint is merged into main (fast-forward to b01eaa3). Go ahead with Phase 3 in /home/vantt/projects/mcp-skill-hub-simplify (absolute paths only), in the order already given, one commit each, make check green: a. planV3ToV4 + pre-Phase-3 fixture (decisions, reopen-only-on-new-evidence, tombstones, coverage gaps survive). Copy the live hub's Phase-0-format test-audit/.meta/distill.yaml into testdata and prove it converts. b. Remove insight/run lifecycle, revision packages, LINK files, intake layout (skill_add must stop writing sources/intake/; insight.go:832 goes too). Con …[+674]
+</asks>
+
+<story>
+hook: 77 hash rút gọn, một lệnh git đổi hết thành 40 ký tự
+tension: it_ma_nhieu (77 hash viết tắt dễ trỏ sai / một lệnh git rev-parse phân giải đủ)
+stakes: 2/3
+# 77 hash commit rút gọn trong distill.yaml được phân giải
+
+**Bối cảnh:** File distill.yaml của hub thật có khoảng 1184 dòng, 46161 byte, 42 bài học, mỗi bài học trỏ tới commit của một nguồn upstream.
+**Chuyện gì xảy ra:** Đếm được 77 mục tham chiếu commit viết tắt. Dùng git rev-parse trên mirror của hai nguồn để phân giải về đủ 40 ký tự, ví dụ một hash 11 ký tự thành hash đầy đủ. Sau đó kiểm tra: không có key sai định dạng, không trùng key, không bài học thiếu what. Kết quả: 39 bài candidate, 3 bài planned.
+**Bài học:** Dữ liệu viết tay luôn có hash rút gọn; phân giải bằng git trước khi siết schema, đừng đoán.
+**Artefact:** Bảng rút gọn sang đầy đủ cho năm mẫu, không kèm tên repo.
+</story>
+
+<excerpt>
+[L2411] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/schemas/distill.schema.json:46-100
+[L2413] RESULT: [schemas/distill.schema.json#6045] | 40: "lessons": {
+[L2414] TOOL bash: python3 -c ' import yaml with open("/home/vantt/skill-hub/skills/default/test-audit/.meta/distill.yaml") as f: doc = yaml.safe_load(f) cursors = doc.get("cursors", {}) print("Cursors:", cursors) short_hashes = [] no_path = [] for lesson in doc.get("lessons", []): for w in lesson.get("where", []): if …[+482]
+[L2416] RESULT: Cursors: {'openclaw': '96370cf438dc9d67d2a13b08c14eb4142fecb767', 'superpowers': '8ca22dba9a94f28898bbce59f2537ff4d87c747d'} | Total short commit entries: 77
+[L2417] TOOL bash: ls -la /home/vantt/skill-hub/runtime/sources/git/
+[L2419] RESULT (exit 2): ls: cannot access '/home/vantt/skill-hub/runtime/sources/git/': No such file or directory | Wall time: 0.00 seconds | Command exited with code 2
+…
+[L2435] TOOL bash: ls -la /home/vantt/skill-hub/runtime/distill-lab/mirrors
+[L2437] RESULT: total 16 | drwxrwxr-x 4 vantt vantt 4096 Oct 8 16:13 .
+[L2438] TOOL bash: git -C /home/vantt/skill-hub/runtime/distill-lab/mirrors/superpowers rev-parse 8ca22dba9a94 e8a9748a3fa9
+[L2440] RESULT: 8ca22dba9a94f28898bbce59f2537ff4d87c747d | e8a9748a3fa9ecd1e480ace6cb3ea073ee58d899
+[L2441] TOOL grep: Phase-0
+[L2443] RESULT: No matches found
+…
+[L2453] TOOL glob: /home/vantt/projects/mcp-skill-hub-simplify/internal/**/testdata/**
+[L2455] RESULT: # internal/ | ## delivery/web/testdata/golden/
+[L2456] TOOL bash: python3 -c ' import yaml with open("/home/vantt/skill-hub/skills/default/test-audit/.meta/distill.yaml") as f: doc = yaml.safe_load(f) commits = {} for lesson in doc.get("lessons", []): for w in lesson.get("where", []): if "@" in w: rc = w.split(":", 1)[0] repo, c = rc.split("@", 1) commits.setdefau …[+79]
+[L2458] RESULT: superpowers {'517a9c6', '030a222af19c', 'e8a9748a3fa9', 'b9e75dd', 'caa1826cbade', 'e74961c11048', '8ca22dba9a94'} | openclaw {'be052821d69', 'c9da900a961', '777421df553', 'e09a265b111', '96370cf438dc'}
+[L2459] TOOL bash: python3 -c ' import subprocess for repo, commits in [ ("openclaw", ["be052821d69", "c9da900a961", "777421df553", "e09a265b111", "96370cf438dc"]), ("superpowers", ["517a9c6", "030a222af19c", "e8a9748a3fa9", "b9e75dd", "caa1826cbade", "e74961c11048", "8ca22dba9a94"]) ]: mirror = f"/home/vantt/skill-hu …[+260]
+[L2461] RESULT: === openclaw === | be052821d69 -> be052821d69c581a94c39f91623419bdfc1093b1
+[L2462] TOOL grep: tombstone
+[L2464] RESULT: # archive/plans/ | ## skillhub-v1-implementation-plan.md#94D4
+…
+[L2486] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/distill/types.go:80-125
+[L2488] RESULT: [internal/distill/types.go#CA19] | 71:type Run struct {
+[L2489] TOOL bash: wc -l -c /home/vantt/skill-hub/skills/default/test-audit/.meta/distill.yaml
+[L2491] RESULT: 1184 46161 /home/vantt/skill-hub/skills/default/test-audit/.meta/distill.yaml | Wall time: 0.02 seconds
+[L2492] TOOL bash: mkdir -p /home/vantt/projects/mcp-skill-hub-simplify/internal/migration/testdata && cp /home/vantt/skill-hub/skills/default/test-audit/.meta/distill.yaml /home/vantt/projects/mcp-skill-hub-simplify/internal/migration/testdata/phase0-distill.yaml
+[L2494] RESULT: (no output) | Wall time: 0.01 seconds
+[L2495] TOOL bash: git -C /home/vantt/projects/mcp-skill-hub-simplify status -s
+…
+[L2510] TOOL bash: go test ./internal/distill/... ./schemas/...
+[L2512] RESULT: ok github.com/vantt/mcp-skill-hub/internal/distill 0.004s | ok github.com/vantt/mcp-skill-hub/schemas 0.565s
+[L2513] TOOL bash: python3 -c ' import yaml, re with open("/home/vantt/projects/mcp-skill-hub-simplify/internal/migration/testdata/phase0-distill.yaml") as f: doc = yaml.safe_load(f) pattern = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$") invalid = [] for l in doc.get("lessons", []): k = l.get("key", "") if not pattern.ma …[+112]
+[L2515] RESULT: Invalid keys: [] | Total lessons: 42
+[L2516] TOOL bash: python3 -c ' import yaml with open("/home/vantt/projects/mcp-skill-hub-simplify/internal/migration/testdata/phase0-distill.yaml") as f: doc = yaml.safe_load(f) keys = [l.get("key", "") for l in doc.get("lessons", [])] dupes = [k for k in keys if keys.count(k) > 1] print("Duplicate keys:", set(dupes) …[+3]
+[L2518] RESULT: Duplicate keys: set() | Wall time: 0.06 seconds
+[L2519] TOOL bash: python3 -c ' import yaml with open("/home/vantt/projects/mcp-skill-hub-simplify/internal/migration/testdata/phase0-distill.yaml") as f: doc = yaml.safe_load(f) empty_what = [l.get("key") for l in doc.get("lessons", []) if not str(l.get("what", "")).strip()] empty_notable = [l.get("key") for l in doc …[+135]
+[L2521] RESULT: Empty what: [] | Empty notable: []
+[L2522] TOOL bash: python3 -c ' import yaml with open("/home/vantt/projects/mcp-skill-hub-simplify/internal/migration/testdata/phase0-distill.yaml") as f: doc = yaml.safe_load(f) decisions = {} for l in doc.get("lessons", []): d = l.get("decision", {}) state = d.get("state") or d.get("status") decisions.setdefault(sta …[+131]
+[L2524] RESULT: State candidate: 39 lessons (e.g. ['mocks-mirror-the-real-shape', 'wait-on-owned-signal', 'change-detector-test']) | State planned: 3 lessons (e.g. ['ratchet-over-doctrine', 'mock-isolation-must-be-declared', 'ban-ships-with-replacement'])
+[L2525] TOOL bash: python3 -c ' import yaml with open("/home/vantt/projects/mcp-skill-hub-simplify/internal/migration/testdata/phase0-distill.yaml") as f: doc = yaml.safe_load(f) coverage = doc.get("coverage", {}) for source, cov in coverage.items(): read = cov.get("read", []) not_read = cov.get("not_read", []) print( …[+77]
+[L2527] RESULT: Source openclaw: 15 read items, 7 not_read items | Source superpowers: 6 read items, 4 not_read items
+[L2528] TOOL read: /home/vantt/projects/mcp-skill-hub-simplify/internal/migration/v3.go:1-40
+[L2530] RESULT: [internal/migration/v3.go#79A3] | 1:package migration
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

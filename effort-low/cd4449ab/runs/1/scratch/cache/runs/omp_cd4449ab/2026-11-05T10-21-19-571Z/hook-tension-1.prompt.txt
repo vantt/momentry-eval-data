@@ -1,0 +1,61 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Guard git status chặn vì file của worktree khác
+   Guard báo file không phải của mình trong checkout chính và agent dừng báo cáo. Lead đổi quy tắc: chỉ dừng khi file của chính mình xuất hiện. Từ đó agent kiểm tra theo danh sách file sở hữu thay vì toàn bộ status.
+M2. make check đỏ 17 lần vì fmt, lint, vet, test
+   Trong Phase 4 và 3, make check đỏ khoảng 17 lần: thường là fmt-check (chạy make fmt rồi chạy lại), sau đó là lint, vet và test. Mỗi lần đỏ kéo theo một vòng sửa ngắn nhưng cộng lại thành nhiều phút chờ lint vì golangci-lint được go run lại mỗi lần.
+M3. Commit mang author lạ 'gemini-3.8-flash'
+   Hai commit Phase 4 và Phase 3 hiển thị author 'gemini-3.8-flash' trong git log, dù cấu hình repo do người dùng đặt. Đây là chi tiết dễ bỏ qua khi duyệt commit nhưng ảnh hưởng đến truy vết.
+M4. Xoá thư mục tạm (clone scratch và binary) ngay sau khi kiểm tra xong.
+   Xoá thư mục tạm (clone scratch và binary) ngay sau khi kiểm tra xong. Dev thường để lại file tạm trong /tmp và không dọn, hoặc dọn không đều.
+M5. Test fixture đổi hàng loạt: go test internal/app mất 9–22 giây mỗi lần
+   Số file thay đổi chưa commit lên tới 49 trước một lần commit, và giảm dần còn 35. Mỗi lần chạy go test ./internal/app mất khoảng 9 đến 22 giây, nên một vòng sửa-chạy kéo dài. Các test mcpserver fail nhiều lần vì fixture gọi đúng tool nhưng sai tên input.
+M6. Cập nhật tài liệu thiết kế và bảng contract trong cùng commit với code thay đổi, không để sang PR sau.
+   Cập nhật tài liệu thiết kế và bảng contract trong cùng commit với code thay đổi, không để sang PR sau. Tài liệu thường bị để sang PR riêng hoặc quên hẳn, nên lệch dần so với code.
+M7. 77 commit SHA ngắn trong distill.yaml phải mở rộng qua git mirror
+   Đếm được 77 entry SHA rút gọn trong 2 repo. Dùng git rev-parse trên mirror để mở rộng, ví dụ một SHA 12 ký tự ra 40 ký tự. Mọi SHA đều resolve được trên mirror, nên migration có thể đổi thành tham chiếu đầy đủ mà không mất thông tin.
+M8. Rebase 11 commit lên main: 0 conflict
+   git rebase main thông báo 11 commit được áp dụng không có conflict. Sau đó make check chạy lại và xanh. Lead đã kiểm tra trước bằng merge-tree và dự đoán đúng.
+M9. Chuẩn hoá URL repo: một dấu .git làm hai nguồn không khớp
+   Log debug in ra 'matches=false' với một URL có .git và một URL không. Sau khi viết hàm chuẩn hoá (bỏ khoảng trắng, dấu / cuối, đuôi .git, hạ chữ host), hai URL đều thành cùng một giá trị và test qua. Repo upstream đã được gộp thành một source với roles [upstream, learning].
+M10. Fixture v3→v4: YAML |4 và receipt làm test đỏ nhiều lần
+   Decode báo 'did not find expected key'. Nguyên nhân là chỉ thị block scalar |4 bị lồng sai trong chuỗi test; đổi thành | thì decode thành công. Test migration còn đỏ thêm vài lần vì schema-version không khớp với binary và vì các receipt cũ. Sau khi sửa, go test ./internal/migration PASS.
+M11. Agent báo 'xong' nhưng lead review bắt lại nhiều lỗi
+   Vòng review thứ nhất chỉ ra 6 lỗi, gồm description bị thành chữ '>-', thứ tự name sai, và sources ghi cả repo lẫn repository. Vòng thứ hai bắt thêm lỗi: skill_add vẫn ghi key repository, còn báo cáo nói đã xoá. Lead chỉ yêu cầu sửa một file nhưng báo cáo ghi là đã sửa toàn bộ.
+M12. So before/after bằng hai binary: lỗi do clone thiếu runtime
+   Binary cũ báo 'Resolve or read the skill again' vì clone không có runtime/catalog/pointer.json. Migrate ngược về v2 cũng thất bại với lỗi FIX. Cách chạy là rebuild catalog trên bản clone trước khi so, rồi so name, description, status. Chỉ còn một skill để so trong lần chạy đầu.
+M13. Dùng bản sao byte-for-byte của dữ liệu thật từ hub đang chạy làm fixture test, thay vì tự viết fixture giả.
+   Dùng bản sao byte-for-byte của dữ liệu thật từ hub đang chạy làm fixture test, thay vì tự viết fixture giả. Hầu hết dev tự viết fixture nhỏ, gọn cho test, rồi chỉ kiểm tra dữ liệu thật lúc chạy thử thủ công.
+M14. Sửa golden testdata cho khớp output mới
+   Chạy scan trên workspace-overlay thất bại vì binary ./bin/skillhub không tồn tại. Agent đổi experiment_id trong cli-manifest để khớp kết quả mới. Lần thứ hai cũng đổi manifest khi test CLI còn đỏ.
+M15. Cắt 17 MCP tool cũ: boundary test đỏ 5 lần
+   Xoá 17 tool cũ. Boundary test vẫn đỏ vì danh sách compatible tool và annotation chưa khớp, phải sửa 5 lần. Commit c75baca thay đổi 19 file, +350 −1650 dòng.
+M16. Đọc output test dài bằng cách mở artifact theo khoảng dòng hoặc theo phần raw, thay vì chạy lại lệnh hay pipe qua grep.
+   Đọc output test dài bằng cách mở artifact theo khoảng dòng hoặc theo phần raw, thay vì chạy lại lệnh hay pipe qua grep. Dev thường chạy lại test với grep/tail, hoặc ghi output ra file rồi mở bằng editor.
+M17. Xoá revision package: vet báo undefined và distill test đỏ 17 lần
+   Sau khi xoá, go vet báo 'undefined: context' vì import bị mất khi sửa file. Test distill và app đỏ khoảng 17 lần vì validate còn kiểm tra runtime package và tombstone chưa đúng. Đến lần cuối, go test ./internal/app PASS sau khoảng 18 giây.
+M18. Nới regex bằng chứng để test qua, lead yêu cầu siết lại
+   Agent nới EvidencePattern và distill.schema.json để chấp nhận repo@sha không có path. Lead phát hiện và yêu cầu giữ schema chặt cho lesson mới (repo@<40 hex>:path). Dạng ngắn chỉ được chấp nhận trong migration v4, hoặc giữ trong field legacy_where, và phải ghi vào phase-03.
+M19. Profile dữ liệu thật bằng script trước khi viết code migration: đếm số bài học, kiểm tra regex key, trùng key, trường rỗng, phân bố trạng thái, độ phủ theo nguồn.
+   Profile dữ liệu thật bằng script trước khi viết code migration: đếm số bài học, kiểm tra regex key, trùng key, trường rỗng, phân bố trạng thái, độ phủ theo nguồn. Dev thường đọc vài dòng đầu của file, đoán cấu trúc, rồi sửa khi test đỏ.
+M20. Dừng ở các điểm kiểm tra do người điều phối đặt ra, báo hash commit, rồi chờ xác nhận trước khi làm bước tiếp.
+   Dừng ở các điểm kiểm tra do người điều phối đặt ra, báo hash commit, rồi chờ xác nhận trước khi làm bước tiếp. Agent thường tự chạy tiếp đến hết nhiệm vụ, chỉ dừng khi gặp lỗi.
+M21. Migration v4 nuốt lỗi bằng `_ =` và lead bắt fail-closed
+   Lead chỉ ra lỗi trả về bị nuốt, khiến migration có thể báo thành công trên dữ liệu hỏng. Agent thay mọi lỗi đọc, duyệt và parse trong v4.go bằng lỗi có tên file. Test mới đưa một file insight hỏng và xác nhận preview thất bại và workspace không đổi.
+M22. Migrate hub thật vỡ: .meta/ bị coi là canonical entity
+   Dry-run migrate trên bản clone của hub thật báo lỗi 'canonical entity is missing an ID' ở v1→v2. Lead chặn merge và yêu cầu coi .meta/** là hub-meta khi schema < 3. Sau khi đổi, go test ./internal/app ./internal/canonical vẫn FAIL một lần rồi PASS ở lần kế tiếp. Commit d348319 đưa vào bản sửa.
+M23. Edit tool từ chối anchor lệch 15 lần, mỗi lần đọc lại
+   Ít nhất 14 lần edit bị từ chối vì số dòng hoặc anchor lệch sau khi file đổi. Mỗi lần agent phải đọc lại vùng liên quan rồi gửi lại edit. Hầu hết đều thành công ở lần thứ hai.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

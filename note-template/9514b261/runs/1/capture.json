@@ -1,0 +1,1345 @@
+{
+  "id": "9514b261",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "72eb302fb732e9b8",
+  "at": "2026-11-10T12:38:20.711Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.28,
+    "tokens": 64045,
+    "chunks": 1,
+    "hotspots": 21,
+    "entries": 614,
+    "gitCommits": 30
+  },
+  "report": {
+    "sid": "claude:9514b261",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.27301119999999995,
+    "secs": 388.2,
+    "exitCode": 0,
+    "status": "done",
+    "written": 18,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-21-ba-agent-quet-trung-lap-va-fd46",
+        "status": "angle",
+        "angle": "Forgent (fgOS) là nền tảng cho ứng dụng agent, đang ở alpha, và người làm cần biết Knowledge and Documentation Engine có trùng với Knowledge Registry đã chạy hay không. Ba agent phụ được giao quét tài liệu, và bản tổng hợp ghi '332 doc đã migrate vẫn provisional'; khi đếm lại, số thật là 479 doc với 332 provisional và 147 active. Điều đáng nói hơn là check cảnh báo doc quá hạn được tin là đang chạy, nhưng phép trừ chuỗi ISO cho NaN khiến nó không bao giờ báo, và 332 doc đã quá hạn 47-55 ngày mà không ai hay. Ai giao việc cho agent phụ nên đếm lại số liệu và đọc code, vì một check sai kiểu dữ liệu có thể im lặng suốt nhiều tuần.",
+        "audience": "dev dùng agent AI để làm việc hằng ngày, đặc biệt người giao việc cho sub-agent",
+        "evidence": [
+          1325,
+          1417,
+          1433,
+          1448,
+          1467
+        ],
+        "spine": {
+          "context": {
+            "text": "Forgent (fgOS) là nền tảng cho ứng dụng agent, đang ở alpha. Người làm đang xem Knowledge and Documentation Engine có trùng với Knowledge Registry đã chạy hay không.",
+            "evidence": [
+              "profile",
+              1325
+            ]
+          },
+          "want": {
+            "text": "Muốn biết engine mới có chồng lên registry hiện có không, nên giao ba agent phụ quét tài liệu, lịch sử và mã.",
+            "evidence": [
+              1325
+            ]
+          },
+          "obstacle": {
+            "text": "Registry không ghi sự kiện doc nào sau 2026-09-11, và chỉ phủ khoảng 15% trong 3146 file md.",
+            "evidence": [
+              1467
+            ]
+          },
+          "turn": {
+            "text": "Tưởng check cảnh báo doc quá hạn đang chạy; hoá ra phép trừ chuỗi ISO cho NaN nên check không bao giờ bắn, và 332 doc đã quá hạn 47-55 ngày mà không ai hay.",
+            "evidence": [
+              1417,
+              1467
+            ]
+          },
+          "action": {
+            "text": "Đếm lại số liệu trong registry và đối chiếu code của check doc-provisional-aged.",
+            "evidence": [
+              1448,
+              1476
+            ]
+          },
+          "outcome": {
+            "text": "Đếm lại được 479 doc, 332 provisional và 147 active; lỗi của check được báo cáo.",
+            "evidence": [
+              1433,
+              1448,
+              1467
+            ]
+          },
+          "takeaway": {
+            "text": "Số liệu từ agent phụ phải đếm lại trước khi dùng, vì một check so sánh sai kiểu dữ liệu có thể im lặng không báo lỗi.",
+            "evidence": [
+              1476
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-21-bo-probe-sau-ho-mo-hinh-fd46",
+        "status": "angle",
+        "angle": "Dự án Forgent (fgOS) là nền tảng cho các ứng dụng agent, và trước khi mở một hội đồng kiến trúc, người làm cần biết họ mô hình nào thật sự chạy được. Ban đầu openai bị đánh dấu là hết phiên, cần đăng nhập lại. Hoá ra codex đã đăng nhập xong, chỉ bị chặn ở hộp thoại \"Trust this folder?\", và đường chạy được là pi với tài khoản đã khai trong fgOS. Dev dùng nhiều nhà cung cấp mô hình nên kiểm bằng lượt gọi thật, vì một cấu hình rỗng có thể làm họ lỗi mà không báo rõ.",
+        "audience": "dev dùng nhiều nhà cung cấp mô hình AI qua CLI",
+        "evidence": [
+          1815,
+          2191,
+          2557,
+          3353
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án Forgent (fgOS) là nền tảng cho các ứng dụng agent. Trước khi mở một hội đồng kiến trúc, người làm cần biết họ mô hình nào thật sự chạy được.",
+            "evidence": [
+              "profile",
+              1815
+            ]
+          },
+          "want": {
+            "text": "Biết chắc họ nào chạy được và còn quota, để chọn các ghế cho hội đồng.",
+            "evidence": [
+              1815,
+              1940
+            ]
+          },
+          "obstacle": {
+            "text": "Kho tài khoản fgOS rỗng nên không theo dõi được quota. Codex đòi đăng nhập, còn gemini và xai lỗi ở khâu giao lệnh.",
+            "evidence": [
+              2191,
+              2284
+            ]
+          },
+          "turn": {
+            "text": "Tưởng openai hết phiên, cần đăng nhập lại; hoá ra codex đã đăng nhập xong, chỉ dừng ở hộp thoại \"Trust this folder?\".",
+            "evidence": [
+              2191,
+              3263
+            ]
+          },
+          "action": {
+            "text": "Khai tài khoản vào config toàn cục, bỏ codex khỏi pool openai để pi đi trước, rồi probe lại từng họ.",
+            "evidence": [
+              2492,
+              2557
+            ]
+          },
+          "outcome": {
+            "text": "Ba tài khoản openai đều chạy được (24 đến 45 giây). Các họ đều gán được ghế, 11/11 ghế.",
+            "evidence": [
+              3342,
+              3353
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi kết luận hết phiên, hãy kiểm bằng lượt gọi thật qua đường đang dùng. Cấu hình rỗng có thể làm họ lỗi mà không báo rõ.",
+            "evidence": [
+              2191,
+              3353
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-21-mo-phong-ghe-hoi-dong-sai-fd46",
+        "status": "angle",
+        "angle": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent, và người làm đang chọn model cho 11 ghế của một hội đồng nhiều bước. Agent tin bảng mô phỏng đúng và trần flagship trong config giới hạn được hội đồng. Khi chạy explain thật trên môi trường có herdr, các việc mức critical lại được nâng lên tầng frontier, còn openai chỉ chạy được qua một đường khác, nên bảng cũ sai ở nhiều ghế. Ai dựng agent nhiều bước nên học từ đây: đừng tin config hay mô phỏng thiếu điều kiện, hãy hỏi công cụ trên đúng môi trường.",
+        "audience": "dev dựng agent chạy nhiều model theo bước",
+        "evidence": [
+          2605,
+          2612,
+          2623,
+          2630
+        ],
+        "spine": {
+          "context": {
+            "text": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent, đang ở giai đoạn alpha. Người làm đang chọn model cho 11 ghế của một hội đồng gồm nhiều bước.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Có bảng model cho từng ghế hội đồng, cập nhật cho chủ dự án.",
+            "evidence": [
+              2612
+            ]
+          },
+          "obstacle": {
+            "text": "Bảng mô phỏng chạy không có herdr, và openai cùng xai vẫn chưa chạy được.",
+            "evidence": [
+              2577,
+              2630
+            ]
+          },
+          "turn": {
+            "text": "Tưởng trần maxTier flagship chặn được hội đồng và bảng mô phỏng là đúng. Hoá ra capability mức critical nâng lên frontier, còn openai chỉ đi được qua codex-herdr.",
+            "evidence": [
+              2605,
+              2623,
+              2630
+            ]
+          },
+          "action": {
+            "text": "Đính chính bảng cũ rồi đề xuất sửa cấu hình. Người làm đồng ý, và agent bắt đầu áp dụng ba thay đổi.",
+            "evidence": [
+              2630,
+              2645,
+              2652
+            ]
+          },
+          "takeaway": {
+            "text": "Dùng công cụ explain thật trên đúng môi trường, đừng tin config hay mô phỏng thiếu điều kiện. Trần trong config có thể bị capability nâng lên.",
+            "evidence": [
+              2588,
+              2630
+            ]
+          }
+        },
+        "completeness": 6
+      },
+      {
+        "id": "2026-10-21-probe-vao-kho-omp-trong-lam-fd46",
+        "status": "angle",
+        "angle": "Forgent là nền tảng để dựng app agent, và người làm đang muốn đưa các tài khoản LLM có sẵn trên máy vào hội đồng 11 ghế. Họ tin tài khoản xai chạy được khi bỏ kho omp rỗng và trỏ sang kho pi. Hoá ra nó vẫn lỗi: probe treo 200 giây rồi thất bại, phải gỡ quarantine và tắt tài khoản. Ai thêm tài khoản vào pool mà chưa kiểm đăng nhập có thể biến lỗi nhanh thành treo.",
+        "audience": "dev dùng nhiều nhà cung cấp LLM trong công cụ agent",
+        "evidence": [
+          2526,
+          2862,
+          2966
+        ],
+        "spine": {
+          "context": {
+            "text": "Forgent là nền tảng để dựng app agent; người làm đang nối các tài khoản LLM có sẵn trên máy vào pool của fgOS để chạy hội đồng 11 ghế.",
+            "evidence": [
+              "profile",
+              2966
+            ]
+          },
+          "want": {
+            "text": "Đưa các tài khoản đã có trên đĩa vào sử dụng, để hội đồng đủ ghế.",
+            "evidence": [
+              2371
+            ]
+          },
+          "obstacle": {
+            "text": "Tài khoản xai trỏ vào kho omp không có đăng nhập; probe chờ lâu rồi bị quarantine.",
+            "evidence": [
+              2526
+            ]
+          },
+          "turn": {
+            "text": "Tưởng bỏ kho omp rỗng và trỏ sang kho pi là xai dùng được; hoá ra kho pi vẫn lỗi, probe treo 200 giây rồi báo scratch-copy-failed.",
+            "evidence": [
+              2862,
+              2966
+            ]
+          },
+          "action": {
+            "text": "Gỡ quarantine, rồi đặt tài khoản xai thành disabled để ghế không bị treo.",
+            "evidence": [
+              2895,
+              2908
+            ]
+          },
+          "outcome": {
+            "text": "11/11 ghế gán được; tài khoản xai bị loại ngay, không còn treo ghế.",
+            "evidence": [
+              2966
+            ]
+          },
+          "takeaway": {
+            "text": "Kiểm đăng nhập trước khi khai tài khoản vào pool; thiếu đăng nhập có thể biến lỗi nhanh thành treo và quarantine.",
+            "evidence": [
+              2526,
+              2966
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-21-agent-khai-ba-may-kiem-khong-fd46",
+        "status": "angle",
+        "angle": "Dự án là Forgent (fgOS), một lớp nền để dựng ứng dụng agent. Người làm đang lập plan sửa các luật và máy kiểm đang lệch trong một repo nhiều lane song song, và agent kết luận ba máy kiểm 'không thuộc component nào' chỉ vì tra bản đồ kiến trúc. Khi chủ dự án hỏi lại, việc tra work item cho thấy component canonical-decision-projection (tsk-1lv) đã xong sáu việc con và quản hai trong ba máy đó. Điều đáng nghe là một cơ chế trông như không có chủ có thể đã có chủ, chỉ là chủ nằm ở work item chứ không nằm trên sơ đồ.",
+        "audience": "dev dùng agent để viết code và quản luật trong repo",
+        "evidence": [
+          262,
+          333,
+          383,
+          542
+        ],
+        "spine": {
+          "context": {
+            "text": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent. Người làm đang lập plan nhóm 1A để sửa các luật và máy kiểm đang lệch trong một repo có nhiều lane làm song song.",
+            "evidence": [
+              "profile",
+              262
+            ]
+          },
+          "want": {
+            "text": "Muốn agent không bị dẫn sai bởi chỉ dẫn cũ, và máy kiểm không bị tắt âm thầm.",
+            "evidence": [
+              282
+            ]
+          },
+          "obstacle": {
+            "text": "Agent không tìm được chủ của ba máy kiểm trong bản đồ kiến trúc.",
+            "evidence": [
+              333
+            ]
+          },
+          "turn": {
+            "text": "Tưởng ba máy kiểm không thuộc component nào; hoá ra component canonical-decision-projection (tsk-1lv) đã làm xong và quản hai trong ba máy đó.",
+            "evidence": [
+              383,
+              542
+            ]
+          },
+          "action": {
+            "text": "Tra work item và lịch sử quyết định thay vì chỉ tra bản đồ kiến trúc, rồi đính chính kết luận cũ.",
+            "evidence": [
+              525,
+              542
+            ]
+          },
+          "outcome": {
+            "text": "Component đã xong sáu việc con; tsk-2yu đang blocked. Người làm yêu cầu viết report nghiên cứu chi tiết về component này.",
+            "evidence": [
+              542,
+              551
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi kết luận một cơ chế không có chủ, hãy tra cả work item và lịch sử quyết định, không chỉ bản đồ kiến trúc.",
+            "evidence": [
+              542
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-21-ba-he-decision-document-context-chia-fd46",
+        "status": "angle",
+        "angle": "Forgent là lớp nền để dựng ứng dụng agent, và người làm đang viết đề xuất hợp nhất hệ thống tài liệu. Chủ phiên nghĩ có ba hệ là quyết định, tài liệu và ngữ cảnh, dùng lẫn nhau, nhưng đề xuất chỉ có hai engine và đặt phần quyết định bên trong phần tài liệu. Khi đối chiếu thì hai bên trích dẫn nhau nên thành vòng phụ thuộc: tài liệu cần chuỗi quyết định, còn bước quét khi ghi quyết định lại đọc tài liệu. Ai vẽ kiến trúc cho người ngoài nên chỉ rõ hướng đọc và ghi giữa các hệ, không chỉ liệt kê.",
+        "audience": "người thiết kế kiến trúc hệ thống nhiều thành phần",
+        "evidence": [
+          1798,
+          1801
+        ],
+        "spine": {
+          "context": {
+            "text": "Forgent là lớp nền để dựng ứng dụng agent; người làm đang viết đề xuất hợp nhất hệ thống tài liệu.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Chủ phiên muốn nhìn tổng quan thấy đủ ba hệ decision, document và context, và chúng dùng lẫn nhau.",
+            "evidence": [
+              1798
+            ]
+          },
+          "obstacle": {
+            "text": "Đề xuất chỉ có hai engine, và quyết định với tài liệu trích dẫn nhau nên thành vòng phụ thuộc.",
+            "evidence": [
+              1801
+            ]
+          },
+          "turn": {
+            "text": "Tưởng phần quyết định nằm trong engine tài liệu; hoá ra quyết định là hệ riêng và hai bên phụ thuộc vòng.",
+            "evidence": [
+              1801
+            ]
+          },
+          "action": {
+            "text": "Lập bảng ba hệ với trạng thái hiện có, ma trận ai dùng ai, và đề xuất chia lớp: context chỉ đọc qua port, decision ghi và chiếu, document đọc và dùng chuỗi đó.",
+            "evidence": [
+              1801
+            ]
+          },
+          "outcome": {
+            "text": "Dừng ở đề xuất chia lớp; chủ phiên chuyển sang yêu cầu commit và mở hội đồng phân ranh giới.",
+            "evidence": [
+              1815,
+              1818
+            ]
+          },
+          "takeaway": {
+            "text": "Khi vẽ kiến trúc cho người ngoài, cần chỉ rõ hướng đọc và ghi giữa các hệ, không chỉ liệt kê.",
+            "evidence": [
+              1801
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-21-chi-8-tren-36-quyet-dinh-fd46",
+        "status": "angle",
+        "angle": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent, và chủ dự án hỏi Effective Decision Reducer có trùng với canonical-decision-projection không. Agent tưởng dữ liệu quyết định đã đủ để tính quyết định nào còn hiệu lực, rồi đếm lại trong log thì chỉ 8 trên 36 quyết định ADR có quan hệ thay thế, có chỗ thay thế chỉ nằm trong câu chữ, và agent phải đính chính lời của mình. Ai thiết kế công cụ đọc chuỗi quyết định sẽ thấy vì sao phải đếm dữ liệu trước khi dựng.",
+        "audience": "dev thiết kế công cụ đọc quyết định kiến trúc cho agent",
+        "evidence": [
+          1093,
+          1121,
+          1237
+        ],
+        "spine": {
+          "context": {
+            "text": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent. Chủ dự án hỏi Effective Decision Reducer có trùng với canonical-decision-projection không.",
+            "evidence": [
+              "profile",
+              1093
+            ]
+          },
+          "want": {
+            "text": "Chủ dự án muốn biết hai thành phần có phải một và dữ liệu quyết định đã đủ để reducer làm việc chưa.",
+            "evidence": [
+              1093,
+              1142
+            ]
+          },
+          "obstacle": {
+            "text": "Trong 36 quyết định ADR chỉ 8 có quan hệ thay thế, còn 18 quan hệ tổng cộng.",
+            "evidence": [
+              1121
+            ]
+          },
+          "turn": {
+            "text": "Agent tưởng proposal không nhắc state.decisions và dữ liệu chuỗi thay thế đã đủ; đếm lại thì chỉ 8 trên 36 có quan hệ, và proposal có nhắc state.decisions.",
+            "evidence": [
+              1121,
+              1128
+            ]
+          },
+          "action": {
+            "text": "Agent đếm quyết định và quan hệ trong log sự kiện, kiểm chỗ proposal nhắc registry, rồi tự đính chính lời nói trước.",
+            "evidence": [
+              1116,
+              1220
+            ]
+          },
+          "outcome": {
+            "text": "Hai thành phần cùng giải bài toán bản hiện hành nhưng khác phía: một ghi và chiếu, một đọc và biên dịch. Dữ liệu chưa đủ cho reducer: ít nhất 4 thay thế chỉ nằm trong câu chữ.",
+            "evidence": [
+              1121,
+              1237
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi dựng lớp đọc dựa vào một quan hệ, đếm xem dữ liệu có đủ không, và kiểm lại chính khẳng định của mình.",
+            "evidence": [
+              1121,
+              1237
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-21-lenh-nhap-khoa-thehive-ghi-de-fd46",
+        "status": "angle",
+        "angle": "Forgent là nền tảng dựng ứng dụng agent, đang ở alpha, và chủ dự án đang cài TheHive cho hai công cụ dòng lệnh pi và omp. Agent đưa lệnh ghi khoá vào file mà không sao lưu, vì tưởng khoá dán vào là đúng và ghi đè là an toàn. Khoá dán hoá ra dài hơn khoá cũ một ký tự, API từ chối với 401, và khoá đang chạy đã bị ghi đè mất. Người dựng công cụ với khoá API nên biết: sao lưu trước, cắt khoảng trắng khi dán, và gọi thử API một lần trước khi tin.",
+        "audience": "dev dùng công cụ AI dòng lệnh và lưu khoá API trên máy",
+        "evidence": [
+          3864,
+          3888,
+          3915,
+          3920,
+          3949
+        ],
+        "spine": {
+          "context": {
+            "text": "Forgent là nền tảng dựng ứng dụng agent, đang ở alpha; chủ dự án đang cài nhà cung cấp mô hình TheHive cho hai công cụ dòng lệnh pi và omp.",
+            "evidence": [
+              "profile",
+              3609
+            ]
+          },
+          "want": {
+            "text": "Muốn TheHive chạy được trên cả pi và omp theo hướng dẫn.",
+            "evidence": [
+              3609
+            ]
+          },
+          "obstacle": {
+            "text": "Khoá mới bị API TheHive trả 401 \"Invalid or expired token\", kể cả khi gọi thẳng.",
+            "evidence": [
+              3915
+            ]
+          },
+          "turn": {
+            "text": "Agent tưởng khoá dán vào là đúng và ghi đè là an toàn; hoá ra khoá dán dài 25 ký tự trong khi khoá cũ dài 24, và khoá đang chạy đã mất vì không có bản sao.",
+            "evidence": [
+              3864,
+              3888,
+              3920
+            ]
+          },
+          "action": {
+            "text": "Agent đưa lệnh ghi khoá không sao lưu; khi lỗi, đề xuất nhập lại bằng lệnh có sao lưu và cắt khoảng trắng.",
+            "evidence": [
+              3864,
+              3920
+            ]
+          },
+          "outcome": {
+            "text": "API trả 200; khoá mới dài 24 ký tự khớp khoá cũ, và cả bốn lượt kiểm pi và omp với deepseek lẫn glm đều OK.",
+            "evidence": [
+              3930,
+              3944,
+              3949
+            ]
+          },
+          "takeaway": {
+            "text": "Sao lưu thông tin xác thực trước khi ghi đè, cắt khoảng trắng khi dán, và gọi thử API một lần trước khi tin.",
+            "evidence": [
+              3920,
+              3949
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-21-dem-lai-ban-do-ranh-gioi-fd46",
+        "status": "none",
+        "none": true,
+        "reason": "Không thấy ai tin sai điều gì: chủ phiên hỏi để kiểm tra, và kết quả là một câu trả lời tra cứu, không có chỗ ngoặt trong tài liệu.",
+        "spine": {
+          "context": {
+            "text": "Forgent (fgOS) là lớp nền cho ứng dụng agent, đang ở alpha. Chủ phiên đang hỏi component trong plan 260925 có nằm trong bản đồ ranh giới component chưa.",
+            "evidence": [
+              "profile",
+              966
+            ]
+          },
+          "want": {
+            "text": "Muốn biết component trong plan tên gì và đã có trong bản đồ authority/boundary chưa.",
+            "evidence": [
+              966
+            ]
+          },
+          "obstacle": {
+            "text": "Bản đồ không có hàng nào mang đúng tên component; chỉ có một hàng gần nghĩa không nhắc quyết định.",
+            "evidence": [
+              987
+            ]
+          },
+          "action": {
+            "text": "Agent grep các tên component trong các file bản đồ ranh giới và đọc hàng gần nhất.",
+            "evidence": [
+              970,
+              986
+            ]
+          },
+          "outcome": {
+            "text": "Các tên đều 0 lần trong ba file bản đồ và bản nháp.",
+            "evidence": [
+              997
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-10-21-hoi-dong-kien-truc-chay-dau-fd46",
+        "status": "angle",
+        "angle": "Forgent (fgOS) là nền tảng để dựng ứng dụng agent, đang alpha, và người làm đang muốn một hội đồng kiến trúc 11 ghế phân ranh giới quyền hạn giữa các thành phần. Người làm tin rằng mọi ghế đã qua kiểm tra thì hội đồng sẽ chạy trơn, nhưng framing đạt xong thì shaping hỏng ở bước thực thi. Ai xây hệ thống agent chạy nhiều mô hình cùng lúc nên biết: kiểm cấu hình chưa phải là chạy thật.",
+        "audience": "dev xây hệ thống agent chạy nhiều mô hình",
+        "evidence": [
+          3353,
+          3502,
+          3987,
+          3993
+        ],
+        "spine": {
+          "context": {
+            "text": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent, đang ở alpha; người làm đang chuẩn bị một hội đồng kiến trúc phân ranh giới quyền hạn giữa các thành phần.",
+            "evidence": [
+              "profile",
+              3502
+            ]
+          },
+          "want": {
+            "text": "Muốn hội đồng 11 ghế chạy xong các bước và cho ra đề xuất phân quyền giữa các thành phần.",
+            "evidence": [
+              3502
+            ]
+          },
+          "obstacle": {
+            "text": "Bước shaping hỏng với execution-failure ở shape-proposals, nên hội đồng không chạy tới kết luận.",
+            "evidence": [
+              3987,
+              3993
+            ]
+          },
+          "turn": {
+            "text": "Tưởng mọi ghế đã kiểm chứng xong thì hội đồng sẽ chạy trơn; hoá ra framing đạt nhưng shaping hỏng khi chạy thật.",
+            "evidence": [
+              3353,
+              3987
+            ]
+          },
+          "action": {
+            "text": "Commit và push config, mở workflow, rồi đọc trạng thái từng bước để tìm ghế hỏng.",
+            "evidence": [
+              3407,
+              3518,
+              3970,
+              3988
+            ]
+          },
+          "outcome": {
+            "text": "Framing pass; shape-proposals execution-failure; chưa có kết luận hay cổng người.",
+            "evidence": [
+              3993,
+              4010
+            ]
+          },
+          "takeaway": {
+            "text": "Kiểm tra cấu hình hay probe qua chưa đủ để tin hội đồng sẽ chạy; cần kiểm trạng thái từng bước sau khi chạy thật.",
+            "evidence": [
+              3518,
+              3993
+            ]
+          }
+        },
+        "completeness": 7
+      }
+    ],
+    "message": "claude:9514b261 L1-L4000: done; 14 chuyện thô, 18 cụm; ghi 18 mới, gộp 0\nđiểm nóng 21 (thiếu 0); 30 commit git; lần chạy 1/1; 0.27 USD\ngóc kể: 9 có, 1 không ra chuyện\nhồ sơ dự án: forgent tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-21-ba-agent-quet-trung-lap-va-fd46",
+      "code": "M-4DTQ",
+      "title": "Ba agent quét trùng lắp, và một check quá hạn không bao giờ bắn vì so sánh chuỗi thời gian",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Forgent (fgOS) là nền tảng cho ứng dụng agent, đang ở alpha, và người làm cần biết Knowledge and Documentation Engine có trùng với Knowledge Registry đã chạy hay không. Ba agent phụ được giao quét tài liệu, và bản tổng hợp ghi '332 doc đã migrate vẫn provisional'; khi đếm lại, số thật là 479 doc với 332 provisional và 147 active. Điều đáng nói hơn là check cảnh báo doc quá hạn được tin là đang chạy, nhưng phép trừ chuỗi ISO cho NaN khiến nó không bao giờ báo, và 332 doc đã quá hạn 47-55 ngày mà không ai hay. Ai giao việc cho agent phụ nên đếm lại số liệu và đọc code, vì một check sai kiểu dữ liệu có thể im lặng suốt nhiều tuần.",
+      "audience": "dev dùng agent AI để làm việc hằng ngày, đặc biệt người giao việc cho sub-agent",
+      "spine": {
+        "context": {
+          "text": "Forgent (fgOS) là nền tảng cho ứng dụng agent, đang ở alpha. Người làm đang xem Knowledge and Documentation Engine có trùng với Knowledge Registry đã chạy hay không.",
+          "lines": [
+            "profile",
+            "claude:9514b261#L1325"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết engine mới có chồng lên registry hiện có không, nên giao ba agent phụ quét tài liệu, lịch sử và mã.",
+          "lines": [
+            "claude:9514b261#L1325"
+          ]
+        },
+        "obstacle": {
+          "text": "Registry không ghi sự kiện doc nào sau 2026-09-11, và chỉ phủ khoảng 15% trong 3146 file md.",
+          "lines": [
+            "claude:9514b261#L1467"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng check cảnh báo doc quá hạn đang chạy; hoá ra phép trừ chuỗi ISO cho NaN nên check không bao giờ bắn, và 332 doc đã quá hạn 47-55 ngày mà không ai hay.",
+          "lines": [
+            "claude:9514b261#L1417",
+            "claude:9514b261#L1467"
+          ]
+        },
+        "action": {
+          "text": "Đếm lại số liệu trong registry và đối chiếu code của check doc-provisional-aged.",
+          "lines": [
+            "claude:9514b261#L1448",
+            "claude:9514b261#L1476"
+          ]
+        },
+        "outcome": {
+          "text": "Đếm lại được 479 doc, 332 provisional và 147 active; lỗi của check được báo cáo.",
+          "lines": [
+            "claude:9514b261#L1433",
+            "claude:9514b261#L1448",
+            "claude:9514b261#L1467"
+          ]
+        },
+        "takeaway": {
+          "text": "Số liệu từ agent phụ phải đếm lại trước khi dùng, vì một check so sánh sai kiểu dữ liệu có thể im lặng không báo lỗi.",
+          "lines": [
+            "claude:9514b261#L1476"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-21-bo-probe-sau-ho-mo-hinh-fd46",
+      "code": "M-W1Y2",
+      "title": "Bộ probe sáu họ mô hình: từ một họ chạy được lên đủ họ, nhờ sửa kho tài khoản chứ không nhờ đổi code",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án Forgent (fgOS) là nền tảng cho các ứng dụng agent, và trước khi mở một hội đồng kiến trúc, người làm cần biết họ mô hình nào thật sự chạy được. Ban đầu openai bị đánh dấu là hết phiên, cần đăng nhập lại. Hoá ra codex đã đăng nhập xong, chỉ bị chặn ở hộp thoại \"Trust this folder?\", và đường chạy được là pi với tài khoản đã khai trong fgOS. Dev dùng nhiều nhà cung cấp mô hình nên kiểm bằng lượt gọi thật, vì một cấu hình rỗng có thể làm họ lỗi mà không báo rõ.",
+      "audience": "dev dùng nhiều nhà cung cấp mô hình AI qua CLI",
+      "spine": {
+        "context": {
+          "text": "Dự án Forgent (fgOS) là nền tảng cho các ứng dụng agent. Trước khi mở một hội đồng kiến trúc, người làm cần biết họ mô hình nào thật sự chạy được.",
+          "lines": [
+            "profile",
+            "claude:9514b261#L1815"
+          ]
+        },
+        "want": {
+          "text": "Biết chắc họ nào chạy được và còn quota, để chọn các ghế cho hội đồng.",
+          "lines": [
+            "claude:9514b261#L1815",
+            "claude:9514b261#L1940"
+          ]
+        },
+        "obstacle": {
+          "text": "Kho tài khoản fgOS rỗng nên không theo dõi được quota. Codex đòi đăng nhập, còn gemini và xai lỗi ở khâu giao lệnh.",
+          "lines": [
+            "claude:9514b261#L2191",
+            "claude:9514b261#L2284"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng openai hết phiên, cần đăng nhập lại; hoá ra codex đã đăng nhập xong, chỉ dừng ở hộp thoại \"Trust this folder?\".",
+          "lines": [
+            "claude:9514b261#L2191",
+            "claude:9514b261#L3263"
+          ]
+        },
+        "action": {
+          "text": "Khai tài khoản vào config toàn cục, bỏ codex khỏi pool openai để pi đi trước, rồi probe lại từng họ.",
+          "lines": [
+            "claude:9514b261#L2492",
+            "claude:9514b261#L2557"
+          ]
+        },
+        "outcome": {
+          "text": "Ba tài khoản openai đều chạy được (24 đến 45 giây). Các họ đều gán được ghế, 11/11 ghế.",
+          "lines": [
+            "claude:9514b261#L3342",
+            "claude:9514b261#L3353"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi kết luận hết phiên, hãy kiểm bằng lượt gọi thật qua đường đang dùng. Cấu hình rỗng có thể làm họ lỗi mà không báo rõ.",
+          "lines": [
+            "claude:9514b261#L2191",
+            "claude:9514b261#L3353"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-21-mo-phong-ghe-hoi-dong-sai-fd46",
+      "code": "M-1K6Q",
+      "title": "Mô phỏng ghế hội đồng sai vì thiếu herdr, và trần flagship không chặn như agent tưởng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent, và người làm đang chọn model cho 11 ghế của một hội đồng nhiều bước. Agent tin bảng mô phỏng đúng và trần flagship trong config giới hạn được hội đồng. Khi chạy explain thật trên môi trường có herdr, các việc mức critical lại được nâng lên tầng frontier, còn openai chỉ chạy được qua một đường khác, nên bảng cũ sai ở nhiều ghế. Ai dựng agent nhiều bước nên học từ đây: đừng tin config hay mô phỏng thiếu điều kiện, hãy hỏi công cụ trên đúng môi trường.",
+      "audience": "dev dựng agent chạy nhiều model theo bước",
+      "spine": {
+        "context": {
+          "text": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent, đang ở giai đoạn alpha. Người làm đang chọn model cho 11 ghế của một hội đồng gồm nhiều bước.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Có bảng model cho từng ghế hội đồng, cập nhật cho chủ dự án.",
+          "lines": [
+            "claude:9514b261#L2612"
+          ]
+        },
+        "obstacle": {
+          "text": "Bảng mô phỏng chạy không có herdr, và openai cùng xai vẫn chưa chạy được.",
+          "lines": [
+            "claude:9514b261#L2577",
+            "claude:9514b261#L2630"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng trần maxTier flagship chặn được hội đồng và bảng mô phỏng là đúng. Hoá ra capability mức critical nâng lên frontier, còn openai chỉ đi được qua codex-herdr.",
+          "lines": [
+            "claude:9514b261#L2605",
+            "claude:9514b261#L2623",
+            "claude:9514b261#L2630"
+          ]
+        },
+        "action": {
+          "text": "Đính chính bảng cũ rồi đề xuất sửa cấu hình. Người làm đồng ý, và agent bắt đầu áp dụng ba thay đổi.",
+          "lines": [
+            "claude:9514b261#L2630",
+            "claude:9514b261#L2645",
+            "claude:9514b261#L2652"
+          ]
+        },
+        "takeaway": {
+          "text": "Dùng công cụ explain thật trên đúng môi trường, đừng tin config hay mô phỏng thiếu điều kiện. Trần trong config có thể bị capability nâng lên.",
+          "lines": [
+            "claude:9514b261#L2588",
+            "claude:9514b261#L2630"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-10-21-probe-vao-kho-omp-trong-lam-fd46",
+      "code": "M-EGX6",
+      "title": "Probe vào kho omp trống làm xai treo 300 giây và bị quarantine, phải gỡ và tắt tài khoản",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Forgent là nền tảng để dựng app agent, và người làm đang muốn đưa các tài khoản LLM có sẵn trên máy vào hội đồng 11 ghế. Họ tin tài khoản xai chạy được khi bỏ kho omp rỗng và trỏ sang kho pi. Hoá ra nó vẫn lỗi: probe treo 200 giây rồi thất bại, phải gỡ quarantine và tắt tài khoản. Ai thêm tài khoản vào pool mà chưa kiểm đăng nhập có thể biến lỗi nhanh thành treo.",
+      "audience": "dev dùng nhiều nhà cung cấp LLM trong công cụ agent",
+      "spine": {
+        "context": {
+          "text": "Forgent là nền tảng để dựng app agent; người làm đang nối các tài khoản LLM có sẵn trên máy vào pool của fgOS để chạy hội đồng 11 ghế.",
+          "lines": [
+            "profile",
+            "claude:9514b261#L2966"
+          ]
+        },
+        "want": {
+          "text": "Đưa các tài khoản đã có trên đĩa vào sử dụng, để hội đồng đủ ghế.",
+          "lines": [
+            "claude:9514b261#L2371"
+          ]
+        },
+        "obstacle": {
+          "text": "Tài khoản xai trỏ vào kho omp không có đăng nhập; probe chờ lâu rồi bị quarantine.",
+          "lines": [
+            "claude:9514b261#L2526"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng bỏ kho omp rỗng và trỏ sang kho pi là xai dùng được; hoá ra kho pi vẫn lỗi, probe treo 200 giây rồi báo scratch-copy-failed.",
+          "lines": [
+            "claude:9514b261#L2862",
+            "claude:9514b261#L2966"
+          ]
+        },
+        "action": {
+          "text": "Gỡ quarantine, rồi đặt tài khoản xai thành disabled để ghế không bị treo.",
+          "lines": [
+            "claude:9514b261#L2895",
+            "claude:9514b261#L2908"
+          ]
+        },
+        "outcome": {
+          "text": "11/11 ghế gán được; tài khoản xai bị loại ngay, không còn treo ghế.",
+          "lines": [
+            "claude:9514b261#L2966"
+          ]
+        },
+        "takeaway": {
+          "text": "Kiểm đăng nhập trước khi khai tài khoản vào pool; thiếu đăng nhập có thể biến lỗi nhanh thành treo và quarantine.",
+          "lines": [
+            "claude:9514b261#L2526",
+            "claude:9514b261#L2966"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-21-agent-khai-ba-may-kiem-khong-fd46",
+      "code": "M-KRTA",
+      "title": "Agent khai ba máy kiểm 'không thuộc component nào', chủ dự án chỉ ra đã có tsk-1lv",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là Forgent (fgOS), một lớp nền để dựng ứng dụng agent. Người làm đang lập plan sửa các luật và máy kiểm đang lệch trong một repo nhiều lane song song, và agent kết luận ba máy kiểm 'không thuộc component nào' chỉ vì tra bản đồ kiến trúc. Khi chủ dự án hỏi lại, việc tra work item cho thấy component canonical-decision-projection (tsk-1lv) đã xong sáu việc con và quản hai trong ba máy đó. Điều đáng nghe là một cơ chế trông như không có chủ có thể đã có chủ, chỉ là chủ nằm ở work item chứ không nằm trên sơ đồ.",
+      "audience": "dev dùng agent để viết code và quản luật trong repo",
+      "spine": {
+        "context": {
+          "text": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent. Người làm đang lập plan nhóm 1A để sửa các luật và máy kiểm đang lệch trong một repo có nhiều lane làm song song.",
+          "lines": [
+            "profile",
+            "claude:9514b261#L262"
+          ]
+        },
+        "want": {
+          "text": "Muốn agent không bị dẫn sai bởi chỉ dẫn cũ, và máy kiểm không bị tắt âm thầm.",
+          "lines": [
+            "claude:9514b261#L282"
+          ]
+        },
+        "obstacle": {
+          "text": "Agent không tìm được chủ của ba máy kiểm trong bản đồ kiến trúc.",
+          "lines": [
+            "claude:9514b261#L333"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng ba máy kiểm không thuộc component nào; hoá ra component canonical-decision-projection (tsk-1lv) đã làm xong và quản hai trong ba máy đó.",
+          "lines": [
+            "claude:9514b261#L383",
+            "claude:9514b261#L542"
+          ]
+        },
+        "action": {
+          "text": "Tra work item và lịch sử quyết định thay vì chỉ tra bản đồ kiến trúc, rồi đính chính kết luận cũ.",
+          "lines": [
+            "claude:9514b261#L525",
+            "claude:9514b261#L542"
+          ]
+        },
+        "outcome": {
+          "text": "Component đã xong sáu việc con; tsk-2yu đang blocked. Người làm yêu cầu viết report nghiên cứu chi tiết về component này.",
+          "lines": [
+            "claude:9514b261#L542",
+            "claude:9514b261#L551"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi kết luận một cơ chế không có chủ, hãy tra cả work item và lịch sử quyết định, không chỉ bản đồ kiến trúc.",
+          "lines": [
+            "claude:9514b261#L542"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-21-ba-he-decision-document-context-chia-fd46",
+      "code": "M-CW7P",
+      "title": "Ba hệ decision, document, context: chia lớp để dùng lẫn nhau không thành vòng phụ thuộc",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Forgent là lớp nền để dựng ứng dụng agent, và người làm đang viết đề xuất hợp nhất hệ thống tài liệu. Chủ phiên nghĩ có ba hệ là quyết định, tài liệu và ngữ cảnh, dùng lẫn nhau, nhưng đề xuất chỉ có hai engine và đặt phần quyết định bên trong phần tài liệu. Khi đối chiếu thì hai bên trích dẫn nhau nên thành vòng phụ thuộc: tài liệu cần chuỗi quyết định, còn bước quét khi ghi quyết định lại đọc tài liệu. Ai vẽ kiến trúc cho người ngoài nên chỉ rõ hướng đọc và ghi giữa các hệ, không chỉ liệt kê.",
+      "audience": "người thiết kế kiến trúc hệ thống nhiều thành phần",
+      "spine": {
+        "context": {
+          "text": "Forgent là lớp nền để dựng ứng dụng agent; người làm đang viết đề xuất hợp nhất hệ thống tài liệu.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Chủ phiên muốn nhìn tổng quan thấy đủ ba hệ decision, document và context, và chúng dùng lẫn nhau.",
+          "lines": [
+            "claude:9514b261#L1798"
+          ]
+        },
+        "obstacle": {
+          "text": "Đề xuất chỉ có hai engine, và quyết định với tài liệu trích dẫn nhau nên thành vòng phụ thuộc.",
+          "lines": [
+            "claude:9514b261#L1801"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng phần quyết định nằm trong engine tài liệu; hoá ra quyết định là hệ riêng và hai bên phụ thuộc vòng.",
+          "lines": [
+            "claude:9514b261#L1801"
+          ]
+        },
+        "action": {
+          "text": "Lập bảng ba hệ với trạng thái hiện có, ma trận ai dùng ai, và đề xuất chia lớp: context chỉ đọc qua port, decision ghi và chiếu, document đọc và dùng chuỗi đó.",
+          "lines": [
+            "claude:9514b261#L1801"
+          ]
+        },
+        "outcome": {
+          "text": "Dừng ở đề xuất chia lớp; chủ phiên chuyển sang yêu cầu commit và mở hội đồng phân ranh giới.",
+          "lines": [
+            "claude:9514b261#L1815",
+            "claude:9514b261#L1818"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi vẽ kiến trúc cho người ngoài, cần chỉ rõ hướng đọc và ghi giữa các hệ, không chỉ liệt kê.",
+          "lines": [
+            "claude:9514b261#L1801"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-21-chi-8-tren-36-quyet-dinh-fd46",
+      "code": "M-DNR7",
+      "title": "Chỉ 8 trên 36 quyết định ADR có quan hệ thay thế, nên reducer không có dữ liệu để tính hiệu lực",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent, và chủ dự án hỏi Effective Decision Reducer có trùng với canonical-decision-projection không. Agent tưởng dữ liệu quyết định đã đủ để tính quyết định nào còn hiệu lực, rồi đếm lại trong log thì chỉ 8 trên 36 quyết định ADR có quan hệ thay thế, có chỗ thay thế chỉ nằm trong câu chữ, và agent phải đính chính lời của mình. Ai thiết kế công cụ đọc chuỗi quyết định sẽ thấy vì sao phải đếm dữ liệu trước khi dựng.",
+      "audience": "dev thiết kế công cụ đọc quyết định kiến trúc cho agent",
+      "spine": {
+        "context": {
+          "text": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent. Chủ dự án hỏi Effective Decision Reducer có trùng với canonical-decision-projection không.",
+          "lines": [
+            "profile",
+            "claude:9514b261#L1093"
+          ]
+        },
+        "want": {
+          "text": "Chủ dự án muốn biết hai thành phần có phải một và dữ liệu quyết định đã đủ để reducer làm việc chưa.",
+          "lines": [
+            "claude:9514b261#L1093",
+            "claude:9514b261#L1142"
+          ]
+        },
+        "obstacle": {
+          "text": "Trong 36 quyết định ADR chỉ 8 có quan hệ thay thế, còn 18 quan hệ tổng cộng.",
+          "lines": [
+            "claude:9514b261#L1121"
+          ]
+        },
+        "turn": {
+          "text": "Agent tưởng proposal không nhắc state.decisions và dữ liệu chuỗi thay thế đã đủ; đếm lại thì chỉ 8 trên 36 có quan hệ, và proposal có nhắc state.decisions.",
+          "lines": [
+            "claude:9514b261#L1121",
+            "claude:9514b261#L1128"
+          ]
+        },
+        "action": {
+          "text": "Agent đếm quyết định và quan hệ trong log sự kiện, kiểm chỗ proposal nhắc registry, rồi tự đính chính lời nói trước.",
+          "lines": [
+            "claude:9514b261#L1116",
+            "claude:9514b261#L1220"
+          ]
+        },
+        "outcome": {
+          "text": "Hai thành phần cùng giải bài toán bản hiện hành nhưng khác phía: một ghi và chiếu, một đọc và biên dịch. Dữ liệu chưa đủ cho reducer: ít nhất 4 thay thế chỉ nằm trong câu chữ.",
+          "lines": [
+            "claude:9514b261#L1121",
+            "claude:9514b261#L1237"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi dựng lớp đọc dựa vào một quan hệ, đếm xem dữ liệu có đủ không, và kiểm lại chính khẳng định của mình.",
+          "lines": [
+            "claude:9514b261#L1121",
+            "claude:9514b261#L1237"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-21-lenh-nhap-khoa-thehive-ghi-de-fd46",
+      "code": "M-MHGP",
+      "title": "Lệnh nhập khoá TheHive ghi đè khoá đang chạy không sao lưu, khoá dán thừa một ký tự cho 401",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Forgent là nền tảng dựng ứng dụng agent, đang ở alpha, và chủ dự án đang cài TheHive cho hai công cụ dòng lệnh pi và omp. Agent đưa lệnh ghi khoá vào file mà không sao lưu, vì tưởng khoá dán vào là đúng và ghi đè là an toàn. Khoá dán hoá ra dài hơn khoá cũ một ký tự, API từ chối với 401, và khoá đang chạy đã bị ghi đè mất. Người dựng công cụ với khoá API nên biết: sao lưu trước, cắt khoảng trắng khi dán, và gọi thử API một lần trước khi tin.",
+      "audience": "dev dùng công cụ AI dòng lệnh và lưu khoá API trên máy",
+      "spine": {
+        "context": {
+          "text": "Forgent là nền tảng dựng ứng dụng agent, đang ở alpha; chủ dự án đang cài nhà cung cấp mô hình TheHive cho hai công cụ dòng lệnh pi và omp.",
+          "lines": [
+            "profile",
+            "claude:9514b261#L3609"
+          ]
+        },
+        "want": {
+          "text": "Muốn TheHive chạy được trên cả pi và omp theo hướng dẫn.",
+          "lines": [
+            "claude:9514b261#L3609"
+          ]
+        },
+        "obstacle": {
+          "text": "Khoá mới bị API TheHive trả 401 \"Invalid or expired token\", kể cả khi gọi thẳng.",
+          "lines": [
+            "claude:9514b261#L3915"
+          ]
+        },
+        "turn": {
+          "text": "Agent tưởng khoá dán vào là đúng và ghi đè là an toàn; hoá ra khoá dán dài 25 ký tự trong khi khoá cũ dài 24, và khoá đang chạy đã mất vì không có bản sao.",
+          "lines": [
+            "claude:9514b261#L3864",
+            "claude:9514b261#L3888",
+            "claude:9514b261#L3920"
+          ]
+        },
+        "action": {
+          "text": "Agent đưa lệnh ghi khoá không sao lưu; khi lỗi, đề xuất nhập lại bằng lệnh có sao lưu và cắt khoảng trắng.",
+          "lines": [
+            "claude:9514b261#L3864",
+            "claude:9514b261#L3920"
+          ]
+        },
+        "outcome": {
+          "text": "API trả 200; khoá mới dài 24 ký tự khớp khoá cũ, và cả bốn lượt kiểm pi và omp với deepseek lẫn glm đều OK.",
+          "lines": [
+            "claude:9514b261#L3930",
+            "claude:9514b261#L3944",
+            "claude:9514b261#L3949"
+          ]
+        },
+        "takeaway": {
+          "text": "Sao lưu thông tin xác thực trước khi ghi đè, cắt khoảng trắng khi dán, và gọi thử API một lần trước khi tin.",
+          "lines": [
+            "claude:9514b261#L3920",
+            "claude:9514b261#L3949"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-21-dem-lai-ban-do-ranh-gioi-fd46",
+      "code": "M-HME2",
+      "title": "Đếm lại bản đồ ranh giới: ba tên component không xuất hiện lần nào",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Forgent (fgOS) là lớp nền cho ứng dụng agent, đang ở alpha. Chủ phiên đang hỏi component trong plan 260925 có nằm trong bản đồ ranh giới component chưa.",
+          "lines": [
+            "profile",
+            "claude:9514b261#L966"
+          ]
+        },
+        "want": {
+          "text": "Muốn biết component trong plan tên gì và đã có trong bản đồ authority/boundary chưa.",
+          "lines": [
+            "claude:9514b261#L966"
+          ]
+        },
+        "obstacle": {
+          "text": "Bản đồ không có hàng nào mang đúng tên component; chỉ có một hàng gần nghĩa không nhắc quyết định.",
+          "lines": [
+            "claude:9514b261#L987"
+          ]
+        },
+        "action": {
+          "text": "Agent grep các tên component trong các file bản đồ ranh giới và đọc hàng gần nhất.",
+          "lines": [
+            "claude:9514b261#L970",
+            "claude:9514b261#L986"
+          ]
+        },
+        "outcome": {
+          "text": "Các tên đều 0 lần trong ba file bản đồ và bản nháp.",
+          "lines": [
+            "claude:9514b261#L997"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-10-21-hoi-dong-kien-truc-chay-dau-fd46",
+      "code": "M-ZWFK",
+      "title": "Hội đồng kiến trúc chạy đầu tiên thất bại ở bước shaping sau khi framing đã đạt",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Forgent (fgOS) là nền tảng để dựng ứng dụng agent, đang alpha, và người làm đang muốn một hội đồng kiến trúc 11 ghế phân ranh giới quyền hạn giữa các thành phần. Người làm tin rằng mọi ghế đã qua kiểm tra thì hội đồng sẽ chạy trơn, nhưng framing đạt xong thì shaping hỏng ở bước thực thi. Ai xây hệ thống agent chạy nhiều mô hình cùng lúc nên biết: kiểm cấu hình chưa phải là chạy thật.",
+      "audience": "dev xây hệ thống agent chạy nhiều mô hình",
+      "spine": {
+        "context": {
+          "text": "Forgent (fgOS) là lớp nền để dựng ứng dụng agent, đang ở alpha; người làm đang chuẩn bị một hội đồng kiến trúc phân ranh giới quyền hạn giữa các thành phần.",
+          "lines": [
+            "profile",
+            "claude:9514b261#L3502"
+          ]
+        },
+        "want": {
+          "text": "Muốn hội đồng 11 ghế chạy xong các bước và cho ra đề xuất phân quyền giữa các thành phần.",
+          "lines": [
+            "claude:9514b261#L3502"
+          ]
+        },
+        "obstacle": {
+          "text": "Bước shaping hỏng với execution-failure ở shape-proposals, nên hội đồng không chạy tới kết luận.",
+          "lines": [
+            "claude:9514b261#L3987",
+            "claude:9514b261#L3993"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng mọi ghế đã kiểm chứng xong thì hội đồng sẽ chạy trơn; hoá ra framing đạt nhưng shaping hỏng khi chạy thật.",
+          "lines": [
+            "claude:9514b261#L3353",
+            "claude:9514b261#L3987"
+          ]
+        },
+        "action": {
+          "text": "Commit và push config, mở workflow, rồi đọc trạng thái từng bước để tìm ghế hỏng.",
+          "lines": [
+            "claude:9514b261#L3407",
+            "claude:9514b261#L3518",
+            "claude:9514b261#L3970",
+            "claude:9514b261#L3988"
+          ]
+        },
+        "outcome": {
+          "text": "Framing pass; shape-proposals execution-failure; chưa có kết luận hay cổng người.",
+          "lines": [
+            "claude:9514b261#L3993",
+            "claude:9514b261#L4010"
+          ]
+        },
+        "takeaway": {
+          "text": "Kiểm tra cấu hình hay probe qua chưa đủ để tin hội đồng sẽ chạy; cần kiểm trạng thái từng bước sau khi chạy thật.",
+          "lines": [
+            "claude:9514b261#L3518",
+            "claude:9514b261#L3993"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-21-khong-co-tai-lieu-agent-do-fd46",
+      "code": "M-BPMF",
+      "title": "Không có tài liệu, agent dò định dạng cấu hình omp từ chuỗi trong binary",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-sua-config-toan-cuc-dung-chung-fd46",
+      "code": "M-4JKK",
+      "title": "Sửa config toàn cục dùng chung mà chưa kiểm các workspace cũ, theo cảnh báo trong hướng dẫn",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-board-va-file-sinh-tu-dong-fd46",
+      "code": "M-7KR6",
+      "title": "Board và file sinh tự động bị ba phiên cùng sửa: pull, restore, ghi lại log theo cấu trúc mới",
+      "tension": "khac",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-doi-ten-profile-va-alias-theo-fd46",
+      "code": "M-SRM0",
+      "title": "Đổi tên profile và alias theo họ nhà cung cấp: tạo, xoá, rồi đổi lại theo lệnh chủ dự án",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-dua-viec-chay-lau-sub-agent-fd46",
+      "code": "M-KZ7K",
+      "title": "Đưa việc chạy lâu (sub-agent, probe, hội đồng) xuống nền rồi chờ thông báo hoàn thành, thay vì chờ đồng bộ hoặc hỏi liên tục",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-dung-lai-hoi-user-truoc-khi-fd46",
+      "code": "M-1XKR",
+      "title": "Dừng lại hỏi user trước khi làm việc có tác động ra ngoài hoặc không đảo ngược được (push, khai tài khoản, xoá, nhập khoá), và đưa 2-3 lựa chọn đánh số để user chỉ cần trả một chữ",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-phan-biet-ro-da-kiem-bang-fd46",
+      "code": "M-SN6X",
+      "title": "Phân biệt rõ 'đã kiểm bằng lệnh' với 'chỉ suy ra từ tài liệu hoặc cấu hình', và dùng các nhãn như 'chưa kết luận', 'đã kiểm chứng', 'chưa kiểm' trong báo cáo",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-21-tach-phan-viec-chi-doc-kiem-fd46",
+      "code": "M-9VR2",
+      "title": "Tách phần việc chỉ đọc (kiểm tra, dò, so sánh) khỏi phần ghi, và đưa cho sub-agent chỉ được ghi một file báo cáo riêng",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

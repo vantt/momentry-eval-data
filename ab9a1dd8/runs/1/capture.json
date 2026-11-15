@@ -1,0 +1,267 @@
+{
+  "id": "ab9a1dd8",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "cfdbe39157750974",
+  "at": "2026-11-05T09:49:30.013Z",
+  "dryRun": {
+    "usd": 0.44,
+    "tokens": 56460,
+    "chunks": 1,
+    "hotspots": 9,
+    "entries": 857
+  },
+  "report": {
+    "sid": "claude:ab9a1dd8",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.5302290799999999,
+    "secs": 191.7,
+    "exitCode": 0,
+    "status": "done",
+    "written": 26,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:ab9a1dd8 L1-L4000: done; 25 chuyện thô, 26 cụm; ghi 26 mới, gộp 0\nđiểm nóng 9 (thiếu 0); lần chạy 1/1; 0.53 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-03-audit-cho-thay-loi-on-nhung",
+      "title": "Audit cho thấy lõi ổn nhưng phân phối gần như bằng 0",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-codex-bo-qua-hook-cua-momentry",
+      "title": "Codex bỏ qua hook của momentry suốt từ đầu vì sai tên sự kiện",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-doi-ma-thoat-loi-go-sai",
+      "title": "Đổi mã thoát: lỗi gõ sai thành lỗi có kết quả",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-hook-ghi-cung-duong-dan-node",
+      "title": "Hook ghi cứng đường dẫn Node: nâng Node là hook chết im lặng",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-reviewer-doc-lap-loi-nang-nhat",
+      "title": "Reviewer độc lập: lỗi nặng nhất là một cặp dấu ngoặc",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-antigravity-stop-hook-chay-sau-moi",
+      "title": "Antigravity: Stop hook chạy sau mỗi lượt, nên không gom chuyện ở đó",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-khong-co-may-windows-tham-do",
+      "title": "Không có máy Windows: thăm dò hook bằng runner CI",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-mot-may-co-27-thu-muc",
+      "title": "Một máy có 27 thư mục profile: quét nào cũng phải tìm đủ",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-symlink-var-va-ten-ngan-runner",
+      "title": "Symlink /var và tên ngắn RUNNER~1 làm mất phiên transcript",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-test-viet-cho-posix-ci-dau",
+      "title": "Test viết cho POSIX: CI đầu tiên Windows đỏ 38 test, macOS đỏ 2",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-vong-agent-native-hoi-tu-khi",
+      "title": "Vòng agent-native hội tụ khi lỗi có lệnh chạy được",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-hook-tu-cai-hay-chi-in",
+      "title": "Hook tự cài hay chỉ in? Đảo quyết định đã chốt trong PRD",
+      "tension": "khac",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-push-bi-tu-choi-rebase-va",
+      "title": "Push bị từ chối, rebase, và một commit kéo theo file của phiên khác",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-tham-do-pi-va-omp-that",
+      "title": "Thăm dò pi và omp thật: chặn mạng trước khi chạy",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-doc-ma-codex-de-biet-cach",
+      "title": "Đọc mã Codex để biết cách tin hook, và tìm ra cờ bỏ qua bước duyệt",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-mot-bang-lenh-sinh-ca-parser",
+      "title": "Một bảng lệnh sinh cả parser, --help và tài liệu tham chiếu",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-muon-bo-cai-powershell-tu-du",
+      "title": "Mượn bộ cài PowerShell từ dự án khác và bài học ASCII cho 5.1",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-runner-ci-chay-quyen-administrator-va",
+      "title": "Runner CI chạy quyền Administrator và PowerShell 5.1 làm hỏng JSON",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-stop-hook-keo-toi-qua-ba",
+      "title": "Stop hook kéo tôi qua ba vòng chưa xong",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-chay-toan-bo-kiem-tra-trong",
+      "title": "Chạy toàn bộ kiểm tra trong HOME tạm (mktemp) với `env -i`, cache và cấu hình riêng, nên thử cài, init, update, uninstall mà không đụng máy thật của user",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-rao-chan-cua-may-chan-ca",
+      "title": "Rào chắn của máy chặn cả lệnh xoá lẫn chữ dist",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-zsh-khong-tach-bien-lenh-vai",
+      "title": "zsh không tách biến lệnh: vài lần no such file và glob không khớp",
+      "tension": "khac",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-doc-schema-transcript-that-ma-khong",
+      "title": "Đọc schema transcript thật mà không in nội dung",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-dong-goi-bang-code-js-tu",
+      "title": "Đóng gói bằng code JS tự viết: đóng lại vẫn ra cùng sha256",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-tag-v0-1-0-lan-dau",
+      "title": "Tag v0.1.0: lần đầu release.yml chạy thật",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-tha-hang-loat-quarantine-chuyen-sach",
+      "title": "Thả hàng loạt quarantine: chuyện sạch đi vào hộp, chuyện còn lộ vẫn giữ",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    }
+  ]
+}

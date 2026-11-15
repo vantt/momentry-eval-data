@@ -1,0 +1,112 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L717] USER: Lệnh 2: This app is blocked This app tried to access sensitive info in your Google Account. To keep your account safe, Google blocked this access.
+[L761] USER: xong. finejapanvietnam.com
+[L920] USER: khoan, anh muốn chúng ta build bộ agent để nó làm. nhưng giờ thành em làm? tức là agent chỉ cần đầy đủ công cụ để làm là tốt nhất.
+</asks>
+
+<story>
+hook: Chủ không muốn agent làm hộ, nên agent giao việc qua issue
+tension: khac (agent làm hộ việc chuyên môn / chủ muốn giao qua issue, agent chỉ cung cấp công cụ)
+stakes: 3/3
+# Chủ đổi vai: không để agent làm hộ việc chuyên môn, phải giao qua issue
+
+**Bối cảnh:** Agent đã tự tìm property GA4, phát hiện lỗi www và chẩn đoán Search Console thay vì để agent SEO làm.
+**Chuyện gì xảy ra:** Chủ nói 'agent chỉ cần đầy đủ công cụ để làm là tốt nhất'. Agent nhận ra các bước đó phải do agent SEO làm bằng MCP sẵn có. Agent tạo issue STU-6 không nêu trước lỗi www, để kiểm xem agent có tự phát hiện được không. Agent liệt kê các công cụ còn thiếu cho từng mảng.
+**Bài học:** Khi thấy mình đang làm hộ agent, hãy tự hỏi agent có công cụ để làm việc này không. Nếu không, phần thiếu nằm ở gói chứ không ở người vận hành.
+**Artefact:** Nội dung issue giao việc (không kể lỗi trước đó).
+</story>
+
+<excerpt>
+[L910] RESULT: (Bash completed with no output)
+[L915] AGENT: Phần GA4 đã chạy. Tôi đã deploy 3 agent SEO/GA4 lên Multica, gọi thử được số liệu thật của `finejapanvietnam.com`. Search Console chưa có số liệu vì đang cấp quyền nhầm property.
+
+**Phải báo trước: lần deploy đầu tiên của tôi đã ghi đè lên team Coding của phiên song song.** Team này nằm trong gói riêng `opc-coding` (phiên kia chưa commit), deploy vào cùng workspace `opc-studio`. Gói `opc-studio` của tôi vẫn còn bản Coding cũ, và tôi đã bỏ qua các dòng thay đổi ngoài phần Marketing khi đọc `plan`. Hậu quả:
+- instructions, model và skill của Khoa, Minh, Quân bị đưa về bản cũ;
+- Bảo, Vy, Tâm bị gỡ khỏi squad Coding;
+- project `product-app` bị gắn sai workflow.
+
+**Đã khôi phục:** tôi deploy lại `opc-coding` từ chính file của phiên kia, sau đó `plan` báo `0 change(s)`. Issue STU-5 đang chờ bạn duyệt spec không bị ảnh hưởng, vì nó được cập nhật lần cuối trước lần deploy của tôi.
+
+**Đã sửa tận gốc:** tôi bỏ phần Coding khỏi gói `opc-studio` (commit `0c4d9ce`), giờ gói này chỉ còn Marketing. Deploy không bao giờ xoá thực thể trên server, nên các agent Coding đang chạy không bị đụng tới. Tôi cũng đã ghi lại bài học này vào bộ nhớ.
+
+**Đã chạy (commit `8aa7b92`):**
+- 3 agent SEO Specialist, Analytics Reporter, Tracking Specialist trên daemon `fg-server-opc`, cùng skill, MCP server và project "Số liệu marketing".
+- GA4 property `274853955`: gọi `run_report` qua MCP trả về số liệu thật, ví dụ kênh Direct có 58 session trong 7 ngày.
+- Lịch báo cáo tuần đã tạo nhưng đang **paused**. Tôi sẽ bật sau khi Search Console có số liệu.
+
+**Bạn cần làm thêm cho Search Console:** `www.finejapanvietnam.com` chuyển hướng 301 sang `finejapanvietnam.com` (không www). Property bạn đã cấp quyền là bản `www`, cũ, có 0 lượt hiển thị từ tháng 7. Trong Search Console, mở dropdown chọn property:
+- Nếu có **`finejapanvietnam.com`** (Domain property) hoặc **`https://finejapanvietnam.com/`**: vào Settings → Users and permissions, thêm `opc-marketing@opc-marketing-906828.iam.gserviceaccount.com` với quyền  …[+327]
+[L920] USER: khoan, anh muốn chúng ta build bộ agent để nó làm. nhưng giờ thành em làm? tức là agent chỉ cần đầy đủ công cụ để làm là tốt nhất.
+[L923] AGENT: Bạn nói đúng. Lẽ ra tôi chỉ cần trang bị đủ công cụ cho agent, nhưng mấy bước vừa rồi tôi đã tự làm thay: tìm property ID, phát hiện lỗi `www`, chẩn đoán Search Console. Những việc đó SEO Specialist và Analytics Reporter phải tự làm được bằng MCP đã gắn: `get_account_summaries`, `list_sites`, `list_sitemaps`, `index_inspect`, cộng WebFetch.
+
+Từ giờ tôi chỉ làm phần hạ tầng, còn việc chuyên môn giao cho agent qua issue. Việc đầu tiên là giao chính vụ Search Console này cho SEO Specialist. Đây cũng là bài kiểm tra đầu cuối xem agent có thật sự dùng được MCP không. Tôi xem API tạo issue:
+[L924] TOOL Bash: cd ~/project/fgOPC/upstreams/multica/server; grep -n "type CreateIssueRequest" -A25 internal/handler/issue*.go | head -35
+[L927] RESULT: internal/handler/issue.go:3038:type CreateIssueRequest struct { | internal/handler/issue.go-3039- Title string `json:"title"`
+[L929] AGENT: Tôi viết issue như chủ giao việc: chỉ nêu mục tiêu, **không kể trước** chỗ lỗi `www` mà tôi đã thấy, để kiểm tra agent có tự phát hiện được không.
+[L930] TOOL Bash: cd ~/project/fgOPC/multica; TOKEN=$(cat ~/multica-spike/.pat); H="Authorization: Bearer $TOKEN"; ST=packages/opc-studio/.opc/multica-opc-studio.json; WS=$(curl -s -H "$H" localhost:8310/api/workspaces | python3 -c 'import json,sys;print([w["id"] for w in json.load(sys.stdin) if w["slug"]=="opc-studi …[+1444]
+[L937] RESULT: STU-6 todo 01a18c5d-a1b9-76c1-968b-e70dd755111a | Shell cwd was reset to /opt/AICoworker
+[L939] AGENT: Đã tạo issue **STU-6** và giao cho SEO Specialist. Tôi theo dõi nền đến khi agent comment hoặc chuyển trạng thái (tối đa 15 phút):
+[L940] TOOL Bash: TOKEN=$(cat ~/multica-spike/.pat); H="Authorization: Bearer $TOKEN"; WS=011422fd-27a5-4ced-8ad7-f533cf7e1718; I=01a18c5d-a1b9-76c1-968b-e70dd755111a for n in $(seq 1 90); do s=$(curl -s -H "$H" -H "X-Workspace-ID: $WS" localhost:8310/api/issues/$I | python3 -c 'import json,sys;print(json.load(sys.st …[+418]
+[L941] RESULT: Command running in background with ID: b9v526mcp. Output is being written to: /tmp/claude-1000/-opt-AICoworker/903e1533-50c2-451b-b5e3-571f6dec4570/tasks/b9v526mcp.output. You will be notified when it completes — do not poll that file or sleep while  …[+151]
+[L946] AGENT: STU-6 đang chờ SEO Specialist xử lý. Tôi theo dõi nền và sẽ báo kết quả khi agent xong.
+
+Trong lúc chờ, đây là các công cụ agent đang có và những chỗ còn thiếu. Agent đã có:
+- GA4 chỉ đọc, 9 tool.
+- Search Console, 8 tool, gồm `index_inspect` và sitemap.
+- WebFetch và WebSearch có sẵn trong Claude Code.
+
+| Thiếu | Ảnh hưởng | Cách bổ sung |
+|---|---|---|
+| **Quyền sửa website (CMS)** | SEO Specialist chỉ đề xuất được, không tự sửa title, meta, schema hay internal link | Cần biết website chạy trên nền gì, vd WordPress thì có REST API và MCP |
+| **Dữ liệu từ khoá** (volume, độ khó, đối thủ) | Search Console chỉ có các truy vấn site đã xuất hiện, không có từ khoá mới | Google Ads Keyword Planner (miễn phí nhưng cần tài khoản Ads và developer token), hoặc dịch vụ trả phí như DataForSEO, Ahrefs, Semrush |
+| **Core Web Vitals / PageSpeed** | Không đo được tốc độ trang | PageSpeed Insights API miễn phí; thêm được bằng một skill có script hoặc một MCP |
+| **Sửa GA4 / GTM** | Tracking Specialist chỉ viết được spec để chủ tự làm | `analytics-mcp --allow-write` cộng quyền Editor; GTM API. Đây là quyết định về quyền hạn |
+
+Có kết quả STU-6, bạn sẽ thấy agent tự làm tới đâu. Lúc đó mình chọn bổ sung công cụ nào trước.
+[L950] USER: <task-notification>
+<task-id>b9v526mcp</task-id>
+<tool-use-id>toolu_014KkRbuQKkixJgUzqhkhKnS</tool-use-id>
+<output-file>/tmp/claude-1000/-opt-AICoworker/903e1533-50c2-451b-b5e3-571f6dec4570/tasks/b9v526mcp.output</output-file>
+<status>completed</status>
+<summary>Background command "Wait for SEO Specialist to finish STU-6, print comments" completed (exit code 0)</summary>
+</task-notification>
+[L954] TOOL Bash: cat /tmp/claude-1000/-opt-AICoworker/903e1533-50c2-451b-b5e3-571f6dec4570/tasks/b9v526mcp.output
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

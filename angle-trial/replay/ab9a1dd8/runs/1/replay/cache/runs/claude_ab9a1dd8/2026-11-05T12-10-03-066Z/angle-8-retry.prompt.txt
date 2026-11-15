@@ -1,0 +1,62 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, không rành lĩnh vực của chuyện dưới đây.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Tìm chỗ ngoặt đó trong chuyện dưới đây, hoặc nói thẳng là không có.
+
+Có chỗ ngoặt thì trả:
+- angle: 1-3 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Theo thứ tự: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng (số trong [Lnnn]) của trích đoạn mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết trong angle phải đọc được trong chuyện hoặc trích đoạn. Trích đoạn không đỡ được thì trả none.
+- evidence chỉ gồm số dòng có trong trích đoạn bên dưới.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Viết angle, audience, reason bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"angle":"Test xanh trên máy, đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<story>
+hook: Một commit làm main mất README và CI đỏ toàn bộ
+tension: nho_ma_to (Rebase rồi push, một commit bình thường / Kéo theo việc đổi tên của phiên khác, main mất README)
+stakes: 1/3
+# Push bị từ chối, và commit kéo theo việc đổi tên README của phiên khác
+
+**Bối cảnh:** Agent commit nhiều file rồi push lên main. Một phiên làm việc khác dùng chung index và đã stage sẵn việc đổi tên README.md thành README.vi.md.
+**Chuyện gì xảy ra:** Push bị từ chối vì main trên GitHub có 2 commit mới, agent rebase rồi push. Commit của agent kéo theo việc đổi tên đã stage sẵn, nên main mất README.md và CI đỏ toàn bộ. Người dùng chọn commit README song ngữ, sau đó CI xanh lại.
+**Bài học:** Khi nhiều phiên dùng chung index, hãy `git add <file>` đúng file của mình và kiểm `git diff --cached` trước khi commit.
+**Artefact:** Đồ thị git log quanh sự cố. Không có nội dung riêng tư.
+</story>
+
+<excerpt>
+[L2260] TOOL Bash: cd /home/vantt/projects/momentry; set -e git add lib bin prompts test scripts install.sh install.ps1 .gitattributes .gitignore git commit -q -F - <<'EOF' feat: one-command install, doctor/init, hook auto-install, update and uninstall - install.sh / install.ps1: download, verify sha256 by exact name, …[+1899]
+[L2263] RESULT: 5397395 docs: first-contact README, installation, CLI reference and release runbook | 631a538 ci: test and installer lifecycle on Linux, macOS, Windows; gated releases
+[L2266] TOOL Bash: cd /home/vantt/projects/momentry; git push origin main 2>&1 | tail -3; sleep 0; gh run list --limit 3 2>&1 | head
+[L2269] RESULT: hint: the same ref. If you want to integrate the remote changes, use | hint: 'git pull' before pushing again.
+[L2282] AGENT: Push bị từ chối vì `main` trên GitHub có commit mà máy này chưa có. Tôi xem các commit đó trước, không force.
+[L2283] TOOL Bash: cd /home/vantt/projects/momentry; git fetch origin 2>&1 | tail -2; git log --oneline main..origin/main; git diff --stat main...origin/main | tail -15
+[L2284] RESULT: From https://github.com/vantt/momentry | 9b5ccb6..dca4d1f main -> origin/main
+[L2288] AGENT: Trên GitHub có thêm 2 commit tài liệu đặt tên (`docs/naming.md`, một dòng trong `docs/README.md`). Rebase các commit của tôi lên trên đó.
+[L2289] TOOL Bash: cd /home/vantt/projects/momentry; git rebase origin/main 2>&1 | tail -3; git status --short | grep -v "^??" | head; git diff --name-only --diff-filter=U
+[L2290] RESULT: Rebasing (1/3) Rebasing (2/3) Rebasing (3/3) Successfully rebased and updated refs/heads/main.
+[L2300] TOOL Bash: cd /home/vantt/projects/momentry; grep -n "naming\|installation.md" docs/README.md | head; node --test test/*.test.mjs 2>&1 | grep -E "ℹ (pass|fail)"; git push origin main 2>&1 | tail -2
+…
+[L2719] RESULT: 3Z ##[group]Run node scripts/package-release.mjs --dry-run | ^[[36;1mnode scripts/package-release.mjs --dry-run^[[0m
+[L2724] TOOL Bash: cd /home/vantt/projects/momentry; git log --oneline --stat -6 -- README.md README.vi.md | head -30; git fetch -q origin; git log --oneline main..origin/main; git log --oneline origin/main..main
+[L2733] RESULT: e78f3ab test: use config privacy-add in the Windows installer lifecycle | README.md => README.vi.md | 0
+[L2738] TOOL Bash: cd /home/vantt/projects/momentry; head -5 README.md; echo ---; git diff --stat; git diff test/commands.test.mjs | head -30
+[L2741] RESULT: # momentry | **English** · [Tiếng Việt](README.vi.md)
+[L2749] TOOL AskUserQuestion: {"questions":[{"question":"Commit e78f3ab của tôi đã vô tình đẩy lên main việc đổi tên README.md → README.vi.md (do một phiên khác stage sẵn), nhưng README.md tiếng Anh mới thì chưa commit, nên main thiếu README.md và CI đỏ toàn bộ. Xử lý thế nào?","header":"README","multiSelect":false,"options":[{" …[+614]
+[L2750] RESULT: Your questions have been answered: "Commit e78f3ab của tôi đã vô tình đẩy lên main việc đổi tên README.md → README.vi.md (do một phiên khác stage sẵn), nhưng README.md tiếng Anh mới thì chưa commit, nên main thiếu README.md và CI đỏ toàn bộ. Xử lý th …[+104]
+[L2759] TOOL Bash: cd /home/vantt/projects/momentry; git diff --cached --stat; node --test test/*.test.mjs 2>&1 | grep -E "^✖|ℹ (pass|fail)"; grep -o "momentry [a-z-]*" README.md | sort -u | head -30
+[L2762] RESULT: ℹ pass 232 | ℹ fail 0
+[L2765] AGENT: Index đang trống, toàn bộ test qua (gồm cả test kiểm README song ngữ). Chỉ commit đúng 4 file đó.
+[L2766] TOOL Bash: cd /home/vantt/projects/momentry; git add README.md README.vi.md docs/installation.md test/commands.test.mjs && git diff --cached --stat && git commit -q -m "docs: English README with Vietnamese README.vi.md Restores README.md (now English) after the rename to README.vi.md landed without it; the doc …[+138]
+[L2769] RESULT: README.md | 115 +++++++++++++++++++++++++++++++++++++++++++++++++ | README.vi.md | 2 +
+[L2772] TOOL Bash: cd /home/vantt/projects/momentry; sleep 20; id=$(gh run list --limit 1 --json databaseId --jq '.[0].databaseId'); echo $id; gh run watch $id --interval 30 >/dev/null 2>&1; gh run view $id --json jobs --jq '.jobs[] | "\(.conclusion)\t\(.name)"'
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

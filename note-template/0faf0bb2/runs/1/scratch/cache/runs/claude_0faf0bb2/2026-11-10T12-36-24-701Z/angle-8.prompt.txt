@@ -1,0 +1,97 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+fgOPC là bộ dựng công ty một người vận hành bằng AI agent, chạy trên nền Multica tự host. Làm cho người muốn giao việc cho các team agent (Coding, Content, SEO & Analytics) qua issue, với bước chờ chủ duyệt ở những việc quan trọng. Mỗi khách có một workspace riêng, dựng từ một file cấu hình; thông tin riêng và secret của khách nằm ngoài repo. Hiện chạy với runtime Claude Code.
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L657] USER: tại sao không cần cái này `Bridge push chuyển thành agent tự kéo việc; bridge chỉ còn là tuỳ chọn`
+[L712] USER: vậy nếu dùng paperclip là dùng được luôn, không cần làm, chỉ cần setup?
+[L724] USER: A session-scoped Stop hook is now active with condition: "thử paperclip trước, chạy spike trên máy này đi, setup một sample opc company.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after success; that's only for clearing a goal early.
+</asks>
+
+<story>
+hook: Ba agent kẹt 'verifying' chỉ vì lệch giao thức 3 và 4
+tension: nho_ma_to (Lỗi chung chung, không nói rõ nguyên nhân / Nội dung giao thức không đổi, hạ mức tối thiểu ở ba chỗ là cả ba sang ready)
+stakes: 1/3
+# Agent kẹt ở bước xác minh vì lệch phiên bản giao thức 3 và 4
+
+**Bối cảnh:** Nối một công cụ điều phối với gateway của runtime agent đã có sẵn. Hai bên khai báo phiên bản giao thức khác nhau.
+**Chuyện gì xảy ra:** Ba agent đứng ở trạng thái 'verifying' và báo lỗi chung, không nói rõ nguyên nhân. Bước kiểm tra cho thấy công cụ yêu cầu giao thức bản 4 trong khi gateway chỉ chấp nhận bản 3. Lịch sử commit của bên công cụ cho thấy nội dung giao thức không đổi giữa hai bản, nên hạ mức tối thiểu từ 4 xuống 3 ở ba chỗ trong bản đã cài, giữ bản 4 làm mức tối đa. Sau khi vá, probe kết nối báo pass và cả ba agent chuyển sang 'ready'. Lần đầu, script lấy token từ tiến trình đang chạy cũng lỗi KeyError vì biến môi trường không có trong shell.
+**Bài học:** Khi nối hai hệ thống khác phiên bản, đọc lịch sử commit của bên kia để biết thay đổi có đụng đến giao thức không trước khi vá, và ghi lại bản gốc để hoàn tác.
+**Artefact:** Ảnh dòng trạng thái 'verifying' chuyển sang 'ready' của ba agent. Che địa chỉ máy và token. Hoặc đoạn diff ba dòng minProtocol.
+</story>
+
+<excerpt>
+[L888] RESULT: Create an agent from a JSON payload | -C, --company-id <id> Company ID
+[L890] TOOL Bash: mkdir -p /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/spike && cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/spike/create_agents.py <<'EOF' import json, os, urllib.request API = "http://127.0.0.1:3100/ap …[+2322]
+[L891] RESULT (exit 1): token = env["OPENCLAW_GATEWAY_TOKEN"] | ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^ | KeyError: 'OPENCLAW_GATEWAY_TOKEN'
+[L894] TOOL Bash: GW_PID=$(ss -ltnpH 'sport = :18789' | grep -oP 'pid=\K[0-9]+' | head -1); echo "pid $GW_PID"; GW_PID=$GW_PID python3 -I /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/spike/create_agents.py
+[L895] RESULT: pid 3811096 | [
+…
+[L942] TOOL Bash: cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/spike/test_env.py <<'EOF' import json, os, urllib.request, sys API="http://127.0.0.1:3100/api"; CO="44a30586-28dc-45b7-b243-3a920c398032" env=dict(l.split("=",1) for l in open(f"/proc/{os.environ['GW_PID …[+811]
+[L943] RESULT: { | "adapterType": "openclaw_gateway",
+[L947] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/paperclip/packages/adapters/openclaw-gateway/src/server; grep -n "PROTOCOL_VERSION\s*=\|minProtocol\|maxProtocol\|clientId\|\"gateway-client\"\|mode:" test.ts execute.ts | head -15; G=/opt/AICoworker/resources/app-source/gateway-source/src/gateway; grep -rn "PR …[+217]
+[L948] RESULT: test.ts:148: minProtocol: 4, | test.ts:149: maxProtocol: 4,
+[L959] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/paperclip; git log --format='%h %ad %s' --date=short -S'PROTOCOL_VERSION = 4' -- packages/adapters/openclaw-gateway/src/server/execute.ts | tail -3; git log --format='%h %ad %s' --date=short -S'PROTOCOL_VERSION = 3' -- packages/adapters/openclaw-gateway/src/ser …[+24]
+[L960] RESULT: ec2d87d35 2026-07-06 fix(openclaw-gateway): bump adapter PROTOCOL_VERSION to 4 to match gateway (#5984) | ec2d87d35 2026-07-06 fix(openclaw-gateway): bump adapter PROTOCOL_VERSION to 4 to match gateway (#5984)
+[L963] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/paperclip; git log -1 --format=%B ec2d87d35 | head -30; git show ec2d87d35 --name-only --format= | head
+…
+[L967] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/paperclip; git log -1 --format=%B ec2d87d35 | sed -n 30,60p
+[L968] RESULT: \`PROTOCOL_VERSION = 3\` → \`PROTOCOL_VERSION = 4\`. No protocol | semantics changed — the adapter's existing frames are compatible with
+[L972] TOOL Bash: G=/opt/AICoworker/resources/app-source/gateway-source/src/gateway; grep -rn "minProtocol\|maxProtocol" $G/server/ws-connection/*.ts $G/server*.ts 2>/dev/null | grep -v test | grep -E "<|>" | head -5; I=~/.paperclip/cli/installs/npm/2026.1023.0; grep -rlE "PROTOCOL_VERSION = 4|minProtocol: 4" $I --in …[+30]
+[L973] RESULT: /opt/AICoworker/resources/app-source/gateway-source/src/gateway/server/ws-connection/message-handler.ts:363: if (maxProtocol < PROTOCOL_VERSION || minProtocol > PROTOCOL_VERSION) { | (eval):1: no matches found: --include=*.js
+[L980] TOOL Bash: I=~/.paperclip/cli/installs/npm/2026.1023.0; grep -rlE "PROTOCOL_VERSION = 4|minProtocol: 4" "$I" 2>/dev/null | grep -v "\.map$" | head
+…
+[L983] TOOL Bash: D=~/.paperclip/cli/installs/npm/2026.1023.0/node_modules/@paperclipai/adapter-openclaw-gateway/dist/server; grep -n "PROTOCOL_VERSION\|minProtocol\|maxProtocol" $D/execute.js $D/test.js
+[L984] RESULT: /home/vantt/.paperclip/cli/installs/npm/2026.1023.0/node_modules/@paperclipai/adapter-openclaw-gateway/dist/server/test.js:130: minProtocol: 4, | /home/vantt/.paperclip/cli/installs/npm/2026.1023.0/node_modules/@paperclipai/adapter-openclaw-gateway/d …[+39]
+[L987] AGENT: Vá bản đã cài: đổi `minProtocol` thành 3 (giữ `maxProtocol` 4) ở 3 chỗ, có lưu bản gốc `.orig`. Sau đó khởi động lại Paperclip để nạp bản vá.
+[L988] TOOL Bash: D=~/.paperclip/cli/installs/npm/2026.1023.0/node_modules/@paperclipai/adapter-openclaw-gateway/dist/server; cp -n $D/execute.js $D/execute.js.orig; cp -n $D/test.js $D/test.js.orig; sed -i 's/minProtocol: PROTOCOL_VERSION,/minProtocol: 3 \/* fgOPC spike: AICoworker gateway speaks v3 *\/,/' $D/execut …[+111]
+[L989] RESULT: cp: warning: behavior of -n is non-portable and may change in future; use --update=none instead | cp: warning: behavior of -n is non-portable and may change in future; use --update=none instead
+[L992] TOOL ToolSearch: {"query":"select:TaskStop","max_results":1}
+[L993] RESULT: 
+…
+[L1015] TOOL Bash: for i in $(seq 1 40); do curl -sf http://127.0.0.1:3100/api/health >/dev/null && break; sleep 3; done; curl -s http://127.0.0.1:3100/api/health | head -c 80; echo; GW_PID=$(ss -ltnpH 'sport = :18789' | grep -oP 'pid=\K[0-9]+' | head -1) python3 -I /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2- …[+92]
+[L1016] RESULT: {"status":"ok","version":"2026.1023.0","serverVersion":"2026.1023.0","commit":"1 | "status": "pass",
+[L1021] AGENT: Bản vá có tác dụng: **`Gateway connect probe succeeded`**, Paperclip đã kết nối được với gateway AICoworker. Giờ chạy lại bước kiểm tra cho 3 agent.
+[L1022] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/paperclip; grep -n "router.post(\"/agents/:id/lifecycle[^\"]*\"\|/lifecycle/retry\|lifecycle/verify\|\"/agents/:id/verify\"" server/src/routes/*.ts | head
+[L1023] RESULT: server/src/routes/agents.ts:5716: router.post("/agents/:id/lifecycle/retry", async (req, res) => { | server/src/routes/openapi.ts:3994: path: "/api/agents/{id}/lifecycle/retry",
+…
+[L1034] AGENT: Cả 3 agent đã ở trạng thái **ready**. Giờ cập nhật đường dẫn file key của Hà, gửi lại đầy đủ cấu hình kèm token để không bị mất header.
+[L1035] TOOL Bash: cat > /tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/scratchpad/spike/fix_ha.py <<'EOF' import json, os, urllib.request API="http://127.0.0.1:3100/api"; aid="a8d27cb7-acf5-485a-8cd0-cfe973982e32" env=dict(l.split("=",1) for l in open(f"/proc/{os.environ['GW_PID']}/en …[+922]
+[L1036] RESULT: /home/vantt/aicoworker/openclaw/workspace-main/paperclip-key-ha.json idle ready
+[L1039] AGENT: Giờ dựng nội dung cho công ty mẫu: một goal, một project và các task theo phòng ban. Trước hết xem các trường bắt buộc khi tạo.
+[L1040] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/paperclip/packages/shared/src; grep -n "export const createGoalSchema" -A 10 validators/goal.ts; grep -n "export const createProjectSchema\|const createProjectBaseSchema\|projectBase" -A 14 validators/project.ts | head -30; grep -n "reviewPolicy" validators/iss …[+79]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

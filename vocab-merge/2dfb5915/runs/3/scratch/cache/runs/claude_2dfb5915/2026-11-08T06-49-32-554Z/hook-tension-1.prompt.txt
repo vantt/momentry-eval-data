@@ -1,0 +1,38 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Chuyển OHS sang bản phát hành công khai: từ đăng nhập gh sang tải thẳng
+   Ban đầu chọn giữ private và dùng gh làm đường dự phòng. Sau khi fork OHS có Release công khai (vantt.3, rồi vantt.4), chuyển nguồn sang Release. Khi người dùng chuyển repo sang public, cài đặt chỉ cần irm | iex, không cần gh.
+M2. Thiết kế interface MCP: hai agent độc lập, phản biện chéo, và từ chối code mode
+   Hai agent (một brainstormer, một agent thiết kế độc lập dùng model mạnh nhất) đưa ra bộ 13 tool gần như trùng nhau, không dùng code mode. Sau phản biện chéo, người duyệt chọn đọc file trực tiếp thay vì chuyển sang OHS (vì OHS mất vài phút để index). Token định nghĩa tool giảm từ khoảng 6 nghìn xuống 3,8–4,4 nghìn (ước lượng theo ký tự, chưa đo bằng tokenizer).
+M3. Dừng hay tiếp tục: hook 'goal' chặn phiên bảy lần liên tiếp bằng cùng một lý do
+   Hook chặn dừng hơn chục lần, mỗi lần với cùng lý do. Agent lặp lại câu trả lời 'chờ Windows / chờ anh' và thử kiểm git fetch mỗi vòng mà không có gì mới. Cuối cùng người dùng phải tự hỏi 'giờ thì còn việc gì?'.
+M4. Phiên bản Rust port: vượt Python ở tốc độ build, nhưng cái được chọn là sự nhỏ gọn
+   Bản viết tay ra binary 0,68 MB, 12 crate, build sạch 2,5 s; rmcp ra 2,79 MB, 56 crate, build 16,5 s và kéo theo tokio. rmcp còn lệch Python ở năm chỗ của tầng giao thức nên bị loại.
+M5. Bộ so khớp với Python: 0 lệch là kết quả của nhiều lần sửa đặc tả, không phải một lần chạy
+   Số mục 'chưa có' giảm từ 47 xuống 34, 15, 1, rồi 0 khi đủ 64/64. Lỗi trên CI Windows lộ ra vì đường dẫn Windows bị escape trong JSON không được che; Python và Rust đều đúng nhưng script so khớp thiếu một dạng đường dẫn. Thứ tự liệt kê file của hệ điều hành làm lệch điểm 'related' ở mức 1e-5, vượt ngưỡng 1e-6 của đặc tả, nên phải ghim thứ tự theo đường dẫn đã sắp.
+M6. Lỗi CI đỏ từ cache: rust-cache xoá file ngoài target nhưng giữ thư mục rỗng
+   Swatinem/rust-cache lưu target/ nhưng xoá mọi file ngoài thư mục build, giữ lại thư mục rỗng. Lần chạy đầu ghi thư mục con vào target/parity rồi lưu cache hỏng; các lần sau khôi phục đúng cache đó và bị từ chối ghi đè. Sửa bằng cách ghi dump ra RUNNER_TEMP, ngoài cache.
+M7. Hết tiền Actions: repo private bị GitHub từ chối chạy mọi job
+   Repo private dùng phút Actions tính phí; không job nào khởi động, kể cả build. Người dùng chuyển repo sang public, Actions miễn phí, và rc.3 phát hành được ngay sau đó. Trước khi công khai, agent quét lịch sử git tìm mẫu token và khoá, không thấy khớp.
+M8. Phát hành binary cho Windows không cần vcruntime: một bước kiểm DLL trong CI
+   Gốc lỗi nhỏ: không có cờ crt-static trong cấu hình build. Sửa bằng .cargo/config.toml và một bước CI dùng dumpbin liệt kê DLL, fail nếu còn C runtime. Release dry run ra 7 file, sha256 đều khớp.
+M9. Chạy song song bằng agent: 17 phase, merge từng cái, và cái 'chặn' thật ra là chờ người
+   Phase 01 chạy một mình, các phase W1 chạy song song (7 agent). Mỗi agent xong thì được review bởi agent khác, rồi merge và push. Hook dừng phiên liên tục chặn vì điều kiện 'hoàn tất toàn bộ plan', trong khi các mục còn lại đều chờ Windows hoặc người duyệt. Tổng cộng 4 rc phát hành, mỗi cái qua CI ba nền.
+M10. Hiệu ứng OOM từ YAML alias bomb: 338 byte làm 1,45 GB RAM
+   Đây là lỗ hổng từ chính đặc tả Python, không phải lỗi mới của port. Sửa bằng ngân sách 1 triệu prop và 64 MiB văn bản cho mỗi note; vượt ngân sách thì ghi MemoryError và coi là lệch có chủ ý.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

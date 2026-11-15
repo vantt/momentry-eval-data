@@ -1,0 +1,195 @@
+{
+  "id": "c4caee3c",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "a80efc8267e2088e",
+  "at": "2026-11-05T10:09:58.878Z",
+  "dryRun": {
+    "usd": 0.33,
+    "tokens": 99560,
+    "chunks": 1,
+    "hotspots": 36,
+    "entries": 874
+  },
+  "report": {
+    "sid": "claude:c4caee3c",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.24723699999999998,
+    "secs": 71.5,
+    "exitCode": 0,
+    "status": "done",
+    "written": 18,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:c4caee3c L1-L4000: done; 13 chuyện thô, 18 cụm; ghi 18 mới, gộp 0\nđiểm nóng 36 (thiếu 0); lần chạy 1/1; 0.25 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-eval-vault-that-cho-thay-goi",
+      "title": "Eval vault thật cho thấy gói tiếng Việt tụt ở vài hạng mục dù tổng tăng",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-phuc-hoi-dau-sai-voi-hoi",
+      "title": "Phục hồi dấu sai với 'Hội An': lỗi nằm ở cách dựng câu, không ở ngưỡng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-doc-giay-phep-du-lieu-truoc",
+      "title": "Đọc giấy phép dữ liệu trước khi học từ điển từ ghép",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-mot-agent-pypi-npm-khong-tu",
+      "title": "Một agent PyPI/npm không tự nhận 'xong': cổng chất lượng đỏ vì baseline ghi trên máy khác CPU",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-fixture-tai-theo-tag-co-dinh",
+      "title": "Fixture tải theo tag cố định v0.10.0 trong khi bộ eval đã sang v0.11.0",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-goi-mac-intel-mot-thu-vien",
+      "title": "Gói Mac Intel: một thư viện npm không còn file cho darwin-x64, và cách ghim bản cũ kèm điều kiện đạt",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-snapshot-test-trong-ci-hong-ngau",
+      "title": "Snapshot test trong CI hỏng ngẫu nhiên vì điểm bằng nhau đổi chỗ",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-test-npm-pack-trong-goi-tieng",
+      "title": "Test npm pack trong gói tiếng Việt đọc sai đầu ra npm 12",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-het-dung-luong-tmp-giua-luc",
+      "title": "Hết dung lượng /tmp giữa lúc 11 agent đang chạy: worktree đặt nhầm chỗ",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-mot-lan-agent-doi-nham-dong",
+      "title": "Một lần agent đổi nhầm dòng: sửa dòng N22 khi định sửa L24 trong PRD",
+      "tension": "khac",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-chay-lai-mot-agent-da-dung",
+      "title": "Chạy lại một agent đã dừng giữa chừng mà không báo",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-don-21g-lam-viec-tam-sau",
+      "title": "Dọn 21G làm việc tạm sau khi các agent xong",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-hook-pre-push-cua-upstream-chan",
+      "title": "Hook pre-push của upstream chặn push vì HUSKY chưa tắt",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-agent-claude-tu-dieu-phoi-nhieu",
+      "title": "Agent Claude tự điều phối nhiều agent con chạy song song trên nhiều worktree và nhánh, mỗi agent một việc, rồi tự ghép (merge/cherry-pick) và kiểm chuỗi bản vá theo đúng thứ tự phụ thuộc trước khi push.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-khi-nhan-cau-hoi-cua-nguoi",
+      "title": "Khi nhận câu hỏi của người dùng về một khái niệm (L13, L22, L15, L24), agent trả lời ngắn, tách rõ phần nào thuộc repo nào, sau đó đối chiếu với PRD trước khi khẳng định, và sửa nhầm lẫn của chính mình ngay trong commit.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-lead-agent-doi-truc-tiep-ke",
+      "title": "Lead agent đổi trực tiếp kế hoạch và PRD khi người dùng đưa quyết định mới (ví dụ chuyển từ tự đuổi upstream sang ghim tag thủ công, bỏ lịch cron), rồi ghi lại quyết định vào tài liệu kèm ngày và lý do, thay vì để tài liệu cũ lệch với thực tế.",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-nguoi-dung-khong-doi-ket-qua",
+      "title": "Người dùng không đợi kết quả cuối cùng để ra quyết định: agent đưa ra hai hoặc ba phương án kèm bằng chứng đo được (bảng số, mức lệch, số câu), rồi hỏi một câu duy nhất với lựa chọn có khuyến nghị; người dùng trả lời ngắn gọn và việc tiếp tục ngay.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-truoc-khi-day-len-ci-hoac",
+      "title": "Trước khi đẩy lên CI hoặc gộp vào nhánh chính, agent kiểm tra trên một nhánh ghép riêng (chk-series) rồi mới chuyển kết quả sang master; khi CI đỏ thì chẩn đoán nguyên nhân từ artifact và log trước khi đề xuất sửa.",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

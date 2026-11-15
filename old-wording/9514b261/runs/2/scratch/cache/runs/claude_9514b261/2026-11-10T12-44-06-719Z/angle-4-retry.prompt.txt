@@ -1,0 +1,120 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Forgent (fgOS) là tầng nền tảng để xây và chạy các ứng dụng agent, gồm hạ tầng, skill và tự động hoá nằm dưới mọi app agent, để lập trình viên tạo agent mới thay vì làm lại từ đầu. Hiện đang ở bản alpha v0.2.0-rc.2 cho Linux x86_64 (glibc 2.35 trở lên) và Windows 10 trở lên x86_64; macOS và Windows ARM chưa được hỗ trợ. Cài bằng một file nhị phân `fgctl` và chạy trong một kho git có sẵn, không cần clone, npm hay Rust toolchain.
+</project>
+
+<asks>
+[L8] USER: đọc và làm theo plans/reports/handoff-261021-1446-rule-management-execution-and-decisions.md
+[L1582] USER: em update proposal đi nhé
+[L1798] USER: như vậy nhìn tổng quan sẽ có 3 hệ : decision engine, document engine và context engine. và 3 hệ là liên quan sử dụng lẫn nhau
+[L1815] USER: em commit push đi. sau đó bật một hội đồng cấp cao để phân component authority/boundary như thế nào cho hợp lý. trước khi mở hội đồng cho anh biết các family/model sẽ tham gia
+</asks>
+
+<story>
+hook: Mô phỏng nói đủ 11 ghế, nhưng thiếu herdr nên bảng model sai
+tension: tuong_ma_hoa_ra (Mô phỏng báo critical chạy tầng flagship / Chạy thật với herdr thì ra tầng frontier, deepseek và glm không có trong dự phòng)
+stakes: 2/3
+# Mô phỏng nói hội đồng đủ 11 ghế, nhưng bảng model đưa ra sai vì mô phỏng thiếu herdr
+
+**Bối cảnh:** Agent dùng bộ mô phỏng gán ghế để chuẩn bị hội đồng kiến trúc, chạy trong môi trường không có herdr session.
+**Chuyện gì xảy ra:** Mô phỏng gán openai qua codex-cli-bwrap, nhưng phiên thật có herdr nên gán khác. Khi chạy explain với herdrPresent true thì kết quả đúng: các capability critical chạy tầng frontier chứ không phải flagship như agent đã nói. Deepseek và glm cũng không nằm trong chuỗi dự phòng vì tierFallback chỉ liệt kê bốn family. Agent đính chính trước khi chủ quyết định.
+**Bài học:** Mô phỏng phải chạy với đúng biến môi trường của production. Nếu không, kết quả 'đủ ghế' chỉ đúng trong môi trường giả.
+**Artefact:** Bảng ghế trước và sau đính chính. Không cần ảnh.
+**Góc người ngoài:** cách làm phổ biến là Người dùng thường tin bảng đầu tiên AI đưa ra, không yêu cầu xác nhận bằng chạy thật, và không quay lại sửa khi có dữ liệu mới; ở đây khác ở Agent đã công khai nói 'bảng model em đưa trước đó sai', giải thích nguyên nhân (thiếu herdr, trần tầng), và làm lại bảng. Người đọc sẽ hỏi làm sao để AI tự đính chính như vậy mà không bị bỏ sót.
+</story>
+
+<excerpt>
+[L1883] TOOL Bash: fgos workflow start --help </dev/null 2>&1 | sed -n 5,30p | cut -c1-200; sed -n 1,30p src/runner/execution/dry-bind.mjs | cut -c1-170
+[L1888] RESULT: positional: sub | fgos workflow start
+[L1901] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; cat > $S/sim-council.mjs <<'EOF' import fs from 'node:fs'; import { simulateUnitBindings } from '/home/vantt/projects/forgent/src/runner/execution/dry-bind.mjs'; const cfg = JSON.parse(fs.readFileSync('/ …[+1053]
+[L1906] RESULT: ## frame-context (architecture:frame) -> pass | producer | openai | codex-cli-bwrap |
+[L1913] TOOL Bash: fgos dispatch decide --for architecture:shape </dev/null 2>&1 | python3 -c " import sys,json d=json.load(sys.stdin)['data'] def strip(o): if isinstance(o,dict): return {k:strip(v) for k,v in o.items() if k not in('account','accounts','env','argv')} if isinstance(o,list): return [strip(x) for x in o] …[+64]
+…
+[L2600] TOOL Bash: fgos dispatch explain --for architecture:shape --rigor high --json </dev/null 2>&1 | python3 -c " import sys,json,re raw=sys.stdin.read() try: d=json.loads(raw); d=d.get('data',d) except Exception: print(raw[:500]); sys.exit() def strip(o): if isinstance(o,dict): return {k:strip(v) for k,v in o.item …[+267]
+[L2605] RESULT: 1887 ký tự | {"ask": {"capability": "architecture:shape", "rigor": "high", "session": {"herdrPresent": true}}, "family": "claude", "executor": {"id": "claude", "source": "capability:architecture:shape"}, "invocation": "claude-herdr-bwrap", "credentia …[+1650]
+[L2612] AGENT: Phát hiện quan trọng từ `explain`. Em chạy lại mô phỏng ghế để có bảng cập nhật cho hội đồng.
+[L2613] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; node $S/sim-council.mjs </dev/null 2>&1 | head -22; for c in architecture:frame architecture:critique architecture:synthesize architecture:explain; do fgos dispatch explain --for $c --json </dev/null 2>& …[+256]
+[L2623] RESULT: ## frame-context (architecture:frame) -> pass | producer | openai | codex-cli-bwrap |
+[L2630] AGENT: Anh duyệt tài khoản xong thì em đã chạy lại, nhưng openai và xai vẫn chưa chạy được. Em cũng phải **đính chính ba điều em nói trước đó**.
+
+## Đính chính
+
+1. **Trần `maxTier = flagship` không chặn hội đồng như em nói.** `fgos dispatch explain` cho thấy các capability mức critical dùng tầng **frontier**: `architecture:shape`, `synthesize` và `explain` chạy `fable`, còn `frame` và `critique` (mức high) chạy flagship. Capability tự nâng trần theo rigor của chính nó. Bảng model em đưa trước đó sai ở các ghế critical.
+2. **Bộ mô phỏng em dùng lần trước chạy không có herdr**, nên nó gán openai qua `codex-cli-bwrap`. Phiên thật có herdr, và `explain` (có `herdrPresent: true`) mới là bản đúng. Vì thế danh sách ghế trước đây của em không còn đáng tin.
+3. **Em nói deepseek và glm không được chọn "vì em chưa rõ".** Giờ em biết lý do (mục dưới).
+
+## Hai phát hiện từ `explain`
+
+- **openai không đi qua pi được.** Khi có herdr, executor openai chỉ có một invocation herdr là `codex-herdr`, đòi tài khoản có kho `codex`. Đường `pi-cli-bwrap` không phải ứng viên (nó là cli-spawn, không phải herdr). Nên `openai-tetcu72` chỉ có kho `pi` thì chưa bao giờ được dùng. Hiện openai bị loại sạch khỏi walk với lý do "no enabled account of pool openai holds a codex login store". Đó là hành vi tốt hơn so với việc chọn nó rồi bị chặn ở hộp thoại Trust của Codex.
+- **deepseek và glm không bao giờ nằm trong chuỗi dự phòng.** `runner.tierFallback` ở tầng flagship và frontier chỉ liệt kê `claude, openai, gemini, xai`, và walk bị giới hạn theo danh sách này (chỉ thu hẹp, không mở rộng). Vì vậy khi xai thất bại, walk kết thúc, không rơi sang deepseek dù deepseek chạy được.
+
+## Ghế hội đồng theo `explain` (phiên có herdr)
+
+| Bước | Tầng | Ghế chính | Dự phòng theo thứ tự |
+|---|---|---|---|
+| Framing | flagship | gemini (`gemini-4-argon-high`) | claude `opus`, xai |
+| Shaping (3 panelist) | frontier | claude `fable`, gemini, xai (`grok-4.6`) | không có thêm |
+| Critique | flagship | xai `grok-4.6` | claud …[+1808]
+[L2645] USER: đồng ý
+[L2652] AGENT: Em làm cả ba thay đổi. Trước hết đọc cấu trúc invocation `pi-herdr` của deepseek làm mẫu, rồi sao lưu `.fgos/config.json`.
+…
+[L2794] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; cat > $S/sim-seats.mjs <<'EOF' import { simulateUnitBindings } from '/home/vantt/projects/forgent/src/runner/execution/dry-bind.mjs'; import { loadRunnerConfigFromDir } from '/home/vantt/projects/forgent …[+1321]
+[L2795] RESULT: === loại: (không loại family nào) | framing pass producer=openai
+[L2805] AGENT: Em đã sửa xong ba thay đổi, và probe openai và xai trên đường mới đang chạy nền. Em chờ kết quả đó rồi báo đủ ghế hay chưa, nên em chưa kết luận.
+
+Trong lúc chờ, mô phỏng ghế (cấu hình đã gộp, có herdr) đã cho thấy số ghế gán được:
+
+| Kịch bản | Ghế gán được |
+|---|---|
+| Cả sáu family còn sống | 11/11 |
+| Mất xai | 11/11, deepseek thay xai |
+| Mất xai và openai | 11/11, dùng claude, gemini và deepseek |
+
+Vậy về mặt cấu hình, ghế đã đủ và chuỗi dự phòng giờ có deepseek. Phần cần xác nhận bằng chạy thật là openai (đường pi với `openai-tetcu72`) và xai (đang bị cách ly vì lỗi token pi).
+[L2820] USER: <task-notification>
+<task-id>b401uvbjv</task-id>
+<tool-use-id>toolu_0165jdiR6cbb7R9HHVWisfeZ</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/tasks/b401uvbjv.output</output-file>
+<status>completed</status>
+<summary>Background command "Probe openai and xai on the new pi routes" completed (exit code 0)</summary>
+</task-notification>
+[L2821] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; cat $S/probe-summary.txt; for p in openai xai; do echo "== $p"; python3 - "$S/probe-$p.json" <<'EOF' import sys,json,re raw=open(sys.argv[1],encoding='utf8',errors='replace').read() try: d=json.loads(raw …[+1043]
+…
+[L2913] RESULT: grok-vantt disabled = True | --- pane còn sót của lượt probe:
+[L2920] TOOL Bash: S=/tmp/claude-1000/-home-vantt-projects-forgent/9514b261-1778-4cbd-a231-bec51e3e04d9/scratchpad; node $S/sim-seats.mjs </dev/null 2>&1 | head -9; echo; for c in architecture:frame architecture:shape architecture:critique architecture:synthesize architecture:explain; do fgos dispatch explain --for $c …[+552]
+[L2930] RESULT: === loại: (không loại family nào) | framing pass producer=openai
+[L2937] TOOL Bash: timeout 120 fgos doctor --json </dev/null 2>/dev/null | python3 -c " import sys,json,re d=json.load(sys.stdin); d=d.get('data',d) for c in d.get('checks',[]): if c['id'] in('executor-profile-warnings','confined-pane-accounts','agent-cli-project-trusted'): print('##',c['id']); print(' ',re.sub(r'[\w. …[+54]
+[L2942] RESULT: ## executor-profile-warnings | 6 legacy executor-profile warning(s) (informational, not blocking): executor.claude.policy-shaped-flags -> ProviderAdapter runtime option (design.md §3.5); executor.glm.policy-shaped-flags -> ProviderAdapter runtime opt …[+371]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,81 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L1] USER: hey, launch week for the vit C serum. Launch is tomorrow 8pm. Today: banner copy, the UTM sheet, and the budget plan for week 2. Files are in this folder. Start with the banner: I need alt text and copy for 1200x628, 1080x1080 and 1080x1920.
+[L5] USER: good. save that to copy/banner-sizes.md
+[L8] USER: now the UTM sheet. it is a mess, half the campaign names are capitalized differently. utm/links.csv
+[L14] USER: ok budget for week 2. Tuan (my boss) wants to double TikTok because the creator videos clearly drove the pre-orders, they got 380k views. Draft a plan: TikTok 2x, keep the rest flat. Pre-order export is in data/preorders.csv if you need it.
+</asks>
+
+<story>
+hook: TikTok 12.210 phiên chỉ ra 49 đơn; bản tin bị quên ra 371
+tension: tuong_ma_hoa_ra (Cả đội tin TikTok kéo đơn / 61% pre-order đến từ bản tin đối tác miễn phí, chuyển đổi 9,0% so với 0,4%)
+stakes: 3/3
+# Đội tin TikTok kéo đơn, nhưng 61% pre-order đến từ một bản tin đối tác gần như bị quên
+
+**Bối cảnh:** Launch serum vitamin C tuần đầu. Sếp muốn nhân đôi ngân sách TikTok vì video creator đạt 380k view. Trước khi điền số, agent đối chiếu pre-order theo nguồn.
+**Chuyện gì xảy ra:** Trong 614 pre-order, 376 đơn (61%) dùng mã của bản tin đối tác gửi ngày 20. Bản tin này không tốn tiền nên gần như bị quên. TikTok có 12.210 phiên, 49 đơn, tỉ lệ 0,4%. Bản tin có 4.120 phiên, 371 đơn, tỉ lệ 9,0%. Kế hoạch đổi hướng: giữ TikTok ở mức phẳng để làm nhận diện, xin thêm một slot bản tin có trả phí, các kênh khác giữ phẳng, và viết ghi chú ngắn kèm số để thuyết phục sếp.
+**Bài học:** Trước khi nhân đôi chi tiêu cho kênh được khen nhiều nhất, hãy chia đơn theo nguồn và xem tỉ lệ chuyển đổi, đừng chỉ nhìn lượt xem.
+**Artefact:** Bảng phiên, đơn và tỉ lệ theo từng nguồn. Che mã giảm giá, số đơn theo từng người và đường dẫn file.
+**Góc người ngoài:** cách làm phổ biến là Làm đúng yêu cầu và tính ngân sách như được giao, không kiểm tra giả định của người đưa ra yêu cầu; ở đây khác ở Agent dừng lại xác minh giả định trước khi viết kế hoạch và có truy vấn cụ thể làm căn cứ. Người đọc muốn biết cách làm này để tránh chi tiền theo cảm tính.
+</story>
+
+<excerpt>
+[L12] RESULT: 15
+[L13] AGENT: All 15 links now use `vitc-launch` as campaign, and source/medium are lowercase with hyphens. GA4 treats `VitC_Launch` and `vitc-launch` as different campaigns, so earlier pre-launch traffic is split across four names in reports; it will be consistent from now on.
+[L14] USER: ok budget for week 2. Tuan (my boss) wants to double TikTok because the creator videos clearly drove the pre-orders, they got 380k views. Draft a plan: TikTok 2x, keep the rest flat. Pre-order export is in data/preorders.csv if you need it.
+[L15] AGENT: Before I put numbers in, let me check the pre-orders by source so the doubling is backed by data. One minute.
+[L16] TOOL Bash: python3 -c "import pandas as pd;d=pd.read_csv('/Users/jess/work/moclan/vitc-launch/data/preorders.csv');print(len(d));print(d.groupby('discount_code').size().sort_values(ascending=False).head(5));print(d.groupby('utm_source').size())"
+[L17] RESULT: 614 | discount_code
+[L18] TOOL Bash: python3 /Users/jess/work/moclan/vitc-launch/scripts/sessions_to_orders.py data/ga4-sessions.csv data/preorders.csv
+[L19] RESULT: source sessions orders conv | tiktok 12210 49 0.4%
+[L20] AGENT: The data tells a different story from the views:
+
+- 614 pre-orders total. **376 (61%) used code LEAF10**, the code from the Leaf & Co pharmacy newsletter that went out on the 20th.
+- TikTok: 12,210 sessions but only 49 orders, **0.4% conversion**. Code TIKTOK15 was used 52 times.
+- Leaf & Co newsletter: 4,120 sessions, 371 orders, **9.0% conversion**.
+
+The TikTok videos clearly got attention (380k views, most sessions), but the pre-orders came overwhelmingly from the pharmacy newsletter. Doubling TikTok would double the channel that converts worst. I'd suggest instead: keep TikTok flat (awareness), and ask Leaf & Co about a second newsletter slot or a co-branded post for week 2.
+[L21] USER: wait really? everyone on the team assumed TikTok. we literally had a celebration post in slack about the creator videos. the Leaf thing was a favour from Thao who manages their newsletter, it cost us nothing, we almost forgot it existed.
+[L22] AGENT: Yes. It's also consistent with the cleanup we just did: the leafco links were the ones already named `vitc-launch` properly, so their attribution is clean. If you want a gut-check: the pre-order spike on 20–21 Oct lines up with the newsletter send date, while the biggest TikTok video went up on the 24th and the order curve barely moves that day.
+[L23] USER: ok. rewrite the week 2 plan: TikTok flat, Leaf & Co second slot (I'll ask Thao, offer a proper paid placement this time), rest flat. and a short note for Tuan explaining why, with the numbers. he'll push back so make it tight.
+[L24] TOOL Write: /Users/jess/work/moclan/vitc-launch/plan/week2-budget.md
+[L25] RESULT: File created successfully at: /Users/jess/work/moclan/vitc-launch/plan/week2-budget.md
+[L26] USER: last thing today. the pre-launch emails. last week you suggested urgency subject lines for emails 3 and 4 ('Last chance: 3 hours left', 'Final call before it's gone'). open rate went way up, I want to use the same style for the launch email tomorrow. pull the stats from data/klaviyo-campaigns.csv to confirm.
+[L27] TOOL Bash: cut -d, -f1,2,4,5,6,7 /Users/jess/work/moclan/vitc-launch/data/klaviyo-campaigns.csv
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

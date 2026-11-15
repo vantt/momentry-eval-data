@@ -1,0 +1,133 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, kết hợp tìm theo nghĩa, tìm từ khoá, tên, thẻ, thư mục và liên kết giữa các ghi chú. Có ba cách dùng: plugin Obsidian để tìm khi đang viết, máy chủ MCP để tác tử AI tìm và đọc ghi chú, và công cụ dòng lệnh cho việc lập chỉ mục và viết script. Dữ liệu lưu cục bộ bằng SQLite, mô hình nhúng mặc định chạy trên máy, và có thể tuỳ chọn dùng API embedding tương thích OpenAI.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L232] USER: Issues đang tắt trên fork (fork mặc định tắt). PRD dựa vào issue để báo khi catchup hỏng và để ghi báo cáo review. Cần bật lại bằng gh repo edit vantt/obsidian-hybrid-search --enable-issues; nên để agent kia làm. Actions trên fork vẫn tắt, đúng như PRD.
+[L264] USER: action là dùng để tự chạy ci catchup khi upstream thay đổi đúng không. cái này bật luôn nếu đúng
+[L748] USER: Tiếp tục điều phối plan vantt/plans/261102-0349-fork-master-roadmap/plan.md: kiểm tra agent Đ0 (V00, V09, V10), commit/push việc đã xong, khởi chạy đợt kế.
+</asks>
+
+<story>
+hook: Bản vá P03 áp sạch trước P00, nhưng xung đột nếu đứng sau
+tension: nho_ma_to (Cùng một bản vá P03 / Đổi vị trí là xung đột, phải dựng lại chuỗi)
+stakes: 2/3
+# Ghép chuỗi 9 bản vá: thứ tự quyết định có áp được không
+
+**Bối cảnh:** Mỗi tính năng của fork là một bản vá riêng, nằm trên một tag upstream. Hai bản vá sửa cùng một file CLI.
+**Chuyện gì xảy ra:** Bản vá P03 áp sạch khi đứng trước P00 nhưng xung đột khi đứng sau. Agent dựng nhánh tích hợp tuần tự, sửa xung đột ở dòng import rồi xuất lại bản vá. Chuỗi đã được dựng lại nhiều lần, mỗi lần thêm bản vá mới vào đúng vị trí. Lần dựng cuối có 8 bản vá và 2083 test xanh, và sau đó thêm P07 thành 9 bản vá.
+**Bài học:** Với nhiều bản vá cùng chạm một file, có một nhánh tích hợp duy nhất và kiểm lại toàn chuỗi mỗi khi thêm bản vá, đừng chỉ nối vào cuối.
+**Artefact:** Danh sách thứ tự bản vá trong series (không nhạy cảm).
+</story>
+
+<excerpt>
+[L897] USER: <task-notification>
+<task-id>a02f473bdfa7cb1ff</task-id>
+<tool-use-id>toolu_01RGYA7MiL7M1jJKNhtNMc3f</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a02f473bdfa7cb1ff.output</output-file>
+<status>completed</status>
+<summary>Agent "V07 P03 vector-export" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+Summary: P03 `vector-export` is committed as one commit on `vantt/work/vector-export` and exported as a patch. It adds `ohs vectors` and `ohs neighbors` (JSON Lines) plus core functions that V08 can reuse. The stdio actions are left to V08/P04, as the PRD assigns them.
+
+Files (shared tree `/home/vantt/projects/obsidian-hybrid-search`):
+- `vantt/patches/0003-vector-export.patch`
+- `vantt/patches/0003-vector-export.spec.md`
+- `vantt/probes/vector-export.mjs`
+- `vantt/plans/261102-1204-v07-vector-export/plan.md` (status: completed)
+
+Worktree: `/home/vantt/projects/ohs-wt/wt-vector-export`, branch `vantt/work/vector-export` (commit e609bee on top of the P01 branch). I removed its `dist` and the temporary upstream build directory.
+
+The patch touches one existing upstream file, `src/transports/cli.ts`, and adds three new files:
+- `src/storage/note-vectors.ts`
+- `src/search/note-vectors.ts`
+- `test/vantt/vector-export.test.ts`
+
+There is no schema change, so `INDEX_SCHEMA_VERSION` is unchanged and the commands only read the DB.
+
+API for V08:
+- `exportNoteVectors(opts)` and `findNoteNeighbors(opts)` both return `{meta, records}`, where `records` is an `Iterable` of per-note objects or `{path, error}`.
+- `opts.ohsVersion` is required, so the transport must pass it.
+- V08 only needs to write `meta` and each record as JSON.
+
+Behaviour you may want to know:
+- **Normalization:** `--normalize` is on by default, and I added `--no-normalize` for raw vectors. Cosine in `neighbors` always runs on unit vectors.
+- **Errors:** a requested note that can't be answered gets a `{path, error}` line and the command exits 1. A missing model or a dimension mismatch aborts with `VectorExportError`.
+- **`--scope`:** it only limits the candidate notes, not the source notes.
+
+series.toml entry:
+```toml
+[[patches]]
+id = "vector-export"
+name = "feat(search): export note vectors and nearest notes as JSON Lines"
+patc …[+1385]
+[L901] AGENT: V07 (P03) xong. Kiểm chuỗi P00 → P01 → P03 → P09 trên worktree kiểm tra.
+[L902] TOOL Bash: cd /home/vantt/projects/ohs-wt/chk-series && git reset -q --hard v0.17.2 && for p in 0000-fork-identity 0001-language-pack-api 0003-vector-export 0009-unicode-inline-tags; do HUSKY=0 git am -q --3way /home/vantt/projects/obsidian-hybrid-search/vantt/patches/$p.patch && echo "OK $p" || { echo "FAIL $ …[+34]
+[L907] RESULT: OK 0000-fork-identity | OK 0001-language-pack-api
+[L920] AGENT: P03 xung đột khi đứng sau P00 vì cả hai đều sửa `cli.ts`. Xem mức xung đột.
+[L921] TOOL Bash: cd /home/vantt/projects/ohs-wt/chk-series && git status --short | grep -v '^A ' | head; git diff --name-only --diff-filter=U; git diff | head -60
+[L922] RESULT: Shell cwd was reset to /home/vantt/projects/obsidian-hybrid-search
+…
+[L928] RESULT: 4a396f2 feat(language): add a language-pack extension point | error: Failed to merge in the changes.
+[L933] AGENT: Chỉ là xung đột dòng import, giữ cả hai. Tôi dựng nhánh ghép tuần tự `vantt/work/series` ở worktree này và xuất lại các bản vá đã sửa.
+[L934] TOOL Bash: cd /home/vantt/projects/ohs-wt/chk-series && python3 - <<'EOF' p='src/transports/cli.ts' s=open(p).read() a=s.index('<<<<<<< HEAD\n'); m=s.index('=======\n',a); e=s.index('>>>>>>> ',m); e2=s.index('\n',e)+1 s=s[:a]+s[a+len('<<<<<<< HEAD\n'):m]+s[m+len('=======\n'):e]+s[e2:] open(p,'w').write(s) EOF  …[+137]
+[L935] RESULT: import { MAX_CPU_THREADS, saveCpuThreads } from '../inference/inference-settings.js'; | import { enableModelDownloadProgress } from '../inference/model-download-progress.js';
+[L944] AGENT: P02 cũng vừa xong và phải đứng trước P03. Dựng lại theo đúng thứ tự P00, P01, P02, P03, P09.
+[L945] TOOL Bash: cd /home/vantt/projects/ohs-wt/chk-series && R=/home/vantt/projects/obsidian-hybrid-search/vantt/patches && git branch -f vantt/work/p03-resolved 0d9fed6 && git reset -q --hard 4a396f2 && HUSKY=0 git am -q --3way $R/0002-db-path.patch && echo OK-P02 && (HUSKY=0 git cherry-pick 0d9fed6 >/dev/null &&  …[+52]
+[L946] RESULT: OK-P02 | OK-P03
+[L950] TOOL Bash: cd /home/vantt/projects/ohs-wt/chk-series && R=/home/vantt/projects/obsidian-hybrid-search/vantt/patches && HUSKY=0 git am -q --3way $R/0009-unicode-inline-tags.patch && echo OK-P09 && git log --oneline -6 && git checkout -q -B vantt/work/series
+[L951] RESULT: OK-P09 | 2bc214b fix(content): accept Unicode letters in inline tags
+[L956] AGENT: Chuỗi P00, P01, P02, P03, P09 đã ghép xong trên nhánh `vantt/work/series`. Chạy build và toàn bộ test upstream trên nhánh ghép (chạy nền).
+…
+[L1068] RESULT: lint=0 | [exited with code 0]
+[L1075] AGENT: Nhánh ghép P00, P01, P02, P03, P09 xanh: 117 file, 2049 test, lint đạt. Xuất lại P02, P03 từ nhánh ghép, chèn vào chuỗi đúng vị trí, rồi commit V06 và V07.
+[L1076] TOOL Bash: cd /home/vantt/projects/ohs-wt/chk-series && R=/home/vantt/projects/obsidian-hybrid-search/vantt/patches && git format-patch -1 59c6d27 --stdout > $R/0002-db-path.patch && git format-patch -1 85658a1 --stdout > $R/0003-vector-export.patch && cd /home/vantt/projects/obsidian-hybrid-search && python3  …[+3035]
+[L1077] RESULT: fork-identity,language-pack-api,db-path,vector-export,unicode-inline-tags | c75d737 feat(vantt): add database path and vector export patches to the series
+[L1082] AGENT: V06 và V07 đã commit (`c75d737`). Giờ thử ghép P05 rồi P06 sau P09 trên nhánh ghép.
+[L1083] TOOL Bash: cd /home/vantt/projects/ohs-wt/chk-series && R=/home/vantt/projects/obsidian-hybrid-search/vantt/patches && git status --short | head -3; for p in 0005-block-anchors 0006-restrict-paths; do HUSKY=0 git am -q --3way $R/$p.patch && echo "OK $p" || { echo "FAIL $p"; git diff --name-only --diff-filter=U …[+16]
+[L1084] RESULT: OK 0005-block-anchors | OK 0006-restrict-paths
+[L1093] AGENT: Cả hai áp sạch. Chạy lại build và test của chuỗi đầy đủ hiện có (chạy nền).
+…
+[L1554] RESULT: knip=0 | 4c69fbf feat(search): restrict search to a given set of note paths
+[L1558] AGENT: Mọi cổng đều xanh. Xuất lại P04, P09, P05, P06 từ nhánh ghép, chèn vào `series.toml` đúng thứ tự, rồi commit V08, V23, V24.
+[L1559] TOOL Bash: cd /home/vantt/projects/ohs-wt/chk-series && R=/home/vantt/projects/obsidian-hybrid-search/vantt/patches && git format-patch -1 65e54d5 --stdout > $R/0004-stdio-parity.patch && git format-patch -1 3d9f985 --stdout > $R/0009-unicode-inline-tags.patch && git format-patch -1 fc0a88f --stdout > $R/0005- …[+4241]
+[L1564] RESULT: fork-identity,language-pack-api,db-path,vector-export,stdio-parity,unicode-inline-tags,block-anchors,restrict-paths | 16
+[L1570] TOOL Agent: V11b P01 contract fixes
+[L1571] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: a081aeb1492f27532 (internal ID - do not mention to user. Use SendMessa …[+86]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

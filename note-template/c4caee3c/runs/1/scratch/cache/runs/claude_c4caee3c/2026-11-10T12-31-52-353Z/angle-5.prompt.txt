@@ -1,0 +1,276 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ tìm kiếm chạy cục bộ trên kho ghi chú Obsidian, kết hợp tìm theo nghĩa, tìm từ khoá, tên, thẻ, thư mục và liên kết giữa các ghi chú. Có ba cách dùng: plugin Obsidian để tìm khi đang viết, máy chủ MCP để tác tử AI tìm và đọc ghi chú, và công cụ dòng lệnh cho việc lập chỉ mục và viết script. Dữ liệu lưu cục bộ bằng SQLite, mô hình nhúng mặc định chạy trên máy, và có thể tuỳ chọn dùng API embedding tương thích OpenAI.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L2474] USER: L24 thì làm gì
+[L2491] USER: ok xác nhận làm nhé. thêm vào goal
+[L2569] USER: vậy là mac cũ nhất năm nào?
+</asks>
+
+<story>
+hook: Agent nói kết quả cố định, nhưng đổi CPU là lệch 0,063
+tension: tuong_ma_hoa_ra (Agent tin kết quả là xác định / Mỗi loại CPU cho một số khác)
+stakes: 2/3
+# ONNX cho số khác nhau theo CPU, tiêu chí Mac Intel đổi ba lần
+
+**Bối cảnh:** macOS Intel cần onnxruntime-node, nhưng bản 1.30 không có binary cho darwin-x64. Chủ dự án chọn ghim bản 1.23.2 chỉ cho gói này.
+**Chuyện gì xảy ra:** Tiêu chí đầu là lệch so với Linux dưới 0,01, nhưng bản ARM không ghim cũng lệch 0,063, vì ONNX lượng tử cho số khác nhau theo CPU. Tiêu chí thứ hai đo trên cùng máy. Kết quả: multilingual +0,063, vi-synonym −0,017, và trên một CPU khác thì baseline upstream là 0,728 thay vì 0,735. Tiêu chí cuối cùng do chủ dự án chọn: chỉ chặn khi có hạng mục tụt quá 0,01. Agent từng nói kết quả là xác định, nhưng thực ra chỉ xác định trên cùng một loại CPU.
+**Bài học:** Kết quả model lượng tử phụ thuộc phần cứng. Đo lại trên cùng loại máy, và ghi rõ tiêu chí đã đổi bao nhiêu lần cùng lý do.
+**Artefact:** Bảng chênh lệch điểm theo hạng mục giữa bản ghim và bản gốc (không nhạy cảm).
+</story>
+
+<excerpt>
+[L2553] RESULT: The user answered: "Gói macOS Intel không dựng được: onnxruntime-node 1.30.0 (upstream dùng) không có bản dựng sẵn cho darwin-x64. Xử lý thế nào?"="như vậy là không dùng được MacOS?", "Gói giải nén nặng 280–330 MB, vượt mục tiêu 250 MB của PRD 8.2 (r …[+221]
+[L2561] AGENT: **macOS vẫn dùng được.** Chỉ máy Mac đời cũ chạy chip Intel là chưa có gói. Mọi máy Mac chip Apple (M1, M2, M3, M4…) dùng gói `darwin-arm64`, gói này đã dựng và qua smoke test trên máy macOS sạch của GitHub. Apple đã ngừng bán Mac Intel từ 2023, nên phần lớn người dùng Mac hiện nay dùng được gói.
+
+**Windows: gói đã có và chạy được trên máy sạch.** File `win32-x64` (zip, 102,6 MB) đã đăng trong release [`v0.17.2-vantt.1`](https://github.com/vantt/obsidian-hybrid-search/releases/tag/v0.17.2-vantt.1). Smoke test chạy trên máy Windows sạch của GitHub, không cài sẵn Node hay npm, và xanh hết:
+- Kiểm sha256 và hash của từng file trong gói.
+- Giải nén vào thư mục có dấu cách và chữ tiếng Việt.
+- Chạy `ohs status`, `reindex`, `search`.
+- Câu tìm mẫu qua `ohs serve --stdio`, bắt tay MCP (`initialize`, `tools/list`), nạp gói tiếng Việt.
+
+Bốn điểm cần biết trước khi đưa cho khách:
+1. **Cài bằng tay:** hiện là giải nén zip rồi chạy. Bộ cài một bước (`pkm setup`) là việc của repo dự án (V16), chưa làm.
+2. **Chưa ký mã:** Windows SmartScreen có thể cảnh báo lần chạy đầu. Smoke test trên CI không đo được cảnh báo này, nên cần thử trên một máy Windows thật.
+3. **Lần chạy đầu cần mạng** để tải model nhúng. Gói có sẵn model là L07, đang để sau.
+4. **Gói tiếng Việt mới kiểm đến mức nạp được và bỏ dấu được.** Chưa so kết quả tìm khi bật và tắt gói trên bản Windows.
+
+Về kích thước: đã ghi nhận bạn chấp nhận, tôi sẽ sửa PRD 8.2 theo số đo thật.
+
+Với Mac Intel, tôi đề nghị **bỏ khỏi danh sách nền bắt buộc**. Dòng dựng gói cho nền này vẫn giữ trong CI ở dạng tuỳ chọn, để tự dựng lại nếu sau này upstream đổi sang thư viện có hỗ trợ Intel. Bạn đồng ý không?
+[L2569] USER: vậy là mac cũ nhất năm nào?
+[L2571] AGENT: Mac cũ nhất dùng được là **các máy M1 ra mắt tháng 11/2020**: MacBook Air M1, MacBook Pro 13" M1 và Mac mini M1. Sau đó là mọi Mac chip Apple: iMac M1 (2021), và các dòng M2, M3, M4 về sau.
+
+Hệ điều hành tối thiểu là **macOS 11 Big Sur**, do Node 22 trong gói yêu cầu. Máy M1 xuất xưởng đã chạy Big Sur nên không vướng.
+
+**Không dùng được: mọi Mac chip Intel**, kể cả máy mua khá gần đây. Apple bán song song Mac Intel và Mac chip Apple một thời gian:
+- MacBook Pro 13"/16" Intel và iMac 27" Intel 2020 vẫn bán tới 2021.
+- Mac mini Intel bán tới đầu 2023.
+- Mac Pro Intel (2019) bán tới giữa 2023.
+
+Nghĩa là một khách mua Mac Intel năm 2021–2023 cũng không cài được gói. Cách nhận biết: vào  > About This Mac. Nếu dòng "Chip" ghi Apple M… thì dùng được; nếu là dòng "Processor" ghi Intel thì không.
+
+Nếu khách của dự án có người dùng Mac Intel, phương án khả thi là ghim một bản `onnxruntime-node` cũ còn hỗ trợ Intel, làm thành bản vá riêng cho gói Intel. Cách này tốn công bảo trì qua mỗi bản upstream, và có thể chạy lệch đôi chút so với các nền khác. Bạn chọn bỏ Mac Intel, hay làm bản vá này?
+[L2579] USER: ghim một bản onnxruntime-node cũ còn hỗ trợ Intel
+[L2585] AGENT: Tôi giao lại cho agent V03, vì nó đã nắm mã dựng gói. Hướng làm: chỉ riêng gói macOS Intel thay `onnxruntime-node` bằng bản cũ nhất còn kèm bản dựng cho Intel, ngay ở bước đóng gói. Mã OHS và ba nền còn lại giữ nguyên, nên bất biến "không có gói ngôn ngữ thì kết quả giống upstream" không bị ảnh hưởng trên các nền đó. Agent cũng sẽ đo xem kết quả tìm trên Intel có lệch so với Linux không.
+[L2586] USER: [Request interrupted by user]
+[L2590] USER: chưa hiểu: `Với Mac Intel, tôi đề nghị bỏ khỏi danh sách nền bắt buộc. Dòng dựng gói cho nền này vẫn giữ trong CI ở dạng tuỳ chọn, để tự dựng lại nếu sau này upstream đổi sang thư viện có hỗ trợ Intel.`
+…
+[L2875] AGENT: V20b xong nhưng tôi chưa merge vào `master`.
+
+**Đã đạt:**
+- Từ điển từ ghép mới có 20.523 từ, học bằng thống kê cặp âm tiết trên ba bộ dữ liệu có giấy phép CC BY 4.0: câu dịch từ Wikinews, văn bản pháp luật Việt Nam, và một bộ văn bản do model sinh. Agent đã đọc giấy phép của từng bộ. Không mục nào chép từ pyvi; pyvi chỉ dùng để chọn ngưỡng.
+- Script dựng lại cho ra file giống hệt từng byte.
+- Fixture `v0.11.0` có thêm 15 câu từ ghép khó. `vi-compound` tăng từ 0,632 (upstream) lên 0,983. Từ điển mới tốt hơn hoặc bằng danh sách pyvi ở mọi hạng mục.
+- Gói giờ báo lỗi rõ ràng khi thiếu dữ liệu. Thư mục `data/` vốn đã nằm trong gói từ V20, nên phát hiện thiếu `data/` của V22 là do agent đó đo trên bản cũ.
+
+**Chưa đạt:** cổng `vi-snippet` còn 14/15. Câu "quen ngu" rơi khỏi top 10 vì fixture mới thêm note. Câu này vốn chỉ đứng hạng 8, nên vốn đã sát ngưỡng. Merge bây giờ thì CI sẽ đỏ. Tôi đã giao một agent tìm nguyên nhân và sửa thứ hạng trong gói bằng cơ chế chung: không sửa riêng cho câu này, không đổi fixture, không hạ ngưỡng. Agent làm trên nhánh gộp V20b với `master`; khi cổng xanh, tôi merge cả hai cùng lúc.
+
+**Đang chạy:**
+- V03: đo lại điều kiện cho gói Mac Intel.
+- V14: báo cáo review cuối, sau đó L24.
+- Agent sửa test so ảnh chụp kết quả của P01.
+- Agent sửa thứ hạng `vi-snippet`.
+[L2890] USER: <task-notification>
+<task-id>aa32b998406ef26b1</task-id>
+<tool-use-id>toolu_01YJv7irbbNyZRdiWXEDtsrC</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/aa32b998406ef26b1.output</output-file>
+<status>completed</status>
+<summary>Agent "V03 bundles and first release" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: BLOCKED on the Intel macOS parity check. The same-machine pin comparison fails, so I did not publish the darwin-x64 bundle. The platform is not dropped, and the Release stays at 3 bundles.
+
+**Parity numbers (run 41404189339)**
+- The `pin-effect` job ran on one ubuntu runner with the same release tree. It compared locked `onnxruntime-node` 1.30.0 against the pinned 1.23.2 and applied the 0.01 nDCG@5 limit.
+- Only two categories fail:
+
+| Corpus / category | Locked 1.30.0 | Pinned 1.23.2 | Delta |
+|---|---|---|---|
+| obsidian-help multilingual | 0.413 | 0.476 | +0.063 |
+| vi-synonym | 0.729 | 0.712 | -0.017 |
+
+- All other categories are within 0.01. obsidian-help ALL moved +0.007 and vi-semantic +0.004.
+- The earlier local Linux run gave the same two deltas.
+
+**Intel smoke**
+- Smoke passes on `macos-15-intel`. The bundle is 87.5 MB packed and 281.6 MB unpacked.
+- The Intel eval numbers are saved as an informational baseline in `vantt/eval/baselines/darwin-x64/`. obsidian-help nDCG@5 is 0.742; vi-search with the pack on is 0.932.
+
+**Gating**
+- Each platform's smoke job now uploads its own bundle to the Release after it passes. darwin-x64 also needs the `pin-effect` result to be ok.
+- A failure on one platform turns only that platform's job red. In this run darwin-x64 went red and the other three stayed green and published. The release is not marked latest.
+- `finalize` writes the release notes. The notes mark darwin-x64 as "not published" and include the pin-effect table.
+- The Release now has 9 assets: 3 bundles with `.sha256` and `.bundle.json`.
+
+**Docs**
+- PRD 8.4 step 6 now describes the same-machine criterion and the 2026-11-02 result. README and the sub-plan are updated.
+
+**Concerns**
+- The pin-effect result is deterministic, so a rerun will give the same numbers.
+- To unblock Intel, the user can choose among:
+  - Accept these deltas, since 1.23.2 actually improves multilingu …[+744]
+[L2893] AGENT: V03 đã đo lại theo điều kiện mới: trên cùng một máy, so `onnxruntime-node` bản ghim 1.23.2 với bản gốc 1.30.0. Hai hạng mục vượt ngưỡng 0,01, các hạng mục còn lại đều trong ngưỡng:
+- `obsidian-help multilingual`: bản ghim **tốt hơn** 0,063.
+- `vi-synonym`: bản ghim **kém hơn** 0,017. Hạng mục này có 15 câu, nên mức lệch đó tương đương một câu tụt vài hạng.
+
+Kết quả đo không đổi qua các lần chạy. Gói Mac Intel đã dựng xong, smoke test xanh, nhưng chưa phát hành. Ba gói kia vẫn trên release như cũ.
+
+Ngưỡng 0,01 cho việc ghim là tôi tự đặt ra, PRD không quy định, nên quyết định thuộc về anh.
+[L2894] TOOL AskUserQuestion: {"questions":[{"question":"Gói Mac Intel (onnxruntime 1.23.2) so với bản gốc trên cùng máy: multilingual +0,063 (tốt hơn), vi-synonym −0,017 (tương đương 1 câu tụt vài hạng), các hạng mục khác trong 0,01. Smoke xanh. Phát hành không?","header":"Mac Intel","multiSelect":false,"options":[{"label":"Phá …[+477]
+[L2895] RESULT: Your questions have been answered: "Gói Mac Intel (onnxruntime 1.23.2) so với bản gốc trên cùng máy: multilingual +0,063 (tốt hơn), vi-synonym −0,017 (tương đương 1 câu tụt vài hạng), các hạng mục khác trong 0,01. Smoke xanh. Phát hành không?"="Phát  …[+89]
+[L2899] TOOL SendMessage: {"to":"aa32b998406ef26b1","summary":"V03: user approves Intel release with deltas","message":"User decision (2026-11-02): publish the darwin-x64 bundle and accept the measured pin deltas (obsidian-help multilingual +0.063, vi-synonym −0.017; all others within 0.01). Please: (1) record the accepted d …[+736]
+[L2900] RESULT: {"success":true,"message":"Resuming agent aa32b99","resumedAgentId":"aa32b998406ef26b1","pin":{"id":"aa32b998406ef26b1","name":"aa32b998406ef26b1","ref":"c3c904"}}
+[L2909] AGENT: Đã giao V03 phát hành gói Mac Intel theo quyết định của anh. Agent sẽ làm bốn việc:
+
+1. Ghi đúng hai mức lệch anh vừa chấp nhận vào bước kiểm của CI, chỉ cho phép thêm 0,005. Nếu bản ghim lệch thêm, hoặc có hạng mục mới vượt 0,01, CI vẫn báo lỗi. Ngưỡng chung không bị nới.
+2. Đưa gói Mac Intel cùng sha256 lên release `v0.17.2-vantt.1`, ghi chú các mức lệch kèm dòng "user chấp nhận 2026-11-02".
+3. Đánh dấu release là bản mới nhất khi đủ 4 gói.
+4. Cập nhật PRD 8.4, README và sub-plan.
+…
+[L3344] TOOL Bash: echo "17:40 CI catchup 41408657204 QUALITY_FAILED only upstream-no-pack (0.735 local baseline vs 0.728 runner). V12 agent fixing: same-run upstream comparison; may commit/push. vantt.2 bundles: darwin-x64 pin-effect failed (nondeterministic?) -> V03 agent investigating + rerun. Tag v0.17.2-vantt.3 N …[+74]
+[L3345] RESULT: (Bash completed with no output)
+[L3349] AGENT: Lượt catchup trên CI vẫn đỏ. Đó là hỏng thật, nhưng chỉ ở một mục và có nguyên nhân rõ.
+
+**Phần đã sửa xong:** lỗi test bị thứ tự kết quả bằng điểm làm hỏng không còn. Test, 9 bản vá, bài kiểm bất biến, `vi-snippet` 15/15 và mọi mục tiêu G3/G8 đều xanh.
+
+**Phần còn hỏng:** mục `upstream-no-pack` của cổng chất lượng. Mục này so điểm eval tiếng Anh (không có gói) với baseline đã ghi. Baseline ghi trên máy này là 0,735, còn runner GitHub đo được 0,728, chênh hơn mức cho phép 0,005. ONNX lượng tử cho số hơi khác nhau theo CPU, nên so số giữa hai máy khác nhau là sai cách. Tôi không hạ baseline. Agent V12 sẽ sửa để mục này so với bản upstream được dựng và đo ngay trong cùng lần chạy, như bài kiểm bất biến đang làm. Baseline đã ghi chỉ còn dùng để báo độ trôi. Agent được phép tự commit, push và theo dõi CI cho tới khi xanh.
+
+**Gói cho `v0.17.2-vantt.2`:** ba gói đã đăng. Gói Mac Intel lại trượt ở bước kiểm mức lệch của bản ghim, dù trước đó V03 khẳng định kết quả bước này không đổi giữa các lần chạy. Tôi đã giao V03 tìm nguyên nhân, đo độ dao động giữa các lần chạy, làm cho bước kiểm ổn định mà không nới các mức lệch đã chấp nhận, rồi dựng lại gói.
+
+Vì catchup hỏng nên tag `v0.17.2-vantt.3` chưa được đẩy. Bản ổn định hiện tại vẫn là `v0.17.2-vantt.1`, đủ 4 gói.
+
+Đang chạy: V12 (sửa cổng chất lượng), V03 (bước kiểm gói Intel), V14 (báo cáo cuối và L24).
+[L3361] USER: <task-notification>
+<task-id>aa32b998406ef26b1</task-id>
+<tool-use-id>toolu_019DBMWNhUe76MNBAq7uxr9J</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/aa32b998406ef26b1.output</output-file>
+<status>completed</status>
+<summary>Agent "V03 bundles and first release" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE. `v0.17.2-vantt.2` now has all 4 bundles (12 files) and is marked latest. The pin-effect check is fixed so it no longer flips on the runner's CPU.
+
+**Why run 41406332060 failed**
+- It used the allow-list version of `bundle-parity.mjs`. The output shows the "Accepted deltas" line and the run's head commit is a071ef9.
+- The eval numbers depend on the CPU class of the `ubuntu-latest` runner. That run landed on a different CPU than the earlier green ones.
+- On it, the locked side scored obsidian-help ALL 0.728 (green runs: 0.735). The deltas from the pin were:
+
+| Corpus / category | Delta |
+|---|---|
+| obsidian-help ALL | +0.018 |
+| obsidian-help keyword | +0.011 |
+| obsidian-help conceptual | +0.029 |
+| obsidian-help multilingual | +0.054 |
+| vi-synonym | +0.023 |
+
+- On AMD EPYC the same check gives multilingual +0.063 and vi-synonym −0.017, the accepted values.
+- So I was wrong to call the result deterministic across machines. It is deterministic per CPU class, not across them.
+
+**Measurement**
+- I ran the check on 3 runners: AMD EPYC 9V74, 7763 and 7763. All 3 gave identical numbers.
+- Re-running the same side on the same machine gave identical results.
+- The "noise" I first saw between locked and locked2 was my own bug. The pinned run had already modified the tree, so the second "locked" run was actually pinned.
+
+**Fix**
+- The check now lives in `.github/workflows/vantt-pin-effect.yml`, which records the CPU model. It only counts on AMD EPYC, the class the user's accepted deltas were measured on.
+- On another CPU the attempt is marked "inconclusive" and retries on a fresh runner, up to 3 attempts. If none lands on EPYC, the verdict is not ok and darwin-x64 is not published, with a visible error.
+- The accepted deltas are unchanged: multilingual +0.063 and vi-synonym −0.017, margin 0.005, every other category within 0.01.
+- Run 41411464446 for `v0.17.2-vantt.2` hit a non-EP …[+990]
+[L3370] AGENT: V03 đã sửa xong: release `v0.17.2-vantt.2` giờ có đủ 4 gói kèm sha256 và được đánh dấu là bản mới nhất.
+
+Nguyên nhân lần trượt trước: GitHub phân runner lúc thì máy AMD EPYC, lúc thì loại CPU khác, và ONNX cho số khác nhau theo loại CPU. Trên cùng một loại CPU thì kết quả lặp lại y hệt; ba runner EPYC đều cho cùng một số. Hai mức lệch anh đã chấp nhận được đo trên EPYC. Vì vậy bước kiểm giờ chỉ tính kết quả chạy trên EPYC. Gặp máy khác thì nó thử lại trên runner mới, tối đa 3 lần. Nếu vẫn không gặp EPYC, gói Mac Intel không được đăng và CI báo lỗi rõ. Các mức lệch đã chấp nhận giữ nguyên.
+
+Phát hiện này cũng khớp với lỗi `upstream-no-pack` của catchup: 0,735 trên một loại CPU, 0,728 trên loại khác. Hướng sửa đã giao cho V12 là so với bản upstream đo trong cùng một lần chạy, nên không còn phụ thuộc vào loại máy.
+[L3371] TOOL Bash: echo "18:00 V03: vantt.2 has 4 bundles, latest (f5f469b). pin-effect only counts on AMD EPYC runners, retries up to 3 (vantt-pin-effect.yml). Same CPU-class cause explains upstream-no-pack 0.735 vs 0.728. Waiting: V12 same-run fix + CI green, V14 final report + L24, then merge vi-snippet-fix, README …[+64]
+[L3372] RESULT: (Bash completed with no output)
+…
+[L3893] AGENT: Catchup đã xanh và đẩy `v0.17.2-vantt.4`, kèm từ điển có giấy phép và các bản sửa mới nhất. Tôi đã đóng issue #5.
+
+Release `vantt.4` hiện có 9 file, tức 3 gói Windows, Mac ARM và Linux. Gói Mac Intel trượt ở bước eval và bước so mức lệch của bản ghim, nên release chưa được đánh dấu là bản mới nhất. Bản mới nhất vẫn là `vantt.3`, đủ 4 gói.
+
+Tôi đã giao V03 tìm nguyên nhân thật. Có hai khả năng:
+- **Lỗi hạ tầng**, ví dụ bước eval hỏng trên máy Intel với fixture mới. Trường hợp này V03 tự sửa.
+- **Mức lệch thật sự đã đổi.** Hai mức anh chấp nhận được đo trên gói cũ, mà gói `vi` đã đổi nhiều từ `vantt.3` sang `vantt.4`. Trường hợp này V03 sẽ không tự sửa danh sách cho phép, mà báo số mới để anh quyết.
+
+Đang chờ:
+- V03: lỗi gói Mac Intel của `vantt.4`.
+- V14: báo cáo cuối kèm biểu đồ L24.
+- Anh hoặc agent bên Windows: chạy `--private-detail` và `learn-abbr` trên vault thật cho V15b.
+[L3903] USER: <task-notification>
+<task-id>aa32b998406ef26b1</task-id>
+<tool-use-id>toolu_01BBJftShfaopUo7eijdDRh5</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/aa32b998406ef26b1.output</output-file>
+<status>completed</status>
+<summary>Agent "V03 bundles and first release" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS. I fixed the infrastructure bug. A genuine new pin delta on vi-snippet remains, so darwin-x64 is not published for `v0.17.2-vantt.4`.
+
+**Root cause of the red catchup run (41419225358)**
+- The failure was an infrastructure bug, not a pin delta. `eval-darwin-x64` and `pe1` (which ran on an AMD EPYC 7763, so it was not inconclusive) both died with "golden-set.json differs from the golden set generated with this fixture version".
+- The workflows cloned `obsidian-test-fixture` at a hardcoded `v0.10.0`, while `run-eval.mjs` and the committed golden set had moved to `v0.11.0`.
+- I fixed it in `vantt-bundles.yml` and `vantt-pin-effect.yml`. Both now read the tag from `FIXTURE_TAG` in `run-eval.mjs` and fail clearly if it is missing.
+
+**Re-run on `v0.17.2-vantt.4` (run 41422251427, reusing the vantt.4 bundles)**
+- The pin-effect attempt landed on EPYC 7763, ran on the same machine, and finished cleanly. Locked 1.30.0 against pinned 1.23.2, nDCG@5:
+
+| Category | Locked | Pinned | Delta | Result |
+|---|---|---|---|---|
+| obsidian-help ALL | 0.735 | 0.742 | +0.007 | pass |
+| obsidian-help multilingual | 0.413 | 0.476 | +0.063 | accepted (unchanged) |
+| vi ALL | 0.944 | 0.945 | +0.001 | pass |
+| vi-semantic | 0.446 | 0.450 | +0.004 | pass |
+| vi-synonym | 0.689 | 0.668 | −0.021 | accepted (−0.017 ± 0.005) |
+| vi-snippet | 0.951 | 0.975 | +0.024 | FAIL |
+
+- Every other category is +0.000.
+- vi-snippet is a new category outside the accepted deltas, so it needs the user's decision. The pin moves it up, from 0.951 to 0.975.
+- vi-synonym moved from the old −0.017 to −0.021. That still passes the allow-list, but is close to its edge.
+- I did not edit the allow-list.
+
+**State of the vantt.4 release**
+- It has win32-x64, darwin-arm64 and linux-x64 with `.sha256` files.
+- darwin-x64 stays unpublished (red smoke job by design).
+- vantt.4 is not marked latest; vantt.3 is still late …[+613]
+[L3912] AGENT: V03 đã tìm ra nguyên nhân thật. Đó là lỗi hạ tầng: hai workflow tải fixture ở bản `v0.10.0` cố định, trong khi bộ eval đã chuyển sang `v0.11.0`. V03 đã sửa để workflow đọc phiên bản fixture từ `run-eval.mjs`.
+
+Chạy lại trên máy EPYC thì còn một mức lệch mới mà anh chưa từng duyệt. Ở `vi-snippet`, bản ghim cho kết quả **tốt hơn** 0,024. Mức lệch `vi-synonym` giờ là −0,021, vẫn nằm trong khoảng cho phép, nhưng sát ngưỡng.
+[L3913] TOOL AskUserQuestion: {"questions":[{"question":"Gói Mac Intel (onnxruntime ghim 1.23.2) trên bản vantt.4 có mức lệch mới: vi-snippet +0,024 (TỐT HƠN); vi-synonym −0,021 (kém hơn, trước là −0,017); multilingual +0,063 như cũ. Danh sách cho phép sẽ lại lỗi thời mỗi lần gói vi đổi. Xử lý thế nào?","header":"Lệch Intel","mu …[+546]
+[L3914] RESULT: Your questions have been answered: "Gói Mac Intel (onnxruntime ghim 1.23.2) trên bản vantt.4 có mức lệch mới: vi-snippet +0,024 (TỐT HƠN); vi-synonym −0,021 (kém hơn, trước là −0,017); multilingual +0,063 như cũ. Danh sách cho phép sẽ lại lỗi thời mỗ …[+116]
+[L3919] TOOL SendMessage: {"to":"aa32b998406ef26b1","summary":"V03: user picks regression-only rule","message":"User decision (2026-11-02): change the pin-effect rule to \"block only on regressions\": any category where pinned − locked ≥ −0.01 passes (improvements always pass, any size); a category drop worse than −0.01 fail …[+784]
+[L3920] RESULT: {"success":true,"message":"Resuming agent aa32b99","resumedAgentId":"aa32b998406ef26b1","pin":{"id":"aa32b998406ef26b1","name":"aa32b998406ef26b1","ref":"c3c904"}}
+[L3923] TOOL Bash: echo "20:30 User: pin-effect rule = block only on regressions (>0.01 drop), vi-synonym accepted to -0.03. V03 implementing + publishing Intel for vantt.4." >> /home/vantt/projects/ohs-wt/lead-state.txt
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

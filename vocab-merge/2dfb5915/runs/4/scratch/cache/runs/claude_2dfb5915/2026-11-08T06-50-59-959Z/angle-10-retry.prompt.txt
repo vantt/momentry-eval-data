@@ -1,0 +1,149 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L1017] USER: bật 1 agent dùng skill cs-packaging-distribution để audit co dữ án này
+[L1113] USER: đoc báo cáo và cho biết cần làm gì với phần packaging-distribution
+[L1140] USER: b,c đồng ý. chưa hiểu a. do ohs của tôi là private?
+</asks>
+
+<story>
+hook: Giữ repo private cho an toàn, rồi public mới là đường cài gọn nhất
+tension: chon_mot_mat_mot (giữ private, phải dùng gh làm đường dự phòng / mở public thì cài chỉ một dòng irm | iex)
+stakes: 1/3
+# Chuyển OHS sang bản phát hành công khai: từ đăng nhập gh sang tải thẳng
+
+**Bối cảnh:** Gói OHS ban đầu lấy từ artifact CI, GitHub bắt đăng nhập để tải, nên máy khách phải có gh và đăng nhập. Repo pkm cũng đang private.
+**Chuyện gì xảy ra:** Ban đầu chọn giữ private và dùng gh làm đường dự phòng. Sau khi fork OHS có Release công khai (vantt.3, rồi vantt.4), chuyển nguồn sang Release. Khi người dùng chuyển repo sang public, cài đặt chỉ cần irm | iex, không cần gh.
+**Bài học:** Artifact CI không phải nguồn phân phối; đưa gói lên Release công khai để máy khách không cần tài khoản.
+**Artefact:** Hai lệnh cài (gh cũ và irm mới) để so sánh; che tên người dùng.
+**Góc người ngoài:** cách làm phổ biến là Dùng gói từ artifact tạm thời hoặc yêu cầu người dùng tự tải và cài bằng tay; ở đây khác ở Installer thử URL công khai trước, không được thì rơi về gh; đổi nguồn cũng không cần sửa script. Người đọc muốn biết cách thiết kế installer có đường lui mà không cần đổi code khi chuyển public.
+</story>
+
+<excerpt>
+[L1142] TOOL Bash: gh repo view vantt/obsidian-hybrid-search --json visibility,isFork,parent -q '.visibility+" fork="+(.isFork|tostring)+" parent="+(.parent.owner.login // "")+"/"+(.parent.name // "")'; gh repo view vantt/obsidian-pkm --json visibility -q .visibility
+[L1143] RESULT: PUBLIC fork=true parent=flowing-abyss/obsidian-hybrid-search | PRIVATE
+[L1148] AGENT: Không phải vì OHS private. Repo fork `vantt/obsidian-hybrid-search` đang public. Vấn đề nằm ở chỗ ta đang lấy gói OHS:
+
+- **Artifact của GitHub Actions** (cái ta đang ghim, run `41398112909`): GitHub bắt đăng nhập mới cho tải, kể cả khi repo public. Máy anh/chị có `gh` đã đăng nhập nên tải được. Máy khách không có `gh` thì không tải tự động được.
+- **GitHub Release** của repo public: ai cũng tải được, không cần đăng nhập. Fork chưa đưa gói lên Release vì bước smoke trên darwin-arm64 và win32-x64 đang hỏng.
+
+Câu Q-a chỉ hỏi: trong lúc chờ fork có Release, chấp nhận máy không có `gh` thì thiếu OHS (chỉ `related` bị ảnh hưởng), hoặc cài OHS bằng tay qua `--ohs-package <file zip>`. Với anh/chị thì không sao, vì agent trên Windows sẽ lo phần OHS. Khi fork sửa smoke và đưa gói lên Release, tôi đổi nguồn sang Release là hết vấn đề.
+
+**Có một vấn đề lớn hơn mà kiểm lại mới thấy: repo `vantt/obsidian-pkm` đang private.** Nghĩa là binary `pkm` trên Release của nó cũng cần đăng nhập mới tải được. Vì vậy `install.ps1` dạng `irm …/install.ps1 | iex` không chạy trên máy sạch. Có ba cách:
+
+1. **Mở public `vantt/obsidian-pkm`:** script cài chạy được cho mọi máy. Lưu ý repo có golden kg-solo, là dữ liệu tổng hợp, không có vault thật.
+2. **Giữ private:** máy cài cần `gh auth login`. Script cài sẽ tải bằng `gh release download` khi không tải công khai được.
+3. **Giữ private, phát binary ở một repo public riêng** chỉ chứa Release.
+
+Tôi đề xuất cách 2 cho bây giờ: agent trên Windows có thể đăng nhập `gh`, không phải lộ gì ra ngoài. Script cài sẽ hỗ trợ cả hai đường, nên sau này mở public thì không phải sửa. Anh/chị chọn cách nào?
+[L1160] USER: 3 giữ private, việc này tính sau.
+[L1162] AGENT: Chốt như sau: giữ repo private, cách phát hành công khai tính sau. Hiện tại script cài sẽ dùng `gh` khi không tải công khai được, và cho đổi nguồn tải. Sau này chuyển sang một repo public riêng chỉ chứa Release thì không phải sửa script.
+[L1163] TOOL SendMessage: {"to":"a1f9526676784076c","summary":"Repo is private: add gh fallback to installers","message":"New constraint from the user: vantt/obsidian-pkm is PRIVATE and stays private for now (public distribution, likely a separate public releases-only repo, is decided later). So anonymous download of release …[+952]
+[L1164] RESULT: {"success":true,"message":"Message queued for delivery to a1f9526676784076c at its next tool round. If it finishes first, it is resumed with the message and notifies again, so wait for that notification before resending.","pin":{"id":"a1f952667678407 …[+47]
+[L1169] AGENT: Đã báo cho agent đang sửa phần đóng gói. Script cài sẽ thử tải công khai trước, không được thì dùng `gh release download`. Nguồn tải đổi được bằng cờ hoặc biến môi trường. README sẽ ghi rõ là hiện cần `gh auth login`. Quyết định này cũng sẽ được ghi vào `docs/DECISIONS.md`.
+
+Q-b và Q-c giữ như PRD. Đang chạy song song: phase 10, phase 12, và phần đóng gói.
+[L1177] USER: vậy với ohs, khách có gh cũng phải login github
+[L1178] AGENT: Đúng vậy. Muốn tự tải được OHS, máy khách phải có `gh` và đã `gh auth login`, dù fork OHS là public. Lý do là GitHub chỉ cho tải artifact của Actions khi đã đăng nhập.
+
+Vì repo `pkm` đang private nên khách đằng nào cũng phải `gh auth login` để tải `pkm`. Một lần đăng nhập đó dùng được cho cả hai, không phải làm thêm bước nào cho OHS.
+
+Khi fork đưa gói OHS lên GitHub Release (fork public nên ai cũng tải được), phần OHS không cần đăng nhập nữa. Lúc đó chỉ còn `pkm` cần đăng nhập, cho tới khi anh/chị chọn cách phát hành công khai.
+
+Máy không có `gh` vẫn cài OHS được bằng tay: tải file zip của gói, rồi chạy `pkm mcp install "<vault>" --ohs-package <file zip>`.
+[L1192] USER: <task-notification>
+<task-id>a5d8b1b065c3a467d</task-id>
+<tool-use-id>toolu_01Nn4UWa2kA95nzfLfwL1CQy</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a5d8b1b065c3a467d.output</output-file>
+<status>completed</status>
+<summary>Agent "Phase 12a CLI and MCP skeleton" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I finished the parts of Phase 12 that don't need the tool layer. On kg-solo, the parity harness shows `initialize`, `instructions` and the 8 CLI commands that need no tools matching the golden dump byte for byte. `tools/list` and the 13 graph-query CLI commands still report "not available", because `pkm_core::tools` hasn't landed yet.
+
+Committed on branch `worktree-agent-a5d8b1b065c3a467d`, commit `4dd6224`. Not pushed or merged.
+
+**What works now**
+- **MCP server (`pkm VAULT mcp`):** it supports every startup flag Python's `parser()` has, and gives the same protocol replies as Python:
+  - it echoes the client's protocol version when it is one Python accepts;
+  - it returns the same errors as Python for bad lines, unknown methods and batches;
+  - notifications get no reply.
+- **Rest of the server:** it builds the index in the background and does an incremental rebuild before a tool call once `--refresh-every` has passed, as Python does. It also compacts results, cuts them at `--max-chars`, writes the `--log` JSONL and exits 0 when stdin closes. Replies are printed with Python's `json.dumps` spacing, not the compact form the probe used.
+- **CLI:** `build` (`--full`, `--json`), `stats` and `validate` print exactly what `cli.py` prints, and `loops` without `--max-len` exits 1 like Python. Abbreviated flags work as in argparse.
+- **Install and doctor:** `pkm mcp install …` and `pkm doctor …` are wired in, and the `dead_code` allows are gone. The existing `pkm VAULT build --db` / `pkm VAULT mcp --db` command shape needed no change. A real install into a temporary config built the index, wrote the `kg` entry and passed `--check` and `--remove`. It reports "0 tool" until the tool layer is plugged in.
+- **Checks:** `cargo fmt --all --check`, `cargo clippy --workspace --all-targets --locked -- -D warnings` and `cargo test --workspace --locked` all pass. The tests include running the real binary over std …[+3245]
+[L1201] TOOL Bash: git merge --no-edit worktree-agent-a5d8b1b065c3a467d 2>&1 | tail -1; git diff --name-only --diff-filter=U
+…
+[L2282] AGENT: Commit Python mới (`223c9c3`) đã được chuyển sang Rust, merge vào `main` và push. Đây là lượt đuổi theo đầu tiên của phase 15.
+
+- **Nội dung chuyển:** từ giờ mọi lần `pkm` khởi động OHS (MCP server, lệnh `related`, `doctor --deep`) đều bật gói ngôn ngữ tiếng Việt có sẵn trong bundle OHS. Nếu không bật, `pkm` và MCP `ohs` của anh/chị đọc chung một index nhưng khác cấu hình gói ngôn ngữ, nên OHS sẽ dựng lại index liên tục.
+- **Phần không áp dụng:** các phần chỉ dành cho WSL hoặc cho cách cài OHS bằng npm của bản Python. Lý do từng phần đã ghi trong `spec/PORTING.md`.
+- **Nâng ghim:** `spec/spec.lock` giờ ghim `223c9c3`. Golden đã dựng lại; khác golden cũ đúng một trường là sha đặc tả.
+- **Kiểm sau khi merge:**
+  - fmt, clippy và test đều qua.
+  - Bộ so khớp: 64 mục, 0 lệch, 0 mục chưa có.
+  - `follow`: 0 commit chưa chuyển.
+- **Kiểm với gói OHS thật trên Linux:** OHS báo đã nạp gói ngôn ngữ, và test chạy với gói thật qua.
+
+Plan đã cập nhật: phase 15 xong lượt này, lượt sau chạy khi anh/chị bảo.
+
+**Tin tốt cho phần OHS:** fork OHS giờ đã có gói trên GitHub Release (`v0.17.2-vantt.1` tới `vantt.3`). Nếu bộ cài chuyển sang tải từ Release thay cho artifact CI đang ghim, khách không cần đăng nhập `gh` để lấy OHS nữa, và hết luôn vấn đề artifact hết hạn ngày 2027-01-31. Anh/chị có muốn tôi chuyển sang Release luôn không, và ghim `vantt.3` (bản mới nhất) hay `vantt.1` (cùng phiên bản với artifact đang dùng)?
+
+Phase 16 và 17 vẫn chờ anh/chị: cho phép gắn tag phát hành thử, dùng `pkm` song song một tuần, quyết Q2 (giữ tên `kg` không), và cho phép sửa repo Python.
+[L2285] USER: Stop hook feedback:
+[bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.]: The condition requires the whole plan plans/261102-0535-rust-core-port-master/plan.md to be completed, and the transcript shows it is not. The final assistant message says 'Phase 16 và 17 vẫn chờ anh/chị' (phases 16 and 17 still wait on the user). Phase 02, 03, 05 and 08-11 still have open Windows/OHS/vault-B checks, and the plan table lists phase 13 as still waiting on a clean Windows test. Phase 15 is only at its first catch-up round ('lượt sau chạy khi anh/chị bảo'). The user had also asked to stop at the installable version, and the last user message ('giải thích phase 16,17') did not approve completing those phases. The 'song song' and 'update/commit/push' parts were carried out, but the plan itself is unfinished.
+[L2296] TOOL AskUserQuestion: {"questions":[{"question":"The fork now publishes the OHS package on GitHub Release (v0.17.2-vantt.1 to vantt.3). Should the installer switch from the pinned CI artifact to a Release, so customers don't need a gh login to get OHS?","header":"OHS source","multiSelect":false,"options":[{"label":"Switc …[+1239]
+[L2297] RESULT: Your questions have been answered: "The fork now publishes the OHS package on GitHub Release (v0.17.2-vantt.1 to vantt.3). Should the installer switch from the pinned CI artifact to a Release, so customers don't need a gh login to get OHS?"="Switch,  …[+344]
+[L2303] TOOL Agent: Switch OHS to Release vantt.3
+…
+[L3785] RESULT: X The job was not started because recent account payments have failed or your spending limit needs to be increased. Please check the 'Billing & plans' section in your settings | assets / asset x86_64-pc-windows-msvc: .github#1
+[L3794] AGENT: Chưa ra được rc.3: GitHub Actions từ chối chạy mọi job, không phải do code. Thông báo của GitHub:
+
+> The job was not started because recent account payments have failed or your spending limit needs to be increased.
+
+Repo đang private, nên CI dùng số phút Actions tính phí của tài khoản. Có vẽ tài khoản đã hết hạn mức, hoặc lần thanh toán gần nhất bị lỗi. Không job nào được khởi động, kể cả job dựng binary. Vì vậy tôi chưa tạo tag `v0.1.0-rc.3`: tạo lúc này thì workflow phát hành cũng không chạy được.
+
+Tôi không dựng thay trên máy này được, vì không cross-compile được binary Windows và macOS đúng như CI làm.
+
+**Anh cần làm:** vào GitHub, mục **Settings → Billing & plans**, kiểm tra phương thức thanh toán hoặc nâng spending limit cho Actions. Xong anh báo tôi. Tôi sẽ chạy lại CI trên nhánh `phase-17-one-door` (commit `535bc55` đã có version `0.1.0-rc.3`), CI xanh thì tag, rồi kiểm sha256 của Release.
+
+Một cách khác là chuyển repo sang public, khi đó Actions miễn phí. Nhưng anh đã quyết giữ private, nên tôi không làm việc này.
+[L3804] USER: anh đã tự chuyển public rồi
+[L3808] TOOL Bash: gh repo view vantt/obsidian-pkm --json visibility -q .visibility && gh workflow run ci.yml --ref phase-17-one-door && sleep 10 && R=$(gh run list --workflow ci.yml --branch phase-17-one-door --limit 1 --json databaseId -q '.[0].databaseId') && echo $R
+[L3812] RESULT: PUBLIC | https://github.com/vantt/obsidian-pkm/actions/runs/41591599303
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

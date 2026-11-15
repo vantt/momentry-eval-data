@@ -1,0 +1,154 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Obsidian Hybrid Search is an npm package that searches your local Obsidian vault by meaning, exact words, titles, aliases, tags, folders, links, and metadata. You can use it from an Obsidian plugin, a command-line tool, or an MCP server that lets AI agents search and read your notes. It is for Obsidian users who want to find and reuse their own notes, and for AI agents that should start from those notes and cite their source files. It runs locally by default with SQLite, and can optionally use an OpenAI-compatible embedding API instead.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L2602] USER: em khuyên như nào?
+[L2644] USER: V15 đang đợi file của anh?
+[L2693] USER: có 1 agent khác đang tìm cách đưa golden-set vào project, chắc nó xong sẽ update ở remote. agent đó cũng đang cài thử để dùng trên windows.
+</asks>
+
+<story>
+hook: Một cờ mặc định bật đưa note đích lên hạng 1, không sửa mã
+tension: it_ma_nhieu (Không sửa dòng mã nào / vi-snippet từ 14/15 lên 15/15, note đích lên hạng 1 với điểm 1,000)
+stakes: 2/3
+# Cờ restoreForEmbedding giải quyết vi-snippet mà không cần sửa mã
+
+**Bối cảnh:** Một câu snippet không đưa note đích vào nhánh vector.
+**Chuyện gì xảy ra:** Nguyên nhân: embedder nhận câu không dấu nên note đích không vào nhánh vector. Khi cờ mặc định bật, note đích lên hạng 1 với điểm 1,000, note kế tiếp 0,910. vi-snippet từ 14/15 lên 15/15. vi-alias giảm 0,016 nhưng vẫn trong ngưỡng cổng.
+**Bài học:** Trước khi sửa thuật toán, kiểm nhánh nào đang thiếu ứng viên; một cờ đúng có thể là đủ.
+**Artefact:** Đầu ra explain theo từng nhánh, đã che nội dung.
+</story>
+
+<excerpt>
+[L2900] RESULT: {"success":true,"message":"Resuming agent aa32b99","resumedAgentId":"aa32b998406ef26b1","pin":{"id":"aa32b998406ef26b1","name":"aa32b998406ef26b1","ref":"c3c904"}}
+[L2909] AGENT: Đã giao V03 phát hành gói Mac Intel theo quyết định của anh. Agent sẽ làm bốn việc:
+
+1. Ghi đúng hai mức lệch anh vừa chấp nhận vào bước kiểm của CI, chỉ cho phép thêm 0,005. Nếu bản ghim lệch thêm, hoặc có hạng mục mới vượt 0,01, CI vẫn báo lỗi. Ngưỡng chung không bị nới.
+2. Đưa gói Mac Intel cùng sha256 lên release `v0.17.2-vantt.1`, ghi chú các mức lệch kèm dòng "user chấp nhận 2026-11-02".
+3. Đánh dấu release là bản mới nhất khi đủ 4 gói.
+4. Cập nhật PRD 8.4, README và sub-plan.
+[L2919] USER: <task-notification>
+<task-id>a21f6af3a7cd474e9</task-id>
+<tool-use-id>toolu_014VHBNiRSJByGibzXaWJaz6</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/a21f6af3a7cd474e9.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix vi-snippet-08 ranking" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>The snippet check is now 15/15, but no code change was needed: the master merge you asked for already fixes `vi-snippet-08`. The miss was not a restoration or rescore problem. It came from V20b running with `restoreForEmbedding` off, before V13b turned it on by default.
+
+**Root cause** (checked with `explain` on `wt-p01b` and the built pack):
+- Restoration is correct: "quen ngủ" with probability 0.994. "quên ngữ" and "quên ngủ" are each below 0.003.
+- The target note `Thói quen ngủ sớm dậy sớm.md` is already rank 1 in every lexical branch (bm25, title, norm, fold), and `rescore` sees the phrase "quen ngủ" in its snippet.
+- With `restoreForEmbedding` off, the embedder gets the unaccented "quen ngu" and the target is missing from the vector branch. The 11 "Ghi chép NNN quán quen" decoy notes appear in all five branches, including vector, so fusion pushes the target to rank 11.
+- With V13b's default (embedder gets "quen ngủ"), the target enters the vector branch at rank 9 and ends up rank 1 (score 1.000; next note 0.910).
+- With `restoreForEmbedding` off, every vi-snippet target except 01, 06 and 07 is missing from the vector branch. Query 08 is just the one with the most decoys.
+
+**Ideas I dropped:**
+- **Bigram evidence for restoration:** restoration is already right, so there is nothing for it to fix.
+- **Exact `viewTerms`:** prefix matching does over-match ("ngu*" hits "người" and "nguội", visible in `matchedTerms`). Stopping it would only reorder the decoys, which still match "quen"; it can't put the target into the vector branch.
+- **Higher rescore or view weights:** that is a threshold change, which you ruled out.
+
+**Eval** (nDCG@5, `wt-p01b` 632209f, fixture v0.11.0, defaults). "V20b" is the "new list" column from `pack-final.json`; "Merged" is this branch.
+
+| Category | Baseline | V20b | Merged |
+|---|---|---|---|
+| ALL | 0.646 | 0.926 | **0.944** |
+| vi-accented / partial / telex | 1 …[+2917]
+[L2927] AGENT: Cổng `vi-snippet` đạt 15/15 mà không cần sửa mã. Khi gộp `master` vào, `restoreForEmbedding` (V13b) đã bật mặc định. Trước đó nhánh nghĩa nhận câu không dấu "quen ngu" nên không tìm ra note đích. Nay nó nhận "quen ngủ" và note đích lên hạng 1.
+
+Mọi mục tiêu G3/G8 đều đạt. nDCG@5 tổng là 0,944, eval tiếng Anh giữ 0,735.
+
+Còn một điểm phải ghi lại: `vi-alias` thấp hơn 0,016 so với V20b đo khi chưa bật `restoreForEmbedding`, do một câu tụt hạng. Hit@5 vẫn 1,00. Mức này vẫn nằm trong ngưỡng 0,02 của cổng chất lượng. Tổng tăng rõ, và `vi-snippet` cần tuỳ chọn này mới đạt, nên tôi giữ nó bật mặc định. Giờ tôi merge nhánh.
+[L2928] TOOL Bash: HUSKY=0 git pull -q --rebase --autostash origin master; git status --short | grep -v '^??'; HUSKY=0 git merge -q --no-ff vantt/work/vi-snippet-fix -m "merge(vantt): licensed compound dictionary, harder compound fixture and pack data checks Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" &&  …[+223]
+[L2929] RESULT (exit 2): Please commit your changes or stash them before you merge. | Aborting | Merge with strategy ort failed.
+…
+[L2939] TOOL Bash: echo "16:40 snippet-fix branch vantt/work/vi-snippet-fix ready (15/15, ALL 0.944, vi-alias -0.016 vs v20b col, within gate 0.02). Merge BLOCKED by V14 uncommitted review-upstream.mjs; V14 told to set fixture v0.11.0 + then L24. Merge after committing V14 files. V03 publishing Intel with allow-listed …[+121]
+[L2940] RESULT: (Bash completed with no output)
+[L2951] AGENT: Sửa lỗi thứ hạng `vi-snippet` đã xong và qua cổng chất lượng, nhưng chưa merge được vào `master`.
+
+**Kết quả trên nhánh `vantt/work/vi-snippet-fix`:**
+- `vi-snippet` đạt 15/15. Không phải sửa mã: khi gộp `master` vào, tuỳ chọn `restoreForEmbedding` của V13b đã bật mặc định, nên nhánh nghĩa nhận câu có dấu "quen ngủ" và đưa note đích lên hạng 1.
+- nDCG@5 tổng là 0,944, mọi mục tiêu G3/G8 đều đạt, eval tiếng Anh giữ nguyên.
+- `vi-alias` thấp hơn 0,016 so với kết quả V20b đo khi chưa bật tuỳ chọn đó, do một câu tụt hạng. Hit@5 vẫn 1,00 và vẫn trong ngưỡng 0,02 của cổng. Tổng tăng rõ và `vi-snippet` cần tuỳ chọn này mới đạt, nên tôi giữ nó bật.
+
+**Vì sao chưa merge:** nhánh này đổi một dòng trong `review-upstream.mjs`, mà V14 đang sửa dở chính file đó trong cây làm việc chung. Tôi đã báo V14 tự đổi dòng ấy (tag fixture `v0.11.0`) và dựng báo cáo cuối bằng gói mới nhất. V14 xong thì tôi commit phần của V14 rồi merge nhánh này.
+
+Sau báo cáo cuối, V14 làm luôn L24: biểu đồ xu hướng chỉ số qua các bản phát hành.
+
+**Đang chạy:**
+- V03: phát hành gói Mac Intel với các mức lệch anh đã chấp nhận.
+- V14: báo cáo cuối, rồi L24.
+- Agent sửa test so ảnh chụp kết quả (snapshot) của P01.
+[L2962] USER: <task-notification>
+<task-id>ae17aea56d49525c5</task-id>
+<tool-use-id>toolu_01KutwtonGCF7dS7PUhe3jDE</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ae17aea56d49525c5.output</output-file>
+<status>completed</status>
+<summary>Agent "V14 upstream review script" is waiting on its own background work</summary>
+<note>This agent stopped with background work of its own still running. It may resume on its own when that work completes or reports, and the same task-id notifies again if it does; the result below may be interim.</note>
+<result>Both parts are still unfinished.
+
+Status: NEEDS_CONTEXT
+
+- **Fixture pin.** The one-line change to `vantt/scripts/review-upstream.mjs` is made in the shared tree (fixture tag `v0.11.0`).
+- **L24 code.**
+  - `vantt/scripts/lib/review-trends.mjs` collects the data files and draws `trends.svg`: 11 panels covering the vi and obsidian-help metrics, the six vi categories, index time and per-query time.
+  - It refreshes a marked block in the newest report, and `review-upstream.mjs` calls it after every run. `--trends-only` redraws without a new run.
+  - `lib/review-run.mjs` now times each eval run, and the data file gets `timing` per side.
+  - The 34 review tests pass.
+- **Final report.** The clone `/home/vantt/projects/ohs-wt/v14-check` is on branch `vantt/work/vi-snippet-fix`. A full catchup (all tiers, with the vi pack) is rebuilding both fork branches. I cloned fixture `v0.11.0` into `/home/vantt/projects/ohs-wt/fixture-v11` for the eval.
+
+The earlier full catchup, on master before the fixture change, left `vantt/v0.17.1` failing the quality gate (exit 6). Its tests, all 9 patches, invariance and `lang_vi` passed. The only failures are G3 and G8, which need a v0.17.1 upstream baseline that doesn't exist (`metric or upstream baseline not available`). Catchup baselines are per upstream version, so v0.17.1 can't pass until one is recorded. The earlier `v0.17.2` run passed fully.
+
+When catchup finishes I will:
+1. Copy my review scripts into the clone.
+2. Run the review with the v0.11.0 fixture and the final pack, writing to the shared `vantt/reviews/`.
+3. Judge the new category-spread blind pairs.
+4. Write the report and the trend chart.
+5. Delete the clone, and the `fixture-v11` clone with it.
+
+I will message you when both parts are done.</result>
+<usage><subagent_tokens>214962</subagent_tokens><tool_uses>18</tool_uses><duration_ms>157244</duration_ms></ …[+27]
+[L2965] AGENT: V14 đang chạy nền, chưa xong:
+- **L24:** mã đã viết. Biểu đồ có 11 ô chỉ số, tự vẽ lại sau mỗi lần review, 34 test xanh.
+- **Báo cáo cuối:** catchup đang dựng lại cả hai nhánh fork với fixture `v0.11.0` và gói mới nhất.
+
+Bản fork trên `v0.17.1` hỏng ở cổng chất lượng. Lý do là chưa có baseline upstream ghi riêng cho tag `v0.17.1`, nên các mục tiêu G3/G8 không có mốc để so. Test, cả 9 bản vá và bất biến đều qua. Báo cáo sẽ ghi rõ điều này.
+
+Việc merge nhánh `vi-snippet-fix` vẫn chờ V14 commit phần sửa `review-upstream.mjs`. Đang chạy: V03 (phát hành gói Mac Intel), V14, và agent sửa test snapshot của P01.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,222 @@
+{
+  "id": "c4caee3c",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "a80efc8267e2088e",
+  "at": "2026-11-05T10:21:19.328Z",
+  "dryRun": {
+    "usd": 0.27,
+    "tokens": 99560,
+    "chunks": 1,
+    "hotspots": 36,
+    "entries": 874
+  },
+  "report": {
+    "sid": "claude:c4caee3c",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.27954300000000004,
+    "secs": 114.8,
+    "exitCode": 0,
+    "status": "done",
+    "written": 21,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:c4caee3c L1-L4000: done; 16 chuyện thô, 21 cụm; ghi 21 mới, gộp 0\nđiểm nóng 36 (thiếu 0); lần chạy 1/1; 0.28 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-bo-eval-sinh-ra-qua-de",
+      "title": "Bộ eval sinh ra quá dễ: baseline upstream tụt từ 0,93 xuống 0,27",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-alias-hit-5-tu-0-73",
+      "title": "Alias: Hit@5 từ 0,73 lên 1,00 nhờ một khoá chuẩn hoá",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-goi-tieng-duc-chay-qua-diem",
+      "title": "Gói tiếng Đức chạy qua điểm cắm mà không sửa lõi",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-khoi-phuc-dau-cho-embedding-hoi",
+      "title": "Khôi phục dấu cho embedding: Hội An thành hội ăn",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-sua-loi-go-sai-lam-hong",
+      "title": "Sửa lỗi gõ sai làm hỏng lexicon: đồng nghĩa tụt từ hạng 4 xuống 7",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-tu-dien-tu-ghep-bo-pyvi",
+      "title": "Từ điển từ ghép: bỏ pyvi, học từ thống kê trên dữ liệu CC BY",
+      "tension": "giup_ma_hai",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-chon-model-nhung-chenh-lech-nho",
+      "title": "Chọn model nhúng: chênh lệch nhỏ hơn nhiễu của bộ đo",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-vi-sao-onnxruntime-bi-ghim-cho",
+      "title": "Vì sao onnxruntime bị ghim cho macOS Intel",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-goi-tieng-viet-ndcg-5-tu",
+      "title": "Gói tiếng Việt: nDCG@5 từ 0,666 lên 0,932 qua nhiều lớp",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-o-tam-day-quota-lam-hong",
+      "title": "Ổ tạm đầy quota làm hỏng mọi agent cùng lúc",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-test-anh-chup-ket-qua-hong",
+      "title": "Test ảnh chụp kết quả hỏng vì hai note bằng điểm đổi chỗ",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-schema-index-tang-tu-2-len",
+      "title": "Schema index tăng từ 2 lên 3 mà không gọi lại embedder",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-khi-ci-do-do-mot-kiem",
+      "title": "Khi CI đỏ do một kiểm tra không ổn định, agent tìm nguyên nhân qua báo cáo tải về và sửa cổng so sánh trên cùng một lần chạy thay vì dựa vào số đo lưu sẵn",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-hook-ckignore-chan-ca-lenh-xoa",
+      "title": "Hook .ckignore chặn cả lệnh xoá node_modules lẫn chữ build",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-zsh-khong-tach-bien-chuoi-thanh",
+      "title": "zsh không tách biến chuỗi thành mảng",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-agent-tu-chia-cong-viec-song",
+      "title": "Agent tự chia công việc song song cho nhiều subagent, mỗi agent làm trên worktree riêng, rồi lead ghép lại theo đúng thứ tự phụ thuộc (chuỗi bản vá)",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-ghep-chuoi-ban-va-cung-sua",
+      "title": "Ghép chuỗi bản vá: cùng sửa một file nên phải đúng thứ tự",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-git-chan-bon-lan-pre-push",
+      "title": "Git chặn bốn lần: pre-push hook, rebase, merge và commit rỗng",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-lead-agent-giu-trang-thai-dieu",
+      "title": "Lead agent giữ trạng thái điều phối ra file ngoài repo (lead-state.txt) rồi đọc lại sau mỗi lần nhắc hẹn giờ hoặc sau khi nén ngữ cảnh",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-nguoi-dung-chot-quyet-dinh-bang",
+      "title": "Người dùng chốt quyết định bằng câu hỏi có lựa chọn kèm khuyến nghị, rồi agent ghi quyết định đó vào PRD và plan trước khi làm tiếp",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-phat-hanh-ban-dung-nhieu-nen",
+      "title": "Phát hành bản dựng nhiều nền bằng tự động hóa: catchup tự kích hoạt bước dựng gói và tạo release, kèm kiểm tra từng nền riêng lẻ",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Khi hai agent cùng sửa các file dùng chung (PORTING.md, DECISIONS.md, Cargo.lock), lead merge từng nhánh worktree và giải xung đột bằng script ngắn (giữ cả hai phía với file nhật ký, tạo lại lockfile), rồi chạy lại fmt, clippy, test và parity trước khi push.
+   Khi hai agent cùng sửa các file dùng chung (PORTING.md, DECISIONS.md, Cargo.lock), lead merge từng nhánh worktree và giải xung đột bằng script ngắn (giữ cả hai phía với file nhật ký, tạo lại lockfile), rồi chạy lại fmt, clippy, test và parity trước khi push. Chạy một agent tại một thời điểm, hoặc để agent tự rebase rồi cãi nhau với conflict. Nhiều người không dám chạy nhiều agent song song trên cùng repo.
+M2. Mọi phase quan trọng đều có một agent review độc lập đọc code (không chạy), ra báo cáo mức High/Medium, rồi gửi lại cho đúng agent đã viết để sửa trên nhánh của nó, rồi mới merge.
+   Mọi phase quan trọng đều có một agent review độc lập đọc code (không chạy), ra báo cáo mức High/Medium, rồi gửi lại cho đúng agent đã viết để sửa trên nhánh của nó, rồi mới merge. Tự review lại code do AI sinh, hoặc không review mà chỉ dựa vào test xanh. Review xong thì tự sửa tay.
+M3. Parity lệch do thứ tự liệt kê file của hệ điều hành, không phải do thuật toán
+   Python liệt kê file theo thứ tự NTFS/APFS trả về, nên đổi thứ tự thì 593 trên 726 `edges.id` đổi, và điểm `related` lệch khoảng 1e-5, vượt dung sai PRD. Agent không nới dung sai mà ghim thứ tự liệt kê theo đường dẫn đã sắp, ghi vào DECISIONS, và yêu cầu phase sau giữ đúng thứ tự này.
+M4. Thiết kế MCP một cửa: hai agent độc lập gặp nhau ở 13 tool và bỏ code mode
+   Hai agent (một chạy model mạnh nhất) thiết kế độc lập rồi phản biện chéo, đều đi tới 13 tool và đều không làm code mode vì giá token định nghĩa và số lượt gọi thêm. Ước lượng định nghĩa tool giảm từ khoảng 6,0 nghìn xuống 3,8–4,4 nghìn token. Hai bên cùng đề xuất `read` do chính server đọc file, vì OHS chỉ đọc được note đã index; người dùng duyệt. Con số token là ước lượng theo số ký tự, chưa đo bằng tokenizer.
+M5. Bộ cài và phát hành Windows: vcruntime140.dll và script cài không kiểm sha
+   Audit (chạy bằng skill đóng gói) tìm ba chặn: `pkm.exe` cần `vcruntime140.dll` mà máy sạch có thể thiếu, không có chỗ cài cố định, và README thiếu hướng dẫn. Agent sửa bằng CRT tĩnh, script cài kiểm sha256 trước khi thay, và bước CI fail nếu còn phụ thuộc DLL. Repo private buộc script cài có đường dự phòng qua `gh`.
+M6. Agent làm bản cài Windows: tải sai bản OHS và hạ cấp ngầm
+   Nhánh gốc thay gói bất cứ khi nào phiên bản khác bản ghim, nên một gói vantt.4 đang dùng sẽ bị đè xuống vantt.3. Review tìm ra và sửa bằng so sánh phiên bản; gói đưa vào bằng `--ohs DIR` không bao giờ bị ghi đè.
+M7. Release lặp: CI không chạy vì hết hạn mức thanh toán, rồi public repo để thoát
+   Thông báo GitHub ghi 'recent account payments have failed or your spending limit needs to be increased', nên không job nào chạy kể cả build binary. Agent không tự dựng binary Windows/macOS được ở máy Linux nên dừng và chờ người dùng xử lý billing. Người dùng chuyển repo sang public, CI chạy lại xanh, rc.3 phát hành với 7 file và checksum khớp.
+M8. Lỗi trên Windows: đường dẫn vault bị lộ dạng JSON-escape trong bản so khớp
+   Trên Linux che đường dẫn là đủ, nhưng trên Windows dấu `\` trong JSON được escape thành `\\`, nên đường dẫn ở dạng escape không bị che. CI Windows đỏ ở đúng bước này; sửa bằng cách che cả dạng escape, dài nhất trước. Máy Windows thật của người dùng phát hiện thêm lỗi UTF-8 khi in tiếng Việt qua pipe và lỗi PyYAML không thấy trong `--user` site (do cờ `-I`).
+M9. Trước khi chuyển repo từ private sang public, agent tự quét toàn bộ lịch sử git (mọi nhánh) tìm mẫu token GitHub, khoá Anthropic, khoá AWS, private key và tên file nhạy cảm. Kết quả là 0 chỗ khớp.
+   Trước khi chuyển repo từ private sang public, agent tự quét toàn bộ lịch sử git (mọi nhánh) tìm mẫu token GitHub, khoá Anthropic, khoá AWS, private key và tên file nhạy cảm. Kết quả là 0 chỗ khớp. Chuyển public luôn rồi mới nhớ ra, hoặc chỉ nhìn file hiện tại. Lịch sử git vẫn giữ lại mọi thứ đã từng commit.
+M10. Đưa 'follow': một lệnh liệt kê các commit mới của repo Python chạm vào những đường dẫn được theo dõi, rồi mỗi commit được chuyển, hoặc ghi 'không áp dụng' kèm lý do vào PORTING.md, nâng ghim, dựng lại golden.
+   Đưa 'follow': một lệnh liệt kê các commit mới của repo Python chạm vào những đường dẫn được theo dõi, rồi mỗi commit được chuyển, hoặc ghi 'không áp dụng' kèm lý do vào PORTING.md, nâng ghim, dựng lại golden. Fork rồi lệch dần, hoặc cứ để hai bản tự trôi. Người ta thỉnh thoảng nhớ ra thì đọc changelog bằng mắt.
+M11. Lỗi `compact()` làm mất hai trong năm khoá của trạng thái OHS 'chưa sẵn sàng'
+   Khi OHS ở trạng thái starting/model_missing/broken, `progress` và `eta_s` là null nên bị bỏ, agent chỉ thấy 3 khoá thay vì 5 theo hợp đồng. Test 5 khoá kiểm trước khi compact nên không bắt được. Agent sửa bằng cách miễn compact cho lỗi `ohs_not_ready` và thêm test ở tầng MCP.
+M12. Một Claude Code agent đẩy cả plan Rust lên `main` với CI xanh, rồi hook dừng không chịu cho dừng
+   Chỉ trong một phiên, các agent con port được 17 phase với 7 phase chạy song song trong các worktree riêng; mỗi lượt merge phải chạy parity so với bản Python và CI ba nền. Parity đạt 64/64 mục, 0 lệch trên bộ vault thử. Bản cài đầu (rc.1) được phát hành sau khi sửa các lỗi review tìm ra. Sau đó phần còn lại của plan nằm sau cổng do người dùng mở (kiểm trên Windows, một tuần dùng song song), nên hook chặn dừng hàng chục lần với cùng một lý do dù agent đã nói rõ không còn việc làm được trên máy.
+M13. Giữ nguyên hành vi của bản Python khi viết lại sang Rust bằng một bộ so khớp tự động: dựng 'golden' (dump toàn bộ bảng index, 81 câu đáp án, 712 lời gọi tool, CLI, handshake MCP) từ bản Python ở một commit được ghim, rồi mỗi lần push CI so bản Rust với golden. CI không cần Python hay token.
+   Giữ nguyên hành vi của bản Python khi viết lại sang Rust bằng một bộ so khớp tự động: dựng 'golden' (dump toàn bộ bảng index, 81 câu đáp án, 712 lời gọi tool, CLI, handshake MCP) từ bản Python ở một commit được ghim, rồi mỗi lần push CI so bản Rust với golden. CI không cần Python hay token. Viết lại bằng cách đọc code cũ rồi viết unit test mới. Cùng lắm có vài test thủ công so đầu ra. Hiếm ai ghim commit tham chiếu và commit cả bộ đầu ra chuẩn vào repo.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

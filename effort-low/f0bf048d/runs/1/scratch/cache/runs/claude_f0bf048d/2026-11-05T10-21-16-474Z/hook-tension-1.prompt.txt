@@ -1,0 +1,47 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Daemon bật mà runtime vẫn offline: profile chỉ được dò lại khi bị sửa
+   Lúc tạo profile, tên lệnh bọc là pi-openai-codex; sau đó đổi tên thành pi-openai-tetnu trước khi cài lệnh mới, nên daemon không tìm thấy lệnh và bỏ qua. Daemon chỉ dò lại profile khi profile bị sửa, nên tắt rồi bật lại là lên ngay. Từ 2 runtime online ra 3 runtime online, cả hai workspace.
+M2. Trước khi đụng máy, viết tài liệu thiết kế quyền rồi nhờ một agent độc lập phản biện, sau đó sửa theo phản biện và chờ duyệt mới làm.
+   Trước khi đụng máy, viết tài liệu thiết kế quyền rồi nhờ một agent độc lập phản biện, sau đó sửa theo phản biện và chờ duyệt mới làm. Làm thử ngay trên máy thật rồi sửa dần khi gặp lỗi, ít khi có vòng phản biện riêng trước khi thay đổi.
+M3. Agent do mình viết được khai báo sai workspace và ghi đè đội khác
+   Lần deploy đầu tiên của phiên này ghi đè team Coding (Khoa, Minh, Quân) về bản cũ, gỡ 3 agent khỏi squad và gắn sai workflow. Lý do: gói opc-studio còn giữ bản Coding cũ, và bỏ qua các dòng ngoài phần Marketing khi đọc plan. Khôi phục bằng deploy lại gói coding từ file của phiên kia, plan về 0 thay đổi.
+M4. Khi đổi thông tin xác thực, tạo cái mới trước, kiểm cái mới hoạt động, rồi mới thu hồi cái cũ; trước đó tìm mọi bản sao của cái cũ trong home của người dùng.
+   Khi đổi thông tin xác thực, tạo cái mới trước, kiểm cái mới hoạt động, rồi mới thu hồi cái cũ; trước đó tìm mọi bản sao của cái cũ trong home của người dùng. Thu hồi token cũ ngay hoặc thay trong vài chỗ đã nhớ, rồi phát hiện sót khi có lỗi.
+M5. Chạy thật lần đầu: 3 model khác nhau, 1 lệnh tìm kiếm bị chặn
+   Hai agent thử (Pi·OpenAI, Pi·Grok) chạy 5 issue, không lỗi. Model thực tế khác model trong cấu hình: gpt-6.1-sol và grok-4.7 thay vì gpt-5.5 và grok-4.6. Google và DuckDuckGo chặn truy cập từ máy chủ (429, CAPTCHA), chỉ Bing còn dùng được. Gemini chạy trong khoảng 30 giây, đúng model đặt trong cấu hình.
+M6. Bot push được thì không chặn được bằng lời dặn: chọn đường không có quyền ghi
+   Phiên này đã đề xuất tài khoản chỉ đọc cho bot, nhưng GitHub cho biết repo private cá nhân không cấp được quyền chỉ đọc, nên đề xuất phải rút lại. Cách thay: bot chỉ có deploy key đọc, còn người duyệt fetch nhánh ops/* về xem diff rồi merge. Phương án Pro (khoảng 4 USD) được giữ làm lựa chọn sau.
+M7. Copy phiên đăng nhập Claude sang user khác: vì sao sẽ hỏng sau vài giờ
+   Chép được, chạy đúng lúc đầu. Nhưng token OAuth tự làm mới theo chu kỳ, và khi user này làm mới, bản của user kia thành hỏng. Nếu đây là user agent đang chạy việc khách, sẽ lỗi 401 giữa chừng mà không báo trước. Đề xuất /login riêng cho mỗi user, tốn khoảng một phút.
+M8. Agent chỉ làm phần hạ tầng; mọi việc chuyên môn (SEO, phân tích số liệu) được giao cho agent qua issue, và người dùng chỉ nhận kết quả, không để AI làm thay agent.
+   Agent chỉ làm phần hạ tầng; mọi việc chuyên môn (SEO, phân tích số liệu) được giao cho agent qua issue, và người dùng chỉ nhận kết quả, không để AI làm thay agent. Người dùng AI thường nhờ AI làm hộ luôn phần việc chuyên môn trong cùng phiên, không tách vai trò.
+M9. Lỗi 'pi update' và vì sao phải ghim phiên bản
+   Thiết kế: mỗi phiên bản nằm trong thư mục riêng, bản cũ được giữ, quay lại chỉ mất vài giây. Nâng omp thử từ 18.12.6 lên 18.14.2 rồi quay lại, đều chạy đúng. Chuyển ba runtime sang cách cài mới không cần sudo sau khi tools-owner.sh cấp quyền. Ba lệnh bọc giờ trỏ vào thư mục theo phiên bản.
+M10. Backup theo giờ hay theo ngày: quyết định theo câu hỏi mất tối đa bao nhiêu việc
+   Database chỉ 27 MB, uploads gần như rỗng, nên mỗi lần restic thêm vài trăm KB. Phiên đề xuất mỗi ngày một lần, giữ 14 bản ngày và 8 tuần, cộng backup ngay trước thao tác rủi ro. Giữa chừng chủ hỏi lại mục tiêu, và kết luận: backup để agent tự làm được nhiều việc đảo ngược được, không phải chỉ để chống sự cố máy.
+M11. Sự cố đăng nhập: mã dev cố định và cách một commit dọn sạch
+   Phản biện xác định đây là lỗ nghiêm trọng nhất, cho phép bất kỳ máy trong tailnet đăng nhập thành chủ nếu biết email. Kiểm tra lại trên container thì biến đã trống, nhờ một commit của phiên song song xoá mã cố định và chuyển sang đăng nhập bằng mã email (5 lần thử, 1 mã/phút). Tài liệu ghi rủi ro dò mã còn lại là vài tháng.
+M12. Agent tự dựng toàn bộ hạ tầng Google (tạo project không gắn billing, bật API, tạo service account, tạo key) bằng CLI, chỉ nhờ người dùng làm các bước bắt buộc trên trình duyệt.
+   Agent tự dựng toàn bộ hạ tầng Google (tạo project không gắn billing, bật API, tạo service account, tạo key) bằng CLI, chỉ nhờ người dùng làm các bước bắt buộc trên trình duyệt. Người làm tay trong Google Cloud Console theo hướng dẫn, hoặc nhờ kỹ sư DevOps làm rồi gửi file key qua chat.
+M13. Mọi lần triển khai đều chạy plan trước, deploy sau, rồi chạy plan lại và phải ra đúng 0 thay đổi mới coi là xong.
+   Mọi lần triển khai đều chạy plan trước, deploy sau, rồi chạy plan lại và phải ra đúng 0 thay đổi mới coi là xong. Chạy script deploy rồi tin là đã xong, không có bước kiểm tra lại trạng thái thực trên hệ thống.
+M14. Dạy lại cho người vận hành: mọi thao tác tay phải vào skill
+   Chủ ra quy tắc: mọi bước làm tay phải được dạy lại cho System Operator và deploy. Phiên ghi quy tắc này vào memory. Khi chuyển sang user riêng opc-ops, các script đọc MULTICA_HOME nên chuyển gọn. Có 7 bước, mỗi bước có phần dạy lại trong references/privileged.md.
+M15. Daemon chạy agent: tách quyền để agent không thành chủ hệ thống
+   Một agent SEO bị chèn lệnh qua trang web có thể giao việc cho System Operator, mà System Operator chạy dưới user vantt có quyền docker (gần như root). Phản biện độc lập chỉ ra 3 lỗ khẩn cấp, gồm mã đăng nhập dev 6 ký tự trong .env. Giai đoạn 0 đã tắt daemon ops, tạo user agents-opc riêng và thay PAT cũ của chủ (thu hồi, PAT mới 90 ngày), nên agent không còn đường thành chủ.
+M16. Tắt daemon vì rủi ro, rồi tự hỏi có nên bật lại
+   Lý do tắt: System Operator chạy dưới vantt có docker, gần như root, và trước đây agent khách giữ PAT chủ. Chuỗi đó đã cắt ở bước 4, nên kế hoạch cho phép bật lại. Nhưng rủi ro còn lại (System Operator đọc nội dung độc) vẫn tồn tại, nên phiên không bật ngay mà chờ chủ duyệt. Chủ chọn làm Giai đoạn 2 trước.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

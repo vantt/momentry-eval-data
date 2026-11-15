@@ -1,0 +1,133 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L2601] USER: mục tiêu backup là để cho chắc ăn đúng không
+[L2611] USER: tạm delay bước này. bướ sau thì sao?
+[L2628] USER: giúp setup runtime trên máy này cho codex và cho grok, dùng pi-openai-codex (.zshrc) và pi-xai-vantt
+</asks>
+
+<story>
+hook: Đổi tên profile trước khi cài lệnh, cả hai runtime tắt ngúm
+tension: nho_ma_to (Chỉ đổi tên sáu profile cho gọn / Daemon không dò lại nên runtime offline)
+stakes: 1/3
+# Runtime offline vì daemon chỉ dò lại profile khi profile bị sửa
+
+**Bối cảnh:** Mỗi tài khoản AI là một lệnh bọc. Daemon tự tạo runtime từ lệnh bọc đó.
+**Chuyện gì xảy ra:** Đã tạo sáu profile, mỗi workspace ba cái. Chủ yêu cầu đổi tên lệnh bọc theo mẫu nhà cung cấp và tài khoản. Profile đổi tên trước khi lệnh được cài nên daemon không tìm thấy lệnh và để runtime offline. Daemon chỉ dò lại khi profile bị sửa. Tắt rồi bật profile thì runtime online trong vài giây, và cả hai runtime OpenAI đều online. Cách xử lý được ghi vào skill để lần sau tự xử.
+**Bài học:** Đặt tên lệnh theo mẫu cố định trước khi tạo profile. Nếu daemon không thấy thứ đã có, sửa profile để kích hoạt dò lại.
+**Artefact:** Bảng ba runtime với trạng thái online, không ghi id.
+</story>
+
+<excerpt>
+[L2795] TOOL Write: /home/vantt/project/fgOPC/multica/stack/pi-runtime.sh
+[L2798] RESULT: The file /home/vantt/project/fgOPC/multica/stack/pi-runtime.sh has been updated successfully. (file state is current in your context — no need to Read it back)
+[L2809] TOOL Bash: bash -n ~/project/fgOPC/multica/stack/pi-runtime.sh && M=~/multica-spike/bin/multica; for ws in 011422fd-27a5-4ced-8ad7-f533cf7e1718 b65ce663-f822-4985-b799-0359ab226333; do for row in "pi pi-openai-codex Pi · OpenAI Codex (tetnu)" "pi pi-xai-vantt Pi · xAI Grok (vantt)" "omp omp-gemini-tetcu72 Oh-M …[+414]
+[L2810] RESULT: 8fb2503f Pi · OpenAI Codex (tetnu) pi-openai-codex pi | 20a493e1 Pi · xAI Grok (vantt) pi-xai-vantt pi
+[L2813] AGENT: Đã tạo 6 profile (3 cho opc-studio, 3 cho sen-coffee). Theo yêu cầu của anh, tôi ghi lại cách làm vào skill của System Operator.
+…
+[L2850] RESULT: 378344d multica: pi/omp runtimes per account for opc-agent; System Operator learns runtime profiles | Shell cwd was reset to /opt/AICoworker
+[L2858] AGENT: Ba runtime đã được khai báo trong Multica nhưng chưa chạy được: cần anh chạy một lệnh `sudo` để cài phía máy, rồi đăng nhập riêng cho từng tài khoản.
+
+**Đã làm**
+- **Script `stack/pi-runtime.sh`** (cần root) cài phần chạy cho cả ba tài khoản dưới user `opc-agent`, không phải dưới `vantt`:
+  - cài `pi` 1.4.0 và `omp` 18.12.6, đúng bản đang có trên máy anh;
+  - tạo ba lệnh bọc, mỗi lệnh trỏ vào một tài khoản: `pi-openai-codex` (ChatGPT tetnu, gpt-5.5), `pi-xai-vantt` (grok-4.6), `omp-gemini-tetcu72` (gemini-3.8-flash).
+- **Đã tạo 6 runtime profile**, mỗi workspace `opc-studio` và `sen-coffee` có 3 cái. Daemon sẽ tự nhận khi lệnh bọc có trên máy.
+- **System Operator đã được cập nhật** (deploy xong, chạy lại plan ra 0 thay đổi). Skill của nó giờ ghi lại:
+  - cách thêm runtime theo từng tài khoản;
+  - vì sao không chép credential của anh sang `opc-agent`;
+  - vì sao không đặt `pi` hay `omp` trần lên PATH;
+  - runtime mới phải được `agents-opc` chia sẻ cho anh, và khi có workspace khách mới thì phải đưa `agents-opc` vào.
+- Đã commit `378344d`, chưa push.
+
+**Anh chạy giúp:**
+```
+! sudo bash ~/project/fgOPC/multica/stack/pi-runtime.sh
+```
+Sau đó đăng nhập riêng cho từng tài khoản. Mỗi lệnh mở giao diện tương tác, nên anh chạy trong terminal của anh rồi gõ `/login`, xong thì thoát:
+```
+sudo -iu opc-agent pi-openai-codex
+sudo -iu opc-agent pi-xai-vantt
+sudo -iu opc-agent omp-gemini-tetcu72
+```
+Xong thì báo tôi. Tôi sẽ cho runtime mới (đứng tên `agents-opc`) chia sẻ cho anh, rồi chạy thử một lượt trên mỗi runtime.
+
+Lưu ý: tài khoản ChatGPT tetnu anh dùng hằng ngày giờ dùng chung quota với agent.
+[L2862] USER: pi-openai-tetnu không nên là pi-openai-codex (tetnu là account, sau này có thể thêm account)
+[L2868] TOOL Bash: ~/multica-spike/bin/multica runtime profile update --help 2>&1 | sed -n 1,20p
+[L2869] RESULT: Update a custom runtime profile (protocol family is immutable) | USAGE
+…
+[L2880] TOOL Bash: ls /opt/opc-agent/bin/ | grep -E "pi-|omp-"; cd ~/project/fgOPC/multica/packages/system-ops/skills/multica-ops/references && python3 - <<'EOF' p="daemon-runtime.md"; s=open(p).read() a="Thêm một tài khoản mới:\n" assert a in s s=s.replace(a,"Đặt tên lệnh bọc là `<công cụ>-<nhà cung cấp>-<tài khoản>` …[+518]
+[L2883] RESULT: omp-gemini-tetcu72 | pi-openai-codex
+[L2885] AGENT: Đã đổi tên thành `pi-openai-tetnu`. Tên lệnh bọc giờ theo dạng `<công cụ>-<nhà cung cấp>-<tài khoản>`, khớp với alias trong `.zshrc`, nên sau này thêm `pi-openai-fgovn` hay tài khoản khác cùng nhà cung cấp không bị trùng.
+
+- Hai runtime profile ở `opc-studio` và `sen-coffee` đã đổi lệnh thành `pi-openai-tetnu` và đổi tên hiển thị thành "Pi · OpenAI (tetnu)".
+- Script cài, skill của System Operator và tài liệu cũng đã đổi theo. Skill đã deploy lại, quy tắc đặt tên được ghi vào đó.
+- Commit `dc9ea2f`.
+
+Tôi thấy anh đã chạy script, vì trên máy đang có lệnh cũ `/opt/opc-agent/bin/pi-openai-codex`. Anh chạy giúp lệnh này để tạo lệnh mới và xoá lệnh cũ:
+```
+! sudo bash ~/project/fgOPC/multica/stack/pi-runtime.sh && sudo rm /opt/opc-agent/bin/pi-openai-codex
+```
+Thư mục tài khoản vẫn là `openai-tetnu`, nên nếu anh đã `/login` trong `pi-openai-codex` thì phiên đăng nhập đó vẫn giữ nguyên, không phải đăng nhập lại. Xong thì báo tôi để tôi chia sẻ runtime cho anh và chạy thử.
+[L2890] USER: rồi cả 3 runtime đều đã login. liệt kê 3 runtime mới
+[L2896] TOOL Bash: ls /opt/opc-agent/bin | grep -E "^(pi|omp)-"; cd ~/multica-spike && P=$(cat .pat); for ws in 011422fd-27a5-4ced-8ad7-f533cf7e1718 b65ce663-f822-4985-b799-0359ab226333; do echo "== $ws"; curl -fsS -H "Authorization: Bearer $P" -H "X-Workspace-ID: $ws" http://127.0.0.1:8310/api/runtimes | python3 -c ' …[+294]
+…
+[L2926] RESULT: // profileSetSignature is a stable content hash of the workspace's custom | // runtime profile list (MUL-3332). An on-demand refresh diffs this against the
+[L2929] TOOL Bash: M=~/multica-spike/bin/multica; for ws in 011422fd-27a5-4ced-8ad7-f533cf7e1718 b65ce663-f822-4985-b799-0359ab226333; do id=$($M --profile ops --workspace-id $ws runtime profile list --output json | python3 -c 'import sys,json d=json.load(sys.stdin); d=d.get("runtime_profiles",d) if isinstance(d,dict) …[+292]
+[L2932] RESULT: toggled 8fb2503f-53ac-4bf4-8fe4-e011bacebc18 | toggled 2d22560d-66aa-40f3-bfc7-54056ae66850
+[L2937] TOOL Bash: cd ~/multica-spike && P=$(cat .pat); for i in 1 2 3 4 5 6 7 8 9 10; do n=$(for ws in 011422fd-27a5-4ced-8ad7-f533cf7e1718 b65ce663-f822-4985-b799-0359ab226333; do curl -fsS -H "Authorization: Bearer $P" -H "X-Workspace-ID: $ws" http://127.0.0.1:8310/api/runtimes | python3 -c 'import sys,json d=json. …[+351]
+[L2938] RESULT: openai online: 2 | send-code 200
+[L2947] AGENT: Cả 3 runtime đã online ở cả hai workspace và đã chia sẻ cho anh. Tôi ghi thêm bài học vừa gặp vào skill của System Operator.
+[L2948] TOOL Bash: cd ~/project/fgOPC/multica/packages/system-ops/skills/multica-ops/references && python3 - <<'EOF' p="daemon-runtime.md"; s=open(p).read() a="- `omp` giữ credential trong `agent.db`" assert a in s s=s.replace(a,"- **Runtime của profile nằm offline dù lệnh bọc đã có:** daemon chỉ dò lại profile khi pr …[+624]
+[L2949] RESULT: deploy: 1 change(s) in workspace system | e862830 multica-ops: re-probe a runtime profile created before its launcher existed
+[L2950] AGENT: Cả 3 runtime mới đều đang online ở hai workspace, đều thuộc `agents-opc` và đã chia sẻ cho anh, nên anh gán agent vào được ngay. Tôi chưa chạy thử lượt nào trên chúng.
+
+| Runtime | Lệnh | Model mặc định | opc-studio | sen-coffee |
+|---|---|---|---|---|
+| Pi · OpenAI (tetnu) | `pi-openai-tetnu` | openai-codex/gpt-5.5 | `7f4b9108` | `58c3c2e5` |
+| Pi · xAI Grok (vantt) | `pi-xai-vantt` | xai/grok-4.6 | `0e156cc4` | `1977d4cd` |
+| Oh-My-Pi · Gemini (tetcu72) | `omp-gemini-tetcu72` | google-antigravity/gemini-3.8-flash | `6a36fcf7` | `1298ca4b` |
+
+Lúc đầu runtime OpenAI bị offline. Tôi đổi tên profile trước khi anh cài lệnh `pi-openai-tetnu`, nên daemon không tìm thấy lệnh và bỏ qua. Daemon chỉ kiểm lại profile khi profile bị sửa, nên tôi tắt rồi bật lại profile và nó lên ngay. Cách xử lý này đã được thêm vào skill của System Operator (commit `e862830`, đã deploy).
+
+Anh muốn tôi chạy thử mỗi runtime một lượt nhỏ, hay gán agent nào sang runtime nào?
+[L2955] USER: cho system-operator thêm khả năng cài pi/omp và update pi/omp
+[L2957] TOOL Bash: ~/.local/bin/omp --help 2>&1 | grep -i -E "update|upgrade|version" | head; ~/.local/bin/pi --help 2>&1 | grep -i -E "update|upgrade" | head; ls ~/.omp/natives 2>/dev/null | head -3; strings -n 12 ~/.local/bin/omp 2>/dev/null | grep -m3 -E "github.com/[^/]+/oh-my-pi|releases/download"
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

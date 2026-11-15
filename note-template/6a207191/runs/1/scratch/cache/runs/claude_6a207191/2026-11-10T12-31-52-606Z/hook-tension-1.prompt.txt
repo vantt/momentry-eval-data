@@ -1,0 +1,32 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: một chi tiết bé xíu hay một rủi ro ẩn không ai để ý, kéo theo hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng chắc là X, bằng chứng cho thấy là Y
+- hop_ma_tan: ghép những thứ tốt lại, ra kết quả trái lẽ thường
+- cam_ma_van_lot: đã chặn mà vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- chon_mot_mat_mot: phải bỏ một thứ có giá trị để giữ thứ kia
+- nguoi_dung_may_sai: người phản bác điều AI hay máy khẳng định, và người đúng
+- gap_ma_phai_chon: sự cố hay hạn chót buộc phải quyết ngay
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. Skill phải tự chứng minh bằng agent mới: test 'cài X giúp tôi' chỉ bằng --help
+   Ban đầu agent đề xuất ~25–30 check bằng script. Người dùng hỏi 'không có script thì agent vẫn làm được?', và câu trả lời là có. Quyết định cuối: không viết script, thay bằng 12 bước verify trong SKILL.md, trong đó bước quan trọng nhất là bật một agent mới không cho đọc README.
+M2. Phát hiện một chỗ UX tệ trên sản phẩm (trang web không báo có bản chờ duyệt) và sửa tại chỗ thay vì chỉ ghi nhận
+   Phát hiện một chỗ UX tệ trên sản phẩm (trang web không báo có bản chờ duyệt) và sửa tại chỗ thay vì chỉ ghi nhận Hầu hết người ta ghi thành issue rồi chờ, hoặc chỉ nhắc với người phụ trách
+M3. Hỏi lại người dùng để xác nhận trước những hành động có thể bị hoàn tác khó, ví dụ gửi lên hub hay đẩy code lên GitHub
+   Hỏi lại người dùng để xác nhận trước những hành động có thể bị hoàn tác khó, ví dụ gửi lên hub hay đẩy code lên GitHub Nhiều dev hoặc công cụ hoặc chạy thẳng, hoặc phải hỏi lại cả chục lần cho mọi bước nhỏ
+M4. Năm test Go đỏ chỉ trên máy dev: lỗi vì cấu hình agent thật bị đọc vào test
+   TestMain đổi HOME sang thư mục tạm nhưng không đổi thư mục làm việc. Lệnh status/doctor đi ngược lên /home/vantt, gặp ~/.codex/config.toml và ~/.gemini/settings.json vừa được ghi lúc 14:46 do connect --global, nên báo 'Connection files FAILED'. Đây không phải lỗi do commit web. CI sạch vì máy CI không có các file đó.
+M5. Skillstation chặn gửi lên hub, rồi hub tự kích hoạt skill mà chưa ai duyệt
+   `skill commit --yes` bị chặn vì hub chưa được tin cậy ở cấp user. Lệnh `connect --user` gợi ý trong thông báo lỗi không tồn tại (bug của skillstation 0.8.0). Sau khi nâng lên 0.13.0 và connect global, gửi thành công SUB-…. Nhưng người dùng phát hiện bản trên hub đã active dù chưa bấm duyệt; trang skill không báo có bản chờ duyệt, nên người xem phải tự vào mục Waiting for review.
+M6. Một skill packaging cho cả họ dự án: từ 46% dư thừa đến bộ lệnh init/doctor chung
+   Lần đầu skill có khoảng 11.900 từ, sau khi người dùng chê dư thừa, rút xuống khoảng 6.400 từ (−46%). Một agent review độc lập chỉ ra 2 lệnh mâu thuẫn (INS-13 dùng `setup`, CMD-04 cấm `setup`) và install.sh mẫu in ra `Next: doctor --fix` thay vì `init`. Sau khi sửa, số rule từ 183 lên 212 và mô hình init/doctor được chốt: doctor là bộ máy duy nhất, init = doctor --fix + được phép tạo mới, setup bỏ đi.
+M7. Quy tắc 'một cửa config' từ momentry được chép thành quy chuẩn chung
+   Đối chiếu cho thấy skill chỉ có mảnh rời (CFG-04, UX-12, UX-14), thiếu quy tắc cấm cờ lẻ. Thêm ba rule CMD-22..24 và nâng CFG-12 lên MUST, đưa commit momentry vào references.md. Lưu ý: commit này chưa có bản phát hành nào, nên chỉ được coi là đã có test chứ chưa là đã chứng minh với người dùng.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

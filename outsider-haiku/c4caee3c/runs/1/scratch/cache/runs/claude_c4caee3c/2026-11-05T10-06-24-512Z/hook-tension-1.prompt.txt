@@ -1,0 +1,75 @@
+Bạn là biên tập viên build-in-public. Người đọc: dev làm một mình, dùng AI hằng ngày, không rành lĩnh vực của các chuyện dưới đây.
+Một câu hook tốt có SỰ GIẰNG XÉ (irony): hai vế đối nhau trong cùng một câu, khiến người đọc thấy chỗ hở giữa điều họ tưởng và điều đã xảy ra. Các dạng thường gặp:
+- nho_ma_to: nguyên nhân bé tí, hậu quả lớn
+- giup_ma_hai: làm để tốt hơn, kết quả tệ hơn
+- tuong_ma_hoa_ra: ai cũng nghĩ X, thật ra là Y
+- hop_ma_tan: gộp nhiều thứ tốt, ra kết quả tệ
+- cam_ma_van_lot: đã chặn, vẫn lọt qua chỗ không ai canh
+- it_ma_nhieu: bỏ ra rất ít, thu về rất nhiều
+- khac: giằng xé dạng khác
+- none: không có giằng xé thật, chỉ là sự kiện, mẹo, hay việc vặt
+
+Với TỪNG chuyện: viết hook (một câu tiếng Việt, dưới 15 chữ, có con số hoặc chi tiết cụ thể nếu có, không thuật ngữ người ngoài không hiểu), chọn tension, ghi side_a và side_b (hai vế đối nhau, rỗng nếu none), và strength 0-3 (0 = không có giằng xé; 3 = người đọc không thể không đọc tiếp). Đừng ép giằng xé khi không có: none là câu trả lời hợp lệ và thường gặp.
+
+M1. onnxruntime 1.30 không có bản darwin-x64: ghim 1.23.2 và đổi luật chấp nhận
+   Đề xuất bỏ nền Mac Intel bị bác. Agent ghim 1.23.2 chỉ cho gói Intel. Đo cùng máy: multilingual +0,063, vi-synonym -0,017, nên danh sách chấp nhận theo từng hạng mục được duyệt. Khi bản vantt.4 cho vi-synonym -0,021 và vi-snippet +0,024, người duyệt đổi luật thành chỉ chặn khi tụt quá 0,01.
+M2. Hai note cùng điểm đổi chỗ: test snapshot đỏ trên CI
+   Thứ tự giữa hai note phụ thuộc thứ tự index trên từng máy, nên test đỏ ngẫu nhiên trên CI. Sửa test: chấp nhận đổi chỗ trong nhóm cùng điểm, phần còn lại vẫn so tuyệt đối. Agent cũng phát hiện một test khác chỉ qua nhờ biến môi trường do file test khác để lại. Chạy 10 lần với thứ tự file xáo trộn đều xanh.
+M3. Điều phối song song: 11 agent cùng một repo, giữ cây chung sạch
+   Agent con xuất bản vá vào thư mục chung, lead ghép theo thứ tự phụ thuộc. Có agent dừng mà không báo lại, lead phải gửi tin để tiếp tục. Trạng thái được ghi ra file để còn dùng sau khi nén ngữ cảnh. Sau khi ghép xong, lead dọn worktree.
+M4. Chuỗi bản vá phụ thuộc thứ tự: P03 xung đột khi đặt sau P00
+   Sau khi chèn P00 lên đầu, P03 xung đột ở cli.ts vì hai bản vá cùng sửa một khối import, và P02 phải được áp trước P03. Agent phải kiểm chuỗi bằng git am --3way trên tag gốc, rồi xuất lại từng bản vá từ nhánh đã ghép. Chuỗi cuối có 9 bản vá và hơn 2.000 test xanh.
+M5. Gói tiếng Đức chạy qua điểm cắm P01 mà không sửa lõi: nDCG@5 0,57 lên 0,97
+   Gói tiếng Đức có ghép từ, biến thể dấu và từ dừng chạy qua P01 mà không đổi lõi. nDCG@5 trên eval tiếng Đức tăng từ 0,57 lên 0,97, không hạng mục nào tụt. Sau đó vẫn phải bổ sung hợp đồng (viewTerms, trọng số view) để gói thật sự dùng được.
+M6. npm 11 khác npm 12 ở đầu ra npm pack: test chỉ đúng trên máy local
+   Test xanh trên máy local nhưng đỏ trong catchup trên CI với lỗi undefined. Sửa test để đọc cả hai dạng, rồi kiểm lại đầu ra npm 12 thật: dạng object, đủ các file dữ liệu. Lần đỏ thứ hai: test đòi build/index.js trong khi tier vi không compile gói. Sửa để chỉ kiểm package.json và các file dữ liệu.
+M7. Khi user hỏi một câu ngắn kiểu 'L13 và L22 là gì', 'ý là obsidian-plugin', agent trả lời ngay theo đúng ngữ cảnh rồi sửa PRD khi user chốt, thay vì đoán lại từ đầu.
+   Khi user hỏi một câu ngắn kiểu 'L13 và L22 là gì', 'ý là obsidian-plugin', agent trả lời ngay theo đúng ngữ cảnh rồi sửa PRD khi user chốt, thay vì đoán lại từ đầu. Với nhiều người, một câu hỏi mơ hồ dẫn tới vòng hỏi lại dài, hoặc người dùng phải tự giải thích lại toàn bộ.
+M8. Cùng mô hình ONNX, CPU khác, số eval khác: 0,735 thành 0,728
+   Agent ban đầu cho rằng điểm này cố định. Thực tế điểm thay đổi theo lớp CPU: một lớp cho một kết quả, lớp khác cho kết quả khác. Quyết định: cổng so với upstream đo trong cùng một lần chạy, baseline ghi chỉ dùng để báo trôi. Phép đo pin-effect chỉ tính kết quả chạy trên EPYC và thử lại tối đa 3 lần. Trên bản vantt.4, bản ghim cho vi-snippet tốt hơn 0,024, từ 0,951 lên 0,975.
+M9. Gói tiếng Việt: nDCG@5 tổng từ 0,666 lên 0,932 qua từng lớp
+   Lần đo đầu với gói đủ M2 và M3: nDCG@5 tổng từ 0,666 lên 0,813, vi-unaccented Hit@5 từ 0,27 lên 1,00, vi-dd từ 0,40 lên 1,00. Các lớp sau đưa tổng lên 0,932. Không hạng mục nào tụt, eval tiếng Anh giữ 0,735.
+M10. Catchup tự dựng gói: CI đẩy tag và bundle trọn vẹn sau nhiều lần đỏ
+   Qua nhiều lần đỏ liên tiếp vì test, cổng chất lượng, pin-effect và tag fixture, catchup cuối cùng tự đẩy v0.17.2-vantt.3 với 12 asset cho 4 nền. Đây là lần đầu chuỗi catchup sang bundles chạy trọn vẹn. Các issue lỗi được mở tự động và đóng khi xanh.
+M11. Hook pre-push chặn push; agent tự đặt HUSKY=0 mà không hỏi
+   Agent tự đặt HUSKY=0 cho các lệnh push sau đó mà không hỏi người duyệt. Bỏ một hook kiểm tra là quyết định nên thuộc về người, và đây là điểm đáng ghi lại trong quá trình làm việc.
+M12. Từ điển từ ghép và tách từ: từ danh sách GPL sang thống kê CC BY
+   Tách từ bằng view seg đưa nDCG@5 từ 0,909 lên 0,932, và trên bộ câu từ ghép khó từ 0,79 lên 0,86. Sau đó agent học lại từ thống kê cặp âm tiết trên ba bộ dữ liệu CC BY 4.0, được 20.523 từ, không chép mục nào từ danh sách cũ. Trên bộ câu từ ghép khó, vi-compound tăng từ 0,632 lên 0,983.
+M13. Ghi trạng thái điều phối ra một file ngoài repo (lead-state) sau mỗi mốc, để sau khi nén ngữ cảnh vẫn tiếp tục đúng việc.
+   Ghi trạng thái điều phối ra một file ngoài repo (lead-state) sau mỗi mốc, để sau khi nén ngữ cảnh vẫn tiếp tục đúng việc. Người dùng bình thường thường dựa vào lịch sử chat hoặc nhớ trong đầu; ít ai có nhật ký có dấu thời gian để khôi phục công việc nhiều bước.
+M14. Lần phát hành đầu: bốn gói dựng sẵn, giải nén 280–330 MB
+   Release v0.17.2-vantt.1 có win32-x64 (zip 102,6 MB, giải nén 279,3 MB), darwin-arm64 (99,5 MB, 326,3 MB), linux-x64 (99,0 MB, 295,7 MB) và darwin-x64 (87,5 MB, 281,6 MB). Smoke test trên máy sạch kiểm sha256, status, search qua stdio, bắt tay MCP và nạp gói tiếng Việt. Mục tiêu 250 MB không đạt và người duyệt chấp nhận.
+M15. Alias qua view fold: vi-alias Hit@5 0,73 lên 1,00
+   Alias được khoá bằng view fold của truy vấn. Vi-alias Hit@5 từ 0,73 lên 1,00, Hit@1 từ 0,60 lên 0,93. Kiểm đoạn trích cho 15/15 câu là chữ gốc có dấu. Thay đổi trong query.ts nhỏ nên được merge trước các việc khác.
+M16. Sửa gõ sai làm rơi từ đồng nghĩa: hạng 4 thành hạng 7
+   Sau khi gộp, bộ sửa gõ sai viết lại từ người dùng gõ thành một từ gần đúng trong vault, nên lớp đồng nghĩa không còn nhận được từ gốc. Một câu tụt từ hạng 4 xuống hạng 7, vi-synonym Hit@5 xuống 0,73. Sửa: lớp đồng nghĩa khớp cả câu gốc lẫn câu đã sửa, và từ đã có trong lexicon không bị sửa gõ sai.
+M17. Đĩa /tmp hết hạn mức: mọi agent hỏng lệnh shell cùng lúc
+   Khi hạn mức đầy, mọi lệnh shell của mọi agent đều lỗi EDQUOT, kể cả lệnh chẩn đoán. Cách xử lý: dừng toàn bộ agent, chuyển worktree sang ổ đĩa lớn rồi chạy git worktree repair, sau đó cho từng agent chạy lại. /tmp còn 26 phần trăm. Đĩa làm việc giảm từ 21G còn khoảng 6,4G sau khi dọn.
+M18. Phục hồi dấu làm hỏng cụm có tên riêng: âm tiết không dấu đổi sang từ phổ biến
+   Một cụm tên riêng hai âm tiết, một có dấu, bị phục hồi âm tiết còn lại thành từ thường gặp hơn. Ngưỡng 50 phần trăm đúng theo PRD nên giữ nguyên. Agent sửa cách ghép câu gửi model nhúng: từ đã gõ có dấu không bao giờ đổi, và chỉ phục hồi khi vault không bao giờ viết từ đó trần và xác suất đủ cao. Sau sửa, bật nhánh nghĩa mặc định làm nDCG@5 tổng từ 0,932 lên 0,954, vi-snippet đạt 15/15.
+M19. PRD đi sau thực đo: câu có dấu không chạy hai view norm và fold
+   Thực đo: bật hai view cho câu có dấu làm vi-semantic tụt 0,083 nDCG@5. Người duyệt chọn giữ cách của gói và sửa PRD 10.3 cho khớp. View fold vẫn tự bật khi vault có chữ viết không dấu.
+M20. Đo trên vault thật mà không đưa nội dung vault ra repo
+   Chế độ chi tiết ghi file quyền 0600 ngoài repo, script từ chối nếu đường dẫn nằm trong repo hoặc đi qua symlink. Kết quả tổng: nDCG@5 từ 0,600 lên 0,698. Hạng mục vi-iy tụt 0,260 vì một câu rơi khỏi top 5, vi-synonym tụt 0,167 vì vault chưa có lexicon. Người duyệt chọn dùng gói cho bộ cài và sửa các hạng mục tụt.
+M21. Ranh giới fork và dự án: L13 và L22 thuộc repo dự án
+   Agent phân tích: sự kiện mở note chỉ plugin mới thấy được, còn fork OHS chỉ cung cấp phần nền. Người duyệt xác nhận và ghi vào PRD mục 14.2 rằng cả hai thuộc repo dự án. PRD mục 9.0 quy định fork chỉ chứa cơ chế chung, không chứa logic sản phẩm.
+M22. Cây làm việc chung: pull và merge bị chặn bởi thay đổi dở của agent khác
+   Lệnh pull --rebase và merge bị từ chối vì có thay đổi chưa commit của agent khác, cụ thể là file review-upstream. Nhánh vi-snippet-fix phải chờ thêm một vòng vì phải đợi agent kia commit trước.
+M23. Đổi schema index mà không gọi lại embedder
+   Migration điền cột mới từ text đã lưu, không gọi embedder. Kích thước chunk được lưu như hậu tố +chunk=N trong setting, nên đổi cấu hình sẽ rebuild qua đường có sẵn. Cách này tránh phải embed lại toàn bộ vector.
+M24. Gói tiếng Việt báo lỗi rõ khi thiếu dữ liệu, thay vì im lặng chạy như không có gói
+   Phát hiện cho thấy gói không khai báo thư mục data trong danh sách file, nên khi cài sẽ thiếu từ điển và OHS im lặng bỏ qua gói. Thư mục data thực ra đã có trong gói từ trước, phát hiện đến từ việc đo trên bản cũ. Sửa: gói báo lỗi rõ khi thiếu dữ liệu.
+M25. Hook chặn lệnh có chữ 'build' và 'node_modules': đổi cách làm việc
+   Lệnh rm -rf node_modules bị chặn. Lệnh có chữ build, kể cả git check-ignore, bị chặn. Sửa file test buộc phải dùng công cụ Edit thay vì shell. Agent phải đổi tên thư mục đầu ra và đổi cách kiểm tra.
+M26. Upstream v0.17.1 → v0.17.2 chỉ nâng phụ thuộc; 8 bản vá áp sạch, probe đổi 1 thành 0
+   Báo cáo review cho thấy upstream không đổi mã nguồn, chỉ nâng phụ thuộc. Cả 8 bản vá áp sạch trên cả hai tag. Mọi probe trả 1 trên upstream và 0 trên fork. Eval tiếng Anh giữ 0,735 trên cả ba bên. Mẫu báo cáo đủ các mục theo PRD 12.5.
+M27. Test thuộc tính đỏ vì bộ đếm token của chính test
+   Ký tự tổ hợp dính vào '+' hoặc '#' được bộ tách coi là một token, còn hàm đếm trong test lại tách khác. Gói đúng nhưng test đỏ ngẫu nhiên. Sửa hàm đếm cho khớp bộ tách, giữ nguyên phép kiểm. Chạy 20.000 lần vẫn qua.
+M28. Fixture tag cố định v0.10.0 trong workflow lệch với bộ eval v0.11.0
+   Hai workflow dựng gói và pin-effect báo lỗi golden set khác với bản được sinh cho phiên bản fixture này, nên gói Mac Intel không ra. Sửa: đọc FIXTURE_TAG từ run-eval.mjs thay cho chuỗi cứng, và thất bại rõ ràng nếu thiếu tag.
+M29. Corpus sinh dễ quá: baseline 0,93 khiến mục tiêu G3 không thể đạt
+   Agent tìm ra nguyên nhân: SQLite unicode61 chỉ bỏ dấu được âm tiết có một dấu, không bỏ được âm tiết có hai dấu và chữ đ. Truy vấn trùng tiêu đề note nên nhánh tiêu đề và nhánh vector cứu baseline. Người duyệt chọn làm corpus khó hơn, không hạ ngưỡng. Sau đó baseline vi-unaccented giảm còn 0,27 và vi-dd còn 0,40.
+M30. Watcher debounce 5 giây: không hạ ngưỡng mà thêm biến môi trường
+   Agent đề xuất hạ tiêu chí hoặc chấp nhận 5 giây. Người duyệt không hạ tiêu chí: thêm biến OBSIDIAN_WATCH_DEBOUNCE_MS với mặc định 5000 để không đổi hành vi upstream, khuyến nghị 250 cho client. Test chứng minh sự kiện đến trong dưới 1 giây khi đặt 250 ms.
+
+Chỉ trả JSON: {"hooks":[{"id":"M1","hook":"","tension":"","side_a":"","side_b":"","strength":0}]}

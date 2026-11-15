@@ -1,0 +1,128 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L5] USER: tôi có các project github như: vantt/mdview ; vantt/skillstation; vantt/herdr-go; vantt/forgent ; mỗi một project có một cách khác nhau và best practice riêng trong việc làm packaging and distribution (install/update/config/doctor). hãy distill tất cả project và học cách hay của từng project. tôi muốn đóng thành 1 skill dạng packaging-distribution-guide , skill này chứa một list các best practices hay cần phải làm và nên làm. cứ mỗi một project mới tôi sẽ kêu agent dùng skill này để có các hướng dẫn cần thiết phải làm cho việc này. tổ chức skill để các guides mới luôn được thêm vào mà không ản …[+179]
+[L1520] USER: ok. dùng `/ak:frontend-development` skill để làm. còn việc phía trên, có vẻ skillstation-send không có năng lực để quản lý routing/metadata hay sao á. lúc kêu sửa phải nhắc tới mấy lần và không hiển thị được metadata hiện tại.
+[L1561] USER: đã có ak:frontend-development.
+[L2018] USER: này là em code và fix luôn rồi?
+</asks>
+
+<story>
+hook: 5 test lỗi trên máy dev, 0 lỗi trên CI
+tension: nho_ma_to (CI xanh nên tưởng test sạch / Test lén đọc cấu hình agent thật của chủ máy)
+stakes: 0/3
+# 5 test Go chỉ lỗi trên máy dev: test đọc cấu hình agent thật của chủ máy
+
+**Bối cảnh:** make check có 5 test lỗi trên main, và lỗi cả trước khi có commit của agent.
+**Chuyện gì xảy ra:** TestMain đổi HOME nhưng không đổi thư mục làm việc. Lệnh status và doctor đi ngược lên thư mục cha đến home thật, gặp cấu hình Codex và Gemini trỏ tới hub, rồi coi đó là một project. Kết quả là 5 test thoát mã 1 hoặc sai thông báo. Trên CI, cả 5 test đều qua vì máy đó không có cấu hình này: 5 lỗi trên máy dev, 0 lỗi trên CI.
+**Bài học:** Test của công cụ đi tìm cấu hình ngược thư mục phải cô lập cả thư mục làm việc, không chỉ biến môi trường.
+**Artefact:** Bảng 5 test và lý do từng test lỗi. Cần che đường dẫn.
+</story>
+
+<excerpt>
+[L2053] TOOL Bash: cd /home/vantt/projects/skillstation && make check 2>&1 | tail -25
+[L2054] RESULT: ok github.com/vantt/skillstation/internal/evaluation 0.606s | ok github.com/vantt/skillstation/internal/fsutil 0.006s
+[L2060] TOOL Bash: cd /home/vantt/projects/skillstation && go test ./... 2>&1 | grep -E "^(FAIL|--- FAIL|panic)|_test.go:[0-9]+" | head -30
+[L2063] RESULT: --- FAIL: TestDoctorReportsAMissingGitIdentity (0.12s) | git_identity_test.go:57: doctor with an identity: exit 1
+[L2073] TOOL Bash: cd /home/vantt/projects/skillstation && git stash -u -q && go test ./internal/delivery/cli -run 'TestDoctorReportsAMissingGitIdentity|TestStatusSaysTheIndexIsBehind|TestStatusNeverCallsACommittedHubNew|TestStatusSuggestsRunnableCreateCommandBUG17|TestSkillMutationHintsPrintTheCommitCommandStatusPrin …[+66]
+[L2074] RESULT: skill_next_steps_test.go:83: status printed no commit command | FAIL
+[L2080] TOOL Bash: cd /home/vantt/projects/skillstation && git add web/src && git diff --cached --stat && git commit -q -F - <<'EOF' feat(web): show updates waiting for review on the skill page and list A submission another machine sent for a skill the hub already has only appeared under Waiting for review, so the ski …[+649]
+[L2083] RESULT: web/src/domain/pending-submissions.test.ts | 38 ++++++++ | web/src/domain/pending-submissions.ts | 29 ++++++
+…
+[L2099] RESULT: Command running in background with ID: bu7dj3l46. Output is being written to: /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/tasks/bu7dj3l46.output. You will be notified when it completes — do not poll that file or  …[+302]
+[L2103] AGENT: Đã merge và push lên `main` của `vantt/skillstation`, commit `185b75d` (feat(web): show updates waiting for review on the skill page and list). Tôi gộp thẳng nhánh vào `main` (fast-forward), không mở PR, rồi xóa nhánh trên máy này.
+
+- **Kiểm tra trên máy này:** web qua cả 229 test, kiểm tra kiểu, lint và build. `make check` thì có **5 test Go trong `internal/delivery/cli` bị lỗi**, nhưng 5 test này lỗi y hệt trên `main` trước khi có commit của tôi. Lần này tôi không sửa dòng Go nào. Chúng là các test về `doctor` và `status`, có vẻ phụ thuộc môi trường máy này (cấu hình hub toàn cục hoặc danh tính git). Tôi chưa tìm nguyên nhân.
+- **CI trên GitHub:** đang chạy cho `185b75d`. Tôi đang theo dõi và có kết quả sẽ báo anh.
+- **Commit không có dòng đồng tác giả AI**, theo quy tắc commit trong `.claude/rules/development-rules.md` của dự án.
+
+Hub của anh chưa đổi gì. Muốn thấy thông báo mới thì phải phát hành bản skillstation mới rồi chạy `skillstation update` trên máy hub.
+
+Còn cần anh quyết định:
+1. Có tìm nguyên nhân 5 test Go đang lỗi trên `main` không?
+2. Anh có muốn tôi chuẩn bị phát hành bản mới không, hay để anh tự làm theo quy trình release của repo?
+[L2113] USER: mô tả rõ 5 lỗi go
+[L2122] TOOL Bash: cat /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/tasks/bu7dj3l46.output; cd /home/vantt/projects/skillstation && go test ./internal/delivery/cli -run 'TestDoctorReportsAMissingGitIdentity|TestStatusSaysTheIndexIsBehind|TestStatusNeverCallsACommittedHubNew|TestSta …[+158]
+[L2123] RESULT: git_identity_test.go:57: doctor with an identity: exit 1 | Hub at /tmp/TestDoctorReportsAMissingGitIdentity2847577294/003/hub
+[L2129] TOOL Bash: cd /home/vantt/projects/skillstation && H=$(mktemp -d) && git config --global user.name >/dev/null; HOME=$H GIT_CONFIG_GLOBAL=$HOME/.gitconfig go test ./internal/delivery/cli -run 'TestDoctorReportsAMissingGitIdentity|TestStatusSaysTheIndexIsBehind|TestStatusNeverCallsACommittedHubNew|TestStatusSugg …[+313]
+[L2135] RESULT: <persisted-output> | Output too large (3.2MB). Full output saved to: /home/vantt/.claude/projects/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/tool-results/by4kdtsik.txt
+[L2146] TOOL Bash: chmod -R u+w /tmp/tmp.NkKQPKY2JG && rm -rf /tmp/tmp.NkKQPKY2JG && echo cleaned; cd /home/vantt/projects/skillstation && MC=$(go env GOMODCACHE) GC=$(go env GOCACHE) GP=$(go env GOPATH); H=/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/home; rm -rf $H; mk …[+388]
+[L2147] RESULT: cleaned | FAIL
+[L2151] TOOL Bash: cd /home/vantt/projects/skillstation && H=/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/scratchpad/home; HOME=$H GOMODCACHE=$(go env GOMODCACHE) GOCACHE=$(go env GOCACHE) GOPATH=$(go env GOPATH) go test ./internal/delivery/cli -run 'TestDoctorReportsAMissingGitIde …[+249]
+[L2152] RESULT: --- FAIL: TestDoctorReportsAMissingGitIdentity (0.37s) | git_identity_test.go:57: doctor with an identity: exit 1
+[L2158] TOOL Bash: cd /home/vantt/projects/skillstation && grep -rn "user.Current()\|LookupId\|getpwuid" internal cmd | grep -v _test | head; grep -rln "skillstation-cli-tests" internal | head -3
+[L2159] RESULT: internal/app/hub_service.go:62: if current, err := user.Current(); err == nil { | internal/delivery/cli/serve_service.go:250: current, err := user.Current()
+[L2168] TOOL Bash: cd /home/vantt/projects/skillstation && sed -n 1,80p internal/delivery/cli/main_test.go
+…
+[L2216] RESULT: if err != nil { | t.Fatal(err)
+[L2221] AGENT: Cả 5 lỗi có **chung một nguyên nhân**: các test chưa cách ly hết khỏi máy thật. Chúng đọc phải cấu hình Codex và Gemini thật của anh, mà cấu hình này mới được ghi lúc 14:46 hôm nay khi anh chạy `skillstation connect --global`. Code của skillstation không sai, và commit web của tôi cũng không liên quan.
+
+**Cơ chế gây lỗi**
+1. `TestMain` đổi `HOME` và các biến `XDG_*` sang thư mục tạm, nhưng không đổi thư mục làm việc. Test vẫn chạy trong `~/projects/skillstation/internal/delivery/cli`.
+2. Lệnh `status` và `doctor` đi ngược từ thư mục làm việc lên các thư mục cha để tìm cấu hình của dự án. Khi tới `/home/vantt`, chúng gặp `~/.codex/config.toml` và `~/.gemini/settings.json`, đều đang trỏ tới hub `http://100.93.158.78:7420`.
+3. Vì HOME lúc này là thư mục tạm, code không nhận ra `/home/vantt` là thư mục nhà. Nó coi hai file trên là cấu hình của một dự án tên "/home/vantt", nên kết quả có thêm phần *"This project (/home/vantt) uses the hub at …"*.
+4. Phần đó so đường dẫn lệnh đã đăng ký (`skillstation` thật) với binary đang chạy (binary test), thấy khác nhau, báo **Connection files FAILED** rồi gợi ý *"Next: reconnect this project to the hub"*.
+
+**Từng test lỗi ra sao**
+
+| Test | Kỳ vọng | Bị lỗi vì |
+|---|---|---|
+| `TestDoctorReportsAMissingGitIdentity` | `doctor` trên hub đã có danh tính git thì thoát mã 0 | thoát mã 1 do dòng Connection files FAILED |
+| `TestStatusSaysTheIndexIsBehindAfterAHandEditAndDoesNotFail` | `status` báo chỉ mục tìm kiếm cũ, nhưng không có chữ `FAILED` | kết quả có chữ `FAILED` |
+| `TestStatusNeverCallsACommittedHubNew` | hub có bản nháp thì `status` không nhắc tới `connect` | kết quả có lời gợi ý `skillstation connect …` |
+| `TestStatusSuggestsRunnableCreateCommandBUG17` | hub rỗng thì bước tiếp theo gợi ý `skillstation skill create` | bước tiếp theo bị thay bằng "reconnect this project" |
+| `TestSkillMutationHintsPrintTheCommitCommandStatusPrints` | `status` in ra lệnh commit giống gợi ý sau `skill activate` | `status` gợi ý reconnect nên khô …[+1264]
+[L2232] USER: <task-notification>
+<task-id>bu7dj3l46</task-id>
+<tool-use-id>toolu_016H3QnQhGRxq1GJC2aHpUaw</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/tasks/bu7dj3l46.output</output-file>
+<status>completed</status>
+<summary>Background command "Wait for the CI run on main to finish" completed (exit code 0)</summary>
+</task-notification>
+[L2240] TOOL Bash: cat /tmp/claude-1000/-home-vantt-projects-devops/6a207191-5a2b-4956-9f48-9efae5fe3b0f/tasks/bu7dj3l46.output; cd /home/vantt/projects/skillstation && gh run list --branch main --workflow CI --limit 3 --json status,conclusion,headSha --jq '.[] | "\(.status) \(.conclusion) \(.headSha[0:7])"'
+[L2243] RESULT: CI exit=0 | success
+[L2246] AGENT: CI trên GitHub cho commit `185b75d` (phần thông báo "update waiting for review" trên web) **đã qua hết**. Kết quả gồm bước Web UI, bộ test Verify trên Ubuntu, macOS và Windows, lint, fuzz, kiểm tra installer, và build chéo cho 6 nền tảng.
+
+Kết quả này cũng khớp với giải thích về 5 lỗi Go: máy CI không có `~/.codex/config.toml` và `~/.gemini/settings.json` trỏ tới hub, nên các test đó không lỗi. Chúng chỉ lỗi trên máy anh.
+
+Trên `main` vừa có thêm ba commit không phải của tôi: `506dacb`, `39a452d`, `490c142`. Có lẽ từ một phiên khác của anh. CI của cả ba đang chạy.
+
+Anh có muốn tôi sửa phần cách ly test, để 5 test Go không lỗi trên máy anh nữa không?
+[L2255] USER: trong project ~/projects/momentry hình như có một quy tắc mới về bộ lệnh config, command để ghi nhận config. em xem lại bên đó và kiểm tra với skill cs-packaging-distribution xem mình có quy chuẩn này chưa
+[L2264] TOOL Bash: cd ~/projects/momentry && git log --oneline -15 2>/dev/null; ls; grep -rli "config" --include='*.md' . 2>/dev/null | grep -v node_modules | head -30
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

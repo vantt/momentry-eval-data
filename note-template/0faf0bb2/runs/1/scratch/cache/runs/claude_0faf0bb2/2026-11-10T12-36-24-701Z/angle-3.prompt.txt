@@ -1,0 +1,148 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+fgOPC là bộ dựng công ty một người vận hành bằng AI agent, chạy trên nền Multica tự host. Làm cho người muốn giao việc cho các team agent (Coding, Content, SEO & Analytics) qua issue, với bước chờ chủ duyệt ở những việc quan trọng. Mỗi khách có một workspace riêng, dựng từ một file cấu hình; thông tin riêng và secret của khách nằm ngoài repo. Hiện chạy với runtime Claude Code.
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L257] USER: nên đào sâu về kiến trúc bên trong xem có gì hay ho, cách nào để kết nối dữ liệu thật vào một cách dễ dàng nhất. ok. giờ em viết vision cho toàn project này nhé: xây dựng phần mềm quản lý mô hình OPC (One Person Company). vì vậy cần giải pháp hostin và chi phí hạ tầng rẻ, ưu tiền dùng Cloudflare. cách làm: dùng một project ui giống gr8, tạo cơ chế lưu trữ dữ liệu cho mọi thứ liên quan đến project/task và colaboration. từ đó điều phối xuống ai agent, làm việc và trao đổi theo project.task.comment; sử dụng hệ thống aicoworker/openclaw đang nghiên cứu.
+[L413] USER: tại sao phải thiết kế lại stackui nhỉ. Research thêm có stack nào sẵn có không. Chứ đi viêt lại tốn lắm
+[L493] USER: không, chạy node thì không phù hợp. hãy distill paperclip xem kiến trúc nội tại của nó có gì hay ho khác biệt. thật ra về cơ chế chúng ta chỉ cần một schema chuẩn cho cac entity khớp với ui, từ schema đó mà ra cả api/mcp rồi agent kết nối. cloudlfare d1 đủ sức cho opc. node server là over rồi
+</asks>
+
+<story>
+hook: Bỏ server Node, chạy cả hệ agent trên D1 với chi phí gần 0 đồng
+tension: it_ma_nhieu (Gần như không tốn hạ tầng / Một schema sinh ra D1, REST và MCP cho agent)
+stakes: 3/3
+# Chủ đổi hướng: bỏ server Node, chuyển sang schema sinh API và MCP trên D1
+
+**Bối cảnh:** Sau khi đề xuất chạy Paperclip trên chính máy AICoworker, người dùng từ chối hướng có server Node chạy liên tục.
+**Chuyện gì xảy ra:** Người dùng nêu ý chính: một schema entity chuẩn khớp với UI, từ đó sinh D1, REST và MCP, agent kết nối qua đó. Phần cần Node của Paperclip được tách riêng, phần lõi (schema, API, cách agent nhận việc) được đánh giá là chạy được trên Workers với D1. Mục tiêu chi phí hạ tầng gần 0 đồng.
+**Bài học:** Khi người dùng đổi ràng buộc hạ tầng, đọc lại toàn bộ đề xuất trước đó thay vì chỉ sửa một phần.
+**Artefact:** Sơ đồ schema, D1, API/MCP và agent (vẽ tay hoặc dạng bảng).
+</story>
+
+<excerpt>
+[L481] RESULT: (1 warning(s); run "distill.mjs check" to see them) | Captured paperclip in intake. Triage decides whether to "add" it.
+[L483] AGENT: Bạn nói đúng, không nên viết lại. Mình đề xuất viết lại chỉ vì gr8r không có license và chỉ là demo frontend. Research thêm thì thấy đã có sẵn một project làm gần như đúng vision của mình.
+
+## Ứng viên số 1: Paperclip, khớp khoảng 90% vision
+
+[paperclipai/paperclip](https://github.com/paperclipai/paperclip): license **MIT**, khoảng **108k sao**, có commit ngay hôm nay. Khẩu hiệu của họ: *"If OpenClaw is an employee, Paperclip is the company."*
+
+| Vision của mình | Paperclip đã có |
+|---|---|
+| Project / task / comment | Có issue gắn với company, project, goal, task con; comment, tài liệu, file đính kèm, inbox |
+| Giao việc cho agent OpenClaw | Có adapter `openclaw-gateway` riêng |
+| Mỗi task là một session agent | `sessionKeyStrategy=issue`, đúng thiết kế mình định làm |
+| Chủ duyệt, agent không tự đóng việc | Có cổng review và approval; khoá task để hai agent không làm trùng |
+| Phòng ban | Có org chart: vai trò, cấp báo cáo, quyền, ngân sách cho từng agent |
+| Theo dõi chi phí token (giai đoạn 3 của mình) | Tính chi phí theo agent, project và issue; tự dừng khi vượt ngân sách |
+| Activity log, task định kỳ, dùng trên điện thoại | Có cả ba |
+
+**Tương thích với AICoworker:** gateway trong máy này (OpenClaw 2026.3.13) có đủ các lệnh mà adapter dùng: `connect.challenge`, `agent.wait`, `device.pair.approve`. Tuy vậy mình **chưa chạy thử**, nên vẫn cần một lần test thật.
+
+## Điều cần chấp nhận: Paperclip không chạy trên Cloudflare Workers
+
+Paperclip là một server Node.js chạy liên tục, dùng Postgres (đi kèm sẵn, không phải cài riêng). Port nó sang Workers thì cũng tốn như viết lại. Cách vẫn giữ chi phí 0 USD mà vẫn ưu tiên Cloudflare:
+
+- **Chạy Paperclip trên chính máy đang chạy AICoworker.** Nó nối thẳng `ws://127.0.0.1:18789`, nên **không cần bridge** như mình thiết kế trước.
+- **Cloudflare Tunnel + Access** (miễn phí) để vào từ xa và từ điện thoại, có đăng nhập.
+- **R2** để lưu bản backup Postgres hằng đêm.
+- Khi cần chạy 24/7 thì chuyển sang một VPS khoảng 5 USD/thá …[+2274]
+[L493] USER: không, chạy node thì không phù hợp. hãy distill paperclip xem kiến trúc nội tại của nó có gì hay ho khác biệt. thật ra về cơ chế chúng ta chỉ cần một schema chuẩn cho cac entity khớp với ui, từ schema đó mà ra cả api/mcp rồi agent kết nối. cloudlfare d1 đủ sức cho opc. node server là over rồi
+[L495] AGENT: Đồng ý với hướng đó. Mình sẽ distill Paperclip, tập trung vào câu hỏi của bạn: **schema thống nhất → API/MCP → agent**, và phần nào của Paperclip thật sự cần server Node chạy liên tục, phần nào chuyển được sang Workers + D1.
+[L496] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; node $S/scripts/distill.mjs add paperclip --type git-repo --url https://github.com/paperclipai/paperclip 2>&1 | ta …[+269]
+[L500] RESULT: Next: git clone --filter=blob:none https://github.com/paperclipai/paperclip upstreams/paperclip && distill.mjs delta paperclip | 5898
+…
+[L523] TOOL Agent: Inventory Paperclip governance and history
+[L524] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: ad69eeff251b0f98b (internal ID - do not mention to user. Use SendMessa …[+86]
+[L535] TOOL Bash: cd /home/vantt/project/fgOPC/docs/distillery; python3 - <<'EOF' s=open('distill.yaml').read() import re i=s.index('goal:'); j=s.index('domains:') new='''goal: status: draft purpose: >- Software for running a One Person Company (OPC): one human owner directs a team of AI agents (AICoworker/OpenClaw)  …[+1987]
+[L536] RESULT: 8: schema, matching the UI, generates the D1 tables, the REST API and the MCP tools; agents connect | 10: needed) with no long-running Node server, so hosting stays near zero.
+[L540] AGENT: Goal đã được cập nhật. Đang chờ 3 agent kiểm kê Paperclip trả kết quả (schema, cách agent kết nối, governance và lịch sử thiết kế).
+[L544] USER: <task-notification>
+<task-id>ad69eeff251b0f98b</task-id>
+<tool-use-id>toolu_01Vd9pavd5ppJ7PdB7jrnkdN</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/ad69eeff251b0f98b.output</output-file>
+<status>completed</status>
+<summary>Agent "Inventory Paperclip governance and history" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I couldn't find a gate that stops an issue from moving to `done` without review. Review is enforced only through a review-policy check on who may answer a pending review confirmation. I did not open the PRODUCT.md or ROADMAP.md non-goals sections in full; the quotes in item 7 come from keyword grep hits.
+
+## 1. Approvals / review gates
+- **Statuses** (`packages/shared/src/constants.ts#L190-L198`): `"backlog","todo","in_progress","in_review","done","blocked","cancelled"`.
+- **Policies** (`packages/shared/src/constants.ts#L213`): `export const ISSUE_REVIEW_POLICIES = ["anyone", "not_creator", "human_only"] as const;`
+- **Schema column** (`packages/db/src/schema/issues.ts#L53`): `reviewPolicy: text("review_policy").$type&lt;IssueReviewPolicy&gt;(),`
+- **Enforcement** is in the route, not the service (`server/src/routes/issues.ts#L6302-L6332`). It only applies while the issue is `in_review` and a pending `request_confirmation` / `request_checkbox_confirmation` interaction exists:
+  ```ts
+  if (issue.reviewPolicy == null || issue.reviewPolicy === "anyone") {
+    return { restriction: "anyone", binding };
+  }
+  if (issue.reviewPolicy === "human_only") { ... policy: "human_only", source: "issue_review" ...
+  ... policy: "not_creator", ... excludedActor: requester ? { type: requester.type, id: requester.id } : null,
+  ```
+- Other gate surfaces exist but I didn't read them: the `approvals` and `issue_approvals` schemas, and `ISSUE_EXECUTION_STAGE_TYPES = ["review", "approval"]` (constants.ts#L521) used by `server/src/services/issue-execution-policy.ts`.
+- Related rule (`doc/PRODUCT.md#L413`): "Agents cannot approve their own governed action requests or edit their own principal permission grants."
+
+## 2. Budgets
+- **Spend table** (`packages/db/src/schema/cost_events.ts`): `pgTable("cost_events", …)` with `companyId`, `agentId`, `issueId`, `projectId`, `goalId`, `heartbeatRunId`, `idempotencyKey`, `re …[+8221]
+…
+[L635] TOOL Bash: cd /home/vantt/project/fgOPC; S=/home/vantt/.local/state/skillstation/remote/192.168.20.57-7420-5c24e091a6/distill-repo/f61a2e10fc686eb4aff138875060340e6904de3c29861d3ac3382b5b534308e3; node $S/scripts/distill.mjs rank --all 2>&1 | head -45
+[L636] RESULT: Lessons by priority (final_score = relevance × impact × evidence / effort; '=' marks a tie): | 1 24 r3 i4 e2 f1 candidate content new client-random-ids-and-keys
+[L641] AGENT: Mình đã distill xong Paperclip và kết quả ủng hộ hướng của bạn: **Paperclip cần Node vì những phần phụ, không phải vì phần lõi.** Phần lõi, gồm schema entity, API và cách agent nhận việc, chạy được trên Workers + D1.
+
+```
+fgOPC: distilled paperclip (lần đầu, commit e8b78cc; 5.898 commit, 252 người đóng góp, MIT)
+Goal: BẢN NHÁP. Đã cập nhật theo ý bạn: "một schema entity sinh ra bảng D1, REST API,
+      MCP và kiểu dữ liệu cho UI; chạy hoàn toàn trên Cloudflare, không có server Node"
+```
+
+## Những gì đáng học, theo thứ tự ưu tiên
+
+1. **Key dễ đọc do server cấp** (`client-random-ids-and-keys`; gr8r và Paperclip có chung ý tưởng này): Paperclip dùng uuid làm id, còn mã kiểu `PAP-123` được cấp bằng **một câu `UPDATE … RETURNING`** trên bộ đếm của công ty. Trong D1, một câu lệnh như vậy đã chạy trọn vẹn một lần (atomic), nên không cần khoá hay Durable Object.
+2. **Trạng thái `in_review`** (gr8r và Paperclip đều tự có): agent làm xong thì chuyển sang review, chủ duyệt sau.
+3. **Activity log ghi tự động mỗi khi dữ liệu thay đổi** (cả hai đều có): Paperclip có một hàm ghi trung tâm, nhưng **từng route phải tự gọi**, nên route mới có thể quên. Nếu API được sinh từ schema, handler sinh ra sẽ tự ghi log, chắc hơn cả hai.
+4. **Nhận việc bằng một câu UPDATE** (`atomic-checkout-single-update`): `UPDATE issues SET assignee, run, status='in_progress' WHERE status IN (…) AND chưa ai giữ`. Nếu 0 dòng được cập nhật thì trả 409, và skill dặn agent "Never retry a 409". Dòng dữ liệu chính là cái khoá, nên **chép thẳng sang D1 được**. Run bị chết giữa chừng sẽ được một Cron Trigger dọn sau khoảng 5 phút.
+5. **Mỗi task có chính sách review riêng**, chọn một trong `anyone | not_creator | human_only`. Có một lỗ hổng cần tránh: service cho phép chuyển **từ bất kỳ trạng thái nào sang bất kỳ trạng thái nào**, nên agent có thể nhảy thẳng sang `done`. Phía mình nên đặt một bảng chuyển trạng thái cạnh danh sách status.
+6. **Agent tự kéo việc** (`agent-pull-loop-inbox-checkout`): vòng lặp là `me →  …[+4318]
+[L645] USER: <task-notification>
+<task-id>b2ytwdrq8</task-id>
+<tool-use-id>toolu_018Khdtt6Lg5wDv5bmyCH7ov</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-project-fgOPC/0faf0bb2-170b-4a3a-b95b-dfe7deea40ee/tasks/b2ytwdrq8.output</output-file>
+<status>completed</status>
+<summary>Background command "Validate area and get Paperclip delta commit" completed (exit code 0)</summary>
+</task-notification>
+[L647] AGENT: Lệnh `delta` của Paperclip mà mình để chạy nền đã kết thúc. Nó chỉ dùng để lấy commit cần ghim (`e8b78cce5bb5`), và pass đã được seal ở đúng commit đó, nên không có gì thay đổi. Ba câu hỏi ở cuối báo cáo trước vẫn đang chờ bạn trả lời.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

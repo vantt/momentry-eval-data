@@ -1,0 +1,141 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L264] USER: action là dùng để tự chạy ci catchup khi upstream thay đổi đúng không. cái này bật luôn nếu đúng
+[L748] USER: Tiếp tục điều phối plan vantt/plans/261102-0349-fork-master-roadmap/plan.md: kiểm tra agent Đ0 (V00, V09, V10), commit/push việc đã xong, khởi chạy đợt kế.
+[L1112] USER: báo cáo tiến độ
+</asks>
+
+<story>
+hook: Người dùng giữ cách làm của V13 và cho sửa PRD, vì vi-semantic tụt 0,083
+tension: chon_mot_mat_mot (làm theo PRD 10.3 như đã viết / vi-semantic tụt 0,083, nên sửa PRD cho khớp V13)
+stakes: 2/3
+# PRD 10.3: câu có dấu không chạy view norm/fold vì vi-semantic tụt 0,083
+
+**Bối cảnh:** Bật norm và fold cho câu có dấu làm vi-semantic tụt 0,083 nDCG@5.
+**Chuyện gì xảy ra:** Agent đề xuất giữ cách của V13 và sửa PRD 10.3 cho khớp. Người dùng chọn giữ V13 và cho sửa PRD. Quy tắc mới: câu có hơn 50% âm tiết có dấu không dùng view; fold chỉ bật khi vault có chính chữ đó viết không dấu.
+**Bài học:** Khi kết quả đo và spec mâu thuẫn, ghi lý do và sửa spec; đừng để spec lệch âm thầm.
+**Artefact:** Bảng vi-semantic trước và sau.
+</story>
+
+<excerpt>
+[L1255] TOOL Bash: cat >> /home/vantt/projects/ohs-wt/lead-state.txt <<'EOF' 12:50 Pushed: V13 570e77b (G3 met; open user decision: accented queries skip views vs PRD 10.3), b5acbaf (user OK: first GitHub release for V03; fixture co-author OK; PRD 3.5 was already correct). V08/P04 DONE (branch vantt/work/stdio-parity, …[+752]
+[L1256] RESULT: (Bash completed with no output)
+[L1264] AGENT: Đã ghi nhận ba ý của bạn:
+- **Release GitHub đầu tiên (V03):** bạn đã đồng ý, tôi đã ghi vào plan. V03 sẽ chạy ngay khi V02 (CI) xong.
+- **Đồng tác giả trên repo fixture:** giữ nguyên, không force-push.
+- **PRD:** đọc lại thì PRD mục 3.5 đã đúng: bỏ dấu được với chữ một dấu, còn chữ hai dấu và `đ` thì không. Nhận định PRD sai của agent là nhầm, nên tôi sửa ghi chú trong plan cho khớp, không sửa PRD.
+
+**V13 (gói tiếng Việt M2/M3) đã commit (`570e77b`).** G3 đạt:
+- `vi-unaccented`: Hit@5 từ 0,27 lên 1,00.
+- `vi-dd`: từ 0,40 lên 1,00.
+- `vi-tone-precision`: MRR đạt 1,00.
+- Không hạng mục nào tụt.
+
+**V08 (P04) đã xong.** Khi lượt test P05 và P06 kết thúc, tôi sẽ dựng lại chuỗi đúng thứ tự P00, P01, P02, P03, P04, P09, P05, P06, chạy test rồi commit cả ba bản vá.
+
+**Đang chạy song song:**
+- V17, V18, V19, V20: mỗi việc một worktree riêng, tôi sẽ merge lần lượt.
+- V22: eval nhánh nghĩa.
+- V25: P07.
+- V02: CI.
+- V12: cổng chất lượng.
+
+**Cần bạn chốt:** V13 làm lệch PRD 10.3 ở một điểm. Câu tìm có dấu mặc định không đi qua view `norm` và `fold`. Lý do là khi bật hai view này cho câu có dấu, `vi-semantic` tụt 0,083 nDCG@5. View `fold` vẫn tự bật khi vault có từ viết không dấu. Nếu bạn muốn giữ đúng PRD, chỉ cần đặt hai tuỳ chọn `accentedNorm: true` và `accentedFold: "always"`. Tôi đề nghị giữ cách của V13 và sửa PRD 10.3 cho khớp. Bạn chọn bên nào?
+[L1274] USER: <task-notification>
+<task-id>ad7f5ec0a87486737</task-id>
+<tool-use-id>toolu_01TuT8zuD7vpSAxpKaXANuPS</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/ad7f5ec0a87486737.output</output-file>
+<status>completed</status>
+<summary>Agent "V19 alias views and snippets" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+**Summary:** The pack now declares `aliasViews: ['fold']`, and `analyzeQuery` returns `aliasKeys.fold`. The core already does the snippet and `matchedTerms` work, so no P01 change was needed. `vi-alias` Hit@5 stays at 1.00 and `vi-snippet` is 15/15 through real OHS.
+
+**Branch and commit:** `vantt/work/v19`, commit `ce2e408`, in `/home/vantt/projects/ohs-wt/m-v19`.
+
+**What changed:**
+- **Alias key:** `src/alias.ts` is new. The key is the `fold` projection of the query with whitespace trimmed and collapsed. It matches the key the core stores for each alias and title. The only hook-point edits are in `buildAnalysis` in `query.ts` and in `index.ts`.
+- **Check script:** `vantt/eval/vi/check-snippets.mjs` runs all 15 `vi-snippet` queries through real OHS with the pack. It checks that the target note's snippet is a verbatim piece of the note, diacritics intact, and contains `snippet_contains`. It also checks that each `matchedTerms` entry is a word from the note whose fold starts with a query word. It exits 0 only at 100%.
+- **Docs and plan:** the sub-plan is `vantt/plans/261102-1330-v19-alias-snippet/plan.md`. I added a short section to `vantt/eval/vi/README.md` and updated the pack README's V19 mention.
+
+**Eval (full vi-search corpus, against `chk-series`, saved at `/home/vantt/projects/ohs-wt/tmp/v19/vi-pack.json`):**
+
+| | V13 | V19 |
+|---|---|---|
+| `vi-alias` Hit@5 | 1.00 | 1.00 |
+| `vi-alias` Hit@1 | 0.60 | 0.93 |
+| `vi-partial-accent` Hit@1 | 0.87 | 1.00 |
+| `vi-names` Hit@1 | 0.93 | 1.00 |
+
+- **All 17 categories against V13:** Hit@5 is unchanged and nothing dropped. Overall nDCG@5 is +0.015. The gains are in `vi-alias` (+0.161), `vi-partial-accent` (+0.067) and `vi-names` (+0.025). There are 0 Hit@5 query changes.
+- **Against the baseline:** the gains match the V13 table. `vi-alias` goes from 0.73 to 1.00 Hit@5, and overall nDCG@5 is +0.162.
+- **Unaccented query on an acc …[+1332]
+[L1283] AGENT: V19 xong và không phải sửa P01. `vi-snippet` đạt 15/15 đoạn trích là chữ gốc và chứa chỗ khớp. Hit@1 của `vi-alias` tăng từ 0,60 lên 0,93. Thay đổi trong `query.ts` rất nhỏ, nên tôi merge V19 ngay thay vì đợi V17 và V18; các việc merge sau sẽ tự giải xung đột nếu có.
+…
+[L2085] RESULT: 5
+[L2094] AGENT: Đã dọn xong các worktree đã ghép; đĩa còn trống 164G. Còn bốn câu cần bạn chốt. Câu thứ năm là V15, như đã gửi ở trên.
+[L2095] TOOL AskUserQuestion: {"questions":[{"question":"Câu tìm CÓ DẤU: V13 mặc định tắt view norm/fold (bật thì vi-semantic tụt 0,083 nDCG@5; fold vẫn tự bật khi vault có chữ viết không dấu). PRD 10.3 ghi là chạy cả hai view. Chọn bên nào?","header":"Câu có dấu","multiSelect":false,"options":[{"label":"Giữ cách V13 (Recommende …[+1955]
+[L2096] RESULT: The user answered: "Câu tìm CÓ DẤU: V13 mặc định tắt view norm/fold (bật thì vi-semantic tụt 0,083 nDCG@5; fold vẫn tự bật khi vault có chữ viết không dấu). PRD 10.3 ghi là chạy cả hai view. Chọn bên nào?"="Giữ cách V13 (Recommended)", "Từ điển từ gh …[+763]
+[L2110] TOOL Bash: sed -n '1,46p' .github/workflows/vantt-catchup.yml; grep -n "Có dấu\|có dấu (>" vantt/PRD.md | head; grep -n "G1 " vantt/PRD.md | head -3
+…
+[L2118] TOOL Bash: awk 'NR>=641 && NR<=680' vantt/PRD.md | grep -n "dấu" | head -12
+[L2119] RESULT: 8:| `normalize.ts` | Chuẩn hoá giữ dấu: NFC; chữ thường; vị trí dấu thanh về một kiểu chuẩn (tuỳ chọn `tonePlacement: "modern" \| "classic"`); thay ký tự lạ hay gặp (U+0110/0111 viết nhầm thành Ð U+00D0, dấu thanh tổ hợp rời, khoảng trắng không ngắt) …[+208]
+[L2129] TOOL Bash: python3 - <<'EOF' p='vantt/PRD.md' s=open(p).read() old="câu có dấu → `norm` = câu chuẩn hoá, `fold` = câu bỏ dấu;" assert old in s s=s.replace(old,"câu có dấu (hơn 50% âm tiết có dấu) → mặc định không dùng view (`norm` = null; `fold` chỉ bật khi vault có chính các chữ đó viết không dấu), vì BM25 củ …[+1132]
+[L2130] RESULT: Created autostash: f00808c | Applied autostash.
+[L2137] AGENT: Hai quyết định còn lại cần sửa mã. Giao cho hai agent chạy song song.
+…
+[L2143] TOOL Agent: V20b licensed compound dictionary
+[L2144] RESULT: Async agent launched successfully. (This tool result is internal metadata — never quote or paste any part of it, including the agentId below, into a user-facing reply.) | agentId: aa751f122f95d7e6a (internal ID - do not mention to user. Use SendMessa …[+86]
+[L2155] TOOL Bash: echo "14:55 User decisions: keep V13 accented (PRD 10.3 updated abce8d2); dictionary -> stats from licensed corpus, pyvi dev-only (V20b aa751f122f95d7e6a, worktree m-v20b); segment on + harder vi-compound fixture (V20b); no auto-follow upstream (V02b a56d2771da391c7db: drop cron, pin vantt/upstream. …[+166]
+[L2156] RESULT: (Bash completed with no output)
+[L2160] AGENT: Tôi đã đưa cả bốn quyết định vào việc, và PRD với plan đã cập nhật (`abce8d2`).
+
+1. **Câu tìm có dấu:** giữ cách của V13. PRD 10.3 đã sửa cho khớp.
+2. **Từ điển từ ghép:** agent V20b sẽ dựng một danh sách mới bằng thống kê cặp âm tiết trên văn bản có giấy phép rõ ràng, rồi thay danh sách của pyvi. pyvi chỉ dùng lúc phát triển để chỉnh tham số và đo kết quả, không phát hành, không chép từ nào sang. Nếu danh sách phát hành được rút ra từng mục từ pyvi thì vẫn mang rủi ro nguồn gốc như cũ, nên tôi đặt ranh giới như vậy. Nếu không tìm được văn bản tiếng Việt đủ lớn với giấy phép đạt yêu cầu, agent sẽ báo trước khi chọn phương án yếu hơn.
+3. **Tách từ:** vẫn bật mặc định. V20b cũng thêm câu từ ghép khó vào fixture để `vi-compound` đo được thật.
+4. **Không tự đuổi theo upstream:** agent V02b đang bỏ lịch chạy 6 giờ một lần và ghim phiên bản upstream vào file `vantt/upstream.pin` (hiện là `v0.17.2`). Lần chạy tự động khi `master` đổi chỉ dựng lại trên đúng tag đã ghim. Đồng bộ `master` với upstream chỉ chạy khi bạn yêu cầu. Vì vậy không cần secret `VANTT_PUSH_TOKEN` nữa. Mục tiêu G1 trong PRD sẽ được sửa theo.
+
+Song song, agent V14 đang chạy lại báo cáo review upstream trên chuỗi đủ 9 bản vá với gói đầy đủ, và lần này không bỏ qua tầng nào.
+
+Còn chờ bạn: V15, tức file khoảng 60 câu gán nhãn trên vault thật như đã hướng dẫn ở trên. Ngoài V15, hiện không còn câu hỏi nào khác.
+
+Đang chạy: V03, V14, V22, V02b, V20b.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

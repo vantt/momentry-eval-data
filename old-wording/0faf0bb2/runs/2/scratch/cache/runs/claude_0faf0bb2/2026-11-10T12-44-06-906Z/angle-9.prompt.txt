@@ -1,0 +1,118 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Bộ dựng công ty một người (One Person Company) vận hành bằng AI agent, nền là Multica. Mỗi khách có một workspace riêng, trong đó các team agent Coding, Content, SEO & Analytics nhận việc qua issue và làm theo workflow có cổng kiểm. Làm cho người điều hành một công ty một người muốn giao việc cho agent nhưng vẫn giữ quyền duyệt ở các bước quan trọng. Ràng buộc chính: tự host Multica và daemon, chạy runtime Claude Code, và thông tin riêng của khách (cấu hình, secret) nằm ngoài repo.
+</project>
+
+<asks>
+[L5] USER: dùng skill distill-repo để học hỏi repo này https://github.com/gr8rstudio/gr8r-studio. sau đó làm một research xem có project nào tương tự không ? trả lời tại sao project này lại nổi tiếng
+[L3386] USER: multica chat multi session được không?
+[L3398] USER: spike multica với claude code đi
+[L3634] USER: nhớ cho anh webui address nhé
+</asks>
+
+<story>
+hook: Multica không có mật khẩu, mã đăng nhập chỉ nằm trong log docker
+tension: khac (Muốn đăng nhập để test, không có mật khẩu lẫn SMTP / Mã chỉ nằm trong log, phải đặt cố định 123456)
+stakes: 0/3
+# Chủ tự đăng nhập bằng mã cố định vì Multica không có mật khẩu và chỉ gửi mã vào log
+
+**Bối cảnh:** Chủ muốn đăng nhập web Multica trên tailnet, nhưng server không gửi email (không có SMTP hay Resend) nên mã xác nhận chỉ nằm trong log.
+**Chuyện gì xảy ra:** Multica không có đăng nhập bằng mật khẩu; chỉ có mã email và Google OAuth. Vì không có SMTP, mã nằm trong log của backend và phải lấy bằng lệnh docker logs. Để test, đặt MULTICA_DEV_VERIFICATION_CODE=123456, chỉ hoạt động khi APP_ENV không phải production.
+**Bài học:** Mã cố định kiểu dev chỉ dùng được cho môi trường thử, không dùng cho sản xuất; luôn kiểm tra APP_ENV trước khi dựa vào nó.
+**Artefact:** Ảnh màn hình trang đăng nhập (che email thật, không chụp mã).
+**Góc người ngoài:** cách làm phổ biến là Cấu hình SMTP hoặc đăng nhập bằng Google/mật khẩu thật; ít khi đặt mã cố định, dù chỉ dùng trong tailnet; ở đây khác ở Người đọc muốn biết có an toàn không khi đặt mã cố định, và vì sao không cần gửi email thật cho bước thử nghiệm.
+</story>
+
+<excerpt>
+[L3629] AGENT: Long **trả lại**: SEN-2 quay về `todo` và tự giao lại cho Mai. Đường "Needs changes" đã chạy. Đang chờ Mai sửa bài.
+[L3634] USER: nhớ cho anh webui address nhé
+[L3643] AGENT: Web UI của Multica:
+
+**http://fg-server.tail342564.ts.net:3310**
+
+Truy cập được từ các máy trong tailnet; dùng `http://100.121.46.35:3310` nếu tên máy không phân giải được.
+
+**Đăng nhập:**
+1. Nhập email **`owner@sen-coffee.local`**. Chỉ email này được phép đăng nhập.
+2. Mã xác nhận không gửi qua email mà nằm trong log của server. Bạn báo mình "lấy mã" để mình đọc từ log, hoặc tự chạy:
+   ```bash
+   docker logs multica-spike-backend-1 2>&1 | grep "Verification code" | tail -1
+   ```
+
+Vào xong, bạn sẽ thấy workspace **Sen Coffee**:
+- project **"Bài đăng Facebook"** với board theo workflow Nháp → Sales review → In review → Done;
+- issue SEN-1 và SEN-2;
+- hai agent Mai và Long.
+
+Địa chỉ và cách đăng nhập đã ghi trong runbook `docs/spikes/2026-10-29-multica-claude/runbook.md`, mục 3.1 và 4. SEN-2 đang ở vòng sửa thứ hai (Long vừa trả lại cho Mai). Mình tiếp tục theo dõi.
+[L3647] USER: lấy mã
+[L3649] TOOL Bash: docker logs multica-spike-backend-1 2>&1 | grep -i "verification code" | tail -3 | sed -E 's/.*(Verification code for [^:]+: *[0-9]{6}).*/\1/' | cut -c1-120
+[L3650] RESULT: 11:59:24.155 WRN no email backend configured (RESEND_API_KEY and SMTP_HOST both empty) — verification codes will be pr | Verification code for owner@sen-coffee.local: 970260
+[L3653] TOOL Bash: docker logs -t multica-spike-backend-1 2>&1 | grep "Verification code for" | tail -1 | cut -c1-40; date -u +%Y-%m-%dT%H:%M:%S
+[L3654] RESULT: 2026-10-29T12:11:20.220861546Z [DEV] Ver | 2026-10-29T12:11:31
+…
+[L3768] TOOL Bash: cd /home/vantt/project/fgOPC/upstreams/multica; git show v0.7.1:apps/docs/content/docs/auth-setup.mdx | grep -vE "^\s*$" | head -40 | cut -c1-220
+[L3769] RESULT: --- | title: Sign-in and signup
+[L3772] AGENT: **Multica không có đăng nhập bằng mật khẩu.** Router chỉ có ba cách: gửi mã qua email, xác nhận mã, và Google OAuth (`/auth/send-code`, `/auth/verify-code`, `/auth/google`). Tài liệu `auth-setup.mdx` cũng xác nhận: *"Multica signs users in with email verification codes by default; Google OAuth can be added on top."* Mã có hiệu lực 10 phút; đăng nhập xong thì trình duyệt giữ cookie, nên không phải nhập lại thường xuyên.
+
+Các cách thay thế:
+
+| Cách | Làm gì | Ưu / nhược |
+|---|---|---|
+| **1. Mã cố định** (giống mật khẩu) | Đặt `MULTICA_DEV_VERIFICATION_CODE=<6 số>` (chỉ hoạt động khi `APP_ENV` không phải production; spike đang để `development`), rồi khởi động lại backend. Nhập email `owner@sen-coffee.local` và mã cố định đó | Nhanh, không cần dịch vụ ngoài. Nhược: chỉ 6 số; áp dụng cho mọi email trong danh sách cho phép (hiện chỉ có owner); có giới hạn số lần thử. Chấp nhận được vì chỉ mở trong tailnet |
+| **2. Email thật qua SMTP hoặc Resend** | Cấu hình `SMTP_HOST`/`SMTP_USERNAME`/`SMTP_PASSWORD`/`SMTP_FROM_EMAIL`, hoặc `RESEND_API_KEY`; thêm email thật của bạn vào `ALLOWED_EMAILS` | Đúng cách dùng thật. Cần bạn cung cấp tài khoản SMTP |
+| **3. Google sign-in** | Tạo OAuth client trên Google Cloud, đặt `GOOGLE_CLIENT_ID`/`SECRET`. Redirect URI phải trỏ về địa chỉ tailnet | Tiện nhất về sau. Google thường đòi HTTPS cho redirect URI không phải localhost, nên sẽ vướng vì tailnet chưa bật HTTPS |
+| 4. Như hiện tại | Lấy mã trong log mỗi lần đăng nhập (báo mình "lấy mã") | Không phải cấu hình gì |
+
+Cho spike, **cách 1** là gọn nhất: mình đặt một mã 6 số ngẫu nhiên, khởi động lại backend, rồi gửi mã cho bạn. Dữ liệu và daemon không bị ảnh hưởng. Bạn muốn mình làm không? Nếu bạn định dùng Multica lâu dài thì nên chọn cách 2.
+[L3775] USER: đặt demo làm mã cố định. chỉ đang test thôi.
+[L3783] AGENT: Mã cố định của Multica có thể bắt buộc là 6 chữ số. Mình kiểm tra trong code xem chữ "demo" có dùng được không.
+…
+[L3844] AGENT: Có thêm một chuẩn bên ngoài đáng chú ý: **Agent Companies** (`agentcompanies.io`). Đây là định dạng gói công ty, markdown là chính, mở rộng chuẩn **Agent Skills** (SKILL.md). Một gói gồm các file:
+- `COMPANY.md`
+- `teams/*/TEAM.md`
+- `agents/*/AGENTS.md`
+- `projects/*/PROJECT.md`
+- `tasks/*/TASK.md`
+- `skills/*/SKILL.md`
+
+Hiện chỉ có Paperclip hiện thực chuẩn này. Bản spec **chưa định nghĩa** cách mô tả workflow (chỉ có `schedule` trong TASK.md), cách khai báo secret, và luật về phiên bản. Mình đang chờ 3 agent đọc xong ba hệ thống để tổng hợp.
+[L3849] USER: đặt lại 123456 cho dễ nhớ
+[L3850] TOOL Bash: sed -i 's/^MULTICA_DEV_VERIFICATION_CODE=.*$/MULTICA_DEV_VERIFICATION_CODE=123456/' ~/multica-spike/.env && cd ~/multica-spike && docker compose -p multica-spike -f docker-compose.selfhost.yml --env-file .env up -d backend 2>&1 | tail -1; for i in $(seq 1 30); do curl -sf http://127.0.0.1:8310/healt …[+872]
+[L3851] RESULT: Container multica-spike-backend-1 Started | verify 123456: 200 True
+[L3856] AGENT: Đã đặt lại mã cố định thành **`123456`**: backend đã khởi động lại và đăng nhập thử thành công. Đăng nhập web: email `owner@sen-coffee.local`, mã `123456`. Runbook cũng đã sửa theo.
+
+Việc nghiên cứu đóng gói agent và workflow vẫn đang chạy, chờ 3 agent đọc xong.
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

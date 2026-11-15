@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "sessions": {
+    "omp:cd4449ab": {
+      "source": "omp",
+      "transcriptPath": "/home/vantt/.omp/profiles/gemini-tetcu72/agent/sessions/-projects-mcp-skill-hub-simplify/2026-10-09T02-40-10-134Z_01a11e88-4796-7023-a511-4a8dcd4449ab.jsonl",
+      "repoRoot": "/tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/cd4449ab/runs/3/scratch/repo",
+      "lastLine": 4000,
+      "size": 0,
+      "mtimeMs": 0,
+      "status": null,
+      "pending": false,
+      "needsRescore": [],
+      "mainGoals": [
+        {
+          "toLine": 4000,
+          "text": "Hoàn thành tái cấu trúc skill hub sang schema v4 (migration v3→v4, bỏ revision package và 17 tool MCP cũ, thêm source_import/source_list), qua các phase có lead review và merge, giữ make check xanh và migration fail closed."
+        }
+      ],
+      "harvests": [
+        {
+          "at": "2026-11-10T12:45:17.561Z",
+          "fromLine": 1,
+          "toLine": 4000,
+          "runs": 1,
+          "runsFailed": 0,
+          "chunks": 1,
+          "hotspots": 144,
+          "hotspotsMissing": 0,
+          "stories": 17,
+          "written": 17,
+          "merged": 0,
+          "privacyBlocked": 0,
+          "privacyUnchecked": 0,
+          "usd": 0.35717119999999997,
+          "secs": 22.8,
+          "status": "done",
+          "explicit": true
+        }
+      ]
+    }
+  },
+  "repos": {}
+}

@@ -1,0 +1,173 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L920] USER: khoan, anh muốn chúng ta build bộ agent để nó làm. nhưng giờ thành em làm? tức là agent chỉ cần đầy đủ công cụ để làm là tốt nhất.
+[L968] USER: việc của em là đóng gói làm sao để khi anh deploy lại team cho multica thì có đủ agent và có đủ tooll cho nó.
+[L1122] USER: như này nhé: OPC-studio là một workspace. nhưng ví dụ nếu khách chỉ mua coding thì trong đó có team coding, nếu khách mua content sẽ có team content.
+</asks>
+
+<story>
+hook: Gói tên opc-studio trùng tên workspace, suýt cài nhầm nên đổi thành opc-content
+tension: nho_ma_to (Chỉ là một cái tên gói / Trùng tên workspace của chính mình, từng gây sự cố cài nhầm)
+stakes: 3/3
+# Mô hình một workspace cho mỗi khách: đổi tên gói vì gói mang tên workspace
+
+**Bối cảnh:** Người vận hành mô tả mô hình: mỗi khách một workspace, khách mua bộ nào thì gắn bộ đó vào.
+**Chuyện gì xảy ra:** Gói tên opc-studio gây nhầm với workspace của chính mình, nên đổi thành opc-content. Bỏ mặc định deploy vào workspace opc-studio để không cài nhầm như sự cố trước. Hai lớp được tách: workspace khách dựng một lần, các bộ nghiệp vụ gắn vào sau. Người vận hành đồng ý làm manifest cho một khách mẫu, plan sạch cho cả hai manifest.
+**Bài học:** Đặt tên đơn vị triển khai theo bộ nghiệp vụ, không theo tên workspace. Thiếu tham số đích thì công cụ phải từ chối chạy.
+**Artefact:** Mẫu manifest khách đã che email và id.
+</story>
+
+<excerpt>
+[L1112] RESULT: M ../docs/comparison-aicoworker-vs-paperclip.md | M ../docs/research/opc-packaging-deployment.md
+[L1118] AGENT: Gói giờ chia theo bộ và cài được cho khách mới (commit `23621cb`, chưa push, chưa deploy):
+
+| Bộ (gói) | Agent | Cần thêm khi cài |
+|---|---|---|
+| `opc-studio`, bộ Nội dung | Lan, Mai, Hà | Không |
+| `opc-seo-analytics`, **gói mới** | Analytics Reporter, SEO Specialist, Tracking Specialist | Service account Google, MCP GA4 và Search Console |
+| `opc-coding` (của phiên song song) | Khoa, Bảo, Minh, Quân, Vy, Tâm | Không đổi |
+
+- **Cài cho khách mới:** mỗi khách có một file `~/opc-clients/<khách>/client.env`, dùng chung cho mọi bộ. File này chọn workspace, tên và website của khách, và đường dẫn tới key.
+- **Gói trung tính:** tên công ty trong instructions và skill giờ là `{{CLIENT_NAME}}`, `{{CLIENT_WEBSITE}}`. Không còn gì ghi cứng tên OPC Studio hay finejapan.
+- **Key được đóng vào gói:** `.fgopc.yaml` khai báo `host` và `files`. Lệnh `tools` cài MCP, chép key cho user `opc-agent` (quyền 600), rồi khởi động từng server **dưới user `opc-agent`** để kiểm. Lỗi "agent không đọc được key" vừa gặp sẽ bị bắt ở bước này, không lọt vào lúc agent chạy.
+- **Agent tự dò dữ liệu:** không cần nhập sẵn Property ID hay site Search Console. Agent tự tìm property khớp với website, kể cả trường hợp có www hay không www.
+- **Tài liệu và script:** quy trình cho khách mới ở `playbook/new-client.md`. Script `stack/google-sa.sh <khách>` tạo service account riêng cho mỗi khách.
+
+**Đã kiểm:**
+- `lint` đạt cho cả hai gói.
+- `tools --check` lấy được 9 tool GA4 và 8 tool Search Console, nhưng chạy dưới user của tôi chứ chưa phải `opc-agent`, vì tôi không có sudo.
+- `plan` cho khách `finejapan` tạo workspace mới, không đụng workspace `opc-studio` hay bộ Coding.
+- `google-sa.sh` mới kiểm cú pháp, chưa chạy thật, vì chạy là tạo service account thật.
+
+**Bạn cần làm** để cài `finejapan` như một khách mới. Lệnh này cài công cụ, chép key, rồi kiểm dưới user `opc-agent`:
+```
+! cd ~/project/fgOPC/multica && sudo env PATH=/opt/opc-agent/bin:/usr/bin:/bin node tools/opc.mjs tools packages/opc-seo-analyti …[+833]
+[L1122] USER: như này nhé: OPC-studio là một workspace. nhưng ví dụ nếu khách chỉ mua coding thì trong đó có team coding, nếu khách mua content sẽ có team content.
+[L1125] AGENT: Mô hình của bạn khớp với cách tôi vừa tách gói: **mỗi khách một workspace, khách mua bộ nào thì deploy gói đó vào**. Còn ba chỗ đang lệch, tôi sửa luôn:
+
+1. **Tên gói `opc-studio` gây nhầm.** `opc-studio` là workspace của chính mình, còn gói này là bộ Content. Tôi đổi tên gói thành `opc-content`.
+2. **Gói đang mặc định deploy vào `opc-studio`.** Quên `--env` là cài nhầm vào workspace của mình, giống sự cố vừa rồi. Tôi bỏ mặc định này: các bộ bán cho khách bắt buộc có `OPC_WORKSPACE` từ file env của khách.
+3. **Workspace `opc-studio` cũng là một "khách"**, nên cần có file env riêng.
+[L1126] TOOL Bash: cd ~/project/fgOPC/multica && git mv packages/opc-studio packages/opc-content && [ -d packages/opc-studio/.opc ] && mv packages/opc-studio/.opc packages/opc-content/ ; rmdir packages/opc-studio 2>/dev/null; ls -a packages/opc-content; python3 - <<'EOF' import re def edit(p, pairs): t=open(p).read()  …[+1187]
+[L1129] RESULT: . | ..
+…
+[L1164] RESULT: - [Multica two daemons](multica-two-daemons.md) — OPS vs opc-agent daemons, daemon.id collision pitfall, where fgOPC/multica lives | - [OPC sets per client](opc-packages-shared-workspace.md) — one workspace per client, one package per set (opc-conten …[+80]
+[L1165] AGENT: Gói giờ chia đúng theo mô hình của bạn: mỗi khách một workspace, khách mua bộ nào thì chỉ deploy gói của bộ đó vào (commit `237d250`, chưa push).
+
+| Bộ khách mua | Gói | Agent |
+|---|---|---|
+| Content | `opc-content` (đổi tên từ gói `opc-studio`) | Lan, Mai, Hà |
+| SEO & Analytics | `opc-seo-analytics` | Analytics Reporter, SEO Specialist, Tracking Specialist, kèm MCP GA4 và Search Console |
+| Coding | `opc-coding` | Khoa, Bảo, Minh, Quân, Vy, Tâm |
+
+Ví dụ khách chỉ mua Coding:
+```
+node tools/opc.mjs deploy packages/opc-coding --env ~/opc-clients/<khách>/client.env
+```
+
+- **Mỗi khách một file env** ở `~/opc-clients/<khách>/client.env`, ghi workspace, tên, website và key. Mọi bộ của khách đó đều dùng file này.
+- **Workspace `opc-studio`** của mình giờ cũng là một khách, có file `~/opc-clients/opc-studio/client.env`.
+- **Bỏ deploy mặc định:** bộ Content và SEO & Analytics không còn workspace mặc định. Thiếu `--env` thì tool từ chối chạy, nên không thể cài nhầm vào `opc-studio` như sự cố trước.
+- **Các bộ độc lập với nhau:** Lan chỉ đọc báo cáo số liệu và xin brief SEO *nếu* workspace có bộ SEO. Agent SEO chỉ báo cáo cho Lan *nếu* workspace có bộ Content, không thì báo chủ.
+- **Đã kiểm bằng `plan`:** bộ Content vào workspace `opc-studio` chỉ đổi đúng phần Content: cập nhật Lan và gỡ 3 agent SEO khỏi squad Marketing. `opc-coding` vẫn báo `0 change(s)`.
+- **`README.md` chưa commit:** tôi đã sửa tham chiếu gói trong `README.md` của `multica`, nhưng không commit file này vì nó đang có thay đổi chưa commit của phiên song song.
+
+**Gói `opc-coding` chưa bán cho khách khác được.** Nó là gói của phiên song song, chưa commit, và đang gắn cứng workspace `opc-studio`, tên "OPC Studio" cùng repo `opc-studio-app`. Muốn bán bộ Coding thì gói này cũng phải chuyển sang dùng `--env`, `{{CLIENT_NAME}}`, repo lấy từ env. Tôi chưa sửa vì phiên kia đang chạy thử trên gói đó. Bạn muốn tôi sửa, hay nhắn phiên kia tự làm?
+
+**Bước tiếp theo để cài `finejapan` như khách đầu tiên (mua Content và …[+333]
+[L1174] USER: vậy cần phải kết hợp giữa việc setup 1 workspace và gắn các gói nghiệp vụ vào space đó. đúng không
+[L1178] AGENT: Đúng. Có hai lớp, và hiện tại lớp thứ nhất đang bị gộp ngầm vào lớp thứ hai.
+
+**Lớp 1: Workspace của khách.** Dựng một lần cho mỗi khách:
+- Tạo workspace: slug, tên, issue prefix.
+- Mời người của khách vào làm thành viên, để họ duyệt việc ở cột `in_review`.
+- Chọn daemon chạy agent cho khách. Hiện tất cả dùng chung `opc-agent`. Tách user riêng cho mỗi khách thì cũng làm ở lớp này.
+- Hạ tầng dùng chung của khách: file env, key Google, repo GitHub hoặc bot token nếu có Coding.
+- Những thứ ở cấp workspace mà nhiều bộ cùng dùng, ví dụ **status** (cột) của workflow. Hai bộ khai cùng một status key với tên hay category khác nhau thì sẽ đè nhau, nên chỗ này phải có một bên quản lý.
+
+**Lớp 2: Các bộ nghiệp vụ** (`opc-content`, `opc-seo-analytics`, `opc-coding`). Lớp này gắn vào workspace đã có: mỗi bộ deploy agent, skill, MCP, project và lịch của riêng nó. Khách mua thêm bộ nào thì gắn thêm bộ đó, ngừng mua thì gỡ bộ đó ra.
+
+**Hiện tại thiếu gì:**
+- Workspace được tạo ngầm khi deploy bộ đầu tiên, và chỉ có slug, tên, prefix. Chưa có bước mời thành viên, chọn daemon hay kiểm hạ tầng.
+- Danh sách bộ khách đã mua chỉ nằm trong đầu người vận hành, không có file nào ghi lại.
+- Chưa gỡ được một bộ, vì `deploy` không bao giờ xoá.
+
+**Đề xuất:** thay file `client.env` bằng một **manifest cho mỗi khách**, ví dụ `~/opc-clients/finejapan/client.yaml`:
+```yaml
+workspace: { slug: finejapan, name: Fine Japan Vietnam, issue_prefix: FJV }
+members: [owner@finejapanvietnam.com]          # người của khách, mời vào workspace
+runtime: fg-server-opc                         # daemon chạy agent của khách
+vars:    { CLIENT_NAME: Fine Japan Vietnam, CLIENT_WEBSITE: https://finejapanvietnam.com }
+secrets: { GOOGLE_SA_KEY: ./google-sa.json }   # file nằm cạnh manifest, quyền 600
+sets:    [opc-content, opc-seo-analytics]      # các bộ khách đã mua
+```
+Đi kèm là bộ lệnh làm việc trên cả khách:
+```
+opc.mjs client plan   ~/opc-clients/finejapan   # workspace + mọi bộ: sẽ đổi gì
+opc.mjs client tools  ~/opc- …[+560]
+[L1183] USER: đồng ý, làm manifest luôn với finejapan
+[L1185] AGENT: Bắt đầu. Trước hết tôi xem API mời thành viên của Multica và cách status được lưu ở cấp workspace:
+[L1186] TOOL Bash: cd ~/project/fgOPC/upstreams/multica/server; grep -n -i "invit\|/members" cmd/server/router.go | head -20; grep -n "type CreateInvitationRequest\|type InviteMemberRequest\|type CreateMemberRequest" -A10 internal/handler/*.go | head -30
+…
+[L1203] RESULT: OK | Shell cwd was reset to /opt/AICoworker
+[L1210] AGENT: Viết manifest cho `finejapan` và `opc-studio`, file mẫu `client.example.yaml`, và sửa `google-sa.sh` để sinh manifest thay cho `client.env`:
+[L1211] TOOL Bash: set -e; umask 077; cat > ~/opc-clients/finejapan/client.yaml <<'EOF' # Client manifest: node tools/opc.mjs client plan|tools|deploy ~/opc-clients/finejapan workspace: slug: finejapan name: Fine Japan Vietnam issue_prefix: FJV members: [] # client's people to invite, e.g. [a@finejapanvietnam.com] or  …[+3067]
+[L1215] RESULT: SH_OK | =================== finejapan
+[L1219] TOOL Bash: cd ~/project/fgOPC/multica; git log --oneline -6; git status --short | grep -v "^??" ; grep -n "CODING_REPO_URL\|repos" tools/opc.mjs | head; grep -rn "CODING_REPO_URL" packages/opc-coding | head -3
+…
+[L1272] TOOL Bash: cd ~/project/fgOPC/multica; git show --stat HEAD | tail -5; git add tools/opc.mjs playbook/new-client.md playbook/client.example.yaml playbook/setup.md stack/google-sa.sh spec/package-format.md packages/opc-content packages/opc-seo-analytics && git commit -q --amend --no-edit && git show --stat HEAD …[+47]
+[L1275] RESULT: Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com> | multica/playbook/{client.env.example => client.example.yaml} | 0
+[L1277] AGENT: Đã commit `3519382` (chưa push). Lệnh `opc.mjs client plan|tools|deploy ~/opc-clients/<khách>` giờ dựng workspace của khách, kiểm các bộ có đè nhau không, rồi gắn từng bộ khách đã mua. Manifest của `finejapan` và `opc-studio` đều chạy `plan` sạch. Phiên song song cũng đã chuyển `opc-coding` sang cài theo khách, khớp với cách làm này. Chỉ còn `playbook/coding-infra.md` của họ vẫn hướng dẫn kiểu `client.env` cũ.
+
+**SEO thuộc Marketing hay là team riêng?** Về tổ chức thì thuộc Marketing. Về đóng gói thì nên là một bộ riêng, và hiện đang đúng như vậy.
+
+- **Tổ chức:** ở hầu hết doanh nghiệp, SEO nằm trong phòng Marketing, cạnh Content, Social, Ads. Lý do là SEO và Content làm chung một vòng việc: brief từ khoá → viết → tối ưu on-page → đo kết quả.
+- **Đóng gói:** khách hay mua SEO riêng, không kèm Content. SEO cũng cần hạ tầng riêng (service account Google, MCP), nên tách thành bộ `opc-seo-analytics` là đúng.
+
+**Cấu trúc phòng Marketing hiện có 3 chỗ chưa ổn:**
+
+1. **Hai squad, không có trưởng phòng.** Khách mua cả hai bộ sẽ có squad "Marketing" do Lan dẫn và squad "SEO & Analytics" do Analytics Reporter dẫn. Lan tên là *Marketing Lead* nhưng thực ra chỉ quản Content. Nên đổi thành: **Lan là trưởng phòng Marketing khi workspace có bộ Content**, các agent SEO và Analytics báo cáo cho Lan. Instructions đã viết theo hướng này, nhưng tên squad và `reportsTo` chưa thể hiện.
+2. **Analytics Reporter đang làm trưởng squad SEO, không hợp lý.** Analytics phục vụ cả công ty: marketing, sales, sản phẩm. Nó không phải người giao việc cho SEO. Nên để **SEO Specialist dẫn squad**, Analytics Reporter và Tracking Specialist là thành viên. Về lâu dài, Analytics có thể tách thành bộ "Data" riêng, khi khách cần số liệu cho cả sales hay sản phẩm.
+3. **SEO chưa nằm trong quy trình Content.** Hiện Lan chỉ @mention SEO Specialist khi nhớ ra. Không nối cứng được, vì workflow `content` không được tham chiếu agent của bộ khác, kẻo khách không mua SEO thì workflow hỏng. Cách sửa là thêm một cột **t …[+706]
+[L1282] USER: anh muốn đóng gói kỹ tất cả các vai của marketing cho anh. tuy nhiên cần làm trước seo, social, content và ads
+[L1287] AGENT: Phạm vi lớn, nên tôi đi theo trình tự: **khảo sát → thiết kế → bạn duyệt → đóng gói**. Lý do là mỗi bộ cần công cụ thật (MCP), quyền truy cập của khách và quy trình riêng, chọn sai thì phải làm lại. Làm Ads trước tiên, rồi SEO, Social, Content.
+
+Bước 1 là kiểm kê các vai trò gốc có sẵn trong `agency-agents`:
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,47 @@
+Dưới đây là 18 chuyện nhặt được từ CÙNG một phiên làm việc dài giữa user và coding agent.
+Trước hết, từ toàn bộ danh sách, suy ra việc chính (mạch chính) của phiên: user đang cố đạt kết quả gì. Viết vào main_goal (1-2 câu).
+Rồi chấm stakes 0-3 cho TỪNG chuyện: chuyện này có làm đổi kết quả của việc chính không?
+- 0: sự cố bên lề (công cụ, môi trường, quy trình) không ảnh hưởng kết quả việc chính
+- 1: có liên quan nhưng chỉ làm chậm hay phiền, kết quả việc chính không đổi
+- 2: làm đổi một phần kết quả hoặc cách làm việc chính
+- 3: là bước ngoặt của việc chính: đổi kết quả, đổi hướng, hoặc là kết quả chính
+Chấm stakes độc lập với việc chuyện có hay, có lạ hay không.
+
+M1. Agent review độc lập bắt được chính skill mâu thuẫn và installer vi phạm luật của nó
+   Reviewer đưa ra 9 phát hiện, xếp theo mức độ. Một quy tắc bảo dùng lệnh setup, quy tắc khác nói không có setup. Chuỗi lệnh init --yes rồi doctor --fix --yes không bao giờ chạy connect, nên agent chỉ đọc --help sẽ không đăng ký MCP. Installer mẫu còn bị chặn khi gỡ cài đặt vì kiểm tra version chạy trước nhánh uninstall.
+M2. Hub để skill active khi chưa ai bấm duyệt; web không báo có bản chờ
+   Bản đang active là bản của một lần duyệt trước, có cùng routing. Mỗi bản gửi là một mục trong Waiting for review và không gắn vào trang skill. Trang skill không có dấu hiệu nào cho biết có bản mới đang chờ. Lúc đó có ba bản gửi cho cùng một skill, nên dễ duyệt nhầm bản cũ.
+M3. Gửi skill lên hub bị chặn: gợi ý cờ --user không tồn tại vì máy cài bản cũ
+   Lệnh có tiền tố ! trong Claude Code không tương tác nên không hỏi xác nhận được, chỉ in bản xem trước. Thông báo lỗi gợi ý cờ --user nhưng bản cũ không có cờ đó. Nâng lên 0.13, kết nối ở cấp user, doctor báo Healthy, rồi gửi được và nhận mã SUB.
+M4. Installer lỗi khi không có terminal: /dev/tty tồn tại nhưng không mở được
+   Test bằng dash trên một release giả lập. Lỗi: /dev/tty tồn tại nhưng không ghi được khi không có terminal, nên script crash thay vì báo cần --yes. Sửa bằng cách thử mở /dev/tty thật. Sau sửa, không có terminal thì báo cần xác nhận; có terminal thì hỏi và huỷ khi người dùng gõ n.
+M5. fgos có ba lệnh init, setup, doctor chồng nhau; chốt doctor là bộ máy duy nhất
+   Đọc code thì setup không phải alias: setup bằng doctor --fix cộng thêm ghi file rc, tạo config, cài git hook và Claude hook. init gọi các fix của doctor rồi tạo thư mục .fgos. Thiết kế mới: doctor chỉ đọc, doctor --fix chỉ sửa cái đã có, init bằng doctor --fix cộng quyền tạo mới, setup bỏ hoặc giữ làm alias ẩn. Sau khi viết lại, số quy tắc từ 230 còn 212.
+M6. Mỗi lần tài liệu trỏ tới một đường dẫn code mẫu ở repo khác, một script kiểm tra đường dẫn đó có thật trên GitHub. Lỗi thiếu file được bắt ngay, không đợi người đọc phát hiện.
+   Mỗi lần tài liệu trỏ tới một đường dẫn code mẫu ở repo khác, một script kiểm tra đường dẫn đó có thật trên GitHub. Lỗi thiếu file được bắt ngay, không đợi người đọc phát hiện. Tài liệu tham chiếu thường để chết. Đường dẫn cũ hỏng âm thầm, và hiếm khi có ai kiểm tra lại sau khi repo đổi tên hoặc xóa file.
+M7. Agent sửa web skillstation trên nhánh riêng, merge thẳng vào main khi được bảo
+   Agent tìm thấy file SKILL.md trong thư mục dự án và làm theo. Viết hai component và thêm test, 229 test web đều qua, typecheck, lint và build sạch. Agent dừng trước commit để chờ. Chủ dự án bảo merge và push, agent gộp fast-forward vào main mà không mở PR. CI trên GitHub qua hết.
+M8. Momentry có quy tắc một cửa config; skill thiếu, thêm CMD-22 đến CMD-24
+   Quy tắc mới: mọi thiết lập đổi qua một lệnh config, thiết lập riêng dự án thêm cờ --project. Skill chỉ có các mảnh rời. Agent thêm ba rule và nâng CFG-12 từ MAY lên MUST: file của repo không được ghi khoá riêng của máy. Số quy tắc từ 212 lên 215, và các đường dẫn tham chiếu đều tồn tại.
+M9. Gặp lỗi gợi ý cờ `--user` không tồn tại, agent không tin lời gợi ý. Nó so phiên bản client (0.8.0) với hub (0.12.0), nâng cấp client rồi kiểm tra lại bằng `doctor`.
+   Gặp lỗi gợi ý cờ `--user` không tồn tại, agent không tin lời gợi ý. Nó so phiên bản client (0.8.0) với hub (0.12.0), nâng cấp client rồi kiểm tra lại bằng `doctor`. Người dùng thường bỏ qua thông báo lỗi rồi tự tìm cách khác, hoặc sửa theo đúng gợi ý dù gợi ý sai.
+M10. Verify không cần script: 12 bước trong SKILL.md thay vì code phải bảo trì
+   Agent đề xuất 12 bước verify ngắn trong SKILL.md, chạy trong HOME tạm để không đụng cấu hình thật. Chỉ 2 bước cần phán đoán là đầu README và agent-native test. Chủ dự án đồng ý. Sau thay đổi, lint vẫn qua 212 quy tắc và SKILL.md còn 1044 từ.
+M11. Trên hub, bản đang active không khớp với thư mục skill trên máy này. Agent tải bản hub về, diff từng file, rồi báo rằng bản duyệt cũ đã được áp dụng mà không ai bấm duyệt bản mới.
+   Trên hub, bản đang active không khớp với thư mục skill trên máy này. Agent tải bản hub về, diff từng file, rồi báo rằng bản duyệt cũ đã được áp dụng mà không ai bấm duyệt bản mới. Người dùng thường tin rằng máy chủ đang chạy đúng bản họ vừa sửa, và chỉ phát hiện khi có chuyện hỏng.
+M12. Máy quét bảo mật báo 11 critical, toàn chữ trong tài liệu; chủ dự án chọn gửi
+   Các critical là rule pipe-to-shell khớp với mẫu curl kèm sh trong tài liệu và installer mẫu. High là persist.autostart khớp chữ hook. Agent đọc lại hai script kiểm tra và xác nhận chúng không tự tải hay chạy gì. Chủ dự án chọn gửi và ghi chú cho người duyệt trên hub rằng các cảnh báo chỉ là văn bản.
+M13. Điểm chạm đầu tiên là cửa hàng: giới thiệu, quick start và agent-native đứng trước kỹ thuật
+   Skill được xếp lại theo tầng: UX trước, rồi cú pháp lệnh và agent-native, cuối cùng mới đến an toàn, đúng đắn, nhanh gọn. Thêm rule cho README: tagline nói về lợi ích, quick start tối đa 3 lệnh trong khoảng 2 phút, quick start chạy thật trong CI. Thêm bài kiểm tra: một agent mới chỉ được đọc --help, phải tự cài và làm cho tool chạy được.
+M14. Routing quá rộng: skill đóng gói bị chọn cho việc frontend thuần
+   Lần đầu hub chọn skill đóng gói với độ tin cậy trung bình. Agent từ chối và hỏi lại, lần hai hub báo không có skill nào khớp. Skill đã có not_for nhưng vẫn bị chọn, nên cần thêm not_for cho việc giao diện.
+M15. Khi hub từ chối gửi skill vì cờ `--yes` cần tin cậy, agent không tìm cách lách. Nó dừng, giải thích lý do và đưa lệnh để người dùng tự chạy trong prompt có dấu `!`.
+   Khi hub từ chối gửi skill vì cờ `--yes` cần tin cậy, agent không tìm cách lách. Nó dừng, giải thích lý do và đưa lệnh để người dùng tự chạy trong prompt có dấu `!`. Nhiều agent sẽ thêm cờ bỏ xác nhận để hoàn thành việc, hoặc chạy thẳng lệnh có quyền ghi token ra ngoài.
+M16. Agent nói skill chưa có routing vì đọc thư mục trên máy khác với bản trên hub
+   Hub đang có 9 trigger, 5 example và 5 not_for do người duyệt đặt. Agent chỉ đọc thư mục trên máy này, nơi chưa có skill.yaml. Lệnh show --verbose bị từ chối vì project trỏ tới hub khác. skill_get không trả về operations, topics, technologies hay min_scope. Lệnh lint báo hub chưa kiểm tra routing vì chạy bản cũ.
+M17. Bốn repo, bốn cách làm packaging: gom thành một skill 230 quy tắc, rồi cắt chữ 46%
+   Bốn agent nghiên cứu chạy song song, mỗi repo một báo cáo. Bản đầu có 230 quy tắc, khoảng 11.900 từ, nhiều file. Chủ dự án thấy dư thừa nên thiết kế lại: mỗi quy tắc còn một dòng có ID, bỏ 4 file case study và thay bằng references.md trỏ thẳng tới code mẫu. Kết quả còn khoảng 6.400 từ, giảm 46%.
+M18. 5 test Go chỉ lỗi trên máy dev: test đọc cấu hình agent thật của chủ máy
+   TestMain đổi HOME nhưng không đổi thư mục làm việc. Lệnh status và doctor đi ngược lên thư mục cha đến home thật, gặp cấu hình Codex và Gemini trỏ tới hub, rồi coi đó là một project. Kết quả là 5 test thoát mã 1 hoặc sai thông báo. Trên CI, cả 5 test đều qua vì máy đó không có cấu hình này: 5 lỗi trên máy dev, 0 lỗi trên CI.
+
+Chỉ trả JSON: {"main_goal":"","stakes":[{"id":"M1","stakes":0,"reason":"ngắn"}]}

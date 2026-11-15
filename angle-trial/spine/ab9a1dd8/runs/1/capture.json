@@ -1,0 +1,1596 @@
+{
+  "id": "ab9a1dd8",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "cfdbe39157750974",
+  "at": "2026-11-05T15:37:13.982Z",
+  "dryRun": {
+    "usd": 0.1,
+    "tokens": 56460,
+    "chunks": 1,
+    "hotspots": 9,
+    "entries": 857
+  },
+  "report": {
+    "sid": "claude:ab9a1dd8",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.10827400000000001,
+    "secs": 146.7,
+    "exitCode": 0,
+    "status": "done",
+    "written": 27,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:ab9a1dd8 L1-L4000: done; 23 chuyện thô, 27 cụm; ghi 27 mới, gộp 0\nđiểm nóng 9 (thiếu 0); lần chạy 1/1; 0.11 USD"
+  },
+  "angleModel": "haiku",
+  "profileModel": "haiku",
+  "ranked": [
+    {
+      "id": "2026-11-03-205-205-test-xanh-nhung-nguoi",
+      "title": "205/205 test xanh nhưng người mới không cài nổi",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang chuẩn bị đưa tới người ngoài dùng. Bộ test 205/205 xanh trên clone sạch dễ bị hiểu là đã sẵn sàng, nhưng khi chạy đúng quick start từ HOME trống, lệnh init --yes báo 'Unknown option' và người mới không qua nổi bước đầu. Chuyện đáng nghe vì test xanh chỉ chứng minh code chạy trong môi trường test, không chứng minh người dùng cài được; chỉ kiểm từ con số 0 mới lộ ra điều đó.",
+      "audience": "dev làm công cụ CLI cần phân phối cho người khác",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang chuẩn bị đưa tới người ngoài dùng.",
+          "lines": [
+            "profile",
+            "claude:ab9a1dd8#L42"
+          ]
+        },
+        "want": {
+          "text": "Người mới cài và chạy được từ con số 0, không phải hỏi lại.",
+          "lines": [
+            "claude:ab9a1dd8#L42"
+          ]
+        },
+        "obstacle": {
+          "text": "Lệnh init --yes báo 'Unknown option', nên người mới dừng ngay bước đầu.",
+          "lines": [
+            "claude:ab9a1dd8#L232"
+          ]
+        },
+        "turn": {
+          "text": "Bộ test 205/205 xanh trên clone sạch bị coi là dấu hiệu đã sẵn sàng; hoá ra người mới không cài nổi.",
+          "lines": [
+            "claude:ab9a1dd8#L170",
+            "claude:ab9a1dd8#L232"
+          ]
+        },
+        "action": {
+          "text": "Chạy các bước kiểm của skill trong HOME tạm, không đụng cấu hình thật.",
+          "lines": [
+            "claude:ab9a1dd8#L236"
+          ]
+        },
+        "outcome": {
+          "text": "Lập plan 8 phase, 45 việc, ước khoảng 9 ngày công; chưa sửa dòng code nào.",
+          "lines": [
+            "claude:ab9a1dd8#L653"
+          ]
+        },
+        "takeaway": {
+          "text": "Test xanh không chứng minh người dùng cài được; chạy đúng quick start từ HOME trống trước khi tin bộ test.",
+          "lines": [
+            "claude:ab9a1dd8#L170",
+            "claude:ab9a1dd8#L232"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Mọi người tin rằng bộ test xanh 205/205 nghĩa là công cụ đã sẵn sàng cho người dùng. Thực tế, trên một bản clone sạch test đúng là qua hết, nhưng README thiếu bước lấy code, và lệnh `init --yes --json` báo lỗi 'Unknown option'. Ai đang phát hành công cụ CLI nên biết test xanh không chứng minh người mới cài được.",
+      "prevAudience": "dev phát hành công cụ dòng lệnh"
+    },
+    {
+      "id": "2026-11-03-reviewer-doc-lap-hai-loi-lam",
+      "title": "Reviewer độc lập: hai lỗi làm install và uninstall Windows hỏng",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent đang làm gói cài đặt cho Windows và Linux. Toàn bộ 230 test trên Linux đều xanh, nên người làm tin installer và uninstall trên Windows cũng ổn. Reviewer độc lập đọc code theo hành vi của PowerShell 5.1 và cmd.exe thì thấy installer Windows luôn báo 'Node quá cũ', còn uninstall báo thành công dù không xoá được gì. Test trên Linux không bắt được loại lỗi quoting này, nên ai viết installer đa nền tảng cần đọc code theo từng shell thật.",
+      "audience": "dev viết installer hoặc script đa nền tảng",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang làm gói cài đặt cho Windows và Linux.",
+          "lines": [
+            "profile",
+            "claude:ab9a1dd8#L664"
+          ]
+        },
+        "want": {
+          "text": "Muốn installer và uninstall chạy đúng trên Windows trước khi phát hành.",
+          "lines": [
+            "claude:ab9a1dd8#L664",
+            "claude:ab9a1dd8#L2017"
+          ]
+        },
+        "obstacle": {
+          "text": "Test trên Linux không bắt được lỗi quoting của PowerShell 5.1 và cmd.exe, nên lỗi Windows không lộ ra.",
+          "lines": [
+            "claude:ab9a1dd8#L2017",
+            "claude:ab9a1dd8#L2026"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng installer và uninstall trên Windows đã ổn vì test Linux xanh; hoá ra installer báo 'Node quá cũ' cho mọi người, còn uninstall báo thành công nhưng không xoá được gì.",
+          "lines": [
+            "claude:ab9a1dd8#L2017",
+            "claude:ab9a1dd8#L2026"
+          ]
+        },
+        "action": {
+          "text": "Bắt đầu sửa từ các lỗi nặng, đã xong H2, H3, H4 và vài lỗi vừa, nhẹ, rồi chạy lại test.",
+          "lines": [
+            "claude:ab9a1dd8#L2039",
+            "claude:ab9a1dd8#L2062"
+          ]
+        },
+        "outcome": {
+          "text": "Sau khi sửa, 230/230 test vẫn qua; lỗi Windows chưa chạy thật, cần CI Windows xác nhận H1 và H2.",
+          "lines": [
+            "claude:ab9a1dd8#L2026",
+            "claude:ab9a1dd8#L2058"
+          ]
+        },
+        "takeaway": {
+          "text": "Test trên Linux không đủ cho installer đa nền tảng; cần đọc code theo hành vi từng shell hoặc chạy CI trên Windows thật.",
+          "lines": [
+            "claude:ab9a1dd8#L2026"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Agent tưởng đã xong: 230 test xanh và installer chạy trơn trên Linux. Reviewer độc lập đọc code theo hành vi Windows thì thấy cài trên Windows luôn báo 'Node quá cũ' dù máy có Node, còn gỡ cài báo thành công nhưng không xoá được file nào. Test chạy trên Linux không bắt được lỗi kiểu quoting này, nên ai viết công cụ đa nền tảng cần đọc code theo từng nền tảng.",
+      "prevAudience": "dev viết công cụ dòng lệnh có installer đa nền tảng"
+    },
+    {
+      "id": "2026-11-03-codex-khong-bao-gio-chay-hook",
+      "title": "Codex không bao giờ chạy hook: tên sự kiện sai, bị bỏ không báo",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Momentry là công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent như Codex, và người làm muốn hook của Codex ghi lại các phiên đó. Họ tin tên sự kiện kiểu snake_case như pre_compact là đúng, nhưng Codex chỉ nhận PascalCase và bỏ qua hook mà không báo lỗi. Sửa tên xong, test cục bộ xanh, còn probe trên Windows vẫn đỏ. Ai viết hook cho host khác nên kiểm bằng log do chính hook ghi, không tin vào cấu hình đã ghi.",
+      "audience": "dev viết hook hoặc plugin cho coding agent",
+      "spine": {
+        "context": {
+          "text": "Momentry là công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent như Codex, và đang nối hook để ghi lại các phiên Codex.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn hook của Codex thật sự chạy và ghi lại phiên.",
+          "lines": [
+            "claude:ab9a1dd8#L3184"
+          ]
+        },
+        "obstacle": {
+          "text": "Cấu hình hook dùng tên sự kiện kiểu snake_case như pre_compact.",
+          "lines": [
+            "claude:ab9a1dd8#L3195"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng snake_case là đúng; hoá ra Codex cần PascalCase và bỏ qua hook im lặng.",
+          "lines": [
+            "claude:ab9a1dd8#L3195",
+            "claude:ab9a1dd8#L3228"
+          ]
+        },
+        "action": {
+          "text": "Đổi tên sự kiện thành PreCompact, SessionEnd, SessionStart; cập nhật test, PRD, CHANGELOG và thêm probe chạy Codex trên Windows.",
+          "lines": [
+            "claude:ab9a1dd8#L3206",
+            "claude:ab9a1dd8#L3214",
+            "claude:ab9a1dd8#L3228"
+          ]
+        },
+        "outcome": {
+          "text": "Test cục bộ pass 234, fail 0; nhưng run CI probe trên Windows kết luận failure.",
+          "lines": [
+            "claude:ab9a1dd8#L3209",
+            "claude:ab9a1dd8#L3239"
+          ]
+        },
+        "takeaway": {
+          "text": "Hook sai tên bị host bỏ im lặng; kiểm bằng log do chính hook ghi trong phiên thật, đừng chỉ xem cấu hình đã ghi.",
+          "lines": [
+            "claude:ab9a1dd8#L3214",
+            "claude:ab9a1dd8#L3239"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Ghi cấu hình hook cho Codex tưởng là đã cài xong. Nhưng Codex yêu cầu tên sự kiện viết kiểu PascalCase, còn code ghi snake_case, nên Codex bỏ qua hook mà không báo lỗi gì. Ai tự cấu hình hook cho công cụ AI có thể đang có hook không bao giờ chạy mà không biết; cách kiểm tra là xem log do chính hook ghi, không chỉ xem file cấu hình đã được ghi.",
+      "prevAudience": "dev tự cấu hình hook hoặc plugin cho công cụ AI coding"
+    },
+    {
+      "id": "2026-11-03-hook-chet-im-lang-vi-ghi",
+      "title": "Hook chết im lặng vì ghi cứng đường dẫn Node",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang tự đóng gói để người mới cài bằng một lệnh. Cấu hình hook ghi đường dẫn Node tuyệt đối trông có vẻ ổn, nhưng khi rà lại thì thấy nâng Node có thể làm hook chết mà không báo gì, vì lệnh hook luôn thoát 0. Lời giải là để hook gọi qua một lệnh momentry đã cài, và thêm lệnh doctor kiểm hook còn chạy được. Ai viết hook cho công cụ dòng lệnh nên để ý chuyện này.",
+      "audience": "dev viết hook hoặc công cụ dòng lệnh cho agent",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang tự đóng gói để người mới cài bằng một lệnh.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Đóng gói để người mới cài bằng một lệnh và đạt thành công đầu tiên nhanh.",
+          "lines": [
+            "claude:ab9a1dd8#L42"
+          ]
+        },
+        "obstacle": {
+          "text": "Phần phân phối gần như chưa có: init báo lỗi với cờ --yes, và không có lệnh kiểm tra hook.",
+          "lines": [
+            "claude:ab9a1dd8#L232",
+            "claude:ab9a1dd8#L236"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng cấu hình hook ghi đường dẫn Node tuyệt đối là ổn; rà lại thì thấy nâng Node có thể làm hook chết mà không báo gì, vì lệnh hook luôn thoát 0.",
+          "lines": [
+            "claude:ab9a1dd8#L236",
+            "claude:ab9a1dd8#L1170"
+          ]
+        },
+        "action": {
+          "text": "Đổi hook sang gọi qua lệnh momentry đã cài, thay vì đường dẫn Node tuyệt đối.",
+          "lines": [
+            "claude:ab9a1dd8#L1170"
+          ]
+        },
+        "outcome": {
+          "text": "Hook gọi qua lệnh đã cài nên nâng Node không còn làm hook chết; 232 test qua trên Linux, 43/45 việc xong.",
+          "lines": [
+            "claude:ab9a1dd8#L2230"
+          ]
+        },
+        "takeaway": {
+          "text": "Hook nên gọi qua tên lệnh ổn định, không ghi cứng đường dẫn runtime, và cần một lệnh doctor kiểm hook còn chạy được.",
+          "lines": [
+            "claude:ab9a1dd8#L236",
+            "claude:ab9a1dd8#L1170"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Ai dán hook vào ~/.claude/settings.json thường tin rằng nó sẽ chạy mãi. Thực tế, cấu hình ghi cứng đường dẫn Node tuyệt đối, nên khi nâng Node qua nvm/fnm hoặc chuyển thư mục clone, hook chết mà lệnh hook vẫn thoát 0, không ai biết. Bản sửa để hook gọi qua lệnh momentry đã cài, nên nâng Node không làm hook chết nữa.",
+      "prevAudience": "dev dùng Claude Code hằng ngày và tự cài hook"
+    },
+    {
+      "id": "2026-11-03-ma-thoat-dao-nghia-2-tu",
+      "title": "Mã thoát đảo nghĩa: 2 từ 'vi phạm riêng tư' thành 'sai cú pháp'",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Momentry là công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, và đang chuẩn bị phát hành. Người làm định đưa mã thoát về chuẩn chung (0 xong, 1 có lỗi, 2 sai cú pháp), nhưng mã 2 hiện đang báo vi phạm riêng tư và có thể có script đang dựa vào nó. Đổi nghĩa âm thầm sẽ làm các script đó hiểu sai đúng ở chỗ kiểm riêng tư. Dev viết pre-commit hook hay script quanh CLI nên quan tâm, vì mã thoát là hợp đồng công khai.",
+      "audience": "dev viết script hoặc pre-commit hook quanh CLI",
+      "spine": {
+        "context": {
+          "text": "Momentry là công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang chuẩn bị phát hành bản có phần phân phối rõ ràng.",
+          "lines": [
+            "profile",
+            "claude:ab9a1dd8#L236"
+          ]
+        },
+        "want": {
+          "text": "Đưa mã thoát về chuẩn chung CMD-08: 0 là xong, 1 là có lỗi, 2 là sai cú pháp.",
+          "lines": [
+            "claude:ab9a1dd8#L264",
+            "claude:ab9a1dd8#L616"
+          ]
+        },
+        "obstacle": {
+          "text": "Mã 2 hiện đang báo vi phạm riêng tư, và có thể có script đang đọc mã này để chặn commit.",
+          "lines": [
+            "claude:ab9a1dd8#L256"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng đổi mã thoát chỉ là dọn theo chuẩn; hoá ra mã 2 có thể là hợp đồng công khai với các script kiểm riêng tư, và các test vẫn kỳ vọng mã 2 cho vi phạm.",
+          "lines": [
+            "claude:ab9a1dd8#L256",
+            "claude:ab9a1dd8#L1253"
+          ]
+        },
+        "action": {
+          "text": "Đổi bảng mã thoát và sửa các test đang kiểm mã 2 sang mã 1.",
+          "lines": [
+            "claude:ab9a1dd8#L616",
+            "claude:ab9a1dd8#L889",
+            "claude:ab9a1dd8#L908"
+          ]
+        },
+        "outcome": {
+          "text": "Sau khi sửa, suite còn 204 test qua và 1 test hỏng.",
+          "lines": [
+            "claude:ab9a1dd8#L911"
+          ]
+        },
+        "takeaway": {
+          "text": "Đổi mã thoát là đổi hợp đồng công khai: liệt kê script nào có thể đang đọc mã đó và ghi vào changelog.",
+          "lines": [
+            "claude:ab9a1dd8#L256"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Script hoặc pre-commit hook dùng mã thoát 2 của `momentry check` để biết có vi phạm riêng tư. Theo chuẩn mới, 2 lại nghĩa là gõ sai cú pháp, còn vi phạm chuyển sang 1. Script cũ không báo lỗi gì mà hiểu sai đúng chỗ kiểm riêng tư.",
+      "prevAudience": "dev viết script hoặc git hook gọi công cụ dòng lệnh"
+    },
+    {
+      "id": "2026-11-03-plan-45-45-chua-du-release",
+      "title": "Plan 45/45 chưa đủ: release thật mới đóng được việc",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent đang làm gói cài đặt để người khác dùng được. Plan đã đánh dấu 45/45 việc và Linux xanh, nên tưởng là xong; nhưng lần push đầu lên CI, macOS và Windows đỏ ở những lỗi Linux không thấy. Plan xong chưa phải release xong: chỉ đóng việc khi bản phát hành thật có lệnh cài một dòng chạy được. Ai làm CLI đa nền tảng sẽ gặp đúng chỗ này.",
+      "audience": "dev làm CLI hoặc công cụ đa nền tảng, build in public",
+      "spine": {
+        "context": {
+          "text": "Công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang làm gói cài đặt để người khác dùng được.",
+          "lines": [
+            "profile",
+            "claude:ab9a1dd8#L2230"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất plan đóng gói và phân phối, để người dùng cài bằng một lệnh.",
+          "lines": [
+            "claude:ab9a1dd8#L664"
+          ]
+        },
+        "obstacle": {
+          "text": "Linux xanh hết, nhưng CI trên macOS và Windows chưa từng chạy.",
+          "lines": [
+            "claude:ab9a1dd8#L2230",
+            "claude:ab9a1dd8#L2945"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng xong vì 45/45 việc và Linux xanh; hoá ra lần push đầu lên CI, macOS và Windows đỏ ở những lỗi Linux không thấy.",
+          "lines": [
+            "claude:ab9a1dd8#L2230",
+            "claude:ab9a1dd8#L2945"
+          ]
+        },
+        "action": {
+          "text": "Sửa các lỗi macOS và Windows, push lên main, rồi cắt v0.1.0 và thử lệnh cài từ GitHub.",
+          "lines": [
+            "claude:ab9a1dd8#L2945",
+            "claude:ab9a1dd8#L3042"
+          ]
+        },
+        "outcome": {
+          "text": "CI 9/9 tổ hợp xanh; v0.1.0 công bố, lệnh cài một dòng chạy được. Hook trên Windows với Claude Code và Codex thật vẫn chưa đo, chuyển thành issue.",
+          "lines": [
+            "claude:ab9a1dd8#L2945",
+            "claude:ab9a1dd8#L3042",
+            "claude:ab9a1dd8#L3047"
+          ]
+        },
+        "takeaway": {
+          "text": "Plan đánh dấu xong chưa phải release xong; chỉ đóng việc khi lệnh cài thật chạy được từ nguồn công khai, và CI đa nền tảng phải chạy trước.",
+          "lines": [
+            "claude:ab9a1dd8#L2945",
+            "claude:ab9a1dd8#L3042"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Agent báo đã xong 45/45 việc trong plan và CI xanh, nên tưởng là đóng được việc. Hoá ra hook dừng việc lại vì chưa có bản phát hành thật: cài thử từ GitHub mới là bằng chứng. Dev dùng AI agent nên cần nhớ: tick 'xong' trong plan chưa chứng minh được hệ thống chạy được, và trong chuyện này phần hook trên Windows vẫn chưa đo trong phiên thật.",
+      "prevAudience": "dev dùng AI agent để viết code và muốn biết khi nào agent thật sự xong việc"
+    },
+    {
+      "id": "2026-11-03-ci-lan-dau-macos-do-2",
+      "title": "CI lần đầu: macOS đỏ 2 test, Windows đỏ 38 test",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent đang hoàn tất plan đóng gói, với mục tiêu CI xanh trên cả ba hệ điều hành. Linux xanh từ đầu nên tưởng vậy là ổn; khi CI thật chạy, macOS đỏ ở một test và Windows đỏ 38 test, vì test được viết theo giả định của OS đang dùng. Tới lần chạy đang xem, macOS đã xanh, Windows vẫn đỏ. Ai viết test cho CLI đa nền tảng nên chạy CI trên mọi OS sớm.",
+      "audience": "dev viết test cho công cụ CLI đa nền tảng",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang hoàn tất plan đóng gói và phân phối.",
+          "lines": [
+            "profile",
+            "claude:ab9a1dd8#L664"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất plan 45 việc, với CI xanh trên cả ba hệ điều hành.",
+          "lines": [
+            "claude:ab9a1dd8#L664",
+            "claude:ab9a1dd8#L2233"
+          ]
+        },
+        "obstacle": {
+          "text": "CI chạy lần đầu: macOS đỏ ở test scan, Windows đỏ 38 test.",
+          "lines": [
+            "claude:ab9a1dd8#L2334",
+            "claude:ab9a1dd8#L2362"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng máy Linux xanh là chạy được mọi nơi; hoá ra test mang giả định của OS đang dùng và sập trên hai OS còn lại.",
+          "lines": [
+            "claude:ab9a1dd8#L2318",
+            "claude:ab9a1dd8#L2362"
+          ]
+        },
+        "action": {
+          "text": "Sửa cách chuẩn hoá đường dẫn trong lib/repo.mjs, rồi đẩy lên GitHub để CI chạy thật.",
+          "lines": [
+            "claude:ab9a1dd8#L2532",
+            "claude:ab9a1dd8#L2538"
+          ]
+        },
+        "outcome": {
+          "text": "macOS xanh cả ba bản Node; Windows vẫn đỏ ở lần chạy sau, plan còn 43/45.",
+          "lines": [
+            "claude:ab9a1dd8#L2233",
+            "claude:ab9a1dd8#L2544"
+          ]
+        },
+        "takeaway": {
+          "text": "Test viết trên một OS mang giả định của OS đó; chạy CI thật trên cả ba OS sớm mới lộ ra.",
+          "lines": [
+            "claude:ab9a1dd8#L2318",
+            "claude:ab9a1dd8#L2529"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Linux xanh cả ba bản Node nên tưởng code chạy được mọi nơi. CI thật trên macOS và Windows cho thấy test viết theo giả định của một hệ điều hành: Windows đỏ 38 test, còn macOS không tìm thấy phiên vì /var là đường dẫn tắt tới /private/var. Ai viết test cho công cụ chạy đa nền tảng đều có thể dính lỗi này.",
+      "prevAudience": "dev viết test cho công cụ dòng lệnh chạy đa nền tảng"
+    },
+    {
+      "id": "2026-11-03-push-bi-tu-choi-va-commit",
+      "title": "Push bị từ chối, và commit kéo theo việc đổi tên README của phiên khác",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án momentry đang chuẩn bị đóng gói và phát hành: cài bằng một lệnh, có README, và CI chạy trên Linux, macOS, Windows. Khi đẩy lên main thì bị từ chối vì GitHub có commit mới; sau khi rebase, commit lại kéo theo việc đổi tên README.md của một phiên khác đã stage sẵn trong cùng index, nên main mất README.md và CI đỏ. Người làm tưởng commit chỉ có file của mình, nhưng index dùng chung không báo trước điều đó. Ai chạy nhiều phiên agent trên cùng một repo nên kiểm `git diff --cached` trước khi commit.",
+      "audience": "dev chạy nhiều phiên AI agent trên cùng một repo",
+      "spine": {
+        "context": {
+          "text": "Dự án momentry đang chuẩn bị đóng gói và phát hành: cài bằng một lệnh, có README, và CI chạy trên nhiều hệ điều hành.",
+          "lines": [
+            "claude:ab9a1dd8#L664",
+            "claude:ab9a1dd8#L2260"
+          ]
+        },
+        "want": {
+          "text": "Đẩy bản đóng gói và tài liệu lên main để CI chạy.",
+          "lines": [
+            "claude:ab9a1dd8#L2233",
+            "claude:ab9a1dd8#L2266"
+          ]
+        },
+        "obstacle": {
+          "text": "Push bị từ chối vì main trên GitHub có commit mà máy này chưa có.",
+          "lines": [
+            "claude:ab9a1dd8#L2269",
+            "claude:ab9a1dd8#L2282"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng commit chỉ chứa file của mình; hoá ra index dùng chung đã có sẵn việc đổi tên README.md thành README.vi.md của phiên khác, và commit kéo theo việc đó.",
+          "lines": [
+            "claude:ab9a1dd8#L2288",
+            "claude:ab9a1dd8#L2733"
+          ]
+        },
+        "action": {
+          "text": "Rebase lên origin/main rồi push. Sau khi người dùng chọn hướng xử lý, commit lại README tiếng Anh mới cùng README.vi.md.",
+          "lines": [
+            "claude:ab9a1dd8#L2750",
+            "claude:ab9a1dd8#L2766"
+          ]
+        },
+        "outcome": {
+          "text": "Test cục bộ: 232 pass, 0 fail, gồm test README song ngữ. Kết quả CI không có trong đoạn trích.",
+          "lines": [
+            "claude:ab9a1dd8#L2762"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi nhiều phiên dùng chung index, `git add` đúng file của mình và xem `git diff --cached` trước khi commit.",
+          "lines": [
+            "claude:ab9a1dd8#L2759",
+            "claude:ab9a1dd8#L2766"
+          ]
+        }
+      },
+      "completeness": 7,
+      "prevAngle": "Agent tưởng commit đẩy lên main chỉ chứa việc của mình, nhưng nó đã kéo theo việc đổi tên README.md thành README.vi.md mà một phiên khác đã stage sẵn. Hậu quả là main mất README.md và CI đỏ toàn bộ. Ai chạy nhiều phiên AI trên cùng một repo cần biết index dùng chung có thể làm commit của mình chứa thay đổi không phải của mình.",
+      "prevAudience": "dev chạy nhiều phiên AI trên cùng một repo git"
+    },
+    {
+      "id": "2026-11-03-antigravity-khong-co-su-kien-ket",
+      "title": "Antigravity không có sự kiện kết thúc: gom chuyện khi mở phiên sau",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang lập kế hoạch hỗ trợ Antigravity (agy).",
+          "lines": [
+            "profile",
+            "claude:ab9a1dd8#L3426"
+          ]
+        },
+        "obstacle": {
+          "text": "Antigravity chỉ có SessionStart và Stop; Stop chạy sau mỗi lượt và chặn agent trong lúc chạy, nên không dùng để gom chuyện.",
+          "lines": [
+            "claude:ab9a1dd8#L3427"
+          ]
+        },
+        "action": {
+          "text": "Người dùng chọn gom chuyện agy khi mở phiên sau và tự tìm mọi profile.",
+          "lines": [
+            "claude:ab9a1dd8#L3433"
+          ]
+        },
+        "takeaway": {
+          "text": "Host không có sự kiện kết thúc phiên buộc phải đổi thời điểm gom chuyện.",
+          "lines": [
+            "claude:ab9a1dd8#L3427",
+            "claude:ab9a1dd8#L3433"
+          ]
+        }
+      },
+      "completeness": 4,
+      "prevAngle": "Dễ tưởng công cụ AI nào cũng có sự kiện báo khi phiên kết thúc để gom chuyện đúng lúc. Antigravity thì không: chỉ có sự kiện mở phiên và Stop, mà Stop chạy sau mỗi lượt và chặn agent trong lúc chạy, nên phải gom khi mở phiên sau. Ai viết hook cho nhiều công cụ nên kiểm tra sự kiện có sẵn trước khi chọn thời điểm gom.",
+      "prevAudience": "dev viết hook hoặc extension cho công cụ AI dòng lệnh"
+    },
+    {
+      "id": "2026-11-03-ba-host-moi-mot-nguoi-co",
+      "title": "Ba host mới: một người có nhiều profile, số lượng tìm được",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang thêm hỗ trợ cho pi, omp và Antigravity (agy).",
+          "lines": [
+            "profile",
+            "claude:ab9a1dd8#L3433"
+          ]
+        },
+        "want": {
+          "text": "Gom chuyện từ pi, omp và agy cùng với Claude Code và Codex.",
+          "lines": [
+            "claude:ab9a1dd8#L3574",
+            "claude:ab9a1dd8#L3601"
+          ]
+        },
+        "obstacle": {
+          "text": "Mỗi host có nhiều profile trên cùng một máy.",
+          "lines": [
+            "claude:ab9a1dd8#L3566"
+          ]
+        },
+        "action": {
+          "text": "Viết hàm tìm profile theo mẫu thư mục và bộ đọc cho pi, omp, agy.",
+          "lines": [
+            "claude:ab9a1dd8#L3574",
+            "claude:ab9a1dd8#L3601",
+            "claude:ab9a1dd8#L3605"
+          ]
+        },
+        "outcome": {
+          "text": "Tìm được 4 thư mục Codex, 9 của pi, 10 của omp, 4 của agy; bộ đọc agy parse đúng 5 transcript thật.",
+          "lines": [
+            "claude:ab9a1dd8#L3574",
+            "claude:ab9a1dd8#L3619"
+          ]
+        },
+        "takeaway": {
+          "text": "Tìm profile theo mẫu thư mục thay vì hardcode một đường dẫn.",
+          "lines": [
+            "claude:ab9a1dd8#L3574"
+          ]
+        }
+      },
+      "completeness": 6,
+      "prevAngle": "Tưởng mỗi công cụ AI chỉ lưu dữ liệu ở một thư mục. Hoá ra một máy có thể đăng nhập nhiều tài khoản: 4 thư mục Codex, 9 của pi, 10 của omp, 4 của agy. Ai đọc log bằng một đường dẫn cố định sẽ bỏ sót các profile còn lại.",
+      "prevAudience": "dev dùng nhiều tài khoản AI trên cùng một máy"
+    },
+    {
+      "id": "2026-11-03-probe-claude-codex-tren-windows-khong",
+      "title": "Probe Claude/Codex trên Windows: không đăng nhập vẫn đo được hook",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-probe-khong-mang-chan-moi-yeu",
+      "title": "Probe không mạng: chặn mọi yêu cầu bằng namespace mạng rỗng",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-windows-hook-dau-trong-duong-dan",
+      "title": "Windows hook: dấu / trong đường dẫn để cmd và Git Bash cùng chạy",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-agent-chi-doc-help-vuong-vi",
+      "title": "Agent chỉ đọc --help vướng vì lỗi là câu văn, không phải lệnh",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-bo-loc-lenh-chan-chuoi-dist",
+      "title": "Bộ lọc lệnh chặn chuỗi 'dist' và '.git' trong Bash",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-don-gian-hoa-sau-khi-xanh",
+      "title": "Đơn giản hoá sau khi xanh: tám chỗ, test vẫn 232",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-guardrail-chan-rm-rf-vi-bien",
+      "title": "Guardrail chặn rm -rf vì biến không resolve",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-installer-powershell-mau-lay-tu-du",
+      "title": "Installer PowerShell mẫu lấy từ dự án cùng nhà",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-quarantine-release-all-tha-hang-cho",
+      "title": "Quarantine --release all: thả hàng chờ nhưng kiểm lại từng chuyện",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-xem-cau-truc-transcript-khong-xem",
+      "title": "Xem cấu trúc transcript, không xem nội dung",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-zsh-va-ham-boc-lam-agent",
+      "title": "zsh và hàm bọc làm agent vấp nhiều lần",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-dao-quyet-dinh-prd-tu-hook",
+      "title": "Đảo quyết định PRD: từ 'hook chỉ in' sang 'công cụ tự cài hook'",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-doc-ma-nguon-codex-de-tim",
+      "title": "Đọc mã nguồn Codex để tìm cách duyệt hook",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-phat-hanh-co-cong-kiem-workflow",
+      "title": "Phát hành có cổng kiểm: workflow tạo bản nháp, cài thử bản nháp trên ba hệ điều hành, rồi mới công bố. Sau khi công bố, agent tải đúng lệnh cài một dòng trong README từ GitHub thật vào HOME tạm để kiểm.",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-dat-mot-dieu-kien-dung-cho",
+      "title": "Đặt một điều kiện dừng cho phiên (Stop hook) là hoàn tất plan, rồi agent tự làm tiếp qua nhiều phase. Agent chỉ dừng hỏi khi gặp việc ra ngoài như push hoặc phát hành công khai.",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-sau-khi-subagent-review-bao-cao",
+      "title": "Sau khi subagent review báo cáo kết quả, agent không tin nguyên văn. Nó tự chạy lại toàn bộ test và kiểm tra cài đặt, rồi mới cập nhật trạng thái.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    },
+    {
+      "id": "2026-11-03-thu-cai-dat-cap-nhat-va",
+      "title": "Thử cài đặt, cập nhật và gỡ cài đặt trong một HOME tạm (`mktemp`) với `env -i` và PATH trỏ tới các chương trình giả, nên không đụng tới cấu hình thật của máy.",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null,
+      "prevAngle": null,
+      "prevAudience": null
+    }
+  ],
+  "angleRun": {
+    "exitCode": 0,
+    "status": "done",
+    "stories": [
+      {
+        "id": "2026-11-03-205-205-test-xanh-nhung-nguoi",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang chuẩn bị đưa tới người ngoài dùng. Bộ test 205/205 xanh trên clone sạch dễ bị hiểu là đã sẵn sàng, nhưng khi chạy đúng quick start từ HOME trống, lệnh init --yes báo 'Unknown option' và người mới không qua nổi bước đầu. Chuyện đáng nghe vì test xanh chỉ chứng minh code chạy trong môi trường test, không chứng minh người dùng cài được; chỉ kiểm từ con số 0 mới lộ ra điều đó.",
+        "audience": "dev làm công cụ CLI cần phân phối cho người khác",
+        "evidence": [
+          170,
+          232
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang chuẩn bị đưa tới người ngoài dùng.",
+            "evidence": [
+              "profile",
+              42
+            ]
+          },
+          "want": {
+            "text": "Người mới cài và chạy được từ con số 0, không phải hỏi lại.",
+            "evidence": [
+              42
+            ]
+          },
+          "obstacle": {
+            "text": "Lệnh init --yes báo 'Unknown option', nên người mới dừng ngay bước đầu.",
+            "evidence": [
+              232
+            ]
+          },
+          "turn": {
+            "text": "Bộ test 205/205 xanh trên clone sạch bị coi là dấu hiệu đã sẵn sàng; hoá ra người mới không cài nổi.",
+            "evidence": [
+              170,
+              232
+            ]
+          },
+          "action": {
+            "text": "Chạy các bước kiểm của skill trong HOME tạm, không đụng cấu hình thật.",
+            "evidence": [
+              236
+            ]
+          },
+          "outcome": {
+            "text": "Lập plan 8 phase, 45 việc, ước khoảng 9 ngày công; chưa sửa dòng code nào.",
+            "evidence": [
+              653
+            ]
+          },
+          "takeaway": {
+            "text": "Test xanh không chứng minh người dùng cài được; chạy đúng quick start từ HOME trống trước khi tin bộ test.",
+            "evidence": [
+              170,
+              232
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-reviewer-doc-lap-hai-loi-lam",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent đang làm gói cài đặt cho Windows và Linux. Toàn bộ 230 test trên Linux đều xanh, nên người làm tin installer và uninstall trên Windows cũng ổn. Reviewer độc lập đọc code theo hành vi của PowerShell 5.1 và cmd.exe thì thấy installer Windows luôn báo 'Node quá cũ', còn uninstall báo thành công dù không xoá được gì. Test trên Linux không bắt được loại lỗi quoting này, nên ai viết installer đa nền tảng cần đọc code theo từng shell thật.",
+        "audience": "dev viết installer hoặc script đa nền tảng",
+        "evidence": [
+          2026,
+          2058
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang làm gói cài đặt cho Windows và Linux.",
+            "evidence": [
+              "profile",
+              664
+            ]
+          },
+          "want": {
+            "text": "Muốn installer và uninstall chạy đúng trên Windows trước khi phát hành.",
+            "evidence": [
+              664,
+              2017
+            ]
+          },
+          "obstacle": {
+            "text": "Test trên Linux không bắt được lỗi quoting của PowerShell 5.1 và cmd.exe, nên lỗi Windows không lộ ra.",
+            "evidence": [
+              2017,
+              2026
+            ]
+          },
+          "turn": {
+            "text": "Tưởng installer và uninstall trên Windows đã ổn vì test Linux xanh; hoá ra installer báo 'Node quá cũ' cho mọi người, còn uninstall báo thành công nhưng không xoá được gì.",
+            "evidence": [
+              2017,
+              2026
+            ]
+          },
+          "action": {
+            "text": "Bắt đầu sửa từ các lỗi nặng, đã xong H2, H3, H4 và vài lỗi vừa, nhẹ, rồi chạy lại test.",
+            "evidence": [
+              2039,
+              2062
+            ]
+          },
+          "outcome": {
+            "text": "Sau khi sửa, 230/230 test vẫn qua; lỗi Windows chưa chạy thật, cần CI Windows xác nhận H1 và H2.",
+            "evidence": [
+              2026,
+              2058
+            ]
+          },
+          "takeaway": {
+            "text": "Test trên Linux không đủ cho installer đa nền tảng; cần đọc code theo hành vi từng shell hoặc chạy CI trên Windows thật.",
+            "evidence": [
+              2026
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-codex-khong-bao-gio-chay-hook",
+        "status": "angle",
+        "angle": "Momentry là công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent như Codex, và người làm muốn hook của Codex ghi lại các phiên đó. Họ tin tên sự kiện kiểu snake_case như pre_compact là đúng, nhưng Codex chỉ nhận PascalCase và bỏ qua hook mà không báo lỗi. Sửa tên xong, test cục bộ xanh, còn probe trên Windows vẫn đỏ. Ai viết hook cho host khác nên kiểm bằng log do chính hook ghi, không tin vào cấu hình đã ghi.",
+        "audience": "dev viết hook hoặc plugin cho coding agent",
+        "evidence": [
+          3195,
+          3209,
+          3228,
+          3239
+        ],
+        "spine": {
+          "context": {
+            "text": "Momentry là công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent như Codex, và đang nối hook để ghi lại các phiên Codex.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn hook của Codex thật sự chạy và ghi lại phiên.",
+            "evidence": [
+              3184
+            ]
+          },
+          "obstacle": {
+            "text": "Cấu hình hook dùng tên sự kiện kiểu snake_case như pre_compact.",
+            "evidence": [
+              3195
+            ]
+          },
+          "turn": {
+            "text": "Tưởng snake_case là đúng; hoá ra Codex cần PascalCase và bỏ qua hook im lặng.",
+            "evidence": [
+              3195,
+              3228
+            ]
+          },
+          "action": {
+            "text": "Đổi tên sự kiện thành PreCompact, SessionEnd, SessionStart; cập nhật test, PRD, CHANGELOG và thêm probe chạy Codex trên Windows.",
+            "evidence": [
+              3206,
+              3214,
+              3228
+            ]
+          },
+          "outcome": {
+            "text": "Test cục bộ pass 234, fail 0; nhưng run CI probe trên Windows kết luận failure.",
+            "evidence": [
+              3209,
+              3239
+            ]
+          },
+          "takeaway": {
+            "text": "Hook sai tên bị host bỏ im lặng; kiểm bằng log do chính hook ghi trong phiên thật, đừng chỉ xem cấu hình đã ghi.",
+            "evidence": [
+              3214,
+              3239
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-hook-chet-im-lang-vi-ghi",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang tự đóng gói để người mới cài bằng một lệnh. Cấu hình hook ghi đường dẫn Node tuyệt đối trông có vẻ ổn, nhưng khi rà lại thì thấy nâng Node có thể làm hook chết mà không báo gì, vì lệnh hook luôn thoát 0. Lời giải là để hook gọi qua một lệnh momentry đã cài, và thêm lệnh doctor kiểm hook còn chạy được. Ai viết hook cho công cụ dòng lệnh nên để ý chuyện này.",
+        "audience": "dev viết hook hoặc công cụ dòng lệnh cho agent",
+        "evidence": [
+          236,
+          1170,
+          2230
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang tự đóng gói để người mới cài bằng một lệnh.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Đóng gói để người mới cài bằng một lệnh và đạt thành công đầu tiên nhanh.",
+            "evidence": [
+              42
+            ]
+          },
+          "obstacle": {
+            "text": "Phần phân phối gần như chưa có: init báo lỗi với cờ --yes, và không có lệnh kiểm tra hook.",
+            "evidence": [
+              232,
+              236
+            ]
+          },
+          "turn": {
+            "text": "Tưởng cấu hình hook ghi đường dẫn Node tuyệt đối là ổn; rà lại thì thấy nâng Node có thể làm hook chết mà không báo gì, vì lệnh hook luôn thoát 0.",
+            "evidence": [
+              236,
+              1170
+            ]
+          },
+          "action": {
+            "text": "Đổi hook sang gọi qua lệnh momentry đã cài, thay vì đường dẫn Node tuyệt đối.",
+            "evidence": [
+              1170
+            ]
+          },
+          "outcome": {
+            "text": "Hook gọi qua lệnh đã cài nên nâng Node không còn làm hook chết; 232 test qua trên Linux, 43/45 việc xong.",
+            "evidence": [
+              2230
+            ]
+          },
+          "takeaway": {
+            "text": "Hook nên gọi qua tên lệnh ổn định, không ghi cứng đường dẫn runtime, và cần một lệnh doctor kiểm hook còn chạy được.",
+            "evidence": [
+              236,
+              1170
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-ma-thoat-dao-nghia-2-tu",
+        "status": "angle",
+        "angle": "Momentry là công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, và đang chuẩn bị phát hành. Người làm định đưa mã thoát về chuẩn chung (0 xong, 1 có lỗi, 2 sai cú pháp), nhưng mã 2 hiện đang báo vi phạm riêng tư và có thể có script đang dựa vào nó. Đổi nghĩa âm thầm sẽ làm các script đó hiểu sai đúng ở chỗ kiểm riêng tư. Dev viết pre-commit hook hay script quanh CLI nên quan tâm, vì mã thoát là hợp đồng công khai.",
+        "audience": "dev viết script hoặc pre-commit hook quanh CLI",
+        "evidence": [
+          256,
+          616
+        ],
+        "spine": {
+          "context": {
+            "text": "Momentry là công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang chuẩn bị phát hành bản có phần phân phối rõ ràng.",
+            "evidence": [
+              "profile",
+              236
+            ]
+          },
+          "want": {
+            "text": "Đưa mã thoát về chuẩn chung CMD-08: 0 là xong, 1 là có lỗi, 2 là sai cú pháp.",
+            "evidence": [
+              264,
+              616
+            ]
+          },
+          "obstacle": {
+            "text": "Mã 2 hiện đang báo vi phạm riêng tư, và có thể có script đang đọc mã này để chặn commit.",
+            "evidence": [
+              256
+            ]
+          },
+          "turn": {
+            "text": "Tưởng đổi mã thoát chỉ là dọn theo chuẩn; hoá ra mã 2 có thể là hợp đồng công khai với các script kiểm riêng tư, và các test vẫn kỳ vọng mã 2 cho vi phạm.",
+            "evidence": [
+              256,
+              1253
+            ]
+          },
+          "action": {
+            "text": "Đổi bảng mã thoát và sửa các test đang kiểm mã 2 sang mã 1.",
+            "evidence": [
+              616,
+              889,
+              908
+            ]
+          },
+          "outcome": {
+            "text": "Sau khi sửa, suite còn 204 test qua và 1 test hỏng.",
+            "evidence": [
+              911
+            ]
+          },
+          "takeaway": {
+            "text": "Đổi mã thoát là đổi hợp đồng công khai: liệt kê script nào có thể đang đọc mã đó và ghi vào changelog.",
+            "evidence": [
+              256
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-plan-45-45-chua-du-release",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent đang làm gói cài đặt để người khác dùng được. Plan đã đánh dấu 45/45 việc và Linux xanh, nên tưởng là xong; nhưng lần push đầu lên CI, macOS và Windows đỏ ở những lỗi Linux không thấy. Plan xong chưa phải release xong: chỉ đóng việc khi bản phát hành thật có lệnh cài một dòng chạy được. Ai làm CLI đa nền tảng sẽ gặp đúng chỗ này.",
+        "audience": "dev làm CLI hoặc công cụ đa nền tảng, build in public",
+        "evidence": [
+          2230,
+          2945,
+          3042
+        ],
+        "spine": {
+          "context": {
+            "text": "Công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang làm gói cài đặt để người khác dùng được.",
+            "evidence": [
+              "profile",
+              2230
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất plan đóng gói và phân phối, để người dùng cài bằng một lệnh.",
+            "evidence": [
+              664
+            ]
+          },
+          "obstacle": {
+            "text": "Linux xanh hết, nhưng CI trên macOS và Windows chưa từng chạy.",
+            "evidence": [
+              2230,
+              2945
+            ]
+          },
+          "turn": {
+            "text": "Tưởng xong vì 45/45 việc và Linux xanh; hoá ra lần push đầu lên CI, macOS và Windows đỏ ở những lỗi Linux không thấy.",
+            "evidence": [
+              2230,
+              2945
+            ]
+          },
+          "action": {
+            "text": "Sửa các lỗi macOS và Windows, push lên main, rồi cắt v0.1.0 và thử lệnh cài từ GitHub.",
+            "evidence": [
+              2945,
+              3042
+            ]
+          },
+          "outcome": {
+            "text": "CI 9/9 tổ hợp xanh; v0.1.0 công bố, lệnh cài một dòng chạy được. Hook trên Windows với Claude Code và Codex thật vẫn chưa đo, chuyển thành issue.",
+            "evidence": [
+              2945,
+              3042,
+              3047
+            ]
+          },
+          "takeaway": {
+            "text": "Plan đánh dấu xong chưa phải release xong; chỉ đóng việc khi lệnh cài thật chạy được từ nguồn công khai, và CI đa nền tảng phải chạy trước.",
+            "evidence": [
+              2945,
+              3042
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-ci-lan-dau-macos-do-2",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent đang hoàn tất plan đóng gói, với mục tiêu CI xanh trên cả ba hệ điều hành. Linux xanh từ đầu nên tưởng vậy là ổn; khi CI thật chạy, macOS đỏ ở một test và Windows đỏ 38 test, vì test được viết theo giả định của OS đang dùng. Tới lần chạy đang xem, macOS đã xanh, Windows vẫn đỏ. Ai viết test cho CLI đa nền tảng nên chạy CI trên mọi OS sớm.",
+        "audience": "dev viết test cho công cụ CLI đa nền tảng",
+        "evidence": [
+          2318,
+          2362,
+          2544
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang hoàn tất plan đóng gói và phân phối.",
+            "evidence": [
+              "profile",
+              664
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất plan 45 việc, với CI xanh trên cả ba hệ điều hành.",
+            "evidence": [
+              664,
+              2233
+            ]
+          },
+          "obstacle": {
+            "text": "CI chạy lần đầu: macOS đỏ ở test scan, Windows đỏ 38 test.",
+            "evidence": [
+              2334,
+              2362
+            ]
+          },
+          "turn": {
+            "text": "Tưởng máy Linux xanh là chạy được mọi nơi; hoá ra test mang giả định của OS đang dùng và sập trên hai OS còn lại.",
+            "evidence": [
+              2318,
+              2362
+            ]
+          },
+          "action": {
+            "text": "Sửa cách chuẩn hoá đường dẫn trong lib/repo.mjs, rồi đẩy lên GitHub để CI chạy thật.",
+            "evidence": [
+              2532,
+              2538
+            ]
+          },
+          "outcome": {
+            "text": "macOS xanh cả ba bản Node; Windows vẫn đỏ ở lần chạy sau, plan còn 43/45.",
+            "evidence": [
+              2233,
+              2544
+            ]
+          },
+          "takeaway": {
+            "text": "Test viết trên một OS mang giả định của OS đó; chạy CI thật trên cả ba OS sớm mới lộ ra.",
+            "evidence": [
+              2318,
+              2529
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-push-bi-tu-choi-va-commit",
+        "status": "angle",
+        "angle": "Dự án momentry đang chuẩn bị đóng gói và phát hành: cài bằng một lệnh, có README, và CI chạy trên Linux, macOS, Windows. Khi đẩy lên main thì bị từ chối vì GitHub có commit mới; sau khi rebase, commit lại kéo theo việc đổi tên README.md của một phiên khác đã stage sẵn trong cùng index, nên main mất README.md và CI đỏ. Người làm tưởng commit chỉ có file của mình, nhưng index dùng chung không báo trước điều đó. Ai chạy nhiều phiên agent trên cùng một repo nên kiểm `git diff --cached` trước khi commit.",
+        "audience": "dev chạy nhiều phiên AI agent trên cùng một repo",
+        "evidence": [
+          2260,
+          2263,
+          2288,
+          2733,
+          2749
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án momentry đang chuẩn bị đóng gói và phát hành: cài bằng một lệnh, có README, và CI chạy trên nhiều hệ điều hành.",
+            "evidence": [
+              664,
+              2260
+            ]
+          },
+          "want": {
+            "text": "Đẩy bản đóng gói và tài liệu lên main để CI chạy.",
+            "evidence": [
+              2233,
+              2266
+            ]
+          },
+          "obstacle": {
+            "text": "Push bị từ chối vì main trên GitHub có commit mà máy này chưa có.",
+            "evidence": [
+              2269,
+              2282
+            ]
+          },
+          "turn": {
+            "text": "Tưởng commit chỉ chứa file của mình; hoá ra index dùng chung đã có sẵn việc đổi tên README.md thành README.vi.md của phiên khác, và commit kéo theo việc đó.",
+            "evidence": [
+              2288,
+              2733
+            ]
+          },
+          "action": {
+            "text": "Rebase lên origin/main rồi push. Sau khi người dùng chọn hướng xử lý, commit lại README tiếng Anh mới cùng README.vi.md.",
+            "evidence": [
+              2750,
+              2766
+            ]
+          },
+          "outcome": {
+            "text": "Test cục bộ: 232 pass, 0 fail, gồm test README song ngữ. Kết quả CI không có trong đoạn trích.",
+            "evidence": [
+              2762
+            ]
+          },
+          "takeaway": {
+            "text": "Khi nhiều phiên dùng chung index, `git add` đúng file của mình và xem `git diff --cached` trước khi commit.",
+            "evidence": [
+              2759,
+              2766
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-antigravity-khong-co-su-kien-ket",
+        "status": "none",
+        "none": true,
+        "reason": "Đây là giới hạn của công cụ được phát hiện khi thiết kế, không phải ai đó tin sai điều gì. Tài liệu không cho thấy giả định 'mọi host đều có sự kiện kết thúc' được nêu hay áp dụng trước khi phát hiện, nên không dựng được chỗ ngoặt có bằng chứng.",
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang lập kế hoạch hỗ trợ Antigravity (agy).",
+            "evidence": [
+              "profile",
+              3426
+            ]
+          },
+          "obstacle": {
+            "text": "Antigravity chỉ có SessionStart và Stop; Stop chạy sau mỗi lượt và chặn agent trong lúc chạy, nên không dùng để gom chuyện.",
+            "evidence": [
+              3427
+            ]
+          },
+          "action": {
+            "text": "Người dùng chọn gom chuyện agy khi mở phiên sau và tự tìm mọi profile.",
+            "evidence": [
+              3433
+            ]
+          },
+          "takeaway": {
+            "text": "Host không có sự kiện kết thúc phiên buộc phải đổi thời điểm gom chuyện.",
+            "evidence": [
+              3427,
+              3433
+            ]
+          }
+        },
+        "completeness": 4
+      },
+      {
+        "id": "2026-11-03-ba-host-moi-mot-nguoi-co",
+        "status": "none",
+        "none": true,
+        "reason": "Không có ai tin sai điều gì. Đoạn trích chỉ ghi việc tìm và đọc profile theo thiết kế, không có câu hay hành động nào cho thấy một giả định bị đổ vỡ.",
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent, đang thêm hỗ trợ cho pi, omp và Antigravity (agy).",
+            "evidence": [
+              "profile",
+              3433
+            ]
+          },
+          "want": {
+            "text": "Gom chuyện từ pi, omp và agy cùng với Claude Code và Codex.",
+            "evidence": [
+              3574,
+              3601
+            ]
+          },
+          "obstacle": {
+            "text": "Mỗi host có nhiều profile trên cùng một máy.",
+            "evidence": [
+              3566
+            ]
+          },
+          "action": {
+            "text": "Viết hàm tìm profile theo mẫu thư mục và bộ đọc cho pi, omp, agy.",
+            "evidence": [
+              3574,
+              3601,
+              3605
+            ]
+          },
+          "outcome": {
+            "text": "Tìm được 4 thư mục Codex, 9 của pi, 10 của omp, 4 của agy; bộ đọc agy parse đúng 5 transcript thật.",
+            "evidence": [
+              3574,
+              3619
+            ]
+          },
+          "takeaway": {
+            "text": "Tìm profile theo mẫu thư mục thay vì hardcode một đường dẫn.",
+            "evidence": [
+              3574
+            ]
+          }
+        },
+        "completeness": 6
+      }
+    ],
+    "usd": 0.0317537,
+    "profiles": [
+      {
+        "root": "/home/vantt/projects/momentry",
+        "status": "generated",
+        "file": "/home/vantt/projects/momentry/docs/_private/eval/angle-trial/spine/ab9a1dd8/runs/1/scratch/cache/profiles/momentry-4448826026.md"
+      }
+    ],
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "angle repo: 10 chuyện; góc kể: 8 có, 2 không ra chuyện; 0.03 USD\nhồ sơ dự án: momentry tạo mới"
+  },
+  "angleCalls": [
+    {
+      "key": "angle-1",
+      "step": "angle",
+      "usd": 0.0030937,
+      "secs": 17.453,
+      "tokIn": 11992,
+      "tokOut": 3789,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-10",
+      "step": "angle",
+      "usd": 0.0022167000000000003,
+      "secs": 12.562,
+      "tokIn": 9712,
+      "tokOut": 2491,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-2",
+      "step": "angle",
+      "usd": 0.003468,
+      "secs": 21.271,
+      "tokIn": 9710,
+      "tokOut": 4994,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-3",
+      "step": "angle",
+      "usd": 0.0030395,
+      "secs": 18.244,
+      "tokIn": 9225,
+      "tokOut": 4234,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-4",
+      "step": "angle",
+      "usd": 0.0034029999999999998,
+      "secs": 19.843,
+      "tokIn": 11850,
+      "tokOut": 4436,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-5",
+      "step": "angle",
+      "usd": 0.0029401,
+      "secs": 16.11,
+      "tokIn": 11716,
+      "tokOut": 3537,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-6",
+      "step": "angle",
+      "usd": 0.0033306,
+      "secs": 17.347,
+      "tokIn": 13831,
+      "tokOut": 3895,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-7",
+      "step": "angle",
+      "usd": 0.0038717,
+      "secs": 25.208,
+      "tokIn": 10612,
+      "tokOut": 5621,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-8",
+      "step": "angle",
+      "usd": 0.0033801,
+      "secs": 21.935,
+      "tokIn": 9756,
+      "tokOut": 4809,
+      "cacheRead": 0
+    },
+    {
+      "key": "angle-9",
+      "step": "angle",
+      "usd": 0.0019744,
+      "secs": 11.687,
+      "tokIn": 8444,
+      "tokOut": 2260,
+      "cacheRead": 0
+    },
+    {
+      "key": "profile-1",
+      "step": "profile",
+      "usd": 0.0010359,
+      "secs": 2.566,
+      "tokIn": 8609,
+      "tokOut": 350,
+      "cacheRead": 0
+    }
+  ],
+  "profiles": [
+    {
+      "root": "/home/vantt/projects/momentry",
+      "status": "generated",
+      "file": "/home/vantt/projects/momentry/docs/_private/eval/angle-trial/spine/ab9a1dd8/runs/1/scratch/cache/profiles/momentry-4448826026.md",
+      "text": "Một công cụ dòng lệnh nhặt chất liệu kể chuyện từ phiên làm việc với coding agent (Claude Code, Codex và một số agent khác). Sau mỗi phiên, công cụ đọc transcript, tìm các khoảnh khắc đáng kể như con số đổi, lỗi có gốc bất ngờ, quyết định bị đảo, rồi ghi mỗi chuyện thành một file markdown trong repo và xếp hạng theo độ hấp dẫn. Làm cho người làm một mình, build in public, viết blog kỹ thuật hoặc báo cáo tuần, không muốn để mất chất liệu. Ràng buộc chính: chạy trên máy của người dùng, không để lọt tên riêng tư vào repo, và giao diện CLI cùng tài liệu hiện viết bằng tiếng Việt. Mục tiêu hiện tại: chưa có trong phần tài liệu đã đọc, nên bỏ qua."
+    }
+  ]
+}

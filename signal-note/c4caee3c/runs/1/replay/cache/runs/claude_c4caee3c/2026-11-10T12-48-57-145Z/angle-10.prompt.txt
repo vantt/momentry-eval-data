@@ -1,0 +1,99 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Obsidian Hybrid Search is an npm package that searches a local Obsidian vault by meaning, exact words, titles, aliases, tags, and links, and returns results through a CLI, JSON-lines IPC, or an MCP server. It is for Obsidian users who want to find and reuse their own notes, and for AI agents that should start from those notes and cite their sources. It runs locally by default with SQLite, FTS5, and sqlite-vec, and can optionally call OpenAI-compatible embedding APIs. It also includes a native Obsidian plugin for search while writing.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L264] USER: action là dùng để tự chạy ci catchup khi upstream thay đổi đúng không. cái này bật luôn nếu đúng
+[L748] USER: Tiếp tục điều phối plan vantt/plans/261102-0349-fork-master-roadmap/plan.md: kiểm tra agent Đ0 (V00, V09, V10), commit/push việc đã xong, khởi chạy đợt kế.
+[L1112] USER: báo cáo tiến độ
+</asks>
+
+<story>
+hook: Bộ sửa lỗi gõ làm hỏng chính từ điển đồng nghĩa: 0,80 xuống 0,73
+tension: giup_ma_hai (Sửa lỗi gõ cho người dùng / Từ đúng bị đổi thành từ gần đó)
+stakes: 2/3
+# Sửa lỗi gõ chèn đè từ điển đồng nghĩa: vi-synonym tụt 0,80 xuống 0,73
+
+**Bối cảnh:** Sau khi merge nhánh gõ sai và nhánh từ điển, hạng mục đồng nghĩa tụt.
+**Chuyện gì xảy ra:** Bộ sửa lỗi một ký tự đã viết lại từ mà từ điển đồng nghĩa cần, ví dụ một từ tiếng Anh bị đổi thành một từ gần đó trong vault. Nhánh từ điển giờ khớp cả dạng người dùng gõ, và từ người dùng viết theo dạng từ điển được coi là từ đã biết. Hạng mục trở lại 0,80.
+**Bài học:** Khi chèn một bước viết lại đầu vào, kiểm tra xem nó có đè lên các bước khớp sau nó không.
+**Artefact:** Bảng Hit@5 của vi-synonym trước và sau.
+</story>
+
+<excerpt>
+[L1451] TOOL Bash: sed -i 's/^- \[ \] V17 Telex/- [x] V17 Telex/' vantt/plans/261102-0349-fork-master-roadmap/phase-04-vietnamese-pack.md && grep -n "V17 Telex" vantt/plans/261102-0349-fork-master-roadmap/phase-04-vietnamese-pack.md && git add vantt/plans/261102-0349-fork-master-roadmap/phase-04-vietnamese-pack.md &&  …[+186]
+[L1452] RESULT: 47:- [x] V17 Telex/VNI và gõ sai | b297a9f docs(vantt): mark Telex and typo task done
+[L1458] AGENT: Tiến độ:
+- **V17 (Telex/VNI và gõ sai) đã merge vào `master`** (`04216f4`). Merge có xung đột ở README, và test của V17 hỏng do thiếu trường `project` mà V19 vừa thêm vào `QueryEnvironment`. Tôi đã sửa cả hai. Gói giờ qua `tsc` và 400 test.
+- **V18 (đồng nghĩa, viết tắt) đã xong.** `vi-synonym` lên Hit@5 0,80, vừa chạm ngưỡng; `vi-abbr` đạt 1,00. Merge vào `master` xung đột ở 4 file, nên tôi huỷ merge và giao lại cho chính agent V18 giải trên nhánh của nó, rồi chạy lại eval.
+- Chuỗi bản vá đầy đủ tới P06 vẫn đang chạy test.
+[L1470] USER: <task-notification>
+<task-id>afc946493829c8141</task-id>
+<tool-use-id>toolu_0133rqM3KmLcQeFa6LQ68vQt</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/afc946493829c8141.output</output-file>
+<status>completed</status>
+<summary>Agent "V18 lexicon and abbreviations" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE
+
+Master is merged into `vantt/work/v18` and the V18 checks pass on the merged tree. The merge commit is `0b5f47a`, and a follow-up fix commit `1853862` sits on top of it. Merge `1853862`, not `0b5f47a`, because at `0b5f47a` `vi-synonym` was 0.73.
+
+**Merge:** I resolved the conflicts in `README.md`, `src/index.ts`, `src/options.ts` and `src/query.ts`, keeping V17 (Telex and typo), V19 (alias keys) and V18 (lexicon). `analyzeQuery` now runs `buildAnalysis(state, options, env)` and then `applyLexicon`. I ticked nothing in the roadmap phase file.
+
+**Regression found after the merge:** the V17 typo corrector rewrote lexicon words before the lexicon saw them. For example, "phone" became a nearby vault word, and `vi-synonym-02` fell from rank 4 to 7. That dropped `vi-synonym` Hit@5 to 0.73. I made two changes:
+- `applyLexicon` now matches the query as typed as well as after Telex/typo rewriting, so a corrected word can't hide a lexicon form the user wrote.
+- A word the user wrote in a synonym or abbreviation form now counts as a known word in `rewrite.ts`. This is a small edit to V17's file (new `LexiconStore.knownWords`).
+
+I added tests for both (431 pass). `npx tsc --noEmit` is clean.
+
+**Eval:** default options against `chk-series`, output `/home/vantt/projects/ohs-wt/tmp/v18/v18-m2.json`. The comparison is V17 `both.json` → merged V18, as nDCG@5 / Hit@5. `both.json` predates V19, so the alias gain comes from V19 and not from V18.
+
+| Category | V17 both | merged V18 |
+|---|---|---|
+| ALL nDCG@5 | 0.856 | 0.909 |
+| `vi-accented` | 1.000 / 1.00 | 1.000 / 1.00 |
+| `vi-partial-accent` | 0.933 / 1.00 | 1.000 / 1.00 |
+| `vi-telex` | 1.000 / 1.00 | 1.000 / 1.00 |
+| `vi-typo` | 0.722 / 1.00 | 0.722 / 1.00 |
+| `vi-snippet` | 0.743 / 0.87 | 0.743 / 0.87 |
+| `vi-unaccented` | 0.951 / 1.00 | 0.951 / 1.00 |
+| `vi-dd` | 0.888 / 1.00 | 0.888 / 1.00 |
+| `vi-iy`, `vi-tone-placement`, `vi-tone-p …[+871]
+[L1478] AGENT: V18 đã gộp `master` vào nhánh của nó và sửa một lỗi tương tác với V17. Mọi điều kiện đạt: `vi-synonym` 0,80, `vi-abbr` 1,00, các hạng mục khác không tụt, nDCG@5 tổng lên 0,909. Merge vào `master`.
+[L1479] TOOL Bash: git log --oneline -1 vantt/work/v18 && HUSKY=0 git merge -q --no-ff vantt/work/v18 -m "merge(vantt): Vietnamese lexicon, abbreviations and learn-abbr Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>" && echo MERGED && (cd vantt/packages/ohs-lang-vi && npx vitest run 2>&1 | grep -E "Test Files …[+424]
+[L1480] RESULT: 1853862 fix(vantt): keep lexicon words out of the typo corrector | MERGED
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,213 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Obsidian Hybrid Search is a search engine for your local Obsidian vault, offered as a native Obsidian plugin, an MCP server for AI agents, and a command-line tool. It is for people who keep their notes in Obsidian and want to find them by idea, phrase, title, link, or metadata, and for AI agents that need to start from those notes. It runs locally by default on SQLite, and can optionally use OpenAI-compatible embedding APIs.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `vantt/plans/261102-0349-fork-master-roadmap/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` afte …[+49]
+[L2458] USER: vậy nên viết rõ là viết lại OHS bùng rust
+[L2474] USER: L24 thì làm gì
+[L2491] USER: ok xác nhận làm nhé. thêm vào goal
+</asks>
+
+<story>
+hook: Thư viện mới bỏ Mac Intel, nên ghim bản cũ để giữ họ lại
+tension: chon_mot_mat_mot (Giữ Mac Intel bằng cách ghim bản cũ / Chấp nhận kết quả lệch +0,063 và −0,017)
+stakes: 2/3
+# Mac Intel: onnxruntime 1.30 không còn file cho Intel, ghim 1.23.2 để giữ nền
+
+**Bối cảnh:** Release đầu tiên có Windows, Mac ARM và Linux. Mac Intel không dựng được vì onnxruntime-node 1.30 không có binding darwin-x64.
+**Chuyện gì xảy ra:** Lead hỏi người dùng: bỏ Mac Intel hay ghim bản cũ. Người dùng chọn ghim, với điều kiện smoke xanh trên runner Intel và lệch nDCG@5 không quá 0,01. Gói được phát hành với hai mức lệch đã chấp nhận: multilingual +0,063 và vi-synonym −0,017. Lead cũng xác định đời máy: Mac từ M1 (2020) trở đi dùng được, Mac Intel thì không.
+**Bài học:** Khi upstream bỏ một nền, tính trước hệ quả với khách (đời máy nào dùng được) và đặt điều kiện đo được trước khi chọn ghim.
+**Artefact:** Bảng mức lệch từng hạng mục, không kèm câu hỏi.
+**Góc người ngoài:** cách làm phổ biến là Người làm một mình thường chỉ phát hành một nền, hoặc bỏ hẳn nền khó để khỏi phải giải thích; ở đây khác ở Một nền Mac Intel bị chặn bởi thư viện upstream, nhưng thay vì cắt bỏ, agent ghim phiên bản cũ, đo lệch, và người dùng chọn luật đơn giản hơn. Người đọc sẽ hỏi cách tự kiểm tra một bản ghim thay đổi kết quả đến đâu.
+</story>
+
+<excerpt>
+[L2526] AGENT: L24 đã vào goal, PRD và plan đều đã cập nhật.
+
+- **PRD:** L24 chuyển sang nhãn "Bắt buộc" theo xác nhận của bạn ngày 2026-11-02 (`1e75767`). Lần sửa đầu tôi ghi nhầm vào dòng N22, đã chỉnh lại trong cùng commit này.
+- **Plan:** thêm L24 vào phase 6 kèm điều kiện xong, và thêm một mục vào danh sách "Xong khi" của goal (`2ad8e1c`). Điều kiện xong: báo cáo review mới nhất có biểu đồ xu hướng các chỉ số qua mọi bản đã review, script tự vẽ lại khi có bản mới, và có test.
+
+Agent V14 đang sửa đúng script `review-upstream.mjs` để chạy lại báo cáo cuối. Vì vậy tôi đợi nó xong rồi giao L24 cho chính nó, để tránh hai agent cùng sửa một file. Bản fork dựng trên hai tag `v0.17.1` và `v0.17.2` cho sẵn hai điểm đầu tiên trên biểu đồ.
+[L2542] USER: <task-notification>
+<task-id>aa32b998406ef26b1</task-id>
+<tool-use-id>toolu_011tx8PcGiTpJqNjz5C5sKBm</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/aa32b998406ef26b1.output</output-file>
+<status>completed</status>
+<summary>Agent "V03 bundles and first release" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: DONE_WITH_CONCERNS. Three of the four platforms are built, smoke-tested and released. macOS Intel is blocked by a dependency, so V03 acceptance is not met for that platform.
+
+**Summary**
+- Release: https://github.com/vantt/obsidian-hybrid-search/releases/tag/v0.17.2-vantt.1. It has 3 bundles, each with `.sha256` and `.bundle.json`, and the notes are auto-generated. It was built from the fork tag with 9 patches, `ohs-lang-vi` 0.2.0 and Node 22.23.3.
+- Final run: 41400682250.
+
+**Per-platform results**
+
+| Platform | Packed | Unpacked | Unpacked before prune | Smoke |
+|---|---|---|---|---|
+| win32-x64 (zip) | 102.6 MB | 279.3 MB | 632.3 MB | pass |
+| darwin-arm64 (tar.gz) | 99.5 MB | 326.3 MB | 656.9 MB | pass |
+| linux-x64 (tar.gz) | 99.0 MB | 295.7 MB | 942.7 MB | pass |
+| darwin-x64 | not built | | | fails by design |
+
+Smoke covers the sha256 and `MANIFEST.json` hashes, a path with spaces and Vietnamese letters, `ohs status`, `reindex`, `search`, golden queries over `ohs serve --stdio`, the MCP `initialize` and `tools/list` handshake, and loading the bundled language pack. Sizes are in the release notes, `vantt/README.md` and the sub-plan.
+
+**macOS Intel: the 4th platform**
+- I did not drop it on a runner basis. `macos-13` is retired, so the matrix uses `macos-15-intel`. That runner works.
+- The blocker is `onnxruntime-node` 1.30.0. Its npm package has `napi-v6` bindings only for `darwin/arm64`, `linux/{arm64,x64}` and `win32/{arm64,x64}`, with no `darwin/x64`.
+- The Intel-runner smoke failed with `Cannot find module ../bin/napi-v6/darwin/x64/onnxruntime_binding.node`.
+- Your Rosetta approach (x64 Node on an ARM runner) cannot work, because the file is missing from the package itself. I did not run it.
+- The darwin-x64 matrix row is restored but marked `optional: true`, so a failure there does not block the release. `bundle.mjs` now refuses the build with the message "onnxruntim …[+2003]
+[L2546] AGENT: V03 xong với ba trên bốn nền. Release đầu tiên [`v0.17.2-vantt.1`](https://github.com/vantt/obsidian-hybrid-search/releases/tag/v0.17.2-vantt.1) đã có gói cho Windows x64, macOS ARM và Linux x64, mỗi gói kèm sha256, và smoke test xanh cả ba. Gói macOS Intel bị chặn vì một lý do thật, không phải vì agent cắt bớt: thư viện `onnxruntime-node` 1.30.0 mà upstream dùng không còn kèm bản dựng sẵn cho macOS Intel. Cách dựng x64 qua Rosetta mà tôi đề xuất cũng không cứu được, vì file đó không có trong gói npm. Phần này cần bạn quyết.
+[L2547] TOOL AskUserQuestion: {"questions":[{"question":"Gói macOS Intel không dựng được: onnxruntime-node 1.30.0 (upstream dùng) không có bản dựng sẵn cho darwin-x64. Xử lý thế nào?","header":"macOS Intel","multiSelect":false,"options":[{"label":"Bỏ macOS Intel (Recommended)","description":"Sửa PRD 7.3/8 còn 3 nền; Mac Intel ng …[+933]
+[L2553] RESULT: The user answered: "Gói macOS Intel không dựng được: onnxruntime-node 1.30.0 (upstream dùng) không có bản dựng sẵn cho darwin-x64. Xử lý thế nào?"="như vậy là không dùng được MacOS?", "Gói giải nén nặng 280–330 MB, vượt mục tiêu 250 MB của PRD 8.2 (r …[+221]
+[L2561] AGENT: **macOS vẫn dùng được.** Chỉ máy Mac đời cũ chạy chip Intel là chưa có gói. Mọi máy Mac chip Apple (M1, M2, M3, M4…) dùng gói `darwin-arm64`, gói này đã dựng và qua smoke test trên máy macOS sạch của GitHub. Apple đã ngừng bán Mac Intel từ 2023, nên phần lớn người dùng Mac hiện nay dùng được gói.
+
+**Windows: gói đã có và chạy được trên máy sạch.** File `win32-x64` (zip, 102,6 MB) đã đăng trong release [`v0.17.2-vantt.1`](https://github.com/vantt/obsidian-hybrid-search/releases/tag/v0.17.2-vantt.1). Smoke test chạy trên máy Windows sạch của GitHub, không cài sẵn Node hay npm, và xanh hết:
+- Kiểm sha256 và hash của từng file trong gói.
+- Giải nén vào thư mục có dấu cách và chữ tiếng Việt.
+- Chạy `ohs status`, `reindex`, `search`.
+- Câu tìm mẫu qua `ohs serve --stdio`, bắt tay MCP (`initialize`, `tools/list`), nạp gói tiếng Việt.
+
+Bốn điểm cần biết trước khi đưa cho khách:
+1. **Cài bằng tay:** hiện là giải nén zip rồi chạy. Bộ cài một bước (`pkm setup`) là việc của repo dự án (V16), chưa làm.
+2. **Chưa ký mã:** Windows SmartScreen có thể cảnh báo lần chạy đầu. Smoke test trên CI không đo được cảnh báo này, nên cần thử trên một máy Windows thật.
+3. **Lần chạy đầu cần mạng** để tải model nhúng. Gói có sẵn model là L07, đang để sau.
+4. **Gói tiếng Việt mới kiểm đến mức nạp được và bỏ dấu được.** Chưa so kết quả tìm khi bật và tắt gói trên bản Windows.
+
+Về kích thước: đã ghi nhận bạn chấp nhận, tôi sẽ sửa PRD 8.2 theo số đo thật.
+
+Với Mac Intel, tôi đề nghị **bỏ khỏi danh sách nền bắt buộc**. Dòng dựng gói cho nền này vẫn giữ trong CI ở dạng tuỳ chọn, để tự dựng lại nếu sau này upstream đổi sang thư viện có hỗ trợ Intel. Bạn đồng ý không?
+[L2569] USER: vậy là mac cũ nhất năm nào?
+[L2571] AGENT: Mac cũ nhất dùng được là **các máy M1 ra mắt tháng 11/2020**: MacBook Air M1, MacBook Pro 13" M1 và Mac mini M1. Sau đó là mọi Mac chip Apple: iMac M1 (2021), và các dòng M2, M3, M4 về sau.
+
+Hệ điều hành tối thiểu là **macOS 11 Big Sur**, do Node 22 trong gói yêu cầu. Máy M1 xuất xưởng đã chạy Big Sur nên không vướng.
+
+**Không dùng được: mọi Mac chip Intel**, kể cả máy mua khá gần đây. Apple bán song song Mac Intel và Mac chip Apple một thời gian:
+- MacBook Pro 13"/16" Intel và iMac 27" Intel 2020 vẫn bán tới 2021.
+- Mac mini Intel bán tới đầu 2023.
+- Mac Pro Intel (2019) bán tới giữa 2023.
+
+Nghĩa là một khách mua Mac Intel năm 2021–2023 cũng không cài được gói. Cách nhận biết: vào  > About This Mac. Nếu dòng "Chip" ghi Apple M… thì dùng được; nếu là dòng "Processor" ghi Intel thì không.
+
+Nếu khách của dự án có người dùng Mac Intel, phương án khả thi là ghim một bản `onnxruntime-node` cũ còn hỗ trợ Intel, làm thành bản vá riêng cho gói Intel. Cách này tốn công bảo trì qua mỗi bản upstream, và có thể chạy lệch đôi chút so với các nền khác. Bạn chọn bỏ Mac Intel, hay làm bản vá này?
+[L2579] USER: ghim một bản onnxruntime-node cũ còn hỗ trợ Intel
+[L2585] AGENT: Tôi giao lại cho agent V03, vì nó đã nắm mã dựng gói. Hướng làm: chỉ riêng gói macOS Intel thay `onnxruntime-node` bằng bản cũ nhất còn kèm bản dựng cho Intel, ngay ở bước đóng gói. Mã OHS và ba nền còn lại giữ nguyên, nên bất biến "không có gói ngôn ngữ thì kết quả giống upstream" không bị ảnh hưởng trên các nền đó. Agent cũng sẽ đo xem kết quả tìm trên Intel có lệch so với Linux không.
+…
+[L2592] AGENT: Câu đó nói về phương án bỏ Mac Intel, phương án bạn đã không chọn. Nói đơn giản:
+
+- **"Bỏ khỏi danh sách nền bắt buộc":** PRD hiện yêu cầu mỗi bản phát hành phải có đủ 4 gói. Bỏ Mac Intel nghĩa là sửa PRD thành chỉ cần 3 gói (Windows, Mac chip Apple, Linux). Bản phát hành vẫn tính là đủ khi thiếu gói Mac Intel.
+- **"Giữ dòng dựng gói trong CI ở dạng tuỳ chọn":** mỗi lần phát hành, CI vẫn thử dựng gói Mac Intel. Thử hỏng thì bỏ qua, không chặn bản phát hành.
+- **"Để tự dựng lại nếu upstream đổi thư viện":** gói Mac Intel đang hỏng vì upstream dùng `onnxruntime-node` 1.30.0, bản này không có file cho Intel. Nếu sau này upstream đổi sang bản có hỗ trợ Intel, lần thử của CI sẽ tự thành công và gói Mac Intel tự xuất hiện lại, không ai phải làm gì.
+
+Nhưng bạn đã chọn **ghim bản `onnxruntime-node` cũ còn hỗ trợ Intel**, nên đề nghị trên không áp dụng nữa. Mac Intel vẫn là nền bắt buộc, mỗi bản phát hành vẫn đủ 4 gói. Riêng gói Mac Intel dùng một bản `onnxruntime-node` cũ hơn, chỉ thay ở bước đóng gói, mã OHS không đổi.
+
+Lời nhắn giao việc cho agent bị ngắt trước khi gửi đi. Nếu bạn xác nhận vẫn làm theo hướng ghim bản cũ, tôi sẽ giao ngay.
+[L2602] USER: em khuyên như nào?
+[L2604] AGENT: Tôi khuyên **thử ghim bản cũ trong giới hạn khoảng nửa ngày công, kèm điều kiện đạt rõ ràng. Không đạt thì bỏ Mac Intel.**
+
+**Vì sao nên thử:**
+- Khách của dự án là người Việt làm một mình và freelancer. Ở Việt Nam, Mac Intel cũ (2017–2020) còn được dùng và mua bán lại khá nhiều. Bỏ hẳn thì mất nhóm khách này.
+- Hướng ghim gọn: chỉ gói Mac Intel thay `onnxruntime-node` ở bước đóng gói. Mã OHS không đổi, ba nền còn lại không bị ảnh hưởng.
+
+**Rủi ro:**
+- Tôi chưa biết bản `onnxruntime-node` cuối cùng còn kèm file cho Mac Intel là bản nào. Agent phải tra trong gói npm thật.
+- Thư viện nạp model của upstream có thể đòi tính năng chỉ có ở bản mới. Khi đó bản cũ không chạy được, hoặc chạy được nhưng cho vector hơi lệch.
+- Mỗi lần nâng upstream lại phải kiểm cặp phiên bản này một lần. Công thêm nhỏ, nhưng có.
+
+**Điều kiện đạt:**
+1. Gói Mac Intel dựng được và smoke test xanh trên máy Intel của GitHub (`macos-15-intel`). Smoke test gồm `status`, `reindex`, `search`, stdio, MCP và nạp gói tiếng Việt.
+2. Eval tiếng Việt và eval upstream trên Mac Intel lệch tối đa 0,01 nDCG@5 so với Linux. Nếu lệch hơn, kết quả tìm của khách Mac Intel sẽ khác khách khác, và điều kiện coi như không đạt.
+3. CI kiểm cặp phiên bản này ở mỗi lần phát hành. Nếu sau này hỏng, CI mở issue chứ không âm thầm phát hành gói lỗi.
+
+**Nếu không đạt:** bỏ Mac Intel, sửa PRD còn 3 nền, và ghi rõ trên trang release rằng chỉ hỗ trợ Mac chip Apple từ M1 (2020) trở lên.
+
+Nếu bạn đồng ý, tôi giao việc này cho agent V03 ngay.
+[L2616] USER: ok
+[L2617] TOOL SendMessage: {"to":"aa32b998406ef26b1","summary":"V03b: pin old onnxruntime for macOS Intel","message":"Lead, with the user's decision (2026-11-02): keep macOS Intel as a required platform by pinning an older `onnxruntime-node` that still ships a darwin-x64 binding — ONLY in the darwin-x64 bundle, applied at bun …[+2261]
+[L2618] RESULT: {"success":true,"message":"Resuming agent aa32b99","resumedAgentId":"aa32b998406ef26b1","pin":{"id":"aa32b998406ef26b1","name":"aa32b998406ef26b1","ref":"c3c904"}}
+…
+[L2890] USER: <task-notification>
+<task-id>aa32b998406ef26b1</task-id>
+<tool-use-id>toolu_01YJv7irbbNyZRdiWXEDtsrC</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-hybrid-search/d78e5468-ce1e-47c6-8282-3a790e653d33/tasks/aa32b998406ef26b1.output</output-file>
+<status>completed</status>
+<summary>Agent "V03 bundles and first release" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>Status: BLOCKED on the Intel macOS parity check. The same-machine pin comparison fails, so I did not publish the darwin-x64 bundle. The platform is not dropped, and the Release stays at 3 bundles.
+
+**Parity numbers (run 41404189339)**
+- The `pin-effect` job ran on one ubuntu runner with the same release tree. It compared locked `onnxruntime-node` 1.30.0 against the pinned 1.23.2 and applied the 0.01 nDCG@5 limit.
+- Only two categories fail:
+
+| Corpus / category | Locked 1.30.0 | Pinned 1.23.2 | Delta |
+|---|---|---|---|
+| obsidian-help multilingual | 0.413 | 0.476 | +0.063 |
+| vi-synonym | 0.729 | 0.712 | -0.017 |
+
+- All other categories are within 0.01. obsidian-help ALL moved +0.007 and vi-semantic +0.004.
+- The earlier local Linux run gave the same two deltas.
+
+**Intel smoke**
+- Smoke passes on `macos-15-intel`. The bundle is 87.5 MB packed and 281.6 MB unpacked.
+- The Intel eval numbers are saved as an informational baseline in `vantt/eval/baselines/darwin-x64/`. obsidian-help nDCG@5 is 0.742; vi-search with the pack on is 0.932.
+
+**Gating**
+- Each platform's smoke job now uploads its own bundle to the Release after it passes. darwin-x64 also needs the `pin-effect` result to be ok.
+- A failure on one platform turns only that platform's job red. In this run darwin-x64 went red and the other three stayed green and published. The release is not marked latest.
+- `finalize` writes the release notes. The notes mark darwin-x64 as "not published" and include the pin-effect table.
+- The Release now has 9 assets: 3 bundles with `.sha256` and `.bundle.json`.
+
+**Docs**
+- PRD 8.4 step 6 now describes the same-machine criterion and the 2026-11-02 result. README and the sub-plan are updated.
+
+**Concerns**
+- The pin-effect result is deterministic, so a rerun will give the same numbers.
+- To unblock Intel, the user can choose among:
+  - Accept these deltas, since 1.23.2 actually improves multilingu …[+744]
+[L2893] AGENT: V03 đã đo lại theo điều kiện mới: trên cùng một máy, so `onnxruntime-node` bản ghim 1.23.2 với bản gốc 1.30.0. Hai hạng mục vượt ngưỡng 0,01, các hạng mục còn lại đều trong ngưỡng:
+- `obsidian-help multilingual`: bản ghim **tốt hơn** 0,063.
+- `vi-synonym`: bản ghim **kém hơn** 0,017. Hạng mục này có 15 câu, nên mức lệch đó tương đương một câu tụt vài hạng.
+
+Kết quả đo không đổi qua các lần chạy. Gói Mac Intel đã dựng xong, smoke test xanh, nhưng chưa phát hành. Ba gói kia vẫn trên release như cũ.
+
+Ngưỡng 0,01 cho việc ghim là tôi tự đặt ra, PRD không quy định, nên quyết định thuộc về anh.
+[L2894] TOOL AskUserQuestion: {"questions":[{"question":"Gói Mac Intel (onnxruntime 1.23.2) so với bản gốc trên cùng máy: multilingual +0,063 (tốt hơn), vi-synonym −0,017 (tương đương 1 câu tụt vài hạng), các hạng mục khác trong 0,01. Smoke xanh. Phát hành không?","header":"Mac Intel","multiSelect":false,"options":[{"label":"Phá …[+477]
+[L2895] RESULT: Your questions have been answered: "Gói Mac Intel (onnxruntime 1.23.2) so với bản gốc trên cùng máy: multilingual +0,063 (tốt hơn), vi-synonym −0,017 (tương đương 1 câu tụt vài hạng), các hạng mục khác trong 0,01. Smoke xanh. Phát hành không?"="Phát  …[+89]
+[L2899] TOOL SendMessage: {"to":"aa32b998406ef26b1","summary":"V03: user approves Intel release with deltas","message":"User decision (2026-11-02): publish the darwin-x64 bundle and accept the measured pin deltas (obsidian-help multilingual +0.063, vi-synonym −0.017; all others within 0.01). Please: (1) record the accepted d …[+736]
+[L2900] RESULT: {"success":true,"message":"Resuming agent aa32b99","resumedAgentId":"aa32b998406ef26b1","pin":{"id":"aa32b998406ef26b1","name":"aa32b998406ef26b1","ref":"c3c904"}}
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

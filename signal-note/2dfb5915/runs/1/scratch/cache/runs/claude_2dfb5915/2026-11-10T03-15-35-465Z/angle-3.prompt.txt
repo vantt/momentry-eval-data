@@ -1,0 +1,103 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+Một công cụ giúp hỏi Claude Desktop về graph của vault Obsidian: note nào nối với note nào, đi từ ý này tới ý kia qua đâu, và note nào lạc khỏi mạng. Làm cho người làm một mình hoặc freelancer, dùng tiếng Việt. Chạy trên máy của người dùng dưới dạng một file cài duy nhất, không cần cài Python, và index vault được lưu trong SQLite trên máy đó. Mục tiêu hiện tại: viết lại lõi bằng Rust để thay bản Python cũ trong Claude Desktop, cho kết quả giống bản Python trên cùng dữ liệu.
+</project>
+
+<asks>
+[L11] USER: A session-scoped Stop hook is now active with condition: "bật các agents phù hợp để hoàn tất plan `plans/261102-0535-rust-core-port-master/plan.md`. làm song song nếu có thể. xong 1 mục thì nhớ update plan, commit và push. em nên compact khi token usage đạt ngưỡng >=50%.". Briefly acknowledge the goal, then immediately start (or continue) working toward it — treat the condition itself as your directive and do not pause to ask the user what to do. The hook will block stopping until the condition holds. It auto-clears once the condition is met — do not tell the user to run `/goal clear` after su …[+45]
+[L1140] USER: b,c đồng ý. chưa hiểu a. do ohs của tôi là private?
+[L1160] USER: 3 giữ private, việc này tính sau.
+[L1177] USER: vậy với ohs, khách có gh cũng phải login github
+</asks>
+
+<story>
+hook: Một lần gọi paths max_len 8 đến 10 làm CPU 100%, ping cũng kẹt
+tension: nho_ma_to (Một tham số max_len nhích lên 8-10 / Tổ hợp bùng nổ, cả server treo, kể cả ping)
+stakes: 2/3
+# MCP có thể treo cả server: một lượt paths với max_len 8 đến 10 có thể làm bùng nổ tổ hợp
+
+**Bối cảnh:** Các tool paths, loops và all_loops nhận max_len từ model mà không có trần. Server đơn luồng giữ khoá state.
+**Chuyện gì xảy ra:** Review chỉ ra một lần gọi có thể làm CPU 100% và RAM tăng cho tới khi bị kill, và cả ping cũng bị kẹt. Fix đặt trần max_len là 12 và thời gian tối đa 10 giây, dùng progress handler của SQLite để ngắt. Các ca parity dùng tối đa 4 và answer key tối đa 10, nên không ảnh hưởng.
+**Bài học:** Đừng tin tham số độ dài do model đưa vào; đặt trần và thời hạn ngay ở tầng query, không chỉ ở tầng giao thức.
+**Artefact:** Con số trần 12 và timeout 10 giây. Không đưa truy vấn.
+</story>
+
+<excerpt>
+[L1764] AGENT: I'm waiting on three things: this CI run, the OHS wiring, and the `pkm` crate review.
+[L1777] USER: <task-notification>
+<task-id>a72152c8ba9e65a8f</task-id>
+<tool-use-id>toolu_01BWacNYGWh3K87M8v2ScDE8</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a72152c8ba9e65a8f.output</output-file>
+<status>completed</status>
+<summary>Agent "Review pkm binary crate" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I found two high-severity bugs that can hang the MCP server, plus several medium and low issues. Nothing on the main path corrupts the Claude Desktop config, and stdout carries only JSON-RPC. This was a read-only review: I didn't run the code, the tests or a repro. The full report (in Vietnamese) is at `/home/vantt/projects/obsidian-pkm/plans/reports/code-reviewer-261102-1550-pkm-crate.md`.
+
+## High
+
+**H1. A panic during the first index build makes every `tools/call` hang forever.** `crates/pkm/src/mcp.rs:258-271` and `:331`
+- **Failure:** `first_build` only calls `set_ready()` after the build returns. If `index::build`, `adapter::load` or `open_tools` panics (say, on a malformed note), the background thread dies and the ready flag is never set.
+- **Effect:** `initialize` and `tools/list` give up after their 20 s wait and carry on. But `tools/call` uses `wait_ready(None)`, which has no limit. The tool never answers and the server never exits, so Claude Desktop shows no error.
+- **Fix:** wrap the body of `first_build` in `catch_unwind`, or use a guard whose `Drop` calls `set_ready`. Give `tools/call` a timeout and return `{"error":"index unavailable"}` when it expires.
+
+**H2. `paths`, `loops` and `all_loops` have no limit, so one tool call can lock the server indefinitely.** `crates/pkm-core/src/query.rs:744-792`, `:796`, `:861`
+- **Failure:** the recursive SQL query lists every simple path up to `max_len` edges. `max_len` comes straight from the model with no ceiling. There is no row limit and no way to interrupt the query.
+- **Effect:** on a vault with a few thousand densely linked notes, `max_len` around 8–10 explodes combinatorially (CPU 100%, RAM growing until the OS kills the process). The server is single-threaded and holds the `state` lock, so every later request, including `ping`, is stuck. This behaviour was inherited from the Python version.
+- **Fix:** cap `max_len` (around 6) at the tool la …[+4667]
+[L1780] AGENT: The review found two High issues that can hang the MCP server:
+- **H1:** a panic during the first index build makes every tool call wait forever.
+- **H2:** `paths` and `loops` have no limit, so one call can lock up the server.
+
+The H1 fix and the related tool-panic fix (M1) are in `mcp.rs`, which the OHS-wiring agent is already editing, so I'm sending them to that agent. H2 and the `install` issues go to a separate agent.
+[L1781] TOOL SendMessage: {"to":"a26e0c02db8ddb58c","summary":"Also fix MCP hang and panic findings","message":"Additionally, in the same worktree (separate commit is fine), fix these review findings from /home/vantt/projects/obsidian-pkm/plans/reports/code-reviewer-261102-1550-pkm-crate.md (read H1, M1):\n- H1: a panic in f …[+625]
+[L1782] RESULT: {"success":true,"message":"Message queued for delivery to a26e0c02db8ddb58c at its next tool round. If it finishes first, it is resumed with the message and notifies again, so wait for that notification before resending.","pin":{"id":"a26e0c02db8ddb5 …[+47]
+…
+[L1934] RESULT: Command running in background with ID: bwktam1i8. Output is being written to: /tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/bwktam1i8.output. You will be notified when it completes — do not poll that fi …[+169]
+[L1940] AGENT: The Windows job was cancelled again by the latest push. I'm watching the newest CI run and waiting for the H2/`install` fix agent.
+[L1950] USER: <task-notification>
+<task-id>a261492f4edd12b04</task-id>
+<tool-use-id>toolu_01VmJkPMvSyDVK2YNEwxxhV8</tool-use-id>
+<output-file>/tmp/claude-1000/-home-vantt-projects-obsidian-pkm/8b14133a-d681-47fe-ae2d-ed5be39976eb/tasks/a261492f4edd12b04.output</output-file>
+<status>completed</status>
+<summary>Agent "Fix query cap and install review items" finished</summary>
+<note>A task-notification fires each time this agent stops with no live background children of its own. The user can send it another message and resume it, so the same task-id may notify more than once.</note>
+<result>I fixed all seven items (M5 turned out not to be a real problem). They are committed on branch `worktree-agent-a261492f4edd12b04` at `232f058`, on top of `56c4b8b`. Nothing was pushed or merged. All the required checks pass: `cargo fmt --all --check`, clippy with `-D warnings` and `cargo test --workspace` are clean. The answer-key test also passes with `PKM_KG_SOLO` set (70/70 graph and 11/11 table questions). The CI-style parity run on a fresh `kg-solo` copy ended with "64 mục, 0 lệch chưa có tên, 0 mục chưa có".
+
+- **H2 (runaway path and loop queries):** `paths`, `loops` and `all_loops` now refuse `max_len` above 12 with a `ValueError`. Each search also stops after 10 seconds with a `TimeoutError` saying "query too expensive … lower max_len or narrow rels". The limit is changed with `PKM_QUERY_TIMEOUT` (seconds; 0 turns it off) or `Graph::set_walk_budget`. The SQL queries are interrupted through SQLite's progress handler, and the `all_loops` search checks the deadline itself. I put the checks in the query layer so the MCP tools, the CLI and the answer key are all covered. 12 does not affect any parity call: the golden calls use at most 4 and the answer key at most 10. This is recorded as "Lệch có chủ ý" in `spec/PORTING.md`.
+- **M2 (`--force`):** `--force` now only skips the Claude Desktop running check. A binary outside the standard install location needs the new `--allow-any-location`, which does not skip the Desktop check. The refusal now prints the exe that was taken for Claude Desktop. Claude Code installed via winget, scoop or `Programs\claude-code` is no longer mistaken for Desktop. Real Desktop locations (`AnthropicClaude\app-*`, the MS Store `WindowsApps\Claude_*`, `Programs\Claude`) and unreadable paths still count as Desktop.
+- **M3 (symlinks and permissions):** a symlinked config is written to the file it points to, and the symlink is kept. A broken symlink is refused. On  …[+3224]
+[L1957] TOOL Bash: git merge --no-edit worktree-agent-a261492f4edd12b04 2>&1 | tail -1; git diff --name-only --diff-filter=U
+[L1958] RESULT: create mode 100644 plans/reports/fullstack-developer-261102-1555-review-fixes.md
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

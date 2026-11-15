@@ -1,0 +1,542 @@
+{
+  "id": "f0bf048d",
+  "run": 3,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-opt-AICoworker/f0bf048d-0996-462f-94f4-0d8f367f342c.jsonl",
+  "fromLine": 1,
+  "toLine": 3520,
+  "windowSha": "f5e08a50c088b598",
+  "at": "2026-11-10T12:45:55.914Z",
+  "git": true,
+  "refreshedFrom": 2,
+  "refreshed": [
+    "hook-tension",
+    "stakes"
+  ],
+  "freshUsd": 0.090254,
+  "dryRun": {
+    "usd": 0.32,
+    "tokens": 81961,
+    "chunks": 1,
+    "hotspots": 25,
+    "entries": 1012,
+    "gitCommits": 0
+  },
+  "report": {
+    "sid": "claude:f0bf048d",
+    "fromLine": 1,
+    "toLine": 3520,
+    "usd": 0.3356216000000001,
+    "secs": 38.6,
+    "exitCode": 0,
+    "status": "done",
+    "written": 25,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-10-31-chuoi-leo-thang-agent-khach-giu-f60d",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-1: spine.context: evidence ngoài các dòng đã đưa: 3320; spine.want: evidence ngoài các dòng đã đưa: 3320; spine.obstacle: evidence ngoài các dòng đã đưa: 3327; spine.action: evidence ngoài các dòng đã đưa: 3320, 3340; spine.takeaway: evidence ngoài các dòng đã đưa: 3340 | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/f0bf048d/runs/3/llm/angle-1-retry.json"
+      },
+      {
+        "id": "2026-10-30-deploy-mot-goi-ghi-de-team-f60d",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-2: spine.context: evidence ngoài các dòng đã đưa: 1794; spine.want: evidence ngoài các dòng đã đưa: 1794; spine.obstacle: evidence ngoài các dòng đã đưa: 1867, 1891; spine.turn: evidence ngoài các dòng đã đưa: 1867, 1891; spine.action: evidence ngoài các dòng đã đưa: 1884, 1891 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/f0bf048d/runs/3/llm/angle-2-retry.json"
+      },
+      {
+        "id": "2026-10-31-doi-danh-tinh-daemon-sang-agents-f60d",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-3: spine.context: evidence ngoài các dòng đã đưa: 1282; spine.want: evidence ngoài các dòng đã đưa: 1439, 1603; spine.obstacle: evidence ngoài các dòng đã đưa: 1603; spine.turn: evidence ngoài các dòng đã đưa: 1603, 1619; spine.action: evidence ngoài các dòng đã đưa: 1620, 1625 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/f0bf048d/runs/3/llm/angle-3-retry.json"
+      },
+      {
+        "id": "2026-11-01-ba-runtime-chay-that-lan-dau-f60d",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-4: spine.context: evidence ngoài các dòng đã đưa: \"profile\", 675; spine.want: evidence ngoài các dòng đã đưa: 675, 920; spine.obstacle: evidence ngoài các dòng đã đưa: 915; spine.turn: evidence ngoài các dòng đã đưa: 915, 902; spine.action: evidence ngoài các dòng đã đưa: 865, 868, 902 (+3) | angle-4-retry: spine.context: evidence ngoài các dòng đã đưa: 897; spine.obstacle: evidence ngoài các dòng đã đưa: 902; spine.turn: evidence ngoài các dòng đã đưa: 915, 902; spine.action: evidence ngoài các dòng đã đưa: 865, 896, 902, 915; spine.outcome: evidence ngoài các dòng đã đưa: 915 (+2)"
+      },
+      {
+        "id": "2026-11-01-bot-khong-co-quyen-ghi-git-f60d",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-5: spine.context: evidence ngoài các dòng đã đưa: 2890; spine.turn: evidence ngoài các dòng đã đưa: 3165; spine.action: evidence ngoài các dòng đã đưa: 3165; spine.outcome: evidence ngoài các dòng đã đưa: 3139, 3165; spine.takeaway: evidence ngoài các dòng đã đưa: 3165 (+1) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/f0bf048d/runs/3/llm/angle-5-retry.json"
+      },
+      {
+        "id": "2026-10-31-cong-cu-tra-phi-lot-vao-f60d",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-6: JSON hỏng (SyntaxError) | angle-6-retry: spine.context: evidence ngoài các dòng đã đưa: 1794, 1957; spine.want: evidence ngoài các dòng đã đưa: 1794; spine.obstacle: evidence ngoài các dòng đã đưa: 2400, 2412; spine.turn: evidence ngoài các dòng đã đưa: 2394, 2400, 2412; spine.action: evidence ngoài các dòng đã đưa: 2433, 2436, 2454 (+3)"
+      },
+      {
+        "id": "2026-10-31-red-team-tim-lo-dev-login-f60d",
+        "status": "angle",
+        "angle": "Dự án Multica chạy agent trên máy, và bản thiết kế quyền đang được viết để agent tự làm được nhiều việc mà không mất dữ liệu. Một agent khác phản biện và báo rằng file cấu hình còn mã đăng nhập dev 6 ký tự, ai biết email chủ có thể đăng nhập thành chủ qua API. Khi kiểm lại trên máy, mã đó trống trong .env, nên lỗ hổng không đúng như bản phản biện nêu. Ai vận hành agent tự động nên biết: phát hiện từ agent khác phải được kiểm trên máy trước khi đưa vào tài liệu.",
+        "audience": "dev vận hành agent tự động trên máy",
+        "evidence": [
+          1867,
+          1975
+        ],
+        "spine": {
+          "context": {
+            "text": "Dự án Multica chạy agent trên máy; đang viết bản thiết kế quyền để agent tự làm được nhiều việc mà không gây hậu quả hay mất dữ liệu.",
+            "evidence": [
+              1794
+            ]
+          },
+          "want": {
+            "text": "Muốn agent tự động làm nhiều nhất có thể mà không gây hậu quả nghiêm trọng hay mất dữ liệu.",
+            "evidence": [
+              1794
+            ]
+          },
+          "obstacle": {
+            "text": "Bản phản biện nêu mã đăng nhập dev 6 ký tự còn hiệu lực, có thể dùng để đăng nhập thành chủ.",
+            "evidence": [
+              1867
+            ]
+          },
+          "turn": {
+            "text": "Tưởng mã đăng nhập dev còn trong .env; kiểm lại thì mã đó trống.",
+            "evidence": [
+              1867,
+              1975
+            ]
+          },
+          "action": {
+            "text": "Kiểm lại trên máy bằng lệnh đọc .env và container, rồi sửa tài liệu.",
+            "evidence": [
+              1875,
+              1884
+            ]
+          },
+          "outcome": {
+            "text": "Biến mã đăng nhập dev trong .env trống, không đúng như bản phản biện nêu.",
+            "evidence": [
+              1975
+            ]
+          },
+          "takeaway": {
+            "text": "Phát hiện từ agent phản biện cần tự kiểm trên máy trước khi đưa vào tài liệu.",
+            "evidence": [
+              1867,
+              1975
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-10-30-agent-lam-thay-viec-cua-agent-f60d",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-8: spine.context: evidence ngoài các dòng đã đưa: 1282; spine.want: evidence ngoài các dòng đã đưa: 1439; spine.obstacle: evidence ngoài các dòng đã đưa: 1388; spine.turn: evidence ngoài các dòng đã đưa: 1388, 1414; spine.action: evidence ngoài các dòng đã đưa: 1393, 1400, 1414 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/f0bf048d/runs/3/llm/angle-8-retry.json"
+      },
+      {
+        "id": "2026-10-30-chon-cong-cu-seo-tra-tien-f60d",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-9: spine.context: evidence ngoài các dòng đã đưa: 920; spine.want: evidence ngoài các dòng đã đưa: 920, 968; spine.obstacle: evidence ngoài các dòng đã đưa: 915; spine.turn: evidence ngoài các dòng đã đưa: 915; spine.action: evidence ngoài các dòng đã đưa: 915 (+3) | thiếu file --fake-llm: /tmp/claude-1000/-home-vantt-projects-momentry/daa7147c-5d6d-4b8b-bc2f-e967ff9177e4/scratchpad/ev/not-a-story/f0bf048d/runs/3/llm/angle-9-retry.json"
+      },
+      {
+        "id": "2026-10-30-mo-hinh-mot-workspace-cho-moi-f60d",
+        "status": "failed",
+        "error": "model lỗi sau khi gọi lại: angle-10: spine.context: evidence ngoài các dòng đã đưa: \"profile\"; spine.obstacle: evidence ngoài các dòng đã đưa: 955, 963; spine.action: evidence ngoài các dòng đã đưa: 963, 975; spine.takeaway: evidence ngoài các dòng đã đưa: 975 | angle-10-retry: spine.context: evidence ngoài các dòng đã đưa: \"profile\"; spine.obstacle: evidence ngoài các dòng đã đưa: 963; spine.action: evidence ngoài các dòng đã đưa: 975; spine.takeaway: evidence ngoài các dòng đã đưa: 975"
+      }
+    ],
+    "message": "claude:f0bf048d L1-L3520: done; 23 chuyện thô, 25 cụm; ghi 25 mới, gộp 0\nđiểm nóng 25 (thiếu 0); lần chạy 1/1; 0.34 USD\ngóc kể: 1 có, 0 không ra chuyện, 9 hỏng (chạy lại: momentry angle)\nhồ sơ dự án: AICoworker không có tài liệu, bỏ qua"
+  },
+  "ranked": [
+    {
+      "id": "2026-10-31-chuoi-leo-thang-agent-khach-giu-f60d",
+      "code": "M-GNK7",
+      "title": "Chuỗi leo thang: agent khách giữ PAT chủ, giao việc cho System Operator có docker",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-deploy-mot-goi-ghi-de-team-f60d",
+      "code": "M-6CCS",
+      "title": "Deploy một gói ghi đè team của gói khác trong cùng workspace",
+      "tension": "giup_ma_hai",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-31-doi-danh-tinh-daemon-sang-agents-f60d",
+      "code": "M-9A43",
+      "title": "Đổi danh tính daemon sang agents-opc: thu hồi PAT chủ, chuyển 12 agent",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-01-ba-runtime-chay-that-lan-dau-f60d",
+      "code": "M-E1ZV",
+      "title": "Ba runtime chạy thật lần đầu: model khác cấu hình, Google và DuckDuckGo chặn máy chủ",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-01-bot-khong-co-quyen-ghi-git-f60d",
+      "code": "M-G41F",
+      "title": "Bot không có quyền ghi: git fetch thay vì push",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-31-cong-cu-tra-phi-lot-vao-f60d",
+      "code": "M-J6W5",
+      "title": "Công cụ trả phí lọt vào plan khi khách chưa mua",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-31-red-team-tim-lo-dev-login-f60d",
+      "code": "M-5ECK",
+      "title": "Red-team tìm lỗ dev login code: chủ bị giả mạo qua API",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án Multica chạy agent trên máy, và bản thiết kế quyền đang được viết để agent tự làm được nhiều việc mà không mất dữ liệu. Một agent khác phản biện và báo rằng file cấu hình còn mã đăng nhập dev 6 ký tự, ai biết email chủ có thể đăng nhập thành chủ qua API. Khi kiểm lại trên máy, mã đó trống trong .env, nên lỗ hổng không đúng như bản phản biện nêu. Ai vận hành agent tự động nên biết: phát hiện từ agent khác phải được kiểm trên máy trước khi đưa vào tài liệu.",
+      "audience": "dev vận hành agent tự động trên máy",
+      "spine": {
+        "context": {
+          "text": "Dự án Multica chạy agent trên máy; đang viết bản thiết kế quyền để agent tự làm được nhiều việc mà không gây hậu quả hay mất dữ liệu.",
+          "lines": [
+            "claude:f0bf048d#L1794"
+          ]
+        },
+        "want": {
+          "text": "Muốn agent tự động làm nhiều nhất có thể mà không gây hậu quả nghiêm trọng hay mất dữ liệu.",
+          "lines": [
+            "claude:f0bf048d#L1794"
+          ]
+        },
+        "obstacle": {
+          "text": "Bản phản biện nêu mã đăng nhập dev 6 ký tự còn hiệu lực, có thể dùng để đăng nhập thành chủ.",
+          "lines": [
+            "claude:f0bf048d#L1867"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng mã đăng nhập dev còn trong .env; kiểm lại thì mã đó trống.",
+          "lines": [
+            "claude:f0bf048d#L1867",
+            "claude:f0bf048d#L1975"
+          ]
+        },
+        "action": {
+          "text": "Kiểm lại trên máy bằng lệnh đọc .env và container, rồi sửa tài liệu.",
+          "lines": [
+            "claude:f0bf048d#L1875",
+            "claude:f0bf048d#L1884"
+          ]
+        },
+        "outcome": {
+          "text": "Biến mã đăng nhập dev trong .env trống, không đúng như bản phản biện nêu.",
+          "lines": [
+            "claude:f0bf048d#L1975"
+          ]
+        },
+        "takeaway": {
+          "text": "Phát hiện từ agent phản biện cần tự kiểm trên máy trước khi đưa vào tài liệu.",
+          "lines": [
+            "claude:f0bf048d#L1867",
+            "claude:f0bf048d#L1975"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-10-30-agent-lam-thay-viec-cua-agent-f60d",
+      "code": "M-Y15Q",
+      "title": "Agent làm thay việc của agent: người dùng kéo lại về đóng gói",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-chon-cong-cu-seo-tra-tien-f60d",
+      "code": "M-7WY5",
+      "title": "Chọn công cụ SEO trả tiền: DataForSEO nạp $50, ước $2-5 mỗi khách",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-mo-hinh-mot-workspace-cho-moi-f60d",
+      "code": "M-0YPE",
+      "title": "Mô hình một workspace cho mỗi khách: đổi tên gói vì gói mang tên workspace",
+      "tension": "nho_ma_to",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-01-backup-hourly-bi-hoi-lai-doi-f60d",
+      "code": "M-2F87",
+      "title": "Backup hourly bị hỏi lại: đổi từ chắc ăn sang agent tự làm được",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-01-chep-phien-dang-nhap-claude-giua-f60d",
+      "code": "M-P1T2",
+      "title": "Chép phiên đăng nhập Claude giữa hai user Linux: token xoay vòng",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-agent-seo-mu-vi-buoc-dat-f60d",
+      "code": "M-QMGQ",
+      "title": "Agent SEO mù vì bước đặt key bị sót",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-search-console-trong-vi-property-www-f60d",
+      "code": "M-WZ7Q",
+      "title": "Search Console trống vì property www cũ trong khi site 301 sang không www",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-service-account-mien-phi-project-khong-f60d",
+      "code": "M-389E",
+      "title": "Service account miễn phí, project không billing, và chỗ tốn tiền thật là token Claude",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-31-repo-private-ca-nhan-khong-cap-f60d",
+      "code": "M-HMER",
+      "title": "Repo private cá nhân không cấp quyền chỉ đọc: đề xuất sai rồi đính chính",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-mot-lenh-root-de-system-operator-f60d",
+      "code": "M-HTFG",
+      "title": "Một lệnh root để System Operator tự cài pi/omp không cần sudo",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-skillstation-hub-chon-loc-skill-qua-f60d",
+      "code": "M-XRPA",
+      "title": "skillstation: hub chọn lọc skill qua tailnet, phải dùng proxy vì daemon bị cắt home",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-01-runtime-offline-du-lenh-boc-da-f60d",
+      "code": "M-SDHG",
+      "title": "Runtime offline dù lệnh bọc đã có: daemon chỉ dò lại khi profile đổi",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-google-chan-scope-quan-tri-ga4-f60d",
+      "code": "M-MX01",
+      "title": "Google chặn scope quản trị GA4 của gcloud, phải thêm tay",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-30-khao-sat-mcp-quang-cao-google-f60d",
+      "code": "M-5Y2R",
+      "title": "Khảo sát MCP quảng cáo: Google chỉ đọc, Meta tạo chiến dịch paused, TikTok đăng nhập lại 30 ngày",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-10-31-moi-buoc-tay-cua-system-operator-f60d",
+      "code": "M-2CS8",
+      "title": "Mọi bước tay của System Operator phải dạy lại vào skill",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-01-gemini-qua-omp-chay-lan-dau-f60d",
+      "code": "M-8XJ2",
+      "title": "Gemini qua omp chạy lần đầu, khoảng 30 giây, không lỗi",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-10-ghi-lai-thao-tac-tay-thanh-f60d",
+      "code": "M-W2VS",
+      "title": "Ghi lại thao tác tay thành bài dạy cho agent vận hành: mỗi bước làm bằng tay trên máy đều được chép vào skill của System Operator rồi deploy lại, để agent tự làm lần sau",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-10-co-y-chi-dong-goi-cong-f60d",
+      "code": "M-3JFS",
+      "title": "Cố ý chỉ đóng gói công cụ đúng với thứ được phép chạy, chặn các việc không đảo ngược được, hỏi người trước khi tốn tiền hoặc đổi quyền",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

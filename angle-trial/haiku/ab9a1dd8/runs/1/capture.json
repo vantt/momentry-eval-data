@@ -1,0 +1,520 @@
+{
+  "id": "ab9a1dd8",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-momentry/ab9a1dd8-2e8c-4156-8f2c-4736da941413.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "cfdbe39157750974",
+  "at": "2026-11-05T12:15:30.516Z",
+  "dryRun": {
+    "usd": 0.1,
+    "tokens": 56460,
+    "chunks": 1,
+    "hotspots": 9,
+    "entries": 857
+  },
+  "report": {
+    "sid": "claude:ab9a1dd8",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.10827400000000001,
+    "secs": 146.7,
+    "exitCode": 0,
+    "status": "done",
+    "written": 27,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:ab9a1dd8 L1-L4000: done; 23 chuyện thô, 27 cụm; ghi 27 mới, gộp 0\nđiểm nóng 9 (thiếu 0); lần chạy 1/1; 0.11 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-03-205-205-test-xanh-nhung-nguoi",
+      "title": "205/205 test xanh nhưng người mới không cài nổi",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Mọi người tin rằng bộ test xanh 205/205 nghĩa là công cụ đã sẵn sàng cho người dùng. Thực tế, trên một bản clone sạch test đúng là qua hết, nhưng README thiếu bước lấy code, và lệnh `init --yes --json` báo lỗi 'Unknown option'. Ai đang phát hành công cụ CLI nên biết test xanh không chứng minh người mới cài được.",
+      "audience": "dev phát hành công cụ dòng lệnh"
+    },
+    {
+      "id": "2026-11-03-reviewer-doc-lap-hai-loi-lam",
+      "title": "Reviewer độc lập: hai lỗi làm install và uninstall Windows hỏng",
+      "tension": "cam_ma_van_lot",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Agent tưởng đã xong: 230 test xanh và installer chạy trơn trên Linux. Reviewer độc lập đọc code theo hành vi Windows thì thấy cài trên Windows luôn báo 'Node quá cũ' dù máy có Node, còn gỡ cài báo thành công nhưng không xoá được file nào. Test chạy trên Linux không bắt được lỗi kiểu quoting này, nên ai viết công cụ đa nền tảng cần đọc code theo từng nền tảng.",
+      "audience": "dev viết công cụ dòng lệnh có installer đa nền tảng"
+    },
+    {
+      "id": "2026-11-03-codex-khong-bao-gio-chay-hook",
+      "title": "Codex không bao giờ chạy hook: tên sự kiện sai, bị bỏ không báo",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Ghi cấu hình hook cho Codex tưởng là đã cài xong. Nhưng Codex yêu cầu tên sự kiện viết kiểu PascalCase, còn code ghi snake_case, nên Codex bỏ qua hook mà không báo lỗi gì. Ai tự cấu hình hook cho công cụ AI có thể đang có hook không bao giờ chạy mà không biết; cách kiểm tra là xem log do chính hook ghi, không chỉ xem file cấu hình đã được ghi.",
+      "audience": "dev tự cấu hình hook hoặc plugin cho công cụ AI coding"
+    },
+    {
+      "id": "2026-11-03-hook-chet-im-lang-vi-ghi",
+      "title": "Hook chết im lặng vì ghi cứng đường dẫn Node",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Ai dán hook vào ~/.claude/settings.json thường tin rằng nó sẽ chạy mãi. Thực tế, cấu hình ghi cứng đường dẫn Node tuyệt đối, nên khi nâng Node qua nvm/fnm hoặc chuyển thư mục clone, hook chết mà lệnh hook vẫn thoát 0, không ai biết. Bản sửa để hook gọi qua lệnh momentry đã cài, nên nâng Node không làm hook chết nữa.",
+      "audience": "dev dùng Claude Code hằng ngày và tự cài hook"
+    },
+    {
+      "id": "2026-11-03-ma-thoat-dao-nghia-2-tu",
+      "title": "Mã thoát đảo nghĩa: 2 từ 'vi phạm riêng tư' thành 'sai cú pháp'",
+      "tension": "cam_ma_van_lot",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Script hoặc pre-commit hook dùng mã thoát 2 của `momentry check` để biết có vi phạm riêng tư. Theo chuẩn mới, 2 lại nghĩa là gõ sai cú pháp, còn vi phạm chuyển sang 1. Script cũ không báo lỗi gì mà hiểu sai đúng chỗ kiểm riêng tư.",
+      "audience": "dev viết script hoặc git hook gọi công cụ dòng lệnh"
+    },
+    {
+      "id": "2026-11-03-plan-45-45-chua-du-release",
+      "title": "Plan 45/45 chưa đủ: release thật mới đóng được việc",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Agent báo đã xong 45/45 việc trong plan và CI xanh, nên tưởng là đóng được việc. Hoá ra hook dừng việc lại vì chưa có bản phát hành thật: cài thử từ GitHub mới là bằng chứng. Dev dùng AI agent nên cần nhớ: tick 'xong' trong plan chưa chứng minh được hệ thống chạy được, và trong chuyện này phần hook trên Windows vẫn chưa đo trong phiên thật.",
+      "audience": "dev dùng AI agent để viết code và muốn biết khi nào agent thật sự xong việc"
+    },
+    {
+      "id": "2026-11-03-ci-lan-dau-macos-do-2",
+      "title": "CI lần đầu: macOS đỏ 2 test, Windows đỏ 38 test",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Linux xanh cả ba bản Node nên tưởng code chạy được mọi nơi. CI thật trên macOS và Windows cho thấy test viết theo giả định của một hệ điều hành: Windows đỏ 38 test, còn macOS không tìm thấy phiên vì /var là đường dẫn tắt tới /private/var. Ai viết test cho công cụ chạy đa nền tảng đều có thể dính lỗi này.",
+      "audience": "dev viết test cho công cụ dòng lệnh chạy đa nền tảng"
+    },
+    {
+      "id": "2026-11-03-push-bi-tu-choi-va-commit",
+      "title": "Push bị từ chối, và commit kéo theo việc đổi tên README của phiên khác",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Agent tưởng commit đẩy lên main chỉ chứa việc của mình, nhưng nó đã kéo theo việc đổi tên README.md thành README.vi.md mà một phiên khác đã stage sẵn. Hậu quả là main mất README.md và CI đỏ toàn bộ. Ai chạy nhiều phiên AI trên cùng một repo cần biết index dùng chung có thể làm commit của mình chứa thay đổi không phải của mình.",
+      "audience": "dev chạy nhiều phiên AI trên cùng một repo git"
+    },
+    {
+      "id": "2026-11-03-antigravity-khong-co-su-kien-ket",
+      "title": "Antigravity không có sự kiện kết thúc: gom chuyện khi mở phiên sau",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Dễ tưởng công cụ AI nào cũng có sự kiện báo khi phiên kết thúc để gom chuyện đúng lúc. Antigravity thì không: chỉ có sự kiện mở phiên và Stop, mà Stop chạy sau mỗi lượt và chặn agent trong lúc chạy, nên phải gom khi mở phiên sau. Ai viết hook cho nhiều công cụ nên kiểm tra sự kiện có sẵn trước khi chọn thời điểm gom.",
+      "audience": "dev viết hook hoặc extension cho công cụ AI dòng lệnh"
+    },
+    {
+      "id": "2026-11-03-ba-host-moi-mot-nguoi-co",
+      "title": "Ba host mới: một người có nhiều profile, số lượng tìm được",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": "Tưởng mỗi công cụ AI chỉ lưu dữ liệu ở một thư mục. Hoá ra một máy có thể đăng nhập nhiều tài khoản: 4 thư mục Codex, 9 của pi, 10 của omp, 4 của agy. Ai đọc log bằng một đường dẫn cố định sẽ bỏ sót các profile còn lại.",
+      "audience": "dev dùng nhiều tài khoản AI trên cùng một máy"
+    },
+    {
+      "id": "2026-11-03-probe-claude-codex-tren-windows-khong",
+      "title": "Probe Claude/Codex trên Windows: không đăng nhập vẫn đo được hook",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-probe-khong-mang-chan-moi-yeu",
+      "title": "Probe không mạng: chặn mọi yêu cầu bằng namespace mạng rỗng",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-windows-hook-dau-trong-duong-dan",
+      "title": "Windows hook: dấu / trong đường dẫn để cmd và Git Bash cùng chạy",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-agent-chi-doc-help-vuong-vi",
+      "title": "Agent chỉ đọc --help vướng vì lỗi là câu văn, không phải lệnh",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-bo-loc-lenh-chan-chuoi-dist",
+      "title": "Bộ lọc lệnh chặn chuỗi 'dist' và '.git' trong Bash",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-don-gian-hoa-sau-khi-xanh",
+      "title": "Đơn giản hoá sau khi xanh: tám chỗ, test vẫn 232",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-guardrail-chan-rm-rf-vi-bien",
+      "title": "Guardrail chặn rm -rf vì biến không resolve",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-installer-powershell-mau-lay-tu-du",
+      "title": "Installer PowerShell mẫu lấy từ dự án cùng nhà",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-quarantine-release-all-tha-hang-cho",
+      "title": "Quarantine --release all: thả hàng chờ nhưng kiểm lại từng chuyện",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-xem-cau-truc-transcript-khong-xem",
+      "title": "Xem cấu trúc transcript, không xem nội dung",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-zsh-va-ham-boc-lam-agent",
+      "title": "zsh và hàm bọc làm agent vấp nhiều lần",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-dao-quyet-dinh-prd-tu-hook",
+      "title": "Đảo quyết định PRD: từ 'hook chỉ in' sang 'công cụ tự cài hook'",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-doc-ma-nguon-codex-de-tim",
+      "title": "Đọc mã nguồn Codex để tìm cách duyệt hook",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-phat-hanh-co-cong-kiem-workflow",
+      "title": "Phát hành có cổng kiểm: workflow tạo bản nháp, cài thử bản nháp trên ba hệ điều hành, rồi mới công bố. Sau khi công bố, agent tải đúng lệnh cài một dòng trong README từ GitHub thật vào HOME tạm để kiểm.",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-dat-mot-dieu-kien-dung-cho",
+      "title": "Đặt một điều kiện dừng cho phiên (Stop hook) là hoàn tất plan, rồi agent tự làm tiếp qua nhiều phase. Agent chỉ dừng hỏi khi gặp việc ra ngoài như push hoặc phát hành công khai.",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-sau-khi-subagent-review-bao-cao",
+      "title": "Sau khi subagent review báo cáo kết quả, agent không tin nguyên văn. Nó tự chạy lại toàn bộ test và kiểm tra cài đặt, rồi mới cập nhật trạng thái.",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null
+    },
+    {
+      "id": "2026-11-03-thu-cai-dat-cap-nhat-va",
+      "title": "Thử cài đặt, cập nhật và gỡ cài đặt trong một HOME tạm (`mktemp`) với `env -i` và PATH trỏ tới các chương trình giả, nên không đụng tới cấu hình thật của máy.",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null
+    }
+  ],
+  "angleModel": "haiku",
+  "angleRun": {
+    "message": "angle repo: 10 chuyện; góc kể: 10 có, 0 không ra chuyện; 0.01 USD",
+    "exitCode": 0,
+    "status": "done",
+    "stories": [
+      {
+        "id": "2026-11-03-205-205-test-xanh-nhung-nguoi",
+        "status": "angle",
+        "angle": "Mọi người tin rằng bộ test xanh 205/205 nghĩa là công cụ đã sẵn sàng cho người dùng. Thực tế, trên một bản clone sạch test đúng là qua hết, nhưng README thiếu bước lấy code, và lệnh `init --yes --json` báo lỗi 'Unknown option'. Ai đang phát hành công cụ CLI nên biết test xanh không chứng minh người mới cài được.",
+        "audience": "dev phát hành công cụ dòng lệnh",
+        "evidence": [
+          170,
+          232
+        ]
+      },
+      {
+        "id": "2026-11-03-reviewer-doc-lap-hai-loi-lam",
+        "status": "angle",
+        "angle": "Agent tưởng đã xong: 230 test xanh và installer chạy trơn trên Linux. Reviewer độc lập đọc code theo hành vi Windows thì thấy cài trên Windows luôn báo 'Node quá cũ' dù máy có Node, còn gỡ cài báo thành công nhưng không xoá được file nào. Test chạy trên Linux không bắt được lỗi kiểu quoting này, nên ai viết công cụ đa nền tảng cần đọc code theo từng nền tảng.",
+        "audience": "dev viết công cụ dòng lệnh có installer đa nền tảng",
+        "evidence": [
+          2017,
+          2026
+        ]
+      },
+      {
+        "id": "2026-11-03-codex-khong-bao-gio-chay-hook",
+        "status": "angle",
+        "angle": "Ghi cấu hình hook cho Codex tưởng là đã cài xong. Nhưng Codex yêu cầu tên sự kiện viết kiểu PascalCase, còn code ghi snake_case, nên Codex bỏ qua hook mà không báo lỗi gì. Ai tự cấu hình hook cho công cụ AI có thể đang có hook không bao giờ chạy mà không biết; cách kiểm tra là xem log do chính hook ghi, không chỉ xem file cấu hình đã được ghi.",
+        "audience": "dev tự cấu hình hook hoặc plugin cho công cụ AI coding",
+        "evidence": [
+          3184,
+          3195,
+          3228
+        ]
+      },
+      {
+        "id": "2026-11-03-hook-chet-im-lang-vi-ghi",
+        "status": "angle",
+        "angle": "Ai dán hook vào ~/.claude/settings.json thường tin rằng nó sẽ chạy mãi. Thực tế, cấu hình ghi cứng đường dẫn Node tuyệt đối, nên khi nâng Node qua nvm/fnm hoặc chuyển thư mục clone, hook chết mà lệnh hook vẫn thoát 0, không ai biết. Bản sửa để hook gọi qua lệnh momentry đã cài, nên nâng Node không làm hook chết nữa.",
+        "audience": "dev dùng Claude Code hằng ngày và tự cài hook",
+        "evidence": [
+          236,
+          2230
+        ]
+      },
+      {
+        "id": "2026-11-03-ma-thoat-dao-nghia-2-tu",
+        "status": "angle",
+        "angle": "Script hoặc pre-commit hook dùng mã thoát 2 của `momentry check` để biết có vi phạm riêng tư. Theo chuẩn mới, 2 lại nghĩa là gõ sai cú pháp, còn vi phạm chuyển sang 1. Script cũ không báo lỗi gì mà hiểu sai đúng chỗ kiểm riêng tư.",
+        "audience": "dev viết script hoặc git hook gọi công cụ dòng lệnh",
+        "evidence": [
+          256,
+          264,
+          616
+        ]
+      },
+      {
+        "id": "2026-11-03-plan-45-45-chua-du-release",
+        "status": "angle",
+        "angle": "Agent báo đã xong 45/45 việc trong plan và CI xanh, nên tưởng là đóng được việc. Hoá ra hook dừng việc lại vì chưa có bản phát hành thật: cài thử từ GitHub mới là bằng chứng. Dev dùng AI agent nên cần nhớ: tick 'xong' trong plan chưa chứng minh được hệ thống chạy được, và trong chuyện này phần hook trên Windows vẫn chưa đo trong phiên thật.",
+        "audience": "dev dùng AI agent để viết code và muốn biết khi nào agent thật sự xong việc",
+        "evidence": [
+          2945,
+          2948,
+          3042,
+          3047
+        ]
+      },
+      {
+        "id": "2026-11-03-ci-lan-dau-macos-do-2",
+        "status": "angle",
+        "angle": "Linux xanh cả ba bản Node nên tưởng code chạy được mọi nơi. CI thật trên macOS và Windows cho thấy test viết theo giả định của một hệ điều hành: Windows đỏ 38 test, còn macOS không tìm thấy phiên vì /var là đường dẫn tắt tới /private/var. Ai viết test cho công cụ chạy đa nền tảng đều có thể dính lỗi này.",
+        "audience": "dev viết test cho công cụ dòng lệnh chạy đa nền tảng",
+        "evidence": [
+          2318,
+          2338,
+          2362,
+          2544
+        ]
+      },
+      {
+        "id": "2026-11-03-push-bi-tu-choi-va-commit",
+        "status": "angle",
+        "angle": "Agent tưởng commit đẩy lên main chỉ chứa việc của mình, nhưng nó đã kéo theo việc đổi tên README.md thành README.vi.md mà một phiên khác đã stage sẵn. Hậu quả là main mất README.md và CI đỏ toàn bộ. Ai chạy nhiều phiên AI trên cùng một repo cần biết index dùng chung có thể làm commit của mình chứa thay đổi không phải của mình.",
+        "audience": "dev chạy nhiều phiên AI trên cùng một repo git",
+        "evidence": [
+          2733,
+          2749
+        ]
+      },
+      {
+        "id": "2026-11-03-antigravity-khong-co-su-kien-ket",
+        "status": "angle",
+        "angle": "Dễ tưởng công cụ AI nào cũng có sự kiện báo khi phiên kết thúc để gom chuyện đúng lúc. Antigravity thì không: chỉ có sự kiện mở phiên và Stop, mà Stop chạy sau mỗi lượt và chặn agent trong lúc chạy, nên phải gom khi mở phiên sau. Ai viết hook cho nhiều công cụ nên kiểm tra sự kiện có sẵn trước khi chọn thời điểm gom.",
+        "audience": "dev viết hook hoặc extension cho công cụ AI dòng lệnh",
+        "evidence": [
+          3410,
+          3427,
+          3433
+        ]
+      },
+      {
+        "id": "2026-11-03-ba-host-moi-mot-nguoi-co",
+        "status": "angle",
+        "angle": "Tưởng mỗi công cụ AI chỉ lưu dữ liệu ở một thư mục. Hoá ra một máy có thể đăng nhập nhiều tài khoản: 4 thư mục Codex, 9 của pi, 10 của omp, 4 của agy. Ai đọc log bằng một đường dẫn cố định sẽ bỏ sót các profile còn lại.",
+        "audience": "dev dùng nhiều tài khoản AI trên cùng một máy",
+        "evidence": [
+          3566,
+          3574
+        ]
+      }
+    ],
+    "usd": 0.0140703,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0
+  },
+  "angleCalls": [
+    {
+      "key": "angle-1",
+      "usd": 0.0012852,
+      "secs": 4.2,
+      "tokIn": 9997,
+      "tokOut": 571
+    },
+    {
+      "key": "angle-10",
+      "usd": 0.00152,
+      "secs": 8.524,
+      "tokIn": 7530,
+      "tokOut": 1534
+    },
+    {
+      "key": "angle-2",
+      "usd": 0.0012717000000000002,
+      "secs": 5.941,
+      "tokIn": 7522,
+      "tokOut": 1039
+    },
+    {
+      "key": "angle-3",
+      "usd": 0.0012433000000000001,
+      "secs": 6.65,
+      "tokIn": 6888,
+      "tokOut": 1109
+    },
+    {
+      "key": "angle-4",
+      "usd": 0.0015205000000000002,
+      "secs": 5.806,
+      "tokIn": 9855,
+      "tokOut": 1070
+    },
+    {
+      "key": "angle-5",
+      "usd": 0.0015667,
+      "secs": 6.526,
+      "tokIn": 9697,
+      "tokOut": 1194
+    },
+    {
+      "key": "angle-6",
+      "usd": 0.0018697000000000002,
+      "secs": 8.353,
+      "tokIn": 11457,
+      "tokOut": 1448
+    },
+    {
+      "key": "angle-7",
+      "usd": 0.0014718,
+      "secs": 6.868,
+      "tokIn": 8238,
+      "tokOut": 1296
+    },
+    {
+      "key": "angle-8",
+      "usd": 0.0011172,
+      "secs": 5.235,
+      "tokIn": 7382,
+      "tokOut": 758
+    },
+    {
+      "key": "angle-9",
+      "usd": 0.0012041999999999999,
+      "secs": 6.682,
+      "tokIn": 6262,
+      "tokOut": 1156
+    }
+  ]
+}

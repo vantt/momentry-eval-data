@@ -1,0 +1,135 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, chưa từng nghe về dự án này và không rành lĩnh vực của nó.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Người ngoài chỉ hiểu chỗ ngoặt khi biết trước bối cảnh: dự án là gì, người làm đang cố đạt điều gì, và vì sao điều đó quan trọng.
+
+Bước 1, dựng xương chuyện. Điền từng ô bằng một câu ngắn, kèm số dòng làm chứng. Ô nào tài liệu bên dưới không đỡ được thì để null: ô trống là trung thực, đừng bịa cho đủ.
+- context: bối cảnh: ai, dự án gì, đang làm gì. Lấy từ hồ sơ dự án và yêu cầu của chủ phiên.
+- want: người làm muốn đạt điều gì.
+- obstacle: vướng ở đâu.
+- turn: tưởng là gì, hoá ra là gì. Điều người ta tưởng không cần có câu nào nói thẳng ra: nó có thể lộ qua việc họ làm (tăng timeout vì nghĩ mạng chậm, dùng lại cấu hình cũ vì nghĩ nó còn đúng) hoặc là điều số đông vẫn tin. Khi đó evidence là dòng cho thấy việc làm ấy và dòng lộ ra điều khác.
+- action: đã làm gì.
+- outcome: giờ thì sao, có con số thì ghi con số.
+- takeaway: điều người nghe mang về dùng được.
+
+Bước 2, viết góc kể từ xương đó. Có chỗ ngoặt (ô turn có chữ) thì trả:
+- angle: 2-4 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Câu đầu PHẢI là bối cảnh (dự án gì, đang cố làm gì) để người ngoài hiểu mà không phải hỏi lại. Sau đó: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết phải đọc được trong hồ sơ dự án, yêu cầu của chủ phiên, chuyện hoặc trích đoạn. Không đỡ được thì để ô null, hoặc trả none.
+- evidence (của angle và của từng ô) chỉ gồm số trong [Lnnn] có ở phần yêu cầu hoặc trích đoạn bên dưới. Riêng ô context được ghi "profile" khi dựa vào hồ sơ dự án.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn, vẫn kèm spine. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Không nêu tên người, tên khách hàng hay đường dẫn máy. Không đoán người làm là một nhóm hay một người khi tài liệu không nói; gọi là "người làm".
+- Viết angle, audience, reason và các ô bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành bản mới.","evidence":["profile",40]},"want":{"text":"Muốn CI xanh trước khi phát hành.","evidence":[40]},"obstacle":{"text":"Test xanh trên máy nhưng đỏ trên CI.","evidence":[812]},"turn":{"text":"Tưởng code sai; hoá ra npm đổi hình dạng một lệnh giữa hai phiên bản.","evidence":[861]},"action":{"text":"Ghim phiên bản npm trong CI.","evidence":[870]},"outcome":{"text":"CI xanh lại, 0 test đỏ.","evidence":[882]},"takeaway":{"text":"Test bám vào đầu ra CLI cần ghim phiên bản công cụ.","evidence":[861]}},"angle":"Một nhóm làm công cụ dòng lệnh cho dev, đang chuẩn bị phát hành thì test xanh trên máy mà đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"spine":{"context":{"text":"Một nhóm làm công cụ dòng lệnh, đang dọn code.","evidence":["profile"]},"want":null,"obstacle":null,"turn":null,"action":{"text":"Đổi tên biến cho thống nhất.","evidence":[120]},"outcome":null,"takeaway":null},"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<project>
+(không có)
+</project>
+
+<asks>
+[L7] USER: trong team marketing, không thấy agent làm seo, không thấy lầm GA4, không thấy người đọc phân tích số liệu
+[L1794] USER: hãy suy nghĩa thạt kỹ (có thể nhờ opus/fable) viết một tài liệu sâu về việc sẽ cấp quyền như thế nào cho agent và user trên máy để nó có thể tự động làm nhiều nhất, mà không gây các hậu quả nghiêm trọng và không làm mất dữ liệu. user chỉ đưa ý muốn. sau khi nhìn rõ rồi thì mới làm.
+[L1917] USER: đang làm tren repo nào
+[L1957] USER: làm giai đoạn 0 đi
+</asks>
+
+<story>
+hook: Tôi đề xuất quyền chỉ đọc, nhưng repo cá nhân không có
+tension: nguoi_dung_may_sai (agent đề xuất cấp quyền chỉ đọc cho bot / tài liệu GitHub nói repo cá nhân chỉ cấp được quyền ghi)
+stakes: 2/3
+# Repo private cá nhân không cấp quyền chỉ đọc: đề xuất sai rồi đính chính
+
+**Bối cảnh:** Cần bot đọc repo GitHub để chạy, nhưng không muốn bot ghi được vào main.
+**Chuyện gì xảy ra:** Agent đề xuất cấp quyền chỉ đọc cho bot trên repo private của tài khoản cá nhân. Khi kiểm tài liệu GitHub, không làm được: repo private cá nhân chỉ cấp được quyền ghi. Agent nhận sai và xin lỗi. Hai đường còn lại: chuyển sang organization miễn phí (chưa chắc có cài đặt fork) hoặc GitHub Pro khoảng $4 mỗi tháng. Chủ chọn để như hiện tại và ghi nhận phương án hoãn.
+**Bài học:** Kiểm tài liệu của nền tảng trước khi đề xuất cấu hình quyền. Ghi rõ đường nào chưa xác nhận được.
+**Artefact:** Bảng ba phương án và điều kiện của từng phương án.
+</story>
+
+<excerpt>
+[L2278] RESULT: 24: if err := json.NewDecoder(r.Body).Decode(&req); err != nil { | 25: writeError(w, http.StatusBadRequest, "invalid JSON body")
+[L2284] AGENT: Giai đoạn 0 xong 3/5 bước. Hai bước còn lại cần bạn: một lệnh `sudo`, và một quyết định về GitHub.
+
+**Đã làm**
+1. **Dừng và tắt tự khởi động hai daemon spike và ops.** Lúc dừng, cả hai đều không có task nào đang chạy.
+   - Từ giờ System Operator và hai agent Mai, Long của sen-coffee tạm ngừng.
+   - Việc của System Operator thì tôi làm thay trong phiên này.
+   - Bật lại ops bằng `systemctl --user enable --now multica-ops-daemon`. Spike là unit tạm nên không có lệnh bật lại; nếu cần chạy lại thì phải khởi động bằng tay.
+2. **Mã đăng nhập dev cố định đã bị tắt.** Commit `9cbdecf` của phiên song song đã xoá nó, và tôi kiểm thấy biến này trống ngay trong container đang chạy.
+   - Đăng nhập bằng mã email vẫn còn: mỗi mã thử được 5 lần, mỗi phút xin được 1 mã mới. Dò ra mã sẽ mất nhiều tháng; tôi ghi đây là rủi ro chấp nhận.
+3. **Đã tạo user Multica `agents-opc@opc.local`.**
+   - Chỉ là member của `sen-coffee` và `opc-studio`, không vào được `system`.
+   - PAT của nó (365 ngày) nằm ở `~/multica-spike/.agents-opc.pat`.
+   - Tôi đã thêm lệnh `login` vào `stack/agent-user.sh`; `setup` từ nay cũng không chép PAT của bạn sang nữa.
+
+**Bạn chạy giúp tôi (cần root):**
+```
+! sudo bash ~/project/fgOPC/multica/stack/agent-user.sh login
+```
+Lệnh này:
+- dừng daemon `opc-agent`;
+- cất login cũ vào `/root/opc-agent-login.bak-*` (chỉ root đọc được, dùng khi cần quay lại);
+- đăng nhập lại daemon bằng `agents-opc` với daemon id mới;
+- xoá `multica.pat` (PAT của bạn) khỏi `opc-agent`;
+- báo nếu còn sót bản sao PAT của bạn ở đâu trong home của `opc-agent`;
+- khởi động lại daemon.
+
+Chạy xong, tôi sẽ:
+- cho runtime mới (thuộc `agents-opc`) chia sẻ riêng với bạn;
+- chuyển 12 agent opc-studio sang runtime mới, rồi chạy thử một agent;
+- kiểm `opc.mjs client plan` không báo thay đổi gì;
+- xem Mai và Long có chuyển sang được không.
+
+Agent opc-studio sẽ ngừng từ lúc chạy lệnh đến khi tôi chuyển xong, khoảng vài phút.
+
+Tôi đã kiểm trong mã nguồn Multica: việc giao task giữa các agent (Lan giao cho Mai …[+834]
+[L2289] USER: (c)
+[L2293] TOOL Bash: cd ~/project/fgOPC/multica && grep -rn -i "push\|pr create\|multica/\*\|no-verify\|origin" packages/opc-coding --include=*.md --include=*.yaml --include=*.sh | grep -v "^Binary" | head -40; git status --short packages/opc-coding
+[L2296] RESULT: (eval):1: no matches found: --include=*.md | Shell cwd was reset to /opt/AICoworker
+…
+[L2350] RESULT: 
+[L2351] TOOL WebFetch: Can the owner of a private repository in a personal account give a collaborator read-only access? Quote the exact sentences about collaborator permission levels for private personal repos, and about forking by collaborators.
+[L2354] RESULT: No. The article says that in a private personal repository, owners can only grant write access: | "In a private repository, repository owners can only grant write access to collaborators."
+[L2360] TOOL WebFetch: Is allowing forks of private repositories available on GitHub Free organizations? Quote the plan availability line and what the setting does.
+[L2361] TOOL WebFetch: For private repositories, which plans/accounts can enable running workflows from fork pull requests? Quote the exact sentences about fork pull request workflows in private repositories and any plan or account-type restriction (personal vs organization).
+[L2362] RESULT: The provided page doesn't say which plans include this setting, so I can't confirm whether GitHub Free organizations have it. No plan availability line appears in the content. | The page describes the setting this way: "You can allow or prevent the f …[+342]
+[L2365] RESULT: The article doesn't specify which plans or account types (personal or organization) can enable this. It only states these restrictions: | - **Repository visibility:** "Available to private repositories only, you can configure these policy settings fo …[+33]
+[L2367] AGENT: Phương án (c) không làm được như tôi đã mô tả: **repo private của tài khoản cá nhân không cho cấp quyền chỉ đọc**. Tài liệu GitHub ghi: *"Collaborators can't have read-only access to repositories owned by a personal account."* Bot hoặc có quyền ghi, hoặc không thấy repo, mà không thấy repo thì cũng không fork hay mở PR được. Tôi đã nói sai khi đề xuất (c), xin lỗi bạn. Trên GitHub tôi chưa đổi gì.
+
+Còn hai đường:
+
+**(c′) Chuyển `opc-studio-app` sang một GitHub Organization miễn phí**
+- Organization thì cấp được quyền Read: bot chỉ đọc, push lên fork của nó rồi mở PR, và chỉ bạn merge được.
+- Việc phải làm:
+  - Bạn tạo organization trên web (`gh` không tạo được), rồi chuyển repo sang đó. URL cũ vẫn tự chuyển hướng.
+  - Bật "Allow forking of private repositories" và "Run workflows from fork pull requests" cho organization.
+  - Tôi đổi URL repo trong project Multica.
+  - Tôi viết lại skill `git-workflow` của `opc-coding`. Minh push lên fork. Quân và Vy dùng `gh pr checkout`. Tâm không merge nữa mà kiểm đủ điều kiện rồi báo bạn merge.
+- Chưa chắc: tài liệu GitHub không nói rõ gói Free của organization có hai cài đặt fork ở trên không. Nếu CI không chạy trên PR từ fork thì Tâm mất điều kiện "CI xanh". Phải thử thật mới biết.
+
+**(b) GitHub Pro, khoảng 4 USD một tháng**
+- Bật bảo vệ `main`: bắt buộc qua PR, cần bạn duyệt theo CODEOWNERS, cấm force-push, không ai được bỏ qua.
+- Bot vẫn push nhánh và Tâm vẫn merge, nhưng chỉ sau khi bạn đã bấm Approve, vì GitHub tự chặn nếu chưa duyệt.
+- Không phải sửa quy trình nào, làm trong 5 phút, và không có điểm nào chưa chắc.
+
+Tôi vẫn đề xuất **(b)**. (c′) chặn chặt hơn, nhưng tốn công hơn và còn điểm phải thử. Bạn chọn đường nào?
+
+Bước sudo vẫn chờ bạn chạy, không phụ thuộc vào lựa chọn này:
+```
+! sudo bash ~/project/fgOPC/multica/stack/agent-user.sh login
+```
+
+Sources:
+- [Permission levels for a personal account repository](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/repository-access-and- …[+474]
+[L2373] USER: thôi để như hiện tại đi. ghi nhận c' defer làm sao
+[L2376] TOOL Bash: cd ~/project/fgOPC/multica && grep -n "H10\|H8" plans/2026-10-31-agent-permissions.md | head; sed -n 319,326p plans/2026-10-31-agent-permissions.md; sed -n 1,8p plans/2026-10-31-agent-permissions.md
+[L2379] RESULT: 46:| H8 | **`.env` của Multica có `MULTICA_DEV_VERIFICATION_CODE`** (6 ký tự), còn `APP_ENV` để trống | *Nếu* mã dev còn hiệu lực, ai gọi được API (agent qua `127.0.0.1:8310`, mọi máy trong tailnet) và biết email của chủ thì **đăng nhập được thành ch …[+257]
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

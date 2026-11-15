@@ -1,0 +1,1425 @@
+{
+  "id": "2dfb5915",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-pkm/2dfb5915-3011-441f-a6fb-2c7cb5abd60b.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "eef608eecc0bbb60",
+  "at": "2026-11-10T12:38:47.814Z",
+  "git": true,
+  "dryRun": {
+    "usd": 0.35,
+    "tokens": 91391,
+    "chunks": 1,
+    "hotspots": 7,
+    "entries": 772,
+    "gitCommits": 30
+  },
+  "report": {
+    "sid": "claude:2dfb5915",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.3211101,
+    "secs": 415.6,
+    "exitCode": 0,
+    "status": "done",
+    "written": 29,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "angles": [
+      {
+        "id": "2026-11-02-thu-vien-yaml-an-toan-panic-3c6e",
+        "status": "angle",
+        "angle": "Dự án là công cụ Obsidian viết lại bằng Rust, và mục tiêu là kết quả phải khớp bản Python trên cùng vault. Người làm tưởng một thư viện YAML 'an toàn' và còn được bảo trì là lựa chọn hiển nhiên, nhưng nó panic 242 lần trên 25.000 note. Thư viện đã archive unsafe-libyaml lại khớp PyYAML hoàn toàn, nên dev viết lại công cụ parse cần chọn theo thứ đối chiếu chứ không theo tiêu chí chung.",
+        "audience": "dev viết lại công cụ parse file cho khớp bản gốc",
+        "evidence": [
+          11,
+          335,
+          352
+        ],
+        "spine": {
+          "context": {
+            "text": "Công cụ dòng lệnh cho vault Obsidian, viết lại bằng Rust để kết quả khớp với bản Python trên cùng một vault.",
+            "evidence": [
+              "profile",
+              11
+            ]
+          },
+          "want": {
+            "text": "Kết quả parse frontmatter phải khớp PyYAML trên cùng vault.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Chọn thư viện YAML nào cho Rust, khi thư viện 'an toàn' và còn bảo trì panic trên nhiều note.",
+            "evidence": [
+              335
+            ]
+          },
+          "turn": {
+            "text": "Tưởng thư viện 'an toàn', còn bảo trì là lựa chọn đúng; hoá ra thư viện đã archive (unsafe-libyaml) khớp PyYAML hoàn toàn, còn libyaml-safer panic 242 lần trên 25.000 note.",
+            "evidence": [
+              335
+            ]
+          },
+          "action": {
+            "text": "Chọn unsafe-libyaml 0.2.11 chỉ để parse, cộng một lớp tương thích PyYAML của riêng mình; merge và push.",
+            "evidence": [
+              352
+            ]
+          },
+          "outcome": {
+            "text": "Trên 25.000 note sinh ngẫu nhiên, unsafe-libyaml cùng lớp tương thích lệch 0; libyaml-safer panic 242 lần; saphyr lệch 6.510.",
+            "evidence": [
+              335
+            ]
+          },
+          "takeaway": {
+            "text": "Chọn thư viện theo thứ đang đối chiếu, không theo 'an toàn' chung chung; đo trên dữ liệu thật trước khi quyết.",
+            "evidence": [
+              335
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-build-loi-giua-chung-de-index-3c6e",
+        "status": "angle",
+        "angle": "Dự án là một công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust để kết quả khớp với bản Python. Người làm tin rằng test so khớp với Python là đủ để chứng minh build đúng. Review phát hiện: nếu build lỗi giữa chừng, lần build sau không tính lại edges và index sai mãi, còn bản Python cũng sai y như vậy nên test không bắt được. Ai viết lại code và dựa vào test so khớp với bản gốc nên nhớ: giống bản gốc không có nghĩa là đúng.",
+        "audience": "dev viết lại công cụ bằng test so khớp với bản gốc",
+        "evidence": [
+          1038,
+          1091
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust để kết quả khớp với bản Python.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất plan viết lại lõi Rust, với kết quả khớp bản Python trên cùng một vault.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Build lỗi giữa chừng để lại index sai, và test so khớp không bắt được.",
+            "evidence": [
+              1038
+            ]
+          },
+          "turn": {
+            "text": "Tưởng test so khớp với Python là đủ để tin build đúng; hoá ra Python có cùng lỗi hai transaction tách rời, nên test không phát hiện.",
+            "evidence": [
+              1038,
+              1091
+            ]
+          },
+          "action": {
+            "text": "Thêm cờ dirty trong meta để buộc tính lại edges sau build lỗi, kèm test mô phỏng lỗi.",
+            "evidence": [
+              1091
+            ]
+          },
+          "outcome": {
+            "text": "Test mô phỏng lỗi đã có; parity vẫn 0 lệch chưa có tên.",
+            "evidence": [
+              1091,
+              1094
+            ]
+          },
+          "takeaway": {
+            "text": "Test so khớp với bản gốc chỉ chứng minh giống bản gốc, không chứng minh bản gốc đúng.",
+            "evidence": [
+              1038
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-mot-note-338-byte-day-ram-3c6e",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh cho vault Obsidian đang viết lại lõi bằng Rust để cho kết quả khớp bản Python. Người làm tưởng khớp Python là đủ; khi rà soát, họ thấy một note 338 byte với alias lồng nhau có thể sinh 11,1 triệu mục và ngốn 1,45 GB RAM, và Python cũng phình y hệt. Khớp spec không có nghĩa là an toàn: ai viết parser đọc file không tin cậy nên đặt ngân sách tài nguyên cho từng đơn vị dữ liệu.",
+        "audience": "dev viết parser hoặc công cụ đọc file không tin cậy",
+        "evidence": [
+          811,
+          833
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust để cho kết quả khớp với bản Python.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn hoàn tất plan viết lại lõi và tới một bản cài được.",
+            "evidence": [
+              11,
+              571
+            ]
+          },
+          "obstacle": {
+            "text": "Plan còn dở, các phase phụ thuộc gate đang chờ người dùng.",
+            "evidence": [
+              477
+            ]
+          },
+          "turn": {
+            "text": "Tưởng khớp Python là đủ an toàn; hoá ra Python cũng phình RAM y hệt, nên khớp spec vẫn là lỗ DoS.",
+            "evidence": [
+              811
+            ]
+          },
+          "action": {
+            "text": "Thêm ngân sách 1.000.000 props và 64 MiB text cho mỗi note; vượt thì báo MemoryError và ghi là lệch có chủ ý.",
+            "evidence": [
+              833
+            ]
+          },
+          "outcome": {
+            "text": "kg-solo khớp 17 bảng với 0 diff không tên; fuzz 25.000 note YAML vẫn 0 khác biệt.",
+            "evidence": [
+              833
+            ]
+          },
+          "takeaway": {
+            "text": "Đặt giới hạn tài nguyên cho từng note, không chỉ kiểm đúng sai so với bản tham chiếu.",
+            "evidence": [
+              811,
+              833
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-github-khong-chay-job-vi-het-3c6e",
+        "status": "angle",
+        "angle": "Người làm công cụ dòng lệnh cho vault Obsidian đang viết lại lõi bằng Rust và muốn ra bản rc.3 từ CI để thử. Họ tin workflow phát hành sẽ chạy như mọi lần, nhưng GitHub từ chối mọi job, kể cả dựng binary, vì thanh toán tài khoản lỗi hoặc hết hạn mức, không phải lỗi code. Sau khi repo chuyển sang public, CI được chạy lại. Dev dùng GitHub Actions cho dự án private nên nên kiểm billing trước khi phụ thuộc vào release CI.",
+        "audience": "dev dùng GitHub Actions cho dự án private",
+        "evidence": [
+          3717,
+          3785,
+          3812
+        ],
+        "spine": {
+          "context": {
+            "text": "Người làm công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust để khớp bản Python.",
+            "evidence": [
+              "profile",
+              3717
+            ]
+          },
+          "want": {
+            "text": "Muốn ra bản rc.3 từ CI để thử.",
+            "evidence": [
+              3717
+            ]
+          },
+          "obstacle": {
+            "text": "GitHub từ chối mọi job, kể cả job dựng binary, vì thanh toán tài khoản lỗi hoặc hết hạn mức.",
+            "evidence": [
+              3785
+            ]
+          },
+          "turn": {
+            "text": "Tưởng CI phát hành chạy được như mọi lần; hoá ra Actions bị chặn vì billing, không phải lỗi code.",
+            "evidence": [
+              3785,
+              3794
+            ]
+          },
+          "action": {
+            "text": "Dừng việc tag và báo chủ dự án kiểm billing; sau khi repo chuyển sang public, chạy lại CI trên nhánh phát hành.",
+            "evidence": [
+              3794,
+              3808
+            ]
+          },
+          "outcome": {
+            "text": "Repo đã public và một run CI mới được tạo; kết quả run chưa có trong trích đoạn.",
+            "evidence": [
+              3812
+            ]
+          },
+          "takeaway": {
+            "text": "Kiểm billing và giới hạn Actions trước khi phụ thuộc vào CI phát hành.",
+            "evidence": [
+              3785
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-03-rc-3-phat-hanh-tu-nhanh-3c6e",
+        "status": "none",
+        "none": true,
+        "reason": "Đây là quyết định phát hành có chủ ý của người dùng, không có ai tin sai điều gì rồi bị lật ngược; nhánh chưa merge là lựa chọn đã nói rõ từ trước.",
+        "spine": {
+          "context": {
+            "text": "Công cụ dòng lệnh cho vault Obsidian, có thêm cửa MCP để hỏi Claude Desktop về graph của vault; đang viết lại lõi bằng Rust.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn thử luôn bản một cửa của phase 17 trong lúc chờ tuần chạy song song.",
+            "evidence": [
+              3717
+            ]
+          },
+          "obstacle": {
+            "text": "Phase 17 chưa merge vào main; plan chỉ merge sau phase 16.",
+            "evidence": [
+              3709
+            ]
+          },
+          "action": {
+            "text": "Đánh tag v0.1.0-rc.3 từ nhánh phase-17-one-door (commit 535bc55) và đẩy lên origin.",
+            "evidence": [
+              3881
+            ]
+          },
+          "outcome": {
+            "text": "Workflow release được theo dõi đến khi xong; theo chuyện, CI xanh và đủ 7 file với checksum khớp.",
+            "evidence": [
+              3889
+            ]
+          }
+        },
+        "completeness": 5
+      },
+      {
+        "id": "2026-11-02-agent-review-tim-2-loi-high-3c6e",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh cho vault Obsidian đang viết lại bằng Rust, và một module điều khiển tiến trình Node chạy lâu qua stdio vừa được viết xong. Người làm tưởng module đã ổn, nhưng review chỉ ra hai lỗi có thể treo: stderr ngừng đọc khi gặp byte UTF-8 hỏng làm pipe đầy, còn stdin giữ khoá không có thời hạn khiến chương trình không thoát được. Ai viết code đọc luồng từ tiến trình con đều nên kiểm tra kịch bản này.",
+        "audience": "dev Rust viết công cụ xử lý tiến trình con và stdio",
+        "evidence": [
+          598,
+          607
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh cho vault Obsidian đang viết lại bằng Rust, trong đó có module OHS điều khiển một tiến trình Node chạy lâu qua stdio.",
+            "evidence": [
+              "profile",
+              607
+            ]
+          },
+          "want": {
+            "text": "Hoàn tất module OHS.",
+            "evidence": [
+              598
+            ]
+          },
+          "obstacle": {
+            "text": "Luồng stderr ngừng đọc khi gặp byte UTF-8 hỏng, làm pipe đầy và OHS đứng; stdin giữ khoá không có thời hạn nên pkm không thoát được.",
+            "evidence": [
+              607
+            ]
+          },
+          "turn": {
+            "text": "Tưởng module đã xong; review chỉ ra hai lỗi High có thể treo.",
+            "evidence": [
+              598,
+              607
+            ]
+          },
+          "action": {
+            "text": "Review gửi lại kèm vị trí và kịch bản lỗi; agent sửa cả 2 lỗi High và 4 lỗi Medium trong một commit.",
+            "evidence": [
+              615,
+              631
+            ]
+          },
+          "outcome": {
+            "text": "Đã merge và push; test mới chạy trên Linux, CI Windows và macOS chưa xác nhận.",
+            "evidence": [
+              639,
+              640,
+              653
+            ]
+          },
+          "takeaway": {
+            "text": "Review với tiêu chí cụ thể (kịch bản lỗi, vị trí, test yêu cầu) giúp tìm đúng lỗi treo mà người viết bỏ sót.",
+            "evidence": [
+              607,
+              615
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-artifact-ci-khong-tai-an-danh-3c6e",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh cho vault Obsidian, đang viết lại bằng Rust, cần cài được mà không cần Python. Người làm nghĩ repo phụ thuộc OHS là private nên mới phải đăng nhập GitHub. Kiểm lại thì fork đang public, nhưng GitHub vẫn đòi đăng nhập để tải artifact từ Actions. Ai phát hành công cụ kèm gói tải từ CI nên kiểm đường tải có cần đăng nhập không, đừng chỉ nhìn repo public hay private.",
+        "audience": "dev phát hành công cụ kèm gói tải từ CI",
+        "evidence": [
+          1140,
+          1143,
+          1148
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust để cho kết quả khớp với bản Python.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn phần đóng gói và phân phối được kiểm tra kỹ.",
+            "evidence": [
+              1017
+            ]
+          },
+          "obstacle": {
+            "text": "Gói OHS lấy từ artifact GitHub Actions của fork, và fork chưa có Release vì bước smoke đang hỏng.",
+            "evidence": [
+              1148
+            ]
+          },
+          "turn": {
+            "text": "Nghĩ repo OHS là private nên mới cần đăng nhập; kiểm lại thì fork đang public, nhưng artifact vẫn đòi đăng nhập.",
+            "evidence": [
+              1140,
+              1143,
+              1148
+            ]
+          },
+          "action": {
+            "text": "Kiểm lại visibility của fork OHS và repo pkm, rồi cho script cài thử tải công khai trước, không được thì dùng gh.",
+            "evidence": [
+              1142,
+              1169
+            ]
+          },
+          "outcome": {
+            "text": "Khách có gh phải gh auth login; máy không có gh cài OHS bằng tay qua file zip. Khi fork có Release, OHS không cần đăng nhập.",
+            "evidence": [
+              1178
+            ]
+          },
+          "takeaway": {
+            "text": "Trước khi hứa cài một lệnh, kiểm xem đường tải có cần đăng nhập không, kể cả khi repo đã public.",
+            "evidence": [
+              1148
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-ban-sua-ohs-ha-cap-goi-3c6e",
+        "status": "angle",
+        "angle": "Công cụ pkm cài gói OHS vào thư mục riêng theo bản ghim, và nhánh đưa bản ghim mới vào main đang chờ review. Nhánh gốc tin rằng gói khác bản ghim là gói cũ cần thay, nên gói vantt.4 đang có sẵn sẽ bị hạ về vantt.3. Lỗi bị bắt trước khi phát hành và được sửa để chỉ nâng khi gói cũ hơn hoặc không đọc được phiên bản. Ai viết trình cài đặt có ghim phiên bản nên so phiên bản theo thứ tự, không theo việc khác nhau.",
+        "audience": "dev viết trình cài đặt có ghim phiên bản",
+        "evidence": [
+          3286,
+          3299
+        ],
+        "spine": {
+          "context": {
+            "text": "Công cụ pkm cài gói OHS vào thư mục riêng theo một bản ghim trong main. Nhánh ohs-release-pin đưa bản ghim mới vào main.",
+            "evidence": [
+              3286
+            ]
+          },
+          "want": {
+            "text": "Đưa nhánh ohs-release-pin vào main cùng bản ghim OHS v0.17.2-vantt.4, và giữ CI xanh.",
+            "evidence": [
+              3286
+            ]
+          },
+          "obstacle": {
+            "text": "Nhánh gốc thay gói bất cứ khi nào phiên bản khác bản ghim, nên gói vantt.4 đang có sẵn sẽ bị đổi thành vantt.3.",
+            "evidence": [
+              3286
+            ]
+          },
+          "turn": {
+            "text": "Tưởng khác bản ghim nghĩa là gói cũ và thay được; hoá ra gói mới hơn bị hạ xuống bản ghim cũ.",
+            "evidence": [
+              3286,
+              3299
+            ]
+          },
+          "action": {
+            "text": "Thêm hàm so sánh phiên bản theo thứ tự X.Y.Z[-vantt.N]: chỉ nâng khi gói cũ hơn hoặc không đọc được phiên bản; gói đưa vào bằng --ohs không bao giờ bị ghi đè, có test cho việc này.",
+            "evidence": [
+              3286
+            ]
+          },
+          "outcome": {
+            "text": "Main ghim vantt.4. CI trên commit đó xanh trên cả ba hệ điều hành và bốn bản build.",
+            "evidence": [
+              3286
+            ]
+          },
+          "takeaway": {
+            "text": "Khi so phiên bản của gói đã cài, hãy so theo thứ tự, không chỉ xem có khác bản ghim hay không, để không hạ cấp gói mới hơn.",
+            "evidence": [
+              3299
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-chon-tu-viet-json-rpc-thay-3c6e",
+        "status": "angle",
+        "angle": "Một công cụ dòng lệnh cho vault Obsidian đang viết lại lõi bằng Rust để cho kết quả khớp bản Python, và cần một thư viện MCP cho server. Người làm định dùng rmcp, nhưng khi đo thì rmcp lệch Python ở 5 điểm trong tầng giao thức, còn binary to gấp 4 lần và build chậm gấp 6 lần, nên họ tự viết JSON-RPC. Ai chọn thư viện cho một giao thức đã có bản gốc nên đo hành vi trước, vì thư viện có sẵn có thể lệch ngay ở thông điệp lỗi.",
+        "audience": "dev viết server MCP hoặc chọn thư viện giao thức",
+        "evidence": [
+          279
+        ],
+        "spine": {
+          "context": {
+            "text": "Một công cụ dòng lệnh cho vault Obsidian, có cửa MCP để hỏi Claude Desktop về graph; đang viết lại lõi bằng Rust để kết quả khớp bản Python.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Muốn hoàn tất plan viết lại lõi bằng Rust, làm song song các phase.",
+            "evidence": [
+              11
+            ]
+          },
+          "obstacle": {
+            "text": "Cần chọn thư viện MCP cho server Rust mà vẫn khớp hành vi bản Python.",
+            "evidence": [
+              279
+            ]
+          },
+          "turn": {
+            "text": "Tưởng dùng được thư viện MCP rmcp; đo ra rmcp lệch Python ở 5 điểm trong tầng giao thức.",
+            "evidence": [
+              279
+            ]
+          },
+          "action": {
+            "text": "Tự viết JSON-RPC và đo so với bản dùng rmcp.",
+            "evidence": [
+              279
+            ]
+          },
+          "outcome": {
+            "text": "Binary 0,68 MB thay vì 2,79 MB; build sạch 2,5 giây thay vì 16,5 giây; phase 03 đã merge và push.",
+            "evidence": [
+              279,
+              292
+            ]
+          },
+          "takeaway": {
+            "text": "Thư viện có sẵn có thể lệch hành vi của bản gốc; đo trước khi chọn.",
+            "evidence": [
+              279
+            ]
+          }
+        },
+        "completeness": 7
+      },
+      {
+        "id": "2026-11-02-compact-xoa-khoa-null-lam-loi-3c6e",
+        "status": "angle",
+        "angle": "Dự án là một công cụ dòng lệnh cho vault Obsidian, đang viết lại bằng Rust và thêm cửa MCP để Claude Desktop hỏi graph của vault. Lúc OHS đang khởi động, người làm tin hợp đồng 5 khoá vẫn được giữ vì test kiểm đủ 5 khoá. Hoá ra hàm compact() bỏ các khoá null trước khi trả cho agent, nên chỉ còn 3 khoá; test chạy trước bước đó nên không bắt được. Ai viết test cho API trả JSON nên kiểm đúng chỗ dữ liệu ra khỏi hệ thống.",
+        "audience": "dev viết test cho API hoặc công cụ MCP",
+        "evidence": [
+          3060,
+          3110
+        ],
+        "spine": {
+          "context": {
+            "text": "Công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust và thêm cửa MCP để Claude Desktop hỏi graph của vault.",
+            "evidence": [
+              "profile"
+            ]
+          },
+          "want": {
+            "text": "Cửa MCP phải trả đủ 5 khoá theo hợp đồng, kể cả khi OHS đang khởi động.",
+            "evidence": [
+              3060
+            ]
+          },
+          "obstacle": {
+            "text": "Lúc OHS starting, progress và eta_s là null nên bị bỏ, agent chỉ nhận 3 khoá.",
+            "evidence": [
+              3060
+            ]
+          },
+          "turn": {
+            "text": "Tưởng hợp đồng 5 khoá đã được giữ vì test kiểm 5 khoá; hoá ra test chạy trước compact() nên không thấy khoá null bị bỏ.",
+            "evidence": [
+              3060,
+              3110
+            ]
+          },
+          "action": {
+            "text": "Miễn compact() cho lỗi ohs_not_ready và thêm test ở tầng MCP.",
+            "evidence": [
+              3110
+            ]
+          },
+          "takeaway": {
+            "text": "Viết test ở đúng tầng mà dữ liệu đi ra cho người dùng, không ở tầng trung gian.",
+            "evidence": [
+              3110
+            ]
+          }
+        },
+        "completeness": 6
+      }
+    ],
+    "message": "claude:2dfb5915 L1-L4000: done; 24 chuyện thô, 29 cụm; ghi 29 mới, gộp 0\nđiểm nóng 7 (thiếu 0); 30 commit git; lần chạy 1/1; 0.32 USD\ngóc kể: 9 có, 1 không ra chuyện\nhồ sơ dự án: obsidian-pkm tạo mới"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-thu-vien-yaml-an-toan-panic-3c6e",
+      "code": "M-6TDH",
+      "title": "Thư viện YAML 'an toàn' panic trên 242 note, thư viện đã archive lại khớp 0 lệch",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là công cụ Obsidian viết lại bằng Rust, và mục tiêu là kết quả phải khớp bản Python trên cùng vault. Người làm tưởng một thư viện YAML 'an toàn' và còn được bảo trì là lựa chọn hiển nhiên, nhưng nó panic 242 lần trên 25.000 note. Thư viện đã archive unsafe-libyaml lại khớp PyYAML hoàn toàn, nên dev viết lại công cụ parse cần chọn theo thứ đối chiếu chứ không theo tiêu chí chung.",
+      "audience": "dev viết lại công cụ parse file cho khớp bản gốc",
+      "spine": {
+        "context": {
+          "text": "Công cụ dòng lệnh cho vault Obsidian, viết lại bằng Rust để kết quả khớp với bản Python trên cùng một vault.",
+          "lines": [
+            "profile",
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "want": {
+          "text": "Kết quả parse frontmatter phải khớp PyYAML trên cùng vault.",
+          "lines": [
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Chọn thư viện YAML nào cho Rust, khi thư viện 'an toàn' và còn bảo trì panic trên nhiều note.",
+          "lines": [
+            "claude:2dfb5915#L335"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng thư viện 'an toàn', còn bảo trì là lựa chọn đúng; hoá ra thư viện đã archive (unsafe-libyaml) khớp PyYAML hoàn toàn, còn libyaml-safer panic 242 lần trên 25.000 note.",
+          "lines": [
+            "claude:2dfb5915#L335"
+          ]
+        },
+        "action": {
+          "text": "Chọn unsafe-libyaml 0.2.11 chỉ để parse, cộng một lớp tương thích PyYAML của riêng mình; merge và push.",
+          "lines": [
+            "claude:2dfb5915#L352"
+          ]
+        },
+        "outcome": {
+          "text": "Trên 25.000 note sinh ngẫu nhiên, unsafe-libyaml cùng lớp tương thích lệch 0; libyaml-safer panic 242 lần; saphyr lệch 6.510.",
+          "lines": [
+            "claude:2dfb5915#L335"
+          ]
+        },
+        "takeaway": {
+          "text": "Chọn thư viện theo thứ đang đối chiếu, không theo 'an toàn' chung chung; đo trên dữ liệu thật trước khi quyết.",
+          "lines": [
+            "claude:2dfb5915#L335"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-build-loi-giua-chung-de-index-3c6e",
+      "code": "M-S2R6",
+      "title": "Build lỗi giữa chừng để index sai mãi, và Python cũng sai y như vậy",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là một công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust để kết quả khớp với bản Python. Người làm tin rằng test so khớp với Python là đủ để chứng minh build đúng. Review phát hiện: nếu build lỗi giữa chừng, lần build sau không tính lại edges và index sai mãi, còn bản Python cũng sai y như vậy nên test không bắt được. Ai viết lại code và dựa vào test so khớp với bản gốc nên nhớ: giống bản gốc không có nghĩa là đúng.",
+      "audience": "dev viết lại công cụ bằng test so khớp với bản gốc",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust để kết quả khớp với bản Python.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất plan viết lại lõi Rust, với kết quả khớp bản Python trên cùng một vault.",
+          "lines": [
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Build lỗi giữa chừng để lại index sai, và test so khớp không bắt được.",
+          "lines": [
+            "claude:2dfb5915#L1038"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng test so khớp với Python là đủ để tin build đúng; hoá ra Python có cùng lỗi hai transaction tách rời, nên test không phát hiện.",
+          "lines": [
+            "claude:2dfb5915#L1038",
+            "claude:2dfb5915#L1091"
+          ]
+        },
+        "action": {
+          "text": "Thêm cờ dirty trong meta để buộc tính lại edges sau build lỗi, kèm test mô phỏng lỗi.",
+          "lines": [
+            "claude:2dfb5915#L1091"
+          ]
+        },
+        "outcome": {
+          "text": "Test mô phỏng lỗi đã có; parity vẫn 0 lệch chưa có tên.",
+          "lines": [
+            "claude:2dfb5915#L1091",
+            "claude:2dfb5915#L1094"
+          ]
+        },
+        "takeaway": {
+          "text": "Test so khớp với bản gốc chỉ chứng minh giống bản gốc, không chứng minh bản gốc đúng.",
+          "lines": [
+            "claude:2dfb5915#L1038"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-mot-note-338-byte-day-ram-3c6e",
+      "code": "M-PBJ2",
+      "title": "Một note 338 byte đẩy RAM lên 1,45 GB",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh cho vault Obsidian đang viết lại lõi bằng Rust để cho kết quả khớp bản Python. Người làm tưởng khớp Python là đủ; khi rà soát, họ thấy một note 338 byte với alias lồng nhau có thể sinh 11,1 triệu mục và ngốn 1,45 GB RAM, và Python cũng phình y hệt. Khớp spec không có nghĩa là an toàn: ai viết parser đọc file không tin cậy nên đặt ngân sách tài nguyên cho từng đơn vị dữ liệu.",
+      "audience": "dev viết parser hoặc công cụ đọc file không tin cậy",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust để cho kết quả khớp với bản Python.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn hoàn tất plan viết lại lõi và tới một bản cài được.",
+          "lines": [
+            "claude:2dfb5915#L11",
+            "claude:2dfb5915#L571"
+          ]
+        },
+        "obstacle": {
+          "text": "Plan còn dở, các phase phụ thuộc gate đang chờ người dùng.",
+          "lines": [
+            "claude:2dfb5915#L477"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng khớp Python là đủ an toàn; hoá ra Python cũng phình RAM y hệt, nên khớp spec vẫn là lỗ DoS.",
+          "lines": [
+            "claude:2dfb5915#L811"
+          ]
+        },
+        "action": {
+          "text": "Thêm ngân sách 1.000.000 props và 64 MiB text cho mỗi note; vượt thì báo MemoryError và ghi là lệch có chủ ý.",
+          "lines": [
+            "claude:2dfb5915#L833"
+          ]
+        },
+        "outcome": {
+          "text": "kg-solo khớp 17 bảng với 0 diff không tên; fuzz 25.000 note YAML vẫn 0 khác biệt.",
+          "lines": [
+            "claude:2dfb5915#L833"
+          ]
+        },
+        "takeaway": {
+          "text": "Đặt giới hạn tài nguyên cho từng note, không chỉ kiểm đúng sai so với bản tham chiếu.",
+          "lines": [
+            "claude:2dfb5915#L811",
+            "claude:2dfb5915#L833"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-03-github-khong-chay-job-vi-het-3c6e",
+      "code": "M-RP0D",
+      "title": "GitHub không chạy job vì hết hạn mức thanh toán",
+      "tension": "gap_ma_phai_chon",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Người làm công cụ dòng lệnh cho vault Obsidian đang viết lại lõi bằng Rust và muốn ra bản rc.3 từ CI để thử. Họ tin workflow phát hành sẽ chạy như mọi lần, nhưng GitHub từ chối mọi job, kể cả dựng binary, vì thanh toán tài khoản lỗi hoặc hết hạn mức, không phải lỗi code. Sau khi repo chuyển sang public, CI được chạy lại. Dev dùng GitHub Actions cho dự án private nên nên kiểm billing trước khi phụ thuộc vào release CI.",
+      "audience": "dev dùng GitHub Actions cho dự án private",
+      "spine": {
+        "context": {
+          "text": "Người làm công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust để khớp bản Python.",
+          "lines": [
+            "profile",
+            "claude:2dfb5915#L3717"
+          ]
+        },
+        "want": {
+          "text": "Muốn ra bản rc.3 từ CI để thử.",
+          "lines": [
+            "claude:2dfb5915#L3717"
+          ]
+        },
+        "obstacle": {
+          "text": "GitHub từ chối mọi job, kể cả job dựng binary, vì thanh toán tài khoản lỗi hoặc hết hạn mức.",
+          "lines": [
+            "claude:2dfb5915#L3785"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng CI phát hành chạy được như mọi lần; hoá ra Actions bị chặn vì billing, không phải lỗi code.",
+          "lines": [
+            "claude:2dfb5915#L3785",
+            "claude:2dfb5915#L3794"
+          ]
+        },
+        "action": {
+          "text": "Dừng việc tag và báo chủ dự án kiểm billing; sau khi repo chuyển sang public, chạy lại CI trên nhánh phát hành.",
+          "lines": [
+            "claude:2dfb5915#L3794",
+            "claude:2dfb5915#L3808"
+          ]
+        },
+        "outcome": {
+          "text": "Repo đã public và một run CI mới được tạo; kết quả run chưa có trong trích đoạn.",
+          "lines": [
+            "claude:2dfb5915#L3812"
+          ]
+        },
+        "takeaway": {
+          "text": "Kiểm billing và giới hạn Actions trước khi phụ thuộc vào CI phát hành.",
+          "lines": [
+            "claude:2dfb5915#L3785"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-03-rc-3-phat-hanh-tu-nhanh-3c6e",
+      "code": "M-1GDX",
+      "title": "rc.3 phát hành từ nhánh chưa merge theo lựa chọn của người dùng",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "none",
+      "audience": null,
+      "spine": {
+        "context": {
+          "text": "Công cụ dòng lệnh cho vault Obsidian, có thêm cửa MCP để hỏi Claude Desktop về graph của vault; đang viết lại lõi bằng Rust.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn thử luôn bản một cửa của phase 17 trong lúc chờ tuần chạy song song.",
+          "lines": [
+            "claude:2dfb5915#L3717"
+          ]
+        },
+        "obstacle": {
+          "text": "Phase 17 chưa merge vào main; plan chỉ merge sau phase 16.",
+          "lines": [
+            "claude:2dfb5915#L3709"
+          ]
+        },
+        "action": {
+          "text": "Đánh tag v0.1.0-rc.3 từ nhánh phase-17-one-door (commit 535bc55) và đẩy lên origin.",
+          "lines": [
+            "claude:2dfb5915#L3881"
+          ]
+        },
+        "outcome": {
+          "text": "Workflow release được theo dõi đến khi xong; theo chuyện, CI xanh và đủ 7 file với checksum khớp.",
+          "lines": [
+            "claude:2dfb5915#L3889"
+          ]
+        }
+      },
+      "completeness": 5
+    },
+    {
+      "id": "2026-11-02-agent-review-tim-2-loi-high-3c6e",
+      "code": "M-VPB2",
+      "title": "Agent review tìm 2 lỗi High, agent viết nhận và sửa trong một commit",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh cho vault Obsidian đang viết lại bằng Rust, và một module điều khiển tiến trình Node chạy lâu qua stdio vừa được viết xong. Người làm tưởng module đã ổn, nhưng review chỉ ra hai lỗi có thể treo: stderr ngừng đọc khi gặp byte UTF-8 hỏng làm pipe đầy, còn stdin giữ khoá không có thời hạn khiến chương trình không thoát được. Ai viết code đọc luồng từ tiến trình con đều nên kiểm tra kịch bản này.",
+      "audience": "dev Rust viết công cụ xử lý tiến trình con và stdio",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh cho vault Obsidian đang viết lại bằng Rust, trong đó có module OHS điều khiển một tiến trình Node chạy lâu qua stdio.",
+          "lines": [
+            "profile",
+            "claude:2dfb5915#L607"
+          ]
+        },
+        "want": {
+          "text": "Hoàn tất module OHS.",
+          "lines": [
+            "claude:2dfb5915#L598"
+          ]
+        },
+        "obstacle": {
+          "text": "Luồng stderr ngừng đọc khi gặp byte UTF-8 hỏng, làm pipe đầy và OHS đứng; stdin giữ khoá không có thời hạn nên pkm không thoát được.",
+          "lines": [
+            "claude:2dfb5915#L607"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng module đã xong; review chỉ ra hai lỗi High có thể treo.",
+          "lines": [
+            "claude:2dfb5915#L598",
+            "claude:2dfb5915#L607"
+          ]
+        },
+        "action": {
+          "text": "Review gửi lại kèm vị trí và kịch bản lỗi; agent sửa cả 2 lỗi High và 4 lỗi Medium trong một commit.",
+          "lines": [
+            "claude:2dfb5915#L615",
+            "claude:2dfb5915#L631"
+          ]
+        },
+        "outcome": {
+          "text": "Đã merge và push; test mới chạy trên Linux, CI Windows và macOS chưa xác nhận.",
+          "lines": [
+            "claude:2dfb5915#L639",
+            "claude:2dfb5915#L640",
+            "claude:2dfb5915#L653"
+          ]
+        },
+        "takeaway": {
+          "text": "Review với tiêu chí cụ thể (kịch bản lỗi, vị trí, test yêu cầu) giúp tìm đúng lỗi treo mà người viết bỏ sót.",
+          "lines": [
+            "claude:2dfb5915#L607",
+            "claude:2dfb5915#L615"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-artifact-ci-khong-tai-an-danh-3c6e",
+      "code": "M-6E8E",
+      "title": "Artifact CI không tải ẩn danh được, nên bộ cài dùng gh rồi chuyển sang Release",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh cho vault Obsidian, đang viết lại bằng Rust, cần cài được mà không cần Python. Người làm nghĩ repo phụ thuộc OHS là private nên mới phải đăng nhập GitHub. Kiểm lại thì fork đang public, nhưng GitHub vẫn đòi đăng nhập để tải artifact từ Actions. Ai phát hành công cụ kèm gói tải từ CI nên kiểm đường tải có cần đăng nhập không, đừng chỉ nhìn repo public hay private.",
+      "audience": "dev phát hành công cụ kèm gói tải từ CI",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust để cho kết quả khớp với bản Python.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn phần đóng gói và phân phối được kiểm tra kỹ.",
+          "lines": [
+            "claude:2dfb5915#L1017"
+          ]
+        },
+        "obstacle": {
+          "text": "Gói OHS lấy từ artifact GitHub Actions của fork, và fork chưa có Release vì bước smoke đang hỏng.",
+          "lines": [
+            "claude:2dfb5915#L1148"
+          ]
+        },
+        "turn": {
+          "text": "Nghĩ repo OHS là private nên mới cần đăng nhập; kiểm lại thì fork đang public, nhưng artifact vẫn đòi đăng nhập.",
+          "lines": [
+            "claude:2dfb5915#L1140",
+            "claude:2dfb5915#L1143",
+            "claude:2dfb5915#L1148"
+          ]
+        },
+        "action": {
+          "text": "Kiểm lại visibility của fork OHS và repo pkm, rồi cho script cài thử tải công khai trước, không được thì dùng gh.",
+          "lines": [
+            "claude:2dfb5915#L1142",
+            "claude:2dfb5915#L1169"
+          ]
+        },
+        "outcome": {
+          "text": "Khách có gh phải gh auth login; máy không có gh cài OHS bằng tay qua file zip. Khi fork có Release, OHS không cần đăng nhập.",
+          "lines": [
+            "claude:2dfb5915#L1178"
+          ]
+        },
+        "takeaway": {
+          "text": "Trước khi hứa cài một lệnh, kiểm xem đường tải có cần đăng nhập không, kể cả khi repo đã public.",
+          "lines": [
+            "claude:2dfb5915#L1148"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-ban-sua-ohs-ha-cap-goi-3c6e",
+      "code": "M-2NBH",
+      "title": "Bản sửa OHS hạ cấp gói mới hơn về bản ghim cũ",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Công cụ pkm cài gói OHS vào thư mục riêng theo bản ghim, và nhánh đưa bản ghim mới vào main đang chờ review. Nhánh gốc tin rằng gói khác bản ghim là gói cũ cần thay, nên gói vantt.4 đang có sẵn sẽ bị hạ về vantt.3. Lỗi bị bắt trước khi phát hành và được sửa để chỉ nâng khi gói cũ hơn hoặc không đọc được phiên bản. Ai viết trình cài đặt có ghim phiên bản nên so phiên bản theo thứ tự, không theo việc khác nhau.",
+      "audience": "dev viết trình cài đặt có ghim phiên bản",
+      "spine": {
+        "context": {
+          "text": "Công cụ pkm cài gói OHS vào thư mục riêng theo một bản ghim trong main. Nhánh ohs-release-pin đưa bản ghim mới vào main.",
+          "lines": [
+            "claude:2dfb5915#L3286"
+          ]
+        },
+        "want": {
+          "text": "Đưa nhánh ohs-release-pin vào main cùng bản ghim OHS v0.17.2-vantt.4, và giữ CI xanh.",
+          "lines": [
+            "claude:2dfb5915#L3286"
+          ]
+        },
+        "obstacle": {
+          "text": "Nhánh gốc thay gói bất cứ khi nào phiên bản khác bản ghim, nên gói vantt.4 đang có sẵn sẽ bị đổi thành vantt.3.",
+          "lines": [
+            "claude:2dfb5915#L3286"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng khác bản ghim nghĩa là gói cũ và thay được; hoá ra gói mới hơn bị hạ xuống bản ghim cũ.",
+          "lines": [
+            "claude:2dfb5915#L3286",
+            "claude:2dfb5915#L3299"
+          ]
+        },
+        "action": {
+          "text": "Thêm hàm so sánh phiên bản theo thứ tự X.Y.Z[-vantt.N]: chỉ nâng khi gói cũ hơn hoặc không đọc được phiên bản; gói đưa vào bằng --ohs không bao giờ bị ghi đè, có test cho việc này.",
+          "lines": [
+            "claude:2dfb5915#L3286"
+          ]
+        },
+        "outcome": {
+          "text": "Main ghim vantt.4. CI trên commit đó xanh trên cả ba hệ điều hành và bốn bản build.",
+          "lines": [
+            "claude:2dfb5915#L3286"
+          ]
+        },
+        "takeaway": {
+          "text": "Khi so phiên bản của gói đã cài, hãy so theo thứ tự, không chỉ xem có khác bản ghim hay không, để không hạ cấp gói mới hơn.",
+          "lines": [
+            "claude:2dfb5915#L3299"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-chon-tu-viet-json-rpc-thay-3c6e",
+      "code": "M-1JM3",
+      "title": "Chọn tự viết JSON-RPC thay vì rmcp: binary 0,68 MB so với 2,79 MB",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Một công cụ dòng lệnh cho vault Obsidian đang viết lại lõi bằng Rust để cho kết quả khớp bản Python, và cần một thư viện MCP cho server. Người làm định dùng rmcp, nhưng khi đo thì rmcp lệch Python ở 5 điểm trong tầng giao thức, còn binary to gấp 4 lần và build chậm gấp 6 lần, nên họ tự viết JSON-RPC. Ai chọn thư viện cho một giao thức đã có bản gốc nên đo hành vi trước, vì thư viện có sẵn có thể lệch ngay ở thông điệp lỗi.",
+      "audience": "dev viết server MCP hoặc chọn thư viện giao thức",
+      "spine": {
+        "context": {
+          "text": "Một công cụ dòng lệnh cho vault Obsidian, có cửa MCP để hỏi Claude Desktop về graph; đang viết lại lõi bằng Rust để kết quả khớp bản Python.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Muốn hoàn tất plan viết lại lõi bằng Rust, làm song song các phase.",
+          "lines": [
+            "claude:2dfb5915#L11"
+          ]
+        },
+        "obstacle": {
+          "text": "Cần chọn thư viện MCP cho server Rust mà vẫn khớp hành vi bản Python.",
+          "lines": [
+            "claude:2dfb5915#L279"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng dùng được thư viện MCP rmcp; đo ra rmcp lệch Python ở 5 điểm trong tầng giao thức.",
+          "lines": [
+            "claude:2dfb5915#L279"
+          ]
+        },
+        "action": {
+          "text": "Tự viết JSON-RPC và đo so với bản dùng rmcp.",
+          "lines": [
+            "claude:2dfb5915#L279"
+          ]
+        },
+        "outcome": {
+          "text": "Binary 0,68 MB thay vì 2,79 MB; build sạch 2,5 giây thay vì 16,5 giây; phase 03 đã merge và push.",
+          "lines": [
+            "claude:2dfb5915#L279",
+            "claude:2dfb5915#L292"
+          ]
+        },
+        "takeaway": {
+          "text": "Thư viện có sẵn có thể lệch hành vi của bản gốc; đo trước khi chọn.",
+          "lines": [
+            "claude:2dfb5915#L279"
+          ]
+        }
+      },
+      "completeness": 7
+    },
+    {
+      "id": "2026-11-02-compact-xoa-khoa-null-lam-loi-3c6e",
+      "code": "M-45AS",
+      "title": "compact() xoá khoá null làm lỗi ohs_not_ready mất 2 trong 5 khoá",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": "Dự án là một công cụ dòng lệnh cho vault Obsidian, đang viết lại bằng Rust và thêm cửa MCP để Claude Desktop hỏi graph của vault. Lúc OHS đang khởi động, người làm tin hợp đồng 5 khoá vẫn được giữ vì test kiểm đủ 5 khoá. Hoá ra hàm compact() bỏ các khoá null trước khi trả cho agent, nên chỉ còn 3 khoá; test chạy trước bước đó nên không bắt được. Ai viết test cho API trả JSON nên kiểm đúng chỗ dữ liệu ra khỏi hệ thống.",
+      "audience": "dev viết test cho API hoặc công cụ MCP",
+      "spine": {
+        "context": {
+          "text": "Công cụ dòng lệnh cho vault Obsidian, đang viết lại lõi bằng Rust và thêm cửa MCP để Claude Desktop hỏi graph của vault.",
+          "lines": [
+            "profile"
+          ]
+        },
+        "want": {
+          "text": "Cửa MCP phải trả đủ 5 khoá theo hợp đồng, kể cả khi OHS đang khởi động.",
+          "lines": [
+            "claude:2dfb5915#L3060"
+          ]
+        },
+        "obstacle": {
+          "text": "Lúc OHS starting, progress và eta_s là null nên bị bỏ, agent chỉ nhận 3 khoá.",
+          "lines": [
+            "claude:2dfb5915#L3060"
+          ]
+        },
+        "turn": {
+          "text": "Tưởng hợp đồng 5 khoá đã được giữ vì test kiểm 5 khoá; hoá ra test chạy trước compact() nên không thấy khoá null bị bỏ.",
+          "lines": [
+            "claude:2dfb5915#L3060",
+            "claude:2dfb5915#L3110"
+          ]
+        },
+        "action": {
+          "text": "Miễn compact() cho lỗi ohs_not_ready và thêm test ở tầng MCP.",
+          "lines": [
+            "claude:2dfb5915#L3110"
+          ]
+        },
+        "takeaway": {
+          "text": "Viết test ở đúng tầng mà dữ liệu đi ra cho người dùng, không ở tầng trung gian.",
+          "lines": [
+            "claude:2dfb5915#L3110"
+          ]
+        }
+      },
+      "completeness": 6
+    },
+    {
+      "id": "2026-11-02-dau-ra-python-doi-theo-thu-3c6e",
+      "code": "M-P9XX",
+      "title": "Đầu ra Python đổi theo thứ tự hệ điều hành liệt kê file",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-may-windows-that-tim-ra-loi-3c6e",
+      "code": "M-AZKR",
+      "title": "Máy Windows thật tìm ra lỗi mà máy Linux không thấy",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-nguoi-duyet-chon-de-pkm-tu-3c6e",
+      "code": "M-RHCF",
+      "title": "Người duyệt chọn để pkm tự đọc file thay vì chuyển sang OHS",
+      "tension": "nguoi_dung_may_sai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-panic-luc-build-dau-lam-moi-3c6e",
+      "code": "M-RC1W",
+      "title": "Panic lúc build đầu làm mọi lệnh gọi tool treo, và truy vấn đường đi bùng nổ tổ hợp",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-phase-15-python-them-goi-tieng-3c6e",
+      "code": "M-8079",
+      "title": "Phase 15: Python thêm gói tiếng Việt, Rust phải bật cùng biến môi trường",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-cache-ci-giu-thu-muc-rong-3c6e",
+      "code": "M-858R",
+      "title": "Cache CI giữ thư mục rỗng, CI đỏ từ lần chạy kế tiếp",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-hook-dung-muc-tieu-lap-hon-3c6e",
+      "code": "M-HV2E",
+      "title": "Hook dừng mục tiêu lặp hơn 20 lần vì điều kiện 'toàn bộ plan' không khớp phạm vi đã thu hẹp",
+      "tension": "giup_ma_hai",
+      "stakes": 0,
+      "strength": 3,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-installer-chuyen-sang-tieng-anh-vi-3c6e",
+      "code": "M-B8B4",
+      "title": "Installer chuyển sang tiếng Anh vì PowerShell 5.1 làm hỏng dấu tiếng Việt",
+      "tension": "chon_mot_mat_mot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-may-audit-chi-doc-ma-vi-3c6e",
+      "code": "M-5PV6",
+      "title": "Máy audit chỉ đọc mã vì hook chặn cargo build, và báo sai một chi tiết",
+      "tension": "cam_ma_van_lot",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-bay-agent-chay-song-song-so-3c6e",
+      "code": "M-QFGD",
+      "title": "Bảy agent chạy song song, số mục chưa có đếm ngược từ 47 về 0",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-seed-11-nam-trong-preset-cua-3c6e",
+      "code": "M-AKS6",
+      "title": "Seed 11 nằm trong preset của fixture, test Python không truyền seed",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-03-truoc-khi-cong-khai-repo-quet-3c6e",
+      "code": "M-YZX0",
+      "title": "Trước khi công khai repo, quét lịch sử git tìm khoá",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-dry-run-release-7-file-sha256-3c6e",
+      "code": "M-PM9B",
+      "title": "Dry run release: 7 file, sha256 khớp, không tạo Release thật",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-muc-porting-md-bi-nhan-doi-3c6e",
+      "code": "M-FM7T",
+      "title": "Mục PORTING.md bị nhân đôi sau mỗi lần merge nhánh",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-doi-quyet-dinh-ky-thuat-thanh-3c6e",
+      "code": "M-W5ZA",
+      "title": "Đổi quyết định kỹ thuật thành một điều kiện phát hành mà người dùng có thể kiểm, thay vì thương lượng bằng lời",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-dung-agent-khac-de-review-ma-3c6e",
+      "code": "M-D8JE",
+      "title": "Dùng agent khác để review mã và báo lỗi, rồi chuyển lỗi về đúng agent đã viết để nó tự sửa",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-giao-mot-nhiem-vu-lon-cho-3c6e",
+      "code": "M-HYGP",
+      "title": "Giao một nhiệm vụ lớn cho AI rồi để nó tự chạy nhiều agent song song đến khi xong, thay vì hỏi từng bước",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-moi-subagent-lam-viec-trong-worktree-3c6e",
+      "code": "M-T5R8",
+      "title": "Mỗi subagent làm việc trong worktree git riêng và báo kết quả bằng một bản tóm tắt có cấu trúc",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    },
+    {
+      "id": "2026-11-02-bat-ci-chay-lai-moi-lan-3c6e",
+      "code": "M-DCKF",
+      "title": "Bắt CI chạy lại mỗi lần đẩy mã và theo dõi cả đường phát hành thử trước khi báo xong",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false,
+      "angle": null,
+      "audience": null,
+      "spine": {},
+      "completeness": null
+    }
+  ]
+}

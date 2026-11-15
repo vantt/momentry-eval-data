@@ -1,0 +1,53 @@
+Bạn là biên tập viên build-in-public. Người nghe: dev dùng AI hằng ngày, không rành lĩnh vực của chuyện dưới đây.
+
+Một sự kiện chỉ thành chuyện kể được khi có chỗ ngoặt: ai đó (user, agent, hay số đông) đã tin một điều, rồi hoá ra điều khác, và người nghe có lý do để quan tâm. Tìm chỗ ngoặt đó trong chuyện dưới đây, hoặc nói thẳng là không có.
+
+Có chỗ ngoặt thì trả:
+- angle: 1-3 câu, chữ thường ngày, tránh thuật ngữ khi nói khác được. Theo thứ tự: điều người ta tin, điều hoá ra đúng, vì sao người nghe nên quan tâm.
+- audience: ai muốn nghe chuyện này, một cụm ngắn.
+- evidence: số dòng (số trong [Lnnn]) của trích đoạn mà angle dựa vào.
+
+Luật cứng:
+- Không bịa sự kiện, con số, người, hay động cơ. Mọi chi tiết trong angle phải đọc được trong chuyện hoặc trích đoạn. Trích đoạn không đỡ được thì trả none.
+- evidence chỉ gồm số dòng có trong trích đoạn bên dưới.
+- Không có ai tin sai điều gì (chỉ là việc vặt, sửa lỗi thường, một mẹo, một bước làm) thì trả none kèm lý do ngắn. none là câu trả lời hợp lệ và thường gặp; đừng ép.
+- Viết angle, audience, reason bằng cùng ngôn ngữ với chuyện.
+
+Ví dụ có góc kể:
+{"angle":"Test xanh trên máy, đỏ trên CI. Code không sai: npm âm thầm đổi hình dạng một lệnh giữa hai phiên bản. Ai viết test bám vào đầu ra CLI đều có thể dính.","audience":"dev viết test cho công cụ dòng lệnh","evidence":[812,861]}
+
+Ví dụ không có:
+{"none":true,"reason":"chỉ là đổi tên biến cho thống nhất; không ai tin sai điều gì"}
+
+<story>
+hook: Codex bỏ qua mọi hook vì viết sai kiểu chữ hoa thường
+tension: nho_ma_to (Chỉ sai snake_case thay vì PascalCase / Codex không bao giờ chạy hook và không báo lỗi)
+stakes: 2/3
+# Codex không bao giờ chạy hook: tên sự kiện sai, bị bỏ không báo
+
+**Bối cảnh:** Momentry ghi cấu hình hook cho Codex, và hook được coi là đã cài.
+**Chuyện gì xảy ra:** Codex yêu cầu tên sự kiện dạng PascalCase, còn momentry ghi snake_case, nên Codex bỏ qua hook mà không báo lỗi. Agent đổi thành PreCompact, SessionEnd, SessionStart, rồi thử chạy codex exec trên Windows vẫn không thấy hook gọi.
+**Bài học:** Hook sai tên sự kiện thường bị host bỏ im lặng. Hãy đo bằng log do chính hook ghi, không đo bằng việc cấu hình đã được ghi.
+**Artefact:** Đoạn hooks.json trước và sau khi đổi tên sự kiện.
+</story>
+
+<excerpt>
+[L3184] TOOL Bash: gh search code "Feature::Hooks" --repo openai/codex --limit 5 --json path --jq '.[].path'; gh api repos/openai/codex/contents/codex-rs/features/src/lib.rs --jq .content 2>/dev/null | base64 -d | grep -n -i -B2 -A8 "Hooks,\|\"hooks\"" | head -40
+[L3187] RESULT: 118- SleepTool, | 119- /// Enable Claude-style lifecycle hooks loaded from hooks.json files.
+[L3192] TOOL Bash: cd /home/vantt/projects/momentry; grep -n "pre_compact\|session_start" lib/*.mjs test/*.mjs docs/*.md README*.md prompts/*.md 2>/dev/null | grep -v "^docs/prd.md" | head -20; grep -n "pre_compact\|session_start" docs/prd.md | head
+[L3195] RESULT: lib/hosts.mjs:28: events: { pre_compact: 'pre-compact', session_start: 'session-start' }, | test/hook.test.mjs:88: assert.match(codex, /pre_compact/);
+[L3205] AGENT: Sửa code, test, PRD và CHANGELOG. Riêng README và README.vi.md (cũng nhắc `pre_compact`) đang được phiên kia sửa, nên tôi để lại và sẽ báo bạn.
+[L3206] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' def edit(p, pairs): s=open(p).read() for a,b in pairs: assert a in s, (p, a[:80]); s=s.replace(a,b) open(p,'w').write(s) edit('lib/hosts.mjs', [(" events: { pre_compact: 'pre-compact', session_start: 'session-start' },", """ // Codex hooks.json use …[+4631]
+[L3209] RESULT: ℹ pass 234 | ℹ fail 0
+…
+[L3214] TOOL Bash: cd /home/vantt/projects/momentry; python3 - <<'EOF' p='.github/workflows/windows-hook-probe.yml'; s=open(p).read() R=[(""" - name: open a Codex session (no credentials) shell: powershell working-directory: probe-repo continue-on-error: true run: | $p = Start-Process -FilePath 'cmd.exe' -ArgumentList …[+1117]
+[L3215] RESULT: 67: const runtime = flags?.codex ? 'codex' : 'claude'; | 73: const sid = id ? `${runtime}:${id}` : '';
+[L3228] TOOL Bash: cd /home/vantt/projects/momentry; git add CHANGELOG.md docs/prd.md lib/hook.mjs lib/hosts.mjs test/hook.test.mjs test/hosts.test.mjs .github/workflows/windows-hook-probe.yml && git diff --cached --stat && git commit -q -m "fix: Codex hook events are PascalCase (PreCompact, SessionEnd, SessionStart)  …[+588]
+[L3229] RESULT: .github/workflows/windows-hook-probe.yml | 14 +++++++------- | CHANGELOG.md | 5 +++++
+[L3233] TOOL Bash: cd /home/vantt/projects/momentry; gh run watch 41622201992 --interval 20 >/dev/null 2>&1; gh run view 41622201992 --json conclusion --jq .conclusion; gh run view 41622201992 --log 2>/dev/null | cut -f2,3 | grep -E "^report hook.log|^open a Codex" | grep -E "event|error|Error|::" | cut -c1-30,75-330  …[+10]
+[L3239] RESULT: failure | open a Codex session (no crederove it) 2026-11-03T10:48:41.2597540Z ^[[36;1mGet-Content codex.out -ErrorAction SilentlyContinue | Select-Object -First 20^[[0m
+[L3252] TOOL WebSearch: {"query":"pi coding agent mariozechner session files jsonl location ~/.pi hooks extensions","mode":"standard"}
+[L3253] TOOL WebSearch: {"query":"oh-my-pi omp coding agent can1357 sessions hooks","mode":"standard"}
+</excerpt>
+
+Chỉ trả JSON theo một trong hai dạng trên.

@@ -1,0 +1,303 @@
+{
+  "id": "c4caee3c",
+  "run": 1,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-hybrid-search/c4caee3c-648b-4dec-9db9-7046ba7beb6d.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "a80efc8267e2088e",
+  "at": "2026-11-05T10:07:15.558Z",
+  "dryRun": {
+    "usd": 0.61,
+    "tokens": 99560,
+    "chunks": 1,
+    "hotspots": 36,
+    "entries": 874
+  },
+  "report": {
+    "sid": "claude:c4caee3c",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.4386829,
+    "secs": 51,
+    "exitCode": 0,
+    "status": "done",
+    "written": 30,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:c4caee3c L1-L4000: done; 28 chuyện thô, 30 cụm; ghi 30 mới, gộp 0\nđiểm nóng 36 (thiếu 0); lần chạy 1/1; 0.44 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-corpus-sinh-de-qua-baseline-0",
+      "title": "Corpus sinh dễ quá: baseline 0,93 khiến mục tiêu G3 không thể đạt",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-cung-mo-hinh-onnx-cpu-khac",
+      "title": "Cùng mô hình ONNX, CPU khác, số eval khác: 0,735 thành 0,728",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-goi-tieng-duc-chay-qua-diem",
+      "title": "Gói tiếng Đức chạy qua điểm cắm P01 mà không sửa lõi: nDCG@5 0,57 lên 0,97",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-phuc-hoi-dau-lam-hong-cum",
+      "title": "Phục hồi dấu làm hỏng cụm có tên riêng: âm tiết không dấu đổi sang từ phổ biến",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-alias-qua-view-fold-vi-alias",
+      "title": "Alias qua view fold: vi-alias Hit@5 0,73 lên 1,00",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-chuoi-ban-va-phu-thuoc-thu",
+      "title": "Chuỗi bản vá phụ thuộc thứ tự: P03 xung đột khi đặt sau P00",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-do-tren-vault-that-ma-khong",
+      "title": "Đo trên vault thật mà không đưa nội dung vault ra repo",
+      "tension": "hop_ma_tan",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-onnxruntime-1-30-khong-co-ban",
+      "title": "onnxruntime 1.30 không có bản darwin-x64: ghim 1.23.2 và đổi luật chấp nhận",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-prd-di-sau-thuc-do-cau",
+      "title": "PRD đi sau thực đo: câu có dấu không chạy hai view norm và fold",
+      "tension": "giup_ma_hai",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-tu-dien-tu-ghep-va-tach",
+      "title": "Từ điển từ ghép và tách từ: từ danh sách GPL sang thống kê CC BY",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-goi-tieng-viet-ndcg-5-tong",
+      "title": "Gói tiếng Việt: nDCG@5 tổng từ 0,666 lên 0,932 qua từng lớp",
+      "tension": "hop_ma_tan",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-sua-go-sai-lam-roi-tu",
+      "title": "Sửa gõ sai làm rơi từ đồng nghĩa: hạng 4 thành hạng 7",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-doi-schema-index-ma-khong-goi",
+      "title": "Đổi schema index mà không gọi lại embedder",
+      "tension": "it_ma_nhieu",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-fixture-tag-co-dinh-v0-10",
+      "title": "Fixture tag cố định v0.10.0 trong workflow lệch với bộ eval v0.11.0",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-npm-11-khac-npm-12-o",
+      "title": "npm 11 khác npm 12 ở đầu ra npm pack: test chỉ đúng trên máy local",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-watcher-debounce-5-giay-khong-ha",
+      "title": "Watcher debounce 5 giây: không hạ ngưỡng mà thêm biến môi trường",
+      "tension": "it_ma_nhieu",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-dieu-phoi-song-song-11-agent",
+      "title": "Điều phối song song: 11 agent cùng một repo, giữ cây chung sạch",
+      "tension": "khac",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-cay-lam-viec-chung-pull-va",
+      "title": "Cây làm việc chung: pull và merge bị chặn bởi thay đổi dở của agent khác",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-dia-tmp-het-han-muc-moi",
+      "title": "Đĩa /tmp hết hạn mức: mọi agent hỏng lệnh shell cùng lúc",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-hai-note-cung-diem-doi-cho",
+      "title": "Hai note cùng điểm đổi chỗ: test snapshot đỏ trên CI",
+      "tension": "nho_ma_to",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-hook-chan-lenh-co-chu-build",
+      "title": "Hook chặn lệnh có chữ 'build' và 'node_modules': đổi cách làm việc",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-hook-pre-push-chan-push-agent",
+      "title": "Hook pre-push chặn push; agent tự đặt HUSKY=0 mà không hỏi",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-test-thuoc-tinh-do-vi-bo",
+      "title": "Test thuộc tính đỏ vì bộ đếm token của chính test",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 0,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-lan-phat-hanh-dau-bon-goi",
+      "title": "Lần phát hành đầu: bốn gói dựng sẵn, giải nén 280–330 MB",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-ranh-gioi-fork-va-du-an",
+      "title": "Ranh giới fork và dự án: L13 và L22 thuộc repo dự án",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-upstream-v0-17-1-v0-17",
+      "title": "Upstream v0.17.1 → v0.17.2 chỉ nâng phụ thuộc; 8 bản vá áp sạch, probe đổi 1 thành 0",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-goi-tieng-viet-bao-loi-ro",
+      "title": "Gói tiếng Việt báo lỗi rõ khi thiếu dữ liệu, thay vì im lặng chạy như không có gói",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-catchup-tu-dung-goi-ci-day",
+      "title": "Catchup tự dựng gói: CI đẩy tag và bundle trọn vẹn sau nhiều lần đỏ",
+      "tension": "none",
+      "stakes": 3,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-ghi-trang-thai-dieu-phoi-ra",
+      "title": "Ghi trạng thái điều phối ra một file ngoài repo (lead-state) sau mỗi mốc, để sau khi nén ngữ cảnh vẫn tiếp tục đúng việc.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-khi-user-hoi-mot-cau-ngan",
+      "title": "Khi user hỏi một câu ngắn kiểu 'L13 và L22 là gì', 'ý là obsidian-plugin', agent trả lời ngay theo đúng ngữ cảnh rồi sửa PRD khi user chốt, thay vì đoán lại từ đầu.",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 0,
+      "held": false
+    }
+  ]
+}

@@ -1,0 +1,312 @@
+{
+  "id": "2dfb5915",
+  "run": 2,
+  "host": "claude",
+  "transcript": "/home/vantt/.claude/projects/-home-vantt-projects-obsidian-pkm/2dfb5915-3011-441f-a6fb-2c7cb5abd60b.jsonl",
+  "fromLine": 1,
+  "toLine": 4000,
+  "windowSha": "eef608eecc0bbb60",
+  "at": "2026-11-05T09:46:39.313Z",
+  "dryRun": {
+    "usd": 0.58,
+    "tokens": 91394,
+    "chunks": 1,
+    "hotspots": 9,
+    "entries": 772
+  },
+  "report": {
+    "sid": "claude:2dfb5915",
+    "fromLine": 1,
+    "toLine": 4000,
+    "usd": 0.9149184,
+    "secs": 196.2,
+    "exitCode": 0,
+    "status": "done",
+    "written": 31,
+    "merged": 0,
+    "privacyBlocked": 0,
+    "privacyUnchecked": 0,
+    "message": "claude:2dfb5915 L1-L4000: done; 29 chuyện thô, 31 cụm; ghi 31 mới, gộp 0\nđiểm nóng 9 (thiếu 0); lần chạy 1/1; 0.91 USD"
+  },
+  "ranked": [
+    {
+      "id": "2026-11-02-nam-cach-doc-yaml-thu-vien",
+      "title": "Năm cách đọc YAML: thư viện libyaml-safer bị loại vì panic trên note thật",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 3,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-alias-bomb-mot-note-338-byte",
+      "title": "Alias bomb: một note 338 byte làm RSS lên 1,45 GB",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-chon-cach-doc-yaml-ba-thu",
+      "title": "Chọn cách đọc YAML: ba thư viện Rust đều lệch hoặc panic so với PyYAML",
+      "tension": "khac",
+      "stakes": 3,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-dau-ra-python-phu-thuoc-thu",
+      "title": "Đầu ra Python phụ thuộc thứ tự liệt kê file của hệ điều hành",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-mot-byte-0xff-tren-stderr-lam",
+      "title": "Một byte 0xFF trên stderr làm OHS treo",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 3,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-03-ci-khong-chay-vi-thanh-toan",
+      "title": "CI không chạy vì thanh toán lỗi, repo chuyển public, và quét lịch sử git trước khi mở",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-artifact-actions-can-dang-nhap-ngay",
+      "title": "Artifact Actions cần đăng nhập ngay cả khi repo public",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-build-loi-giua-chung-de-edges",
+      "title": "Build lỗi giữa chừng để edges cũ mãi",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-do-roi-moi-chon-rmcp-hay",
+      "title": "Đo rồi mới chọn: rmcp hay JSON-RPC viết tay cho server MCP",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-panic-lan-build-dau-lam-moi",
+      "title": "Panic lần build đầu làm mọi tool call treo vĩnh viễn",
+      "tension": "nho_ma_to",
+      "stakes": 2,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-index-sqlite-khop-python-tung-byte",
+      "title": "Index SQLite khớp Python từng byte, build nhanh gấp 2,8 lần",
+      "tension": "it_ma_nhieu",
+      "stakes": 3,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-ci-do-vi-rust-cache-xoa",
+      "title": "CI đỏ vì rust-cache xoá file ngoài thư mục build",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-compact-xoa-khoa-null-loi-ohs",
+      "title": "Compact() xoá khoá null: lỗi ohs_not_ready chỉ còn 3/5 khoá",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-cong-g0-cau-tra-loi-tu",
+      "title": "Cổng G0: câu trả lời tự do được hiểu thành lệnh mở cổng",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-hook-chan-build-va-ghi-file",
+      "title": "Hook chặn build và ghi file, audit chỉ đọc được mã nguồn",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-nhanh-va-goi-ohs-co-the",
+      "title": "Nhánh vá gói OHS có thể hạ cấp gói mới hơn",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-packaging-audit-pkm-exe-can-vcruntime140",
+      "title": "Packaging audit: pkm.exe cần vcruntime140.dll",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-python-i-an-user-site-nen",
+      "title": "Python -I ẩn user site nên probe không thấy PyYAML trên Windows",
+      "tension": "giup_ma_hai",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-python-them-ohs-language-pack-thieu",
+      "title": "Python thêm OHS_LANGUAGE_PACK: thiếu biến thì hai MCP dựng lại index liên tục",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-vong-review-roi-sua-ngay-gan",
+      "title": "Vòng review rồi sửa ngay: gần như mỗi merge đều có lỗi High",
+      "tension": "tuong_ma_hoa_ra",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-windows-do-hai-lan-tach-ten",
+      "title": "Windows đỏ hai lần: tách tên theo '/' và dấu gạch chéo nhân đôi trong JSON",
+      "tension": "nho_ma_to",
+      "stakes": 1,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-hai-tinh-nang-ranh-gioi-duoc",
+      "title": "Hai tính năng ranh giới được ghi thẳng vào `docs/DECISIONS.md` và `spec/PORTING.md` thành 'lệch có chủ ý so với Python': ngân sách bộ nhớ cho YAML độc hại, giới hạn độ sâu và thời gian cho truy vấn đường đi, khoá file khi hai lần build chạy cùng lúc. Mỗi mục có tên ngoại lệ và bộ so khớp liệt kê ngoại lệ chưa dùng.",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-lenh-follow-dem-cac-commit-moi",
+      "title": "Lệnh `follow` đếm các commit mới của repo Python chạm vào đường dẫn được theo dõi, kể từ sha đã ghim. Khi có commit mới thì chuyển sang Rust, nâng ghim, dựng lại golden, và cho kết quả 0 commit chưa chuyển.",
+      "tension": "khac",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 0,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-stop-hook-chan-dung-hon-30",
+      "title": "Stop hook chặn dừng hơn 30 lần sau khi user đã thu hẹp phạm vi",
+      "tension": "cam_ma_van_lot",
+      "stakes": 0,
+      "strength": 2,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-khong-them-limit-va-system-vi",
+      "title": "Không thêm --limit và --system vì Python không có",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-powershell-5-1-lam-hong-tieng",
+      "title": "PowerShell 5.1 làm hỏng tiếng Việt khi chạy script qua irm",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-probe-ohs-kill-9-giua-luc",
+      "title": "Probe OHS: kill -9 giữa lúc index không để lại tiến trình node",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 1,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-bay-phase-song-song-sau-phase",
+      "title": "Bảy phase song song sau phase nền, CI xanh trên ba nền",
+      "tension": "none",
+      "stakes": 2,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-bo-so-khop-an-danh-chi",
+      "title": "Bộ so khớp ẩn danh: chỉ in số lệch, không in tên note hay đường dẫn",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-merge-lap-lai-tren-file-chung",
+      "title": "Merge lặp lại trên file chung: Cargo.lock xung đột, mục MCP bị nhân đôi",
+      "tension": "none",
+      "stakes": 0,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    },
+    {
+      "id": "2026-11-02-phat-hanh-thu-rc-1-den",
+      "title": "Phát hành thử rc.1 đến rc.3: 7 file, sha256, job macOS bị huỷ",
+      "tension": "none",
+      "stakes": 1,
+      "strength": 0,
+      "hits": 1,
+      "held": false
+    }
+  ]
+}
